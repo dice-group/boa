@@ -35,6 +35,8 @@ public class LoggingConfigurator {
 		try {
 			
 			String path = getClass().getProtectionDomain().getCodeSource().getLocation().toString();
+			
+			System.out.println(path);
 			path = path.substring(5, path.indexOf("WEB-INF"));
 			CONFIG_FILE = path + "WEB-INF/config/log4j.xml";
 			
