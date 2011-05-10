@@ -31,7 +31,12 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * 
 	 */
-	private Double confidence;
+	private Double withLogConfidence;
+	
+	/**
+	 * 
+	 */
+	private Double withoutLogConfidence;
 	
 	/**
 	 * 
@@ -99,7 +104,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		this.nerTaggedString = generalizedPatternString;
 		this.learnedFrom = new HashMap<String,Integer>();
 		this.numberOfOccurrences = 1;
-		this.confidence = -1D;
+		this.withLogConfidence = -1D;
 	}
 
 	/**
@@ -112,22 +117,40 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	}
 	
 	/**
-	 * @return the confidence
+	 * @return the withLogConfidence
 	 */
 	@Basic
-	public Double getConfidence() {
+	public Double getWithLogConfidence() {
 	
-		return this.confidence;
+		return this.withLogConfidence;
 	}
 	
 	/**
-	 * @param confidence the confidence to set
+	 * @param withLogConfidence the withLogConfidence to set
 	 */
-	public void setConfidence(Double confidence) {
+	public void setWithLogConfidence(Double confidence) {
 	
-		this.confidence = confidence;
+		this.withLogConfidence = confidence;
 	}
 	
+	/**
+	 * @param withoutLogConfidence the withoutLogConfidence to set
+	 */
+	public void setWithoutLogConfidence(Double withoutLogConfidence) {
+
+		this.withoutLogConfidence = withoutLogConfidence;
+	}
+
+
+	/**
+	 * @return the withoutLogConfidence
+	 */
+	public Double getWithoutLogConfidence() {
+
+		return withoutLogConfidence;
+	}
+
+
 	/**
 	 * @return the numberOfOccurrences
 	 */
@@ -206,7 +229,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	public String toString() {
 
 		return "Pattern [id=" + id + ", naturalLanguageRepresentation=" + naturalLanguageRepresentation + ", numberOfOccurrences=" + numberOfOccurrences
-				+ ", useForPatternEvaluation=" + useForPatternEvaluation + ", confidence=" + confidence + ", nerTaggedString=" + nerTaggedString + ", posTaggedString=" + posTaggedString
+				+ ", useForPatternEvaluation=" + useForPatternEvaluation + ", withLogConfidence=" + withLogConfidence + ", nerTaggedString=" + nerTaggedString + ", posTaggedString=" + posTaggedString
 				+ ", foundInIteration=" + foundInIteration + "]\n";
 	}
 

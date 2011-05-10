@@ -39,14 +39,19 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 	private final PatternMappingDao patternMappingDao	= (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 	private NamedEntityRecognizer ner;
 	private final int maxNumberOfDocuments = Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
-
-	private double max = -1;
-	private double min = 1;
+	
+	private double maxWithoutLog = -1;
+	private double maxWithLog = -1;
+	
+	private double minWithoutLog = 1;
+	private double minWithLog = 1;
+	
 	private PatternSearcher patternSearcher;
 	
 	// used for sentence segmentation
 	private Reader stringReader;
 	private DocumentPreprocessor preprocessor;
+	
 	
 	public DomainAndRangeEvaluator() {
 		
@@ -130,15 +135,27 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					domainCorrectness = (double) correctDomain / (double) sentences.size();
 					rangeCorrectness = (double) correctRange / (double) sentences.size();
 					
-					confidence = (domainCorrectness + rangeCorrectness) / 2;
-					confidence = Double.isNaN(confidence) ? 0d : confidence * (Math.log((double)(sentences.size() + 1)) / Math.log(2d));
+					// ########################################################
 					
-					this.min = Math.min(confidence, min);
-					this.max = Math.max(confidence, max);
+					double confidenceWithLog = (domainCorrectness + rangeCorrectness) / 2;
+					confidenceWithLog = Double.isNaN(confidenceWithLog) ? 0d : confidenceWithLog * (Math.log((double)(sentences.size() + 1)) / Math.log(2d));
 					
-					pattern.setConfidence(confidence);
+					this.minWithLog = Math.min(confidenceWithLog, minWithLog);
+					this.maxWithLog = Math.max(confidenceWithLog, maxWithLog);
 					
-					if ( pattern.getConfidence() == 0 ) {
+					pattern.setWithLogConfidence(confidenceWithLog);
+					
+					// ########################################################
+					
+					double confidenceWithoutLog = (domainCorrectness + rangeCorrectness) / 2;
+					confidenceWithoutLog = Double.isNaN(confidenceWithoutLog) ? 0d : confidenceWithoutLog * sentences.size();
+					
+					this.minWithoutLog = Math.min(confidenceWithoutLog, minWithoutLog);
+					this.maxWithoutLog = Math.max(confidenceWithoutLog, maxWithoutLog);
+					
+					pattern.setWithoutLogConfidence(confidenceWithoutLog);
+					
+					if ( pattern.getWithLogConfidence() == 0 ) {
 						
 						System.out.println("Pattern " + pattern.getNaturalLanguageRepresentation() + " does not fit in domain/range.");
 						this.logger.debug("Pattern " +  pattern.getNaturalLanguageRepresentation() + " does not fit in domain/range.");
@@ -183,13 +200,23 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 		
 	}
 	
-	public double getMin() {
+	public double getMinWithoutLog() {
 		
-		return this.min;
+		return this.minWithoutLog;
 	}
 	
-	public double getMax() {
+	public double getMaxWithoutLog() {
 		
-		return this.max;
+		return this.maxWithoutLog;
+	}
+	
+	public double getMinWithLog() {
+		
+		return this.minWithLog;
+	}
+	
+	public double getMaxWithLog() {
+		
+		return this.maxWithLog;
 	}
 }

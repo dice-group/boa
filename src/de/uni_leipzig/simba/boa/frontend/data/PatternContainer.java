@@ -20,7 +20,7 @@ public class PatternContainer extends BeanItemContainer<Pattern> implements Seri
 			
 			for ( Pattern p : pm.getPatterns()) {
 				
-				if ( p.isUseForPatternEvaluation() && p.getConfidence() >= 0) {
+				if ( p.isUseForPatternEvaluation() && ( p.getWithLogConfidence() >= 0 || p.getWithoutLogConfidence() >= 0) ) {
 					
 					this.addItem(p);
 				}
@@ -36,11 +36,11 @@ public class PatternContainer extends BeanItemContainer<Pattern> implements Seri
 			pc = new PatternContainer(null);
 			
 			Pattern pattern1 = new Pattern();
-			pattern1.setConfidence(0.5);
+			pattern1.setWithLogConfidence(0.5);
 			pattern1.setNaturalLanguageRepresentation("x is a y");
 			
 			Pattern pattern2 = new Pattern();
-			pattern2.setConfidence(0.3);
+			pattern2.setWithLogConfidence(0.3);
 			pattern2.setNaturalLanguageRepresentation("x is not a y");
 			
 			pc.addItem(pattern1);

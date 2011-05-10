@@ -42,17 +42,17 @@ public class PatternTest {
 	public void testPattern() {
 	
 		Pattern p0 = new Pattern("?X? is a ?Y?", "?X? is a ?Y?");
-		p0.setConfidence(0.3);
+		p0.setWithLogConfidence(0.3);
 		p0.setNumberOfOccurrences(766);
 		p0.setUseForPatternEvaluation(true);
 		
 		Pattern p1 = new Pattern("?X? is an ?Y?", "?X? is an ?Y?");
-		p1.setConfidence(0.34);
+		p1.setWithLogConfidence(0.34);
 		p1.setNumberOfOccurrences(7626);
 		p1.setUseForPatternEvaluation(false);
 		
 		Pattern p2 = new Pattern("?X? is an ?Y?","?X? is an ?Y?");
-		p2.setConfidence(0.34);
+		p2.setWithLogConfidence(0.34);
 		p2.setNumberOfOccurrences(7626);
 		p2.setUseForPatternEvaluation(false);
 		

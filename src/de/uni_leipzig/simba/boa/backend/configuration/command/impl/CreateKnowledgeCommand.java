@@ -64,7 +64,7 @@ public class CreateKnowledgeCommand implements Command {
 				String domainUri	= pattern.getPatternMapping().getRdfsDomain();
 				String rangeUri		= pattern.getPatternMapping().getRdfsRange();
 				
-				if ( pattern.isUseForPatternEvaluation() && pattern.getConfidence() > new Double(NLPediaSettings.getInstance().getSetting("createKnowledgeThreshold")) ) {
+				if ( pattern.isUseForPatternEvaluation() && pattern.getWithoutLogConfidence() > new Double(NLPediaSettings.getInstance().getSetting("createKnowledgeThreshold")) ) {
 					
 					String patternWithOutVariables = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 					

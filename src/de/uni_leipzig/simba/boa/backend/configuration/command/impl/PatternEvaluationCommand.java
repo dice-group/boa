@@ -54,11 +54,13 @@ public class PatternEvaluationCommand implements Command {
 			this.logger.debug(patternEvaluator.getClass().getSimpleName() + " finished!");
 		}
 		
-		double max = ((DomainAndRangeEvaluator) patternEvaluators.get(DomainAndRangeEvaluator.class.getName())).getMax();
-		double min = ((DomainAndRangeEvaluator) patternEvaluators.get(DomainAndRangeEvaluator.class.getName())).getMin();
+		double maxWithLog = ((DomainAndRangeEvaluator) patternEvaluators.get(DomainAndRangeEvaluator.class.getName())).getMaxWithLog();
+		double minWithLog = ((DomainAndRangeEvaluator) patternEvaluators.get(DomainAndRangeEvaluator.class.getName())).getMinWithLog();
+		double maxWithoutLog = ((DomainAndRangeEvaluator) patternEvaluators.get(DomainAndRangeEvaluator.class.getName())).getMaxWithoutLog();
+		double minWithoutLog = ((DomainAndRangeEvaluator) patternEvaluators.get(DomainAndRangeEvaluator.class.getName())).getMinWithoutLog();
 		
-		System.out.println(max);
-		System.out.println(min);
+		double maxMinusMinWithLog = maxWithLog - minWithLog;
+		double maxMinusMinWithoutLog = maxWithoutLog - minWithoutLog;
 		
 		for ( PatternMapping mapping : patternMappingList ) {
 			
@@ -66,7 +68,8 @@ public class PatternEvaluationCommand implements Command {
 				
 				if ( pattern.isUseForPatternEvaluation() ) {
 					
-					pattern.setConfidence(pattern.getConfidence() / (max - min));
+					pattern.setWithoutLogConfidence(pattern.getWithoutLogConfidence() / (maxMinusMinWithoutLog));
+					pattern.setWithLogConfidence(pattern.getWithLogConfidence() / (maxMinusMinWithLog));
 				}
 			}
 			this.patternMappingDao.updatePatternMapping(mapping);
