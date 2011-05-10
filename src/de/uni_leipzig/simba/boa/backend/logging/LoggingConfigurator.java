@@ -36,11 +36,17 @@ public class LoggingConfigurator {
 			
 			String path = getClass().getProtectionDomain().getCodeSource().getLocation().toString();
 			
-			if ( path.contains(".jar") ) path = path.substring(5, path.indexOf("nlpedia.jar")); 
-			if ( path.contains("WEB-INF") ) path = path.substring(5, path.indexOf("WEB-INF"));
+			if ( path.contains(".jar") ) {
+				
+				path = path.substring(5, path.indexOf("nlpedia.jar"));
+				CONFIG_FILE = path + "WebContent/WEB-INF/config/log4j.xml";
+			}
+			if ( path.contains("WEB-INF") ) {
+				
+				path = path.substring(5, path.indexOf("WEB-INF"));
+				CONFIG_FILE = path + "WEB-INF/config/log4j.xml";
+			}
 
-			CONFIG_FILE = path + "WEB-INF/config/nlpedia_setup.xml";
-			
 			DOMConfigurator.configure(CONFIG_FILE);
 		}
 		catch ( FactoryConfigurationError fce ) {

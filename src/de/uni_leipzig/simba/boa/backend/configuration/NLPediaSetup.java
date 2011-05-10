@@ -46,10 +46,17 @@ public class NLPediaSetup {
 		
 		String path = getClass().getProtectionDomain().getCodeSource().getLocation().toString();
 		
-		if ( path.contains(".jar") ) path = path.substring(5, path.indexOf("nlpedia.jar")); 
-		if ( path.contains("WEB-INF") ) path = path.substring(5, path.indexOf("WEB-INF"));
+		if ( path.contains(".jar") ) {
+			
+			path = path.substring(5, path.indexOf("nlpedia.jar"));
+			NLPEDIA_SETUP_FILE = path + "WebContent/WEB-INF/config/nlpedia_setup.xml";
+		}
+		if ( path.contains("WEB-INF") ) {
+			
+			path = path.substring(5, path.indexOf("WEB-INF"));
+			NLPEDIA_SETUP_FILE = path + "WEB-INF/config/nlpedia_setup.xml";
+		}
 		
-		NLPEDIA_SETUP_FILE = path + "WEB-INF/config/nlpedia_setup.xml";
 		
 		// initializing settings and factories (nlpedia_setup.xml)
 		logger.info("Initializing nlpedia...");
