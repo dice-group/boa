@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="nlpedia" basedir="." default="usage">
+
+	<!-- ==================== info screen ==================== -->
+	<target name="usage">
+		<echo message=""/>
+		<echo message="${name} build file"/>
+		<echo message="-----------------------------------"/>
+		<echo message=""/>
+		<echo message="Available targets are:"/>
+		<echo message=""/>
+		<echo message="config				--> Process all .in files and generate config files"/>
+		<echo message="build				--> Compile src files"/>
+		<echo message="build.nlpedia.jar	--> Create the NLPedia jar file"/>
+		<echo message=""/>
+	</target>
+
+	<!-- ============================ Init ============================ -->
+	<target name="init" description="Initialize files, libraries and classpath." >
+		<!-- properties file -->
+		<property file="build.properties" />
+
+		<!-- include libraries -->
+		<path id="master-classpath">
+			<fileset dir="${base.dir}/WebContent/WEB-INF/lib">
+				<include name="**/*.jar"/>
+			</fileset>
+			<pathelement path="${build.dir}"/>
+		</path>
+	</target>
+
+	<!-- ==================== build nlpedia ==================== -->
+
+	<target name="build" depends="init" description="Compile main source tree java files">
+		<mkdir dir="${build.dir}"/>
+		<javac destdir="${build.dir}" debug="true" deprecation="false" optimize="true" failonerror="true">
+			<src path="${src.dir}"/>
+			<classpath refid="master-classpath"/>
+		</javac>
+	</target>
+
+	<!-- ==================== build nlpedia jar ==================== -->
+	
+	<target name="build.nlpedia.jar" depends="init" description="Build the NLPedia framework.">
+
+		<echo>
+				Building NLPedia framework...
+			</echo>
+		
+		<mkdir dir="${base.dir}/build"/>
+		<javac destdir="${base.dir}/build" debug="true" deprecation="false" optimize="false" failonerror="true">
+			<src path="${base.dir}/src" />
+			<classpath refid="master-classpath" />
+		</javac>
+
+		 <jar destfile="${base.dir}/nlpedia.jar"> <!--filesetmanifest="mergewithoutmain"-->
+		            <manifest>
+		                <attribute name="Main-Class" value="de.uni_leipzig.simba.boa.backend.NLPedia"/>
+		                <attribute name="Class-Path" value="."/>
+		            </manifest>
+		            <fileset dir="${base.dir}/build"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/crawler4j-2.2.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/commons-codec-1.4.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/commons-logging-1.1.1.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/dsiutils-1.0.10.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/fastutil-5.1.5.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/httpclient-4.0.1.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/httpcore-4.0.1.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/je-4.0.71.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/opennlp-tools-1.5.0.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/log4j-1.2.16.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/jwnl-1.3.3.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/maxent-3.0.0.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/spring.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/junit-4.8.2.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/lucene-core-3.0.3.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/arq-2.8.1.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/jena-2.6.2.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/slf4j-api-1.5.6.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/slf4j-log4j12-1.5.6.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/xercesImpl-2.7.1.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/antlr-2.7.6.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/commons-collections-3.1.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/dom4j-1.6.1.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/javassist-3.12.0.GA.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/jta-1.1.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/hibernate3.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/mysql-connector-java-5.1.15-bin.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/colt.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/fastutil-6.1.0.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/java-getopt-1.0.13.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/lc4j-0.3.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/mg4j-3.0.1.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/stanford-corenlp-2010-11-12.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/LIMES.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/limes/icu4j-3.4.4.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/limes/iri-0.7.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/limes/LBJ2.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/limes/LBJ2Library.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/limes/LbjNerTagger.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/limes/simmetrics_jar_v1_6_2_d07_02_07.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/limes/stax-api-1.0.1.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/limes/wstx-asl-3.2.9.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/limes/SSJoinJava.jar"/>
+		            <fileset dir="${base.dir}/WebContent/WEB-INF/lib/cugar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/cugar/Cugar.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/cugar/colt.jar"/>
+		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/cugar/semiosys.jar"/>
+		        </jar>
+	</target>
+	<!-- ==================== configure jawa ==================== -->
+
+	<target name="config" depends="init" description="Process all .in files and generate config files">
+
+		<echo message="Processing all .in files at ${config.dir}/..." />
+
+		<!-- log.xml.in -->
+		<copy overwrite="true" file="${config.dir}/log4j.xml.in" tofile="${config.dir}/log4j.xml" />
+		<replace file="${config.dir}/log4j.xml">
+			<replacefilter token="@log.dir@" value="${log.dir}"/>
+			<replacefilter token="@log.priority@" value="${log.priority}"/>
+		</replace>
+
+		<!-- nlpedia_setup.xml.in -->
+		<copy overwrite="true" file="${config.dir}/nlpedia_setup.xml.in" tofile="${config.dir}/nlpedia_setup.xml" />
+		<replace file="${config.dir}/nlpedia_setup.xml">
+			<replacefilter token="@crawl.directory@" 						value="${crawl.directory}"/>
+			<replacefilter token="@filter.files.regex@"						value="${filter.files.regex}"/>
+			<replacefilter token="@url.seed.file.directory@"				value="${url.seed.file.directory}"/>
+			<replacefilter token="@sentence.file.directory@"				value="${sentence.file.directory}"/>
+			<replacefilter token="@sentence.index.directory@"				value="${sentence.index.directory}"/>
+			<replacefilter token="@number.of.threads@"						value="${number.of.threads}"/>
+			<replacefilter token="@overwrite.index@"						value="${overwrite.index}"/>
+			<replacefilter token="@dbpedia.sparql.endpoint@"				value="${dbpedia.sparql.endpoint}"/>
+			<replacefilter token="@dbpedia.default.graph@"					value="${dbpedia.default.graph}"/>
+			<replacefilter token="@label.output.file@"						value="${label.output.file}"/>
+			<replacefilter token="@resource.type.url@"						value="${resource.type.url}"/>
+			<replacefilter token="@pattern.store.file@"						value="${pattern.store.file}"/>
+			<replacefilter token="@hibernate.config.file@"					value="${config.dir}/hibernate.cfg.xml"/>
+			<replacefilter token="@ram.buffer.max.size.in.mb@"				value="${ram.buffer.max.size.in.mb}"/>
+			<replacefilter token="@hibernate.connection.driver_class@"		value="${hibernate.connection.driver_class}"/>
+			<replacefilter token="@hibernate.connection.url@"				value="${hibernate.connection.url}"/>
+			<replacefilter token="@hibernate.connection.username@"			value="${hibernate.connection.username}"/>
+			<replacefilter token="@hibernate.connection.password@"			value="${hibernate.connection.password}"/>
+			<replacefilter token="@hibernate.dialect@"						value="${hibernate.dialect}"/>
+			<replacefilter token="@hibernate.hbm2ddl.auto@"					value="${hibernate.hbm2ddl.auto}"/>
+			<replacefilter token="@language.models.for.language.detection@"	value="${language.models.for.language.detection}"/>
+			<replacefilter token="@max.pattern.lenght@"						value="${max.pattern.lenght}"/>
+			<replacefilter token="@sentence.per.line.output.file@"			value="${sentence.per.line.output.file}"/>
+			<replacefilter token="@raw.data.input.directory@"				value="${raw.data.input.directory}"/>
+			<replacefilter token="@sentence.boundary.disambiguation@"		value="${sentence.boundary.disambiguation}"/>
+			<replacefilter token="@sentence.error.file@"					value="${sentence.error.file}"/>
+			<replacefilter token="@number.of.search.threads@"				value="${number.of.search.threads}"/>
+			<replacefilter token="@limes.acceptanceThreshold@"				value="${limes.acceptanceThreshold}"/>
+			<replacefilter token="@limes.verificationThreshold@"			value="${limes.verificationThreshold}"/>
+			<replacefilter token="@limes.metricExpression@"					value="${limes.metricExpression}"/>
+			<replacefilter token="@maxNumberOfDocuments@"					value="${maxNumberOfDocuments}"/>
+			<replacefilter token="@namendEntityRecognizerClassifier@"		value="${namendEntityRecognizerClassifier}"/>
+			<replacefilter token="@sentenceRepairedFile@"					value="${sentenceRepairedFile}"/>
+			<replacefilter token="@limesMetricExpression@"					value="${limesMetricExpression}"/>
+			<replacefilter token="@limesVerificationThreshold@"				value="${limesVerificationThreshold}"/>
+			<replacefilter token="@limesAcceptanceThreshold@"				value="${limesAcceptanceThreshold}"/>
+			<replacefilter token="@limesAcceptanceFile@"					value="${limesAcceptanceFile}"/>
+			<replacefilter token="@limesVerificationFile@"					value="${limesVerificationFile}"/>
+			<replacefilter token="@limesVerificationThreshold@"				value="${limesVerificationThreshold}"/>
+			<replacefilter token="@rdfModel@"								value="${rdfModel}"/>
+			<replacefilter token="@createKnowledgeThreshold@"				value="${createKnowledgeThreshold}"/>
+		</replace>
+		<echo message="Generated config files are available at ${config.dir}." />
+	</target>
+
+</project>

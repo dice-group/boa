@@ -1,0 +1,137 @@
+package de.uni_leipzig.simba.boa.backend.search;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.Version;
+
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+
+/**
+ * This terminal application creates an Apache Lucene index in a folder and adds
+ * files into this index based on the input of the user.
+ */
+public class FileIndexer {
+
+	private NLPediaLogger logger = new NLPediaLogger(FileIndexer.class);
+	
+	private IndexWriter writer;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param indexDir
+	 *            the name of the folder in which the index should be created
+	 * @param overwriteIndex
+	 * 			  overwrite an existing index or append
+	 * @throws java.io.IOException
+	 */
+	public FileIndexer(String indexDir, boolean overwriteIndex, int ramBufferSizeInMb) throws IOException {
+		
+		Directory directory	= FSDirectory.open(new File(indexDir));
+		Analyzer analyzer	= new StandardAnalyzer(Version.LUCENE_30);
+		
+		// create the index writer
+		this.writer = new IndexWriter(
+					directory,
+					analyzer,
+					overwriteIndex,
+					IndexWriter.MaxFieldLength.LIMITED);
+		
+		this.writer.setRAMBufferSizeMB(ramBufferSizeInMb);
+		
+		// index the files
+		this.indexFileOrDirectory();
+	}
+
+	/**
+	 * Indexes the sentenceFileDirectory specified in nlpedia_config.xml.
+	 * 
+	 * @throws java.io.IOException
+	 */
+	public void indexFileOrDirectory() throws IOException {
+
+		File directory = new File(NLPediaSettings.getInstance().getSetting("sentenceFileDirectory"));
+		
+		File files[] = directory.listFiles();
+		
+		FileReader fileReader	= null;
+		Document doc			= null;
+		int i = 1;
+		
+		// go through all files in the data 
+		for (File file : files) {
+			
+			this.logger.info("Indexing file " + file + " with index ");
+			
+			long fileSize = file.length();
+			
+			System.out.println("Indexing file["+(i++)+"] " + file);
+		    System.out.println("File size: " + (double)fileSize/(1024*1024) + "MB");
+			
+			// only index txt files
+			if ( file.getName().endsWith(".txt") ) {
+				
+				try {
+					
+					fileReader = new FileReader(file);
+					BufferedReader br = new BufferedReader(fileReader);
+					String line = null;
+					
+//					NamedEntityRecognizer ner = new NamedEntityRecognizer();
+					
+					int j = 0;
+					
+					while( (line = br.readLine()) != null){ 
+						
+						if ( j++ % 10000 == 0 ) System.out.println("Iteration: " + j);
+						
+//						String[] lineParts = line.split(" \\|\\|\\| ");
+						
+//						if ( lineParts.length == 2 ) {
+							
+							doc = new Document();
+							doc.add(new Field("sentence", line, Field.Store.YES, Field.Index.ANALYZED));
+//							doc.add(new Field("generalization", ner.recognizeEntitiesInString(line), Field.Store.YES, Field.Index.ANALYZED));
+//							doc.add(new Field("partOfSpeach", lineParts[1], Field.Store.YES, Field.Index.NOT_ANALYZED));
+//							doc.add(new Field("path", file.getAbsolutePath(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+							
+							this.writer.addDocument(doc);
+//						}
+					}
+		 
+					br.close();
+					this.logger.info("Added: " + file.getAbsolutePath() + " to index.");
+				}
+				catch (Exception e) {
+					
+					this.logger.error("Could not add: " + file + " to index", e);
+					e.printStackTrace();
+				}
+				finally {
+					
+					fileReader.close();
+				}
+			}
+			else {
+				
+				this.logger.info("The file: " + file.getAbsolutePath() + "could not be indexed. Wrong file type!");
+			}
+		}
+		// close the index
+		this.writer.optimize();
+		this.writer.close();
+		
+		this.logger.info("Added " + writer.numDocs() + " files to index");
+	}
+}
