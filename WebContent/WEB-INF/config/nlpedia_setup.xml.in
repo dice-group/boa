@@ -415,10 +415,12 @@
 				<entry key="de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao" value-ref="PatternDao" />
 				<entry key="de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao" value-ref="PatternMappingDao" />
 				<entry key="de.uni_leipzig.simba.boa.backend.dao.cluster.ClusterDao" value-ref="ClusterDao" />	
+				<entry key="de.uni_leipzig.simba.boa.backend.dao.evaluation.EvaluationResultDao" value-ref="EvaluationResultDao" />
 			</map>
 		</property>
 	</bean>
-	
+
+	<bean id="EvaluationResultDao" class="de.uni_leipzig.simba.boa.backend.dao.evaluation.EvaluationResultDao" singleton="false" />
 	<bean id="PatternDao" class="de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao" singleton="false" />
 	<bean id="PatternMappingDao" class="de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao" singleton="false" />
 	<bean id="ClusterDao" class="de.uni_leipzig.simba.boa.backend.dao.cluster.ClusterDao" singleton="false" />

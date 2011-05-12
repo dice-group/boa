@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 /**
  * 
@@ -151,6 +153,18 @@ public class Model {
 	public void addStatements(List<Statement> statementList) {
 
 		this.model.add(statementList);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<Statement> getStatements() {
+		
+		List<Statement> statements = new ArrayList<Statement>();
+		StmtIterator iter = this.model.listStatements();
+		while (iter.hasNext()) statements.add(iter.next());
+		return statements;
 	}
 
 	/**

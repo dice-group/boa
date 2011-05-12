@@ -30,7 +30,6 @@ public class NLPediaSetup {
 	public NLPediaSetup(boolean isTestCase) {
 		
 		this.logger = new NLPediaLogger(NLPediaSetup.class);
-		System.out.println(this.logger.isDebugEnabled());
 		this.configure(isTestCase);
 	}
 	
@@ -45,16 +44,20 @@ public class NLPediaSetup {
 		this.logStartup();
 		
 		String path = getClass().getProtectionDomain().getCodeSource().getLocation().toString();
-		
 		if ( path.contains(".jar") ) {
 			
 			path = path.substring(5, path.indexOf("nlpedia.jar"));
 			NLPEDIA_SETUP_FILE = path + "WebContent/WEB-INF/config/nlpedia_setup.xml";
 		}
-		if ( path.contains("WEB-INF") ) {
+		else if ( path.contains("WEB-INF") ) {
 			
 			path = path.substring(5, path.indexOf("WEB-INF"));
 			NLPEDIA_SETUP_FILE = path + "WEB-INF/config/nlpedia_setup.xml";
+		}
+		else {
+			
+			path = path.substring(5, path.indexOf("build/classes/"));
+			NLPEDIA_SETUP_FILE = path + "WebContent/WEB-INF/config/nlpedia_setup.xml";
 		}
 		
 		

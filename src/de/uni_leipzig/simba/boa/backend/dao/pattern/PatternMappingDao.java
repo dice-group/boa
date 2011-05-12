@@ -96,7 +96,7 @@ public class PatternMappingDao extends AbstractDao {
 			session = HibernateFactory.getSessionFactory().openSession();
 			tx = session.beginTransaction();
 			
-			String queryString = (uri == null) ? "select distinct(pm.id), pm.uri, pm.rdfsRange, pm.rdfsDomain from pattern_mapping as pm, pattern as p where pm.id = p.pattern_mapping_id and confidence >= 0 and useForPatternEvaluation = 1 order by pm.uri;" : "select pm.id, pm.uri, pm.rdfsRange, pm.rdfsDomain from pattern_mapping as pm where uri=:uri"; 
+			String queryString = (uri == null) ? "select distinct(pm.id), pm.uri, pm.rdfsRange, pm.rdfsDomain from pattern_mapping as pm, pattern as p where pm.id = p.pattern_mapping_id and (withLogConfidence >= 0 or withoutLogConfidence >= 0) and useForPatternEvaluation = 1 order by pm.uri;" : "select pm.id, pm.uri, pm.rdfsRange, pm.rdfsDomain from pattern_mapping as pm where uri=:uri"; 
 			
 			Query query = session.createSQLQuery(queryString);
 			if ( uri != null ) query.setString("uri", uri);;

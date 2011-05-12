@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
-import de.uni_leipzig.simba.boa.backend.entity.Cluster;
+import de.uni_leipzig.simba.boa.backend.entity.cluster.Cluster;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;

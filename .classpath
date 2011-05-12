@@ -54,7 +54,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-log4j12-1.5.6.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/stanford-corenlp-2010-11-12.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/vaadin-6.5.7.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/vaadin-6.5.7.jar" sourcepath="/Users/gerb/.m2/repository/com/vaadin/vaadin/6.5.7/vaadin-6.5.7-sources.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xercesImpl-2.7.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

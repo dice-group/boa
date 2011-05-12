@@ -9,7 +9,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.cluster.ClusterDao;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
-import de.uni_leipzig.simba.boa.backend.entity.Cluster;
+import de.uni_leipzig.simba.boa.backend.entity.cluster.Cluster;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.exception.NLPediaRuntimeException;
 import de.uni_leipzig.simba.boa.backend.limes.ClusterThread;

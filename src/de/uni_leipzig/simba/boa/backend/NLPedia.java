@@ -27,7 +27,6 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 public class NLPedia {
 
 	
-	
 	/**
 	 * @param args
 	 */

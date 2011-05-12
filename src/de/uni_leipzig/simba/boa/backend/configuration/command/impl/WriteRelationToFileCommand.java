@@ -149,7 +149,7 @@ public class WriteRelationToFileCommand implements Command {
 						String range = solution.get("rangep2") == null ? "null" : solution.get("rangep2").toString();
 						String domain = solution.get("domainp2") == null ? "null" : solution.get("domainp2").toString();
 						
-						writer.write(s2l + " ||| " + solution.get("p2").toString() + " ||| " + o2l + " ||| " + domain + " ||| " + range);
+						writer.write(s2l + " ||| " + solution.get("p2").toString() + " ||| " + o2l + " ||| " + range + " ||| " + domain);
 						writer.write(System.getProperty("line.separator"));
 					}
 				}

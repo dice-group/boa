@@ -3,7 +3,7 @@ package de.uni_leipzig.simba.boa.backend.dao.cluster;
 import java.util.List;
 
 import de.uni_leipzig.simba.boa.backend.dao.AbstractDao;
-import de.uni_leipzig.simba.boa.backend.entity.Cluster;
+import de.uni_leipzig.simba.boa.backend.entity.cluster.Cluster;
 
 
 /**

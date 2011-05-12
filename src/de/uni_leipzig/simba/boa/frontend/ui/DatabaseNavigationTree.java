@@ -2,19 +2,20 @@ package de.uni_leipzig.simba.boa.frontend.ui;
 
 import com.vaadin.data.Property;
 import com.vaadin.event.Action;
+import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Tree;
 
 import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 import de.uni_leipzig.simba.boa.frontend.data.DatabaseContainer;
 
 @SuppressWarnings("serial")
-public class NavigationTree extends Tree {
+public class DatabaseNavigationTree extends Tree {
 	
-	public NavigationTree(BoaFrontendApplication app) {
+	public DatabaseNavigationTree(BoaFrontendApplication app) {
 		
 		this.setContainerDataSource(new DatabaseContainer());
 		
-		this.addListener((Property.ValueChangeListener) app);
+		this.addListener((ItemClickListener) app);
 
         // Add actions (context menu)
 		this.addActionHandler((Action.Handler) app);

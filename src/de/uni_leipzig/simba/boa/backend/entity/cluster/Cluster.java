@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.entity;
+package de.uni_leipzig.simba.boa.backend.entity.cluster;
 
 import java.util.ArrayList;
 import java.util.HashMap;

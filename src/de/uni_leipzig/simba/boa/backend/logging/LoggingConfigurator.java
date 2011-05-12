@@ -41,10 +41,15 @@ public class LoggingConfigurator {
 				path = path.substring(5, path.indexOf("nlpedia.jar"));
 				CONFIG_FILE = path + "WebContent/WEB-INF/config/log4j.xml";
 			}
-			if ( path.contains("WEB-INF") ) {
+			else if ( path.contains("WEB-INF") ) {
 				
 				path = path.substring(5, path.indexOf("WEB-INF"));
 				CONFIG_FILE = path + "WEB-INF/config/log4j.xml";
+			}
+			else {
+				
+				path = path.substring(5, path.indexOf("build/classes/"));
+				CONFIG_FILE = path + "WebContent/WEB-INF/config/log4j.xml";
 			}
 
 			DOMConfigurator.configure(CONFIG_FILE);

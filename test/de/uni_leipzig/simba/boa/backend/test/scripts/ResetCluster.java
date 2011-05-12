@@ -3,7 +3,7 @@ package de.uni_leipzig.simba.boa.backend.test.scripts;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.cluster.ClusterDao;
-import de.uni_leipzig.simba.boa.backend.entity.Cluster;
+import de.uni_leipzig.simba.boa.backend.entity.cluster.Cluster;
 
 
 public class ResetCluster {

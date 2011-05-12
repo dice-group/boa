@@ -16,7 +16,7 @@ public class Store {
 	
 	private final NLPediaLogger logger = new NLPediaLogger(Store.class);
 	
-	private static final String JENA_DB_URL 		= "jdbc:mysql://127.0.0.1:3306/nlpedia_rdf";
+	private static final String JENA_DB_URL 		= "jdbc:mysql://127.0.0.1:3306/en_wiki_rdf";
 	private static final String JENA_DB_USERNAME	= "root";
 	private static final String JENA_DB_PASSWORD	= "root";
 	private static final String JENA_DB_TYPE		= "MySQL";
