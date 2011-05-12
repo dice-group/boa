@@ -1,0 +1,17 @@
+
+syntax: regexp
+^WebContent/WEB-INF/config/log4j\.xml$
+syntax: regexp
+^build\.properties$
+syntax: regexp
+^WebContent/WEB-INF/config/nlpedia_setup\.xml$
+syntax: regexp
+^WebContent/WEB-INF/config/test_en_wiki\.xml$
+syntax: regexp
+^nlpedia\.jar$
+syntax: regexp
+^log/nlpedia\.log\.2011-05-10$
+syntax: regexp
+^log/nlpedia\.log\.2011-05-10$
+syntax: regexp
+^log/nlpedia\.log\.2011-05-11$

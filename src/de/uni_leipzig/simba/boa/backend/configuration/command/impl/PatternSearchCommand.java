@@ -55,7 +55,7 @@ public class PatternSearchCommand implements Command {
 		for (int i = 0 ; i < numberOfSearchThreads ; i++ ) {
 			
 				Thread t = new PatternSearchThread(labelSubLists.get(i), results, ner);
-				t.setName("Thread-" + (i + 1));
+				t.setName("PatternSearchThread-" + (i + 1));
 				threadList.add(i, t);
 				t.start();
 				System.out.println(t.getName() + " started!");
@@ -63,7 +63,7 @@ public class PatternSearchCommand implements Command {
 		}
 		
 		Timer timer = new Timer();
-		timer.schedule(new PrintProgressTask(threadList), 0, 60000);
+		timer.schedule(new PrintProgressTask(threadList), 0, 30000);
 		
 		for ( Thread t : threadList ) {
 			

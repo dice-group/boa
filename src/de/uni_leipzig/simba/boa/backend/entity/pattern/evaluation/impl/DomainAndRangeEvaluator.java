@@ -82,7 +82,6 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 			
 			double domainCorrectness;
 			double rangeCorrectness;
-			double confidence;
 			
 			String nerTagged;
 			String segmentedFoundString;
@@ -140,8 +139,8 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					double confidenceWithLog = (domainCorrectness + rangeCorrectness) / 2;
 					confidenceWithLog = Double.isNaN(confidenceWithLog) ? 0d : confidenceWithLog * (Math.log((double)(sentences.size() + 1)) / Math.log(2d));
 					
-					this.minWithLog = Math.min(confidenceWithLog, minWithLog);
-					this.maxWithLog = Math.max(confidenceWithLog, maxWithLog);
+//					this.minWithLog = Math.min(confidenceWithLog, minWithLog);
+//					this.maxWithLog = Math.max(confidenceWithLog, maxWithLog);
 					
 					pattern.setWithLogConfidence(confidenceWithLog);
 					
@@ -150,18 +149,19 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					double confidenceWithoutLog = (domainCorrectness + rangeCorrectness) / 2;
 					confidenceWithoutLog = Double.isNaN(confidenceWithoutLog) ? 0d : confidenceWithoutLog * sentences.size();
 					
-					this.minWithoutLog = Math.min(confidenceWithoutLog, minWithoutLog);
-					this.maxWithoutLog = Math.max(confidenceWithoutLog, maxWithoutLog);
+//					this.minWithoutLog = Math.min(confidenceWithoutLog, minWithoutLog);
+//					this.maxWithoutLog = Math.max(confidenceWithoutLog, maxWithoutLog);
 					
 					pattern.setWithoutLogConfidence(confidenceWithoutLog);
+					
+					// we wont need to see them in the view
+					if ( confidenceWithoutLog == 0 && confidenceWithLog == 0 ) pattern.setUseForPatternEvaluation(false);
 					
 					if ( pattern.getWithLogConfidence() == 0 ) {
 						
 						System.out.println("Pattern " + pattern.getNaturalLanguageRepresentation() + " does not fit in domain/range.");
 						this.logger.debug("Pattern " +  pattern.getNaturalLanguageRepresentation() + " does not fit in domain/range.");
 					}
-					
-					this.patternMappingDao.updatePatternMapping(patternMapping);
 				}
 			}
 		}
