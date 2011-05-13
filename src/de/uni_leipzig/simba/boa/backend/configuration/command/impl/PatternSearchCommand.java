@@ -120,7 +120,7 @@ public class PatternSearchCommand implements Command {
 					// new pattern found
 					else {
 						
-						Pattern p = new Pattern(patternString, this.ner.recognizeEntitiesInPattern(patternString));
+						Pattern p = new Pattern(patternString, "");
 						p.setFoundInIteration(this.foundInIteration);
 						p.addLearnedFrom(label1 + "-;-" + label2);
 						p.setPatternMapping(currentMapping);
@@ -136,7 +136,7 @@ public class PatternSearchCommand implements Command {
 					currentMapping.setRdfsRange(range);
 					currentMapping.setRdfsDomain(domain);
 					
-					Pattern p = new Pattern(patternString, this.ner.recognizeEntitiesInPattern(patternString));
+					Pattern p = new Pattern(patternString, "");
 					p.setFoundInIteration(this.foundInIteration);
 					p.addLearnedFrom(label1 + "-;-" + label2);
 					p.setPatternMapping(currentMapping);

@@ -45,7 +45,7 @@ public class CreateKnowledgeCommand implements Command {
 	
 	public CreateKnowledgeCommand () {
 		
-		store.removeModel(NLPediaSettings.getInstance().getSetting("rdfModel"));
+		if ( store.isModelAvailable(NLPediaSettings.getInstance().getSetting("rdfModel")) ) store.removeModel(NLPediaSettings.getInstance().getSetting("rdfModel")); 
 		this.model = store.createModelIfNotExists(NLPediaSettings.getInstance().getSetting("rdfModel"));
 		this.rdfType = this.model.createProperty(Constants.RDF_TYPE);
 		this.rdfsLabel = this.model.createProperty(Constants.RDFS_LABEL);

@@ -23,6 +23,41 @@ public class Store {
 
 	public Store() {}
 	
+	/**
+	 * Checks if a model is available 
+	 * 
+	 * @param modelName
+	 * @return
+	 */
+	public boolean isModelAvailable(String modelName) {
+		
+		try {
+			
+			Class.forName ("com.mysql.jdbc.Driver");
+			
+			// Create database connection
+			IDBConnection conn = new DBConnection ( Store.JENA_DB_URL, Store.JENA_DB_USERNAME, Store.JENA_DB_PASSWORD, Store.JENA_DB_TYPE);
+			
+			boolean modelAvailable = conn.containsModel(modelName);
+			
+			// Close the database connection
+			conn.close();
+			
+			return modelAvailable;		
+		}
+		catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	
 	public de.uni_leipzig.simba.boa.backend.rdf.Model createModelIfNotExists(String modelName){
 		
 		Model model = null;
