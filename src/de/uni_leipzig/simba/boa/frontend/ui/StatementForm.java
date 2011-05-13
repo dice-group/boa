@@ -44,9 +44,13 @@ public class StatementForm extends Form {
 		// make the list random
 		for ( int i = 0 ; i < 100 ; i++ ) {
 			
-			int j = (int)(Math.random() * (stmts.size()));
-			randomStatments.add(stmts.get(j));
-			stmts.remove(j);
+			if ( i < stmts.size() ) {
+				
+				int j = (int)(Math.random() * (stmts.size()));
+				randomStatments.add(stmts.get(j));
+				stmts.remove(j);
+			}
+			else break;
 		}
 		
 		randomStatments = this.filterCorrectStatements(randomStatments, id, graph);

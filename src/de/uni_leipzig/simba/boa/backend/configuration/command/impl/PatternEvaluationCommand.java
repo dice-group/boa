@@ -96,8 +96,8 @@ public class PatternEvaluationCommand implements Command {
 		System.out.println(maxWithoutLog);
 		System.out.println(minWithoutLog);
 
-		double maxMinusMinWithLog = minWithLog == -1 ? (maxWithLog - 0) : maxWithLog - minWithLog;
-		double maxMinusMinWithoutLog = maxWithoutLog - minWithoutLog;
+		double maxMinusMinWithLog 		= minWithLog == -1 		? (maxWithLog - 0) 		: maxWithLog - minWithLog;
+		double maxMinusMinWithoutLog 	= minWithoutLog == -1 	? (maxWithoutLog - 0) 	: minWithoutLog - minWithoutLog;
 		
 		for ( PatternMapping mapping : patternMappingList ) {
 			
@@ -114,6 +114,7 @@ public class PatternEvaluationCommand implements Command {
 		}
 	}
 	
+	@Deprecated
 	public void execute2() {
 
 		Map<String,PatternEvaluator> patternEvaluators = PatternEvaluatorFactory.getInstance().getPatternEvaluatorMap();
