@@ -16,7 +16,7 @@ public class Store {
 	
 	private final NLPediaLogger logger = new NLPediaLogger(Store.class);
 	
-	private static final String JENA_DB_URL 		= "jdbc:mysql://127.0.0.1:3306/en_wiki_rdf";
+	private static final String JENA_DB_URL 		= "jdbc:mysql://127.0.0.1:3306/";
 	private static final String JENA_DB_USERNAME	= "root";
 	private static final String JENA_DB_PASSWORD	= "root";
 	private static final String JENA_DB_TYPE		= "MySQL";
@@ -36,7 +36,7 @@ public class Store {
 			Class.forName ("com.mysql.jdbc.Driver");
 			
 			// Create database connection
-			IDBConnection conn = new DBConnection ( Store.JENA_DB_URL, Store.JENA_DB_USERNAME, Store.JENA_DB_PASSWORD, Store.JENA_DB_TYPE);
+			IDBConnection conn = new DBConnection ( Store.JENA_DB_URL + modelName, Store.JENA_DB_USERNAME, Store.JENA_DB_PASSWORD, Store.JENA_DB_TYPE);
 			
 			boolean modelAvailable = conn.containsModel(modelName);
 			
@@ -67,7 +67,7 @@ public class Store {
 			Class.forName ("com.mysql.jdbc.Driver");
 			
 			// Create database connection
-			IDBConnection conn = new DBConnection ( Store.JENA_DB_URL, Store.JENA_DB_USERNAME, Store.JENA_DB_PASSWORD, Store.JENA_DB_TYPE);
+			IDBConnection conn = new DBConnection ( Store.JENA_DB_URL + modelName, Store.JENA_DB_USERNAME, Store.JENA_DB_PASSWORD, Store.JENA_DB_TYPE);
 			
 			if( !conn.containsModel(modelName) ) {
 				
@@ -107,7 +107,7 @@ public class Store {
 		
 		try {
 			
-			IDBConnection conn = new DBConnection ( Store.JENA_DB_URL, Store.JENA_DB_USERNAME, Store.JENA_DB_PASSWORD, Store.JENA_DB_TYPE);
+			IDBConnection conn = new DBConnection ( Store.JENA_DB_URL + modelName, Store.JENA_DB_USERNAME, Store.JENA_DB_PASSWORD, Store.JENA_DB_TYPE);
 			model = new de.uni_leipzig.simba.boa.backend.rdf.Model(ModelRDB.open(conn, modelName));
 		}
 		catch (DoesNotExistException dnee) {
@@ -142,7 +142,7 @@ public class Store {
 	 */
 	public void removeModel(String modelName) {
 		
-		IDBConnection conn = new DBConnection ( Store.JENA_DB_URL, Store.JENA_DB_USERNAME, Store.JENA_DB_PASSWORD, Store.JENA_DB_TYPE);
+		IDBConnection conn = new DBConnection ( Store.JENA_DB_URL + modelName, Store.JENA_DB_USERNAME, Store.JENA_DB_PASSWORD, Store.JENA_DB_TYPE);
 		ModelRDB.open(conn, modelName).remove();
 	}
 }

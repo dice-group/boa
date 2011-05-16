@@ -91,11 +91,6 @@ public class PatternEvaluationCommand implements Command {
 			}
 		}
 		
-		System.out.println(maxWithLog);
-		System.out.println(minWithLog);
-		System.out.println(maxWithoutLog);
-		System.out.println(minWithoutLog);
-
 		double maxMinusMinWithLog 		= minWithLog == -1 		? (maxWithLog - 0) 		: maxWithLog - minWithLog;
 		double maxMinusMinWithoutLog 	= minWithoutLog == -1 	? (maxWithoutLog - 0) 	: minWithoutLog - minWithoutLog;
 		

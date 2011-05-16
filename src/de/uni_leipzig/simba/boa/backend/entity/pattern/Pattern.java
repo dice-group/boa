@@ -106,6 +106,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		this.numberOfOccurrences = 1;
 		this.withLogConfidence = -1D;
 		this.withoutLogConfidence = -1D;
+		this.useForPatternEvaluation = true;
 	}
 
 	/**

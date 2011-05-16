@@ -98,5 +98,13 @@ public class ContextTest {
 		
 		assertTrue("American Drug Stores , Inc.".equals(leftContext5.getSuitableEntity("http://dbpedia.org/ontology/Legislature")));
 		assertTrue("Osco Drug".equals(rightContext5.getSuitableEntity("http://dbpedia.org/ontology/Legislature")));
+
+		// ######################################################################
+
+		testAnnotated				= "with_O the_O head_O of_O the_O slain_O Goliath_B-LOC ,_O as_O he_O is_O in_O Donatello_B-LOC 's_O and_O Verrocchio_B-LOC 's_O statues_O ._O";
+		test						= "Michelangelo 's David differs from previous representations of the subject in that the Biblical hero is not depicted with the head of the slain Goliath , as he is in Donatello 's and Verrocchio 's statues .";
+		patternWithOutVariables1	="'s and";
+		
+		
 	}
 }

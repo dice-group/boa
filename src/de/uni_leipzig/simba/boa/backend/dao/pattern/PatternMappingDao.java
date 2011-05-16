@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import de.uni_leipzig.simba.boa.backend.dao.AbstractDao;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.persistance.Entity;
 import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
@@ -60,6 +61,54 @@ public class PatternMappingDao extends AbstractDao {
     public PatternMapping findPatternMapping(int id) {
     	
         return (PatternMapping) super.findEntityById(PatternMapping.class, id);
+    }
+    
+    public PatternMapping findPatternMappingWithoutZeroConfidencePattern(PatternMapping pm) {
+    	
+    	Transaction tx = null;
+		Session session = null;
+
+		try {
+			
+			session = HibernateFactory.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+			
+			String queryString = "select p.id, p.naturalLanguageRepresentation, p.withLogConfidence, p.withoutLogConfidence, p.numberOfOccurrences, p.useForPatternEvaluation " +
+								 "from pattern_mapping as pm, pattern as p " +
+								 "where pm.uri='"+pm.getUri().trim()+"' and pm.id = p.pattern_mapping_id and ( p.withLogConfidence >= 0 or p.withoutLogConfidence >= 0) and p.useForPatternEvaluation = 1 " +
+								 "order by pm.uri;"; 
+			
+			System.out.println(queryString);
+			
+			Query query = session.createSQLQuery(queryString);
+			
+			List<Object[]> objs = query.list();
+			for (Object[] obj : objs) {
+				
+				Pattern pattern = new Pattern();
+				pattern.setId((Integer) obj[0]);
+				pattern.setNaturalLanguageRepresentation((String) obj[1]);
+				pattern.setWithLogConfidence((Double) obj[2]);
+				pattern.setWithoutLogConfidence((Double) obj[3]);
+				pattern.setNumberOfOccurrences((Integer) obj[4]);
+				pattern.setUseForPatternEvaluation((Boolean) obj[5]);
+				pm.addPattern(pattern);
+			}
+			System.out.println(pm);
+			
+			tx.commit();
+		}
+		catch (HibernateException he) {
+			
+			HibernateFactory.rollback(tx);
+			super.logger.error("Error...", he);
+			he.printStackTrace();
+		}
+		finally {
+			
+			HibernateFactory.closeSession(session);
+		}
+		return pm;
     }
 
     /**
@@ -118,6 +167,7 @@ public class PatternMappingDao extends AbstractDao {
 			
 			HibernateFactory.rollback(tx);
 			super.logger.error("Error...", he);
+			he.printStackTrace();
 		}
 		finally {
 			

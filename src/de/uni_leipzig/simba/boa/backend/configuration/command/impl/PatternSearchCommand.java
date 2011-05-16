@@ -28,7 +28,6 @@ import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 public class PatternSearchCommand implements Command {
 
 	private final NLPediaLogger logger					= new NLPediaLogger(PatternSearchCommand.class);
-	private final NamedEntityRecognizer ner				= new NamedEntityRecognizer();
 	private final Map<String,PatternMapping> mappings	= new HashMap<String,PatternMapping>();
 	private Integer foundInIteration 					= null;
 	
@@ -39,8 +38,8 @@ public class PatternSearchCommand implements Command {
 		
 		List<String[]> labels =  RelationFinder.getRelationFromFile(NLPediaSettings.getInstance().getSetting("labelOutputFile"));
 		
-		System.out.println("Number of search operations: " + labels.size());
-		this.logger.info("Number of search operations: " + labels.size());
+		System.out.println("Number of search operations: " + labels.size() + " for input file " + NLPediaSettings.getInstance().getSetting("labelOutputFile"));
+		this.logger.info("Number of search operations: " + labels.size() + " for input file " + NLPediaSettings.getInstance().getSetting("labelOutputFile"));
 		
 		int numberOfSearchThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfSearchThreads")).intValue();
 		
