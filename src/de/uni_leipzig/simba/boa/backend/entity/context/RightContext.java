@@ -41,6 +41,7 @@ public final class RightContext extends Context {
 				if ( this.words.get(0).contains(entityMapping) ) entity += this.words.get(0).substring(0, this.words.get(0).indexOf("_"));
 				if ( this.words.get(1).contains(entityMapping) ) entity += this.words.get(1).substring(0, this.words.get(1).indexOf("_"));
 			}
+//			System.out.println("rightentity: "+ entity.trim());
 			return entity.trim();
 		}
 		else {
@@ -48,10 +49,15 @@ public final class RightContext extends Context {
 			for (int j = 0; j < this.words.size() - 2; j++ ) {
 				
 				String currentWord					= this.words.get(j);
-				String wordBeforeCurrentWord		= this.words.get(j + 1);
-				String wordBeforeBeforeCurrentWord 	= this.words.get(j + 2);
+				// cover the end of the context with withspaces
+				String wordBeforeCurrentWord		= (j + 1) <= this.words.size() - 1 ? this.words.get(j + 1) : ""; 
+				String wordBeforeBeforeCurrentWord 	= (j + 2) <= this.words.size() - 1 ? this.words.get(j + 2) : "";
 				
-//				System.out.println(entity);
+//				System.out.println("j:" +j);
+//				System.out.println(currentWord);
+//				System.out.println(wordBeforeCurrentWord);
+//				System.out.println(wordBeforeBeforeCurrentWord);
+//				System.out.println();
 				
 				if ( currentWord.contains(entityMapping) &&		!wordBeforeCurrentWord.contains(entityMapping) && 	wordBeforeBeforeCurrentWord.contains(entityMapping) ) {
 					
@@ -79,13 +85,13 @@ public final class RightContext extends Context {
 					else {
 						
 						entity = entity + " " + wordBeforeBeforeCurrentWord;
-						j = j -3;
+						j = j + 3;
 					}
 				}
 				if ( !currentWord.contains(entityMapping) && 	!wordBeforeCurrentWord.contains(entityMapping) && 	!wordBeforeBeforeCurrentWord.contains(entityMapping) ) {
 					
 					if ( entity.contains(entityMapping) ) break;
-					break;
+					j = j + 3;
 				}
 				if ( !currentWord.contains(entityMapping) && 	wordBeforeCurrentWord.contains(entityMapping) && 	wordBeforeBeforeCurrentWord.contains(entityMapping) ) {
 					
@@ -114,10 +120,13 @@ public final class RightContext extends Context {
 			}
 			String[] foundEntity = entity.trim().split(" ");
 			String result = "";
+//			System.out.println("rightentitybefore: " + entity.trim());
 			for (int i = 0; i < foundEntity.length ; i++) {
 				
+//				System.out.println("right["+i+"]:" +foundEntity[i]);
 				result += " " + foundEntity[i].substring(0, foundEntity[i].indexOf("_"));
 			}
+//			System.out.println("rightentityafter: " + result);
 			return result.trim();
 		}
 	}

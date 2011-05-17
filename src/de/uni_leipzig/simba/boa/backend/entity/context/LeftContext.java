@@ -37,16 +37,17 @@ public class LeftContext extends Context {
 				if ( this.words.get(0).contains(entityMapping) ) entity += this.words.get(0).substring(0, this.words.get(0).indexOf("_"));
 				if ( this.words.get(1).contains(entityMapping) ) entity += " " + this.words.get(1).substring(0, this.words.get(1).indexOf("_"));
 			}
-			
+//			System.out.println("leftcontext:"+ entity.trim());
 			return entity.trim();
 		}
 		else {
 			
-			for (int j = this.words.size() - 1; j >= 2; ) {
+			for (int j = this.words.size() - 1; j >= 0; ) {
 				
 				String currentWord					= this.words.get(j);
-				String wordBeforeCurrentWord		= this.words.get(j - 1);
-				String wordBeforeBeforeCurrentWord 	= this.words.get(j - 2);
+				// cover the end of the context with withspaces
+				String wordBeforeCurrentWord		= (j - 1) >= 0 ? this.words.get(j - 1) : ""; 
+				String wordBeforeBeforeCurrentWord 	= (j - 2) >= 0 ? this.words.get(j - 2) : "";
 				
 //				System.out.println("j:" +j);
 //				System.out.println("ENTITY: " + entity);
@@ -81,7 +82,7 @@ public class LeftContext extends Context {
 					else {
 						
 						entity = entity + " " + wordBeforeBeforeCurrentWord;
-						j = j -3;
+						j = j - 3;
 					}
 				}
 				if ( !currentWord.contains(entityMapping) && 	!wordBeforeCurrentWord.contains(entityMapping) && 	!wordBeforeBeforeCurrentWord.contains(entityMapping) ) {
@@ -114,7 +115,7 @@ public class LeftContext extends Context {
 					else break;
 				}
 			}
-//			System.out.println(entity);
+//			System.out.println("leftentity: " + entity);
 			// reverse the order because we moved from right to left
 			String[] foundEntity = entity.trim().split(" ");
 			String result = "";
@@ -122,7 +123,7 @@ public class LeftContext extends Context {
 				
 //				System.out.println(foundEntity[i]);
 				result += " " + foundEntity[i].substring(0, foundEntity[i].indexOf("_"));
-			}//System.out.println(result.trim());
+			}//System.out.println("leftentity: " + result.trim());
 			return result.trim();
 		}
 	}

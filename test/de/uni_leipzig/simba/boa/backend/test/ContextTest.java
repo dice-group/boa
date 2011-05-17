@@ -101,10 +101,14 @@ public class ContextTest {
 
 		// ######################################################################
 
-		testAnnotated				= "with_O the_O head_O of_O the_O slain_O Goliath_B-LOC ,_O as_O he_O is_O in_O Donatello_B-LOC 's_O and_O Verrocchio_B-LOC 's_O statues_O ._O";
-		test						= "Michelangelo 's David differs from previous representations of the subject in that the Biblical hero is not depicted with the head of the slain Goliath , as he is in Donatello 's and Verrocchio 's statues .";
-		patternWithOutVariables1	="'s and";
+		testAnnotated				= "Dale_B-PER Steyn_I-PER ,_O the_O South_B-MISC African_I-MISC right-arm_O fast_O bowler_O ,_O was_O optimistic_O about_O South_B-LOC Africa_I-LOC 's_O chances_O of_O winning_O the_O series_O ._O";
+		test						= "Dale Steyn , the South African right-arm fast bowler , was optimistic about South Africa 's chances of winning the series .";
+		patternWithOutVariables1	= "fast bowler";
 		
+		Context leftContext6 = new LeftContext(testAnnotated,test, patternWithOutVariables1);
+		Context rightContext6 = new RightContext(testAnnotated,test, patternWithOutVariables1);
 		
+		assertTrue("Dale Steyn".equals(leftContext6.getSuitableEntity("http://dbpedia.org/ontology/Person")));
+		assertTrue("South Africa".equals(rightContext6.getSuitableEntity("http://dbpedia.org/ontology/Place")));
 	}
 }
