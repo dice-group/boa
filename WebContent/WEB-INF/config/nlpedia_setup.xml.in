@@ -93,14 +93,14 @@
 				<entry key="numberOfSearchThreads">
 					<value>@number.of.search.threads@</value>
 				</entry>
+				<entry key="numberOfEvaluationThreads">
+					<value>@numberOfEvaluationThreads@</value>
+				</entry>
 				<entry key="namendEntityRecognizerClassifier">
 					<value>@namendEntityRecognizerClassifier@</value>
 				</entry>
 				<entry key="sentenceRepairedFile">
 					<value>@sentenceRepairedFile@</value>
-				</entry>
-				<entry key="numberOfSearchThreads">
-					<value>@number.of.search.threads@</value>
 				</entry>
 				<entry key="limesMetricExpression">
 					<value>@limesMetricExpression@</value>

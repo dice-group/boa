@@ -6,6 +6,7 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.impl;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -99,7 +100,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					String patternWithOutVariables = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 					
 					this.logger.debug("Querying index for pattern \"" + patternWithOutVariables + "\".");
-					Set<String> sentences = patternSearcher.getSentencesWithString(patternWithOutVariables, this.maxNumberOfDocuments);
+					List<String> sentences = this.createRandomList(patternSearcher.getSentencesWithString(patternWithOutVariables, this.maxNumberOfDocuments));
 					this.logger.debug("Pattern \"" + patternWithOutVariables + "\" returned " + sentences.size() + " results.");
 					
 					int correctDomain	= 0;
@@ -107,7 +108,12 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					
 					for (String foundString : sentences) {
 						
+						System.out.println(foundString);
+						
 						nerTagged = this.ner.recognizeEntitiesInString(foundString);
+						
+						System.out.println(nerTagged);
+						
 						segmentedFoundString = this.segmentString(foundString);
 						segmentedPattern = this.segmentString(patternWithOutVariables);
 						
@@ -120,6 +126,8 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 								
 								correctDomain++;
 							}
+							System.out.println(Context.namedEntityRecognitionMappings.get(domainUri));
+							System.out.println(Context.namedEntityRecognitionMappings.get(rangeUri));
 							if ( rightContext.containsSuitableEntity(rangeUri) ) {
 								
 								correctRange++;
@@ -129,7 +137,12 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 							//ioob.printStackTrace();
 							this.logger.error("Could not create context for string " + segmentedFoundString + ". NER tagged: " + nerTagged + " pattern: "  + patternWithOutVariables);
 						}
+						
+						System.out.println();
 					}
+					
+					System.out.println(correctDomain);
+					System.out.println(correctRange);
 					
 					domainCorrectness = (double) correctDomain / (double) sentences.size();
 					rangeCorrectness = (double) correctRange / (double) sentences.size();
@@ -175,6 +188,23 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 		}
 	}
 	
+	private List<String> createRandomList(Set<String> sentencesWithString) {
+
+		List<String> sentencesOld = new ArrayList<String>(sentencesWithString);
+		List<String> sentencesNew = new ArrayList<String>();
+		
+		for ( int i = 0 ; i < 100 ; i++ ) {
+			
+			if ( sentencesOld.size() != 0 ) {
+			
+				int j = (int)(Math.random() * (sentencesOld.size()));
+				sentencesNew.add(sentencesOld.get(j));
+				sentencesOld.remove(j);
+			}
+		}
+		return sentencesNew;
+	}
+
 	private String segmentString(String sentence) {
 		
 		this.stringReader = new StringReader(sentence);

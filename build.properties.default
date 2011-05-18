@@ -21,6 +21,7 @@ resource.type.url = http:/dbpedia.org/ontology/City
 
 ### search
 number.of.search.threads = 4
+numberOfEvaluationThreads = 3
 pattern.store.file = /home/gerber/data/en_wiki/data/pattern/pattern.txt
 
 ### hibernate

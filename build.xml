@@ -167,6 +167,7 @@
 			<replacefilter token="@limesVerificationThreshold@"				value="${limesVerificationThreshold}"/>
 			<replacefilter token="@rdfModel@"								value="${rdfModel}"/>
 			<replacefilter token="@createKnowledgeThreshold@"				value="${createKnowledgeThreshold}"/>
+			<replacefilter token="@numberOfEvaluationThreads@"				value="${numberOfEvaluationThreads}"/>
 		</replace>
 		<echo message="Generated config files are available at ${config.dir}." />
 	</target>

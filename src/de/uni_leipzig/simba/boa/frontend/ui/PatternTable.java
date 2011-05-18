@@ -16,18 +16,11 @@ import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 @SuppressWarnings("serial")
 public class PatternTable extends Table {
 	
-	/**
-	 * Natural property order for Person bean. Used in tables and forms.
-	 */
 	public static final Object[] NATURAL_COL_ORDER = new Object[] {
-		"withoutLogConfidence", "withLogConfidence", "naturalLanguageRepresentation", "numberOfOccurrences"};
+		 "withoutLogConfidence", "withLogConfidence", "naturalLanguageRepresentation", "numberOfOccurrences"};
 
-	/**
-	 * "Human readable" captions for properties in same order as in
-	 * NATURAL_COL_ORDER.
-	 */
 	public static final String[] COL_HEADERS_ENGLISH = new String[] {
-		"Conf", "LogConf", "naturalLanguageRepresentation", "#" };
+		 "Conf", "LogConf", "naturalLanguageRepresentation", "#" };
 	
 	public PatternTable(BoaFrontendApplication app, Container dataSource) {
 		
@@ -38,10 +31,11 @@ public class PatternTable extends Table {
 		setVisibleColumns(PatternTable.NATURAL_COL_ORDER);
 		setColumnHeaders(PatternTable.COL_HEADERS_ENGLISH);
 		
-		setColumnWidth(NATURAL_COL_ORDER[0],100);
+		setColumnWidth(NATURAL_COL_ORDER[0],50);
 		setColumnWidth(NATURAL_COL_ORDER[1],100);
-		setColumnWidth(NATURAL_COL_ORDER[3],50);
-		sort(NATURAL_COL_ORDER, new boolean[]{false,false, true, true});
+		setColumnWidth(NATURAL_COL_ORDER[2],100);
+		setColumnWidth(NATURAL_COL_ORDER[4],50);
+		sort(NATURAL_COL_ORDER, new boolean[]{true,false,false, true, true});
 		
 		setColumnCollapsingAllowed(true);
 		setColumnReorderingAllowed(true);

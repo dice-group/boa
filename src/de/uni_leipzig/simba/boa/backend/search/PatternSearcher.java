@@ -63,12 +63,12 @@ public class PatternSearcher {
 
 	public Set<String> getSentencesWithString(String keyphrase, int maxNumberOfDocuments) throws ParseException, IOException {
 
-		Query query = parser.parse("+sentence:'" + QueryParser.escape(keyphrase) + "'");
+		Query query = parser.parse("+sentence:'" + keyphrase + "'");
 		ScoreDoc[] hits = indexSearcher.search(query, null, maxNumberOfDocuments).scoreDocs;
 		
-//		System.out.println("keyphrase: " + keyphrase);
-//		System.out.println("parsed-keyphrase: " + QueryParser.escape(keyphrase));
-//		System.out.println("query: " + query);
+		System.out.println("keyphrase: " + keyphrase);
+		System.out.println("parsed-keyphrase: " + QueryParser.escape(keyphrase));
+		System.out.println("query: " + query);
 		
 		Set<String> list = new TreeSet<String>();
 		for (int i = 0 ; i < hits.length ; i++ ) {
