@@ -14,6 +14,8 @@ import com.vaadin.ui.Form;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.evaluation.EvaluationResultDao;
@@ -29,6 +31,11 @@ public class StatementForm extends Form {
 	private static GridLayout layout = null; 
 	private final EvaluationResultDao evalResultDao = (EvaluationResultDao) DaoFactory.getInstance().createDAO(EvaluationResultDao.class);
 	
+	private static final String MANUAL_REASON = "MANUAL";
+	private static final String AUTOMATIC_REASON = "AUTOMATIC";
+	
+	private static int NUMBER_OF_ITEMS_IN_RANDOM_LIST;
+	
 	public StatementForm(BoaFrontendApplication app, String rdfModelId) {
 		
 		String id = this.hashCode() + new Date().toString();
@@ -38,24 +45,37 @@ public class StatementForm extends Form {
 		Store store = new Store();
 		Model model = store.createModelIfNotExists(graph);
 		
+		System.out.println(model);
+		
 		List<Statement> stmts = model.getStatements();
+		NUMBER_OF_ITEMS_IN_RANDOM_LIST = Math.min(100, stmts.size());
 		List<Statement> randomStatments = new ArrayList<Statement>();
 		
 		// make the list random
-		for ( int i = 0 ; i < 100 ; i++ ) {
+		for ( int i = 0 ; i < NUMBER_OF_ITEMS_IN_RANDOM_LIST ; i++ ) {
 			
-			if ( i < stmts.size() ) {
-				
-				int j = (int)(Math.random() * (stmts.size()));
-				randomStatments.add(stmts.get(j));
-				stmts.remove(j);
-			}
-			else break;
+			int j = (int)(Math.random() * (stmts.size()));
+			randomStatments.add(stmts.get(j));
+			stmts.remove(j);
 		}
 		
-		randomStatments = this.filterCorrectStatements(randomStatments, id, graph);
+		List<Statement> statmentsToVerify = this.filterCorrectStatements(randomStatments, id, graph);
 		
-		StatementForm.layout = new GridLayout(6, (randomStatments.size() * 2) + 1);
+		Window subwindow = new Window("Evaluation of RDF Model " + graph);
+        subwindow.setModal(false);
+        VerticalLayout vlayout = (VerticalLayout) subwindow.getContent();
+        vlayout.setMargin(true);
+        vlayout.setSpacing(true);
+        Label message = new Label(
+        		"There are " + model.getStatements().size() + " statements in the RDF model<br/><hr/>" + 
+				"There were " + StatementForm.NUMBER_OF_ITEMS_IN_RANDOM_LIST + " statements used for evaluation!<br/><hr/>" +
+				"And " + (StatementForm.NUMBER_OF_ITEMS_IN_RANDOM_LIST - statmentsToVerify.size()) + " of those statements have been considered correct because they are already in dbpedia.org!", Label.CONTENT_XHTML);
+        subwindow.addComponent(message);
+        subwindow.setWidth("850px");
+        subwindow.setResizable(false);
+        app.getMainWindow().addWindow(subwindow);
+        
+		StatementForm.layout = new GridLayout(6, (statmentsToVerify.size() * 2) + 1);
 		StatementForm.layout.setMargin(false, false, false, false);
 		StatementForm.layout.setSpacing(true);
 		StatementForm.layout.setSizeFull();
@@ -66,9 +86,9 @@ public class StatementForm extends Form {
 		StatementForm.layout.setColumnExpandRatio(4, .15f);
 		StatementForm.layout.setColumnExpandRatio(5, .15f);
 		
-		for (int i = 0, j = 1; i < randomStatments.size() * 2 ; i = i + 2, j++ ) {
+		for (int i = 0, j = 1; i < statmentsToVerify.size() * 2 ; i = i + 2, j++ ) {
 			
-			Statement st = randomStatments.get(j - 1);
+			Statement st = statmentsToVerify.get(j - 1);
 			
 			if ( i % 2 == 0 ) StatementForm.layout.addComponent(new Label(String.valueOf(j) + "."), 0, i);
 			
@@ -104,7 +124,7 @@ public class StatementForm extends Form {
 					result.setPredicate(data.get(4));
 					result.setObject(data.get(5));
 					result.setCorrect(correct);
-					
+					result.setReason(StatementForm.MANUAL_REASON);
 					evalResultDao.createAndSaveEvaluationResult(result);
 				}
 	        });
@@ -129,6 +149,7 @@ public class StatementForm extends Form {
 					result.setPredicate(data.get(4));
 					result.setObject(data.get(5));
 					result.setCorrect(correct);
+					result.setReason(StatementForm.MANUAL_REASON);
 					
 					evalResultDao.createAndSaveEvaluationResult(result);
 				}
@@ -151,12 +172,15 @@ public class StatementForm extends Form {
 			
 			if ( dbpediaUtil.askDbpediaForTriple(st) ) {
 				
+				System.out.println("TRUE" + st);
+				
 				EvaluationResult result = new EvaluationResult(id);
 				result.setGraph(graph);
 				result.setSubject(st.getSubject().toString());
 				result.setPredicate(st.getPredicate().toString());
 				result.setObject(st.getObject().toString());
 				result.setCorrect(true);
+				result.setReason(StatementForm.AUTOMATIC_REASON);
 				this.evalResultDao.createAndSaveEvaluationResult(result);
 			}
 			else {

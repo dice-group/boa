@@ -13,6 +13,7 @@ public class EvaluationResult extends de.uni_leipzig.simba.boa.backend.persistan
 	private String subject;
 	private String predicate;
 	private String object;
+	private String reason;
 	private boolean correct;
 
 	public EvaluationResult(String evaluationId) {
@@ -130,5 +131,24 @@ public class EvaluationResult extends de.uni_leipzig.simba.boa.backend.persistan
 	public String getEvaluationId() {
 
 		return evaluationId;
+	}
+
+	
+	/**
+	 * @return the reason
+	 */
+	@Basic
+	public String getReason() {
+	
+		return reason;
+	}
+
+	
+	/**
+	 * @param reason the reason to set
+	 */
+	public void setReason(String reason) {
+	
+		this.reason = reason;
 	}
 }

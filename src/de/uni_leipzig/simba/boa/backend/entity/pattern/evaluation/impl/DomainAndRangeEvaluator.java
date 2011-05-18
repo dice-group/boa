@@ -57,7 +57,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 		
 		try {
 			
-			this.patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"), null, null);
+			this.patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block

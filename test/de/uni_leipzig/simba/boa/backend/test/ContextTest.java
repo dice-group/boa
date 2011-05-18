@@ -110,5 +110,17 @@ public class ContextTest {
 		
 		assertTrue("Dale Steyn".equals(leftContext6.getSuitableEntity("http://dbpedia.org/ontology/Person")));
 		assertTrue("South Africa".equals(rightContext6.getSuitableEntity("http://dbpedia.org/ontology/Place")));
+		
+		// ######################################################################
+
+		testAnnotated				= "Vygotsky_B-PER was_O born_O in_O Orsha_B-LOC ,_O in_O the_O Russian_B-MISC Empire_I-MISC -LRB-_O today_O in_O Belarus_B-LOC -RRB-_O into_O a_O nonreligious_O Jewish_B-MISC family_O ._O";
+		test						= "Vygotsky was born in Orsha , in the Russian Empire -LRB- today in Belarus -RRB- into a nonreligious Jewish family .";
+		patternWithOutVariables1	= "in the Russian Empire -LRB- today in";
+		
+		Context leftContext7 = new LeftContext(testAnnotated,test, patternWithOutVariables1);
+		Context rightContext7 = new RightContext(testAnnotated,test, patternWithOutVariables1);
+		
+		assertTrue("Orsha".equals(leftContext7.getSuitableEntity("http://dbpedia.org/ontology/PopulatedPlace")));
+		assertTrue("Belarus".equals(rightContext7.getSuitableEntity("http://dbpedia.org/ontology/City")));
 	}
 }

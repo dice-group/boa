@@ -10,7 +10,7 @@ import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 public class RdfModelTree extends Tree {
 
 	public static final String[] RDF_MODEL_IDS = new String[]{"en_wiki_loc", "en_wiki_per", "en_wiki_org", "en_news_loc", "en_news_per", "en_news_org"};
-//	public static final String[] RDF_MODEL_IDS = new String[]{"en_wiki_rdf"};
+//	public static final String[] RDF_MODEL_IDS = new String[]{"en_news_loc"};
 	
 	public RdfModelTree(BoaFrontendApplication app) {
 		

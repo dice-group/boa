@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -42,6 +43,7 @@ public abstract class AbstractDao {
 		try {
 
 			this.startOperation();
+			entity.setLastModified(new Date());
 			this.session.saveOrUpdate(entity);
 			this.tx.commit();
 		}

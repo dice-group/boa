@@ -106,13 +106,21 @@ public class LeftContext extends Context {
 				}
 				if ( !currentWord.contains(entityMapping) &&	 wordBeforeCurrentWord.contains(entityMapping) && 	!wordBeforeBeforeCurrentWord.contains(entityMapping) ) {
 					
-					String[] temp = entity.split(" ");
-					if ( temp[temp.length-1].contains(entityMapping) ) {
+					if ( entity.isEmpty() ) {
 						
-						entity = entity + " " + currentWord + " " + wordBeforeCurrentWord;
-						j = j - 2;
+						entity = wordBeforeCurrentWord;
+						j = j - 3;
 					}
-					else break;
+					else {
+						
+						String[] temp = entity.split(" ");
+						if ( temp[temp.length-1].contains(entityMapping) ) {
+							
+							entity = entity + " " + currentWord + " " + wordBeforeCurrentWord;
+							j = j - 2;
+						}
+						else break;
+					}
 				}
 			}
 //			System.out.println("leftentity: " + entity);

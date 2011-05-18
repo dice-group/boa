@@ -78,8 +78,6 @@ public class PatternMappingDao extends AbstractDao {
 								 "where pm.uri='"+pm.getUri().trim()+"' and pm.id = p.pattern_mapping_id and ( p.withLogConfidence >= 0 or p.withoutLogConfidence >= 0) and p.useForPatternEvaluation = 1 " +
 								 "order by pm.uri;"; 
 			
-			System.out.println(queryString);
-			
 			Query query = session.createSQLQuery(queryString);
 			
 			List<Object[]> objs = query.list();
@@ -94,8 +92,6 @@ public class PatternMappingDao extends AbstractDao {
 				pattern.setUseForPatternEvaluation((Boolean) obj[5]);
 				pm.addPattern(pattern);
 			}
-			System.out.println(pm);
-			
 			tx.commit();
 		}
 		catch (HibernateException he) {

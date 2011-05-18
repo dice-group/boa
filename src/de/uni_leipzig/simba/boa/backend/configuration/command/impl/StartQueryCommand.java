@@ -30,8 +30,8 @@ public class StartQueryCommand implements Command {
 			Scanner scanner = new Scanner(System.in);
 			String keyphrase = scanner.nextLine();
 			
-			PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"), null, null);
-			Set<String> results = patternSearcher.getSentencesWithString(keyphrase, 10000);
+			PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+			Set<String> results = patternSearcher.getSentencesWithString(keyphrase, 10);
 			
 			this.logger.debug("Size of result list for keyphrase querying:\t" + results.size());
 			

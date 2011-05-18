@@ -1,5 +1,12 @@
 package de.uni_leipzig.simba.boa.frontend;
 
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.apache.lucene.queryParser.ParseException;
+
 import com.vaadin.Application;
 import com.vaadin.event.Action;
 import com.vaadin.event.ItemClickEvent;
@@ -18,12 +25,15 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
+import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.frontend.data.PatternContainer;
 import de.uni_leipzig.simba.boa.frontend.ui.PatternTable;
 import de.uni_leipzig.simba.boa.frontend.ui.DatabaseNavigationTree;
@@ -41,6 +51,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	
 	private DatabaseNavigationTree tree;
 	private RdfModelTree rdfTree;
+	private PatternTable patternTable;
 	
 	private HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
 
@@ -129,8 +140,8 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				
 				try {
 					
-					PatternTable table = new PatternTable(this, new PatternContainer(pm));
-					gridLayout.addComponent(table, 0, 1, 4, 5);
+					this.patternTable = new PatternTable(this, new PatternContainer(pm));
+					gridLayout.addComponent(patternTable, 0, 1, 4, 5);
 				}
 				catch (InstantiationException e) {
 					// TODO Auto-generated catch block
@@ -152,6 +163,46 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				Panel p = new Panel();
 				p.addComponent(new StatementForm(this, itemId));
 				this.horizontalSplitPanel.setSecondComponent(p);
+			}
+		}
+		if (event.getSource() == this.patternTable ) {
+			
+			Pattern pattern = (Pattern) event.getItemId();
+			
+			try {
+				
+				String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
+				
+				PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+				TreeSet<String> results = (TreeSet) patternSearcher.getSentencesWithString(naturalLanguageRepresentation, 100);
+				
+				StringBuilder builder = new StringBuilder();
+				
+				Iterator<String> iter = results.iterator(); 
+				int i = 0;
+				while ( iter.hasNext() && i++ < 100) {
+					builder.append(iter.next() + "<br/>");
+					if ( iter.hasNext() ) builder.append("<hr/>");
+				}
+				
+				Window subwindow = new Window("Search for label \""+ naturalLanguageRepresentation+"\" in the index return " + results.size() + " results.");
+		        subwindow.setModal(true);
+		        VerticalLayout layout = (VerticalLayout) subwindow.getContent();
+		        layout.setMargin(true);
+		        layout.setSpacing(true);
+		        Label message = new Label(builder.toString(), Label.CONTENT_XHTML);
+		        subwindow.addComponent(message);
+		        subwindow.setWidth("850px");
+		        subwindow.setResizable(false);
+		        this.getMainWindow().addWindow(subwindow);
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}

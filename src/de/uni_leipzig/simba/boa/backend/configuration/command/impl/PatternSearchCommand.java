@@ -1,5 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -8,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.crawl.RelationFinder;
@@ -39,7 +42,15 @@ public class PatternSearchCommand implements Command {
 		List<String[]> labels =  RelationFinder.getRelationFromFile(NLPediaSettings.getInstance().getSetting("labelOutputFile"));
 		
 		System.out.println("Number of search operations: " + labels.size() + " for input file " + NLPediaSettings.getInstance().getSetting("labelOutputFile"));
+		System.out.println("Number of search threads: " + NLPediaSettings.getInstance().getSetting("numberOfSearchThreads"));
+		System.out.println("Number of allowed documents: " + NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
+		System.out.println("Index directory: " + NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+		System.out.println("Hibernate connection: " + NLPediaSettings.getInstance().getSetting("hibernateConnectionUrl"));
+		
 		this.logger.info("Number of search operations: " + labels.size() + " for input file " + NLPediaSettings.getInstance().getSetting("labelOutputFile"));
+		this.logger.info("Number of search threads: " + NLPediaSettings.getInstance().getSetting("numberOfSearchThreads"));
+		this.logger.info("Number of allowed documents: " + NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
+		this.logger.info("Index directory: " + NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
 		
 		int numberOfSearchThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfSearchThreads")).intValue();
 		
@@ -49,11 +60,9 @@ public class PatternSearchCommand implements Command {
 		
 		List<Thread> threadList = new ArrayList<Thread>();
 		
-		NamedEntityRecognizer ner = new NamedEntityRecognizer();
-		
 		for (int i = 0 ; i < numberOfSearchThreads ; i++ ) {
 			
-				Thread t = new PatternSearchThread(labelSubLists.get(i), results, ner);
+				Thread t = new PatternSearchThread(labelSubLists.get(i));
 				t.setName("PatternSearchThread-" + (i + 1));
 				threadList.add(i, t);
 				t.start();
@@ -75,6 +84,11 @@ public class PatternSearchCommand implements Command {
 			}
 		}
 		timer.cancel();
+		
+		for ( Thread t: threadList ) {
+			
+			results.addAll(((PatternSearchThread)t).getResults());
+		}
 		
 		for ( Thread t : threadList ) t = null;
 		threadList = null;

@@ -126,7 +126,6 @@ public class PatternEvaluationCommand implements Command {
 			
 				this.logger.debug("Evaluating pattern: " + patternMapping);
 				patternEvaluator.evaluatePattern(patternMapping);
-//				this.patternMappingDao.updatePatternMapping(patternMapping);
 			}
 			this.logger.debug(patternEvaluator.getClass().getSimpleName() + " finished!");
 		}

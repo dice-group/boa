@@ -41,6 +41,7 @@ public class CreateKnowledgeCommand implements Command {
 	private final Store store = new Store();
 	private final Property rdfType;
 	private final Property rdfsLabel;
+	private final List<Pattern> patternList = patternDao.findAllPatterns();
 	private Model model;
 	
 	public CreateKnowledgeCommand () {
@@ -57,14 +58,18 @@ public class CreateKnowledgeCommand implements Command {
 
 		try {
 			
-			PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"), this.ner, null);
+			PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
 			
-			for ( Pattern pattern : patternDao.findAllPatterns() ) {
-				
-				String domainUri	= pattern.getPatternMapping().getRdfsDomain();
-				String rangeUri		= pattern.getPatternMapping().getRdfsRange();
+			System.out.println("Querying index for " + this.patternList.size() + " patterns!");
+			
+			for ( Pattern pattern : patternList ) {
 				
 				if ( pattern.isUseForPatternEvaluation() && pattern.getWithoutLogConfidence() > new Double(NLPediaSettings.getInstance().getSetting("createKnowledgeThreshold")) ) {
+					
+					System.out.println("Querying pattern: " + pattern.getNaturalLanguageRepresentation() + " ["+pattern.getId()+"]");
+					
+					String domainUri	= pattern.getPatternMapping().getRdfsDomain();
+					String rangeUri		= pattern.getPatternMapping().getRdfsRange();
 					
 					String patternWithOutVariables = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 					
@@ -94,16 +99,18 @@ public class CreateKnowledgeCommand implements Command {
 								RDFNode rightResource	= model.createResource(rightUri);
 								
 								Statement link			= model.createStatement(leftResource, model.createProperty(pattern.getPatternMapping().getUri()), rightResource);
-								Statement labelLeft		= model.createStatement((Resource)leftResource, this.rdfsLabel, leftLabel);
-								Statement labelRight	= model.createStatement((Resource)rightResource, this.rdfsLabel, rightLabel);
-								Statement typeLeft		= model.createStatement(leftResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsDomain()));
-								Statement typeRight		= model.createStatement(rightResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsRange()));
+//								Statement labelLeft		= model.createStatement((Resource)leftResource, this.rdfsLabel, leftLabel);
+//								Statement labelRight	= model.createStatement((Resource)rightResource, this.rdfsLabel, rightLabel);
+//								Statement typeLeft		= model.createStatement(leftResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsDomain()));
+//								Statement typeRight		= model.createStatement(rightResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsRange()));
 								
 								model.addStatement(link);
-								model.addStatement(labelLeft);
-								model.addStatement(labelRight);
-								model.addStatement(typeLeft);
-								model.addStatement(typeRight);
+//								model.addStatement(labelLeft);
+//								model.addStatement(labelRight);
+//								model.addStatement(typeLeft);
+//								model.addStatement(typeRight);
+								
+								System.out.println("Statement created: " + link);
 							}
 						}
 						catch ( IndexOutOfBoundsException ioob ) {

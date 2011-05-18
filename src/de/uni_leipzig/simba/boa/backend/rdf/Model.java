@@ -161,10 +161,7 @@ public class Model {
 	 */
 	public List<Statement> getStatements() {
 		
-		List<Statement> statements = new ArrayList<Statement>();
-		StmtIterator iter = this.model.listStatements();
-		while (iter.hasNext()) statements.add(iter.next());
-		return statements;
+		return this.model.listStatements().toList();
 	}
 
 	/**

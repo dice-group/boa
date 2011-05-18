@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,7 +39,6 @@ public class PatternSearcher {
 	private Analyzer analyzer				= null;
 	private Searcher indexSearcher 			= null;
 	
-	private NamedEntityRecognizer ner;
 	private QueryParser parser;
 	private List<String> results;
 	private ScoreDoc[] hits;
@@ -48,7 +48,7 @@ public class PatternSearcher {
 	private Pattern p2 = null;
 	private Matcher m2 = null;
 	
-	public PatternSearcher(String indexDir, NamedEntityRecognizer ner, List<String> results) throws IOException, ParseException {
+	public PatternSearcher(String indexDir) throws IOException, ParseException {
 		
 		this.directory	= FSDirectory.open(new File(indexDir));
 		this.analyzer 	= new StandardAnalyzer(Version.LUCENE_30);
@@ -57,18 +57,20 @@ public class PatternSearcher {
 		this.indexSearcher = new IndexSearcher(directory, true);
 		this.parser = new QueryParser(Version.LUCENE_30, "sentence", analyzer);
 		
-		this.ner = ner;
-		
-		this.results = results;
+		this.results = new ArrayList<String>();
 		this.hits = null;
 	}
 
 	public Set<String> getSentencesWithString(String keyphrase, int maxNumberOfDocuments) throws ParseException, IOException {
-		
+
 		Query query = parser.parse("+sentence:'" + QueryParser.escape(keyphrase) + "'");
 		ScoreDoc[] hits = indexSearcher.search(query, null, maxNumberOfDocuments).scoreDocs;
 		
-		Set<String> list = new HashSet<String>();
+//		System.out.println("keyphrase: " + keyphrase);
+//		System.out.println("parsed-keyphrase: " + QueryParser.escape(keyphrase));
+//		System.out.println("query: " + query);
+		
+		Set<String> list = new TreeSet<String>();
 		for (int i = 0 ; i < hits.length ; i++ ) {
 					
 			String sentence = indexSearcher.doc(hits[i].doc).get("sentence");
@@ -76,7 +78,8 @@ public class PatternSearcher {
 			// how is exact matching possible? right now filter for exact string afterwards
 			if ( sentence.contains(keyphrase) && !sentence.contains("/") ) {
 				
-				list.add(sentence);	
+				list.add(sentence);
+//				System.out.println(sentence);
 			}
 		}
 		return list;
@@ -129,9 +132,14 @@ public class PatternSearcher {
 	    	// add only those patterns we do have a property for an all patterns with length higher than 256 are more or less useless
 	    	if ( property.length() > 0 && naturalLanguageRepresentation.length() < 256 ){
 	    		
-	    		results.add(property + "-;-" + naturalLanguageRepresentation + "-;-" + range + "-;-" + domain + "-;-" + label1 + "-;-" + label2);
+	    		this.results.add(property + "-;-" + naturalLanguageRepresentation + "-;-" + range + "-;-" + domain + "-;-" + label1 + "-;-" + label2);
 	    	}
 	    }
+	}
+	
+	public List<String> getResults() {
+		
+		return this.results;
 	}
 	
 	/**

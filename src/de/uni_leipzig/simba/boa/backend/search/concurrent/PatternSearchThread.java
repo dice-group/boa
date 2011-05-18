@@ -25,14 +25,14 @@ public class PatternSearchThread extends Thread {
 	// the 
 	private int i = 0;
 	
-	public PatternSearchThread(List<String[]> labels, List<String> results, NamedEntityRecognizer ner) {
+	public PatternSearchThread(List<String[]> labels) {
 		
 		this.labels = labels;
 		this.logger = new NLPediaLogger(PatternSearchThread.class);
 		
 		try {
 			
-			this.patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"), ner, results);
+			this.patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
 		}
 		catch (IOException e) {
 			
@@ -75,5 +75,10 @@ public class PatternSearchThread extends Thread {
 			this.logger.error("Could not parse query.", e);
 			e.printStackTrace();
 		}
+	}
+	
+	public List<String> getResults() {
+		
+		return this.patternSearcher.getResults();
 	}
 }
