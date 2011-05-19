@@ -75,35 +75,35 @@ public class PatternEvaluationCommand implements Command {
 			}
 		}
 		
-//		double maxWithLog = 0;
-//		double minWithLog = 1;
-//		double maxWithoutLog = 0;
-//		double minWithoutLog = 1;
-//		
-//		for (PatternMapping pm : evaluatedMappings ) {
-//			
-//			for (Pattern pattern : pm.getPatterns() ) {
-//				
-//				maxWithLog = Math.max(maxWithLog, pattern.getWithLogConfidence());
-//				minWithLog = Math.min(minWithLog, pattern.getWithLogConfidence());
-//				maxWithoutLog = Math.max(maxWithoutLog, pattern.getWithoutLogConfidence());
-//				minWithoutLog = Math.min(minWithoutLog, pattern.getWithoutLogConfidence());
-//			}
-//		}
-//		
-//		double maxMinusMinWithLog 		= minWithLog == -1 		? (maxWithLog - 0) 		: maxWithLog - minWithLog;
-//		double maxMinusMinWithoutLog 	= minWithoutLog == -1 	? (maxWithoutLog - 0) 	: minWithoutLog - minWithoutLog;
+		double maxWithLog = 0;
+		double minWithLog = 1;
+		double maxWithoutLog = 0;
+		double minWithoutLog = 1;
+		
+		for (PatternMapping pm : evaluatedMappings ) {
+			
+			for (Pattern pattern : pm.getPatterns() ) {
+				
+				maxWithLog = Math.max(maxWithLog, pattern.getWithLogConfidence());
+				minWithLog = Math.min(minWithLog, pattern.getWithLogConfidence());
+				maxWithoutLog = Math.max(maxWithoutLog, pattern.getWithoutLogConfidence());
+				minWithoutLog = Math.min(minWithoutLog, pattern.getWithoutLogConfidence());
+			}
+		}
+		
+		double maxMinusMinWithLog 		= minWithLog == -1 		? (maxWithLog - 0) 		: maxWithLog - minWithLog;
+		double maxMinusMinWithoutLog 	= minWithoutLog == -1 	? (maxWithoutLog - 0) 	: minWithoutLog - minWithoutLog;
 		
 		for ( PatternMapping mapping : patternMappingList ) {
 			
-//			for (Pattern pattern : mapping.getPatterns() ) {
-//				
-//				if ( pattern.isUseForPatternEvaluation() ) {
-//					
-//					pattern.setWithoutLogConfidence(pattern.getWithoutLogConfidence() / (maxMinusMinWithoutLog));
-//					pattern.setWithLogConfidence(pattern.getWithLogConfidence() / (maxMinusMinWithLog));
-//				}
-//			}
+			for (Pattern pattern : mapping.getPatterns() ) {
+				
+				if ( pattern.isUseForPatternEvaluation() ) {
+					
+					pattern.setWithoutLogConfidence(pattern.getWithoutLogConfidence() / (maxMinusMinWithoutLog));
+					pattern.setWithLogConfidence(pattern.getWithLogConfidence() / (maxMinusMinWithLog));
+				}
+			}
 			System.out.println("Updating pattern mapping " + mapping.getUri());
 			this.patternMappingDao.updatePatternMapping(mapping);
 		}
