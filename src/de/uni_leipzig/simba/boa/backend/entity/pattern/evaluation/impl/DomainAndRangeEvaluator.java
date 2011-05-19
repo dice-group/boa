@@ -53,7 +53,6 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 	private Reader stringReader;
 	private DocumentPreprocessor preprocessor;
 	
-	
 	public DomainAndRangeEvaluator() {
 		
 		try {
@@ -108,12 +107,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					
 					for (String foundString : sentences) {
 						
-						System.out.println(foundString);
-						
 						nerTagged = this.ner.recognizeEntitiesInString(foundString);
-						
-						System.out.println(nerTagged);
-						
 						segmentedFoundString = this.segmentString(foundString);
 						segmentedPattern = this.segmentString(patternWithOutVariables);
 						
@@ -126,8 +120,6 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 								
 								correctDomain++;
 							}
-							System.out.println(Context.namedEntityRecognitionMappings.get(domainUri));
-							System.out.println(Context.namedEntityRecognitionMappings.get(rangeUri));
 							if ( rightContext.containsSuitableEntity(rangeUri) ) {
 								
 								correctRange++;
