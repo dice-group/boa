@@ -104,6 +104,9 @@ public class PatternSearchCommand implements Command {
 		try {
 
 			Collections.sort(results);
+		
+			System.out.println("There are " + results.size() + " strings in the result list");
+			this.logger.info("There are " + results.size() + " strings in the result list");
 			
 			String currentProperty = "";
 			String currentPattern = "";
@@ -119,6 +122,7 @@ public class PatternSearchCommand implements Command {
 				String domain			= line[3];
 				String label1			= line[4];
 				String label2			= line[5];
+				String documentId		= line[6];
 				
 				// next line is for the same property
 				if ( property.equals(currentProperty) ) {
@@ -129,6 +133,7 @@ public class PatternSearchCommand implements Command {
 						Pattern p = currentMapping.getPatternByNaturalLanguageRepresentation(currentPattern);
 						p.increaseNumberOfOccurrences();
 						p.addLearnedFrom(label1 + "-;-" + label2);
+						p.addLuceneDocIds(Integer.valueOf(documentId));
 					}
 					// new pattern found
 					else {
@@ -137,6 +142,7 @@ public class PatternSearchCommand implements Command {
 						p.setFoundInIteration(this.foundInIteration);
 						p.addLearnedFrom(label1 + "-;-" + label2);
 						p.setPatternMapping(currentMapping);
+						p.addLuceneDocIds(Integer.valueOf(documentId));
 						
 						currentMapping.addPattern(p);
 					}
@@ -153,6 +159,7 @@ public class PatternSearchCommand implements Command {
 					p.setFoundInIteration(this.foundInIteration);
 					p.addLearnedFrom(label1 + "-;-" + label2);
 					p.setPatternMapping(currentMapping);
+					p.addLuceneDocIds(Integer.valueOf(documentId));
 					
 					currentMapping.addPattern(p);
 					

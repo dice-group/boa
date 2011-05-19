@@ -66,9 +66,9 @@ public class PatternSearcher {
 		Query query = parser.parse("+sentence:'" + keyphrase + "'");
 		ScoreDoc[] hits = indexSearcher.search(query, null, maxNumberOfDocuments).scoreDocs;
 		
-		System.out.println("keyphrase: " + keyphrase);
-		System.out.println("parsed-keyphrase: " + QueryParser.escape(keyphrase));
-		System.out.println("query: " + query);
+//		System.out.println("keyphrase: " + keyphrase);
+//		System.out.println("parsed-keyphrase: " + QueryParser.escape(keyphrase));
+//		System.out.println("query: " + query);
 		
 		Set<String> list = new TreeSet<String>();
 		for (int i = 0 ; i < hits.length ; i++ ) {
@@ -79,7 +79,6 @@ public class PatternSearcher {
 			if ( sentence.contains(keyphrase) && !sentence.contains("/") ) {
 				
 				list.add(sentence);
-//				System.out.println(sentence);
 			}
 		}
 		return list;
@@ -132,7 +131,7 @@ public class PatternSearcher {
 	    	// add only those patterns we do have a property for an all patterns with length higher than 256 are more or less useless
 	    	if ( property.length() > 0 && naturalLanguageRepresentation.length() < 256 ){
 	    		
-	    		this.results.add(property + "-;-" + naturalLanguageRepresentation + "-;-" + range + "-;-" + domain + "-;-" + label1 + "-;-" + label2);
+	    		this.results.add(property + "-;-" + naturalLanguageRepresentation + "-;-" + range + "-;-" + domain + "-;-" + label1 + "-;-" + label2 + "-;-" + hits[i].doc);
 	    	}
 	    }
 	}

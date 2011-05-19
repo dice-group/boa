@@ -32,7 +32,7 @@ public class StartQueryCommand implements Command {
 			String keyphrase = scanner.nextLine();
 			
 			PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
-			Set<String> results = ((TreeSet<String>) patternSearcher.getSentencesWithString(keyphrase, 50000));
+			Set<String> results = ((TreeSet<String>) patternSearcher.getSentencesWithString(keyphrase, 1000));
 			
 			for (String sentence : results) {
 				

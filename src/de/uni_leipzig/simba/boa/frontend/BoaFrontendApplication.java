@@ -174,7 +174,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 				
 				PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
-				TreeSet<String> results = (TreeSet) patternSearcher.getSentencesWithString(naturalLanguageRepresentation, 100);
+				TreeSet<String> results = (TreeSet) patternSearcher.getSentencesWithString(naturalLanguageRepresentation, 1000);
 				
 				StringBuilder builder = new StringBuilder();
 				

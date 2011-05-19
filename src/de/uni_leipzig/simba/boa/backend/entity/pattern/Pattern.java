@@ -1,6 +1,8 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Basic;
@@ -74,6 +76,11 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	private Map<String,Integer> learnedFrom;
 	
 	/**
+	 * 
+	 */
+	private String luceneDocIds;
+	
+	/**
 	 * @param naturalLanguageRepresentation the naturalLanguageRepresentation to set
 	 */
 	public void setNaturalLanguageRepresentation(String naturalLanguageRepresentation) {
@@ -107,6 +114,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		this.withLogConfidence = -1D;
 		this.withoutLogConfidence = -1D;
 		this.useForPatternEvaluation = true;
+		this.luceneDocIds = "";
 	}
 
 	/**
@@ -346,6 +354,34 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		else {
 			this.learnedFrom.put(label, 1);
 		}
+	}
+
+
+	/**
+	 * @param luceneDocIds the luceneDocIds to set
+	 */
+	public void setLuceneDocIds(String luceneDocIds) {
+
+		this.luceneDocIds = luceneDocIds;
+	}
+
+	/**
+	 * @return the luceneDocIds
+	 */
+	@Basic
+	public String getLuceneDocIds() {
+
+		return luceneDocIds;
+	}
+	
+	public void addLuceneDocIds(int id){
+		
+		this.luceneDocIds += "$" + id; 
+	}
+	
+	public List<String> getLuceneDocIdsAsList(){
+		
+		return Arrays.asList(this.luceneDocIds.split("$"));
 	}
 }
 
