@@ -379,7 +379,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		this.luceneDocIds += "$" + id; 
 	}
 	
-	public List<String> getLuceneDocIdsAsList(){
+	public List<String> retrieveLuceneDocIdsAsList(){
 		
 		return Arrays.asList(this.luceneDocIds.split("$"));
 	}
