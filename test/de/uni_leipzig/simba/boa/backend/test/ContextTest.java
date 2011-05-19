@@ -38,7 +38,7 @@ public class ContextTest {
 		this.setup.destroy();
 	}
 	
-	@Test
+//	@Test
 	public void testContext() {
 		
 		String testAnnotated 			= "Has_O a_O of_O Josephine_B-PER of_O of_O Daughter_I-PER ,_O who_O was_O born_O in_O Germany_LOC ._O";
@@ -122,5 +122,17 @@ public class ContextTest {
 		
 		assertTrue("Orsha".equals(leftContext7.getSuitableEntity("http://dbpedia.org/ontology/PopulatedPlace")));
 		assertTrue("Belarus".equals(rightContext7.getSuitableEntity("http://dbpedia.org/ontology/City")));
+	}
+	
+	@Test
+	public void testContextGetSuitableEntityTime() {
+		
+		long start = System.currentTimeMillis();
+		
+		for ( int i = 0 ; i < 10000 ; i++) {
+			
+			this.testContext();
+		}
+		System.out.println("Time in ms: " + (System.currentTimeMillis() - start));
 	}
 }

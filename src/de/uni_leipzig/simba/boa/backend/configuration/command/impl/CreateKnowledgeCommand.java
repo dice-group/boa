@@ -64,7 +64,7 @@ public class CreateKnowledgeCommand implements Command {
 			
 			for ( Pattern pattern : patternList ) {
 				
-				if ( pattern.isUseForPatternEvaluation() && pattern.getWithoutLogConfidence() > new Double(NLPediaSettings.getInstance().getSetting("createKnowledgeThreshold")) ) {
+				if ( pattern.isUseForPatternEvaluation() && pattern.getWithLogConfidence() > new Double(NLPediaSettings.getInstance().getSetting("createKnowledgeThreshold")) ) {
 					
 					System.out.println("Querying pattern: " + pattern.getNaturalLanguageRepresentation() + " ["+pattern.getId()+"]");
 					
@@ -115,11 +115,11 @@ public class CreateKnowledgeCommand implements Command {
 						}
 						catch ( IndexOutOfBoundsException ioob ) {
 							
-							System.out.println(foundString);
-							System.out.println(nerTagged);
-							System.out.println(patternWithOutVariables);
-							
-							ioob.printStackTrace();
+//							System.out.println(foundString);
+//							System.out.println(nerTagged);
+//							System.out.println(patternWithOutVariables);
+//							
+//							ioob.printStackTrace();
 							this.logger.error("Could not create context for string " + foundString + ". NER tagged: " + nerTagged + " pattern: "  + patternWithOutVariables);
 						}
 					}
