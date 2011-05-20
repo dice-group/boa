@@ -167,7 +167,7 @@ public class PatternSearcher {
 //	    	    	System.out.println(property);
 //	    	    	System.out.println();
 	    	    	
-	    	    	if ( StringUtils.countOccurrencesOf(naturalLanguageRepresentation, "?X?") != 1 || StringUtils.countOccurrencesOf(naturalLanguageRepresentation, "?Y?") != 1) {
+	    	    	if ( StringUtils.countOccurrencesOf(naturalLanguageRepresentation, "?D?") != 1 || StringUtils.countOccurrencesOf(naturalLanguageRepresentation, "?R?") != 1) {
 	    	    		
 	    	    		continue; // be sure there are no patterns without x or y in the pattern list
 	    	    	}
