@@ -31,11 +31,14 @@ public class PatternTable extends Table {
 		setVisibleColumns(PatternTable.NATURAL_COL_ORDER);
 		setColumnHeaders(PatternTable.COL_HEADERS_ENGLISH);
 		
+		setSortContainerPropertyId(NATURAL_COL_ORDER[2]);
+		setSortAscending(false);
+		sort();
+		
 		setColumnWidth(NATURAL_COL_ORDER[0],50);
 		setColumnWidth(NATURAL_COL_ORDER[1],100);
 		setColumnWidth(NATURAL_COL_ORDER[2],100);
 		setColumnWidth(NATURAL_COL_ORDER[4],50);
-		sort(NATURAL_COL_ORDER, new boolean[]{true,false,false, true, true});
 		
 		setColumnCollapsingAllowed(true);
 		setColumnReorderingAllowed(true);

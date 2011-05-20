@@ -1,7 +1,9 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -18,6 +20,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="pattern_mapping") // uniqueConstraints = {@UniqueConstraint(columnNames={"uri"})} 
 public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance.Entity {
+	
+	private Map<Integer,Pattern> patternMap;
 	
 	/**
 	 * 
@@ -46,6 +50,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 		
 		this.uri		= new String();
 		this.patterns	= new ArrayList<Pattern>();
+		this.patternMap	= new HashMap<Integer,Pattern>();
 	}
 
 	/**
@@ -58,6 +63,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 
 		this.uri = property;
 		this.patterns = new ArrayList<Pattern>();
+		this.patternMap	= new HashMap<Integer,Pattern>();
 	}
 
 	/**
@@ -102,6 +108,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 	public PatternMapping addPattern(Pattern pattern) {
 		
 		this.patterns.add(pattern);
+		this.patternMap.put(pattern.getNaturalLanguageRepresentation().hashCode(), pattern);
 		return this;
 	}
 	
@@ -204,12 +211,8 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 	 * @param naturalLanguageRepresentation - the natural language representation of the pattern to search for
 	 * @return the pattern or null if no such pattern was found
 	 */
-	public Pattern getPatternByNaturalLanguageRepresentation(String naturalLanguageRepresentation) {
+	public Pattern getPatternByNaturalLanguageRepresentation(int patternHashCode) { 
 		
-		for ( Pattern p : this.patterns ) {
-			
-			if ( p.getNaturalLanguageRepresentation().equals(naturalLanguageRepresentation) ) return p;
-		}
-		return null;
+		return this.patternMap.get(patternHashCode);
 	}
 }

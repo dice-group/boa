@@ -130,7 +130,7 @@ public class PatternSearchCommand implements Command {
 					// previous line had the same pattern
 					if ( patternString.equals(currentPattern) ) {
 						
-						Pattern p = currentMapping.getPatternByNaturalLanguageRepresentation(currentPattern);
+						Pattern p = currentMapping.getPatternByNaturalLanguageRepresentation(currentPattern.hashCode());
 						p.increaseNumberOfOccurrences();
 						p.addLearnedFrom(label1 + "-;-" + label2);
 						p.addLuceneDocIds(Integer.valueOf(documentId));

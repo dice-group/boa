@@ -1,7 +1,9 @@
 package de.uni_leipzig.simba.boa.backend.search.concurrent;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
 
+import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -37,8 +39,8 @@ public class PrintProgressTask extends TimerTask {
 				}
 			}
 		}
-		System.out.println("Overall progress " + NumberFormat.getPercentInstance().format((double)overallProgress / (double)(this.threadList.size()*100)));
-		this.logger.debug("Overall progress " + NumberFormat.getPercentInstance().format((double)overallProgress / (double)(this.threadList.size()*100)));
+		System.out.println("Overall progress " + NumberFormat.getPercentInstance().format((double)overallProgress / (double)(this.threadList.size()*100)) + " at " + DateFormat.getTimeInstance().format(new Date()));
+		this.logger.debug("Overall progress " + NumberFormat.getPercentInstance().format((double)overallProgress / (double)(this.threadList.size()*100)) + " at " + DateFormat.getTimeInstance().format(new Date()));
 		System.out.println("########################################################################################");
 		this.logger.debug("########################################################################################");
 	}

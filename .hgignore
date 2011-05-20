@@ -17,3 +17,7 @@ syntax: regexp
 ^log/nlpedia\.log\.2011-05-11$
 syntax: regexp
 ^build$
+syntax: regexp
+nlpedia.log*
+syntax: regexp
+nlpedia.debug*
