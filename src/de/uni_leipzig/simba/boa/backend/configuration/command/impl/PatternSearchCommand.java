@@ -51,6 +51,7 @@ public class PatternSearchCommand implements Command {
 		this.logger.info("Number of search threads: " + NLPediaSettings.getInstance().getSetting("numberOfSearchThreads"));
 		this.logger.info("Number of allowed documents: " + NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
 		this.logger.info("Index directory: " + NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+		this.logger.info("Hibernate connection: " + NLPediaSettings.getInstance().getSetting("hibernateConnectionUrl"));
 		
 		int numberOfSearchThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfSearchThreads")).intValue();
 		
@@ -105,8 +106,10 @@ public class PatternSearchCommand implements Command {
 
 			Collections.sort(results);
 		
-			System.out.println("There are " + results.size() + " strings in the result list");
-			this.logger.info("There are " + results.size() + " strings in the result list");
+			int size = results.size();
+			
+			System.out.println("There are " + size + " strings in the result list");
+			this.logger.info("There are " + size + " strings in the result list");
 			
 			String currentProperty = "";
 			String currentPattern = "";

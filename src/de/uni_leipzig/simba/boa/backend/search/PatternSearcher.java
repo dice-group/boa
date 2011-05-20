@@ -91,48 +91,93 @@ public class PatternSearcher {
 	 * @param string2
 	 * @throws ParseException, IOException 
 	 */
-	public void queryPattern(String label1, String label2, String property, String range, String domain) throws ParseException, IOException {
+	public void queryPattern(String label1, String label2, String property, String range, String domain, boolean isLabel1Subject) throws ParseException, IOException {
 
 		Query query = parser.parse("+sentence:\"" + QueryParser.escape(label1) + "\" && +sentence:\"" + QueryParser.escape(label2) + "\"");
 		
 		int maxNumberOfDocuments = Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
 		
-		hits = indexSearcher.search(query, null, maxNumberOfDocuments).scoreDocs;
+		hits = indexSearcher.search(query, null, 10).scoreDocs;
 	    
 	    for (int i = 0; i < hits.length; i++) {
 	    	
 	    	if ( i == maxNumberOfDocuments ) break;
 	    	hitDoc = indexSearcher.doc(hits[i].doc);
-	    	
-	    	p1 = Pattern.compile("(\\b"+label1+"\\b)(.*?)(\\b"+label2+"\\b)", Pattern.CASE_INSENSITIVE);
-	    	m1 = p1.matcher(hitDoc.get("sentence"));
-	    	p2 = Pattern.compile("(\\b"+label2+"\\b)(.*?)(\\b"+label1+"\\b)", Pattern.CASE_INSENSITIVE);
-	    	m2 = p2.matcher(hitDoc.get("sentence"));
 
-	    	String match1 = "", match2 = "";
-	    	while (m1.find()) match1 = m1.group();
-	    	while (m2.find()) match2 = m2.group();
-	    	
-	    	String naturalLanguageRepresentation = "";
-	    	if ( !match1.isEmpty() ) {  // java.util.regex.PatternSyntaxException: Dangling meta character '?' near index 4 (?i)?
-	    		
-	    		naturalLanguageRepresentation = match1.replaceFirst("(?i)"+label1, "?X?");
-	    		naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?Y?");
-	    	}
-	    	if ( !match2.isEmpty() ) { // java.util.regex.PatternSyntaxException: Dangling meta character '?' near index 4 (?i)?
-	    		
-	    		naturalLanguageRepresentation = match2.replaceFirst("(?i)"+label2, "?X?");
-	    		naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label1, "?Y?");
-	    	}
-	    	if ( StringUtils.countOccurrencesOf(naturalLanguageRepresentation, "?X?") != 1 || StringUtils.countOccurrencesOf(naturalLanguageRepresentation, "?Y?") != 1) {
-	    		
-	    		continue; // be sure there are no patterns without x or y in the pattern list
-	    	}
-	    	// add only those patterns we do have a property for an all patterns with length higher than 256 are more or less useless
-	    	if ( property.length() > 0 && naturalLanguageRepresentation.length() < 256 ){
-	    		
-	    		this.results.add(property + "-;-" + naturalLanguageRepresentation + "-;-" + range + "-;-" + domain + "-;-" + label1 + "-;-" + label2 + "-;-" + hits[i].doc);
-	    	}
+//	    	if ( label1.equals("Council of the European Union") && label2.equals("Justus Lipsius building") ) {
+//	    	if ( property.equals("http://dbpedia.org/ontology/subsidiary") ) {
+//	    		if ( hitDoc.get("sentence").equals("The European Council uses the same building as the Council of the European Union , i.e. , the Justus Lipsius building .") || 
+//		    			hitDoc.get("sentence").equals("The Justus Lipsius building is a building in Brussels -LRB- Belgium -RRB- that has been the headquarters of the Council of the European Union since 1995 .") ) {
+		    	
+	    			String naturalLanguageRepresentation = "";
+	    			if ( isLabel1Subject ) {
+	    				
+	    				p1 = Pattern.compile("(\\b"+label1+"\\b)(.*?)(\\b"+label2+"\\b)", Pattern.CASE_INSENSITIVE);
+		    	    	m1 = p1.matcher(hitDoc.get("sentence"));
+		    	    	p2 = Pattern.compile("(\\b"+label2+"\\b)(.*?)(\\b"+label1+"\\b)", Pattern.CASE_INSENSITIVE);
+		    	    	m2 = p2.matcher(hitDoc.get("sentence"));
+		    	    	
+		    	    	String match1 = "";
+		    	    	while (m1.find()) match1 = m1.group();
+		    	    	String match2 = "";
+		    	    	while (m2.find()) match2 = m2.group();
+		    	    	
+		    	    	if ( !match1.isEmpty() ) {  // java.util.regex.PatternSyntaxException: Dangling meta character '?' near index 4 (?i)?
+		    	    		
+		    	    		naturalLanguageRepresentation = match1.replaceFirst("(?i)"+label1, "?Y?");
+			    	    	naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?X?");
+		    	    	}
+		    	    	if ( !match2.isEmpty() ) {
+		    	    		
+		    	    		naturalLanguageRepresentation = match2.replaceFirst("(?i)"+label1, "?Y?");
+		    	    		naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?X?");
+		    	    	}
+	    			}
+	    			else {
+	    				
+	    				p1 = Pattern.compile("(\\b"+label1+"\\b)(.*?)(\\b"+label2+"\\b)", Pattern.CASE_INSENSITIVE);
+		    	    	m1 = p1.matcher(hitDoc.get("sentence"));
+		    	    	p2 = Pattern.compile("(\\b"+label2+"\\b)(.*?)(\\b"+label1+"\\b)", Pattern.CASE_INSENSITIVE);
+		    	    	m2 = p2.matcher(hitDoc.get("sentence"));
+		    	    	
+		    	    	String match1 = "";
+		    	    	while (m1.find()) match1 = m1.group();
+		    	    	String match2 = "";
+		    	    	while (m2.find()) match2 = m2.group();
+		    	    	
+		    	    	if ( !match1.isEmpty() ) {  // java.util.regex.PatternSyntaxException: Dangling meta character '?' near index 4 (?i)?
+		    	    		
+		    	    		System.out.println("match1: " + match1);
+		    	    		naturalLanguageRepresentation = match1.replaceFirst("(?i)"+label1, "?X?");
+			    	    	naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?Y?");
+		    	    	}
+		    	    	if ( !match2.isEmpty() ) {
+		    	    		
+		    	    		System.out.println("match2: " + match2);
+		    	    		naturalLanguageRepresentation = match2.replaceFirst("(?i)"+label1, "?X?");
+		    	    		naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?Y?");
+		    	    	}
+		    	    	
+		    	    	System.out.println(label1 +" "+ property + " " + label2);
+	    			}
+//	    	    	System.out.println(naturalLanguageRepresentation);
+//	    	    	System.out.println(hitDoc.get("sentence"));
+//	    	    	System.out.println("LABEL1: " + label1);
+//	    	    	System.out.println("LABEL2: " + label2);
+//	    	    	System.out.println(property);
+//	    	    	System.out.println();
+	    	    	
+	    	    	if ( StringUtils.countOccurrencesOf(naturalLanguageRepresentation, "?X?") != 1 || StringUtils.countOccurrencesOf(naturalLanguageRepresentation, "?Y?") != 1) {
+	    	    		
+	    	    		continue; // be sure there are no patterns without x or y in the pattern list
+	    	    	}
+	    	    	// add only those patterns we do have a property for an all patterns with length higher than 256 are more or less useless
+	    	    	if ( property.length() > 0 && naturalLanguageRepresentation.length() < 256 ){
+	    	    		
+	    	    		this.results.add(property + "-;-" + naturalLanguageRepresentation + "-;-" + range + "-;-" + domain + "-;-" + label1 + "-;-" + label2 + "-;-" + hits[i].doc);
+	    	    	}
+//		    	}
+//	    	}
 	    }
 	}
 	

@@ -369,6 +369,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	 * @return the luceneDocIds
 	 */
 	@Basic
+	@Column(length=5012)
 	public String getLuceneDocIds() {
 
 		return luceneDocIds;

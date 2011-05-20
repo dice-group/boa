@@ -129,12 +129,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 							//ioob.printStackTrace();
 							this.logger.error("Could not create context for string " + segmentedFoundString + ". NER tagged: " + nerTagged + " pattern: "  + patternWithOutVariables);
 						}
-						
-						System.out.println();
 					}
-					
-					System.out.println(correctDomain);
-					System.out.println(correctRange);
 					
 					domainCorrectness = (double) correctDomain / (double) sentences.size();
 					rangeCorrectness = (double) correctRange / (double) sentences.size();
