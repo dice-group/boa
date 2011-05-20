@@ -147,18 +147,18 @@ public class PatternSearcher {
 		    	    	
 		    	    	if ( !match1.isEmpty() ) {  // java.util.regex.PatternSyntaxException: Dangling meta character '?' near index 4 (?i)?
 		    	    		
-		    	    		System.out.println("match1: " + match1);
+//		    	    		System.out.println("match1: " + match1);
 		    	    		naturalLanguageRepresentation = match1.replaceFirst("(?i)"+label1, "?X?");
 			    	    	naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?Y?");
 		    	    	}
 		    	    	if ( !match2.isEmpty() ) {
 		    	    		
-		    	    		System.out.println("match2: " + match2);
+//		    	    		System.out.println("match2: " + match2);
 		    	    		naturalLanguageRepresentation = match2.replaceFirst("(?i)"+label1, "?X?");
 		    	    		naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?Y?");
 		    	    	}
 		    	    	
-		    	    	System.out.println(label1 +" "+ property + " " + label2);
+//		    	    	System.out.println(label1 +" "+ property + " " + label2);
 	    			}
 //	    	    	System.out.println(naturalLanguageRepresentation);
 //	    	    	System.out.println(hitDoc.get("sentence"));
