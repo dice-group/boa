@@ -124,13 +124,13 @@ public class PatternSearcher {
 		    	    	
 		    	    	if ( !match1.isEmpty() ) {  // java.util.regex.PatternSyntaxException: Dangling meta character '?' near index 4 (?i)?
 		    	    		
-		    	    		naturalLanguageRepresentation = match1.replaceFirst("(?i)"+label1, "?Y?");
-			    	    	naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?X?");
+		    	    		naturalLanguageRepresentation = match1.replaceFirst("(?i)"+label1, "?D?");
+			    	    	naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?R?");
 		    	    	}
 		    	    	if ( !match2.isEmpty() ) {
 		    	    		
-		    	    		naturalLanguageRepresentation = match2.replaceFirst("(?i)"+label1, "?Y?");
-		    	    		naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?X?");
+		    	    		naturalLanguageRepresentation = match2.replaceFirst("(?i)"+label1, "?D?");
+		    	    		naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?R?");
 		    	    	}
 	    			}
 	    			else {
@@ -148,14 +148,14 @@ public class PatternSearcher {
 		    	    	if ( !match1.isEmpty() ) {  // java.util.regex.PatternSyntaxException: Dangling meta character '?' near index 4 (?i)?
 		    	    		
 //		    	    		System.out.println("match1: " + match1);
-		    	    		naturalLanguageRepresentation = match1.replaceFirst("(?i)"+label1, "?X?");
-			    	    	naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?Y?");
+		    	    		naturalLanguageRepresentation = match1.replaceFirst("(?i)"+label1, "?R?");
+			    	    	naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?D?");
 		    	    	}
 		    	    	if ( !match2.isEmpty() ) {
 		    	    		
 //		    	    		System.out.println("match2: " + match2);
-		    	    		naturalLanguageRepresentation = match2.replaceFirst("(?i)"+label1, "?X?");
-		    	    		naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?Y?");
+		    	    		naturalLanguageRepresentation = match2.replaceFirst("(?i)"+label1, "?R?");
+		    	    		naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)"+label2, "?D?");
 		    	    	}
 		    	    	
 //		    	    	System.out.println(label1 +" "+ property + " " + label2);

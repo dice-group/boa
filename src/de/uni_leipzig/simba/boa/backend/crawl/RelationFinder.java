@@ -37,6 +37,7 @@ public class RelationFinder {
 
 				if (!lineParts[1].equals("disambiguates") && !lineParts[1].equals("blankName") && !lineParts[1].equals("wikiPageWikiLink") ) {
 					
+					// label1 (Domain), label2 (Range), property, range, domain, isSubject;
 					resultsSet.add(new String[] { lineParts[0], lineParts[1], lineParts[2], lineParts[3], lineParts[4], lineParts[5] });
 				}
 			}
@@ -57,9 +58,10 @@ public class RelationFinder {
 
 				String[] lineParts = line.split(" \\|\\|\\| ");
 
+				// label1 (Domain), label2 (Range), property, range, domain, isSubject;
 				if (!lineParts[1].equals("disambiguates") && !lineParts[1].equals("blankName") && !lineParts[1].equals("wikiPageWikiLink") ) {
 					
-					resultsSet.add(new String[] { lineParts[0], lineParts[1], lineParts[2], lineParts[3], lineParts[4], lineParts[5] });
+					resultsSet.add(new String[] { lineParts[1], lineParts[0], lineParts[2], lineParts[3], lineParts[4], lineParts[5] });
 				}
 			}
 			br.close();

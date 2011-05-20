@@ -135,6 +135,8 @@ public class WriteRelationToFileCommand implements Command {
 			 "	?p2  rdfs:range  ?rangep2 . " +
 			 "	?p2  rdfs:domain ?domainp2 . " +
 			"}";
+		
+		// s2l + " ||| " + solution.get("p2").toString() + " ||| " + o2l + " ||| " + range + " ||| " + domain + " ||| isObject";
 	}
 
 	private String createQueryPersonSubject() {
@@ -153,6 +155,8 @@ public class WriteRelationToFileCommand implements Command {
 			 "	?p1  rdfs:range  ?rangep1 . " +
 			 "	?p1  rdfs:domain ?domainp1 . " +
 			"}";
+		
+		// s1l + " ||| " + solution.get("p1").toString() + " ||| " + o1l + " ||| " + range + " ||| " + domain + " ||| isSubject";
 	}
 
 	private void getPlaceObjectKnowledge(String queryPlaceObject) {
