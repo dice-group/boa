@@ -39,8 +39,7 @@ public class StopWordPatternEvaluator extends Initializeable implements PatternE
 		
 		for ( Pattern p : patternMapping.getPatterns() ) {
 			
-			String patternInLanguage = p.getNaturalLanguageRepresentation();
-			patternInLanguage = patternInLanguage.replace("?X?", "").replace("?Y?", "").trim();
+			String patternInLanguage = p.getNaturalLanguageRepresentation().substring(0, p.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 			String[] tokens = patternInLanguage.split(" ");
 			
 			int numberOfStopWordsInPattern = 0;

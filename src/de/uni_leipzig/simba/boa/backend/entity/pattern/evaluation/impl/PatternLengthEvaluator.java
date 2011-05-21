@@ -48,7 +48,7 @@ public class PatternLengthEvaluator extends Initializeable implements PatternEva
 			// skip this evaluation, because it was characterized as not suitable in a previous evaluation
 			if ( p.isUseForPatternEvaluation() ) {
 				
-				String[] naturalLanguageRepresentation = p.getNaturalLanguageRepresentation().replaceAll("\\?X\\?", "").replaceAll("\\?Y\\?", "").trim().split(" ");
+				String[] naturalLanguageRepresentation = p.getNaturalLanguageRepresentation().substring(0, p.getNaturalLanguageRepresentation().length() - 3).substring(3).trim().split(" ");
 				
 				// the number of chunks (words get seperated at " ") needs to smaller then the configured max value
 				p.setUseForPatternEvaluation(

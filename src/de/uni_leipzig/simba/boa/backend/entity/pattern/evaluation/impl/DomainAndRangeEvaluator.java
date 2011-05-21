@@ -96,6 +96,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 				
 				if ( pattern.isUseForPatternEvaluation() ) {
 					
+					boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
 					String patternWithOutVariables = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 					
 					this.logger.debug("Querying index for pattern \"" + patternWithOutVariables + "\".");
@@ -116,13 +117,27 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 							leftContext = new LeftContext(nerTagged, segmentedFoundString, segmentedPattern);
 							rightContext = new RightContext(nerTagged, segmentedFoundString, segmentedPattern);
 							
-							if ( leftContext.containsSuitableEntity(domainUri) ) {
+							if ( beginsWithDomain ) {
 								
-								correctDomain++;
+								if ( leftContext.containsSuitableEntity(domainUri) ) {
+									
+									correctDomain++;
+								}
+								if ( rightContext.containsSuitableEntity(rangeUri) ) {
+									
+									correctRange++;
+								}
 							}
-							if ( rightContext.containsSuitableEntity(rangeUri) ) {
+							else {
 								
-								correctRange++;
+								if ( leftContext.containsSuitableEntity(rangeUri) ) {
+									
+									correctDomain++;
+								}
+								if ( rightContext.containsSuitableEntity(domainUri) ) {
+									
+									correctRange++;
+								}
 							}
 						}
 						catch ( IndexOutOfBoundsException ioob ) {

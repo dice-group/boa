@@ -33,7 +33,7 @@ public class StartsWithEvaluator extends Initializeable implements PatternEvalua
 			if ( p.isUseForPatternEvaluation() ) {
 				
 				String pattern = p.getNaturalLanguageRepresentation();
-				pattern = pattern.replace("?X?", "").replace("?Y?", "").trim();
+				pattern = p.getNaturalLanguageRepresentation().substring(0, p.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 
 				// patterns with "and" at the beginning to not have a real meaning
 				p.setUseForPatternEvaluation(!pattern.startsWith("and ") && !pattern.startsWith("and,"));
