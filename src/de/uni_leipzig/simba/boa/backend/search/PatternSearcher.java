@@ -97,11 +97,11 @@ public class PatternSearcher {
 		
 		int maxNumberOfDocuments = Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
 		
-		hits = indexSearcher.search(query, null, 10).scoreDocs;
+		hits = indexSearcher.search(query, null, maxNumberOfDocuments).scoreDocs;
 	    
 	    for (int i = 0; i < hits.length; i++) {
 	    	
-	    	if ( i == maxNumberOfDocuments ) break;
+//	    	if ( i == maxNumberOfDocuments ) break;
 	    	hitDoc = indexSearcher.doc(hits[i].doc);
 
 //	    	if ( label1.equals("Council of the European Union") && label2.equals("Justus Lipsius building") ) {
