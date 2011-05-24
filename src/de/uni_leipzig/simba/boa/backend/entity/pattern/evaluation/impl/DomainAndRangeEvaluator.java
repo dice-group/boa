@@ -100,13 +100,13 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					String patternWithOutVariables = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 					
 					this.logger.debug("Querying index for pattern \"" + patternWithOutVariables + "\".");
-					List<String> sentences = this.createRandomList(patternSearcher.getSentencesWithString(patternWithOutVariables, this.maxNumberOfDocuments));
+					List<String> sentences = new ArrayList<String>(patternSearcher.getSentencesWithString(patternWithOutVariables, this.maxNumberOfDocuments));
 					this.logger.debug("Pattern \"" + patternWithOutVariables + "\" returned " + sentences.size() + " results.");
 					
 					int correctDomain	= 0;
 					int correctRange	= 0;
 					
-					for (String foundString : sentences) {
+					for (String foundString : sentences.size() >= 20 ? sentences.subList(0,19) : sentences) {
 						
 						nerTagged = this.ner.recognizeEntitiesInString(foundString);
 						segmentedFoundString = this.segmentString(foundString);
