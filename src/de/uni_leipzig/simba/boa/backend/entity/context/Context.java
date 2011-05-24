@@ -28,6 +28,7 @@ public abstract class Context {
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Newspaper",					"ORG");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Organisation",				"ORG");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/MilitaryUnit",				"ORG");
+		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Broadcast",					"ORG");
 
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/CollegeCoach",				"PER");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Wrestler",					"PER");
@@ -58,7 +59,6 @@ public abstract class Context {
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Work",						"MISC");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Currency",					"MISC");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/MilitaryConflict",			"MISC");
-		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Broadcast",					"MISC");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Award",						"MISC");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/MusicGenre",				"MISC");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/MusicalWork",				"MISC");

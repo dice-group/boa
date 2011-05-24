@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -380,9 +381,14 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		this.luceneDocIds += "$" + id; 
 	}
 	
-	public List<String> retrieveLuceneDocIdsAsList(){
+	public List<Integer> retrieveLuceneDocIdsAsList(){
 		
-		return Arrays.asList(this.luceneDocIds.split("$"));
+		List<Integer> ids = new ArrayList<Integer>();
+		for (String id : this.luceneDocIds.split("$")) {
+			
+			ids.add(Integer.valueOf(id));
+		}
+		return ids;
 	}
 }
 

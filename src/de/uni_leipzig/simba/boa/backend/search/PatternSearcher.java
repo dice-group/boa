@@ -4,6 +4,7 @@ package de.uni_leipzig.simba.boa.backend.search;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +15,7 @@ import java.util.regex.Pattern;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -24,6 +26,8 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 import org.springframework.util.StringUtils;
+
+import com.sun.tools.javac.code.Attribute.Array;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
@@ -66,10 +70,6 @@ public class PatternSearcher {
 		Query query = parser.parse("+sentence:'" + QueryParser.escape(keyphrase) + "'");
 		ScoreDoc[] hits = indexSearcher.search(query, null, maxNumberOfDocuments).scoreDocs;
 		
-//		System.out.println("keyphrase: " + keyphrase);
-//		System.out.println("parsed-keyphrase: " + QueryParser.escape(keyphrase));
-//		System.out.println("query: " + query);
-		
 		Set<String> list = new TreeSet<String>();
 		for (int i = 0 ; i < hits.length ; i++ ) {
 					
@@ -81,7 +81,48 @@ public class PatternSearcher {
 				list.add(sentence);
 			}
 		}
-		return list;
+		return ((TreeSet) list).descendingSet();
+	}
+	
+	/**
+	 * Returns the sentence index by the given id.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public String getSentencesByID(Integer id) {
+		
+		try {
+			
+			return this.indexSearcher.doc(id).get("sentence");
+		}
+		catch (CorruptIndexException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	/**
+	 * Returns the sentences from the index with the given ids.
+	 * Uses the method PatternSearcher.getSentencesByID() to query 
+	 * the index
+	 * 
+	 * @param listOfIds
+	 * @return
+	 */
+	public List<String> getSentences(List<Integer> ids) {
+		
+		List<String> sentences = new ArrayList<String>();
+		for ( Integer id : ids) {
+			
+			sentences.add(this.getSentencesByID(id));
+		}
+		return sentences;
 	}
 	
 	/**

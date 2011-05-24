@@ -97,7 +97,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 				if ( pattern.isUseForPatternEvaluation() ) {
 					
 					boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
-					String patternWithOutVariables = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
+					String patternWithOutVariables = this.segmentString(pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim());
 					
 					this.logger.debug("Querying index for pattern \"" + patternWithOutVariables + "\".");
 					List<String> sentences = new ArrayList<String>(patternSearcher.getSentencesWithString(patternWithOutVariables, this.maxNumberOfDocuments));
@@ -106,7 +106,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					int correctDomain	= 0;
 					int correctRange	= 0;
 					
-					for (String foundString : sentences.size() >= 20 ? sentences.subList(0,19) : sentences) {
+					for (String foundString : sentences.size() >= 100 ? sentences.subList(0,99) : sentences) {
 						
 						nerTagged = this.ner.recognizeEntitiesInString(foundString);
 						segmentedFoundString = this.segmentString(foundString);
@@ -172,7 +172,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					// we wont need to see them in the view
 					if ( confidenceWithoutLog == 0 && confidenceWithLog == 0 ) pattern.setUseForPatternEvaluation(false);
 					
-					if ( pattern.getWithLogConfidence() == 0 ) {
+					if ( pattern.getWithLogConfidence() == 0 || pattern.getWithoutLogConfidence() == 0) {
 						
 						System.out.println("Pattern " + pattern.getNaturalLanguageRepresentation() + " does not fit in domain/range.");
 						this.logger.debug("Pattern " +  pattern.getNaturalLanguageRepresentation() + " does not fit in domain/range.");

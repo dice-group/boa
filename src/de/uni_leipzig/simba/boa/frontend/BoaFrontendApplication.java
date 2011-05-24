@@ -1,6 +1,8 @@
 package de.uni_leipzig.simba.boa.frontend;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -177,12 +179,19 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				TreeSet<String> results = (TreeSet) patternSearcher.getSentencesWithString(naturalLanguageRepresentation, 1000);
 				
 				StringBuilder builder = new StringBuilder();
-				
 				Iterator<String> iter = results.iterator(); 
 				int i = 0;
 				while ( iter.hasNext() && i++ < 100) {
 					builder.append(iter.next() + "<br/>");
 					if ( iter.hasNext() ) builder.append("<hr/>");
+				}
+				
+				iter = patternSearcher.getSentences(new ArrayList<Integer>(pattern.retrieveLuceneDocIdsAsList())).iterator();
+				StringBuilder builder2 = new StringBuilder();
+				i = 0;
+				while (iter.hasNext()) {
+					
+					builder.append(i++ + ". " + iter.next() + "<br/>");
 				}
 				
 				Window subwindow = new Window("Search for label \""+ naturalLanguageRepresentation+"\" in the index return " + results.size() + " results.");
@@ -191,6 +200,8 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		        layout.setMargin(true);
 		        layout.setSpacing(true);
 		        Label message = new Label(builder.toString(), Label.CONTENT_XHTML);
+		        Label spacer = new Label("<br/><hr/>", Label.CONTENT_XHTML);
+		        Label found = new Label(builder2.toString(), Label.CONTENT_XHTML);
 		        subwindow.addComponent(message);
 		        subwindow.setWidth("850px");
 		        subwindow.setResizable(false);
