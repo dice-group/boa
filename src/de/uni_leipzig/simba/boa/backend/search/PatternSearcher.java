@@ -63,7 +63,7 @@ public class PatternSearcher {
 
 	public Set<String> getSentencesWithString(String keyphrase, int maxNumberOfDocuments) throws ParseException, IOException {
 
-		Query query = parser.parse("+sentence:'" + keyphrase + "'");
+		Query query = parser.parse("+sentence:'" + QueryParser.escape(keyphrase) + "'");
 		ScoreDoc[] hits = indexSearcher.search(query, null, maxNumberOfDocuments).scoreDocs;
 		
 //		System.out.println("keyphrase: " + keyphrase);
