@@ -64,7 +64,7 @@ public class PatternSearchCommand implements Command {
 		for (int i = 0 ; i < numberOfSearchThreads ; i++ ) {
 			
 				Thread t = new PatternSearchThread(labelSubLists.get(i));
-				t.setName("PatternSearchThread-" + (i + 1));
+				t.setName("PatternSearchThread-" + (i + 1) + "-" + labelSubLists.get(i).size());
 				threadList.add(i, t);
 				t.start();
 				System.out.println(t.getName() + " started!");
