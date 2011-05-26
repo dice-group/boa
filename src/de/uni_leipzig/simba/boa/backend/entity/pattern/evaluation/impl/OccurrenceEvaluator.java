@@ -40,12 +40,14 @@ public class OccurrenceEvaluator extends Initializeable implements PatternEvalua
 					Map<String,Integer> learnedFrom = p.getLearnedFrom();
 					for (Entry<String,Integer> entry : learnedFrom.entrySet()) {
 						
-						System.out.println(entry.getKey() + " => " + entry.getValue());
-						
 						if ( entry.getValue() > OccurrenceEvaluator.NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD ) counter++;
 					}
 					
 					if ( counter < 1 ) p.setUseForPatternEvaluation(false);
+					else {
+						
+						
+					}
 				}
 				
 				if ( !p.isUseForPatternEvaluation() ) {

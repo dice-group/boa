@@ -124,7 +124,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				
 				gridLayout.addComponent(new Label(""), 0, 0);
 				
-				Label rdfsDomainLabel = new Label("rdfs:domain");
+				Label rdfsDomainLabel = new Label("rdfs:domain (?D?)");
 				gridLayout.addComponent(rdfsDomainLabel, 1, 0);
 				gridLayout.setComponentAlignment(rdfsDomainLabel, Alignment.MIDDLE_LEFT);
 				
@@ -132,7 +132,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				gridLayout.addComponent(rdfsDomainLink, 2, 0);
 				gridLayout.setComponentAlignment(rdfsDomainLink, Alignment.MIDDLE_LEFT);
 				
-				Label rdfsRangeLabel = new Label("rdfs:range");
+				Label rdfsRangeLabel = new Label("rdfs:range (?R?)");
 				gridLayout.addComponent(rdfsRangeLabel, 3, 0);
 				gridLayout.setComponentAlignment(rdfsRangeLabel, Alignment.MIDDLE_RIGHT);
 				
@@ -176,34 +176,40 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 				
 				PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
-				TreeSet<String> results = (TreeSet) patternSearcher.getSentencesWithString(naturalLanguageRepresentation, 1000);
+				TreeSet<String> results = (TreeSet<String>) patternSearcher.getSentencesWithString(naturalLanguageRepresentation, 1000);
 				
 				StringBuilder builder = new StringBuilder();
+				builder.append("<h2>Search for label \""+ naturalLanguageRepresentation+"\" in the index returned " + results.size() + " results.</h2>");
+				
 				Iterator<String> iter = results.iterator(); 
 				int i = 0;
 				while ( iter.hasNext() && i++ < 100) {
-					builder.append(iter.next() + "<br/>");
-					if ( iter.hasNext() ) builder.append("<hr/>");
+
+					String sentence = iter.next();
+					sentence = sentence.replaceFirst(naturalLanguageRepresentation, "<span style=\"color: red;\">"+naturalLanguageRepresentation+"</span>");
+					builder.append(i + ". " + sentence + "<br/>");
+					if (iter.hasNext()) builder.append("<hr/>");
 				}
 				
+				builder.append("<h2>Pattern learned from:</h2>");
 				iter = patternSearcher.getSentences(new ArrayList<Integer>(pattern.retrieveLuceneDocIdsAsList())).iterator();
-				StringBuilder builder2 = new StringBuilder();
-				i = 0;
+				i = 1;
 				while (iter.hasNext()) {
 					
-					builder.append(i++ + ". " + iter.next() + "<br/>");
+					String sentence = iter.next();
+					sentence = sentence.replaceFirst(naturalLanguageRepresentation, "<span style=\"color: red;\">"+naturalLanguageRepresentation+"</span>");
+					builder.append(i++ + ". " + sentence + "<br/>");
+					if (iter.hasNext()) builder.append("<hr/>");
 				}
 				
-				Window subwindow = new Window("Search for label \""+ naturalLanguageRepresentation+"\" in the index return " + results.size() + " results.");
+				Window subwindow = new Window("Details for pattern: \""+naturalLanguageRepresentation+"\"");
 		        subwindow.setModal(true);
 		        VerticalLayout layout = (VerticalLayout) subwindow.getContent();
 		        layout.setMargin(true);
 		        layout.setSpacing(true);
-		        Label message = new Label(builder.toString(), Label.CONTENT_XHTML);
-		        Label spacer = new Label("<br/><hr/>", Label.CONTENT_XHTML);
-		        Label found = new Label(builder2.toString(), Label.CONTENT_XHTML);
-		        subwindow.addComponent(message);
-		        subwindow.setWidth("850px");
+		        Label content = new Label(builder.toString(), Label.CONTENT_XHTML);
+		        subwindow.addComponent(content);
+		        subwindow.setWidth("1200px");
 		        subwindow.setResizable(false);
 		        this.getMainWindow().addWindow(subwindow);
 			}

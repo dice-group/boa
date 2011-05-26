@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +17,9 @@ public class PatternEvaluationThread extends Thread {
 	
 	private final NLPediaLogger logger = new NLPediaLogger(PatternEvaluationThread.class);
 
-	private List<PatternMapping> results;
-	
-	public PatternEvaluationThread(List<PatternMapping> list, List<PatternMapping> results) {
+	public PatternEvaluationThread(List<PatternMapping> list) {
 
 		this.patternMappings = list;
-		this.results = results;
 	}
 	
 	@Override
@@ -42,6 +40,10 @@ public class PatternEvaluationThread extends Thread {
 			}
 			this.logger.info(patternEvaluator.getClass().getSimpleName() + " from " + this.getName() + " finished!");
 		}
-		this.results.addAll(this.patternMappings);
+	}
+	
+	public List<PatternMapping> getEvaluatedPatternMappings(){
+		
+		return this.patternMappings;
 	}
 }

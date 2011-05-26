@@ -1,13 +1,12 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -15,7 +14,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -40,6 +38,26 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	 * 
 	 */
 	private Double withoutLogConfidence;
+	
+	/**
+	 * 
+	 */
+	private Double withLogWithLogLearndFromConfidence = -1D;
+	
+	/**
+	 * 
+	 */
+	private Double withLogWithoutLogLearndFromConfidence = -1D;
+	
+	/**
+	 * 
+	 */
+	private Double withoutLogWithLogLearndFromConfidence = -1D;
+	
+	/**
+	 * 
+	 */
+	private Double withoutLogWithoutLogLearndFromConfidence = -1D;
 	
 	/**
 	 * 
@@ -98,7 +116,15 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		this.nerTaggedString = nerTaggedString;
 	}
 
-	public Pattern(){}
+	public Pattern(){
+		
+		this.withLogConfidence = -1D;
+		this.withoutLogConfidence = -1D;
+		this.withoutLogWithoutLogLearndFromConfidence = -1D;
+		this.withoutLogWithLogLearndFromConfidence = -1D;
+		this.withLogWithoutLogLearndFromConfidence = -1D;
+		this.withLogWithLogLearndFromConfidence = -1D;
+	}
 	
 	/**
 	 * Creates a Pattern with the specified pattern string and sets
@@ -116,6 +142,10 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		this.withoutLogConfidence = -1D;
 		this.useForPatternEvaluation = true;
 		this.luceneDocIds = "";
+		this.withoutLogWithoutLogLearndFromConfidence = -1D;
+		this.withoutLogWithLogLearndFromConfidence = -1D;
+		this.withLogWithoutLogLearndFromConfidence = -1D;
+		this.withLogWithLogLearndFromConfidence = -1D;
 	}
 
 	/**
@@ -384,11 +414,101 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	public List<Integer> retrieveLuceneDocIdsAsList(){
 		
 		List<Integer> ids = new ArrayList<Integer>();
-		for (String id : this.luceneDocIds.split("$")) {
+		System.out.println( this.luceneDocIds);
+		
+		String[] s = this.luceneDocIds.substring(1).split("\\$");
+		for (String id : s) {
 			
 			ids.add(Integer.valueOf(id));
 		}
 		return ids;
+	}
+
+
+	/**
+	 * @param withLogWithoutLogLearndFromConfidence the withLogWithoutLogLearndFromConfidence to set
+	 */
+	public void setWithLogWithoutLogLearndFromConfidence(Double withLogWithoutLogLearndFromConfidence) {
+
+		this.withLogWithoutLogLearndFromConfidence = withLogWithoutLogLearndFromConfidence;
+	}
+
+
+	/**
+	 * @return the withLogWithoutLogLearndFromConfidence
+	 */
+	@Basic
+	public Double getWithLogWithoutLogLearndFromConfidence() {
+
+		return withLogWithoutLogLearndFromConfidence;
+	}
+
+
+	/**
+	 * @param withoutLogWithLogLearndFromConfidence the withoutLogWithLogLearndFromConfidence to set
+	 */
+	public void setWithoutLogWithLogLearndFromConfidence(Double withoutLogWithLogLearndFromConfidence) {
+
+		this.withoutLogWithLogLearndFromConfidence = withoutLogWithLogLearndFromConfidence;
+	}
+
+
+	/**
+	 * @return the withoutLogWithLogLearndFromConfidence
+	 */
+	@Basic
+	public Double getWithoutLogWithLogLearndFromConfidence() {
+
+		return withoutLogWithLogLearndFromConfidence;
+	}
+
+
+	public double retrieveMaxLearnedFrom() {
+
+		double maximum = 0;
+		for ( Entry<String,Integer> entry : this.learnedFrom.entrySet() ) {
+			
+			maximum = Math.max(entry.getValue(), maximum);
+		}
+		return maximum;
+	}
+
+
+	/**
+	 * @param withLogWithLogLearndFromConfidence the withLogWithLogLearndFromConfidence to set
+	 */
+	public void setWithLogWithLogLearndFromConfidence(Double withLogWithLogLearndFromConfidence) {
+
+		this.withLogWithLogLearndFromConfidence = withLogWithLogLearndFromConfidence;
+	}
+
+
+	/**
+	 * @return the withLogWithLogLearndFromConfidence
+	 */
+	@Basic
+	public Double getWithLogWithLogLearndFromConfidence() {
+
+		return withLogWithLogLearndFromConfidence;
+	}
+
+
+	/**
+	 * @param withoutLogWithoutLogLearndFromConfidence the withoutLogWithoutLogLearndFromConfidence to set
+	 */
+	public void setWithoutLogWithoutLogLearndFromConfidence(Double withoutLogWithoutLogLearndFromConfidence) {
+
+		this.withoutLogWithoutLogLearndFromConfidence = withoutLogWithoutLogLearndFromConfidence;
+	}
+
+
+	/**
+	 * @return the withoutLogWithoutLogLearndFromConfidence
+	 */
+	@Basic
+	public Double getWithoutLogWithoutLogLearndFromConfidence() {
+
+		return withoutLogWithoutLogLearndFromConfidence;
 	}
 }
 

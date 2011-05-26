@@ -37,21 +37,16 @@ import edu.stanford.nlp.process.DocumentPreprocessor;
 public class DomainAndRangeEvaluator extends Initializeable implements PatternEvaluator {
 
 	private final NLPediaLogger logger					= new NLPediaLogger(DomainAndRangeEvaluator.class);
-	private final PatternMappingDao patternMappingDao	= (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 	private NamedEntityRecognizer ner;
-	private final int maxNumberOfDocuments = Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
-	
-	private double maxWithoutLog = -1;
-	private double maxWithLog = -1;
-	
-	private double minWithoutLog = 1;
-	private double minWithLog = 1;
+	private final int maxNumberOfDocuments 				= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
+	private final int maxNumberOfEvaluationSentences 	= 10;
 	
 	private PatternSearcher patternSearcher;
 	
 	// used for sentence segmentation
 	private Reader stringReader;
 	private DocumentPreprocessor preprocessor;
+	private StringBuilder stringBuilder;
 	
 	public DomainAndRangeEvaluator() {
 		
@@ -96,6 +91,8 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 				
 				if ( pattern.isUseForPatternEvaluation() ) {
 					
+					System.out.println("Pattern: " + pattern.getNaturalLanguageRepresentation());
+					
 					boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
 					String patternWithOutVariables = this.segmentString(pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim());
 					
@@ -106,7 +103,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					int correctDomain	= 0;
 					int correctRange	= 0;
 					
-					for (String foundString : sentences.size() >= 100 ? sentences.subList(0,99) : sentences) {
+					for (String foundString : sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0,this.maxNumberOfEvaluationSentences - 1) : sentences) {
 						
 						nerTagged = this.ner.recognizeEntitiesInString(foundString);
 						segmentedFoundString = this.segmentString(foundString);
@@ -154,20 +151,30 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					double confidenceWithLog = (domainCorrectness + rangeCorrectness) / 2;
 					confidenceWithLog = Double.isNaN(confidenceWithLog) ? 0d : confidenceWithLog * (Math.log((double)(sentences.size() + 1)) / Math.log(2d));
 					
-//					this.minWithLog = Math.min(confidenceWithLog, minWithLog);
-//					this.maxWithLog = Math.max(confidenceWithLog, maxWithLog);
+//					System.out.println("MAX_LEARNED:" +pattern.retrieveMaxLearnedFrom());
 					
 					pattern.setWithLogConfidence(confidenceWithLog);
+					pattern.setWithLogWithLogLearndFromConfidence(confidenceWithLog * (Math.log((double)(pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2d)));
+					pattern.setWithLogWithoutLogLearndFromConfidence(confidenceWithLog * pattern.retrieveMaxLearnedFrom());
+					
+//					System.out.println(pattern.getWithLogConfidence());
+//					System.out.println(pattern.getWithLogWithLogLearndFromConfidence());
+//					System.out.println(pattern.getWithLogWithoutLogLearndFromConfidence());
 					
 					// ########################################################
 					
 					double confidenceWithoutLog = (domainCorrectness + rangeCorrectness) / 2;
 					confidenceWithoutLog = Double.isNaN(confidenceWithoutLog) ? 0d : confidenceWithoutLog * sentences.size();
 					
-//					this.minWithoutLog = Math.min(confidenceWithoutLog, minWithoutLog);
-//					this.maxWithoutLog = Math.max(confidenceWithoutLog, maxWithoutLog);
-					
 					pattern.setWithoutLogConfidence(confidenceWithoutLog);
+					pattern.setWithoutLogWithLogLearndFromConfidence(confidenceWithoutLog * (Math.log((double)(pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2d)));
+					pattern.setWithoutLogWithoutLogLearndFromConfidence(confidenceWithoutLog * pattern.retrieveMaxLearnedFrom());
+					
+//					System.out.println(pattern.getWithoutLogConfidence());
+//					System.out.println(pattern.getWithoutLogWithLogLearndFromConfidence());
+//					System.out.println(pattern.getWithoutLogWithoutLogLearndFromConfidence());
+					
+					// ########################################################
 					
 					// we wont need to see them in the view
 					if ( confidenceWithoutLog == 0 && confidenceWithLog == 0 ) pattern.setUseForPatternEvaluation(false);
@@ -189,23 +196,6 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 			e.printStackTrace();
 		}
 	}
-	
-	private List<String> createRandomList(Set<String> sentencesWithString) {
-
-		List<String> sentencesOld = new ArrayList<String>(sentencesWithString);
-		List<String> sentencesNew = new ArrayList<String>();
-		
-		for ( int i = 0 ; i < 100 ; i++ ) {
-			
-			if ( sentencesOld.size() != 0 ) {
-			
-				int j = (int)(Math.random() * (sentencesOld.size()));
-				sentencesNew.add(sentencesOld.get(j));
-				sentencesOld.remove(j);
-			}
-		}
-		return sentencesNew;
-	}
 
 	private String segmentString(String sentence) {
 		
@@ -215,12 +205,12 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 		Iterator<List<HasWord>> iter = this.preprocessor.iterator();
 		while ( iter.hasNext() ) {
 			
-			StringBuilder string = new StringBuilder();
+			stringBuilder = new StringBuilder();
 			
 			for ( HasWord word : iter.next() ) {
-				string.append(word.toString() + " ");
+				stringBuilder.append(word.toString() + " ");
 			}
-			return string.toString().trim();
+			return stringBuilder.toString().trim();
 		}
 		return "";
 	}
@@ -230,25 +220,5 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 
 		// TODO Auto-generated method stub
 		
-	}
-	
-	public double getMinWithoutLog() {
-		
-		return this.minWithoutLog;
-	}
-	
-	public double getMaxWithoutLog() {
-		
-		return this.maxWithoutLog;
-	}
-	
-	public double getMinWithLog() {
-		
-		return this.minWithLog;
-	}
-	
-	public double getMaxWithLog() {
-		
-		return this.maxWithLog;
 	}
 }
