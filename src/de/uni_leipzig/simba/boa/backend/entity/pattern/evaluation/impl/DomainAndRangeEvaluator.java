@@ -39,7 +39,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 	private final NLPediaLogger logger					= new NLPediaLogger(DomainAndRangeEvaluator.class);
 	private NamedEntityRecognizer ner;
 	private final int maxNumberOfDocuments 				= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
-	private final int maxNumberOfEvaluationSentences 	= 10;
+	private final int maxNumberOfEvaluationSentences 	= 500;
 	
 	private PatternSearcher patternSearcher;
 	
@@ -91,7 +91,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 				
 				if ( pattern.isUseForPatternEvaluation() ) {
 					
-					System.out.println("Pattern: " + pattern.getNaturalLanguageRepresentation());
+					System.out.print("Pattern: " + pattern.getNaturalLanguageRepresentation());
 					
 					boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
 					String patternWithOutVariables = this.segmentString(pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim());
@@ -181,7 +181,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					
 					if ( pattern.getWithLogConfidence() == 0 || pattern.getWithoutLogConfidence() == 0) {
 						
-						System.out.println("Pattern " + pattern.getNaturalLanguageRepresentation() + " does not fit in domain/range.");
+						System.out.println(" does not fit in domain/range."); // continued from upper system.out.print()
 						this.logger.debug("Pattern " +  pattern.getNaturalLanguageRepresentation() + " does not fit in domain/range.");
 					}
 				}

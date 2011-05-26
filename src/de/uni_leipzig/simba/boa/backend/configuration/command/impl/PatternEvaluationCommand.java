@@ -46,7 +46,7 @@ public class PatternEvaluationCommand implements Command {
 		int numberOfSearchThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfEvaluationThreads")).intValue();
 		
 		// split the mappings into several lists
-		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList.subList(0, 2), patternMappingList.size() / numberOfSearchThreads);
+		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfSearchThreads) + 10);
 		Map<String,PatternEvaluator> patternEvaluators		= PatternEvaluatorFactory.getInstance().getPatternEvaluatorMap();
 		
 		this.logger.debug("Evaluation of " + patternMappingList.size() + " pattern mappings with " + patternEvaluators.size() + " evaluators started!");
