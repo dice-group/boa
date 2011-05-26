@@ -39,7 +39,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 	private final NLPediaLogger logger					= new NLPediaLogger(DomainAndRangeEvaluator.class);
 	private NamedEntityRecognizer ner;
 	private final int maxNumberOfDocuments 				= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
-	private final int maxNumberOfEvaluationSentences 	= 500;
+	private final int maxNumberOfEvaluationSentences 	= 5000;
 	
 	private PatternSearcher patternSearcher;
 	

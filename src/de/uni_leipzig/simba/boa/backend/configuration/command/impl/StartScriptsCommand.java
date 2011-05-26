@@ -5,6 +5,7 @@ import java.util.Scanner;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.AskDbpediaForTriple;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.CreateLearndFromDistributionCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.PlainTextToSentencePerLineCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
@@ -27,6 +28,7 @@ public class StartScriptsCommand implements Command {
 		    		System.out.println("\t\t1. Create sentence per line file");
 		    		System.out.println("\t\t2. Ask DBpedia for triples");
 		    		System.out.println("\t\t3. Reset pattern evaluation");
+		    		System.out.println("\t\t4. Create learned from distribution");
 		    		System.out.println("\t\t");
 		    		System.out.println("");
 		    		
@@ -62,6 +64,12 @@ public class StartScriptsCommand implements Command {
 							
 							Command resetPatternCommand = new ResetPatternCommand();
 							resetPatternCommand.execute();
+							break;
+							
+						case 4:
+							
+							Command createLearndFromDistributionCommand = new CreateLearndFromDistributionCommand();
+							createLearndFromDistributionCommand.execute();
 							break;
 					
 						default: // option not supported
