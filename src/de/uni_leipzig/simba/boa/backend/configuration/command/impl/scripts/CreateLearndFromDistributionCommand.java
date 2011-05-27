@@ -29,7 +29,7 @@ public class CreateLearndFromDistributionCommand implements Command {
 
 		try {
 			
-			System.out.print("Please enter the file path:\t");
+			System.out.print("Please enter the file path for the output file:\t");
 			
 			Scanner scanner = new Scanner(System.in);
 			String path = scanner.next();
@@ -61,43 +61,48 @@ public class CreateLearndFromDistributionCommand implements Command {
 			Map<Integer,Integer> enNewsPerDistribution = learnedFromDistribution.get(databaseIds[4]);
 			Map<Integer,Integer> enNewsOrgDistribution = learnedFromDistribution.get(databaseIds[5]);
 			
-			BufferedWriter out = new BufferedWriter(new FileWriter(path + "en_wiki_loc"));
+			BufferedWriter out1 = new BufferedWriter(new FileWriter(path + "en_wiki_loc"));
 			for (Entry<Integer,Integer> entry : enWikiLocDistribution.entrySet() ) {
 				
-				out.append(entry.getKey() + "\t" + entry.getValue() + Constants.NEW_LINE_SEPARATOR);
+				out1.append(entry.getKey() + "\t" + entry.getValue() + Constants.NEW_LINE_SEPARATOR);
 			}
+			out1.close();
 			
-			out = new BufferedWriter(new FileWriter(path + "en_wiki_per"));
+			BufferedWriter out2 = new BufferedWriter(new FileWriter(path + "en_wiki_per"));
 			for (Entry<Integer,Integer> entry : enWikiPerDistribution.entrySet() ) {
 				
-				out.append(entry.getKey() + "\t" + entry.getValue());
+				out2.append(entry.getKey() + "\t" + entry.getValue() + Constants.NEW_LINE_SEPARATOR);
 			}
+			out2.close();
 			
-			out = new BufferedWriter(new FileWriter(path + "en_wiki_org"));
+			BufferedWriter out3 = new BufferedWriter(new FileWriter(path + "en_wiki_org"));
 			for (Entry<Integer,Integer> entry : enWikiOrgDistribution.entrySet() ) {
 				
-				out.append(entry.getKey() + "\t" + entry.getValue());
+				out3.append(entry.getKey() + "\t" + entry.getValue() + Constants.NEW_LINE_SEPARATOR);
 			}
+			out3.close();
 			
-			out = new BufferedWriter(new FileWriter(path + "en_news_loc"));
+			BufferedWriter out4 = new BufferedWriter(new FileWriter(path + "en_news_loc"));
 			for (Entry<Integer,Integer> entry : enNewsLocDistribution.entrySet() ) {
 				
-				out.append(entry.getKey() + "\t" + entry.getValue());
+				out4.append(entry.getKey() + "\t" + entry.getValue() + Constants.NEW_LINE_SEPARATOR);
 			}
+			out4.close();
 			
-			out = new BufferedWriter(new FileWriter(path + "en_news_per"));
+			BufferedWriter out5 = new BufferedWriter(new FileWriter(path + "en_news_per"));
 			for (Entry<Integer,Integer> entry : enNewsPerDistribution.entrySet() ) {
 				
-				out.append(entry.getKey() + "\t" + entry.getValue());
+				out5.append(entry.getKey() + "\t" + entry.getValue() + Constants.NEW_LINE_SEPARATOR);
 			}
+			out5.close();
 			
-			out = new BufferedWriter(new FileWriter(path + "en_news_org"));
+			BufferedWriter out6 = new BufferedWriter(new FileWriter(path + "en_news_org"));
 			for (Entry<Integer,Integer> entry : enNewsOrgDistribution.entrySet() ) {
 				
-				out.append(entry.getKey() + "\t" + entry.getValue());
+				out6.append(entry.getKey() + "\t" + entry.getValue() + Constants.NEW_LINE_SEPARATOR);
 			}
+			out6.close();
 			
-			out.close();
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block
