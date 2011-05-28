@@ -518,7 +518,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	}
 
 	@Basic
-	@Column(columnDefinition="default 0")
 	public Double getConfidence() {
 
 		return this.confidence;
