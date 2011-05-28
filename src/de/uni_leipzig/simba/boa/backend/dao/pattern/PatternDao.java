@@ -1,9 +1,11 @@
 package de.uni_leipzig.simba.boa.backend.dao.pattern;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -78,61 +80,32 @@ public class PatternDao extends AbstractDao {
         return (List<Pattern>) super.findAllEntitiesByClass(Pattern.class);
     }
     
-//    public List<Pattern> findUniquePatterns() {
-//    	
-//    	List<Pattern> objects = null;
-//		
-//		Session session = null;
-//		Transaction tx = null;
-//		
-//		try {
-//			
-//			session = HibernateFactory.getSessionFactory().openSession();
-//			tx = session.beginTransaction();
-//
-//			Query query = session.createSQLQuery("");
-//			
-//			objects = uniqueCriteria.list();
-//			
-//			tx.commit();
-//		}
-//		catch (HibernateException he) {
-//			
-//			HibernateFactory.rollback(tx);
-//			logger.error("Could not find pattern with naturalLanguageRepresentation: " + naturalLanguageRepresentation, he);
-//		}
-//		finally {
-//			
-//			HibernateFactory.closeSession(session);
-//		}
-//		return objects;
-//    }
-    
-    /**
-     * 
-     * @param naturalLanguageRepresentation
-     * @return
-     */
-    public List<Pattern> findPatternByNaturalLanguageRepresentation(String naturalLanguageRepresentation) {
+	public int countPatternMappingsWithSameNaturalLanguageRepresenation(String naturalLanguageRepresentation) {
 
-		List<Pattern> objects = null;
-		
 		Session session = null;
 		Transaction tx = null;
+		
+		BigInteger numberOfPatternMappings = BigInteger.valueOf(0);
 		
 		try {
 			
 			session = HibernateFactory.getSessionFactory().openSession();
 			tx = session.beginTransaction();
 			
-			Query query = session.createSQLQuery("select * from Pattern_naturalLanguageRepresentationByLanguage where naturalLanguageRepresentationByLanguage=:naturalLanguageRepresentation");
+			String sql = "select count(distinct(pattern_mapping_id)) from pattern where naturalLanguageRepresentation=:naturalLanguageRepresentation";
+			SQLQuery query = session.createSQLQuery(sql);
 			query.setString("naturalLanguageRepresentation", naturalLanguageRepresentation);
-			objects = query.list();
+			
+			   List<BigInteger> listCounter = (List<BigInteger>)query.list();
+			   if (!listCounter.isEmpty()) {
+				   numberOfPatternMappings = listCounter.get(0);
+			   }
 			
 			tx.commit();
 		}
 		catch (HibernateException he) {
 			
+			he.printStackTrace();
 			HibernateFactory.rollback(tx);
 			logger.error("Could not find pattern with naturalLanguageRepresentation: " + naturalLanguageRepresentation, he);
 		}
@@ -140,7 +113,7 @@ public class PatternDao extends AbstractDao {
 			
 			HibernateFactory.closeSession(session);
 		}
-		return objects;
+		return numberOfPatternMappings.intValue();
 	}
 }
 

@@ -98,6 +98,11 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	 * 
 	 */
 	private String luceneDocIds;
+
+	/**
+	 * 
+	 */
+	private Double confidence = -1D;
 	
 	/**
 	 * @param naturalLanguageRepresentation the naturalLanguageRepresentation to set
@@ -118,6 +123,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 
 	public Pattern(){
 		
+		this.confidence = -1D;
 		this.withLogConfidence = -1D;
 		this.withoutLogConfidence = -1D;
 		this.withoutLogWithoutLogLearndFromConfidence = -1D;
@@ -509,6 +515,18 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	public Double getWithoutLogWithoutLogLearndFromConfidence() {
 
 		return withoutLogWithoutLogLearndFromConfidence;
+	}
+
+	@Basic
+	@Column(columnDefinition="default 0")
+	public Double getConfidence() {
+
+		return this.confidence;
+	}
+
+	public void setConfidence(Double confidence) {
+
+		this.confidence = confidence;
 	}
 }
 

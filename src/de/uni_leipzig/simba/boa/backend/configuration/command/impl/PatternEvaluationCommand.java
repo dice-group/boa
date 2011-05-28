@@ -29,15 +29,14 @@ public class PatternEvaluationCommand implements Command {
 
 	private final NLPediaLogger logger = new NLPediaLogger(PatternEvaluationCommand.class);
 	
-	private PatternMappingDao patternMappingDao = null;
+	private PatternMappingDao patternMappingDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+	public List<PatternMapping> patternMappingList = this.patternMappingDao.findAllPatternMappings();
 	
-	public static List<PatternMapping> patternMappingList = null;
+	public static int NUMBER_OF_PATTERN_MAPPINGS;
 
 	public PatternEvaluationCommand() {
 		
-		this.patternMappingDao	= (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
-		
-		patternMappingList		= this.patternMappingDao.findAllPatternMappings();
+		NUMBER_OF_PATTERN_MAPPINGS = patternMappingList.size();
 	}
 	
 	@Override
@@ -81,64 +80,36 @@ public class PatternEvaluationCommand implements Command {
 		}
 		
 		double maxWithLog = 0;
-		double minWithLog = 1;
-		double maxWithoutLog = 0;
-		double minWithoutLog = 1;
-		
 		double maxWithLogWithLogLearnedFrom = 0;
-		double minWithLogWithLogLearnedFrom = 1;
-		double maxWithLogWithoutLogLearnedFrom = 0;
-		double minWithLogWithoutLogLearnedFrom = 1; 
-		
-		double maxWithoutLogWithLogLearnedFrom = 0;
-		double minWithoutLogWithLogLearnedFrom = 1;
-		double maxWithoutLogWithoutLogLearnedFrom = 0;
-		double minWithoutLogWithoutLogLearnedFrom = 1; 
 		
 		System.out.println("All evaluation threads are finished. Start to calculate normalized confidence!");
 		
-		
 		for (PatternMapping pm : results ) {
+			
+			double maxConfidenceForPatternMapping = 0;
 			
 			for (Pattern pattern : pm.getPatterns() ) {
 				
 				if ( pattern.isUseForPatternEvaluation() ) {
 					
+					maxConfidenceForPatternMapping	= Math.max(maxConfidenceForPatternMapping, pattern.getConfidence());
 					maxWithLog 						= Math.max(maxWithLog, pattern.getWithLogConfidence());
-					minWithLog 						= Math.min(minWithLog, pattern.getWithLogConfidence());
-					maxWithoutLog 					= Math.max(maxWithoutLog, pattern.getWithoutLogConfidence());
-					minWithoutLog 					= Math.min(minWithoutLog, pattern.getWithoutLogConfidence());
-					
 					maxWithLogWithLogLearnedFrom 	= Math.max(maxWithLogWithLogLearnedFrom, 	pattern.getWithLogWithLogLearndFromConfidence());
-					minWithLogWithLogLearnedFrom	= Math.min(minWithLogWithLogLearnedFrom, 	pattern.getWithLogWithLogLearndFromConfidence());
-					maxWithLogWithoutLogLearnedFrom	= Math.max(maxWithLogWithoutLogLearnedFrom, pattern.getWithLogWithoutLogLearndFromConfidence());
-					minWithLogWithoutLogLearnedFrom	= Math.min(minWithLogWithoutLogLearnedFrom, pattern.getWithLogWithoutLogLearndFromConfidence());
-					
-					maxWithoutLogWithLogLearnedFrom 	= Math.max(maxWithoutLogWithLogLearnedFrom, 	pattern.getWithoutLogWithLogLearndFromConfidence());
-					minWithoutLogWithLogLearnedFrom		= Math.min(minWithoutLogWithLogLearnedFrom, 	pattern.getWithoutLogWithLogLearndFromConfidence());
-					maxWithoutLogWithoutLogLearnedFrom	= Math.max(maxWithoutLogWithoutLogLearnedFrom, 	pattern.getWithoutLogWithoutLogLearndFromConfidence());
-					minWithoutLogWithoutLogLearnedFrom	= Math.min(minWithoutLogWithoutLogLearnedFrom,	pattern.getWithoutLogWithoutLogLearndFromConfidence());
+				}
+			}
+			
+			for ( Pattern pattern : pm.getPatterns() ) {
+				
+				if ( pattern.isUseForPatternEvaluation() ) {
+				
+					pattern.setConfidence(pattern.getConfidence() / maxConfidenceForPatternMapping);
 				}
 			}
 		}
 		
-		double maxMinusMinWithLog 		= minWithLog == -1 		? (maxWithLog - 0) 		: maxWithLog;// - minWithLog;
-		double maxMinusMinWithoutLog 	= minWithoutLog == -1 	? (maxWithoutLog - 0) 	: maxWithoutLog;// - minWithoutLog;
-		
-		double maxMinusMinWithLogWithLogLearned 	= minWithLogWithLogLearnedFrom == -1 	? (maxWithLogWithLogLearnedFrom - 0) 		: maxWithLogWithLogLearnedFrom;// - minWithLogWithLogLearnedFrom;
-		double maxMinusMinWithLogWithoutLogLearned 	= minWithLogWithoutLogLearnedFrom == -1 ? (maxWithLogWithoutLogLearnedFrom - 0) 	: maxWithLogWithoutLogLearnedFrom;// - minWithLogWithoutLogLearnedFrom;
-		
-		double maxMinusMinWithoutLogWithLogLearned 		= minWithoutLogWithLogLearnedFrom == -1 	? (maxWithoutLogWithLogLearnedFrom - 0) 	: maxWithoutLogWithLogLearnedFrom;// - minWithoutLogWithLogLearnedFrom;
-		double maxMinusMinWithoutLogWithoutLogLearned 	= minWithoutLogWithoutLogLearnedFrom == -1 	? (maxWithoutLogWithoutLogLearnedFrom - 0) 	: maxWithoutLogWithoutLogLearnedFrom;// - minWithoutLogWithoutLogLearnedFrom;
-		
 		System.out.println();
-		System.out.println("maxMinusMinWithLog: "+maxMinusMinWithLog);
-		System.out.println("maxMinusMinWithLogWithLogLearned: "+maxMinusMinWithLogWithLogLearned);
-		System.out.println("maxMinusMinWithLogWithoutLogLearned: "+maxMinusMinWithLogWithoutLogLearned);
-		System.out.println();
-		System.out.println("maxMinusMinWithoutLog: "+ maxMinusMinWithoutLog);
-		System.out.println("maxMinusMinWithoutLogWithLogLearned: "+maxMinusMinWithoutLogWithLogLearned);
-		System.out.println("maxMinusMinWithoutLogWithoutLogLearned: "+maxMinusMinWithoutLogWithoutLogLearned);
+		System.out.println("maxWithLog: "+maxWithLog);
+		System.out.println("maxWithLogWithLogLearned: "+maxWithLogWithLogLearnedFrom);
 		System.out.println();
 		
 		for ( PatternMapping mapping : results ) {
@@ -148,33 +119,13 @@ public class PatternEvaluationCommand implements Command {
 				
 				if ( pattern.isUseForPatternEvaluation() ) {
 					
-					pattern.setWithoutLogConfidence(pattern.getWithoutLogConfidence() / (maxMinusMinWithoutLog));
-					pattern.setWithLogConfidence(pattern.getWithLogConfidence() / (maxMinusMinWithLog));
-					
-					pattern.setWithLogWithLogLearndFromConfidence(pattern.getWithLogWithLogLearndFromConfidence() / maxMinusMinWithLogWithLogLearned);
-					pattern.setWithLogWithoutLogLearndFromConfidence(pattern.getWithLogWithoutLogLearndFromConfidence() / maxMinusMinWithLogWithoutLogLearned);
-					
-					pattern.setWithoutLogWithLogLearndFromConfidence(pattern.getWithoutLogWithLogLearndFromConfidence() / maxMinusMinWithoutLogWithLogLearned);
-					pattern.setWithoutLogWithoutLogLearndFromConfidence(pattern.getWithoutLogWithoutLogLearndFromConfidence() / maxMinusMinWithoutLogWithoutLogLearned);
-					
-//					System.out.println("" + pattern.getNaturalLanguageRepresentation());
-//					
-//					System.out.println("getWithLogConfidence" + pattern.getWithLogConfidence());
-//					System.out.println("getWithLogWithLogLearndFromConfidence" + pattern.getWithLogWithLogLearndFromConfidence());
-//					System.out.println("getWithLogWithoutLogLearndFromConfidence" + pattern.getWithLogWithoutLogLearndFromConfidence());
-//					
-//					System.out.println("getWithoutLogConfidence" + pattern.getWithoutLogConfidence());
-//					System.out.println("getWithoutLogWithLogLearndFromConfidence" + pattern.getWithoutLogWithLogLearndFromConfidence());
-//					System.out.println("getWithoutLogWithoutLogLearndFromConfidence" + pattern.getWithoutLogWithoutLogLearndFromConfidence());
+					pattern.setWithLogConfidence(pattern.getWithLogConfidence() / (maxWithLog));
+					pattern.setWithLogWithLogLearndFromConfidence(pattern.getWithLogWithLogLearndFromConfidence() / maxWithLogWithLogLearnedFrom);
 				}
 				else {
 					
-					pattern.setWithoutLogConfidence(0D);
-					pattern.setWithLogConfidence(0D);
-					pattern.setWithLogWithLogLearndFromConfidence(0D);
-					pattern.setWithLogWithoutLogLearndFromConfidence(0D);
-					pattern.setWithoutLogWithLogLearndFromConfidence(0D);
-					pattern.setWithoutLogWithoutLogLearndFromConfidence(0D);
+					pattern.setWithLogConfidence(-1D);
+					pattern.setWithLogWithLogLearndFromConfidence(-1D);
 				}
 			}
 			this.patternMappingDao.updatePatternMapping(mapping);

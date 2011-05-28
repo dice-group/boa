@@ -176,7 +176,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 				
 				PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
-				TreeSet<String> results = (TreeSet<String>) patternSearcher.getSentencesWithString(naturalLanguageRepresentation, 1000);
+				TreeSet<String> results = (TreeSet<String>) patternSearcher.getSentencesWithString(naturalLanguageRepresentation, 5000);
 				
 				StringBuilder builder = new StringBuilder();
 				builder.append("<h2>Search for label \""+ naturalLanguageRepresentation+"\" in the index returned " + results.size() + " results.</h2>");

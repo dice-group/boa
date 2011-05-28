@@ -19,7 +19,7 @@ public class PatternLengthEvaluator extends Initializeable implements PatternEva
 
 	private final NLPediaLogger logger		= new NLPediaLogger(PatternLengthEvaluator.class);
 	private final int maxPatternChunkLength = new Integer(NLPediaSettings.getInstance().getSetting("maxPatternLenght")).intValue();
-	private final int minPatternChunkLenght = 2;
+	private final int minPatternChunkLenght = 3;
 	
 	public PatternLengthEvaluator() {}
 	

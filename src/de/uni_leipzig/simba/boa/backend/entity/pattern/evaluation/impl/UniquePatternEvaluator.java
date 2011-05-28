@@ -27,27 +27,27 @@ public class UniquePatternEvaluator extends Initializeable implements PatternEva
 	public void initialize() {
 
 		// we need to read all pattern mappings into RAM to avoid querying for every pattern
-		this.mappings = PatternEvaluationCommand.patternMappingList;
-		this.patterns = new HashMap<String, Integer>();
-		
-		int i = 0;
-		
-		for ( PatternMapping patternMapping : this.mappings ) {
-			
-			System.out.println("Iteration: " + i++);
-			
-			for ( Pattern p : patternMapping.getPatterns() ) {
-				
-				if ( this.patterns.containsKey(p.getNaturalLanguageRepresentation())) {
-					
-					this.patterns.put(p.getNaturalLanguageRepresentation(), this.patterns.get(p.getNaturalLanguageRepresentation()) + 1);
-				}
-				else {
-					
-					this.patterns.put(p.getNaturalLanguageRepresentation(), 1);
-				}
-			}
-		}
+//		this.mappings = PatternEvaluationCommand.patternMappingList;
+//		this.patterns = new HashMap<String, Integer>();
+//		
+//		int i = 0;
+//		
+//		for ( PatternMapping patternMapping : this.mappings ) {
+//			
+//			System.out.println("Iteration: " + i++);
+//			
+//			for ( Pattern p : patternMapping.getPatterns() ) {
+//				
+//				if ( this.patterns.containsKey(p.getNaturalLanguageRepresentation())) {
+//					
+//					this.patterns.put(p.getNaturalLanguageRepresentation(), this.patterns.get(p.getNaturalLanguageRepresentation()) + 1);
+//				}
+//				else {
+//					
+//					this.patterns.put(p.getNaturalLanguageRepresentation(), 1);
+//				}
+//			}
+//		}
 	}
 
 	@Override

@@ -15,7 +15,9 @@ import org.apache.lucene.queryParser.ParseException;
 
 import de.uni_leipzig.simba.boa.backend.configuration.Initializeable;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternEvaluationCommand;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
+import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
 import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
@@ -39,7 +41,8 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 	private final NLPediaLogger logger					= new NLPediaLogger(DomainAndRangeEvaluator.class);
 	private NamedEntityRecognizer ner;
 	private final int maxNumberOfDocuments 				= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
-	private final int maxNumberOfEvaluationSentences 	= 5000;
+	private final int maxNumberOfEvaluationSentences 	= 500;
+	private PatternDao patternDao						= (PatternDao) DaoFactory.getInstance().createDAO(PatternDao.class);
 	
 	private PatternSearcher patternSearcher;
 	
@@ -149,26 +152,27 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					// ########################################################
 					
 					double confidenceWithLog = (domainCorrectness + rangeCorrectness) / 2;
-					confidenceWithLog = Double.isNaN(confidenceWithLog) ? 0d : confidenceWithLog * (Math.log((double)(sentences.size() + 1)) / Math.log(2d));
+					confidenceWithLog = Double.isNaN(confidenceWithLog) ? 0d : confidenceWithLog * (double) (Math.log((int)(sentences.size() + 1)) / Math.log(2));
 					
 //					System.out.println("MAX_LEARNED:" +pattern.retrieveMaxLearnedFrom());
-					
+//					
 					pattern.setWithLogConfidence(confidenceWithLog);
-					pattern.setWithLogWithLogLearndFromConfidence(confidenceWithLog * (Math.log((double)(pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2d)));
-					pattern.setWithLogWithoutLogLearndFromConfidence(confidenceWithLog * pattern.retrieveMaxLearnedFrom());
-					
+					pattern.setWithLogWithLogLearndFromConfidence(confidenceWithLog * (double) (Math.log((int)(pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2)));
+					pattern.setConfidence(pattern.getWithLogWithLogLearndFromConfidence() * (Math.log(PatternEvaluationCommand.NUMBER_OF_PATTERN_MAPPINGS / this.getNumberOfPatternMappingsWithPattern(pattern.getNaturalLanguageRepresentation())) / Math.log(2)));
+//					pattern.setWithLogWithoutLogLearndFromConfidence(confidenceWithLog * pattern.retrieveMaxLearnedFrom());
+//					
 //					System.out.println(pattern.getWithLogConfidence());
 //					System.out.println(pattern.getWithLogWithLogLearndFromConfidence());
 //					System.out.println(pattern.getWithLogWithoutLogLearndFromConfidence());
 					
 					// ########################################################
 					
-					double confidenceWithoutLog = (domainCorrectness + rangeCorrectness) / 2;
-					confidenceWithoutLog = Double.isNaN(confidenceWithoutLog) ? 0d : confidenceWithoutLog * sentences.size();
-					
-					pattern.setWithoutLogConfidence(confidenceWithoutLog);
-					pattern.setWithoutLogWithLogLearndFromConfidence(confidenceWithoutLog * (Math.log((double)(pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2d)));
-					pattern.setWithoutLogWithoutLogLearndFromConfidence(confidenceWithoutLog * pattern.retrieveMaxLearnedFrom());
+//					double confidenceWithoutLog = (domainCorrectness + rangeCorrectness) / 2;
+//					confidenceWithoutLog = Double.isNaN(confidenceWithoutLog) ? 0d : confidenceWithoutLog * sentences.size();
+//					
+//					pattern.setWithoutLogConfidence(confidenceWithoutLog);
+//					pattern.setWithoutLogWithLogLearndFromConfidence(confidenceWithoutLog * (Math.log((double)(pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2d)));
+//					pattern.setWithoutLogWithoutLogLearndFromConfidence(confidenceWithoutLog * pattern.retrieveMaxLearnedFrom());
 					
 //					System.out.println(pattern.getWithoutLogConfidence());
 //					System.out.println(pattern.getWithoutLogWithLogLearndFromConfidence());
@@ -177,11 +181,11 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					// ########################################################
 					
 					// we wont need to see them in the view
-					if ( confidenceWithoutLog == 0 && confidenceWithLog == 0 ) pattern.setUseForPatternEvaluation(false);
+					if ( pattern.getConfidence() < 0 ) pattern.setUseForPatternEvaluation(false);
 					
-					if ( pattern.getWithLogConfidence() == 0 || pattern.getWithoutLogConfidence() == 0) {
+					if ( pattern.getConfidence() < 0 || pattern.getWithLogConfidence() < 0 ) {
 						
-						System.out.println(" does not fit in domain/range."); // continued from upper system.out.print()
+						System.out.println(" does not fit in domain/range.\n"); // continued from upper system.out.print()
 						this.logger.debug("Pattern " +  pattern.getNaturalLanguageRepresentation() + " does not fit in domain/range.");
 					}
 				}
@@ -195,6 +199,11 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private int getNumberOfPatternMappingsWithPattern(String naturalLanguageRepresentation) {
+
+		return this.patternDao.countPatternMappingsWithSameNaturalLanguageRepresenation(naturalLanguageRepresentation);
 	}
 
 	private String segmentString(String sentence) {

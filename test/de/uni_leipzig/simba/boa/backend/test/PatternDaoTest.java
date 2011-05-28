@@ -46,12 +46,8 @@ public class PatternDaoTest {
 		this.setup.destroy();
 	}
 	
-	@Test
+//	@Test
 	public void testPatternSaving() {
-		
-		// ################################################
-		// ######## ATTENTION: THIS MAY DROP YOUR DATABASE
-		// ################################################
 		
 		PatternDao patternDao 				= (PatternDao) DaoFactory.getInstance().createDAO(PatternDao.class);
 		PatternMappingDao patternMappingDao	= (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
@@ -96,11 +92,11 @@ public class PatternDaoTest {
 //	    		}
 //	    	}
 //	    }
-	    
-	    PatternMapping mapping2 = (PatternMapping) patternMappingDao.findPatternMappingsWithoutPattern("http://rdf/ns/.xml.as");
-	    
-	    assertEquals(mapping2.getUri(), "http://rdf/ns/.xml.as");
-	    assertEquals(2, mappings.get(0).getPatterns().size());
+//	    System.out.println(mapping.getId());
+//	    PatternMapping mapping2 = (PatternMapping) patternMappingDao.findPatternMapping(mapping.getId());
+//	    System.out.println(mapping2);
+//	    assertEquals(mapping2.getUri(), "http://rdf/ns/.xml.as");
+//	    assertEquals(2, mappings.get(0).getPatterns().size());
 	}
 	
 //	@Test
@@ -109,7 +105,7 @@ public class PatternDaoTest {
 //		HibernateFactory.changeConnection("en_wiki");
 //	}
 	
-	@Test
+//	@Test
 	public void testGetPatternMappingsWithoutPatterns() {
 		
 		PatternMappingDao patternMappingDao	= (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
@@ -134,5 +130,29 @@ public class PatternDaoTest {
 			System.out.println(mapping.getRdfsDomain());
 			System.out.println();
 		}
+	}
+	
+	@Test
+	public void testCountNumberOfPatternWithNLR() {
+		
+		PatternDao patternDao 				= (PatternDao) DaoFactory.getInstance().createDAO(PatternDao.class);
+		PatternMappingDao patternMappingDao	= (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+		
+		Pattern pattern1 = new Pattern("?D? in the county of ?R?", "");
+	    Pattern pattern2 = new Pattern("?D? in the county of ?R?", "");
+	    
+	    PatternMapping mapping1 = (PatternMapping) patternMappingDao.createNewEntity();
+	    PatternMapping mapping2 = (PatternMapping) patternMappingDao.createNewEntity();
+	    
+	    mapping1.addPattern(pattern1);
+	    mapping2.addPattern(pattern2);
+	    
+	    mapping1.setUri("http://rdf/ns/.xml.as");
+	    mapping1.setUri("http://rdf/ns/.xml.ab");
+	    
+	    patternMappingDao.updatePatternMapping(mapping1);
+	    patternMappingDao.updatePatternMapping(mapping2);
+
+	    assertEquals(5, patternDao.countPatternMappingsWithSameNaturalLanguageRepresenation("?D? in the county of ?R?"));
 	}
 }
