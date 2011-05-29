@@ -46,6 +46,7 @@ public class CreateKnowledgeCommand implements Command {
 	private final Property rdfsLabel;
 	private final List<Pattern> patternList = patternDao.findAllPatterns();
 	private Model model;
+	private List<String> statementList;
 	
 	public CreateKnowledgeCommand () {
 		
@@ -166,12 +167,16 @@ public class CreateKnowledgeCommand implements Command {
 //										model.addStatement(typeLeft);
 //										model.addStatement(typeRight);
 										
-										out.append("LeftLabel(Range):\t" + leftLabel + Constants.NEW_LINE_SEPARATOR);
-										out.append("Pattern: " + pattern.getNaturalLanguageRepresentation() + Constants.NEW_LINE_SEPARATOR);
-										out.append("RightLabel(Domain):\t" + rightLabel + Constants.NEW_LINE_SEPARATOR);
-										out.append("Statement created: " + link.toString() + Constants.NEW_LINE_SEPARATOR);
-										out.append(Constants.NEW_LINE_SEPARATOR);
-										System.out.println("Statement created: " + link);
+										if ( !statementList.contains(link.toString()) ) {
+											
+											statementList.add(link.toString());
+											out.append("LeftLabel(Range):\t" + leftLabel + Constants.NEW_LINE_SEPARATOR);
+											out.append("Pattern: " + pattern.getNaturalLanguageRepresentation() + Constants.NEW_LINE_SEPARATOR);
+											out.append("RightLabel(Domain):\t" + rightLabel + Constants.NEW_LINE_SEPARATOR);
+											out.append("Statement created: " + link.toString() + Constants.NEW_LINE_SEPARATOR);
+											out.append(Constants.NEW_LINE_SEPARATOR);
+											System.out.println("Statement created: " + link);
+										}
 									}
 								}
 							}
