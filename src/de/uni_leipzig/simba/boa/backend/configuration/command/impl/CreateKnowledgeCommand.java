@@ -65,7 +65,7 @@ public class CreateKnowledgeCommand implements Command {
 			
 			for ( Pattern pattern : patternList ) {
 				
-				if ( pattern.isUseForPatternEvaluation() && pattern.getNumberOfOccurrences() > 100) {//pattern.getWithLogConfidence() > new Double(NLPediaSettings.getInstance().getSetting("createKnowledgeThreshold")) ) {
+				if ( pattern.getConfidence() >= new Double(NLPediaSettings.getInstance().getSetting("createKnowledgeThreshold")) ) {
 					
 					System.out.println("Querying pattern: " + pattern.getNaturalLanguageRepresentation() + " ["+pattern.getId()+"]");
 					

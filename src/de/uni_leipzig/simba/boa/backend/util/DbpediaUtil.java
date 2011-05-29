@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.util;
 
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
@@ -38,6 +39,16 @@ public class DbpediaUtil {
 		
 		String askQuery = 
 			"ASK { <" + st.getSubject().getURI() + "> <" + st.getPredicate().getURI() + "> <" + ((Resource)st.getObject()).getURI() + "> } ";
+		
+		QueryEngineHTTP qexec = new QueryEngineHTTP(SPARQL_ENDPOINT_URI, askQuery);
+		qexec.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
+		return qexec.execAsk();
+	}
+
+	public boolean askIsResourceOfType(String leftResourceUri, String type) {
+
+		String askQuery = 
+			"ASK { <" + leftResourceUri + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <" + type + "> } ";
 		
 		QueryEngineHTTP qexec = new QueryEngineHTTP(SPARQL_ENDPOINT_URI, askQuery);
 		qexec.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
