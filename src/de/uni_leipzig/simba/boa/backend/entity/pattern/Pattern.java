@@ -275,9 +275,25 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	@Override
 	public String toString() {
 
-		return "Pattern [id=" + id + ", naturalLanguageRepresentation=" + naturalLanguageRepresentation + ", numberOfOccurrences=" + numberOfOccurrences
-				+ ", useForPatternEvaluation=" + useForPatternEvaluation + ", withLogConfidence=" + withLogConfidence + ", nerTaggedString=" + nerTaggedString + ", posTaggedString=" + posTaggedString
-				+ ", foundInIteration=" + foundInIteration + "]\n";
+		StringBuilder builder = new StringBuilder();
+		builder.append("Pattern [naturalLanguageRepresentation=");
+		builder.append(naturalLanguageRepresentation);
+		builder.append(", withLogConfidence=");
+		builder.append(withLogConfidence);
+		builder.append(", numberOfOccurrences=");
+		builder.append(numberOfOccurrences);
+		builder.append(", useForPatternEvaluation=");
+		builder.append(useForPatternEvaluation);
+		builder.append(", patternMapping=");
+		builder.append(patternMapping.getId());
+		builder.append(", learnedFrom=");
+		builder.append(learnedFrom);
+		builder.append(", luceneDocIds=");
+		builder.append(luceneDocIds);
+		builder.append(", confidence=");
+		builder.append(confidence);
+		builder.append("]");
+		return builder.toString();
 	}
 
 	/* (non-Javadoc)

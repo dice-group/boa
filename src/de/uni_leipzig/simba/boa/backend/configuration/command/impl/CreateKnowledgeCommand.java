@@ -1,5 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -63,114 +65,130 @@ public class CreateKnowledgeCommand implements Command {
 			
 			System.out.println("Querying index for " + this.patternList.size() + " patterns!");
 			
+			BufferedWriter out = new BufferedWriter(new FileWriter(NLPediaSettings.getInstance().getSetting("rdfModelFile")));
+			
 			for ( Pattern pattern : patternList ) {
 				
-				if ( pattern.getConfidence() >= new Double(NLPediaSettings.getInstance().getSetting("createKnowledgeThreshold")) ) {
+				if ( pattern.isUseForPatternEvaluation() && pattern.getConfidence() != null ) {
 					
-					System.out.println("Querying pattern: " + pattern.getNaturalLanguageRepresentation() + " ["+pattern.getId()+"]");
-					
-					String domainUri	= pattern.getPatternMapping().getRdfsDomain();
-					String rangeUri		= pattern.getPatternMapping().getRdfsRange();
-					
-					String patternWithOutVariables = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
-					
-					this.logger.debug("Querying index for pattern \"" + patternWithOutVariables + "\".");
-					Set<String> sentences = patternSearcher.getSentencesWithString(patternWithOutVariables, Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments")));
-					this.logger.debug("Pattern \"" + patternWithOutVariables + "\" returned " + sentences.size() + " results.");
-					
-					for ( String foundString : sentences ) {
+					if ( pattern.getConfidence() >= new Double(NLPediaSettings.getInstance().getSetting("createKnowledgeThreshold")) ) {
 						
-						String nerTagged = this.ner.recognizeEntitiesInString(foundString);
+						System.out.println("Querying pattern: " + pattern.getNaturalLanguageRepresentation() + " [ID:"+pattern.getId()+"]");
 						
-						try {
-	
-							Context leftContext = new LeftContext(nerTagged, foundString, patternWithOutVariables);
-							Context rightContext = new RightContext(nerTagged, foundString, patternWithOutVariables);
+						String domainUri	= pattern.getPatternMapping().getRdfsDomain();
+						String rangeUri		= pattern.getPatternMapping().getRdfsRange();
+						
+						String patternWithOutVariables = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
+						
+						this.logger.debug("Querying index for pattern \"" + patternWithOutVariables + "\".");
+						Set<String> sentences = patternSearcher.getSentencesWithString(patternWithOutVariables, Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments")));
+						this.logger.debug("Pattern \"" + patternWithOutVariables + "\" returned " + sentences.size() + " results.");
+						
+						for ( String foundString : sentences ) {
 							
-							boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
+							String nerTagged = this.ner.recognizeEntitiesInString(foundString);
 							
-							if ( beginsWithDomain ) {
+							try {
+		
+								Context leftContext = new LeftContext(nerTagged, foundString, patternWithOutVariables);
+								Context rightContext = new RightContext(nerTagged, foundString, patternWithOutVariables);
 								
-								if ( leftContext.containsSuitableEntity(domainUri) && rightContext.containsSuitableEntity(rangeUri) ) {
+								boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
+								
+								if ( beginsWithDomain ) {
 									
-									String leftLabel = leftContext.getSuitableEntity(domainUri);
-									String rightLabel = rightContext.getSuitableEntity(rangeUri);
-									
-									UriRetrieval uriRetrieval = new DbpediaUriRetrieval();
-									String leftUri = uriRetrieval.getUri(leftLabel);
-									String rightUri = uriRetrieval.getUri(rightLabel);
+									if ( leftContext.containsSuitableEntity(domainUri) && rightContext.containsSuitableEntity(rangeUri) ) {
+										
+										String leftLabel = leftContext.getSuitableEntity(domainUri);
+										String rightLabel = rightContext.getSuitableEntity(rangeUri);
+										
+										UriRetrieval uriRetrieval = new DbpediaUriRetrieval();
+										String leftUri = uriRetrieval.getUri(leftLabel);
+										String rightUri = uriRetrieval.getUri(rightLabel);
 
-//									boolean leftResourceHasCorrectType	= DbpediaUtil.getInstance().askIsResourceOfType(leftUri, domainUri);
-//									boolean rightResourceHasCorrectType	= DbpediaUtil.getInstance().askIsResourceOfType(rightUri, rangeUri);
-//									
-//									if ( rightResourceHasCorrectType && leftResourceHasCorrectType ) {
+//										boolean leftResourceHasCorrectType	= DbpediaUtil.getInstance().askIsResourceOfType(leftUri, domainUri);
+//										boolean rightResourceHasCorrectType	= DbpediaUtil.getInstance().askIsResourceOfType(rightUri, rangeUri);
 //										
-//										
-//									}
+//										if ( rightResourceHasCorrectType && leftResourceHasCorrectType ) {
+//											
+//											
+//										}
+										
+										RDFNode leftResource	= model.createResource(leftUri);
+										RDFNode rightResource	= model.createResource(rightUri);
+										
+										Statement link			= model.createStatement(leftResource, model.createProperty(pattern.getPatternMapping().getUri()), rightResource);
+//										Statement labelLeft		= model.createStatement((Resource)leftResource, this.rdfsLabel, leftLabel);
+//										Statement labelRight	= model.createStatement((Resource)rightResource, this.rdfsLabel, rightLabel);
+//										Statement typeLeft		= model.createStatement(leftResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsDomain()));
+//										Statement typeRight		= model.createStatement(rightResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsRange()));
+										
+										model.addStatement(link);
+//										model.addStatement(labelLeft);
+//										model.addStatement(labelRight);
+//										model.addStatement(typeLeft);
+//										model.addStatement(typeRight);
+										
+										out.append("LeftLabel(Domain):\t" + leftLabel + Constants.NEW_LINE_SEPARATOR);
+										out.append("Pattern: " + pattern.getNaturalLanguageRepresentation() + Constants.NEW_LINE_SEPARATOR);
+										out.append("RightLabel(Range):\t" + rightLabel + Constants.NEW_LINE_SEPARATOR);
+										out.append("Statement created: " + link.toString() + Constants.NEW_LINE_SEPARATOR);
+										out.append(Constants.NEW_LINE_SEPARATOR);
+										System.out.println("Statement created: " + link);
+									}
+								}
+								else {
 									
-									RDFNode leftResource	= model.createResource(leftUri);
-									RDFNode rightResource	= model.createResource(rightUri);
-									
-									Statement link			= model.createStatement(leftResource, model.createProperty(pattern.getPatternMapping().getUri()), rightResource);
-//									Statement labelLeft		= model.createStatement((Resource)leftResource, this.rdfsLabel, leftLabel);
-//									Statement labelRight	= model.createStatement((Resource)rightResource, this.rdfsLabel, rightLabel);
-//									Statement typeLeft		= model.createStatement(leftResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsDomain()));
-//									Statement typeRight		= model.createStatement(rightResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsRange()));
-									
-									model.addStatement(link);
-//									model.addStatement(labelLeft);
-//									model.addStatement(labelRight);
-//									model.addStatement(typeLeft);
-//									model.addStatement(typeRight);
-									
-									System.out.println("Statement created: " + link);
+									if ( leftContext.containsSuitableEntity(rangeUri) && rightContext.containsSuitableEntity(domainUri) ) {
+										
+										String leftLabel = leftContext.getSuitableEntity(rangeUri);
+										String rightLabel = rightContext.getSuitableEntity(domainUri);
+										
+										UriRetrieval uriRetrieval = new DbpediaUriRetrieval();
+										String leftUri = uriRetrieval.getUri(leftLabel);
+										String rightUri = uriRetrieval.getUri(rightLabel);
+										
+//										boolean leftResourceHasCorrectType	= DbpediaUtil.getInstance().askIsResourceOfType(leftUri, rangeUri);
+//										boolean rightResourceHasCorrectType	= DbpediaUtil.getInstance().askIsResourceOfType(rightUri, domainUri);
+										
+										RDFNode leftResource	= model.createResource(leftUri);
+										RDFNode rightResource	= model.createResource(rightUri);
+										
+										Statement link			= model.createStatement(leftResource, model.createProperty(pattern.getPatternMapping().getUri()), rightResource);
+//										Statement labelLeft		= model.createStatement((Resource)leftResource, this.rdfsLabel, leftLabel);
+//										Statement labelRight	= model.createStatement((Resource)rightResource, this.rdfsLabel, rightLabel);
+//										Statement typeLeft		= model.createStatement(leftResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsDomain()));
+//										Statement typeRight		= model.createStatement(rightResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsRange()));
+										
+										model.addStatement(link);
+//										model.addStatement(labelLeft);
+//										model.addStatement(labelRight);
+//										model.addStatement(typeLeft);
+//										model.addStatement(typeRight);
+										
+										out.append("LeftLabel(Range):\t" + leftLabel + Constants.NEW_LINE_SEPARATOR);
+										out.append("Pattern: " + pattern.getNaturalLanguageRepresentation() + Constants.NEW_LINE_SEPARATOR);
+										out.append("RightLabel(Domain):\t" + rightLabel + Constants.NEW_LINE_SEPARATOR);
+										out.append("Statement created: " + link.toString() + Constants.NEW_LINE_SEPARATOR);
+										out.append(Constants.NEW_LINE_SEPARATOR);
+										System.out.println("Statement created: " + link);
+									}
 								}
 							}
-							else {
+							catch ( IndexOutOfBoundsException ioob ) {
 								
-								if ( leftContext.containsSuitableEntity(rangeUri) && rightContext.containsSuitableEntity(domainUri) ) {
-									
-									String leftLabel = leftContext.getSuitableEntity(rangeUri);
-									String rightLabel = rightContext.getSuitableEntity(domainUri);
-									
-									UriRetrieval uriRetrieval = new DbpediaUriRetrieval();
-									String leftUri = uriRetrieval.getUri(leftLabel);
-									String rightUri = uriRetrieval.getUri(rightLabel);
-									
-//									boolean leftResourceHasCorrectType	= DbpediaUtil.getInstance().askIsResourceOfType(leftUri, rangeUri);
-//									boolean rightResourceHasCorrectType	= DbpediaUtil.getInstance().askIsResourceOfType(rightUri, domainUri);
-									
-									RDFNode leftResource	= model.createResource(leftUri);
-									RDFNode rightResource	= model.createResource(rightUri);
-									
-									Statement link			= model.createStatement(leftResource, model.createProperty(pattern.getPatternMapping().getUri()), rightResource);
-//									Statement labelLeft		= model.createStatement((Resource)leftResource, this.rdfsLabel, leftLabel);
-//									Statement labelRight	= model.createStatement((Resource)rightResource, this.rdfsLabel, rightLabel);
-//									Statement typeLeft		= model.createStatement(leftResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsDomain()));
-//									Statement typeRight		= model.createStatement(rightResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsRange()));
-									
-									model.addStatement(link);
-//									model.addStatement(labelLeft);
-//									model.addStatement(labelRight);
-//									model.addStatement(typeLeft);
-//									model.addStatement(typeRight);
-									
-									System.out.println("Statement created: " + link);
-								}
+//								System.out.println(foundString);
+//								System.out.println(nerTagged);
+//								System.out.println(patternWithOutVariables);
+//								
+//								ioob.printStackTrace();
+								this.logger.error("Could not create context for string " + foundString + ". NER tagged: " + nerTagged + " pattern: "  + patternWithOutVariables);
 							}
-						}
-						catch ( IndexOutOfBoundsException ioob ) {
-							
-//							System.out.println(foundString);
-//							System.out.println(nerTagged);
-//							System.out.println(patternWithOutVariables);
-//							
-//							ioob.printStackTrace();
-							this.logger.error("Could not create context for string " + foundString + ". NER tagged: " + nerTagged + " pattern: "  + patternWithOutVariables);
 						}
 					}
 				}
 			}
+			out.close();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
