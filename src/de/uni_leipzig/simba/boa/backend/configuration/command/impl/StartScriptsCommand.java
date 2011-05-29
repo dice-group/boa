@@ -6,6 +6,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.AskDbpediaForTriple;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.CreateLearndFromDistributionCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.KnowledgeStatisticsCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.PlainTextToSentencePerLineCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
@@ -29,6 +30,7 @@ public class StartScriptsCommand implements Command {
 		    		System.out.println("\t\t2. Ask DBpedia for triples");
 		    		System.out.println("\t\t3. Reset pattern evaluation");
 		    		System.out.println("\t\t4. Create learned from distribution");
+		    		System.out.println("\t\t5. Create knowledge statistics");
 		    		System.out.println("\t\t");
 		    		System.out.println("");
 		    		
@@ -70,6 +72,12 @@ public class StartScriptsCommand implements Command {
 							
 							Command createLearndFromDistributionCommand = new CreateLearndFromDistributionCommand();
 							createLearndFromDistributionCommand.execute();
+							break;
+							
+						case 5:
+							
+							Command createKnowledgeStatisticsCommand = new KnowledgeStatisticsCommand();
+							createKnowledgeStatisticsCommand.execute();
 							break;
 					
 						default: // option not supported

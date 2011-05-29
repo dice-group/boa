@@ -181,7 +181,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					// ########################################################
 					
 					// we wont need to see them in the view
-					if ( pattern.getConfidence() < 0 ) pattern.setUseForPatternEvaluation(false);
+					if ( pattern.getConfidence() <= 0 ) pattern.setUseForPatternEvaluation(false);
 					
 					if ( pattern.getConfidence() < 0 || pattern.getWithLogConfidence() < 0 ) {
 						

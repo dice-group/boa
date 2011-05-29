@@ -46,37 +46,57 @@ public class PatternEvaluationCommand implements Command {
 		
 		// split the mappings into several lists
 		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfSearchThreads) + 10);
-		Map<String,PatternEvaluator> patternEvaluators		= PatternEvaluatorFactory.getInstance().getPatternEvaluatorMap();
-		
-		this.logger.debug("Evaluation of " + patternMappingList.size() + " pattern mappings with " + patternEvaluators.size() + " evaluators started!");
 		
 		List<Thread> threadList = new ArrayList<Thread>();
 		List<PatternMapping> results = new ArrayList<PatternMapping>();
 		
-		for (int i = 0 ; i < numberOfSearchThreads ; i++ ) {
+		if ( numberOfSearchThreads != 1 ) {
 			
+			for (int i = 0 ; i < numberOfSearchThreads ; i++ ) {
+				
 				Thread t = new PatternEvaluationThread(patternMappingSubLists.get(i));
 				t.setName("PatternEvaluationThread-" + (i + 1));
 				threadList.add(i, t);
 				t.start();
 				System.out.println(t.getName() + " started!");
 				this.logger.info(t.getName() + " started!");
-		}
-		// wait for all to finish
-		for ( Thread t : threadList ) {
-			
-			try {
-				t.join();	
 			}
-			catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			// wait for all to finish
+			for ( Thread t : threadList ) {
+				
+				try {
+					t.join();	
+				}
+				catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			for ( Thread t: threadList ) {
+				
+				results.addAll(((PatternEvaluationThread)t).getEvaluatedPatternMappings());
 			}
 		}
-		
-		for ( Thread t: threadList ) {
+		else {
 			
-			results.addAll(((PatternEvaluationThread)t).getEvaluatedPatternMappings());
+			Map<String,PatternEvaluator> patternEvaluators = PatternEvaluatorFactory.getInstance().getPatternEvaluatorMap();
+			
+			// go through all evaluators
+			for ( PatternEvaluator patternEvaluator : patternEvaluators.values() ) {
+
+				this.logger.info(patternEvaluator.getClass().getSimpleName() + " started!");
+				
+				// and check each pattern mapping
+				for ( PatternMapping patternMapping : this.patternMappingList ) {
+				
+					this.logger.debug("Evaluating pattern: " + patternMapping);
+					patternEvaluator.evaluatePattern(patternMapping);
+					this.patternMappingDao.updatePatternMapping(patternMapping);
+				}
+				this.logger.info(patternEvaluator.getClass().getSimpleName() + " finished!");
+			}
+			results.addAll(patternMappingList);
 		}
 		
 		double maxWithLog = 0;

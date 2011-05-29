@@ -26,52 +26,79 @@ public class RelationFinder {
 		
 		List<String[]> resultsSet = new ArrayList<String[]>();
 		
-		try {
+		if ( !filename.isEmpty() ) {
+			
+			try {
 
-			BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(LABEL_OUTPUT_FILE + "_subject.txt"))));
+				BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(filename))));
 
-			String line;
-			while ((line = br.readLine()) != null) {
+				String line;
+				while ((line = br.readLine()) != null) {
 
-				String[] lineParts = line.split(" \\|\\|\\| ");
+					String[] lineParts = line.split(" \\|\\|\\| ");
 
-				if (!lineParts[1].equals("disambiguates") && !lineParts[1].equals("blankName") && !lineParts[1].equals("wikiPageWikiLink") ) {
-					
+					if (!lineParts[1].equals("disambiguates") && !lineParts[1].equals("blankName") && !lineParts[1].equals("wikiPageWikiLink") ) {
+						
+						// label1 (Domain), label2 (Range), property, range, domain, isSubject;
+						resultsSet.add(new String[] { lineParts[0], lineParts[1], lineParts[2], lineParts[3], lineParts[4], lineParts[5] });
+					}
+				}
+				br.close();
+			}
+			catch (Exception e) {
+
+				e.printStackTrace();
+				logger.error("Could not read file: " + LABEL_OUTPUT_FILE, e);
+			}
+		}
+		else {
+			
+			try {
+
+				BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(LABEL_OUTPUT_FILE + "_subject.txt"))));
+
+				String line;
+				while ((line = br.readLine()) != null) {
+
+					String[] lineParts = line.split(" \\|\\|\\| ");
+
+					if (!lineParts[1].equals("disambiguates") && !lineParts[1].equals("blankName") && !lineParts[1].equals("wikiPageWikiLink") ) {
+						
+						// label1 (Domain), label2 (Range), property, range, domain, isSubject;
+						resultsSet.add(new String[] { lineParts[0], lineParts[1], lineParts[2], lineParts[3], lineParts[4], lineParts[5] });
+					}
+				}
+				br.close();
+			}
+			catch (Exception e) {
+
+				e.printStackTrace();
+				logger.error("Could not read file: " + LABEL_OUTPUT_FILE, e);
+			}
+			
+			try {
+
+				BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(LABEL_OUTPUT_FILE + "_object.txt"))));
+
+				String line;
+				while ((line = br.readLine()) != null) {
+
+					String[] lineParts = line.split(" \\|\\|\\| ");
+
 					// label1 (Domain), label2 (Range), property, range, domain, isSubject;
-					resultsSet.add(new String[] { lineParts[0], lineParts[1], lineParts[2], lineParts[3], lineParts[4], lineParts[5] });
+					if (!lineParts[1].equals("disambiguates") && !lineParts[1].equals("blankName") && !lineParts[1].equals("wikiPageWikiLink") ) {
+						
+						resultsSet.add(new String[] { lineParts[1], lineParts[0], lineParts[2], lineParts[3], lineParts[4], lineParts[5] });
+					}
 				}
+				br.close();
 			}
-			br.close();
-		}
-		catch (Exception e) {
+			catch (Exception e) {
 
-			e.printStackTrace();
-			logger.error("Could not read file: " + LABEL_OUTPUT_FILE, e);
-		}
-		
-		try {
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(LABEL_OUTPUT_FILE + "_object.txt"))));
-
-			String line;
-			while ((line = br.readLine()) != null) {
-
-				String[] lineParts = line.split(" \\|\\|\\| ");
-
-				// label1 (Domain), label2 (Range), property, range, domain, isSubject;
-				if (!lineParts[1].equals("disambiguates") && !lineParts[1].equals("blankName") && !lineParts[1].equals("wikiPageWikiLink") ) {
-					
-					resultsSet.add(new String[] { lineParts[1], lineParts[0], lineParts[2], lineParts[3], lineParts[4], lineParts[5] });
-				}
+				e.printStackTrace();
+				logger.error("Could not read file: " + LABEL_OUTPUT_FILE, e);
 			}
-			br.close();
 		}
-		catch (Exception e) {
-
-			e.printStackTrace();
-			logger.error("Could not read file: " + LABEL_OUTPUT_FILE, e);
-		}
-		
 		
 		return resultsSet;
 	}

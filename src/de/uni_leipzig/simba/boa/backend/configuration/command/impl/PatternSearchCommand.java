@@ -39,7 +39,7 @@ public class PatternSearchCommand implements Command {
 
 		Date startSearchDate = new Date();
 		
-		List<String[]> labels =  RelationFinder.getRelationFromFile(NLPediaSettings.getInstance().getSetting("labelOutputFile"));
+		List<String[]> labels =  RelationFinder.getRelationFromFile("");
 		
 		System.out.println("Number of search operations: " + labels.size() + " for input file " + NLPediaSettings.getInstance().getSetting("labelOutputFile"));
 		System.out.println("Number of search threads: " + NLPediaSettings.getInstance().getSetting("numberOfSearchThreads"));
