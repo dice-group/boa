@@ -27,6 +27,7 @@ import de.uni_leipzig.simba.boa.backend.rdf.store.Store;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.DbpediaUriRetrieval;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.util.DbpediaUtil;
 
 /**
  * 
@@ -86,31 +87,76 @@ public class CreateKnowledgeCommand implements Command {
 							Context leftContext = new LeftContext(nerTagged, foundString, patternWithOutVariables);
 							Context rightContext = new RightContext(nerTagged, foundString, patternWithOutVariables);
 							
-							if ( leftContext.containsSuitableEntity(domainUri) && rightContext.containsSuitableEntity(rangeUri) ) {
+							boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
+							
+							if ( beginsWithDomain ) {
 								
-								String leftLabel = leftContext.getSuitableEntity(domainUri);
-								String rightLabel = rightContext.getSuitableEntity(rangeUri);
+								if ( leftContext.containsSuitableEntity(domainUri) && rightContext.containsSuitableEntity(rangeUri) ) {
+									
+									String leftLabel = leftContext.getSuitableEntity(domainUri);
+									String rightLabel = rightContext.getSuitableEntity(rangeUri);
+									
+									UriRetrieval uriRetrieval = new DbpediaUriRetrieval();
+									String leftUri = uriRetrieval.getUri(leftLabel);
+									String rightUri = uriRetrieval.getUri(rightLabel);
+
+//									boolean leftResourceHasCorrectType	= DbpediaUtil.getInstance().askIsResourceOfType(leftUri, domainUri);
+//									boolean rightResourceHasCorrectType	= DbpediaUtil.getInstance().askIsResourceOfType(rightUri, rangeUri);
+//									
+//									if ( rightResourceHasCorrectType && leftResourceHasCorrectType ) {
+//										
+//										
+//									}
+									
+									RDFNode leftResource	= model.createResource(leftUri);
+									RDFNode rightResource	= model.createResource(rightUri);
+									
+									Statement link			= model.createStatement(leftResource, model.createProperty(pattern.getPatternMapping().getUri()), rightResource);
+//									Statement labelLeft		= model.createStatement((Resource)leftResource, this.rdfsLabel, leftLabel);
+//									Statement labelRight	= model.createStatement((Resource)rightResource, this.rdfsLabel, rightLabel);
+//									Statement typeLeft		= model.createStatement(leftResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsDomain()));
+//									Statement typeRight		= model.createStatement(rightResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsRange()));
+									
+									model.addStatement(link);
+//									model.addStatement(labelLeft);
+//									model.addStatement(labelRight);
+//									model.addStatement(typeLeft);
+//									model.addStatement(typeRight);
+									
+									System.out.println("Statement created: " + link);
+								}
+							}
+							else {
 								
-								UriRetrieval uriRetrieval = new DbpediaUriRetrieval();
-								String leftUri = uriRetrieval.getUri(leftLabel);
-								String rightUri = uriRetrieval.getUri(rightLabel);
-								
-								RDFNode leftResource	= model.createResource(leftUri);
-								RDFNode rightResource	= model.createResource(rightUri);
-								
-								Statement link			= model.createStatement(leftResource, model.createProperty(pattern.getPatternMapping().getUri()), rightResource);
-//								Statement labelLeft		= model.createStatement((Resource)leftResource, this.rdfsLabel, leftLabel);
-//								Statement labelRight	= model.createStatement((Resource)rightResource, this.rdfsLabel, rightLabel);
-//								Statement typeLeft		= model.createStatement(leftResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsDomain()));
-//								Statement typeRight		= model.createStatement(rightResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsRange()));
-								
-								model.addStatement(link);
-//								model.addStatement(labelLeft);
-//								model.addStatement(labelRight);
-//								model.addStatement(typeLeft);
-//								model.addStatement(typeRight);
-								
-								System.out.println("Statement created: " + link);
+								if ( leftContext.containsSuitableEntity(rangeUri) && rightContext.containsSuitableEntity(domainUri) ) {
+									
+									String leftLabel = leftContext.getSuitableEntity(rangeUri);
+									String rightLabel = rightContext.getSuitableEntity(domainUri);
+									
+									UriRetrieval uriRetrieval = new DbpediaUriRetrieval();
+									String leftUri = uriRetrieval.getUri(leftLabel);
+									String rightUri = uriRetrieval.getUri(rightLabel);
+									
+//									boolean leftResourceHasCorrectType	= DbpediaUtil.getInstance().askIsResourceOfType(leftUri, rangeUri);
+//									boolean rightResourceHasCorrectType	= DbpediaUtil.getInstance().askIsResourceOfType(rightUri, domainUri);
+									
+									RDFNode leftResource	= model.createResource(leftUri);
+									RDFNode rightResource	= model.createResource(rightUri);
+									
+									Statement link			= model.createStatement(leftResource, model.createProperty(pattern.getPatternMapping().getUri()), rightResource);
+//									Statement labelLeft		= model.createStatement((Resource)leftResource, this.rdfsLabel, leftLabel);
+//									Statement labelRight	= model.createStatement((Resource)rightResource, this.rdfsLabel, rightLabel);
+//									Statement typeLeft		= model.createStatement(leftResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsDomain()));
+//									Statement typeRight		= model.createStatement(rightResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsRange()));
+									
+									model.addStatement(link);
+//									model.addStatement(labelLeft);
+//									model.addStatement(labelRight);
+//									model.addStatement(typeLeft);
+//									model.addStatement(typeRight);
+									
+									System.out.println("Statement created: " + link);
+								}
 							}
 						}
 						catch ( IndexOutOfBoundsException ioob ) {
