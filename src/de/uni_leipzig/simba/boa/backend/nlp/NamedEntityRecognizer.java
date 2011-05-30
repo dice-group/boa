@@ -29,8 +29,8 @@ public class NamedEntityRecognizer {
 	
 	public NamedEntityRecognizer() {
 		
-		this.classifier = new NERClassifierCombiner(
-				CRFClassifier.getClassifierNoExceptions(NLPediaSettings.getInstance().getSetting("namendEntityRecognizerClassifier")));//, 
+		this.classifier = //new NERClassifierCombiner(
+				CRFClassifier.getClassifierNoExceptions(NLPediaSettings.getInstance().getSetting("namendEntityRecognizerClassifier"));//, 
 //				CRFClassifier.getClassifierNoExceptions("/Users/gerb/Development/workspaces/java-ws/nlpedia/data/training/classifier/ner-date-model.ser.gz"));
 	}
 	

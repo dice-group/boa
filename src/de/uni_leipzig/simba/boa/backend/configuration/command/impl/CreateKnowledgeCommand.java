@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.apache.lucene.queryParser.ParseException;
 
+import com.hp.hpl.jena.db.RDFRDBException;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -184,6 +185,10 @@ public class CreateKnowledgeCommand implements Command {
 										}
 									}
 								}
+							}
+							catch (RDFRDBException rdfrdbe) {
+								
+								this.logger.error("Could not create statement!", rdfrdbe);
 							}
 							catch ( IndexOutOfBoundsException ioob ) {
 								
