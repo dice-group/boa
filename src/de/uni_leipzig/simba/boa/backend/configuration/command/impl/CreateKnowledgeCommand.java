@@ -161,7 +161,7 @@ public class CreateKnowledgeCommand implements Command {
 										RDFNode leftResource	= model.createResource(leftUri);
 										RDFNode rightResource	= model.createResource(rightUri);
 										
-										Statement link			= model.createStatement(leftResource, model.createProperty(pattern.getPatternMapping().getUri()), rightResource);
+										Statement link			= model.createStatement(rightResource, model.createProperty(pattern.getPatternMapping().getUri()), leftResource);
 //										Statement labelLeft		= model.createStatement((Resource)leftResource, this.rdfsLabel, leftLabel);
 //										Statement labelRight	= model.createStatement((Resource)rightResource, this.rdfsLabel, rightLabel);
 //										Statement typeLeft		= model.createStatement(leftResource, this.rdfType, model.createResource(pattern.getPatternMapping().getRdfsDomain()));
