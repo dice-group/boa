@@ -98,7 +98,8 @@ public class PatternEvaluationCommand implements Command {
 			}
 			results.addAll(patternMappingList);
 		}
-		
+
+		// global maxima
 		double maxWithLog = 0;
 		double maxWithLogWithLogLearnedFrom = 0;
 		
@@ -106,23 +107,32 @@ public class PatternEvaluationCommand implements Command {
 		
 		for (PatternMapping pm : results ) {
 			
+			// local maxima
 			double maxConfidenceForPatternMapping = 0;
+			double maxDoubleSupportConfidence = 0;
 			
 			for (Pattern pattern : pm.getPatterns() ) {
 				
 				if ( pattern.isUseForPatternEvaluation() ) {
 					
 					maxConfidenceForPatternMapping	= Math.max(maxConfidenceForPatternMapping, pattern.getConfidence());
+					maxDoubleSupportConfidence		= Math.max(maxDoubleSupportConfidence, pattern.getDoubleSupportConfidence());
 					maxWithLog 						= Math.max(maxWithLog, pattern.getWithLogConfidence());
 					maxWithLogWithLogLearnedFrom 	= Math.max(maxWithLogWithLogLearnedFrom, 	pattern.getWithLogWithLogLearndFromConfidence());
 				}
 			}
 			
+			System.out.println("Mapping: " + pm.getUri());
+			System.out.println("maxDoubleSupportConfidence: "+maxDoubleSupportConfidence);
+			System.out.println("maxConfidenceForPatternMapping: "+maxConfidenceForPatternMapping + "\n");
+			
+			// set local maximums
 			for ( Pattern pattern : pm.getPatterns() ) {
 				
 				if ( pattern.isUseForPatternEvaluation() ) {
 				
 					pattern.setConfidence(pattern.getConfidence() / maxConfidenceForPatternMapping);
+					pattern.setDoubleSupportConfidence(pattern.getDoubleSupportConfidence() / maxDoubleSupportConfidence);
 				}
 			}
 		}

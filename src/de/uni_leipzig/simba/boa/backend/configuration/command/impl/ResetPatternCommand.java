@@ -19,6 +19,8 @@ public class ResetPatternCommand implements Command {
 		for (Pattern p: patternDao.findAllPatterns()) {
 			
 			p.setUseForPatternEvaluation(true);
+			p.setConfidence(-1D);
+			p.setDoubleSupportConfidence(-1D);
 			p.setWithLogConfidence(-1d);
 			p.setWithoutLogConfidence(-1d);
 			patternDao.updatePattern(p);

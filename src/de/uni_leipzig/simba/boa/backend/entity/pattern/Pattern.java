@@ -103,6 +103,11 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	 * 
 	 */
 	private Double confidence = -1D;
+
+	/**
+	 * 
+	 */
+	private Double doubleSupportConfidence = -1D;
 	
 	/**
 	 * @param naturalLanguageRepresentation the naturalLanguageRepresentation to set
@@ -494,7 +499,14 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		}
 		return maximum;
 	}
-
+	
+	/**
+	 * @return the number from how many triples this pattern has been learned from
+	 */
+	public int retrieveCountLearnedFrom(){
+		
+		return this.learnedFrom.size();
+	}
 
 	/**
 	 * @param withLogWithLogLearndFromConfidence the withLogWithLogLearndFromConfidence to set
@@ -542,6 +554,17 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	public void setConfidence(Double confidence) {
 
 		this.confidence = confidence;
+	}
+
+	@Basic
+	public Double getDoubleSupportConfidence() {
+
+		return this.doubleSupportConfidence;
+	}
+
+	public void setDoubleSupportConfidence(Double confidence) {
+
+		this.doubleSupportConfidence = confidence;
 	}
 }
 

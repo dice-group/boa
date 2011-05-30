@@ -56,6 +56,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	private PatternTable patternTable;
 	
 	private HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
+	private String currentDatabase;
 
 	@Override
 	public void init() {
@@ -108,10 +109,10 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 			
 			if (itemId != null) {
 				
-				String database = itemId.substring(0, itemId.indexOf(":"));
-				String uri		= itemId.substring(itemId.indexOf(":") + 1);
+				this.currentDatabase 	= itemId.substring(0, itemId.indexOf(":"));
+				String uri				= itemId.substring(itemId.indexOf(":") + 1);
 				
-				HibernateFactory.changeConnection(database);
+				HibernateFactory.changeConnection(this.currentDatabase);
 				
 				PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 				PatternMapping pm = pmDao.findPatternMappingsWithoutPattern(uri).get(0);
@@ -175,7 +176,13 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				
 				String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 				
-				PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+				// something like en_wiki or en_news
+				String temp = currentDatabase.substring(0,currentDatabase.lastIndexOf("_"));
+				
+				String indexDir = NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory");
+				indexDir 		= indexDir.contains(temp) ? indexDir : indexDir.replace(temp, temp.equals("en_news") ? "en_wiki" : "en_news");  
+				
+				PatternSearcher patternSearcher = new PatternSearcher(indexDir);
 				TreeSet<String> results = (TreeSet<String>) patternSearcher.getSentencesWithString(naturalLanguageRepresentation, 5000);
 				
 				StringBuilder builder = new StringBuilder();

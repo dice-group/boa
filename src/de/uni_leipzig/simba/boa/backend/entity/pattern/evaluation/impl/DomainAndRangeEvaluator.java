@@ -94,7 +94,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 				
 				if ( pattern.isUseForPatternEvaluation() ) {
 					
-					System.out.print("Pattern: " + pattern.getNaturalLanguageRepresentation());
+					System.out.print("\nPattern: " + pattern.getNaturalLanguageRepresentation());
 					
 					boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
 					String patternWithOutVariables = this.segmentString(pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim());
@@ -159,6 +159,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					pattern.setWithLogConfidence(confidenceWithLog);
 					pattern.setWithLogWithLogLearndFromConfidence(confidenceWithLog * (double) (Math.log((int)(pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2)));
 					pattern.setConfidence(pattern.getWithLogWithLogLearndFromConfidence() * (Math.log(PatternEvaluationCommand.NUMBER_OF_PATTERN_MAPPINGS / this.getNumberOfPatternMappingsWithPattern(pattern.getNaturalLanguageRepresentation())) / Math.log(2)));
+					pattern.setDoubleSupportConfidence( ((double) (Math.log((pattern.retrieveCountLearnedFrom() + 1)) / Math.log(2))) * pattern.getConfidence() );
 //					pattern.setWithLogWithoutLogLearndFromConfidence(confidenceWithLog * pattern.retrieveMaxLearnedFrom());
 //					
 //					System.out.println(pattern.getWithLogConfidence());

@@ -20,8 +20,7 @@ public class PatternContainer extends BeanItemContainer<Pattern> implements Seri
 			
 			for ( Pattern p : pm.getPatterns()) {
 				
-//				if ( p.isUseForPatternEvaluation() && ( p.getWithLogConfidence() >= 0 || p.getConfidence() >= 0) ) {
-				if ( p.isUseForPatternEvaluation() && ( p.getConfidence() >= 0) ) {
+				if ( p.isUseForPatternEvaluation() && p.getConfidence() > 0 && p.getDoubleSupportConfidence() > 0 ) {
 					
 					this.addItem(p);
 				}
