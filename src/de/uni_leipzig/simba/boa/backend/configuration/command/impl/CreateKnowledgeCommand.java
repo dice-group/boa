@@ -135,7 +135,7 @@ public class CreateKnowledgeCommand implements Command {
 										if ( !statementList.contains(link.toString()) ) {
 											
 											statementList.add(link.toString());
-											out.append("FoundString: " + foundString);
+											out.append("FoundString: " + foundString + Constants.NEW_LINE_SEPARATOR);
 											out.append("LeftLabel(Domain):\t" + leftLabel + Constants.NEW_LINE_SEPARATOR);
 											out.append("Pattern: " + pattern.getNaturalLanguageRepresentation() + Constants.NEW_LINE_SEPARATOR);
 											out.append("RightLabel(Range):\t" + rightLabel + Constants.NEW_LINE_SEPARATOR);
@@ -177,7 +177,7 @@ public class CreateKnowledgeCommand implements Command {
 										if ( !statementList.contains(link.toString()) ) {
 											
 											statementList.add(link.toString());
-											out.append("FoundString: " + foundString);
+											out.append("FoundString: " + foundString + Constants.NEW_LINE_SEPARATOR);
 											out.append("LeftLabel(Range):\t" + leftLabel + Constants.NEW_LINE_SEPARATOR);
 											out.append("Pattern: " + pattern.getNaturalLanguageRepresentation() + Constants.NEW_LINE_SEPARATOR);
 											out.append("RightLabel(Domain):\t" + rightLabel + Constants.NEW_LINE_SEPARATOR);
