@@ -52,6 +52,7 @@ public class HibernateFactory {
     
     public static void changeConnection(String database) {
     	
+    	HibernateFactory.closeSessionFactory();
     	HibernateFactory.sessionFactory = new Configuration()
 		// Add classes 
         .addAnnotatedClass(Pattern.class)

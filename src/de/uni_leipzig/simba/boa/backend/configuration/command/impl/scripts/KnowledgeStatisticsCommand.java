@@ -1,10 +1,22 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Searcher;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.Version;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -18,6 +30,73 @@ public class KnowledgeStatisticsCommand implements Command {
 	
 	@Override
 	public void execute() {
+
+//		this.createKnowledgeDistribution();
+		this.createUniqueWordsCount();
+	}
+
+	private void createUniqueWordsCount() {
+
+		try {
+			
+			// ########################################################################
+			//         en wiki
+			// ########################################################################
+			Directory directory = FSDirectory.open(new File("/Users/gerb/Development/workspaces/experimental/nlpedia/en_wiki/data/index"));
+			Searcher indexSearcher	= new IndexSearcher(directory, true);
+			
+			Set<String> uniqueWords = new HashSet<String>(1000000);
+			
+			int numberOfTokens = 0;
+			int size = indexSearcher.maxDoc() - 1;
+			System.out.println("en_wiki has " + size + " indexed sentences!");
+			
+			for (int i = 0 ; i < size ; i++) {
+				
+				String[] sentence = indexSearcher.doc(i).get("sentence").split(" ");
+				numberOfTokens += sentence.length;
+				
+				for (String part : sentence) {
+					
+					uniqueWords.add(part);
+				}
+			}
+			System.out.println("en_wiki has " + uniqueWords.size() + " unique words!");
+			
+			// ########################################################################
+			//        en_news
+			// ########################################################################
+			directory = FSDirectory.open(new File("/Users/gerb/Development/workspaces/experimental/nlpedia/en_news/data/index/stanfordnlp"));
+			indexSearcher	= new IndexSearcher(directory, true);
+			
+			uniqueWords = new HashSet<String>(1000000);
+			
+			numberOfTokens = 0;
+			size = indexSearcher.maxDoc() - 1;
+			System.out.println("en_news has " + size + " indexed sentences!");
+			
+			for (int i = 0 ; i < size ; i++) {
+				
+				String[] sentence = indexSearcher.doc(i).get("sentence").split(" ");
+				numberOfTokens += sentence.length;
+				
+				for (String part : sentence) {
+					
+					uniqueWords.add(part);
+				}
+			}
+			System.out.println("en_news has " + uniqueWords.size() + " unique words!");
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+
+	private void createKnowledgeDistribution() {
 
 		String path = knowledgePath.substring(0, knowledgePath.lastIndexOf("/"));
 		
