@@ -79,7 +79,7 @@ public class CreateKnowledgeCommand implements Command {
 				List<Pattern> patternList = this.getTopNPattern(mapping, 1);
 				
 				System.out.println(patternList.size() + " patterns found!");
-				System.out.println(patternList.get(0));
+//				System.out.println(patternList.get(0));
 				
 				for ( Pattern pattern : patternList ) {
 					
@@ -241,6 +241,6 @@ public class CreateKnowledgeCommand implements Command {
 				return pattern2.getDoubleSupportConfidence().compareTo(pattern1.getDoubleSupportConfidence());
 			}
 		});
-		return patternList.subList(0, topN);
+		return patternList.size() > 0 ? patternList.subList(0, topN) : patternList;
 	}
 }
