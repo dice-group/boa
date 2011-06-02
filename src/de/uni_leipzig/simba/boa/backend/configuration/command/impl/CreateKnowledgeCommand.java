@@ -76,7 +76,7 @@ public class CreateKnowledgeCommand implements Command {
 				
 				System.out.println("Querying pattern: " + mapping.getUri());
 				
-				List<Pattern> patternList = this.getTopNPattern(mapping, 1);
+				List<Pattern> patternList = this.getTopNPattern(mapping, 2);
 				
 				System.out.println(patternList.size() + " patterns found!");
 //				System.out.println(patternList.get(0));
