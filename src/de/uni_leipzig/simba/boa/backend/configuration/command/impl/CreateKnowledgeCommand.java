@@ -241,6 +241,7 @@ public class CreateKnowledgeCommand implements Command {
 				return pattern2.getDoubleSupportConfidence().compareTo(pattern1.getDoubleSupportConfidence());
 			}
 		});
-		return patternList.size() > 0 ? patternList.subList(0, topN) : patternList;
+		
+		return patternList.size() > topN ? patternList.subList(0, topN) : patternList;
 	}
 }
