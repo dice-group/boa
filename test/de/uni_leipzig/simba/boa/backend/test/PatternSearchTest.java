@@ -1,9 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.test;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import junit.framework.JUnit4TestAdapter;
 
 import org.junit.After;
@@ -11,13 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
-import de.uni_leipzig.simba.boa.backend.limes.PatternSimilarityCalculator;
-import de.uni_leipzig.simba.boa.backend.limes.SimilarityStatement;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.util.BoyerMooreUtil;
-
 
 public class PatternSearchTest {
 
@@ -70,18 +60,6 @@ public class PatternSearchTest {
 		
 		String pattern = "former bandmates";
 		int numberOfIterations = 1000000;
-		
-		long startTimeBoyerMoore = System.currentTimeMillis();
-		
-		BoyerMooreUtil boyerMooreUtil = new BoyerMooreUtil(pattern);
-		for (int i = 0; i < numberOfIterations ; i++) {
-			
-			for (String s : sentences) {
-				
-				boyerMooreUtil.match(s);
-			}
-		}
-		System.out.println("Time for boyer moore: " + (System.currentTimeMillis() - startTimeBoyerMoore) + "ms.");
 		
 		long startTimeNaive = System.currentTimeMillis();
 		
