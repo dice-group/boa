@@ -79,7 +79,6 @@ public class CreateKnowledgeCommand implements Command {
 				List<Pattern> patternList = this.getTopNPattern(mapping, 2);
 				
 				System.out.println(patternList.size() + " patterns found!");
-//				System.out.println(patternList.get(0));
 				
 				for ( Pattern pattern : patternList ) {
 					

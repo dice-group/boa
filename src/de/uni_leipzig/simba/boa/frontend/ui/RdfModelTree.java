@@ -1,6 +1,8 @@
 package de.uni_leipzig.simba.boa.frontend.ui;
 
 import com.vaadin.data.Item;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Tree;
 
 import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;

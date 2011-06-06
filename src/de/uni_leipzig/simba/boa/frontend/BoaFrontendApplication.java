@@ -4,13 +4,27 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.lucene.queryParser.ParseException;
 
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QueryParseException;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFormatter;
+import com.hp.hpl.jena.query.Syntax;
 import com.vaadin.Application;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.Action;
+import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.terminal.ExternalResource;
@@ -19,12 +33,19 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Form;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.TextArea;
+import com.vaadin.ui.Tree.ExpandEvent;
+import com.vaadin.ui.Tree.ExpandListener;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -35,6 +56,8 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
+import de.uni_leipzig.simba.boa.backend.rdf.Model;
+import de.uni_leipzig.simba.boa.backend.rdf.store.Store;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.frontend.data.PatternContainer;
 import de.uni_leipzig.simba.boa.frontend.ui.PatternTable;
@@ -43,17 +66,23 @@ import de.uni_leipzig.simba.boa.frontend.ui.RdfModelTree;
 import de.uni_leipzig.simba.boa.frontend.ui.StatementForm;
 
 @SuppressWarnings("serial")
-public class BoaFrontendApplication extends Application implements ItemClickListener, Action.Handler, Button.ClickListener {
+public class BoaFrontendApplication extends Application implements ItemClickListener, Action.Handler, Button.ClickListener, TextChangeListener {
 
 	private NLPediaSetup setup = new NLPediaSetup(false);
 	private NLPediaLogger logger = new NLPediaLogger(BoaFrontendApplication.class);
 
 	private Button evaluationButton = new Button("Evaluation");
 	private Button databasesButton = new Button("Corpora");
+	private Button sparqlButton = new Button("SPARQL");
+	private Button startQuery = new Button("Query"); 
 	
 	private DatabaseNavigationTree tree;
 	private RdfModelTree rdfTree;
+	private RdfModelTree rdfSparqlTree;
 	private PatternTable patternTable;
+	
+	private TextArea sparqlQueryString;
+	private String sparqlQueryModel = "";
 	
 	private HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
 	private String currentDatabase;
@@ -89,6 +118,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 			horizontalSplitPanel.setFirstComponent(rdfTree);
 			// in den rechten teil kommt die erklŠrung
 			horizontalSplitPanel.setSecondComponent(p);
+			horizontalSplitPanel.setSplitPosition(400, HorizontalSplitPanel.UNITS_PIXELS);
 		}
 		else if ( source == this.databasesButton ) {
 			
@@ -98,6 +128,51 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 			horizontalSplitPanel.setFirstComponent(tree);			
 			// in denrechten teil kommt die erklŠrung
 			horizontalSplitPanel.setSecondComponent(p);
+			horizontalSplitPanel.setSplitPosition(400, HorizontalSplitPanel.UNITS_PIXELS);
+		}
+		else if ( source == this.sparqlButton ) {
+			
+			Panel p = new Panel();
+			p.addComponent(new Label("Hier kann man SPARQL Queries starten!"));
+			// setze linken teil auf die modelle
+			horizontalSplitPanel.setFirstComponent(rdfSparqlTree);			
+			// in denrechten teil kommt die erklŠrung
+			horizontalSplitPanel.setSecondComponent(p);
+			horizontalSplitPanel.setSplitPosition(130, HorizontalSplitPanel.UNITS_PIXELS);
+		}
+		else if ( source == this.startQuery ) {
+			
+			String queryString = this.sparqlQueryString.getValue().toString();
+			
+			try {
+				
+				Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
+				Store store = new Store();
+				Model model = store.getModel(this.sparqlQueryModel);
+				QueryExecution qexec = QueryExecutionFactory.create(query, model.getModel());
+				String solution = ResultSetFormatter.asText(qexec.execSelect());
+				qexec.close() ;
+				
+//				solution = solution.replaceAll("http://dbpedia.org/resource/", "dbr:");
+//				solution = solution.replaceAll("http://nlpedia.de/", "boa:");
+//				solution = solution.replaceAll("http://dbpedia.org/ontology/", "dbo");
+//				solution = solution.replaceAll(">", "");
+//				solution = solution.replaceAll("<", "");
+				
+				Layout p = new HorizontalLayout();
+//				Panel p = new Panel();
+				Label output = new Label(solution);
+				output.setContentMode(Label.CONTENT_PREFORMATTED);
+				p.addComponent(output);
+				p.setMargin(true);
+				p.setSizeFull();
+				
+				((VerticalSplitPanel) this.horizontalSplitPanel.getSecondComponent()).setSecondComponent(output);
+			}
+			catch (QueryParseException qpe) {
+			
+				this.getMainWindow().showNotification(qpe.getLocalizedMessage());
+			}
 		}
 	}
 	
@@ -157,7 +232,35 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				this.horizontalSplitPanel.setSecondComponent(gridLayout);
 			}
 		}
-		if (event.getSource() == rdfTree) {
+		else if (event.getSource() == rdfSparqlTree) {
+			
+			this.sparqlQueryModel = (String) event.getItemId();
+			
+			VerticalSplitPanel verticalSplitPanel = new VerticalSplitPanel();
+
+			VerticalLayout hLayout = new VerticalLayout();
+			
+			this.sparqlQueryString = new TextArea("SPARQL-Querie", "SELECT * \nWHERE {\n\t ?s ?p ?o .\n}");
+	        sparqlQueryString.setRows(10);
+	        sparqlQueryString.setColumns(50);
+	        sparqlQueryString.addListener((TextChangeListener) this);
+	        sparqlQueryString.setImmediate(true);
+	        
+	        startQuery.addListener(this); // react to clicks
+	        
+	        hLayout.addComponent(sparqlQueryString);
+	        hLayout.addComponent(startQuery);
+	        hLayout.setSpacing(true);
+	        hLayout.setMargin(true);
+	        
+	        verticalSplitPanel.addComponent(hLayout);
+	        verticalSplitPanel.setSplitPosition(230, VerticalSplitPanel.UNITS_PIXELS);
+	        verticalSplitPanel.setMargin(true);
+	        verticalSplitPanel.setSizeFull();
+	        
+	        this.horizontalSplitPanel.setSecondComponent(verticalSplitPanel);
+		}
+		else if (event.getSource() == rdfTree) {
 			
 			String itemId = (String) event.getItemId();
 			
@@ -168,7 +271,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				this.horizontalSplitPanel.setSecondComponent(p);
 			}
 		}
-		if (event.getSource() == this.patternTable ) {
+		else if (event.getSource() == this.patternTable ) {
 			
 			Pattern pattern = (Pattern) event.getItemId();
 			
@@ -238,6 +341,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		
 		this.tree = new DatabaseNavigationTree(this);
 		this.rdfTree = new RdfModelTree(this);
+		this.rdfSparqlTree = new RdfModelTree(this);
 		
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
@@ -256,12 +360,15 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		GridLayout lo = new GridLayout(30,1);
 		lo.addComponent(databasesButton,0,0);
 		lo.addComponent(evaluationButton,1,0);
+		lo.addComponent(sparqlButton,2,0);
 		
 		evaluationButton.addListener((ClickListener) this);
 		databasesButton.addListener((ClickListener) this);
-
+		sparqlButton.addListener((ClickListener) this);
+		
 		evaluationButton.setIcon(new ThemeResource("icons/32/folder-add.png"));
 		databasesButton.setIcon(new ThemeResource("icons/32/users.png"));
+		sparqlButton.setIcon(new ThemeResource("icons/32/document-edit.png"));
 		
 		lo.setMargin(true);
 		lo.setSpacing(false);
@@ -277,4 +384,12 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 
 		return lo;
 	}
+
+	@Override
+	public void textChange(TextChangeEvent event) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
 }
