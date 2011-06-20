@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend;
 
+import java.util.Date;
 import java.util.Scanner;
 
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CrawlingCommand;
@@ -74,8 +75,10 @@ public class NLPedia {
 						break;
 						
 					case 4: // evaluate pattern
+						long start4 = new Date().getTime(); 
 						Command patternEvaluationCommand = new PatternEvaluationCommand();
 						patternEvaluationCommand.execute();
+						System.out.println("Pattern search took: " + (new Date().getTime() - start4) + "ms");
 						break;
 						
 					case 5: // query a single phrase
@@ -117,6 +120,26 @@ public class NLPedia {
 					case 12: // start scripts here
 						Command createKnowledgeCommand = new CreateKnowledgeCommand();
 						createKnowledgeCommand.execute();
+						break;
+						
+					case 13:
+						
+						long start13 = new Date().getTime();
+
+						// search the patterns
+						Command patternSearchCommand1 = new PatternSearchCommand();
+						((PatternSearchCommand)patternSearchCommand1).setFoundInIteration(0);
+						patternSearchCommand1.execute();
+						
+						// evaluate them
+						Command patternEvaluationCommand1 = new PatternEvaluationCommand();
+						patternEvaluationCommand1.execute();
+						
+						// generate rdf
+						Command createKnowledgeCommand1 = new CreateKnowledgeCommand();
+						createKnowledgeCommand1.execute();
+						
+						System.out.println("Pattern search took: " + (new Date().getTime() - start13) + "ms");
 						break;
 						
 					default: // option not supported

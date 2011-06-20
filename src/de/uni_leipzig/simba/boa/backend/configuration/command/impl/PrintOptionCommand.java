@@ -36,6 +36,7 @@ public class PrintOptionCommand implements Command {
 			"||    10. Start Scripts                               ||\n" + 
 			"||    11. Start Limes and BorderFlow                  ||\n" + 
 			"||    12. Query text with patterns                    ||\n" + 
+			"||    13. Search - Evaluation - Generate              ||\n" + 
 			"========================================================\n";
 		
 		this.out.println(options);
