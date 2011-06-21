@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -99,8 +100,11 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
 					String patternWithOutVariables = this.segmentString(pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim());
 					
-					this.logger.debug("Querying index for pattern \"" + patternWithOutVariables + "\".");
+					
+					long start = new Date().getTime();
 					List<String> sentences = new ArrayList<String>(patternSearcher.getSentencesWithString(patternWithOutVariables, this.maxNumberOfDocuments));
+					System.out.println("Querying index for pattern \"" + patternWithOutVariables + "\" took "+((new Date().getTime() - start )/1000 )+"s and returned " +sentences.size() + " sentences.");
+					this.logger.debug("Querying index for pattern \"" + patternWithOutVariables + "\" took "+((new Date().getTime() - start )/1000 )+"s and returned " +sentences.size() + " sentences.");
 					this.logger.debug("Pattern \"" + patternWithOutVariables + "\" returned " + sentences.size() + " results.");
 					
 					int correctDomain	= 0;
@@ -108,7 +112,10 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					
 					for (String foundString : sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0,this.maxNumberOfEvaluationSentences - 1) : sentences) {
 						
+						start = new Date().getTime();
 						nerTagged = this.ner.recognizeEntitiesInString(foundString);
+						System.out.println("NER tag string: \"" + foundString + "\" took "+((new Date().getTime() - start )/1000 )+"s.");
+						this.logger.debug("NER tag string: \"" + foundString + "\" took "+((new Date().getTime() - start )/1000 )+"s.");
 						segmentedFoundString = this.segmentString(foundString);
 						segmentedPattern = this.segmentString(patternWithOutVariables);
 						
@@ -151,7 +158,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					
 					// ########################################################
 					
-					double confidenceWithLog = (domainCorrectness + rangeCorrectness) / 2;
+					double confidenceWithLog = (domainCorrectness + rangeCorrectness) / (2D * (double) sentences.size());
 					confidenceWithLog = Double.isNaN(confidenceWithLog) ? 0d : confidenceWithLog * (double) (Math.log((int)(sentences.size() + 1)) / Math.log(2));
 					
 //					System.out.println("MAX_LEARNED:" +pattern.retrieveMaxLearnedFrom());
