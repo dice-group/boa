@@ -1,11 +1,14 @@
 package de.uni_leipzig.simba.boa.backend.search;
 
 import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.KeywordAnalyzer;
+import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -39,7 +42,7 @@ public class FileIndexer {
 	public FileIndexer(String indexDir, boolean overwriteIndex, int ramBufferSizeInMb) throws IOException {
 		
 		Directory directory	= FSDirectory.open(new File(indexDir));
-		Analyzer analyzer	= new StandardAnalyzer(Version.LUCENE_30);
+		Analyzer analyzer	= new SimpleAnalyzer();
 		
 		// create the index writer
 		this.writer = new IndexWriter(
@@ -101,7 +104,8 @@ public class FileIndexer {
 //						if ( lineParts.length == 2 ) {
 							
 							doc = new Document();
-							doc.add(new Field("sentence", line, Field.Store.YES, Field.Index.ANALYZED));
+							doc.add(new Field("sentence", line, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+//							doc.add(new Field("sentenceNotAnalyzed", line, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
 //							doc.add(new Field("generalization", ner.recognizeEntitiesInString(line), Field.Store.YES, Field.Index.ANALYZED));
 //							doc.add(new Field("partOfSpeach", lineParts[1], Field.Store.YES, Field.Index.NOT_ANALYZED));
 //							doc.add(new Field("path", file.getAbsolutePath(), Field.Store.YES, Field.Index.NOT_ANALYZED));
