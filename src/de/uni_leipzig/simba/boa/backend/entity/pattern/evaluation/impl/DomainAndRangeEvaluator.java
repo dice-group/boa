@@ -155,7 +155,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					
 					// ########################################################
 					
-					double confidenceWithLog = (domainCorrectness + rangeCorrectness) / (2D * (double) sentences.size());
+					double confidenceWithLog = (domainCorrectness + rangeCorrectness) / (2D);//* (double) sentences.size());
 					confidenceWithLog = Double.isNaN(confidenceWithLog) ? 0d : confidenceWithLog * (double) (Math.log((int)(sentences.size() + 1)) / Math.log(2));
 					
 //					System.out.println("MAX_LEARNED:" +pattern.retrieveMaxLearnedFrom());
