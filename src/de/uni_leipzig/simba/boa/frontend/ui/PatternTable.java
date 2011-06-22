@@ -20,7 +20,7 @@ public class PatternTable extends Table {
 		 "id", "withLogConfidence", "withLogWithLogLearndFromConfidence", "confidence", "doubleSupportConfidence", "naturalLanguageRepresentation", "numberOfOccurrences"};
 
 	public static final String[] COL_HEADERS_ENGLISH = new String[] {
-		 "id", "LogConf", "LogConfLogLearned", "confidence", "newConf","naturalLanguageRepresentation", "#" };
+		 "id", "LogConf", "LogConfLogLearned", "confidence", "CONF","naturalLanguageRepresentation", "OCC" };
 	
 	public PatternTable(BoaFrontendApplication app, Container dataSource) {
 		

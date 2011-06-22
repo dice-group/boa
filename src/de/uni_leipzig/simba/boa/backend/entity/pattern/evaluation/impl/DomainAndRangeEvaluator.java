@@ -52,7 +52,13 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 	private DocumentPreprocessor preprocessor;
 	private StringBuilder stringBuilder;
 	
-	public DomainAndRangeEvaluator() {
+	public DomainAndRangeEvaluator() {}
+	
+	/* (non-Javadoc)
+	 * @see simba.nlpedia.entity.pattern.evaluation.PatternEvaluator#evaluatePattern(simba.nlpedia.entity.pattern.PatternMapping)
+	 */
+	@Override
+	public void evaluatePattern(PatternMapping patternMapping) {
 		
 		try {
 			
@@ -66,13 +72,6 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see simba.nlpedia.entity.pattern.evaluation.PatternEvaluator#evaluatePattern(simba.nlpedia.entity.pattern.PatternMapping)
-	 */
-	@Override
-	public void evaluatePattern(PatternMapping patternMapping) {
 
 		try {
 			
@@ -99,10 +98,9 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					
 					boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
 					String patternWithOutVariables = this.segmentString(pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim());
-					
-					
+							
 					long start = new Date().getTime();
-					List<String> sentences = new ArrayList<String>(patternSearcher.getSentencesWithString(patternWithOutVariables, this.maxNumberOfDocuments));
+					List<String> sentences = new ArrayList<String>(patternSearcher.getExactMatchSentences(patternWithOutVariables, maxNumberOfDocuments));//.getSentencesWithString(patternWithOutVariables, this.maxNumberOfDocuments));
 					System.out.println("Querying index for pattern \"" + patternWithOutVariables + "\" took "+((new Date().getTime() - start )/1000 )+"s and returned " +sentences.size() + " sentences.");
 					this.logger.debug("Querying index for pattern \"" + patternWithOutVariables + "\" took "+((new Date().getTime() - start )/1000 )+"s and returned " +sentences.size() + " sentences.");
 					this.logger.debug("Pattern \"" + patternWithOutVariables + "\" returned " + sentences.size() + " results.");

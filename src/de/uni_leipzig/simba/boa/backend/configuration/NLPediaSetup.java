@@ -25,7 +25,7 @@ public class NLPediaSetup {
 	/**
 	 * Default constructor.
 	 * 
-	 * @param servletContext - the context of the nlpediaServlet
+	 * @param isTestCase - true if we are in a testcase
 	 */
 	public NLPediaSetup(boolean isTestCase) {
 		

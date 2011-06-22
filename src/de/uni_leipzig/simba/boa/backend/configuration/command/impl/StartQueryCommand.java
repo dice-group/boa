@@ -31,8 +31,10 @@ public class StartQueryCommand implements Command {
 			Scanner scanner = new Scanner(System.in);
 			String keyphrase = scanner.nextLine();
 			
+			System.out.println("askdlasd");
+			
 			PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
-			Set<String> results = ((TreeSet<String>) patternSearcher.getSentencesWithString(keyphrase, 1000));
+			Set<String> results = ((TreeSet<String>) patternSearcher.getExactMatchSentences(keyphrase, 10));
 			
 			for (String sentence : results) {
 				

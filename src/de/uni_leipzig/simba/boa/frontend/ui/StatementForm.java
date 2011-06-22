@@ -45,9 +45,14 @@ public class StatementForm extends Form {
 		Store store = new Store();
 		Model model = store.createModelIfNotExists(graph);
 		
-		System.out.println(model);
-		
 		List<Statement> stmts = model.getStatements();
+		
+		int correctStmts = 0;
+		for ( Statement st : stmts) {
+			
+			if ( DbpediaUtil.getInstance().askDbpediaForTriple(st) ) correctStmts++;
+		}
+		
 		NUMBER_OF_ITEMS_IN_RANDOM_LIST = Math.min(100, stmts.size());
 		List<Statement> randomStatments = new ArrayList<Statement>();
 		
@@ -67,7 +72,7 @@ public class StatementForm extends Form {
         vlayout.setMargin(true);
         vlayout.setSpacing(true);
         Label message = new Label(
-        		"There are " + model.getStatements().size() + " statements in the RDF model<br/><hr/>" + 
+        		"There are " + model.getStatements().size() + " statements in the RDF model, " + correctStmts + " are already in Dbpedia.<br/><hr/>" + 
 				"There were " + StatementForm.NUMBER_OF_ITEMS_IN_RANDOM_LIST + " statements used for evaluation!<br/><hr/>" +
 				"And " + (StatementForm.NUMBER_OF_ITEMS_IN_RANDOM_LIST - statmentsToVerify.size()) + " of those statements have been considered correct because they are already in dbpedia.org!", Label.CONTENT_XHTML);
         subwindow.addComponent(message);
