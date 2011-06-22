@@ -41,8 +41,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 
 	private final NLPediaLogger logger					= new NLPediaLogger(DomainAndRangeEvaluator.class);
 	private NamedEntityRecognizer ner;
-	private final int maxNumberOfDocuments 				= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
-	private final int maxNumberOfEvaluationSentences 	= 500;
+	private final int maxNumberOfEvaluationSentences 	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfEvalDocuments"));
 	private PatternDao patternDao						= (PatternDao) DaoFactory.getInstance().createDAO(PatternDao.class);
 	
 	private PatternSearcher patternSearcher;
@@ -100,7 +99,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					String patternWithOutVariables = this.segmentString(pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim());
 							
 					long start = new Date().getTime();
-					List<String> sentences = new ArrayList<String>(patternSearcher.getExactMatchSentences(patternWithOutVariables, maxNumberOfDocuments));//.getSentencesWithString(patternWithOutVariables, this.maxNumberOfDocuments));
+					List<String> sentences = new ArrayList<String>(patternSearcher.getExactMatchSentences(patternWithOutVariables, maxNumberOfEvaluationSentences));//.getSentencesWithString(patternWithOutVariables, this.maxNumberOfDocuments));
 					System.out.println("Querying index for pattern \"" + patternWithOutVariables + "\" took "+((new Date().getTime() - start )/1000 )+"s and returned " +sentences.size() + " sentences.");
 					this.logger.debug("Querying index for pattern \"" + patternWithOutVariables + "\" took "+((new Date().getTime() - start )/1000 )+"s and returned " +sentences.size() + " sentences.");
 					this.logger.debug("Pattern \"" + patternWithOutVariables + "\" returned " + sentences.size() + " results.");
