@@ -279,15 +279,10 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				
 				String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 				
-				// something like en_wiki or en_news
-				String temp = currentDatabase.substring(0,currentDatabase.lastIndexOf("_"));
-				String indexDir = NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory");
-				// this only works only if the both indexes are accessable via the same path TODO
-				if ( !indexDir.contains(temp) ) {
-					
-					if ( indexDir.contains("en_news") ) indexDir = indexDir.replace("en_news", "en_wiki");
-					else if ( indexDir.contains("en_wiki") ) indexDir = indexDir.replace("en_wiki", "en_news");
-				}
+				String indexDir = NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"); //TODO replace with setting
+				indexDir = indexDir.replace("/index/stanfordnlp", "");
+				indexDir = indexDir.replace(indexDir.substring(indexDir.lastIndexOf("/")+1), "");
+				indexDir = indexDir + currentDatabase.substring(0,currentDatabase.lastIndexOf("_")) + "/index/stanfordnlp";
 				
 				PatternSearcher patternSearcher = new PatternSearcher(indexDir);
 				TreeSet<String> results = (TreeSet<String>) patternSearcher.getExactMatchSentences(naturalLanguageRepresentation, 1000);

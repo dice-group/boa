@@ -77,7 +77,7 @@ public class PatternMappingDao extends AbstractDao {
 									"p.confidence, p.numberOfOccurrences, p.useForPatternEvaluation, p.luceneDocIds, " +
 									"p.specificity, p.typicity, p.support " + 
 								 "from pattern_mapping as pm, pattern as p " +
-								 "where pm.uri='"+pm.getUri().trim()+"' and pm.id = p.pattern_mapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0) " +
+								 "where pm.uri='"+pm.getUri().trim()+"' and pm.id = p.pattern_mapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0 or p.confidence > 0) " +
 								 "order by pm.uri;"; 
 			
 			Query query = session.createSQLQuery(queryString);
@@ -148,7 +148,7 @@ public class PatternMappingDao extends AbstractDao {
 			tx = session.beginTransaction();
 			
 			String queryString = (uri == null) 
-				? "select distinct(pm.id), pm.uri, pm.rdfsRange, pm.rdfsDomain from pattern_mapping as pm, pattern as p where pm.id = p.pattern_mapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0) order by pm.uri;"
+				? "select distinct(pm.id), pm.uri, pm.rdfsRange, pm.rdfsDomain from pattern_mapping as pm, pattern as p where pm.id = p.pattern_mapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0 or p.confidence > 0) order by pm.uri;"
 				: "select pm.id, pm.uri, pm.rdfsRange, pm.rdfsDomain from pattern_mapping as pm where uri=:uri"; 
 			
 			
