@@ -57,6 +57,8 @@ public class PatternSearchThread extends Thread {
 			
 			for (i = 0; i < labels.size() ; i++) {
 				
+//				System.out.println(this.getName() + ": " + i);
+				
 				if ( !labels.get(i)[0].equals(labels.get(i)[2]) && !labels.get(i)[0].contains("?") && !labels.get(i)[2].contains("?")) {
 					
 					patternSearcher.queryPattern(labels.get(i)[0], labels.get(i)[2], labels.get(i)[1], labels.get(i)[3], labels.get(i)[4], labels.get(i)[5].equals("isSubject") ? true : false);

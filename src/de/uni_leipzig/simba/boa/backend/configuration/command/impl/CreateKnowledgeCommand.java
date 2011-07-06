@@ -85,7 +85,7 @@ public class CreateKnowledgeCommand implements Command {
 
 				for (Pattern pattern : patternList) {
 
-					System.out.println("Querying pattern: " + pattern.getNaturalLanguageRepresentation() + " [ID:" + pattern.getId() + ", conf:" + pattern.getDoubleSupportConfidence() + "]");
+					System.out.println("Querying pattern: " + pattern.getNaturalLanguageRepresentation() + " [ID:" + pattern.getId() + ", conf:" + pattern.getConfidence() + "]");
 
 					String domainUri = pattern.getPatternMapping().getRdfsDomain();
 					String rangeUri = pattern.getPatternMapping().getRdfsRange();
@@ -269,7 +269,7 @@ public class CreateKnowledgeCommand implements Command {
 			@Override
 			public int compare(Pattern pattern1, Pattern pattern2) {
 
-				return pattern2.getDoubleSupportConfidence().compareTo(pattern1.getDoubleSupportConfidence());
+				return pattern2.getConfidence().compareTo(pattern1.getConfidence());
 			}
 		});
 

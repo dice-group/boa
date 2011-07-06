@@ -99,10 +99,6 @@ public class PatternEvaluationCommand implements Command {
 			results.addAll(patternMappingList);
 		}
 
-		// global maxima
-		double maxWithLog = 0;
-		double maxWithLogWithLogLearnedFrom = 0;
-		
 		System.out.println("All evaluation threads are finished. Start to calculate normalized confidence!");
 		
 		for (PatternMapping pm : results ) {
@@ -115,16 +111,12 @@ public class PatternEvaluationCommand implements Command {
 				
 				if ( pattern.isUseForPatternEvaluation() ) {
 					
-					maxConfidenceForPatternMapping	= Math.max(maxConfidenceForPatternMapping, pattern.getConfidence());
-					maxDoubleSupportConfidence		= Math.max(maxDoubleSupportConfidence, pattern.getDoubleSupportConfidence());
-					maxWithLog 						= Math.max(maxWithLog, pattern.getWithLogConfidence());
-					maxWithLogWithLogLearnedFrom 	= Math.max(maxWithLogWithLogLearnedFrom, 	pattern.getWithLogWithLogLearndFromConfidence());
+					maxDoubleSupportConfidence		= Math.max(maxDoubleSupportConfidence, pattern.getConfidence());
 				}
 			}
 			
 			System.out.println("Mapping: " + pm.getUri());
-			System.out.println("maxDoubleSupportConfidence: "+maxDoubleSupportConfidence);
-			System.out.println("maxConfidenceForPatternMapping: "+maxConfidenceForPatternMapping + "\n");
+			System.out.println("\tmaxConfidence: "+maxDoubleSupportConfidence);
 			
 			// set local maximums
 			for ( Pattern pattern : pm.getPatterns() ) {
@@ -132,32 +124,13 @@ public class PatternEvaluationCommand implements Command {
 				if ( pattern.isUseForPatternEvaluation() ) {
 				
 					pattern.setConfidence(pattern.getConfidence() / maxConfidenceForPatternMapping);
-					pattern.setDoubleSupportConfidence(pattern.getDoubleSupportConfidence() / maxDoubleSupportConfidence);
 				}
 			}
 		}
 		
-		System.out.println();
-		System.out.println("maxWithLog: "+maxWithLog);
-		System.out.println("maxWithLogWithLogLearned: "+maxWithLogWithLogLearnedFrom);
-		System.out.println();
-		
 		for ( PatternMapping mapping : results ) {
 			
 			System.out.println("Updating pattern mapping " + mapping.getUri());
-			for (Pattern pattern : mapping.getPatterns() ) {
-				
-				if ( pattern.isUseForPatternEvaluation() ) {
-					
-					pattern.setWithLogConfidence(pattern.getWithLogConfidence() / (maxWithLog));
-					pattern.setWithLogWithLogLearndFromConfidence(pattern.getWithLogWithLogLearndFromConfidence() / maxWithLogWithLogLearnedFrom);
-				}
-				else {
-					
-					pattern.setWithLogConfidence(-1D);
-					pattern.setWithLogWithLogLearndFromConfidence(-1D);
-				}
-			}
 			this.patternMappingDao.updatePatternMapping(mapping);
 		}
 	}

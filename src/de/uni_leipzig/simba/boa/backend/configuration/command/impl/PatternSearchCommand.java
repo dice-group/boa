@@ -40,6 +40,7 @@ public class PatternSearchCommand implements Command {
 		Date startSearchDate = new Date();
 		
 		List<String[]> labels =  RelationFinder.getRelationFromFile("");
+		Collections.shuffle(labels); // some threads are always faster then other, shuffle them to be more even on execution time
 		
 		System.out.println("Number of search operations: " + labels.size() + " for input file " + NLPediaSettings.getInstance().getSetting("labelOutputFile"));
 		System.out.println("Number of search threads: " + NLPediaSettings.getInstance().getSetting("numberOfSearchThreads"));

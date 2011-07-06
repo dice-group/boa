@@ -3,8 +3,10 @@ package de.uni_leipzig.simba.boa.backend.search;
 import java.io.BufferedReader;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.KeywordAnalyzer;
@@ -68,9 +70,10 @@ public class FileIndexer {
 		
 		File files[] = directory.listFiles();
 		
-		FileReader fileReader	= null;
 		Document doc			= null;
 		int i = 1;
+		
+		System.out.println("Index directory: " + NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
 		
 		// go through all files in the data 
 		for (File file : files) {
@@ -86,9 +89,8 @@ public class FileIndexer {
 			if ( file.getName().endsWith(".txt") ) {
 				
 				try {
-					
-					fileReader = new FileReader(file);
-					BufferedReader br = new BufferedReader(fileReader);
+
+					BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 					String line = null;
 					
 //					NamedEntityRecognizer ner = new NamedEntityRecognizer();
@@ -113,7 +115,6 @@ public class FileIndexer {
 							this.writer.addDocument(doc);
 //						}
 					}
-		 
 					br.close();
 					this.logger.info("Added: " + file.getAbsolutePath() + " to index.");
 				}
@@ -121,10 +122,6 @@ public class FileIndexer {
 					
 					this.logger.error("Could not add: " + file + " to index", e);
 					e.printStackTrace();
-				}
-				finally {
-					
-					fileReader.close();
 				}
 			}
 			else {

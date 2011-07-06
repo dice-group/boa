@@ -73,10 +73,11 @@ public class PatternMappingDao extends AbstractDao {
 			session = HibernateFactory.getSessionFactory().openSession();
 			tx = session.beginTransaction();
 			
-			String queryString = "select p.id, p.naturalLanguageRepresentation, p.withLogConfidence, p.withLogWithLogLearndFromConfidence, " +
-									"p.confidence, p.doubleSupportConfidence, p.numberOfOccurrences, p.useForPatternEvaluation, p.luceneDocIds " +
+			String queryString = "select p.id, p.naturalLanguageRepresentation, " +
+									"p.confidence, p.numberOfOccurrences, p.useForPatternEvaluation, p.luceneDocIds, " +
+									"p.specificity, p.typicity, p.support " + 
 								 "from pattern_mapping as pm, pattern as p " +
-								 "where pm.uri='"+pm.getUri().trim()+"' and pm.id = p.pattern_mapping_id and p.confidence >= 0 and p.useForPatternEvaluation = 1 " +
+								 "where pm.uri='"+pm.getUri().trim()+"' and pm.id = p.pattern_mapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0) " +
 								 "order by pm.uri;"; 
 			
 			Query query = session.createSQLQuery(queryString);
@@ -87,13 +88,13 @@ public class PatternMappingDao extends AbstractDao {
 				Pattern pattern = new Pattern();
 				pattern.setId((Integer) obj[0]);
 				pattern.setNaturalLanguageRepresentation((String) obj[1]);
-				pattern.setWithLogConfidence((Double) obj[2]);
-				pattern.setWithLogWithLogLearndFromConfidence((Double) obj[3]);
-				pattern.setConfidence((Double) obj[4]);
-				pattern.setDoubleSupportConfidence((Double) obj[5]);
-				pattern.setNumberOfOccurrences((Integer) obj[6]);
-				pattern.setUseForPatternEvaluation((Boolean) obj[7]);
-				pattern.setLuceneDocIds((String) obj[8]);
+				pattern.setConfidence((Double) obj[2]);
+				pattern.setNumberOfOccurrences((Integer) obj[3]);
+				pattern.setUseForPatternEvaluation((Boolean) obj[4]);
+				pattern.setLuceneDocIds((String) obj[5]);
+				pattern.setSpecificity((Double) obj[6]);
+				pattern.setTypicity((Double) obj[7]);
+				pattern.setSupport((Double) obj[8]);
 				
 				pm.addPattern(pattern);
 			}
@@ -147,7 +148,7 @@ public class PatternMappingDao extends AbstractDao {
 			tx = session.beginTransaction();
 			
 			String queryString = (uri == null) 
-				? "select distinct(pm.id), pm.uri, pm.rdfsRange, pm.rdfsDomain from pattern_mapping as pm, pattern as p where pm.id = p.pattern_mapping_id and p.confidence >= 0 and useForPatternEvaluation = 1 order by pm.uri;"
+				? "select distinct(pm.id), pm.uri, pm.rdfsRange, pm.rdfsDomain from pattern_mapping as pm, pattern as p where pm.id = p.pattern_mapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0) order by pm.uri;"
 				: "select pm.id, pm.uri, pm.rdfsRange, pm.rdfsDomain from pattern_mapping as pm where uri=:uri"; 
 			
 			

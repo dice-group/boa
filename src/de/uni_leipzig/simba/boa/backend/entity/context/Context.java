@@ -76,7 +76,8 @@ public abstract class Context {
 		
 		for ( String word : this.words ) {
 			
-			if ( word.contains(NamedEntityRecognizer.DELIMITER + "B-" + Context.namedEntityRecognitionMappings.get(entityType))) 
+			if ( word.contains(NamedEntityRecognizer.DELIMITER + "B-" + Context.namedEntityRecognitionMappings.get(entityType)) 
+					|| word.contains(NamedEntityRecognizer.DELIMITER + "I-" + Context.namedEntityRecognitionMappings.get(entityType)) )  
 				return true;
 		}
 		return false;

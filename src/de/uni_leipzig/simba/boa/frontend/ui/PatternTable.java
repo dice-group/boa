@@ -17,10 +17,10 @@ import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 public class PatternTable extends Table {
 	
 	public static final Object[] NATURAL_COL_ORDER = new Object[] {
-		 "id", "withLogConfidence", "withLogWithLogLearndFromConfidence", "confidence", "doubleSupportConfidence", "naturalLanguageRepresentation", "numberOfOccurrences"};
+		 "id",	"confidence",	"support",	"typicity",	"specificity",	"naturalLanguageRepresentation",	"numberOfOccurrences"};
 
 	public static final String[] COL_HEADERS_ENGLISH = new String[] {
-		 "id", "LogConf", "LogConfLogLearned", "confidence", "CONF","naturalLanguageRepresentation", "OCC" };
+		 "id",	"CONF",			"SUPP",		"TYP",		"SPEC",			"naturalLanguageRepresentation",	"OCC" };
 	
 	public PatternTable(BoaFrontendApplication app, Container dataSource) {
 		
@@ -31,7 +31,7 @@ public class PatternTable extends Table {
 		setVisibleColumns(PatternTable.NATURAL_COL_ORDER);
 		setColumnHeaders(PatternTable.COL_HEADERS_ENGLISH);
 		
-		setSortContainerPropertyId(NATURAL_COL_ORDER[4]);
+		setSortContainerPropertyId(NATURAL_COL_ORDER[1]);
 		setSortAscending(false);
 		sort();
 		

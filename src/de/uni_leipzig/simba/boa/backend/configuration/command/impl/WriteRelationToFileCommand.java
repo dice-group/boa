@@ -32,19 +32,21 @@ public class WriteRelationToFileCommand implements Command {
 	public void execute() {
 		
 		String queryPersonSubject		= this.createQueryPersonSubject();
+		System.out.println(queryPersonSubject);
 		String queryPersonObject		= this.createQueryPersonObject();
-		this.getPersonSubjectKnowledge(queryPersonSubject);
-		this.getPersonObjectKnowledge(queryPersonObject);
-		
-		String queryPlaceSubject		= this.createQueryPlaceSubject();
-		String queryPlaceObject			= this.createQueryPlaceObject();
-		this.getPlaceSubjectKnowledge(queryPlaceSubject);
-		this.getPlaceObjectKnowledge(queryPlaceObject);
-		
-		String queryOrganisationSubject	= this.createQueryOrganisationSubject();
-		String queryOrganisationObject	= this.createQueryOrganisationObject();
-		this.getOrganisationSubjectKnowledge(queryOrganisationSubject);
-		this.getOrganisationObjectKnowledge(queryOrganisationObject);
+		System.out.println(queryPersonObject);
+//		this.getPersonSubjectKnowledge(queryPersonSubject);
+//		this.getPersonObjectKnowledge(queryPersonObject);
+//		
+//		String queryPlaceSubject		= this.createQueryPlaceSubject();
+//		String queryPlaceObject			= this.createQueryPlaceObject();
+//		this.getPlaceSubjectKnowledge(queryPlaceSubject);
+//		this.getPlaceObjectKnowledge(queryPlaceObject);
+//		
+//		String queryOrganisationSubject	= this.createQueryOrganisationSubject();
+//		String queryOrganisationObject	= this.createQueryOrganisationObject();
+//		this.getOrganisationSubjectKnowledge(queryOrganisationSubject);
+//		this.getOrganisationObjectKnowledge(queryOrganisationObject);
 	}
 
 	private String createQueryOrganisationObject() {
@@ -58,8 +60,8 @@ public class WriteRelationToFileCommand implements Command {
 			 "  ?s2 rdfs:label ?s2l . " +
 			 "  ?o2 ?p2 ?s2 . " +
 			 "	?o2 rdfs:label ?o2l " +
-			 "	FILTER (lang(?s2l) = \"en\") " +
-			 "	FILTER (lang(?o2l) = \"en\") " +
+			 "	FILTER (lang(?s2l) = \"de\") " +
+			 "	FILTER (lang(?o2l) = \"de\") " +
 			 "	?p2  rdfs:range  ?rangep2 . " +
 			 "	?p2  rdfs:domain ?domainp2 . " +
 			"}";
@@ -76,8 +78,8 @@ public class WriteRelationToFileCommand implements Command {
 			 "  ?s1 rdfs:label ?s1l . " +
 			 "	?s1 ?p1 ?o1 . " +
 			 "	?o1 rdfs:label ?o1l ." +
-			 "	FILTER (lang(?s1l) = \"en\") . " +
-			 "	FILTER (lang(?o1l) = \"en\") . " +
+			 "	FILTER (lang(?s1l) = \"de\") . " +
+			 "	FILTER (lang(?o1l) = \"de\") . " +
 			 "	?p1  rdfs:range  ?rangep1 . " +
 			 "	?p1  rdfs:domain ?domainp1 . " +
 			"}";
@@ -94,8 +96,8 @@ public class WriteRelationToFileCommand implements Command {
 			 "  ?s2 rdfs:label ?s2l . " +
 			 "  ?o2 ?p2 ?s2 . " +
 			 "	?o2 rdfs:label ?o2l " +
-			 "	FILTER (lang(?s2l) = \"en\") " +
-			 "	FILTER (lang(?o2l) = \"en\") " +
+			 "	FILTER (lang(?s2l) = \"de\") " +
+			 "	FILTER (lang(?o2l) = \"de\") " +
 			 "	?p2  rdfs:range  ?rangep2 . " +
 			 "	?p2  rdfs:domain ?domainp2 . " +
 			"}";
@@ -112,8 +114,8 @@ public class WriteRelationToFileCommand implements Command {
 			 "  ?s1 rdfs:label ?s1l . " +
 			 "	?s1 ?p1 ?o1 . " +
 			 "	?o1 rdfs:label ?o1l ." +
-			 "	FILTER (lang(?s1l) = \"en\") . " +
-			 "	FILTER (lang(?o1l) = \"en\") . " +
+			 "	FILTER (lang(?s1l) = \"de\") . " +
+			 "	FILTER (lang(?o1l) = \"de\") . " +
 			 "	?p1  rdfs:range  ?rangep1 . " +
 			 "	?p1  rdfs:domain ?domainp1 . " +
 			"}";
@@ -130,8 +132,8 @@ public class WriteRelationToFileCommand implements Command {
 			 "  ?s2 rdfs:label ?s2l . " +
 			 "  ?o2 ?p2 ?s2 . " +
 			 "	?o2 rdfs:label ?o2l " +
-			 "	FILTER (lang(?s2l) = \"en\") " +
-			 "	FILTER (lang(?o2l) = \"en\") " +
+			 "	FILTER (lang(?s2l) = \"de\") " +
+			 "	FILTER (lang(?o2l) = \"de\") " +
 			 "	?p2  rdfs:range  ?rangep2 . " +
 			 "	?p2  rdfs:domain ?domainp2 . " +
 			"}";
@@ -150,8 +152,8 @@ public class WriteRelationToFileCommand implements Command {
 			 "  ?s1 rdfs:label ?s1l . " +
 			 "	?s1 ?p1 ?o1 . " +
 			 "	?o1 rdfs:label ?o1l ." +
-			 "	FILTER (lang(?s1l) = \"en\") . " +
-			 "	FILTER (lang(?o1l) = \"en\") . " +
+			 "	FILTER (lang(?s1l) = \"de\") . " +
+			 "	FILTER (lang(?o1l) = \"de\") . " +
 			 "	?p1  rdfs:range  ?rangep1 . " +
 			 "	?p1  rdfs:domain ?domainp1 . " +
 			"}";
@@ -162,37 +164,37 @@ public class WriteRelationToFileCommand implements Command {
 	private void getPlaceObjectKnowledge(String queryPlaceObject) {
 
 		ResultSet resultSet = this.getResultSet(queryPlaceObject);
-		this.handleObjectQuery("/Users/gerb/place_object.txt", resultSet);
+		this.handleObjectQuery("/Users/gerb/de_place_object.txt", resultSet);
 	}
 
 	private void getPlaceSubjectKnowledge(String queryPlaceSubject) {
 
 		ResultSet resultSet = this.getResultSet(queryPlaceSubject);
-		this.handleSubjectQuery("/Users/gerb/place_subject.txt", resultSet);
+		this.handleSubjectQuery("/Users/gerb/de_place_subject.txt", resultSet);
 	}
 
 	private void getOrganisationObjectKnowledge(String queryOrganisationObject) {
 
 		ResultSet resultSet = this.getResultSet(queryOrganisationObject);
-		this.handleObjectQuery("/Users/gerb/organisation_object.txt", resultSet);
+		this.handleObjectQuery("/Users/gerb/de_organisation_object.txt", resultSet);
 	}
 
 	private void getOrganisationSubjectKnowledge(String queryOrganisationSubject) {
 
 		ResultSet resultSet = this.getResultSet(queryOrganisationSubject);
-		this.handleSubjectQuery("/Users/gerb/organisation_subject.txt", resultSet);
+		this.handleSubjectQuery("/Users/gerb/de_organisation_subject.txt", resultSet);
 	}
 
 	private void getPersonObjectKnowledge(String queryPersonObject) {
 
 		ResultSet resultSet = this.getResultSet(queryPersonObject);
-		this.handleObjectQuery("/Users/gerb/person_object.txt", resultSet);
+		this.handleObjectQuery("/Users/gerb/de_person_object.txt", resultSet);
 	}
 
 	private void getPersonSubjectKnowledge(String queryPersonSubject) {
 
 		ResultSet resultSet = this.getResultSet(queryPersonSubject);
-		this.handleSubjectQuery("/Users/gerb/person_subject.txt", resultSet);
+		this.handleSubjectQuery("/Users/gerb/de_person_subject.txt", resultSet);
 	}
 		
 	private void handleSubjectQuery(String fileName, ResultSet resultSet) {

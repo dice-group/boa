@@ -26,13 +26,13 @@ import de.uni_leipzig.simba.boa.backend.crawl.RelationFinder;
 
 public class KnowledgeStatisticsCommand implements Command {
 
-	private String knowledgePath = NLPediaSettings.getInstance().getSetting("labelOutputFile");
+	private static String knowledgePath = NLPediaSettings.getInstance().getSetting("labelOutputFile");
 	
 	@Override
 	public void execute() {
 
-//		this.createKnowledgeDistribution();
-		this.createUniqueWordsCount();
+		createKnowledgeDistribution();
+//		this.createUniqueWordsCount();
 	}
 
 	private void createUniqueWordsCount() {
@@ -96,7 +96,7 @@ public class KnowledgeStatisticsCommand implements Command {
 		
 	}
 
-	private void createKnowledgeDistribution() {
+	private static void createKnowledgeDistribution() {
 
 		String path = knowledgePath.substring(0, knowledgePath.lastIndexOf("/"));
 		

@@ -263,8 +263,18 @@ public class PatternSearcher {
 		TreeSet<String> list = new TreeSet<String>();
 		
 		for (int i = hits.length - 1; i >= 0; i--) {
+			
+			// get the indexed string
 			String sentence = indexSearcher.doc(hits[i].doc).get("sentence");
-			list.add(sentence);
+			
+			// convert to UTF8
+			byte[] bytes = sentence.getBytes("UTF-8");
+			String testString = new String(bytes, "UTF-8");
+			
+//			System.out.println(testString);
+			
+			// only add it if also "," are contained (remember lucene does not match ",")
+			if ( testString.contains(keyphrase)) list.add(testString);
 		}
 		return list;
 	}

@@ -112,6 +112,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 						start = new Date().getTime();
 						nerTagged = this.ner.recognizeEntitiesInString(foundString);
 						System.out.println("NER tag string: \"" + foundString + "\" took "+((new Date().getTime() - start )/1000 )+"s.");
+						System.out.println("NER tag string: " + nerTagged);
 						this.logger.debug("NER tag string: \"" + foundString + "\" took "+((new Date().getTime() - start )/1000 )+"s.");
 						segmentedFoundString = this.segmentString(foundString);
 						segmentedPattern = this.segmentString(patternWithOutVariables);
@@ -155,40 +156,35 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					
 					// ########################################################
 					
-					double confidenceWithLog = (domainCorrectness + rangeCorrectness) / (2D);//* (double) sentences.size());
-					confidenceWithLog = Double.isNaN(confidenceWithLog) ? 0d : confidenceWithLog * (double) (Math.log((int)(sentences.size() + 1)) / Math.log(2));
+					double typicity = 0D;
+					double support = 0D;
+					double specificity = 0D;
 					
-//					System.out.println("MAX_LEARNED:" +pattern.retrieveMaxLearnedFrom());
-//					
-					pattern.setWithLogConfidence(confidenceWithLog);
-					pattern.setWithLogWithLogLearndFromConfidence(confidenceWithLog * (double) (Math.log((int)(pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2)));
-					pattern.setConfidence(pattern.getWithLogWithLogLearndFromConfidence() * (Math.log(PatternEvaluationCommand.NUMBER_OF_PATTERN_MAPPINGS / this.getNumberOfPatternMappingsWithPattern(pattern.getNaturalLanguageRepresentation())) / Math.log(2)));
-					pattern.setDoubleSupportConfidence( ((double) (Math.log((pattern.retrieveCountLearnedFrom() + 1)) / Math.log(2))) * pattern.getConfidence() );
-//					pattern.setWithLogWithoutLogLearndFromConfidence(confidenceWithLog * pattern.retrieveMaxLearnedFrom());
-//					
-//					System.out.println(pattern.getWithLogConfidence());
-//					System.out.println(pattern.getWithLogWithLogLearndFromConfidence());
-//					System.out.println(pattern.getWithLogWithoutLogLearndFromConfidence());
+					typicity = (domainCorrectness + rangeCorrectness) / (2D);//* (double) sentences.size());
+					typicity = Double.isNaN(typicity) ? 0d : typicity * (double) (Math.log((int)(sentences.size() + 1)) / Math.log(2));
 					
-					// ########################################################
+					specificity = (Math.log(PatternEvaluationCommand.NUMBER_OF_PATTERN_MAPPINGS / this.getNumberOfPatternMappingsWithPattern(pattern.getNaturalLanguageRepresentation())) / Math.log(2));
 					
-//					double confidenceWithoutLog = (domainCorrectness + rangeCorrectness) / 2;
-//					confidenceWithoutLog = Double.isNaN(confidenceWithoutLog) ? 0d : confidenceWithoutLog * sentences.size();
-//					
-//					pattern.setWithoutLogConfidence(confidenceWithoutLog);
-//					pattern.setWithoutLogWithLogLearndFromConfidence(confidenceWithoutLog * (Math.log((double)(pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2d)));
-//					pattern.setWithoutLogWithoutLogLearndFromConfidence(confidenceWithoutLog * pattern.retrieveMaxLearnedFrom());
+					support = (double) (Math.log((int)(pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2)) * 
+								(double) (Math.log((pattern.retrieveCountLearnedFrom() + 1)) / Math.log(2));
 					
-//					System.out.println(pattern.getWithoutLogConfidence());
-//					System.out.println(pattern.getWithoutLogWithLogLearndFromConfidence());
-//					System.out.println(pattern.getWithoutLogWithoutLogLearndFromConfidence());
+					pattern.setSupport(support);
+					pattern.setTypicity(typicity);
+					pattern.setSpecificity(specificity);
+					
+					System.out.println(pattern.getNaturalLanguageRepresentation());
+					System.out.println("Support: \t\t" + pattern.getSupport());
+					System.out.println("Specificity:\t" + pattern.getSpecificity());
+					System.out.println("Typicity:\t" + pattern.getTypicity());
+					
+					pattern.setConfidence(support * typicity * specificity);
 					
 					// ########################################################
 					
 					// we wont need to see them in the view
 					if ( pattern.getConfidence() <= 0 ) pattern.setUseForPatternEvaluation(false);
 					
-					if ( pattern.getConfidence() <= 0 || pattern.getWithLogConfidence() <= 0 || pattern.getDoubleSupportConfidence() <= 0 ) {
+					if ( pattern.getConfidence() <= 0 ) {
 						
 						System.out.println(" does not fit in domain/range.\n"); // continued from upper system.out.print()
 						this.logger.debug("Pattern " +  pattern.getNaturalLanguageRepresentation() + " does not fit in domain/range.");

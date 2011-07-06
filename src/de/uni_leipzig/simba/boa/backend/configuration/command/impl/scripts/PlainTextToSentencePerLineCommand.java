@@ -1,12 +1,14 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Date;
@@ -34,7 +36,8 @@ public class PlainTextToSentencePerLineCommand implements Command {
 
 		try {
 
-			Writer writer 		= new PrintWriter(new BufferedWriter(new FileWriter(this.pathToOutputFile, true)));
+//			Writer writer 		= new PrintWriter(new BufferedWriter(new FileWriter(this.pathToOutputFile, true)));
+			BufferedWriter writer	= new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.pathToOutputFile), "UTF-8"));
 			
 			SentenceDetection sd = new SentenceDetection();
 			
@@ -50,7 +53,7 @@ public class PlainTextToSentencePerLineCommand implements Command {
 				this.logger.debug("Processing file: " + file.getAbsolutePath());
 				System.out.println("Processing file: " + file.getAbsolutePath());
 				
-				BufferedReader br	= new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(file))));
+				BufferedReader br	= new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 				
 				int i = 0;
 				
@@ -62,9 +65,8 @@ public class PlainTextToSentencePerLineCommand implements Command {
 						if ( i++ == 1000000 ) {
 							
 							for (String sentence : sd.getSentences(buffer.toString(), NLPediaSettings.getInstance().getSetting("sentenceBoundaryDisambiguation"))){
-							
-								writer.write(sentence);
-								writer.write(System.getProperty("line.separator"));
+								
+								writer.write(sentence + System.getProperty("line.separator"));
 							}
 							
 							buffer = new StringBuffer();

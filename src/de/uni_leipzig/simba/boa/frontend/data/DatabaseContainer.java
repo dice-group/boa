@@ -18,7 +18,8 @@ public class DatabaseContainer extends HierarchicalContainer{
 	public static final Object DATABASE_PROPERTY_NAME = "database_name";
 	public static final Object URI_NAME = "database_name";
 	
-	public static final String[] DATABASE_IDS = new String[]{"en_wiki_loc", "en_wiki_per", "en_wiki_org", "en_wiki_all", "en_news_loc", "en_news_per", "en_news_org", "en_news_all", "en_news_time_test"};
+//	public static final String[] DATABASE_IDS = new String[]{"en_wiki_loc", "en_wiki_per", "en_wiki_org", "en_wiki_all", "en_news_loc", "en_news_per", "en_news_org", "en_news_all", "en_news_time_test", "de_wiki_all"};
+	public static final String[] DATABASE_IDS = new String[]{"en_wiki_loc", "de_wiki_all"};
 	
 	public DatabaseContainer() {
 		

@@ -13,7 +13,7 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 public class OccurrenceEvaluator extends Initializeable implements PatternEvaluator {
 
-	private static final int NUMBER_OF_OCCURRENCES_THRESHOLD = 10;
+	private static final int NUMBER_OF_OCCURRENCES_THRESHOLD = 5;
 	private static final int NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD = 2;
 	private final NLPediaLogger logger = new NLPediaLogger(OccurrenceEvaluator.class);
 	

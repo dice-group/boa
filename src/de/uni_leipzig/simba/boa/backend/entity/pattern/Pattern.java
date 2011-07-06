@@ -32,36 +32,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * 
 	 */
-	private Double withLogConfidence;
-	
-	/**
-	 * 
-	 */
-	private Double withoutLogConfidence;
-	
-	/**
-	 * 
-	 */
-	private Double withLogWithLogLearndFromConfidence = -1D;
-	
-	/**
-	 * 
-	 */
-	private Double withLogWithoutLogLearndFromConfidence = -1D;
-	
-	/**
-	 * 
-	 */
-	private Double withoutLogWithLogLearndFromConfidence = -1D;
-	
-	/**
-	 * 
-	 */
-	private Double withoutLogWithoutLogLearndFromConfidence = -1D;
-	
-	/**
-	 * 
-	 */
 	private Integer numberOfOccurrences;
 	
 	/**
@@ -107,7 +77,17 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * 
 	 */
-	private Double doubleSupportConfidence = -1D;
+	private Double support = -1D;
+	
+	/**
+	 * 
+	 */
+	private Double typicity = -1D;
+	
+	/**
+	 * 
+	 */
+	private Double specificity = -1D;
 	
 	/**
 	 * @param naturalLanguageRepresentation the naturalLanguageRepresentation to set
@@ -129,12 +109,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	public Pattern(){
 		
 		this.confidence = -1D;
-		this.withLogConfidence = -1D;
-		this.withoutLogConfidence = -1D;
-		this.withoutLogWithoutLogLearndFromConfidence = -1D;
-		this.withoutLogWithLogLearndFromConfidence = -1D;
-		this.withLogWithoutLogLearndFromConfidence = -1D;
-		this.withLogWithLogLearndFromConfidence = -1D;
 	}
 	
 	/**
@@ -149,14 +123,8 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		this.nerTaggedString = generalizedPatternString;
 		this.learnedFrom = new HashMap<String,Integer>();
 		this.numberOfOccurrences = 1;
-		this.withLogConfidence = -1D;
-		this.withoutLogConfidence = -1D;
 		this.useForPatternEvaluation = true;
 		this.luceneDocIds = "";
-		this.withoutLogWithoutLogLearndFromConfidence = -1D;
-		this.withoutLogWithLogLearndFromConfidence = -1D;
-		this.withLogWithoutLogLearndFromConfidence = -1D;
-		this.withLogWithLogLearndFromConfidence = -1D;
 	}
 
 	/**
@@ -168,41 +136,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		return this.naturalLanguageRepresentation;
 	}
 	
-	/**
-	 * @return the withLogConfidence
-	 */
-	@Basic
-	public Double getWithLogConfidence() {
-	
-		return this.withLogConfidence;
-	}
-	
-	/**
-	 * @param withLogConfidence the withLogConfidence to set
-	 */
-	public void setWithLogConfidence(Double confidence) {
-	
-		this.withLogConfidence = confidence;
-	}
-	
-	/**
-	 * @param withoutLogConfidence the withoutLogConfidence to set
-	 */
-	public void setWithoutLogConfidence(Double withoutLogConfidence) {
-
-		this.withoutLogConfidence = withoutLogConfidence;
-	}
-
-
-	/**
-	 * @return the withoutLogConfidence
-	 */
-	public Double getWithoutLogConfidence() {
-
-		return withoutLogConfidence;
-	}
-
-
 	/**
 	 * @return the numberOfOccurrences
 	 */
@@ -283,8 +216,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		StringBuilder builder = new StringBuilder();
 		builder.append("Pattern [naturalLanguageRepresentation=");
 		builder.append(naturalLanguageRepresentation);
-		builder.append(", withLogConfidence=");
-		builder.append(withLogConfidence);
 		builder.append(", numberOfOccurrences=");
 		builder.append(numberOfOccurrences);
 		builder.append(", useForPatternEvaluation=");
@@ -452,44 +383,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	}
 
 
-	/**
-	 * @param withLogWithoutLogLearndFromConfidence the withLogWithoutLogLearndFromConfidence to set
-	 */
-	public void setWithLogWithoutLogLearndFromConfidence(Double withLogWithoutLogLearndFromConfidence) {
-
-		this.withLogWithoutLogLearndFromConfidence = withLogWithoutLogLearndFromConfidence;
-	}
-
-
-	/**
-	 * @return the withLogWithoutLogLearndFromConfidence
-	 */
-	@Basic
-	public Double getWithLogWithoutLogLearndFromConfidence() {
-
-		return withLogWithoutLogLearndFromConfidence;
-	}
-
-
-	/**
-	 * @param withoutLogWithLogLearndFromConfidence the withoutLogWithLogLearndFromConfidence to set
-	 */
-	public void setWithoutLogWithLogLearndFromConfidence(Double withoutLogWithLogLearndFromConfidence) {
-
-		this.withoutLogWithLogLearndFromConfidence = withoutLogWithLogLearndFromConfidence;
-	}
-
-
-	/**
-	 * @return the withoutLogWithLogLearndFromConfidence
-	 */
-	@Basic
-	public Double getWithoutLogWithLogLearndFromConfidence() {
-
-		return withoutLogWithLogLearndFromConfidence;
-	}
-
-
 	public double retrieveMaxLearnedFrom() {
 
 		double maximum = 0;
@@ -508,43 +401,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		return this.learnedFrom.size();
 	}
 
-	/**
-	 * @param withLogWithLogLearndFromConfidence the withLogWithLogLearndFromConfidence to set
-	 */
-	public void setWithLogWithLogLearndFromConfidence(Double withLogWithLogLearndFromConfidence) {
-
-		this.withLogWithLogLearndFromConfidence = withLogWithLogLearndFromConfidence;
-	}
-
-
-	/**
-	 * @return the withLogWithLogLearndFromConfidence
-	 */
-	@Basic
-	public Double getWithLogWithLogLearndFromConfidence() {
-
-		return withLogWithLogLearndFromConfidence;
-	}
-
-
-	/**
-	 * @param withoutLogWithoutLogLearndFromConfidence the withoutLogWithoutLogLearndFromConfidence to set
-	 */
-	public void setWithoutLogWithoutLogLearndFromConfidence(Double withoutLogWithoutLogLearndFromConfidence) {
-
-		this.withoutLogWithoutLogLearndFromConfidence = withoutLogWithoutLogLearndFromConfidence;
-	}
-
-
-	/**
-	 * @return the withoutLogWithoutLogLearndFromConfidence
-	 */
-	@Basic
-	public Double getWithoutLogWithoutLogLearndFromConfidence() {
-
-		return withoutLogWithoutLogLearndFromConfidence;
-	}
-
 	@Basic
 	public Double getConfidence() {
 
@@ -556,15 +412,52 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		this.confidence = confidence;
 	}
 
-	@Basic
-	public Double getDoubleSupportConfidence() {
-
-		return this.doubleSupportConfidence;
+	/**
+	 * @return the support
+	 */
+	public Double getSupport() {
+	
+		return support;
+	}
+	
+	/**
+	 * @param support the support to set
+	 */
+	public void setSupport(Double support) {
+	
+		this.support = support;
+	}
+	
+	/**
+	 * @return the typicity
+	 */
+	public Double getTypicity() {
+	
+		return typicity;
 	}
 
-	public void setDoubleSupportConfidence(Double confidence) {
+	/**
+	 * @param typicity the typicity to set
+	 */
+	public void setTypicity(Double typicity) {
+	
+		this.typicity = typicity;
+	}
 
-		this.doubleSupportConfidence = confidence;
+	/**
+	 * @return the specificity
+	 */
+	public Double getSpecificity() {
+	
+		return specificity;
+	}
+
+	/**
+	 * @param specificity the specificity to set
+	 */
+	public void setSpecificity(Double specificity) {
+	
+		this.specificity = specificity;
 	}
 }
 
