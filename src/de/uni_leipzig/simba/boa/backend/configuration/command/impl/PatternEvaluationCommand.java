@@ -105,18 +105,17 @@ public class PatternEvaluationCommand implements Command {
 			
 			// local maxima
 			double maxConfidenceForPatternMapping = 0;
-			double maxDoubleSupportConfidence = 0;
 			
 			for (Pattern pattern : pm.getPatterns() ) {
 				
 				if ( pattern.isUseForPatternEvaluation() ) {
 					
-					maxDoubleSupportConfidence		= Math.max(maxDoubleSupportConfidence, pattern.getConfidence());
+					maxConfidenceForPatternMapping		= Math.max(maxConfidenceForPatternMapping, pattern.getConfidence());
 				}
 			}
 			
 			System.out.println("Mapping: " + pm.getUri());
-			System.out.println("\tmaxConfidence: "+maxDoubleSupportConfidence);
+			System.out.println("\tmaxConfidence: "+maxConfidenceForPatternMapping);
 			
 			// set local maximums
 			for ( Pattern pattern : pm.getPatterns() ) {
