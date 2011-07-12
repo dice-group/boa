@@ -108,7 +108,9 @@ public class NamedEntityRecognizerLearner {
 			System.out.println("Found " + sentencesContainingLabels.size() + " sentences containing label: " + label);
 			
 			// get the most precise type definition for an URI
-			String typReplacement = getTypeForUri(uri, types.get(uri)).replace("http://dbpedia.org/ontology/", "");
+			String typeReplacement = getTypeForUri(uri, types.get(uri));
+			typeReplacement = typeReplacement.replace("http://dbpedia.org/ontology/", "");
+			
 			String[] tokensOfLabel = label.split(" ");
 			
 			for ( Entry<Integer,String> sent : sentencesContainingLabels.entrySet() ) {
@@ -123,11 +125,11 @@ public class NamedEntityRecognizerLearner {
 					
 					if ( i == 0 ) {
 						
-						sentence = sentence.replaceAll("(?i)" + tokensOfLabel[i], tokensOfLabel[i] + "_B-" + typReplacement);
+						sentence = sentence.replaceAll("(?i)" + tokensOfLabel[i], tokensOfLabel[i] + "_B-" + typeReplacement);
 					}
 					else {
 						
-						sentence = sentence.replaceAll("(?i)" + tokensOfLabel[i], tokensOfLabel[i] + "_I-" + typReplacement);
+						sentence = sentence.replaceAll("(?i)" + tokensOfLabel[i], tokensOfLabel[i] + "_I-" + typeReplacement);
 					}
 				}
 				sentences.put(indexId, sentence);
@@ -162,8 +164,8 @@ public class NamedEntityRecognizerLearner {
 		// calculate the depth for all types in the ontology
 		for (String type : types) {
 			
-			System.out.println(type);
 			depth.put(type, new Long(indexer.getHierarchyForClassURI(type).size()).intValue());
+			System.out.println(type + " : " + new Long(indexer.getHierarchyForClassURI(type).size()).intValue());
 		}
 		
 		String currentUri = "";
@@ -218,37 +220,38 @@ public class NamedEntityRecognizerLearner {
 		
 		long start = new Date().getTime();
 
-		Map<String,String> labels = new HashMap<String,String>();
+		this.labels = new HashMap<String,String>();
+
+		this.labels.put("http://dbpedia.org/resource/Brateiu" , "Brateiu");
 		
-		try {
-			
-			BufferedReader in = new BufferedReader(new FileReader(pathToLabelsFile));
-			
-			String line = ""; 
-			
-			while ( (line = in.readLine()) != null ) {
-				
-				String[] lineParts = line.split(">");
-				
-				String uri		= lineParts[0].replaceAll("<", "").replaceAll(">", "").trim();
-				String label	= lineParts[2].replaceAll("\"@en", "");
-				label = label.substring(0,label.length() - 1).replaceAll("\"", "");
-				
-				labels.put(uri, label);
-			}
-		}
-		catch (FileNotFoundException e) {
-			
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Label file read in " + (new Date().getTime() - start) + "ms.");
-		System.out.println("Checking labels for validity!");
-		this.labels = labels;
-		this.checkLabels();
+//		try {
+//			
+//			BufferedReader in = new BufferedReader(new FileReader(pathToLabelsFile));
+//			
+//			String line = ""; 
+//			
+//			while ( (line = in.readLine()) != null ) {
+//				
+//				String[] lineParts = line.split(">");
+//				
+//				String uri		= lineParts[0].replaceAll("<", "").replaceAll(">", "").trim();
+//				String label	= lineParts[2].replaceAll("\"@en", "");
+//				label = label.substring(0,label.length() - 1).replaceAll("\"", "");
+//				
+//				labels.put(uri, label);
+//			}
+//		}
+//		catch (FileNotFoundException e) {
+//			
+//			e.printStackTrace();
+//		}
+//		catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println("Label file read in " + (new Date().getTime() - start) + "ms.");
+//		System.out.println("Checking labels for validity!");
+//		this.checkLabels();
 	}
 
 	private boolean checkLabels() {
@@ -321,7 +324,7 @@ public class NamedEntityRecognizerLearner {
 		System.out.println("Types file read in " + (new Date().getTime() - start) + "ms.");
 		System.out.println("Checking types for validity!");
 		this.types = types;
-		this.checkTypes();
+//		this.checkTypes();
 	}
 	
 	private boolean checkTypes() {
