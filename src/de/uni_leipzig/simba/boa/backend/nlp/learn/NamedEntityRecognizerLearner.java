@@ -90,9 +90,9 @@ public class NamedEntityRecognizerLearner {
 		}
 
 		// read the labels with uris from the ntriples file
-		this.labels = readLabels();
+		readLabels();
 		// read the types (multiple) for each resource from the n triples file 
-		this.types	= readRdfTypes();
+		readRdfTypes();
 		
 		System.out.println("There are " + labels.size() + " labels to search.");
 		System.out.println("They maximum number of sentences is " + this.maxNumberOfDocuments);
@@ -214,7 +214,7 @@ public class NamedEntityRecognizerLearner {
 	/**
 	 * @return the english labels for each instance
 	 */
-	private Map<String,String> readLabels() {
+	private void readLabels() {
 		
 		long start = new Date().getTime();
 
@@ -247,9 +247,8 @@ public class NamedEntityRecognizerLearner {
 		}
 		System.out.println("Label file read in " + (new Date().getTime() - start) + "ms.");
 		System.out.println("Checking labels for validity!");
+		this.labels = labels;
 		this.checkLabels();
-		
-		return labels;
 	}
 
 	private boolean checkLabels() {
@@ -272,7 +271,7 @@ public class NamedEntityRecognizerLearner {
 	 * 
 	 * @return
 	 */
-	private Map<String,Set<String>> readRdfTypes() {
+	private void readRdfTypes() {
 
 		long start = new Date().getTime();
 		
@@ -317,9 +316,8 @@ public class NamedEntityRecognizerLearner {
 		}
 		System.out.println("Types file read in " + (new Date().getTime() - start) + "ms.");
 		System.out.println("Checking types for validity!");
+		this.types = types;
 		this.checkTypes();
-		
-		return types;
 	}
 	
 	private boolean checkTypes() {
