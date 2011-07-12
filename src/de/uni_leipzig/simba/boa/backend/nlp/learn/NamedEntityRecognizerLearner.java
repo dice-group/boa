@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.BufferedWriter;
-import java.io.FileWriter; 
+import java.io.FileWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,123 +50,136 @@ import de.uni_leipzig.simba.boa.backend.util.rdf.ClassIndexer;
  */
 public class NamedEntityRecognizerLearner {
 
-	private Map<Integer,String> sentences = new HashMap<Integer,String>();
+	private Map<Integer, String> sentences = new HashMap<Integer, String>();
 	private QueryParser exactMatchParser = new QueryParser(Version.LUCENE_30, "sentence", new SimpleAnalyzer());
 	private Directory index = null;
 	private IndexSearcher indexSearcher = null;
 	private ClassIndexer indexer = null;
-	
-	private String PREFIX = NLPediaSettings.getInstance().getSetting("learnPrefix");
-	
-	private String pathToTrainedSentenceFile 	= PREFIX + "trained_sentences.txt";
-	private String pathToLabelsFile				= PREFIX + "labels_en.nt";
-	private String pathToTypesFile				= PREFIX + "instance_types_en.nt";
-	private String pathToDBpediaOntology		= PREFIX + "dbpedia_3.6.owl";
-	
-	private int maxNumberOfDocuments 			= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
-	
-	private Map<String,String> labels = null; 	
-	private Map<String,Set<String>> types = null;
-	
+
+	private static String PREFIX = NLPediaSettings.getInstance().getSetting("learnPrefix");
+
+	private String pathToTrainedSentenceFile = PREFIX + "trained_sentences.txt";
+	private String pathToLabelsFile = PREFIX + "labels_en.nt";
+	private String pathToTypesFile = PREFIX + "instance_types_en.nt";
+	private String pathToDBpediaOntology = PREFIX + "dbpedia_3.6.owl";
+
+	private int maxNumberOfDocuments = Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
+
+	private Map<String, String> labels = null;
+	private Map<String, Set<String>> types = null;
+
 	/**
 	 * @param args
 	 */
 	public void learn() {
-		
+
 		OntModel ontModel = ModelFactory.createOntologyModel();
 		InputStream in = FileManager.get().open(pathToDBpediaOntology);
-		ontModel.read(in, ""); 
-		
+		ontModel.read(in, "");
+
 		indexer = new ClassIndexer();
 		indexer.index(ontModel);
-		
+
 		try {
-			
+
 			index = FSDirectory.open(new File(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory")));
 			indexSearcher = new IndexSearcher(index, true);
 		}
 		catch (CorruptIndexException cie) {
-			
+
 			cie.printStackTrace();
 		}
 		catch (IOException ioe) {
-			
+
 			ioe.printStackTrace();
 		}
 
 		// read the labels with uris from the ntriples file
 		readLabels();
-		// read the types (multiple) for each resource from the n triples file 
+		// read the types (multiple) for each resource from the n triples file
 		readRdfTypes();
-		
+
 		System.out.println("There are " + labels.size() + " labels to search.");
 		System.out.println("They maximum number of sentences is " + this.maxNumberOfDocuments);
-		
+
 		// go through each label
-		for ( Entry<String,String> entry : labels.entrySet() ) {
-			
+		for (Entry<String, String> entry : labels.entrySet()) {
+
 			String uri = entry.getKey();
-			String label = entry.getValue();
-			
-			System.out.println(uri + " " + label);
-			
+			String label = entry.getValue().toLowerCase();
+
 			if (uri != null & label != null) {
-				
+
 				// find all sentences containing the label
-				Map<Integer,String> sentencesContainingLabels = getSentencesContainingLabel(label);
+				Map<Integer, String> sentencesContainingLabels = getSentencesContainingLabel(label);
 				System.out.println("Found " + sentencesContainingLabels.size() + " sentences containing label: " + label);
-				
+
 				// get the most precise type definition for an URI
 				Set<String> typesForUri = this.types.get(uri);
-				
-				if ( typesForUri == null ) {
-					
-					System.out.println("Something is wrong with uri: " + uri);
+
+				// for some uris we have labels but no types
+				if (typesForUri == null) {
+
+					System.out.println("No type statements found for: " + uri);
 				}
 				else {
-					
+
 					String typeReplacement = getTypeForUri(uri, typesForUri);
 					typeReplacement = typeReplacement.replace("http://dbpedia.org/ontology/", "");
-					
+
 					String[] tokensOfLabel = label.split(" ");
-					
-					for ( Entry<Integer,String> sent : sentencesContainingLabels.entrySet() ) {
-						
+
+					for (Entry<Integer, String> sent : sentencesContainingLabels.entrySet()) {
+
 						int indexId = sent.getKey();
-						// if the sentence was already found in the sentence list take it from there else use it untagged from the index
-						String sentence = sent.getValue();
-						if ( sentences.containsKey(indexId) ) sentences.get(indexId);
-						
+						// if the sentence was already found in the sentence list, take it from there else use it untagged from the index
+						String sentence = sent.getValue().toLowerCase();
+						if (sentences.containsKey(indexId)) sentences.get(indexId);
+
+						String replacement = "";
 						// replace the first token of the label with _B to show that this is the beginning
-						for (int i = 0 ; i < tokensOfLabel.length ; i++) {
-							
-							if ( i == 0 ) {
-								
-								sentence = sentence.replaceAll("(?i)" + tokensOfLabel[i], tokensOfLabel[i] + "_B-" + typeReplacement);
+						for (int i = 0; i < tokensOfLabel.length; i++) {
+
+							if (i == 0) {
+
+								replacement += tokensOfLabel[i] + "_B-" + typeReplacement;
 							}
 							else {
-								
-								sentence = sentence.replaceAll("(?i)" + tokensOfLabel[i], tokensOfLabel[i] + "_I-" + typeReplacement);
+
+								replacement += tokensOfLabel[i] + "_I-" + typeReplacement;
 							}
 						}
-						sentences.put(indexId, sentence);
+						// replace the whole label with the complete replacement
+						sentences.put(indexId, sentence.replaceAll(label, replacement));
 					}
 				}
 			}
 		}
- 		writeTrainedModelToFile();
+		writeTrainedModelToFile();
 	}
-	
+
 	private void writeTrainedModelToFile() {
 
 		try {
-			
-			// write the trained model in utf8 to a file containing "word \tab tag" per line
-			BufferedWriter writer	= new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(pathToTrainedSentenceFile)), "UTF-8"));
-			
-			for (String sentence : sentences.values() ) {
+
+			// write the trained model in utf8 to a file containing
+			// "word \tab tag" per line
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(pathToTrainedSentenceFile)), "UTF-8"));
+
+			for (String sentence : sentences.values()) {
 				
-				writer.write(sentence + Constants.NEW_LINE_SEPARATOR);
+				for (String token : sentence.split(" ") ) {
+					
+					if ( !token.contains("_B") || !token.contains("_I") ) {
+						
+						writer.write(token + "\t" + "O" + Constants.NEW_LINE_SEPARATOR);
+					}
+					else {
+						
+						writer.write(token + Constants.NEW_LINE_SEPARATOR);
+					}
+					
+				}
 			}
 			writer.close();
 		}
@@ -178,46 +191,43 @@ public class NamedEntityRecognizerLearner {
 
 	private String getTypeForUri(String uri, Set<String> types) {
 
-		Map<String,Integer> depth = new HashMap<String,Integer>();
-		
+		Map<String, Integer> depth = new HashMap<String, Integer>();
+
 		// calculate the depth for all types in the ontology
 		for (String type : types) {
-			
+
 			depth.put(type, new Long(indexer.getHierarchyForClassURI(type).size()).intValue());
-			System.out.println(type + " : " + new Long(indexer.getHierarchyForClassURI(type).size()).intValue());
 		}
-		
+
 		String currentUri = "";
 		int biggestCount = 0;
-		
-		for (Entry<String,Integer> entry : depth.entrySet()) {
-		
-			if ( entry.getValue() > biggestCount ) {
-				
+
+		for (Entry<String, Integer> entry : depth.entrySet()) {
+
+			if (entry.getValue() > biggestCount) {
+
 				biggestCount = entry.getValue();
 				currentUri = entry.getKey();
 			}
-			if ( entry.getValue() == biggestCount ) {
+			if (entry.getValue() == biggestCount) {
 				
 				System.out.println("multiple deepest types were found for uri: " + uri);
 			}
 		}
-		
+
 		return currentUri;
 	}
 
 	private Map<Integer, String> getSentencesContainingLabel(String label) {
 
-		Map<Integer,String> sentencesContainingLabel = new HashMap<Integer,String>();
-		
-		try {
-			
-			ScoreDoc[] hits = indexSearcher.search(exactMatchParser.parse("\""+QueryParser.escape(label)+"\""), null, maxNumberOfDocuments).scoreDocs;
+		Map<Integer, String> sentencesContainingLabel = new HashMap<Integer, String>();
 
-//			if ( hits.length >= n ) System.out.println("Found " + hits.length + " documents for label: \"" + label + "\"");
-			
+		try {
+
+			ScoreDoc[] hits = indexSearcher.search(exactMatchParser.parse("\"" + QueryParser.escape(label) + "\""), null, maxNumberOfDocuments).scoreDocs;
+
 			for (int i = hits.length - 1; i >= 0; i--) {
-				
+
 				sentencesContainingLabel.put(hits[i].doc, indexSearcher.doc(hits[i].doc).get("sentence"));
 			}
 		}
@@ -236,33 +246,34 @@ public class NamedEntityRecognizerLearner {
 	 * @return the english labels for each instance
 	 */
 	private void readLabels() {
-		
+
 		long start = new Date().getTime();
 
-		this.labels = new HashMap<String,String>();
+		this.labels = new HashMap<String, String>();
 
-//		this.labels.put("http://dbpedia.org/resource/Brateiu" , "Brateiu");
-//		this.labels.put("http://dbpedia.org/resource/Taisto_class_motor_torpedo_boat", "Taisto class motor torpedo boat");
-		
+		// this.labels.put("http://dbpedia.org/resource/Brateiu" , "Brateiu");
+		// this.labels.put("http://dbpedia.org/resource/Taisto_class_motor_torpedo_boat",
+		// "Taisto class motor torpedo boat");
+
 		try {
-			
+
 			BufferedReader in = new BufferedReader(new FileReader(pathToLabelsFile));
-			
-			String line = ""; 
-			
-			while ( (line = in.readLine()) != null ) {
-				
+
+			String line = "";
+
+			while ((line = in.readLine()) != null) {
+
 				String[] lineParts = line.split(">");
-				
-				String uri		= lineParts[0].replaceAll("<", "").replaceAll(">", "").trim();
-				String label	= lineParts[2].replaceAll("\"@en", "");
-				label = label.substring(0,label.length() - 1).replaceAll("\"", "");
-				
+
+				String uri = lineParts[0].replaceAll("<", "").replaceAll(">", "").trim();
+				String label = lineParts[2].replaceAll("\"@en", "");
+				label = label.substring(0, label.length() - 1).replaceAll("\"", "");
+
 				labels.put(uri, label);
 			}
 		}
 		catch (FileNotFoundException e) {
-			
+
 			e.printStackTrace();
 		}
 		catch (IOException e) {
@@ -270,27 +281,6 @@ public class NamedEntityRecognizerLearner {
 			e.printStackTrace();
 		}
 		System.out.println("Label file read in " + (new Date().getTime() - start) + "ms.");
-//		System.out.println("Checking labels for validity!");
-//		this.checkLabels();
-	}
-
-	private boolean checkLabels() {
-
-		Set<String> wrongLabels = new HashSet<String>();
-		
-		for ( Entry<String, String> entry : this.labels.entrySet()) {
-			
-			String uri = entry.getKey();
-			String label = entry.getValue();
-			
-			if ( uri.equals("") || label.equals("") || !uri.startsWith("http://dbpedia.org/resource/") ) {
-				
-				System.out.println("\""+uri+"\": " + label + " is not correct!");
-				wrongLabels.add(uri);
-			}
-		}
-		for (String wrong : wrongLabels) this.labels.remove(wrong);
-		return true;
 	}
 
 	/**
@@ -301,61 +291,57 @@ public class NamedEntityRecognizerLearner {
 	private void readRdfTypes() {
 
 		long start = new Date().getTime();
-		
-		types = new TreeMap<String,Set<String>>();
-		
-//		Set<String> typSet = new HashSet<String>();
-//		typSet.add("http://dbpedia.org/ontology/MeanOfTransportation");
-//		typSet.add("http://dbpedia.org/ontology/Ship");
-//		
-//		types.put("http://dbpedia.org/resource/Taisto_class_motor_torpedo_boat", typSet);
-//		
-//		typSet = new HashSet<String>();
-//		typSet.add("http://dbpedia.org/ontology/Place");
-//		typSet.add("http://dbpedia.org/ontology/PopulatedPlace");
-//		typSet.add("http://dbpedia.org/ontology/Settlement");
-//		
-//		types.put("http://dbpedia.org/resource/Brateiu", typSet);
-		
+
+		types = new TreeMap<String, Set<String>>();
+
+		// Set<String> typSet = new HashSet<String>();
+		// typSet.add("http://dbpedia.org/ontology/MeanOfTransportation");
+		// typSet.add("http://dbpedia.org/ontology/Ship");
+		//
+		// types.put("http://dbpedia.org/resource/Taisto_class_motor_torpedo_boat",
+		// typSet);
+		//
+		// typSet = new HashSet<String>();
+		// typSet.add("http://dbpedia.org/ontology/Place");
+		// typSet.add("http://dbpedia.org/ontology/PopulatedPlace");
+		// typSet.add("http://dbpedia.org/ontology/Settlement");
+		//
+		// types.put("http://dbpedia.org/resource/Brateiu", typSet);
+
 		try {
-			
+
 			BufferedReader in = new BufferedReader(new FileReader(pathToTypesFile));
-			
-			String line = ""; 
-			
-			while ( (line = in.readLine()) != null ) {
-				
+
+			String line = "";
+
+			while ((line = in.readLine()) != null) {
+
 				String[] lineParts = line.split(" ");
-				
-				String uri	= lineParts[0].replaceAll("<", "").replaceAll(">", "");
+
+				String uri = lineParts[0].replaceAll("<", "").replaceAll(">", "");
 				String type = lineParts[2].replaceAll("<", "").replaceAll(">", "");
-				
-				if ( uri.equals("http://dbpedia.org/resource/Finnish_motor_torpedo_boat_Tuima") ) {
-					
-					System.out.println("!!!!!\t" + type);
-				}
-				
-				if ( !type.equals("http://www.w3.org/2002/07/owl#Thing") ) {
-					               
-					if ( types.get(uri) == null ) {
-						
+
+				if (!type.equals("http://www.w3.org/2002/07/owl#Thing")) {
+
+					if (types.get(uri) == null) {
+
 						Set<String> set = new HashSet<String>();
 						set.add(type);
-						
+
 						types.put(uri, set);
 					}
 					else {
-						
-						Set<String> set = types.get(uri); 
+
+						Set<String> set = types.get(uri);
 						set.add(type);
-						
+
 						types.put(uri, set);
 					}
 				}
 			}
 		}
 		catch (FileNotFoundException e) {
-			
+
 			e.printStackTrace();
 		}
 		catch (IOException e) {
@@ -363,43 +349,6 @@ public class NamedEntityRecognizerLearner {
 			e.printStackTrace();
 		}
 		System.out.println("Types file read in " + (new Date().getTime() - start) + "ms.");
-//		System.out.println("Checking types for validity!");
-//		this.types = types;
-		this.checkTypes();
-	}
-	
-	private boolean checkTypes() {
-
-		for ( Entry<String, Set<String>> entry : this.types.entrySet()) {
-			
-			String uri = entry.getKey();
-			Set<String> types = entry.getValue();
-			
-			System.out.println("\""+uri+"\": has " + types.size() + " types.");
-		}
-		return true;
-	}
-	
-	private Map<String, Set<String>> readRdfTypesTEST() {
-
-		Map<String, Set<String>> typeForUris = new HashMap<String,Set<String>>();
-		Set<String> types = new HashSet<String>();
-		types.add("http://dbpedia.org/ontology/City");
-		types.add("http://dbpedia.org/ontology/PopulatedPlace");
-		typeForUris.put("http://dbpedia.org/resource/Atlantic_Ocean", types);
-		types = new HashSet<String>();
-		types.add("http://dbpedia.org/ontology/Person");
-		types.add("http://dbpedia.org/ontology/Actor");
-		typeForUris.put("http://dbpedia.org/resource/Albert_Einstein", types);
-		return typeForUris;
-	}
-
-	private Map<String, String> readLabelsTEST() {
-		
-		Map<String, String> labels = new HashMap<String,String>();
-		labels.put("http://dbpedia.org/resource/Albert_Einstein", "Albert Einstein");
-		labels.put("http://dbpedia.org/resource/Atlantic_Ocean", "Atlantic Ocean");
-		return labels;
 	}
 
 	public void setPathToTrainedSentenceFile(String pathToTrainedSentenceFile) {
