@@ -222,35 +222,35 @@ public class NamedEntityRecognizerLearner {
 
 		this.labels = new HashMap<String,String>();
 
-		this.labels.put("http://dbpedia.org/resource/Brateiu" , "Brateiu");
-		this.labels.put("http://dbpedia.org/resource/Taisto_class_motor_torpedo_boat", "Taisto class motor torpedo boat");
+//		this.labels.put("http://dbpedia.org/resource/Brateiu" , "Brateiu");
+//		this.labels.put("http://dbpedia.org/resource/Taisto_class_motor_torpedo_boat", "Taisto class motor torpedo boat");
 		
-//		try {
-//			
-//			BufferedReader in = new BufferedReader(new FileReader(pathToLabelsFile));
-//			
-//			String line = ""; 
-//			
-//			while ( (line = in.readLine()) != null ) {
-//				
-//				String[] lineParts = line.split(">");
-//				
-//				String uri		= lineParts[0].replaceAll("<", "").replaceAll(">", "").trim();
-//				String label	= lineParts[2].replaceAll("\"@en", "");
-//				label = label.substring(0,label.length() - 1).replaceAll("\"", "");
-//				
-//				labels.put(uri, label);
-//			}
-//		}
-//		catch (FileNotFoundException e) {
-//			
-//			e.printStackTrace();
-//		}
-//		catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		System.out.println("Label file read in " + (new Date().getTime() - start) + "ms.");
+		try {
+			
+			BufferedReader in = new BufferedReader(new FileReader(pathToLabelsFile));
+			
+			String line = ""; 
+			
+			while ( (line = in.readLine()) != null ) {
+				
+				String[] lineParts = line.split(">");
+				
+				String uri		= lineParts[0].replaceAll("<", "").replaceAll(">", "").trim();
+				String label	= lineParts[2].replaceAll("\"@en", "");
+				label = label.substring(0,label.length() - 1).replaceAll("\"", "");
+				
+				labels.put(uri, label);
+			}
+		}
+		catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Label file read in " + (new Date().getTime() - start) + "ms.");
 //		System.out.println("Checking labels for validity!");
 //		this.checkLabels();
 	}
@@ -285,57 +285,57 @@ public class NamedEntityRecognizerLearner {
 		
 		types = new HashMap<String,Set<String>>();
 		
-		Set<String> typSet = new HashSet<String>();
-		typSet.add("http://dbpedia.org/ontology/MeanOfTransportation");
-		typSet.add("http://dbpedia.org/ontology/Ship");
+//		Set<String> typSet = new HashSet<String>();
+//		typSet.add("http://dbpedia.org/ontology/MeanOfTransportation");
+//		typSet.add("http://dbpedia.org/ontology/Ship");
+//		
+//		types.put("http://dbpedia.org/resource/Taisto_class_motor_torpedo_boat", typSet);
+//		
+//		typSet = new HashSet<String>();
+//		typSet.add("http://dbpedia.org/ontology/Place");
+//		typSet.add("http://dbpedia.org/ontology/PopulatedPlace");
+//		typSet.add("http://dbpedia.org/ontology/Settlement");
+//		
+//		types.put("http://dbpedia.org/resource/Brateiu", typSet);
 		
-		types.put("http://dbpedia.org/resource/Taisto_class_motor_torpedo_boat", typSet);
-		
-		typSet = new HashSet<String>();
-		typSet.add("http://dbpedia.org/ontology/Place");
-		typSet.add("http://dbpedia.org/ontology/PopulatedPlace");
-		typSet.add("http://dbpedia.org/ontology/Settlement");
-		
-		types.put("http://dbpedia.org/resource/Brateiu", typSet);
-		
-//		try {
-//			
-//			BufferedReader in = new BufferedReader(new FileReader(pathToTypesFile));
-//			
-//			String line = ""; 
-//			
-//			while ( (line = in.readLine()) != null ) {
-//				
-//				String[] lineParts = line.split(" ");
-//				
-//				String uri	= lineParts[0].replaceAll("<", "").replaceAll(">", "");
-//				String type = lineParts[2].replaceAll("<", "").replaceAll(">", "");
-//				
-//				if ( !type.equals("http://www.w3.org/2002/07/owl#Thing") ) {
-//					               
-//					if ( types.get(uri) == null ) {
-//						
-//						Set<String> set = new HashSet<String>();
-//						set.add(type);
-//						
-//						types.put(uri, set);
-//					}
-//					else {
-//						
-//						types.get(uri).add(type);
-//					}
-//				}
-//			}
-//		}
-//		catch (FileNotFoundException e) {
-//			
-//			e.printStackTrace();
-//		}
-//		catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		System.out.println("Types file read in " + (new Date().getTime() - start) + "ms.");
+		try {
+			
+			BufferedReader in = new BufferedReader(new FileReader(pathToTypesFile));
+			
+			String line = ""; 
+			
+			while ( (line = in.readLine()) != null ) {
+				
+				String[] lineParts = line.split(" ");
+				
+				String uri	= lineParts[0].replaceAll("<", "").replaceAll(">", "");
+				String type = lineParts[2].replaceAll("<", "").replaceAll(">", "");
+				
+				if ( !type.equals("http://www.w3.org/2002/07/owl#Thing") ) {
+					               
+					if ( types.get(uri) == null ) {
+						
+						Set<String> set = new HashSet<String>();
+						set.add(type);
+						
+						types.put(uri, set);
+					}
+					else {
+						
+						types.get(uri).add(type);
+					}
+				}
+			}
+		}
+		catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Types file read in " + (new Date().getTime() - start) + "ms.");
 //		System.out.println("Checking types for validity!");
 //		this.types = types;
 //		this.checkTypes();
