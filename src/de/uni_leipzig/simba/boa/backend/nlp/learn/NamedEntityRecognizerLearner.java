@@ -253,6 +253,8 @@ public class NamedEntityRecognizerLearner {
 
 	private boolean checkLabels() {
 
+		Set<String> wrongLabels = new HashSet<String>();
+		
 		for ( Entry<String, String> entry : this.labels.entrySet()) {
 			
 			String uri = entry.getKey();
@@ -261,8 +263,10 @@ public class NamedEntityRecognizerLearner {
 			if ( uri.equals("") || label.equals("") || !uri.startsWith("http://dbpedia.org/resource/") ) {
 				
 				System.out.println("\""+uri+"\": " + label + " is not correct!");
+				wrongLabels.add(uri);
 			}
 		}
+		for (String wrong : wrongLabels) this.labels.remove(wrong);
 		return true;
 	}
 
@@ -322,6 +326,8 @@ public class NamedEntityRecognizerLearner {
 	
 	private boolean checkTypes() {
 
+		Set<String> wrongUris = new HashSet<String>();
+		
 		for ( Entry<String, Set<String>> entry : this.types.entrySet()) {
 			
 			String uri = entry.getKey();
@@ -330,8 +336,10 @@ public class NamedEntityRecognizerLearner {
 			if ( uri.equals("") || types == null || types.size() == 0 || !uri.startsWith("http://dbpedia.org/resource/") ) {
 				
 				System.out.println("\""+uri+"\": types is not correct!");
+				wrongUris.add(uri);
 			}
 		}
+		for (String wrong : wrongUris) this.types.remove(wrong);
 		return true;
 	}
 	
