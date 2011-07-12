@@ -351,25 +351,19 @@ public class NamedEntityRecognizerLearner {
 		System.out.println("Types file read in " + (new Date().getTime() - start) + "ms.");
 //		System.out.println("Checking types for validity!");
 //		this.types = types;
-//		this.checkTypes();
+		this.checkTypes();
 	}
 	
 	private boolean checkTypes() {
 
-		Set<String> wrongUris = new HashSet<String>();
 		
 		for ( Entry<String, Set<String>> entry : this.types.entrySet()) {
 			
 			String uri = entry.getKey();
 			Set<String> types = entry.getValue();
 			
-			if ( uri.equals("") || types == null || types.size() == 0 || !uri.startsWith("http://dbpedia.org/resource/") ) {
-				
-				System.out.println("\""+uri+"\": types is not correct!");
-				wrongUris.add(uri);
-			}
+			System.out.println("\""+uri+"\": has " + types.size() + " types.");
 		}
-		for (String wrong : wrongUris) this.types.remove(wrong);
 		return true;
 	}
 	
