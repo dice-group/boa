@@ -177,7 +177,7 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					System.out.println("Specificity:\t" + pattern.getSpecificity());
 					System.out.println("Typicity:\t" + pattern.getTypicity());
 					
-					pattern.setConfidence(support + typicity + specificity);
+					pattern.setConfidence(support * typicity * specificity);
 					
 					// ########################################################
 					
