@@ -54,11 +54,11 @@ public class NamedEntityRecognizerLearner {
 	private Directory index = null;
 	private IndexSearcher indexSearcher = null;
 	private ClassIndexer indexer = null;
-	private String pathToTrainedSentenceFile = "";
-	private String pathToLabelsFile = "";
-	private String pathToTypesFile = "";
-	private String pathToDBpediaOntology = "";
-	private int maxNumberOfDocuments =  Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
+	private String pathToTrainedSentenceFile 	= "/home/gerber/nlpedia-data/en_wiki/learn/trained_sentences.txt";
+	private String pathToLabelsFile				= "/home/gerber/nlpedia-data/en_wiki/learn/labels_en.nt";
+	private String pathToTypesFile				= "/home/gerber/nlpedia-data/en_wiki/learn/instance_types_en.nt";
+	private String pathToDBpediaOntology		= "/home/gerber/nlpedia-data/en_wiki/learn/dbpedia_3.6.owl";
+	private int maxNumberOfDocuments 			= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
 	
 	private Map<String,String> labels = null; 	
 	private Map<String,Set<String>> types = null;
