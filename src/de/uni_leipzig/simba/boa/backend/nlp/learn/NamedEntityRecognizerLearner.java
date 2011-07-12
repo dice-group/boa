@@ -103,36 +103,41 @@ public class NamedEntityRecognizerLearner {
 			String uri = entry.getKey();
 			String label = entry.getValue();
 			
-			// find all sentences containing the label
-			Map<Integer,String> sentencesContainingLabels = getSentencesContainingLabel(label);
-			System.out.println("Found " + sentencesContainingLabels.size() + " sentences containing label: " + label);
+			System.out.println(uri + " " + label);
 			
-			// get the most precise type definition for an URI
-			String typeReplacement = getTypeForUri(uri, types.get(uri));
-			typeReplacement = typeReplacement.replace("http://dbpedia.org/ontology/", "");
-			
-			String[] tokensOfLabel = label.split(" ");
-			
-			for ( Entry<Integer,String> sent : sentencesContainingLabels.entrySet() ) {
+			if (uri != null & label != null) {
 				
-				int indexId = sent.getKey();
-				// if the sentence was already found in the sentence list take it from there else use it untagged from the index
-				String sentence = sent.getValue();
-				if ( sentences.containsKey(indexId) ) sentences.get(indexId);
+				// find all sentences containing the label
+				Map<Integer,String> sentencesContainingLabels = getSentencesContainingLabel(label);
+				System.out.println("Found " + sentencesContainingLabels.size() + " sentences containing label: " + label);
 				
-				// replace the first token of the label with _B to show that this is the beginning
-				for (int i = 0 ; i < tokensOfLabel.length ; i++) {
+				// get the most precise type definition for an URI
+				String typeReplacement = getTypeForUri(uri, types.get(uri));
+				typeReplacement = typeReplacement.replace("http://dbpedia.org/ontology/", "");
+				
+				String[] tokensOfLabel = label.split(" ");
+				
+				for ( Entry<Integer,String> sent : sentencesContainingLabels.entrySet() ) {
 					
-					if ( i == 0 ) {
+					int indexId = sent.getKey();
+					// if the sentence was already found in the sentence list take it from there else use it untagged from the index
+					String sentence = sent.getValue();
+					if ( sentences.containsKey(indexId) ) sentences.get(indexId);
+					
+					// replace the first token of the label with _B to show that this is the beginning
+					for (int i = 0 ; i < tokensOfLabel.length ; i++) {
 						
-						sentence = sentence.replaceAll("(?i)" + tokensOfLabel[i], tokensOfLabel[i] + "_B-" + typeReplacement);
+						if ( i == 0 ) {
+							
+							sentence = sentence.replaceAll("(?i)" + tokensOfLabel[i], tokensOfLabel[i] + "_B-" + typeReplacement);
+						}
+						else {
+							
+							sentence = sentence.replaceAll("(?i)" + tokensOfLabel[i], tokensOfLabel[i] + "_I-" + typeReplacement);
+						}
 					}
-					else {
-						
-						sentence = sentence.replaceAll("(?i)" + tokensOfLabel[i], tokensOfLabel[i] + "_I-" + typeReplacement);
-					}
+					sentences.put(indexId, sentence);
 				}
-				sentences.put(indexId, sentence);
 			}
 		}
  		writeTrainedModelToFile();
