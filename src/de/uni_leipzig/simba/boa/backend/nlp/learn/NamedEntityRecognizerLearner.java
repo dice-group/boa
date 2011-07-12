@@ -356,7 +356,6 @@ public class NamedEntityRecognizerLearner {
 	
 	private boolean checkTypes() {
 
-		
 		for ( Entry<String, Set<String>> entry : this.types.entrySet()) {
 			
 			String uri = entry.getKey();
