@@ -258,7 +258,7 @@ public class NamedEntityRecognizerLearner {
 			String uri = entry.getKey();
 			String label = entry.getValue();
 			
-			if ( uri.equals("") || label.equals("") || !uri.startsWith("http://dbpedia.org/ontology/") ) {
+			if ( uri.equals("") || label.equals("") || !uri.startsWith("http://dbpedia.org/resource/") ) {
 				
 				System.out.println("\""+uri+"\": " + label + " is not correct!");
 			}
