@@ -327,7 +327,7 @@ public class NamedEntityRecognizerLearner {
 			String uri = entry.getKey();
 			Set<String> types = entry.getValue();
 			
-			if ( uri.equals("") || types == null || types.size() == 0 || !uri.startsWith("http://dbpedia.org/ontology/") ) {
+			if ( uri.equals("") || types == null || types.size() == 0 || !uri.startsWith("http://dbpedia.org/resource/") ) {
 				
 				System.out.println("\""+uri+"\": types is not correct!");
 			}
