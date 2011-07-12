@@ -43,20 +43,8 @@ public class FileIndexer {
 	 */
 	public FileIndexer(String indexDir, boolean overwriteIndex, int ramBufferSizeInMb) throws IOException {
 		
-		Directory directory	= FSDirectory.open(new File(indexDir));
-		Analyzer analyzer	= new SimpleAnalyzer();
-		
-		// create the index writer
-		this.writer = new IndexWriter(
-					directory,
-					analyzer,
-					overwriteIndex,
-					IndexWriter.MaxFieldLength.LIMITED);
-		
-		this.writer.setRAMBufferSizeMB(ramBufferSizeInMb);
-		
 		// index the files
-		this.indexFileOrDirectory();
+		this.indexFileOrDirectory(indexDir, ramBufferSizeInMb);
 	}
 
 	/**
@@ -64,9 +52,12 @@ public class FileIndexer {
 	 * 
 	 * @throws java.io.IOException
 	 */
-	public void indexFileOrDirectory() throws IOException {
+	public void indexFileOrDirectory(String indexDir, int ramBufferSizeInMb) throws IOException {
 
 		File directory = new File(NLPediaSettings.getInstance().getSetting("sentenceFileDirectory"));
+		
+		Directory indexDirectory	= FSDirectory.open(new File(indexDir));
+		Analyzer analyzer	= new SimpleAnalyzer();
 		
 		File files[] = directory.listFiles();
 		
@@ -75,8 +66,26 @@ public class FileIndexer {
 		
 		System.out.println("Index directory: " + NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
 		
+		// create the index writer
+		this.writer = new IndexWriter(
+					indexDirectory,
+					analyzer,
+					true,
+					IndexWriter.MaxFieldLength.LIMITED);
+		
+		this.writer.close();
+		
 		// go through all files in the data 
 		for (File file : files) {
+			
+			// create the index writer
+			this.writer = new IndexWriter(
+						indexDirectory,
+						analyzer,
+						false,
+						IndexWriter.MaxFieldLength.LIMITED);
+			
+			this.writer.setRAMBufferSizeMB(ramBufferSizeInMb);
 			
 			this.logger.info("Indexing file " + file + " with index ");
 			
@@ -128,11 +137,10 @@ public class FileIndexer {
 				
 				this.logger.info("The file: " + file.getAbsolutePath() + "could not be indexed. Wrong file type!");
 			}
+			// close the index
+			this.writer.optimize();
+			this.writer.close();
 		}
-		// close the index
-		this.writer.optimize();
-		this.writer.close();
-		
 		this.logger.info("Added " + writer.numDocs() + " files to index");
 	}
 }

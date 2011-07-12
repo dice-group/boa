@@ -57,13 +57,21 @@ public class PatternTable extends Table {
 	}
 	@Override
     protected String formatPropertyValue(Object rowId, Object colId, Property property) {
-        // Format by property type
-        if (property.getType() == Double.class) {
-        	
-        	DecimalFormat df = new DecimalFormat("#.###");
-            return df.format((Double)property.getValue());
-        }
+        
+		try {
+			
+			// Format by property type
+	        if (property.getType() == Double.class) {
+	        	
+	        	DecimalFormat df = new DecimalFormat("#.###");
+	            return df.format((Double)property.getValue());
+	        }
 
-        return super.formatPropertyValue(rowId, colId, property);
+	        return super.formatPropertyValue(rowId, colId, property);
+		}
+		catch (IllegalArgumentException iae) {
+			
+			return "-1";
+		}
     }
 }

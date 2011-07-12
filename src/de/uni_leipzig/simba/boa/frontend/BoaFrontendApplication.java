@@ -279,9 +279,12 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				
 				String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 				
-				String indexDir = NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"); //TODO replace with setting
+				String indexDir = NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory");
 				indexDir = indexDir.replace("/index/stanfordnlp", "");
+				System.out.println("indexDir: " +indexDir);
+				System.out.println("indexDir.substring(indexDir.lastIndexOf()+1): " + indexDir.substring(indexDir.lastIndexOf("/")+1));
 				indexDir = indexDir.replace(indexDir.substring(indexDir.lastIndexOf("/")+1), "");
+				System.out.println("indexDir: " + indexDir);
 				indexDir = indexDir + currentDatabase.substring(0,currentDatabase.lastIndexOf("_")) + "/index/stanfordnlp";
 				
 				PatternSearcher patternSearcher = new PatternSearcher(indexDir);

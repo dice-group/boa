@@ -26,27 +26,27 @@ public class WriteRelationToFileCommand implements Command {
 	
 	private final NLPediaLogger logger = new NLPediaLogger(WriteRelationToFileCommand.class);
 	
+	private final String language = "EN";
+	
 	/**
 	 * 
 	 */
 	public void execute() {
 		
 		String queryPersonSubject		= this.createQueryPersonSubject();
-		System.out.println(queryPersonSubject);
 		String queryPersonObject		= this.createQueryPersonObject();
-		System.out.println(queryPersonObject);
-//		this.getPersonSubjectKnowledge(queryPersonSubject);
-//		this.getPersonObjectKnowledge(queryPersonObject);
-//		
-//		String queryPlaceSubject		= this.createQueryPlaceSubject();
-//		String queryPlaceObject			= this.createQueryPlaceObject();
-//		this.getPlaceSubjectKnowledge(queryPlaceSubject);
-//		this.getPlaceObjectKnowledge(queryPlaceObject);
-//		
-//		String queryOrganisationSubject	= this.createQueryOrganisationSubject();
-//		String queryOrganisationObject	= this.createQueryOrganisationObject();
-//		this.getOrganisationSubjectKnowledge(queryOrganisationSubject);
-//		this.getOrganisationObjectKnowledge(queryOrganisationObject);
+		this.getPersonSubjectKnowledge(queryPersonSubject);
+		this.getPersonObjectKnowledge(queryPersonObject);
+		
+		String queryPlaceSubject		= this.createQueryPlaceSubject();
+		String queryPlaceObject			= this.createQueryPlaceObject();
+		this.getPlaceSubjectKnowledge(queryPlaceSubject);
+		this.getPlaceObjectKnowledge(queryPlaceObject);
+		
+		String queryOrganisationSubject	= this.createQueryOrganisationSubject();
+		String queryOrganisationObject	= this.createQueryOrganisationObject();
+		this.getOrganisationSubjectKnowledge(queryOrganisationSubject);
+		this.getOrganisationObjectKnowledge(queryOrganisationObject);
 	}
 
 	private String createQueryOrganisationObject() {
@@ -60,8 +60,7 @@ public class WriteRelationToFileCommand implements Command {
 			 "  ?s2 rdfs:label ?s2l . " +
 			 "  ?o2 ?p2 ?s2 . " +
 			 "	?o2 rdfs:label ?o2l " +
-			 "	FILTER (lang(?s2l) = \"de\") " +
-			 "	FILTER (lang(?o2l) = \"de\") " +
+			 "	FILTER (  langMatches( lang(?s2l), \""+language+"\" )  && langMatches( lang(?o2l), \""+language+"\" ) ) " +
 			 "	?p2  rdfs:range  ?rangep2 . " +
 			 "	?p2  rdfs:domain ?domainp2 . " +
 			"}";
@@ -78,8 +77,7 @@ public class WriteRelationToFileCommand implements Command {
 			 "  ?s1 rdfs:label ?s1l . " +
 			 "	?s1 ?p1 ?o1 . " +
 			 "	?o1 rdfs:label ?o1l ." +
-			 "	FILTER (lang(?s1l) = \"de\") . " +
-			 "	FILTER (lang(?o1l) = \"de\") . " +
+			 "	FILTER (  langMatches( lang(?s1l), \""+language+"\" )  && langMatches( lang(?o1l), \""+language+"\" ) ) " +
 			 "	?p1  rdfs:range  ?rangep1 . " +
 			 "	?p1  rdfs:domain ?domainp1 . " +
 			"}";
@@ -96,8 +94,7 @@ public class WriteRelationToFileCommand implements Command {
 			 "  ?s2 rdfs:label ?s2l . " +
 			 "  ?o2 ?p2 ?s2 . " +
 			 "	?o2 rdfs:label ?o2l " +
-			 "	FILTER (lang(?s2l) = \"de\") " +
-			 "	FILTER (lang(?o2l) = \"de\") " +
+			 "	FILTER (  langMatches( lang(?s2l), \""+language+"\" )  && langMatches( lang(?o2l), \""+language+"\" ) ) " +
 			 "	?p2  rdfs:range  ?rangep2 . " +
 			 "	?p2  rdfs:domain ?domainp2 . " +
 			"}";
@@ -114,8 +111,7 @@ public class WriteRelationToFileCommand implements Command {
 			 "  ?s1 rdfs:label ?s1l . " +
 			 "	?s1 ?p1 ?o1 . " +
 			 "	?o1 rdfs:label ?o1l ." +
-			 "	FILTER (lang(?s1l) = \"de\") . " +
-			 "	FILTER (lang(?o1l) = \"de\") . " +
+			 "	FILTER (  langMatches( lang(?s1l), \""+language+"\" )  && langMatches( lang(?o1l), \""+language+"\" ) ) " +
 			 "	?p1  rdfs:range  ?rangep1 . " +
 			 "	?p1  rdfs:domain ?domainp1 . " +
 			"}";
@@ -132,8 +128,7 @@ public class WriteRelationToFileCommand implements Command {
 			 "  ?s2 rdfs:label ?s2l . " +
 			 "  ?o2 ?p2 ?s2 . " +
 			 "	?o2 rdfs:label ?o2l " +
-			 "	FILTER (lang(?s2l) = \"de\") " +
-			 "	FILTER (lang(?o2l) = \"de\") " +
+			 "	FILTER (  langMatches( lang(?s2l), \""+language+"\" )  && langMatches( lang(?o2l), \""+language+"\" ) ) " +
 			 "	?p2  rdfs:range  ?rangep2 . " +
 			 "	?p2  rdfs:domain ?domainp2 . " +
 			"}";
@@ -152,8 +147,7 @@ public class WriteRelationToFileCommand implements Command {
 			 "  ?s1 rdfs:label ?s1l . " +
 			 "	?s1 ?p1 ?o1 . " +
 			 "	?o1 rdfs:label ?o1l ." +
-			 "	FILTER (lang(?s1l) = \"de\") . " +
-			 "	FILTER (lang(?o1l) = \"de\") . " +
+			 "	FILTER (  langMatches( lang(?s1l), \""+language+"\" )  && langMatches( lang(?o1l), \""+language+"\" ) ) " +
 			 "	?p1  rdfs:range  ?rangep1 . " +
 			 "	?p1  rdfs:domain ?domainp1 . " +
 			"}";
