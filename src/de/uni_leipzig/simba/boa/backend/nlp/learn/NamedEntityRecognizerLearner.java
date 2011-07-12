@@ -60,6 +60,9 @@ public class NamedEntityRecognizerLearner {
 	private String pathToDBpediaOntology = "";
 	private int maxNumberOfDocuments =  Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
 	
+	private Map<String,String> labels = null; 	
+	private Map<String,Set<String>> types = null;
+	
 	/**
 	 * @param args
 	 */
@@ -87,9 +90,9 @@ public class NamedEntityRecognizerLearner {
 		}
 
 		// read the labels with uris from the ntriples file
-		Map<String,String> labels 		= readLabels();
+		this.labels = readLabels();
 		// read the types (multiple) for each resource from the n triples file 
-		Map<String,Set<String>> types	= readRdfTypes();
+		this.types	= readRdfTypes();
 		
 		System.out.println("There are " + labels.size() + " labels to search.");
 		System.out.println("They maximum number of sentences is " + this.maxNumberOfDocuments);
@@ -130,9 +133,7 @@ public class NamedEntityRecognizerLearner {
 				sentences.put(indexId, sentence);
 			}
 		}
-//		for (String string : sentences.values() ) System.out.println(string);
-		
-		writeTrainedModelToFile();
+ 		writeTrainedModelToFile();
 	}
 	
 	private void writeTrainedModelToFile() {
@@ -244,9 +245,26 @@ public class NamedEntityRecognizerLearner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Label files read in " + (new Date().getTime() - start) + "ms.");
+		System.out.println("Label file read in " + (new Date().getTime() - start) + "ms.");
+		System.out.println("Checking labels for validity!");
+		this.checkLabels();
 		
 		return labels;
+	}
+
+	private boolean checkLabels() {
+
+		for ( Entry<String, String> entry : this.labels.entrySet()) {
+			
+			String uri = entry.getKey();
+			String label = entry.getValue();
+			
+			if ( uri.equals("") || label.equals("") || !uri.startsWith("http://dbpedia.org/ontology/") ) {
+				
+				System.out.println("\""+uri+"\": " + label + " is not correct!");
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -297,9 +315,26 @@ public class NamedEntityRecognizerLearner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Label files read in " + (new Date().getTime() - start) + "ms.");
+		System.out.println("Types file read in " + (new Date().getTime() - start) + "ms.");
+		System.out.println("Checking types for validity!");
+		this.checkTypes();
 		
 		return types;
+	}
+	
+	private boolean checkTypes() {
+
+		for ( Entry<String, Set<String>> entry : this.types.entrySet()) {
+			
+			String uri = entry.getKey();
+			Set<String> types = entry.getValue();
+			
+			if ( uri.equals("") || types == null || types.size() == 0 || !uri.startsWith("http://dbpedia.org/ontology/") ) {
+				
+				System.out.println("\""+uri+"\": types is not correct!");
+			}
+		}
+		return true;
 	}
 	
 	private Map<String, Set<String>> readRdfTypesTEST() {
