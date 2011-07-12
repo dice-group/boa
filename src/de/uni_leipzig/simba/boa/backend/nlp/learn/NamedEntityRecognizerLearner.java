@@ -316,6 +316,11 @@ public class NamedEntityRecognizerLearner {
 				String uri	= lineParts[0].replaceAll("<", "").replaceAll(">", "");
 				String type = lineParts[2].replaceAll("<", "").replaceAll(">", "");
 				
+				if ( uri.equals("http://dbpedia.org/resource/Finnish_motor_torpedo_boat_Tuima") ) {
+					
+					System.out.println("!!!!!\t" + type);
+				}
+				
 				if ( !type.equals("http://www.w3.org/2002/07/owl#Thing") ) {
 					               
 					if ( types.get(uri) == null ) {
@@ -327,7 +332,10 @@ public class NamedEntityRecognizerLearner {
 					}
 					else {
 						
-						types.get(uri).add(type);
+						Set<String> set = types.get(uri); 
+						set.add(type);
+						
+						types.put(uri, set);
 					}
 				}
 			}
