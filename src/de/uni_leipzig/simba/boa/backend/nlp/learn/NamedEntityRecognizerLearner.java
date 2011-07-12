@@ -11,6 +11,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.BufferedWriter;
 import java.io.FileWriter; 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -86,9 +87,12 @@ public class NamedEntityRecognizerLearner {
 		}
 
 		// read the labels with uris from the ntriples file
-		Map<String,String> labels 		= readLabels(); 
+		Map<String,String> labels 		= readLabels();
 		// read the types (multiple) for each resource from the n triples file 
 		Map<String,Set<String>> types	= readRdfTypes();
+		
+		System.out.println("There are " + labels.size() + " labels to search.");
+		System.out.println("They maximum number of sentences is " + this.maxNumberOfDocuments);
 		
 		// go through each label
 		for ( Entry<String,String> entry : labels.entrySet() ) {
@@ -211,6 +215,8 @@ public class NamedEntityRecognizerLearner {
 	 */
 	private Map<String,String> readLabels() {
 		
+		long start = new Date().getTime();
+
 		Map<String,String> labels = new HashMap<String,String>();
 		
 		try {
@@ -238,6 +244,7 @@ public class NamedEntityRecognizerLearner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("Label files read in " + (new Date().getTime() - start) + "ms.");
 		
 		return labels;
 	}
@@ -249,6 +256,8 @@ public class NamedEntityRecognizerLearner {
 	 */
 	private Map<String,Set<String>> readRdfTypes() {
 
+		long start = new Date().getTime();
+		
 		Map<String,Set<String>> types = new HashMap<String,Set<String>>();
 		
 		try {
@@ -288,6 +297,7 @@ public class NamedEntityRecognizerLearner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("Label files read in " + (new Date().getTime() - start) + "ms.");
 		
 		return types;
 	}
