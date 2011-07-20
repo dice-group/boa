@@ -73,12 +73,13 @@ public class NamedEntityRecognizerLearner {
 	 */
 	public void learn() {
 
+		System.out.print("Reading ontology ... ");
 		OntModel ontModel = ModelFactory.createOntologyModel();
 		InputStream in = FileManager.get().open(pathToDBpediaOntology);
 		ontModel.read(in, "");
-
 		indexer = new ClassIndexer();
 		indexer.index(ontModel);
+		System.out.print("DONE!\n");
 
 		try {
 
@@ -95,9 +96,14 @@ public class NamedEntityRecognizerLearner {
 		}
 
 		// read the labels with uris from the ntriples file
+		System.out.print("Reading labels ... ");
 		readLabels();
+		System.out.print("DONE\n");
+		
 		// read the types (multiple) for each resource from the n triples file
+		System.out.print("Reading types ... ");
 		readRdfTypes();
+		System.out.print("DONE\n");
 
 		System.out.println("There are " + labels.size() + " labels to search.");
 		System.out.println("They maximum number of sentences is " + this.maxNumberOfDocuments);
@@ -114,7 +120,7 @@ public class NamedEntityRecognizerLearner {
 
 					// find all sentences containing the label
 					Map<Integer, String> sentencesContainingLabels = getSentencesContainingLabel(label);
-					System.out.println("Found " + sentencesContainingLabels.size() + " sentences containing label: " + label);
+					// System.out.println("Found " + sentencesContainingLabels.size() + " sentences containing label: " + label);
 
 					// get the most precise type definition for an URI
 					Set<String> typesForUri = this.types.get(uri);
@@ -142,14 +148,7 @@ public class NamedEntityRecognizerLearner {
 							// replace the first token of the label with _B to show that this is the beginning
 							for (int i = 0; i < tokensOfLabel.length; i++) {
 
-								if (i == 0) {
-
-									replacement += tokensOfLabel[i] + "_B-" + typeReplacement;
-								}
-								else {
-
-									replacement += tokensOfLabel[i] + "_I-" + typeReplacement;
-								}
+								replacement += tokensOfLabel[i] + "___" + typeReplacement + " ";
 							}
 							// replace the whole label with the complete replacement
 							sentences.put(indexId, sentence.replaceAll(label, replacement));
@@ -173,19 +172,21 @@ public class NamedEntityRecognizerLearner {
 			// "word \tab tag" per line
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(pathToTrainedSentenceFile)), "UTF-8"));
 
+			System.out.println("Writing " + sentences.values().size() + " sentences to file!");
+			
 			for (String sentence : sentences.values()) {
 				
 				for (String token : sentence.split(" ") ) {
 					
-					if ( !token.contains("_B") || !token.contains("_I") ) {
+					if ( !token.contains("___") ) {
 						
 						writer.write(token + "\t" + "O" + Constants.NEW_LINE_SEPARATOR);
 					}
 					else {
 						
-						writer.write(token + Constants.NEW_LINE_SEPARATOR);
+						String[] tokens = token.split("___"); 
+						writer.write(tokens[0] + "\t" + tokens[1] + Constants.NEW_LINE_SEPARATOR);
 					}
-					
 				}
 			}
 			writer.close();
@@ -216,7 +217,7 @@ public class NamedEntityRecognizerLearner {
 				biggestCount = entry.getValue();
 				currentUri = entry.getKey();
 			}
-			if (entry.getValue() == biggestCount) {
+			else if (entry.getValue() == biggestCount) {
 				
 				System.out.println("multiple deepest types were found for uri: " + uri);
 			}
@@ -258,9 +259,9 @@ public class NamedEntityRecognizerLearner {
 
 		this.labels = new HashMap<String, String>();
 
-		// this.labels.put("http://dbpedia.org/resource/Brateiu" , "Brateiu");
-		// this.labels.put("http://dbpedia.org/resource/Taisto_class_motor_torpedo_boat",
-		// "Taisto class motor torpedo boat");
+//		this.labels.put("http://dbpedia.org/resource/Continental_Illinois", "Continental Illinois bank");
+//		this.labels.put("http://dbpedia.org/resource/McKinley_Senior_High_School", "McKinley Senior High School");
+//		this.labels.put("http://dbpedia.org/resource/APR_FC", "APR FC");
 
 		try {
 
@@ -301,20 +302,23 @@ public class NamedEntityRecognizerLearner {
 
 		types = new TreeMap<String, Set<String>>();
 
-		// Set<String> typSet = new HashSet<String>();
-		// typSet.add("http://dbpedia.org/ontology/MeanOfTransportation");
-		// typSet.add("http://dbpedia.org/ontology/Ship");
-		//
-		// types.put("http://dbpedia.org/resource/Taisto_class_motor_torpedo_boat",
-		// typSet);
-		//
-		// typSet = new HashSet<String>();
-		// typSet.add("http://dbpedia.org/ontology/Place");
-		// typSet.add("http://dbpedia.org/ontology/PopulatedPlace");
-		// typSet.add("http://dbpedia.org/ontology/Settlement");
-		//
-		// types.put("http://dbpedia.org/resource/Brateiu", typSet);
-
+//		Set<String> typSet1 = new HashSet<String>();
+//		typSet1.add("http://dbpedia.org/ontology/Organisation");
+//		typSet1.add("http://dbpedia.org/ontology/SportsTeam");
+//		typSet1.add("http://dbpedia.org/ontology/SoccerClub");
+//		types.put("http://dbpedia.org/resource/APR_FC", typSet1);
+//
+//		Set<String> typSet2 = new HashSet<String>();
+//		typSet2.add("http://dbpedia.org/ontology/School");
+//		typSet2.add("http://dbpedia.org/ontology/EducationalInstitution");
+//		typSet2.add("http://dbpedia.org/ontology/Organisation");
+//		types.put("http://dbpedia.org/resource/McKinley_Senior_High_School", typSet2);
+//
+//		Set<String> typSet3 = new HashSet<String>();
+//		typSet3.add("http://dbpedia.org/ontology/Organisation");
+//		typSet3.add("http://dbpedia.org/ontology/Company");
+//		types.put("http://dbpedia.org/resource/Continental_Illinois", typSet3);
+		 
 		try {
 
 			BufferedReader in = new BufferedReader(new FileReader(pathToTypesFile));
