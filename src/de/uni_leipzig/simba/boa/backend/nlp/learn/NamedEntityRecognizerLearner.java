@@ -50,6 +50,8 @@ import de.uni_leipzig.simba.boa.backend.util.rdf.ClassIndexer;
  */
 public class NamedEntityRecognizerLearner {
 
+	private final NLPediaLogger logger = new NLPediaLogger(NamedEntityRecognizerLearner.class);
+	
 	private Map<Integer, String> sentences = new HashMap<Integer, String>();
 	private QueryParser exactMatchParser = new QueryParser(Version.LUCENE_30, "sentence", new SimpleAnalyzer());
 	private Directory index = null;
@@ -137,7 +139,7 @@ public class NamedEntityRecognizerLearner {
 					// for some uris we have labels but no types
 					if (typesForUri == null) {
 
-						System.out.println("No type statements found for: " + uri);
+						this.logger.info("No type statements found for: " + uri);
 					}
 					else {
 
