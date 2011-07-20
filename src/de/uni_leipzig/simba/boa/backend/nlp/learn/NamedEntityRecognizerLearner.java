@@ -108,8 +108,17 @@ public class NamedEntityRecognizerLearner {
 		System.out.println("There are " + labels.size() + " labels to search.");
 		System.out.println("They maximum number of sentences is " + this.maxNumberOfDocuments);
 
+		int onePercent = labels.size() / 100;
+		int n = 1;
+		int j = 1;
+		
 		// go through each label
 		for (Entry<String, String> entry : labels.entrySet()) {
+			
+			if ( n++ == onePercent ) {
+				System.out.println( j++ + " %");
+				onePercent += onePercent;
+			}
 			
 			try {
 
