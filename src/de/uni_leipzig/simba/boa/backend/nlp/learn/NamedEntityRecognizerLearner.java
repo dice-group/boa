@@ -152,8 +152,11 @@ public class NamedEntityRecognizerLearner {
 
 							String replacement = "";
 							for (int i = 0; i < tokensOfLabel.length; i++) {
-
-								replacement += tokensOfLabel[i] + "___" + typeReplacement + " ";
+								
+								if ( !tokensOfLabel[i].trim().equals("") ) {
+									
+									replacement += tokensOfLabel[i].trim() + "___" + typeReplacement + " ";
+								}
 							}
 							// replace the whole label with the complete replacement
 							while (sentence.contains(label)) {
