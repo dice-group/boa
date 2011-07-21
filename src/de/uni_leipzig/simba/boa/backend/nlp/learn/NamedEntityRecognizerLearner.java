@@ -117,15 +117,12 @@ public class NamedEntityRecognizerLearner {
 			try {
 
 				String uri = entry.getKey();
-				String label = entry.getValue().toLowerCase();
+				String label = entry.getValue();
 
 				if (uri != null & label != null) {
 
 					// find all sentences containing the label
 					Map<Integer, String> sentencesContainingLabels = getSentencesContainingLabel(label);
-					// System.out.println("Found " +
-					// sentencesContainingLabels.size() +
-					// " sentences containing label: " + label);
 
 					// get the most precise type definition for an URI
 					Set<String> typesForUri = this.types.get(uri);
@@ -148,20 +145,20 @@ public class NamedEntityRecognizerLearner {
 							// if the sentence was already found in the sentence
 							// list, take it from there else use it untagged
 							// from the index
-							String sentence = sent.getValue().toLowerCase();
-							if (sentences.containsKey(indexId))
-								sentences.get(indexId);
+							String sentence = sent.getValue();
+							if (sentences.containsKey(indexId)) sentences.get(indexId);
 
 							String replacement = "";
-							// replace the first token of the label with _B to
-							// show that this is the beginning
 							for (int i = 0; i < tokensOfLabel.length; i++) {
 
 								replacement += tokensOfLabel[i] + "___" + typeReplacement + " ";
 							}
-							// replace the whole label with the complete
-							// replacement
-							sentences.put(indexId, sentence.replaceAll(label, replacement));
+							// replace the whole label with the complete replacement
+							while (sentence.contains(label)) {
+								
+								sentence = sentence.replace(label, replacement);
+							}
+							sentences.put(indexId, sentence);
 						}
 					}
 				}
