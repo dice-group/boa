@@ -119,7 +119,7 @@ public class NamedEntityRecognizerLearner {
 			try {
 
 				String uri = entry.getKey();
-				String label = entry.getValue();
+				String label = entry.getValue().trim();
 
 				if (uri != null & label != null) {
 
@@ -153,10 +153,7 @@ public class NamedEntityRecognizerLearner {
 							String replacement = "";
 							for (int i = 0; i < tokensOfLabel.length; i++) {
 								
-								if ( !tokensOfLabel[i].trim().equals("") ) {
-									
-									replacement += tokensOfLabel[i].trim() + "___" + typeReplacement + " ";
-								}
+								replacement += tokensOfLabel[i] + "___" + typeReplacement + " ";
 							}
 							// replace the whole label with the complete replacement
 							while (sentence.contains(label)) {
