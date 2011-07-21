@@ -104,16 +104,14 @@ public class NamedEntityRecognizerLearner {
 		System.out.println("There are " + labels.size() + " labels to search.");
 		System.out.println("They maximum number of sentences is " + this.maxNumberOfDocuments);
 
-		int onePercent = labels.size() / 100;
-		int n = 1;
-		int j = 1;
-
+		int n = 0;
+		
 		// go through each label
 		for (Entry<String, String> entry : labels.entrySet()) {
 
-			if (n++ == onePercent) {
-				System.out.println(j++ + " %");
-				onePercent += onePercent;
+			if (n++ % 1000 == 0 ) {
+				
+				this.printProgBar(n/labels.size());
 			}
 
 			try {
@@ -392,4 +390,21 @@ public class NamedEntityRecognizerLearner {
 
 		this.pathToTypesFile = pathToTypesFile;
 	}
+	
+	public void printProgBar(int percent){
+        StringBuilder bar = new StringBuilder("[");
+
+        for(int i = 0; i < 50; i++){
+            if( i < (percent/2)){
+                bar.append("=");
+            }else if( i == (percent/2)){
+                bar.append(">");
+            }else{
+                bar.append(" ");
+            }
+        }
+
+        bar.append("]   " + percent + "%     ");
+        System.out.print("\r" + bar.toString());
+    }
 }
