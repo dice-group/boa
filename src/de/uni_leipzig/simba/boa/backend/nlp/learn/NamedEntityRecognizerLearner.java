@@ -113,6 +113,7 @@ public class NamedEntityRecognizerLearner {
 			if (n++ % 100 == 0 ) {
 				
 				this.printProgBar((n/labels.size()) * 100);
+				this.logger.info(((n/labels.size()) * 100) + " %");
 			}
 
 			try {
@@ -159,6 +160,9 @@ public class NamedEntityRecognizerLearner {
 								
 								sentence = sentence.replace(label, replacement);
 							}
+							logger.debug("##################################################");
+							logger.debug(label);
+							logger.debug(replacement);
 							logger.debug(sentence);
 							sentences.put(indexId, sentence);
 						}
