@@ -158,6 +158,7 @@ public class NamedEntityRecognizerLearner {
 								
 								sentence = sentence.replace(label, replacement);
 							}
+							logger.debug(sentence);
 							sentences.put(indexId, sentence);
 						}
 					}
