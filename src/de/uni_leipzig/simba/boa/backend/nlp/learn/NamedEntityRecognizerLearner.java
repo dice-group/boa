@@ -110,13 +110,13 @@ public class NamedEntityRecognizerLearner {
 		// go through each label
 		for (Entry<String, String> entry : labels.entrySet()) {
 
-			if (n++ % 100 == 0 ) {
-				
-				this.printProgBar((n/labels.size()) * 100);
-				this.logger.info("Iteration n: \t" + n + " \t" +((n/labels.size()) * 100) + " %");
-			}
-
 			try {
+				
+				if (n++ % 100 == 0 ) {
+					
+					this.printProgBar((n/labels.size()) * 100);
+					this.logger.info("Iteration n: \t" + n + " \t" +((n/labels.size()) * 100) + " %");
+				}
 
 				String uri = entry.getKey();
 				String label = entry.getValue().trim();
