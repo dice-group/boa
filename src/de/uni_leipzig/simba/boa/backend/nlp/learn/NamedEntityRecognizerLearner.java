@@ -111,7 +111,7 @@ public class NamedEntityRecognizerLearner {
 
 			if (n++ % 1000 == 0 ) {
 				
-				this.printProgBar(n/labels.size());
+				this.printProgBar((n/labels.size()) * 100);
 			}
 
 			try {
