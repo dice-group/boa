@@ -1,7 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -10,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
-import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.crawl.RelationFinder;
@@ -19,7 +16,6 @@ import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
 import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchThread;
 import de.uni_leipzig.simba.boa.backend.search.concurrent.PrintProgressTask;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;

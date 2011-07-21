@@ -3,8 +3,6 @@ package de.uni_leipzig.simba.boa.backend.search;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -12,13 +10,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.KeywordAnalyzer;
 import org.apache.lucene.analysis.SimpleAnalyzer;
-import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -30,11 +25,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 import org.springframework.util.StringUtils;
 
-import com.sun.tools.javac.code.Attribute.Array;
-
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
-import de.uni_leipzig.simba.boa.backend.nlp.PosTagger;
 
 /**
  * 

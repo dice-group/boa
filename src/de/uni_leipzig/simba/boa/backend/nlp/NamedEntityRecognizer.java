@@ -5,9 +5,7 @@ import java.util.List;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-
 import edu.stanford.nlp.ie.AbstractSequenceClassifier;
-import edu.stanford.nlp.ie.NERClassifierCombiner;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.ling.CoreAnnotations.AnswerAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;

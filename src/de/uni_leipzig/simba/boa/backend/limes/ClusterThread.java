@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import de.uni_leipzig.cugar.harden.HardenMaxQuality;
 import de.uni_leipzig.simba.boa.backend.entity.cluster.Cluster;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;

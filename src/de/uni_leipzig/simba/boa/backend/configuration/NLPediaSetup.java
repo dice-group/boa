@@ -10,7 +10,6 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluat
 import de.uni_leipzig.simba.boa.backend.logging.LoggingConfigurator;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.util.BeanUtility;
-import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 
 /**
  * NLpediaSetup starts up and shuts down the NLPedia application.

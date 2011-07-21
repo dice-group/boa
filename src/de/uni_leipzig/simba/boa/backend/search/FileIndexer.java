@@ -1,23 +1,18 @@
 package de.uni_leipzig.simba.boa.backend.search;
 
 import java.io.BufferedReader;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.KeywordAnalyzer;
 import org.apache.lucene.analysis.SimpleAnalyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;

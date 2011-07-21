@@ -1,7 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;

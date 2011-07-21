@@ -9,7 +9,6 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.nlp.SentenceDetection;
 import de.uni_leipzig.simba.boa.backend.util.FileWriterUtil;
-
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;

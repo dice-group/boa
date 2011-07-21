@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

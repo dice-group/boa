@@ -26,7 +26,6 @@ import org.springframework.util.StringUtils;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 

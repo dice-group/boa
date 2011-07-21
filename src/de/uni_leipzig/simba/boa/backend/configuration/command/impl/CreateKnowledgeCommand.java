@@ -14,14 +14,12 @@ import org.apache.lucene.queryParser.ParseException;
 import com.hp.hpl.jena.db.RDFRDBException;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
 import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
@@ -35,7 +33,6 @@ import de.uni_leipzig.simba.boa.backend.rdf.store.Store;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.DbpediaUriRetrieval;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
-import de.uni_leipzig.simba.boa.backend.util.DbpediaUtil;
 
 /**
  * 

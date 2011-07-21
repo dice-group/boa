@@ -2,7 +2,6 @@ package de.uni_leipzig.simba.boa.backend.search.concurrent;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
-
 import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;

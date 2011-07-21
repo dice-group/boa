@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Statement;
-import com.vaadin.data.Container;
 import com.vaadin.terminal.ExternalResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;

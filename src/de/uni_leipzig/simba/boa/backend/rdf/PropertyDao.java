@@ -2,13 +2,13 @@ package de.uni_leipzig.simba.boa.backend.rdf;
 
 import java.util.Iterator;
 
-import de.uni_leipzig.simba.boa.backend.Constants;
-
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
+
+import de.uni_leipzig.simba.boa.backend.Constants;
 
 
 public class PropertyDao {

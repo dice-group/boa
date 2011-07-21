@@ -6,7 +6,6 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.rdf.Model;
 import de.uni_leipzig.simba.boa.backend.rdf.store.Store;
 

@@ -4,10 +4,9 @@ import it.unimi.dsi.fastutil.bytes.ByteArrayList;
 
 import java.util.List;
 
+import net.olivo.lc4j.LanguageCategorization;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-
-import net.olivo.lc4j.LanguageCategorization;
 
 /**
  * This class uses the approach presented in:

@@ -1,11 +1,9 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.uni_leipzig.simba.boa.backend.configuration.Initializeable;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternEvaluationCommand;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluator;

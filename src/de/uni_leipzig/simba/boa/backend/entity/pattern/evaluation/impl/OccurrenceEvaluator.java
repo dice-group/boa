@@ -1,7 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.impl;
 
 import java.util.Map;
-
 import java.util.Map.Entry;
 
 import de.uni_leipzig.simba.boa.backend.configuration.Initializeable;

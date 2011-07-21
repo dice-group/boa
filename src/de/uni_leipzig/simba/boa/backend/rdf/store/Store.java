@@ -2,7 +2,6 @@ package de.uni_leipzig.simba.boa.backend.rdf.store;
 
 import java.sql.SQLException;
 
-
 import com.hp.hpl.jena.db.DBConnection;
 import com.hp.hpl.jena.db.IDBConnection;
 import com.hp.hpl.jena.db.ModelRDB;

@@ -7,7 +7,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map.Entry;
 
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;

@@ -1,10 +1,8 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;

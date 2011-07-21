@@ -1,22 +1,19 @@
 package de.uni_leipzig.simba.boa.backend.rdf;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import de.uni_leipzig.simba.boa.backend.Constants;
 
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
+
+import de.uni_leipzig.simba.boa.backend.Constants;
 
 /**
  * 

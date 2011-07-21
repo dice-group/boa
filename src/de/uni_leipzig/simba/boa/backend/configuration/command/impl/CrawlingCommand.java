@@ -16,7 +16,6 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.crawl.Crawler;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 
 

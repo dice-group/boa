@@ -3,7 +3,6 @@ package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
@@ -14,11 +13,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluationThread;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluator;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluatorFactory;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.impl.DomainAndRangeEvaluator;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
-import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchThread;
-import de.uni_leipzig.simba.boa.backend.search.concurrent.PrintProgressTask;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 
 /**

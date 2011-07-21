@@ -2,12 +2,10 @@ package de.uni_leipzig.simba.boa.frontend.data;
 
 import java.io.Serializable;
 
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
+import com.vaadin.data.util.BeanItemContainer;
+
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-
-import com.vaadin.data.util.BeanItemContainer;
 
 
 @SuppressWarnings("serial")

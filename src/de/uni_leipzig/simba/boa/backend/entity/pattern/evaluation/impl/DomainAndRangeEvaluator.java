@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.lucene.queryParser.ParseException;
 
@@ -19,7 +18,6 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternEvaluationCommand;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
-import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
 import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
 import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
@@ -29,7 +27,6 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluat
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
-
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 

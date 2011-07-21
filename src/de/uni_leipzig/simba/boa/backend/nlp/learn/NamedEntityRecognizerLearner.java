@@ -1,6 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.nlp.learn;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -8,27 +9,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.lucene.analysis.SimpleAnalyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -40,7 +33,6 @@ import com.hp.hpl.jena.util.FileManager;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.util.rdf.ClassIndexer;
 
@@ -51,7 +43,7 @@ import de.uni_leipzig.simba.boa.backend.util.rdf.ClassIndexer;
 public class NamedEntityRecognizerLearner {
 
 	private final NLPediaLogger logger = new NLPediaLogger(NamedEntityRecognizerLearner.class);
-	
+
 	private Map<Integer, String> sentences = new HashMap<Integer, String>();
 	private QueryParser exactMatchParser = new QueryParser(Version.LUCENE_30, "sentence", new SimpleAnalyzer());
 	private Directory index = null;
@@ -99,13 +91,15 @@ public class NamedEntityRecognizerLearner {
 
 		// read the labels with uris from the ntriples file
 		System.out.print("Reading labels ... ");
+		long start = new Date().getTime();
 		readLabels();
-		System.out.print("DONE\n");
-		
+		System.out.print("DONE in " + (new Date().getTime() - start) + "ms!\n");
+
 		// read the types (multiple) for each resource from the n triples file
 		System.out.print("Reading types ... ");
+		start = new Date().getTime();
 		readRdfTypes();
-		System.out.print("DONE\n");
+		System.out.print("DONE in " + (new Date().getTime() - start) + "ms!\n");
 
 		System.out.println("There are " + labels.size() + " labels to search.");
 		System.out.println("They maximum number of sentences is " + this.maxNumberOfDocuments);
@@ -113,15 +107,15 @@ public class NamedEntityRecognizerLearner {
 		int onePercent = labels.size() / 100;
 		int n = 1;
 		int j = 1;
-		
+
 		// go through each label
 		for (Entry<String, String> entry : labels.entrySet()) {
-			
-			if ( n++ == onePercent ) {
-				System.out.println( j++ + " %");
+
+			if (n++ == onePercent) {
+				System.out.println(j++ + " %");
 				onePercent += onePercent;
 			}
-			
+
 			try {
 
 				String uri = entry.getKey();
@@ -131,7 +125,9 @@ public class NamedEntityRecognizerLearner {
 
 					// find all sentences containing the label
 					Map<Integer, String> sentencesContainingLabels = getSentencesContainingLabel(label);
-					// System.out.println("Found " + sentencesContainingLabels.size() + " sentences containing label: " + label);
+					// System.out.println("Found " +
+					// sentencesContainingLabels.size() +
+					// " sentences containing label: " + label);
 
 					// get the most precise type definition for an URI
 					Set<String> typesForUri = this.types.get(uri);
@@ -151,25 +147,30 @@ public class NamedEntityRecognizerLearner {
 						for (Entry<Integer, String> sent : sentencesContainingLabels.entrySet()) {
 
 							int indexId = sent.getKey();
-							// if the sentence was already found in the sentence list, take it from there else use it untagged from the index
+							// if the sentence was already found in the sentence
+							// list, take it from there else use it untagged
+							// from the index
 							String sentence = sent.getValue().toLowerCase();
-							if (sentences.containsKey(indexId)) sentences.get(indexId);
+							if (sentences.containsKey(indexId))
+								sentences.get(indexId);
 
 							String replacement = "";
-							// replace the first token of the label with _B to show that this is the beginning
+							// replace the first token of the label with _B to
+							// show that this is the beginning
 							for (int i = 0; i < tokensOfLabel.length; i++) {
 
 								replacement += tokensOfLabel[i] + "___" + typeReplacement + " ";
 							}
-							// replace the whole label with the complete replacement
+							// replace the whole label with the complete
+							// replacement
 							sentences.put(indexId, sentence.replaceAll(label, replacement));
 						}
 					}
 				}
 			}
 			catch (Exception e) {
-				
-				e.printStackTrace();
+
+				logger.error("Something went wrong during creation of NER training data", e);
 			}
 		}
 		writeTrainedModelToFile();
@@ -184,18 +185,18 @@ public class NamedEntityRecognizerLearner {
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(pathToTrainedSentenceFile)), "UTF-8"));
 
 			System.out.println("Writing " + sentences.values().size() + " sentences to file!");
-			
+
 			for (String sentence : sentences.values()) {
-				
-				for (String token : sentence.split(" ") ) {
-					
-					if ( !token.contains("___") ) {
-						
+
+				for (String token : sentence.split(" ")) {
+
+					if (!token.contains("___")) {
+
 						writer.write(token + "\t" + "O" + Constants.NEW_LINE_SEPARATOR);
 					}
 					else {
-						
-						String[] tokens = token.split("___"); 
+
+						String[] tokens = token.split("___");
 						writer.write(tokens[0] + "\t" + tokens[1] + Constants.NEW_LINE_SEPARATOR);
 					}
 				}
@@ -228,10 +229,11 @@ public class NamedEntityRecognizerLearner {
 				biggestCount = entry.getValue();
 				currentUri = entry.getKey();
 			}
-			else if (entry.getValue() == biggestCount) {
-				
-				System.out.println("multiple deepest types were found for uri: " + uri);
-			}
+			else
+				if (entry.getValue() == biggestCount) {
+
+					System.out.println("multiple deepest types were found for uri: " + uri);
+				}
 		}
 
 		return currentUri;
@@ -266,13 +268,13 @@ public class NamedEntityRecognizerLearner {
 	 */
 	private void readLabels() {
 
-		long start = new Date().getTime();
-
 		this.labels = new HashMap<String, String>();
 
-//		this.labels.put("http://dbpedia.org/resource/Continental_Illinois", "Continental Illinois bank");
-//		this.labels.put("http://dbpedia.org/resource/McKinley_Senior_High_School", "McKinley Senior High School");
-//		this.labels.put("http://dbpedia.org/resource/APR_FC", "APR FC");
+		// this.labels.put("http://dbpedia.org/resource/Continental_Illinois",
+		// "Continental Illinois bank");
+		// this.labels.put("http://dbpedia.org/resource/McKinley_Senior_High_School",
+		// "McKinley Senior High School");
+		// this.labels.put("http://dbpedia.org/resource/APR_FC", "APR FC");
 
 		try {
 
@@ -299,7 +301,6 @@ public class NamedEntityRecognizerLearner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Label file read in " + (new Date().getTime() - start) + "ms.");
 	}
 
 	/**
@@ -309,27 +310,27 @@ public class NamedEntityRecognizerLearner {
 	 */
 	private void readRdfTypes() {
 
-		long start = new Date().getTime();
-
 		types = new TreeMap<String, Set<String>>();
 
-//		Set<String> typSet1 = new HashSet<String>();
-//		typSet1.add("http://dbpedia.org/ontology/Organisation");
-//		typSet1.add("http://dbpedia.org/ontology/SportsTeam");
-//		typSet1.add("http://dbpedia.org/ontology/SoccerClub");
-//		types.put("http://dbpedia.org/resource/APR_FC", typSet1);
-//
-//		Set<String> typSet2 = new HashSet<String>();
-//		typSet2.add("http://dbpedia.org/ontology/School");
-//		typSet2.add("http://dbpedia.org/ontology/EducationalInstitution");
-//		typSet2.add("http://dbpedia.org/ontology/Organisation");
-//		types.put("http://dbpedia.org/resource/McKinley_Senior_High_School", typSet2);
-//
-//		Set<String> typSet3 = new HashSet<String>();
-//		typSet3.add("http://dbpedia.org/ontology/Organisation");
-//		typSet3.add("http://dbpedia.org/ontology/Company");
-//		types.put("http://dbpedia.org/resource/Continental_Illinois", typSet3);
-		 
+		// Set<String> typSet1 = new HashSet<String>();
+		// typSet1.add("http://dbpedia.org/ontology/Organisation");
+		// typSet1.add("http://dbpedia.org/ontology/SportsTeam");
+		// typSet1.add("http://dbpedia.org/ontology/SoccerClub");
+		// types.put("http://dbpedia.org/resource/APR_FC", typSet1);
+		//
+		// Set<String> typSet2 = new HashSet<String>();
+		// typSet2.add("http://dbpedia.org/ontology/School");
+		// typSet2.add("http://dbpedia.org/ontology/EducationalInstitution");
+		// typSet2.add("http://dbpedia.org/ontology/Organisation");
+		// types.put("http://dbpedia.org/resource/McKinley_Senior_High_School",
+		// typSet2);
+		//
+		// Set<String> typSet3 = new HashSet<String>();
+		// typSet3.add("http://dbpedia.org/ontology/Organisation");
+		// typSet3.add("http://dbpedia.org/ontology/Company");
+		// types.put("http://dbpedia.org/resource/Continental_Illinois",
+		// typSet3);
+
 		try {
 
 			BufferedReader in = new BufferedReader(new FileReader(pathToTypesFile));
@@ -370,7 +371,6 @@ public class NamedEntityRecognizerLearner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Types file read in " + (new Date().getTime() - start) + "ms.");
 	}
 
 	public void setPathToTrainedSentenceFile(String pathToTrainedSentenceFile) {

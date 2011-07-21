@@ -1,14 +1,10 @@
 package de.uni_leipzig.simba.boa.frontend.ui;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
-import com.vaadin.terminal.ExternalResource;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Link;
 import com.vaadin.ui.Table;
 
 import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;

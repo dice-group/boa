@@ -1,14 +1,12 @@
 package de.uni_leipzig.simba.boa.backend.search.concurrent;
 
 import java.io.IOException;
-
 import java.text.NumberFormat;
 import java.util.List;
 
 import org.apache.lucene.queryParser.ParseException;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 

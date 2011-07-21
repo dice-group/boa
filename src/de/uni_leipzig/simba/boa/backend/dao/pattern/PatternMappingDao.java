@@ -1,7 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.dao.pattern;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import org.hibernate.HibernateException;

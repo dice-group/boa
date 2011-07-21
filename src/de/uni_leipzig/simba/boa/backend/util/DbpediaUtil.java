@@ -1,6 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.util;
 
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;

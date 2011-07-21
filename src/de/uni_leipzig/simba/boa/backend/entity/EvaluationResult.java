@@ -1,8 +1,8 @@
 package de.uni_leipzig.simba.boa.backend.entity;
 
 import javax.persistence.Basic;
-import javax.persistence.Table;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name="evaluation_result")

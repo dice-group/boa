@@ -6,13 +6,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
-import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
+
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 /**
  * 

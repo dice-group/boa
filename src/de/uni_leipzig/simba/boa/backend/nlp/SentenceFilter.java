@@ -1,10 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.nlp;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;

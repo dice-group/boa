@@ -1,6 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
