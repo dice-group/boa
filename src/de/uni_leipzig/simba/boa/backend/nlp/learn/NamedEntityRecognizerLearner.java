@@ -67,13 +67,14 @@ public class NamedEntityRecognizerLearner {
 	 */
 	public void learn() {
 
+		long start = new Date().getTime();
 		System.out.print("Reading ontology ... ");
 		OntModel ontModel = ModelFactory.createOntologyModel();
 		InputStream in = FileManager.get().open(pathToDBpediaOntology);
 		ontModel.read(in, "");
 		indexer = new ClassIndexer();
 		indexer.index(ontModel);
-		System.out.print("DONE!\n");
+		System.out.print("DONE in " + (new Date().getTime() - start) + "ms!\n");
 
 		try {
 
@@ -90,14 +91,14 @@ public class NamedEntityRecognizerLearner {
 		}
 
 		// read the labels with uris from the ntriples file
+		start = new Date().getTime();
 		System.out.print("Reading labels ... ");
-		long start = new Date().getTime();
 		readLabels();
 		System.out.print("DONE in " + (new Date().getTime() - start) + "ms!\n");
 
 		// read the types (multiple) for each resource from the n triples file
-		System.out.print("Reading types ... ");
 		start = new Date().getTime();
+		System.out.print("Reading types ... ");
 		readRdfTypes();
 		System.out.print("DONE in " + (new Date().getTime() - start) + "ms!\n");
 
@@ -109,7 +110,7 @@ public class NamedEntityRecognizerLearner {
 		// go through each label
 		for (Entry<String, String> entry : labels.entrySet()) {
 
-			if (n++ % 1000 == 0 ) {
+			if (n++ % 100 == 0 ) {
 				
 				this.printProgBar((n/labels.size()) * 100);
 			}
