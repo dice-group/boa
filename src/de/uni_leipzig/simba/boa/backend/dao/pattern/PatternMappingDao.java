@@ -73,7 +73,7 @@ public class PatternMappingDao extends AbstractDao {
 			tx = session.beginTransaction();
 			
 			String queryString = "select p.id, p.naturalLanguageRepresentation, " +
-									"p.confidence, p.numberOfOccurrences, p.useForPatternEvaluation, p.luceneDocIds, " +
+									"p.confidence, p.globalConfidence, p.numberOfOccurrences, p.useForPatternEvaluation, p.luceneDocIds, " +
 									"p.specificity, p.typicity, p.support " + 
 								 "from pattern_mapping as pm, pattern as p " +
 								 "where pm.uri='"+pm.getUri().trim()+"' and pm.id = p.pattern_mapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0 or p.confidence > 0) " +
@@ -88,12 +88,13 @@ public class PatternMappingDao extends AbstractDao {
 				pattern.setId((Integer) obj[0]);
 				pattern.setNaturalLanguageRepresentation((String) obj[1]);
 				pattern.setConfidence((Double) obj[2]);
-				pattern.setNumberOfOccurrences((Integer) obj[3]);
-				pattern.setUseForPatternEvaluation((Boolean) obj[4]);
-				pattern.setLuceneDocIds((String) obj[5]);
-				pattern.setSpecificity((Double) obj[6]);
-				pattern.setTypicity((Double) obj[7]);
-				pattern.setSupport((Double) obj[8]);
+				pattern.setGlobalConfidence((Double) obj[3]);
+				pattern.setNumberOfOccurrences((Integer) obj[4]);
+				pattern.setUseForPatternEvaluation((Boolean) obj[5]);
+				pattern.setLuceneDocIds((String) obj[6]);
+				pattern.setSpecificity((Double) obj[7]);
+				pattern.setTypicity((Double) obj[8]);
+				pattern.setSupport((Double) obj[9]);
 				
 				pm.addPattern(pattern);
 			}

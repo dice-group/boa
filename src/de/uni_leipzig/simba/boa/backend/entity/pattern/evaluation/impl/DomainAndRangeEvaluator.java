@@ -179,9 +179,9 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					// ########################################################
 					
 					// we wont need to see them in the view
-					if ( pattern.getConfidence() <= 0 ) pattern.setUseForPatternEvaluation(false);
+					if ( pattern.retrieveTempConfidence() <= 0 ) pattern.setUseForPatternEvaluation(false);
 					
-					if ( pattern.getConfidence() <= 0 ) {
+					if ( pattern.retrieveTempConfidence() <= 0 ) {
 						
 						System.out.println(" does not fit in domain/range.\n"); // continued from upper system.out.print()
 						this.logger.debug("Pattern " +  pattern.getNaturalLanguageRepresentation() + " does not fit in domain/range.");
