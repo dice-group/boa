@@ -93,10 +93,7 @@ public class NamedEntityRecognizerLearner {
 		
 		BackgroundKnowledge knowledge = null;
 		
-		boolean isDeSer = sUtil.isDeserializeable(pathToSerializedFile);
-		System.out.println("File exists: " + isDeSer);
-		
-		if ( isDeSer ) {
+		if ( sUtil.isDeserializeable(pathToSerializedFile) ) {
 			
 			start = new Date().getTime();
 			System.out.print("Deserialize data ... ");
@@ -127,24 +124,19 @@ public class NamedEntityRecognizerLearner {
 					
 					this.printProgBar((n/knowledge.getLabels().size()) * 100);
 					this.logger.info("Iteration n: \t" + n + " \t" +((n/knowledge.getLabels().size()) * 100) + " %");
+					this.logger.info("There are currently " + this.sentences.size() + " trained sentences!");
 				}
 
 				String uri = entry.getKey();
 				String label = entry.getValue().trim();
 				
-				System.out.println(uri + ": \"" + label + "\"");
-
 				if (uri != null & label != null) {
 
 					// find all sentences containing the label
 					Map<Integer, String> sentencesContainingLabels = getSentencesContainingLabel(label);
 					
-					System.out.println("Found " + sentencesContainingLabels.size() + " sentences with that label.");
-					
 					// get the most precise type definition for an URI
 					Set<String> typesForUri = knowledge.getTypes().get(uri);
-
-					System.out.println("Found " + typesForUri.size() + "types for that uri.");
 					
 					// for some uris we have labels but no types
 					if (typesForUri == null){
@@ -156,14 +148,10 @@ public class NamedEntityRecognizerLearner {
 						String typeReplacement = getTypeForUri(uri, typesForUri);
 						typeReplacement = typeReplacement.replace("http://dbpedia.org/ontology/", "");
 
-						System.out.println("Type replacement: " + typeReplacement);
-						
 						String[] tokensOfLabel = label.split(" ");
 
 						for (Entry<Integer, String> sent : sentencesContainingLabels.entrySet()) {
 
-							System.out.println("Found sentence: " + sent);
-							
 							int indexId = sent.getKey();
 							// if the sentence was already found in the sentence
 							// list, take it from there else use it untagged
@@ -177,20 +165,8 @@ public class NamedEntityRecognizerLearner {
 								replacement += tokensOfLabel[i] + "___" + typeReplacement + " ";
 							}
 							
-							System.out.println("Replacement: " + replacement);
-							
 							// replace the whole label with the complete replacement
-							while (sentence.contains(label)) {
-								
-								sentence = sentence.replace(label, replacement);
-							}
-							
-							
-							logger.debug("##################################################");
-							logger.debug(label);
-							logger.debug(replacement);
-							logger.debug(sentence);
-							sentences.put(indexId, sentence);
+							sentences.put(indexId, sentence.replace(label, replacement));
 						}
 					}
 				}

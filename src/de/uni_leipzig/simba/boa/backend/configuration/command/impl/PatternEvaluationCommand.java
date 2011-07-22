@@ -96,6 +96,8 @@ public class PatternEvaluationCommand implements Command {
 
 		System.out.println("All evaluation threads are finished. Start to calculate normalized confidence!");
 		
+		double maxConfidenceForAllPatternMappings = 0;
+		
 		for (PatternMapping pm : results ) {
 			
 			// local maxima
@@ -106,6 +108,7 @@ public class PatternEvaluationCommand implements Command {
 				if ( pattern.isUseForPatternEvaluation() ) {
 					
 					maxConfidenceForPatternMapping		= Math.max(maxConfidenceForPatternMapping, pattern.getConfidence());
+					maxConfidenceForAllPatternMappings	= Math.max(maxConfidenceForAllPatternMappings, pattern.getConfidence());
 				}
 			}
 			
