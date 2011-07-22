@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -69,10 +70,15 @@ public class SerializationUtil {
 		System.out.println(p);
 	}
 
+	/**
+	 * checks if there is a file at the given path
+	 * 
+	 * @param pathToSerializedFile
+	 * @return
+	 */
 	public boolean isDeserializeable(String pathToSerializedFile) {
 
-		// TODO Auto-generated method stub
-		return false;
+		return new File(pathToSerializedFile).exists();
 	}
 	
 }

@@ -40,7 +40,7 @@ public class BackgroundKnowledge implements Serializable {
 		System.out.print("DONE in " + (new Date().getTime() - start) + "ms!\n");
 		
 		start = new Date().getTime();
-		System.out.print("Reading labels ... ");
+		System.out.print("Reading types ... ");
 		this.readRdfTypes(pathToTypesFile);
 		System.out.print("DONE in " + (new Date().getTime() - start) + "ms!\n");
 	}
