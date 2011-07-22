@@ -73,6 +73,11 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	 * 
 	 */
 	private Double confidence = -1D;
+	
+	/**
+	 * 
+	 */
+	private Double globalConfidence = -1D;
 
 	/**
 	 * 
@@ -88,6 +93,11 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	 * 
 	 */
 	private Double specificity = -1D;
+
+	/**
+	 * 
+	 */
+	private double tempConfidence = -1D;
 	
 	/**
 	 * @param naturalLanguageRepresentation the naturalLanguageRepresentation to set
@@ -458,6 +468,35 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	public void setSpecificity(Double specificity) {
 	
 		this.specificity = specificity;
+	}
+
+
+	public double retrieveTempConfidence() {
+
+		return this.tempConfidence ;
+	}
+
+	public void updateTempConfidence(double tempConfidence) {
+
+		this.tempConfidence = tempConfidence;
+	}
+
+
+	/**
+	 * @param globalConfidence the globalConfidence to set
+	 */
+	public void setGlobalConfidence(Double globalConfidence) {
+
+		this.globalConfidence = globalConfidence;
+	}
+
+
+	/**
+	 * @return the globalConfidence
+	 */
+	public Double getGlobalConfidence() {
+
+		return globalConfidence;
 	}
 }
 

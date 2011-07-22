@@ -107,8 +107,8 @@ public class PatternEvaluationCommand implements Command {
 				
 				if ( pattern.isUseForPatternEvaluation() ) {
 					
-					maxConfidenceForPatternMapping		= Math.max(maxConfidenceForPatternMapping, pattern.getConfidence());
-					maxConfidenceForAllPatternMappings	= Math.max(maxConfidenceForAllPatternMappings, pattern.getConfidence());
+					maxConfidenceForPatternMapping		= Math.max(maxConfidenceForPatternMapping, pattern.retrieveTempConfidence());
+					maxConfidenceForAllPatternMappings	= Math.max(maxConfidenceForAllPatternMappings, pattern.retrieveTempConfidence());
 				}
 			}
 			
@@ -120,12 +120,20 @@ public class PatternEvaluationCommand implements Command {
 				
 				if ( pattern.isUseForPatternEvaluation() ) {
 				
-					pattern.setConfidence(pattern.getConfidence() / maxConfidenceForPatternMapping);
+					pattern.setConfidence(pattern.retrieveTempConfidence() / maxConfidenceForPatternMapping);
 				}
 			}
 		}
 		
 		for ( PatternMapping mapping : results ) {
+			
+			for ( Pattern p : mapping.getPatterns() ) {
+				
+				if ( p.isUseForPatternEvaluation() ) {
+					
+					p.setGlobalConfidence(p.retrieveTempConfidence() / maxConfidenceForAllPatternMappings);
+				}
+			}
 			
 			System.out.println("Updating pattern mapping " + mapping.getUri());
 			this.patternMappingDao.updatePatternMapping(mapping);

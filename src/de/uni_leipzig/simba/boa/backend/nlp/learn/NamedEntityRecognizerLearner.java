@@ -111,6 +111,7 @@ public class NamedEntityRecognizerLearner {
 		}
 		
 		System.out.println("There are " + knowledge.getLabels().size() + " labels to search.");
+		System.out.println("There are " + knowledge.getTypes().size() + " types to search.");
 		System.out.println("They maximum number of sentences is " + this.maxNumberOfDocuments);
 
 		int n = 0;
@@ -122,7 +123,7 @@ public class NamedEntityRecognizerLearner {
 				
 				if (n++ % 100 == 0 ) {
 					
-					this.printProgBar((n/knowledge.getLabels().size()) * 100);
+					this.printProgBar((int) ( ( ((double) n) / ((double)knowledge.getLabels().size() ) ) * 100));
 					this.logger.info("Iteration n: \t" + n + " \t" +((n/knowledge.getLabels().size()) * 100) + " %");
 					this.logger.info("There are currently " + this.sentences.size() + " trained sentences!");
 				}
