@@ -34,6 +34,7 @@ import com.hp.hpl.jena.util.FileManager;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.util.SerializationUtil;
 import de.uni_leipzig.simba.boa.backend.util.rdf.ClassIndexer;
 
 /**
@@ -56,11 +57,9 @@ public class NamedEntityRecognizerLearner {
 	private String pathToLabelsFile = PREFIX + "labels_en.nt";
 	private String pathToTypesFile = PREFIX + "instance_types_en.nt";
 	private String pathToDBpediaOntology = PREFIX + "dbpedia_3.6.owl";
+	private String pathToSerializedFile = PREFIX + "knowledge.ser";
 
 	private int maxNumberOfDocuments = Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfLearnSentences"));
-
-	private Map<String, String> labels = null;
-	private Map<String, Set<String>> types = null;
 
 	/**
 	 * @param args
@@ -89,33 +88,34 @@ public class NamedEntityRecognizerLearner {
 
 			ioe.printStackTrace();
 		}
-
-		// read the labels with uris from the ntriples file
-		start = new Date().getTime();
-		System.out.print("Reading labels ... ");
-		readLabels();
-		System.out.print("DONE in " + (new Date().getTime() - start) + "ms!\n");
-
-		// read the types (multiple) for each resource from the n triples file
-		start = new Date().getTime();
-		System.out.print("Reading types ... ");
-		readRdfTypes();
-		System.out.print("DONE in " + (new Date().getTime() - start) + "ms!\n");
-
-		System.out.println("There are " + labels.size() + " labels to search.");
+		
+		SerializationUtil sUtil = new SerializationUtil();
+		
+		BackgroundKnowledge knowledge = null;
+		if ( sUtil.isDeserializeable(pathToSerializedFile) ) {
+			
+			knowledge = sUtil.deserializeObject(new BackgroundKnowledge(), pathToSerializedFile);
+		}
+		else {
+			
+			knowledge = new BackgroundKnowledge(pathToTypesFile, pathToLabelsFile);
+			sUtil.serializeObject(knowledge, pathToSerializedFile);
+		}
+		
+		System.out.println("There are " + knowledge.getLabels().size() + " labels to search.");
 		System.out.println("They maximum number of sentences is " + this.maxNumberOfDocuments);
 
 		int n = 0;
 		
 		// go through each label
-		for (Entry<String, String> entry : labels.entrySet()) {
+		for (Entry<String, String> entry : knowledge.getLabels().entrySet()) {
 
 			try {
 				
 				if (n++ % 100 == 0 ) {
 					
-					this.printProgBar((n/labels.size()) * 100);
-					this.logger.info("Iteration n: \t" + n + " \t" +((n/labels.size()) * 100) + " %");
+					this.printProgBar((n/knowledge.getLabels().size()) * 100);
+					this.logger.info("Iteration n: \t" + n + " \t" +((n/knowledge.getLabels().size()) * 100) + " %");
 				}
 
 				String uri = entry.getKey();
@@ -129,7 +129,7 @@ public class NamedEntityRecognizerLearner {
 					Map<Integer, String> sentencesContainingLabels = getSentencesContainingLabel(label);
 
 					// get the most precise type definition for an URI
-					Set<String> typesForUri = this.types.get(uri);
+					Set<String> typesForUri = knowledge.getTypes().get(uri);
 
 					// for some uris we have labels but no types
 					if (typesForUri == null) {
@@ -264,116 +264,6 @@ public class NamedEntityRecognizerLearner {
 			e.printStackTrace();
 		}
 		return sentencesContainingLabel;
-	}
-
-	/**
-	 * @return the english labels for each instance
-	 */
-	private void readLabels() {
-
-		this.labels = new HashMap<String, String>();
-
-//		 this.labels.put("http://dbpedia.org/resource/Continental_Illinois",
-//		 "Continental Illinois bank");
-//		 this.labels.put("http://dbpedia.org/resource/McKinley_Senior_High_School",
-//		 "McKinley Senior High School");
-//		 this.labels.put("http://dbpedia.org/resource/APR_FC", "APR FC");
-
-		try {
-
-			BufferedReader in = new BufferedReader(new FileReader(pathToLabelsFile));
-
-			String line = "";
-
-			while ((line = in.readLine()) != null) {
-
-				String[] lineParts = line.split(">");
-
-				String uri = lineParts[0].replaceAll("<", "").replaceAll(">", "").trim();
-				String label = lineParts[2].replaceAll("\"@en", "");
-				label = label.substring(0, label.length() - 1).replaceAll("\"", "");
-
-				labels.put(uri, label);
-			}
-		}
-		catch (FileNotFoundException e) {
-
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * returns a map mapping the uri to the various rdf:type definitions of it
-	 * 
-	 * @return
-	 */
-	private void readRdfTypes() {
-
-		types = new TreeMap<String, Set<String>>();
-
-//		 Set<String> typSet1 = new HashSet<String>();
-//		 typSet1.add("http://dbpedia.org/ontology/Organisation");
-//		 typSet1.add("http://dbpedia.org/ontology/SportsTeam");
-//		 typSet1.add("http://dbpedia.org/ontology/SoccerClub");
-//		 types.put("http://dbpedia.org/resource/APR_FC", typSet1);
-//		
-//		 Set<String> typSet2 = new HashSet<String>();
-//		 typSet2.add("http://dbpedia.org/ontology/School");
-//		 typSet2.add("http://dbpedia.org/ontology/EducationalInstitution");
-//		 typSet2.add("http://dbpedia.org/ontology/Organisation");
-//		 types.put("http://dbpedia.org/resource/McKinley_Senior_High_School",
-//		 typSet2);
-//		
-//		 Set<String> typSet3 = new HashSet<String>();
-//		 typSet3.add("http://dbpedia.org/ontology/Organisation");
-//		 typSet3.add("http://dbpedia.org/ontology/Company");
-//		 types.put("http://dbpedia.org/resource/Continental_Illinois",
-//		 typSet3);
-
-		try {
-
-			BufferedReader in = new BufferedReader(new FileReader(pathToTypesFile));
-
-			String line = "";
-
-			while ((line = in.readLine()) != null) {
-
-				String[] lineParts = line.split(" ");
-
-				String uri = lineParts[0].replaceAll("<", "").replaceAll(">", "");
-				String type = lineParts[2].replaceAll("<", "").replaceAll(">", "");
-
-				if (!type.equals("http://www.w3.org/2002/07/owl#Thing")) {
-
-					if (types.get(uri) == null) {
-
-						Set<String> set = new HashSet<String>();
-						set.add(type);
-
-						types.put(uri, set);
-					}
-					else {
-
-						Set<String> set = types.get(uri);
-						set.add(type);
-
-						types.put(uri, set);
-					}
-				}
-			}
-		}
-		catch (FileNotFoundException e) {
-
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public void setPathToTrainedSentenceFile(String pathToTrainedSentenceFile) {
