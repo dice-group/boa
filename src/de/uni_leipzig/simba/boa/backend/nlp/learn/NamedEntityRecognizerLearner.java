@@ -92,7 +92,11 @@ public class NamedEntityRecognizerLearner {
 		SerializationUtil sUtil = new SerializationUtil();
 		
 		BackgroundKnowledge knowledge = null;
-		if ( sUtil.isDeserializeable(pathToSerializedFile) ) {
+		
+		boolean isDeSer = sUtil.isDeserializeable(pathToSerializedFile);
+		System.out.println("File exists: " + isDeSer);
+		
+		if ( isDeSer ) {
 			
 			start = new Date().getTime();
 			System.out.print("Deserialize data ... ");
