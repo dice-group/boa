@@ -1,9 +1,12 @@
 package de.uni_leipzig.simba.boa.backend.search;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -16,6 +19,7 @@ import org.apache.lucene.store.FSDirectory;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.util.ProgressBarUtil;
 
 /**
  * This terminal application creates an Apache Lucene index in a folder and adds
@@ -85,6 +89,7 @@ public class FileIndexer {
 			this.logger.info("Indexing file " + file + " with index ");
 			
 			long fileSize = file.length();
+			int linesOfFile = this.countLinesOfFile(file.getAbsolutePath());
 			
 			System.out.println("Indexing file["+(i++)+"] " + file);
 		    System.out.println("File size: " + (double)fileSize/(1024*1024) + "MB");
@@ -103,7 +108,10 @@ public class FileIndexer {
 					
 					while( (line = br.readLine()) != null){ 
 						
-						if ( j++ % 10000 == 0 ) System.out.println("Iteration: " + j);
+						if ( j++ % 10000 == 0 ) {
+							
+							ProgressBarUtil.printProgBar((int) ( ( ((double) j) / ((double)linesOfFile ) ) * 100));
+						}
 						
 //						String[] lineParts = line.split(" \\|\\|\\| ");
 						
@@ -137,5 +145,40 @@ public class FileIndexer {
 			this.writer.close();
 		}
 		this.logger.info("Added " + writer.numDocs() + " files to index");
+	}
+	
+	public int countLinesOfFile(String filename)  {
+		
+		InputStream is = null;
+		
+	    try {
+	    	
+	    	is = new BufferedInputStream(new FileInputStream(filename));
+	    	byte[] c = new byte[1024];
+	        int count = 0;
+	        int readChars = 0;
+	        while ((readChars = is.read(c)) != -1) {
+	            for (int i = 0; i < readChars; ++i) {
+	                if (c[i] == '\n')
+	                    ++count;
+	            }
+	        }
+	        return count;
+	    }
+	    catch (Exception e) {
+	    	
+	    	e.printStackTrace();
+	    }
+	    finally {
+	    	
+	        try {
+				is.close();
+			}
+			catch (IOException e) {
+
+				e.printStackTrace();
+			}
+	    }
+	    return 0;
 	}
 }
