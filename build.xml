@@ -104,6 +104,7 @@
 		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/limes/stax-api-1.0.1.jar"/>
 		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/limes/wstx-asl-3.2.9.jar"/>
 		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/limes/SSJoinJava.jar"/>
+		 			<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/cugar/utk.jar"/>
 		            <fileset dir="${base.dir}/WebContent/WEB-INF/lib/cugar"/>
 		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/cugar/Cugar.jar"/>
 		            <zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/cugar/colt.jar"/>

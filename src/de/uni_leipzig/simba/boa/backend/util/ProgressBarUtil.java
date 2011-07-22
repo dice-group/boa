@@ -3,6 +3,12 @@ package de.uni_leipzig.simba.boa.backend.util;
 
 public class ProgressBarUtil {
 
+	/**
+	 * Prints a progress bar on the sys.out stream
+	 * by replace the last line. 
+	 * 
+	 * @param percent - the percent it should print between 0 -> 100
+	 */
 	public static void printProgBar(int percent){
 		
         StringBuilder bar = new StringBuilder("[");

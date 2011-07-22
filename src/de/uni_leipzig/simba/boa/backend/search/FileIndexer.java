@@ -17,6 +17,7 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
+import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.util.ProgressBarUtil;
@@ -89,10 +90,10 @@ public class FileIndexer {
 			this.logger.info("Indexing file " + file + " with index ");
 			
 			long fileSize = file.length();
-			int linesOfFile = this.countLinesOfFile(file.getAbsolutePath());
+			int linesOfFile = FileUtil.countLinesOfFile(file.getAbsolutePath());
 			
 			System.out.println("Indexing file["+(i++)+"] " + file);
-		    System.out.println("File size: " + (double)fileSize/(1024*1024) + "MB");
+		    System.out.println("File size: " + (double)fileSize/(1024*1024) + "MB and ");
 			
 			// only index txt files
 			if ( file.getName().endsWith(".txt") ) {
@@ -145,40 +146,5 @@ public class FileIndexer {
 			this.writer.close();
 		}
 		this.logger.info("Added " + writer.numDocs() + " files to index");
-	}
-	
-	public int countLinesOfFile(String filename)  {
-		
-		InputStream is = null;
-		
-	    try {
-	    	
-	    	is = new BufferedInputStream(new FileInputStream(filename));
-	    	byte[] c = new byte[1024];
-	        int count = 0;
-	        int readChars = 0;
-	        while ((readChars = is.read(c)) != -1) {
-	            for (int i = 0; i < readChars; ++i) {
-	                if (c[i] == '\n')
-	                    ++count;
-	            }
-	        }
-	        return count;
-	    }
-	    catch (Exception e) {
-	    	
-	    	e.printStackTrace();
-	    }
-	    finally {
-	    	
-	        try {
-				is.close();
-			}
-			catch (IOException e) {
-
-				e.printStackTrace();
-			}
-	    }
-	    return 0;
 	}
 }

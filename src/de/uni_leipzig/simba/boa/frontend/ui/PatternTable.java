@@ -7,6 +7,7 @@ import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Table;
 
+import de.danielgerber.format.OutputFormatter;
 import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 
 @SuppressWarnings("serial")
@@ -60,8 +61,7 @@ public class PatternTable extends Table {
 			// Format by property type
 	        if (property.getType() == Double.class) {
 	        	
-	        	DecimalFormat df = new DecimalFormat("#.###");
-	            return df.format((Double)property.getValue());
+	        	return OutputFormatter.format((Double) property.getValue(), "#.##");
 	        }
 
 	        return super.formatPropertyValue(rowId, colId, property);
