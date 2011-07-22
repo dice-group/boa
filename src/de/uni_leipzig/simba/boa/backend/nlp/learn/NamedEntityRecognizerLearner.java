@@ -94,7 +94,10 @@ public class NamedEntityRecognizerLearner {
 		BackgroundKnowledge knowledge = null;
 		if ( sUtil.isDeserializeable(pathToSerializedFile) ) {
 			
+			start = new Date().getTime();
+			System.out.print("Reading labels ... ");
 			knowledge = sUtil.deserializeObject(new BackgroundKnowledge(), pathToSerializedFile);
+			System.out.print("DONE in " + (new Date().getTime() - start) + "ms!\n");
 		}
 		else {
 			
