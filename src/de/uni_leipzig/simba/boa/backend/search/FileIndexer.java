@@ -92,7 +92,7 @@ public class FileIndexer {
 			long fileSize = file.length();
 			int linesOfFile = FileUtil.countLinesOfFile(file.getAbsolutePath());
 			
-			System.out.println("Indexing file["+(i++)+"] " + file);
+			System.out.println("\nIndexing file["+(i++)+"] " + file);
 		    System.out.println("File size: " + (double)fileSize/(1024*1024) + "MB and ");
 			
 			// only index txt files

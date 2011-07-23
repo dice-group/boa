@@ -112,7 +112,7 @@ public class NamedEntityRecognizerLearner {
 		
 		System.out.println("There are " + knowledge.getLabels().size() + " labels to search.");
 		System.out.println("There are " + knowledge.getTypes().size() + " types to search.");
-		System.out.println("They maximum number of sentences is " + this.maxNumberOfDocuments);
+		System.out.println("The maximum number of sentences is " + this.maxNumberOfDocuments);
 
 		int n = 0;
 		
@@ -142,7 +142,7 @@ public class NamedEntityRecognizerLearner {
 					// for some uris we have labels but no types
 					if (typesForUri == null){
 
-						this.logger.info("No type statements found for: " + uri);
+						this.logger.warn("No type statements found for: " + uri);
 					}
 					else {
 
@@ -196,12 +196,12 @@ public class NamedEntityRecognizerLearner {
 
 					if (!token.contains("___")) {
 
-						writer.write(token + "\t" + "O" + Constants.NEW_LINE_SEPARATOR);
+						writer.write(token + "\t" + "O" + System.getProperty("line.separator"));
 					}
 					else {
 
 						String[] tokens = token.split("___");
-						writer.write(tokens[0] + "\t" + tokens[1] + Constants.NEW_LINE_SEPARATOR);
+						writer.write(tokens[0] + "\t" + tokens[1] + System.getProperty("line.separator"));
 					}
 				}
 			}
