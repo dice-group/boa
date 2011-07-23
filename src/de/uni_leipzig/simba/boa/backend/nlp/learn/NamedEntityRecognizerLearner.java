@@ -140,11 +140,7 @@ public class NamedEntityRecognizerLearner {
 					Set<String> typesForUri = knowledge.getTypes().get(uri);
 					
 					// for some uris we have labels but no types
-					if (typesForUri == null){
-
-						this.logger.warn("No type statements found for: " + uri);
-					}
-					else {
+					if (typesForUri != null){
 
 						String typeReplacement = getTypeForUri(uri, typesForUri);
 						typeReplacement = typeReplacement.replace("http://dbpedia.org/ontology/", "");
