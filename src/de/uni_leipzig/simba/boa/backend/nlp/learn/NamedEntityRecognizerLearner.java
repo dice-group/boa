@@ -114,15 +114,6 @@ public class NamedEntityRecognizerLearner {
 		Map<String,Set<String>> types = knowledge.getTypes();
 		Map<String,String> labels = knowledge.getLabels();
 		
-		Map<String,Set<String>> tempTypes = new TreeMap<String,Set<String>>();
-		int j = 0;
-		for (Entry<String,Set<String>> entry : types.entrySet()){
-			
-			if (j++ > 100000) break;
-			tempTypes.put(entry.getKey(), entry.getValue());
-		}
-		types = tempTypes;
-		
 		// go through each type since not all labels have types
 		for ( Entry<String,Set<String>> entry : types.entrySet() ) {
 				
