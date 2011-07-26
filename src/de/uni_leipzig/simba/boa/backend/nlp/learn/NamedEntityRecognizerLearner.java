@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -113,6 +114,15 @@ public class NamedEntityRecognizerLearner {
 		Map<String,Set<String>> types = knowledge.getTypes();
 		Map<String,String> labels = knowledge.getLabels();
 		
+		Map<String,Set<String>> tempTypes = new TreeMap<String,Set<String>>();
+		int j = 0;
+		for (Entry<String,Set<String>> entry : types.entrySet()){
+			
+			if (j++ > 100000) break;
+			tempTypes.put(entry.getKey(), entry.getValue());
+		}
+		types = tempTypes;
+		
 		// go through each type since not all labels have types
 		for ( Entry<String,Set<String>> entry : types.entrySet() ) {
 				
@@ -120,7 +130,7 @@ public class NamedEntityRecognizerLearner {
 				
 				if (n++ % 1000 == 0 ) {
 					
-					this.printProgBar((int) ( ( ((double) n) / ((double)knowledge.getLabels().size() ) ) * 100));
+					this.printProgBar((int) ( ( ((double) n) / ((double)types.size() ) ) * 100));
 					this.logger.info("After "+ n + " label searches are " + this.sentences.size() + " trained sentences in the list!");
 				}
 
@@ -191,7 +201,10 @@ public class NamedEntityRecognizerLearner {
 					else {
 
 						String[] tokens = token.split("___");
-						writer.write(tokens[0] + "\t" + tokens[1] + System.getProperty("line.separator"));
+						if (tokens.length == 2) {
+							
+							writer.write(tokens[0] + "\t" + tokens[1] + System.getProperty("line.separator"));
+						}
 					}
 				}
 			}
