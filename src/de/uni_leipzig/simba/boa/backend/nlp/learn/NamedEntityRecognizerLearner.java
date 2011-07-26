@@ -1,21 +1,16 @@
 package de.uni_leipzig.simba.boa.backend.nlp.learn;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
 
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.index.CorruptIndexException;
@@ -31,7 +26,6 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.util.FileManager;
 
-import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.util.SerializationUtil;
@@ -124,7 +118,6 @@ public class NamedEntityRecognizerLearner {
 				if (n++ % 100 == 0 ) {
 					
 					this.printProgBar((int) ( ( ((double) n) / ((double)knowledge.getLabels().size() ) ) * 100));
-					this.logger.info("Iteration n: \t" + n + " \t" +((n/knowledge.getLabels().size()) * 100) + " %");
 					this.logger.info("There are currently " + this.sentences.size() + " trained sentences!");
 				}
 
@@ -140,7 +133,7 @@ public class NamedEntityRecognizerLearner {
 					Set<String> typesForUri = knowledge.getTypes().get(uri);
 					
 					// for some uris we have labels but no types
-					if (typesForUri != null){
+					if (typesForUri != null) {
 
 						String typeReplacement = getTypeForUri(uri, typesForUri);
 						typeReplacement = typeReplacement.replace("http://dbpedia.org/ontology/", "");
