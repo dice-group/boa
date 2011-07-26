@@ -134,7 +134,7 @@ public class NamedEntityRecognizerLearner {
 				
 				if (uri != null & type != null) {
 
-					String label = labels.get(uri);
+					String label = labels.get(uri).trim();
 					
 					if ( label != null  && !label.isEmpty() ) {
 						
