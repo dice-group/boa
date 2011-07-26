@@ -121,7 +121,7 @@ public class NamedEntityRecognizerLearner {
 				if (n++ % 1000 == 0 ) {
 					
 					this.printProgBar((int) ( ( ((double) n) / ((double)knowledge.getLabels().size() ) ) * 100));
-					this.logger.info("There are currently " + this.sentences.size() + " trained sentences!");
+					this.logger.info("After "+ n + " label searches are " + this.sentences.size() + " trained sentences in the list!");
 				}
 
 				String uri = entry.getKey();
@@ -131,31 +131,34 @@ public class NamedEntityRecognizerLearner {
 
 					String label = labels.get(uri);
 					
-					// find all sentences containing the label
-					Map<Integer, String> sentencesContainingLabels = getSentencesContainingLabel(label);
-					
-					String typeReplacement = getTypeForUri(uri, type);
-					typeReplacement = typeReplacement.replace("http://dbpedia.org/ontology/", "");
-
-					String[] tokensOfLabel = label.split(" ");
-
-					for (Entry<Integer, String> sent : sentencesContainingLabels.entrySet()) {
-
-						int indexId = sent.getKey();
-						// if the sentence was already found in the sentence
-						// list, take it from there else use it untagged
-						// from the index
-						String sentence = sent.getValue();
-						if (sentences.containsKey(indexId)) sentences.get(indexId);
-
-						String replacement = "";
-						for (int i = 0; i < tokensOfLabel.length; i++) {
-							
-							replacement += tokensOfLabel[i] + "___" + typeReplacement + " ";
-						}
+					if ( label != null  && !label.isEmpty() ) {
 						
-						// replace the whole label with the complete replacement
-						sentences.put(indexId, sentence.replace(label, replacement));
+						// find all sentences containing the label
+						Map<Integer, String> sentencesContainingLabels = getSentencesContainingLabel(label);
+						
+						String typeReplacement = getTypeForUri(uri, type);
+						typeReplacement = typeReplacement.replace("http://dbpedia.org/ontology/", "");
+
+						String[] tokensOfLabel = label.split(" ");
+
+						for (Entry<Integer, String> sent : sentencesContainingLabels.entrySet()) {
+
+							int indexId = sent.getKey();
+							// if the sentence was already found in the sentence
+							// list, take it from there else use it untagged
+							// from the index
+							String sentence = sent.getValue();
+							if (sentences.containsKey(indexId)) sentences.get(indexId);
+
+							String replacement = "";
+							for (int i = 0; i < tokensOfLabel.length; i++) {
+								
+								replacement += tokensOfLabel[i] + "___" + typeReplacement + " ";
+							}
+							
+							// replace the whole label with the complete replacement
+							sentences.put(indexId, sentence.replace(label, replacement));
+						}
 					}
 				}
 			}
