@@ -185,16 +185,19 @@ public class NamedEntityRecognizerLearner {
 
 				for (String token : sentence.split(" ")) {
 
-					if (!token.contains("___")) {
+					if ( !token.isEmpty() ) {
 
-						writer.write(token + "\t" + "O" + System.getProperty("line.separator"));
-					}
-					else {
+						if (!token.contains("___")) {
 
-						String[] tokens = token.split("___");
-						if (tokens.length == 2) {
-							
-							writer.write(tokens[0] + "\t" + tokens[1] + System.getProperty("line.separator"));
+							writer.write(token + "\t" + "O" + System.getProperty("line.separator"));
+						}
+						else {
+
+							String[] tokens = token.split("___");
+							if (tokens.length == 2) {
+								
+								writer.write(tokens[0] + "\t" + tokens[1] + System.getProperty("line.separator"));
+							}
 						}
 					}
 				}
