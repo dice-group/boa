@@ -21,6 +21,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -72,8 +73,11 @@ public class NamedEntityRecognizerLearner {
 
 		try {
 
-			index = FSDirectory.open(new File(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory")));
+			start = new Date().getTime();
+			System.out.print("Reading ram index directory ... ");
+			index = new RAMDirectory(FSDirectory.open(new File(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"))));
 			indexSearcher = new IndexSearcher(index, true);
+			System.out.print("DONE in " + (new Date().getTime() - start) + "ms!\n");
 		}
 		catch (CorruptIndexException cie) {
 
