@@ -154,25 +154,28 @@ public class NamedEntityRecognizerLearner {
 							// find all sentences containing the label
 							Map<Integer, String> sentencesContainingLabels = getSentencesContainingLabel(label);
 							
-							String[] tokensOfLabel = label.split(" ");
-
-							for (Entry<Integer, String> sent : sentencesContainingLabels.entrySet()) {
-
-								int indexId = sent.getKey();
-								// if the sentence was already found in the sentence
-								// list, take it from there else use it untagged
-								// from the index
-								String sentence = sent.getValue();
-								if (sentences.containsKey(indexId)) sentences.get(indexId);
-
-								String replacement = "";
-								for (int i = 0; i < tokensOfLabel.length; i++) {
-									
-									replacement += tokensOfLabel[i] + "___" + typeReplacement + " ";
-								}
+							if ( sentencesContainingLabels.size() > 0 ) {
 								
-								// replace the whole label with the complete replacement
-								sentences.put(indexId, sentence.replace(label, replacement));
+								String[] tokensOfLabel = label.split(" ");
+
+								for (Entry<Integer, String> sent : sentencesContainingLabels.entrySet()) {
+
+									int indexId = sent.getKey();
+									// if the sentence was already found in the sentence
+									// list, take it from there else use it untagged
+									// from the index
+									String sentence = sent.getValue();
+									if (sentences.containsKey(indexId)) sentences.get(indexId);
+
+									String replacement = "";
+									for (int i = 0; i < tokensOfLabel.length; i++) {
+										
+										replacement += tokensOfLabel[i] + "___" + typeReplacement + " ";
+									}
+									
+									// replace the whole label with the complete replacement
+									sentences.put(indexId, sentence.replace(label, replacement));
+								}
 							}
 						}
 					}
