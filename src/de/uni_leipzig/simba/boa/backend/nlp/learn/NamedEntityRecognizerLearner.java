@@ -142,9 +142,11 @@ public class NamedEntityRecognizerLearner {
 				
 				if (uri != null & type != null) {
 
-					String label = labels.get(uri).trim();
+					String label = labels.get(uri);
 					
 					if ( label != null  && !label.isEmpty() ) {
+						
+						label = label.trim();
 						
 						String typeReplacement = getTypeForUri(uri, type);
 						
