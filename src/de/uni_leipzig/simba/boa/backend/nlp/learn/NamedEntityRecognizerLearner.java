@@ -188,6 +188,7 @@ public class NamedEntityRecognizerLearner {
 			catch (Exception e) {
 
 				logger.error("Something went wrong during creation of NER training data", e);
+				e.printStackTrace();
 			}
 		}
 		writeTrainedModelToFile();
