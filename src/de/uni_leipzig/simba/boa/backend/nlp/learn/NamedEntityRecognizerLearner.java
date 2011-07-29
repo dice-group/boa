@@ -46,22 +46,21 @@ public class NamedEntityRecognizerLearner {
 
 	private final NLPediaLogger logger = new NLPediaLogger(NamedEntityRecognizerLearner.class);
 
-	private Map<Integer, String> sentences = new HashMap<Integer, String>();
+	private static Map<Integer, String> sentences = new HashMap<Integer, String>();
 	private QueryParser exactMatchParser = new QueryParser(Version.LUCENE_30, "sentence", new SimpleAnalyzer());
 	private Directory index = null;
 	private IndexSearcher indexSearcher = null;
 	private ClassIndexer indexer = null;
 
 	private static String PREFIX = NLPediaSettings.getInstance().getSetting("learnPrefix");
-
-	private String pathToTrainedSentenceFile = PREFIX + "trained_sentences.txt";
+	private String pathToTrainedSentenceFile = PREFIX;
 	private String pathToLabelsFile = PREFIX + "labels_en.nt";
 	private String pathToTypesFile = PREFIX + "instance_types_en.nt";
 	private String pathToDBpediaOntology = PREFIX + "dbpedia_3.6.owl";
 	private String pathToSerializedFile = PREFIX + "knowledge.ser";
 	
 	// top 41 classes with more than 10000 occurrences
-	private List<String> types = Arrays.asList(new String[]{"Writer","Airport","MilitaryUnit","Mountain","University","Fish","Bird","Planet","BaseballPlayer","SoccerClub","City","AutomobileEngine","Road","RadioStation","VideoGame","MilitaryPerson","TelevisionShow","River","OfficeHolder","Ship","Book","School","Band","Mollusca","HistoricPlace","MusicalArtist","Plant","Company","PersonFunction","AdministrativeRegion","Town","Person","Single","Actor","Insect","Film","SoccerPlayer","Village","TelevisionEpisode","Album","Settlement"}); 
+	private static List<String> types = Arrays.asList(new String[]{"Writer","Airport","MilitaryUnit","Mountain","University","Fish","Bird","Planet","BaseballPlayer","SoccerClub","City","AutomobileEngine","Road","RadioStation","VideoGame","MilitaryPerson","TelevisionShow","River","OfficeHolder","Ship","Book","School","Band","Mollusca","HistoricPlace","MusicalArtist","Plant","Company","PersonFunction","AdministrativeRegion","Town","Person","Single","Actor","Insect","Film","SoccerPlayer","Village","TelevisionEpisode","Album","Settlement"}); 
 	
 	private int maxNumberOfDocuments = Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfLearnSentences"));
 
@@ -204,15 +203,17 @@ public class NamedEntityRecognizerLearner {
 			Map<String,BufferedWriter> writers = new HashMap<String,BufferedWriter>();
 			for (String type : types) {
 				
-				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(pathToTrainedSentenceFile + "." + type)), "UTF-8"));
+				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(pathToTrainedSentenceFile + type + ".txt")), "UTF-8"));
 				writers.put(type, writer);
+				if ( type.equals("School") ) System.out.println("school is richtig");
 			}
-			System.out.println("There are " + types.size() + " different classes or writers resp. in th map.");
+			System.out.println("There are " + types.size() + " different classes or writers resp. in the map.");
+			System.out.println("Defined writers: " + writers.keySet());
 			
 			for (String sentence : sentences.values()) {
 				
-				String tag = this.getFavoredTag(StringUtil.getRegexMatches(sentence, "___[a-zA-Z]*\\s"));
-
+				String tag = getFavoredTag(StringUtil.getRegexMatches(sentence, "___[a-zA-Z]*\\s"));
+				
 				if ( !tag.isEmpty() && writers.containsKey(tag) ) {
 					
 					Writer w = writers.get(tag);
@@ -246,7 +247,7 @@ public class NamedEntityRecognizerLearner {
 		}
 	}
 	
-	private String getFavoredTag(List<String> regexMatches) {
+	private static String getFavoredTag(List<String> regexMatches) {
 
 		if (regexMatches != null && regexMatches.size() > 0 ) {
 			
@@ -271,7 +272,7 @@ public class NamedEntityRecognizerLearner {
 					maxOcc = pair.getValue();
 				}
 			}
-			return max;
+			return max.trim();
 		}
 		return "";
 	}
@@ -368,17 +369,10 @@ public class NamedEntityRecognizerLearner {
     }
 	
 //	public static void main(String[] args) {
-		//
-//				List<String> test = new ArrayList<String>();
-//				test.add("___AAA");
-//				test.add("___AAA");
-//				test.add("___AAA");
-//				test.add("___CCC");
-//				test.add("___DDD");
-//				test.add("___DDD");
-//				test.add("___BBB");
-//				test.add("___BBB");
-//				
-//				System.out.println(getFavoredTag(test));
-//			}
+//		
+//		sentences = new HashMap<Integer,String>();
+//		sentences.put(1, "He graduated from Alameda___School High___School School___School in 1942 .");
+//		sentences.put(2, "He composed the musical scores for some of the most popular silent movies , including Aloma of the South Seas and A___Film Daughter___Film of___Film the___Film Gods___Film .");
+//		writeTrainedModelToFile();		
+//	}
 }
