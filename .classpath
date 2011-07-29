@@ -23,8 +23,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/crawler4j-2.2.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/dsiutils-1.0.10.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/fastutil-5.1.5.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/fastutil-6.1.0.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/hibernate3.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/httpclient-4.0.1.jar"/>
@@ -48,13 +46,17 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-api-1.5.6.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-log4j12-1.5.6.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/stanford-corenlp-2010-11-12.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/vaadin-6.5.7.jar" sourcepath="/Users/gerb/.m2/repository/com/vaadin/vaadin/6.5.7/vaadin-6.5.7-sources.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xercesImpl-2.7.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/iri-0.8.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/icu4j-3.4.4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/utk.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/utk"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/stanford-corenlp-2011-06-19.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xom.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/stanford-corenlp-models-2011-06-19.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jgraph.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jgrapht.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/fastutil.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
