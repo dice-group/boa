@@ -254,7 +254,7 @@ public class NamedEntityRecognizerLearner {
 			
 			for (int i = 0; i < regexMatches.size() ; i++) {
 				
-				String s = regexMatches.get(i);
+				String s = regexMatches.get(i).substring(3);
 				if ( counts.containsKey(s) ) {
 					
 					counts.put(s, counts.get(s) + 1);
