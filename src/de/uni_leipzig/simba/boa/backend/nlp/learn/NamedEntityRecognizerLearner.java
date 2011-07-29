@@ -147,34 +147,38 @@ public class NamedEntityRecognizerLearner {
 					if ( label != null  && !label.isEmpty() ) {
 						
 						String typeReplacement = getTypeForUri(uri, type);
-						typeReplacement = typeReplacement.replace("http://dbpedia.org/ontology/", "");
 						
-						if ( this.types.contains(typeReplacement) ) {
+						if ( typeReplacement != null && !typeReplacement.isEmpty() ) {
 							
-							// find all sentences containing the label
-							Map<Integer, String> sentencesContainingLabels = getSentencesContainingLabel(label);
+							typeReplacement = typeReplacement.replace("http://dbpedia.org/ontology/", "");
 							
-							if ( sentencesContainingLabels.size() > 0 ) {
+							if ( this.types.contains(typeReplacement) ) {
 								
-								String[] tokensOfLabel = label.split(" ");
-
-								for (Entry<Integer, String> sent : sentencesContainingLabels.entrySet()) {
-
-									int indexId = sent.getKey();
-									// if the sentence was already found in the sentence
-									// list, take it from there else use it untagged
-									// from the index
-									String sentence = sent.getValue();
-									if (sentences.containsKey(indexId)) sentences.get(indexId);
-
-									String replacement = "";
-									for (int i = 0; i < tokensOfLabel.length; i++) {
-										
-										replacement += tokensOfLabel[i] + "___" + typeReplacement + " ";
-									}
+								// find all sentences containing the label
+								Map<Integer, String> sentencesContainingLabels = getSentencesContainingLabel(label);
+								
+								if ( sentencesContainingLabels != null && sentencesContainingLabels.size() > 0 ) {
 									
-									// replace the whole label with the complete replacement
-									sentences.put(indexId, sentence.replace(label, replacement));
+									String[] tokensOfLabel = label.split(" ");
+
+									for (Entry<Integer, String> sent : sentencesContainingLabels.entrySet()) {
+
+										int indexId = sent.getKey();
+										// if the sentence was already found in the sentence
+										// list, take it from there else use it untagged
+										// from the index
+										String sentence = sent.getValue();
+										if (sentences.containsKey(indexId)) sentences.get(indexId);
+
+										String replacement = "";
+										for (int i = 0; i < tokensOfLabel.length; i++) {
+											
+											replacement += tokensOfLabel[i] + "___" + typeReplacement + " ";
+										}
+										
+										// replace the whole label with the complete replacement
+										sentences.put(indexId, sentence.replace(label, replacement));
+									}
 								}
 							}
 						}
@@ -206,25 +210,29 @@ public class NamedEntityRecognizerLearner {
 				
 				String tag = this.getFavoredTag(StringUtil.getRegexMatches(sentence, "___[a-zA-Z]*\\s"));
 
-				Writer w = writers.get(tag);
-				
-				for (String token : sentence.split(" ")) {
+				if ( !tag.isEmpty() && writers.containsKey(tag) ) {
+					
+					Writer w = writers.get(tag);
+					
+					for (String token : sentence.split(" ")) {
 
-					if ( !token.isEmpty() ) {
+						if ( !token.isEmpty() ) {
 
-						if (!token.contains("___")) {
+							if (!token.contains("___")) {
 
-							w.write(token + "\t" + "O" + System.getProperty("line.separator"));
-						}
-						else {
+								w.write(token + "\t" + "O" + System.getProperty("line.separator"));
+							}
+							else {
 
-							String[] tokens = token.split("___");
-							if (tokens.length == 2) {
-								
-								w.write(tokens[0] + "\t" + tokens[1] + System.getProperty("line.separator"));
+								String[] tokens = token.split("___");
+								if (tokens.length == 2) {
+									
+									w.write(tokens[0] + "\t" + tokens[1] + System.getProperty("line.separator"));
+								}
 							}
 						}
 					}
+
 				}
 			}
 			for ( BufferedWriter writer : writers.values() ) writer.close();
@@ -237,28 +245,32 @@ public class NamedEntityRecognizerLearner {
 	
 	private String getFavoredTag(List<String> regexMatches) {
 
-		Map<String,Integer> counts =  new HashMap<String,Integer>();
-		
-		for (int i = 0; i < regexMatches.size() ; i++) {
+		if (regexMatches != null && regexMatches.size() > 0 ) {
 			
-			String s = regexMatches.get(i);
-			if ( counts.containsKey(s) ) {
-				
-				counts.put(s, counts.get(s) + 1);
-			}
-			else counts.put(s, 1);
-		}
-		String max = "";
-		int maxOcc = -1;
-		for (Map.Entry<String, Integer> pair : counts.entrySet()) {
+			Map<String,Integer> counts =  new HashMap<String,Integer>();
 			
-			if ( pair.getValue() >= maxOcc ) {
+			for (int i = 0; i < regexMatches.size() ; i++) {
 				
-				max = pair.getKey();
-				maxOcc = pair.getValue();
+				String s = regexMatches.get(i);
+				if ( counts.containsKey(s) ) {
+					
+					counts.put(s, counts.get(s) + 1);
+				}
+				else counts.put(s, 1);
 			}
+			String max = "";
+			int maxOcc = -1;
+			for (Map.Entry<String, Integer> pair : counts.entrySet()) {
+				
+				if ( pair.getValue() >= maxOcc ) {
+					
+					max = pair.getKey();
+					maxOcc = pair.getValue();
+				}
+			}
+			return max;
 		}
-		return max;
+		return "";
 	}
 
 	private String getTypeForUri(String uri, Set<String> types) {
