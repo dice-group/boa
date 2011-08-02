@@ -10,9 +10,9 @@ import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluationThread;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluator;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluatorFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilterFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilteringThread;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 
@@ -20,16 +20,16 @@ import de.uni_leipzig.simba.boa.backend.util.ListUtil;
  * 
  * @author Daniel Gerber
  */
-public class PatternEvaluationCommand implements Command {
+public class PatternFilteringCommand implements Command {
 
-	private final NLPediaLogger logger = new NLPediaLogger(PatternEvaluationCommand.class);
+	private final NLPediaLogger logger = new NLPediaLogger(PatternFilteringCommand.class);
 	
 	private PatternMappingDao patternMappingDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 	public List<PatternMapping> patternMappingList = this.patternMappingDao.findAllPatternMappings();
 	
 	public static int NUMBER_OF_PATTERN_MAPPINGS;
 
-	public PatternEvaluationCommand() {
+	public PatternFilteringCommand() {
 		
 		NUMBER_OF_PATTERN_MAPPINGS = patternMappingList.size();
 	}
@@ -37,20 +37,20 @@ public class PatternEvaluationCommand implements Command {
 	@Override
 	public void execute() {
 		
-		int numberOfSearchThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfEvaluationThreads")).intValue();
+		int numberOfFilteringThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfEvaluationThreads")).intValue();
 		
 		// split the mappings into several lists
-		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfSearchThreads));
+		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfFilteringThreads));
 		
 		List<Thread> threadList = new ArrayList<Thread>();
 		List<PatternMapping> results = new ArrayList<PatternMapping>();
 		
-		if ( numberOfSearchThreads != 1 ) {
+		if ( numberOfFilteringThreads != 1 ) {
 			
-			for (int i = 0 ; i < numberOfSearchThreads ; i++ ) {
+			for (int i = 0 ; i < numberOfFilteringThreads ; i++ ) {
 				
-				Thread t = new PatternEvaluationThread(patternMappingSubLists.get(i));
-				t.setName("PatternEvaluationThread-" + (i + 1));
+				Thread t = new PatternFilteringThread(patternMappingSubLists.get(i));
+				t.setName("PatternFilteringThread-" + (i + 1));
 				threadList.add(i, t);
 				t.start();
 				System.out.println(t.getName() + " started!");
@@ -70,15 +70,15 @@ public class PatternEvaluationCommand implements Command {
 			
 			for ( Thread t: threadList ) {
 				
-				results.addAll(((PatternEvaluationThread)t).getEvaluatedPatternMappings());
+				results.addAll(((PatternFilteringThread)t).getEvaluatedPatternMappings());
 			}
 		}
 		else {
 			
-			Map<String,PatternEvaluator> patternEvaluators = PatternEvaluatorFactory.getInstance().getPatternEvaluatorMap();
+			Map<String,PatternFilter> patternEvaluators = PatternFilterFactory.getInstance().getPatternFilterMap();
 			
 			// go through all evaluators
-			for ( PatternEvaluator patternEvaluator : patternEvaluators.values() ) {
+			for ( PatternFilter patternEvaluator : patternEvaluators.values() ) {
 
 				this.logger.info(patternEvaluator.getClass().getSimpleName() + " started!");
 				
@@ -86,7 +86,7 @@ public class PatternEvaluationCommand implements Command {
 				for ( PatternMapping patternMapping : this.patternMappingList ) {
 				
 					this.logger.debug("Evaluating pattern: " + patternMapping);
-					patternEvaluator.evaluatePattern(patternMapping);
+					patternEvaluator.filterPattern(patternMapping);
 					this.patternMappingDao.updatePatternMapping(patternMapping);
 				}
 				this.logger.info(patternEvaluator.getClass().getSimpleName() + " finished!");
@@ -112,7 +112,7 @@ public class PatternEvaluationCommand implements Command {
 				}
 			}
 			
-			System.out.println("Mapping: " + pm.getUri());
+			System.out.println("Mapping: " + pm.getProperty().getUri());
 			System.out.println("\tmaxConfidence: "+maxConfidenceForPatternMapping);
 			
 			// set local maximums
@@ -135,7 +135,7 @@ public class PatternEvaluationCommand implements Command {
 				}
 			}
 			
-			System.out.println("Updating pattern mapping " + mapping.getUri());
+			System.out.println("Updating pattern mapping " + mapping.getProperty().getUri());
 			this.patternMappingDao.updatePatternMapping(mapping);
 		}
 	}

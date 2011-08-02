@@ -12,6 +12,9 @@ import de.uni_leipzig.simba.boa.backend.entity.cluster.Cluster;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 /**
  * 
@@ -34,8 +37,11 @@ public class HibernateFactory {
     											// Add classes 
 									            .addAnnotatedClass(Pattern.class)
 									            .addAnnotatedClass(PatternMapping.class)
-									            .addAnnotatedClass(Cluster.class)
-									            .addAnnotatedClass(EvaluationResult.class)
+//									            .addAnnotatedClass(Cluster.class)
+//									            .addAnnotatedClass(EvaluationResult.class)
+									            .addAnnotatedClass(Property.class)
+									            .addAnnotatedClass(Resource.class)
+									            .addAnnotatedClass(Triple.class)
 									            
 									            // Add settings
 										        .setProperty("hibernate.connection.driver_class", 	NLPediaSettings.getInstance().getSetting("hibernateConnectionDriverClass"))
@@ -57,9 +63,12 @@ public class HibernateFactory {
 		// Add classes 
         .addAnnotatedClass(Pattern.class)
         .addAnnotatedClass(PatternMapping.class)
-        .addAnnotatedClass(Cluster.class)
-        .addAnnotatedClass(EvaluationResult.class)
-        
+//        .addAnnotatedClass(Cluster.class)
+//        .addAnnotatedClass(EvaluationResult.class)
+        .addAnnotatedClass(Property.class)
+        .addAnnotatedClass(Resource.class)
+        .addAnnotatedClass(Triple.class)
+
         // Add settings
         .setProperty("hibernate.connection.driver_class", 	"com.mysql.jdbc.Driver")
         .setProperty("hibernate.connection.url", 			"jdbc:mysql://127.0.0.1:3306/" + database)

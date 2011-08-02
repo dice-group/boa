@@ -74,7 +74,7 @@ public class CreateKnowledgeCommand implements Command {
 
 			for (PatternMapping mapping : this.patternMappingList) {
 
-				System.out.println("Querying pattern: " + mapping.getUri());
+				System.out.println("Querying pattern: " + mapping.getProperty().getUri());
 
 				List<Pattern> patternList = this.getTopNPattern(mapping, 5);
 
@@ -84,8 +84,8 @@ public class CreateKnowledgeCommand implements Command {
 
 					System.out.println("Querying pattern: " + pattern.getNaturalLanguageRepresentation() + " [ID:" + pattern.getId() + ", conf:" + pattern.getConfidence() + "]");
 
-					String domainUri = pattern.getPatternMapping().getRdfsDomain();
-					String rangeUri = pattern.getPatternMapping().getRdfsRange();
+					String domainUri = pattern.getPatternMapping().getProperty().getRdfsDomain();
+					String rangeUri = pattern.getPatternMapping().getProperty().getRdfsRange();
 
 					String patternWithOutVariables = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 
@@ -131,7 +131,7 @@ public class CreateKnowledgeCommand implements Command {
 									RDFNode leftResource = model.createResource(leftUri);
 									RDFNode rightResource = model.createResource(rightUri);
 
-									Statement link = model.createStatement(leftResource, model.createProperty(pattern.getPatternMapping().getUri()), rightResource);
+									Statement link = model.createStatement(leftResource, model.createProperty(pattern.getPatternMapping().getProperty().getUri()), rightResource);
 									// Statement labelLeft =
 									// model.createStatement((Resource)leftResource,
 									// this.rdfsLabel, leftLabel);
@@ -187,7 +187,7 @@ public class CreateKnowledgeCommand implements Command {
 									RDFNode leftResource = model.createResource(leftUri);
 									RDFNode rightResource = model.createResource(rightUri);
 
-									Statement link = model.createStatement(rightResource, model.createProperty(pattern.getPatternMapping().getUri()), leftResource);
+									Statement link = model.createStatement(rightResource, model.createProperty(pattern.getPatternMapping().getProperty().getUri()), leftResource);
 									// Statement labelLeft =
 									// model.createStatement((Resource)leftResource,
 									// this.rdfsLabel, leftLabel);

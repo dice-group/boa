@@ -13,6 +13,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.persistance.Entity;
 import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 
 
 /**
@@ -29,18 +30,22 @@ public class PatternMappingDao extends AbstractDao {
 	 * 
 	 * @param patternMapping
 	 */
-    public Entity createAndSavePatternMapping(PatternMapping patternMapping) {
+    public PatternMapping createAndSavePatternMapping(PatternMapping patternMapping) {
     	
-        return super.saveOrUpdateEntity(patternMapping);
+        return (PatternMapping) super.saveOrUpdateEntity(patternMapping);
     }
     
     /**
      * 
      * @return
      */
-    public Entity createNewEntity() {
+    public PatternMapping createNewEntity(Entity p) {
     	
-        return this.createAndSavePatternMapping(new PatternMapping());
+    	if ( p instanceof Property ) {
+    		
+    		return (PatternMapping) super.saveOrUpdateEntity(new PatternMapping((Property) p));
+    	}
+        throw new RuntimeException("Parameter passed to this method was not a Property but a: " + p.getClass() );
     }
 
     /**
@@ -76,7 +81,7 @@ public class PatternMappingDao extends AbstractDao {
 									"p.confidence, p.globalConfidence, p.numberOfOccurrences, p.useForPatternEvaluation, p.luceneDocIds, " +
 									"p.specificity, p.typicity, p.support " + 
 								 "from pattern_mapping as pm, pattern as p " +
-								 "where pm.uri='"+pm.getUri().trim()+"' and pm.id = p.pattern_mapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0 or p.confidence > 0) " +
+								 "where pm.uri='"+pm.getProperty().getUri().trim()+"' and pm.id = p.pattern_mapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0 or p.confidence > 0) " +
 								 "order by pm.uri;"; 
 			
 			Query query = session.createSQLQuery(queryString);
@@ -148,7 +153,10 @@ public class PatternMappingDao extends AbstractDao {
 			tx = session.beginTransaction();
 			
 			String queryString = (uri == null) 
-				? "select distinct(pm.id), pm.uri, pm.rdfsRange, pm.rdfsDomain from pattern_mapping as pm, pattern as p where pm.id = p.pattern_mapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0 or p.confidence > 0) order by pm.uri;"
+				? 		"select distinct(pm.id), pm.uri, pm.rdfsRange, pm.rdfsDomain " +
+						"from pattern_mapping as pm, pattern as p " +
+						"where pm.id = p.pattern_mapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0 or p.confidence > 0) " +
+						"order by pm.uri;"
 				: "select pm.id, pm.uri, pm.rdfsRange, pm.rdfsDomain from pattern_mapping as pm where uri=:uri"; 
 			
 			
@@ -158,11 +166,8 @@ public class PatternMappingDao extends AbstractDao {
 			List<Object[]> objs = query.list();
 			for (Object[] obj : objs) {
 				
-				PatternMapping pm = new PatternMapping();
+				PatternMapping pm = new PatternMapping((String) obj[1], "", (String) obj[2], (String) obj[3]);
 				pm.setId((Integer) obj[0]);
-				pm.setUri((String) obj[1]);
-				pm.setRdfsRange((String) obj[2]);
-				pm.setRdfsDomain((String) obj[3]);
 				objects.add(pm);
 			}
 			
@@ -179,5 +184,11 @@ public class PatternMappingDao extends AbstractDao {
 			HibernateFactory.closeSession(session);
 		}
 		return objects;
+	}
+
+	@Override
+	public Entity createNewEntity() {
+
+		throw new RuntimeException("Do not use this method!");
 	}
 }

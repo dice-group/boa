@@ -18,7 +18,7 @@ public class AllTests {
 		suite.addTest(NamedEntityRecognizerTest.suite());
 		suite.addTest(PatternSimilarityCalculatorTest.suite());
 		suite.addTest(PatternMappingTest.suite());
-		suite.addTest(PatternEvaluatorTest.suite());
+		suite.addTest(PatternFilterTest.suite());
 		//$JUnit-END$
 		return suite;
 	}

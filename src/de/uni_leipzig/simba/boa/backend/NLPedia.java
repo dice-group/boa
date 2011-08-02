@@ -10,7 +10,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateIndexCo
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateKnowledgeCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.ExitCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.LimesCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternEvaluationCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternFilteringCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternSearchCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PrintOptionCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.StartQueryCommand;
@@ -76,7 +76,7 @@ public class NLPedia {
 						
 					case 4: // evaluate pattern
 						long start4 = new Date().getTime(); 
-						Command patternEvaluationCommand = new PatternEvaluationCommand();
+						Command patternEvaluationCommand = new PatternFilteringCommand();
 						patternEvaluationCommand.execute();
 						System.out.println("Pattern search took: " + (new Date().getTime() - start4) + "ms");
 						break;
@@ -132,7 +132,7 @@ public class NLPedia {
 						patternSearchCommand1.execute();
 						
 						// evaluate them
-						Command patternEvaluationCommand1 = new PatternEvaluationCommand();
+						Command patternEvaluationCommand1 = new PatternFilteringCommand();
 						patternEvaluationCommand1.execute();
 						
 						// generate rdf

@@ -9,6 +9,7 @@ import org.apache.lucene.queryParser.ParseException;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.SearchResult;
 
 /**
  * 
@@ -77,7 +78,7 @@ public class PatternSearchThread extends Thread {
 		}
 	}
 	
-	public List<String> getResults() {
+	public List<SearchResult> getResults() {
 		
 		return this.patternSearcher.getResults();
 	}

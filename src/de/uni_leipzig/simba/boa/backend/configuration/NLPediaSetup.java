@@ -6,7 +6,7 @@ import java.util.Date;
 import org.springframework.beans.BeansException;
 
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluatorFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilterFactory;
 import de.uni_leipzig.simba.boa.backend.logging.LoggingConfigurator;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.util.BeanUtility;
@@ -73,7 +73,7 @@ public class NLPediaSetup {
 			
 			if ( isTestCase ) {
 				
-				this.settings.setSetting("hibernateConnectionUrl", "jdbc:mysql://127.0.0.1:3306/test");
+				this.settings.setSetting("hibernateConnectionUrl", "jdbc:mysql://127.0.0.1:3306/de_wiki_loc");
 				this.settings.setSetting("hibernateHbm2ddlAuto", "create");
 			}
 			
@@ -81,8 +81,8 @@ public class NLPediaSetup {
 			BeanUtility.getBeansOfType(setupFile, DaoFactory.class);
 			logger.info("Initialized DaoFactory...");
 			
-			BeanUtility.getBeansOfType(setupFile, PatternEvaluatorFactory.class);
-			logger.info("Initialized PatternEvaluatorFactory...");
+			BeanUtility.getBeansOfType(setupFile, PatternFilterFactory.class);
+			logger.info("Initialized PatternFilterFactory...");
 		}
 		catch (BeansException be) {
 			

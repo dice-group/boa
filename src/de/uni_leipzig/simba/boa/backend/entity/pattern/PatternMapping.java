@@ -5,13 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 
 /**
  * 
@@ -21,12 +23,15 @@ import javax.persistence.Table;
 @Table(name="pattern_mapping") // uniqueConstraints = {@UniqueConstraint(columnNames={"uri"})} 
 public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance.Entity {
 	
+	/**
+	 * 
+	 */
 	private Map<Integer,Pattern> patternMap;
 	
 	/**
 	 * 
 	 */
-	private String uri;
+	private Property property;
 	
 	/**
 	 * 
@@ -34,21 +39,19 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 	private List<Pattern> patterns;
 	
 	/**
-	 * 
+	 * default constructor needed for hibernate
 	 */
-	private String rdfsDomain;
-	
-	/**
-	 * 
-	 */
-	private String rdfsRange;
-	
-	/**
-	 * 
-	 */
-	public PatternMapping() {
+	public PatternMapping(){
 		
-		this.uri		= new String();
+		// needed for hibernate
+	}
+	
+	/**
+	 * 
+	 */
+	public PatternMapping(String uri, String label, String domain, String range) {
+		
+		this.property	= new Property(uri, label, range, domain);
 		this.patterns	= new ArrayList<Pattern>();
 		this.patternMap	= new HashMap<Integer,Pattern>();
 	}
@@ -59,35 +62,18 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 	 * 
 	 * @param property
 	 */
-	public PatternMapping(String property) {
+	public PatternMapping(Property property) {
 
-		this.uri = property;
+		this.property = property;
 		this.patterns = new ArrayList<Pattern>();
 		this.patternMap	= new HashMap<Integer,Pattern>();
-	}
-
-	/**
-	 * @return the uri
-	 */
-	@Basic
-	public String getUri() {
-	
-		return uri;
-	}
-	
-	/**
-	 * @param uri the uri to set
-	 */
-	public void setUri(String uri) {
-	
-		this.uri = uri;
 	}
 
 	/**
 	 * @return the patterns
 	 */
 	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	@JoinColumn(name = "pattern_mapping_id", nullable = false, updatable = false, insertable = false)
+	@JoinColumn(name = "patternMapping_id", nullable = true, updatable = true, insertable = true)
 	public List<Pattern> getPatterns() {
 	
 		return patterns;
@@ -112,54 +98,6 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 		return this;
 	}
 	
-
-	/**
-	 * 
-	 * @param rdfsRange
-	 */
-	public void setRdfsRange(String range) {
-
-		this.rdfsRange = range;
-	}
-
-	/**
-	 * 
-	 * @param rdfsDomain
-	 */
-	public void setRdfsDomain(String domain) {
-
-		this.rdfsDomain = domain;
-	}
-	
-	/**
-	 * @return the rdfsDomain
-	 */
-	@Basic
-	public String getRdfsDomain() {
-	
-		return rdfsDomain;
-	}
-
-	
-	/**
-	 * @return the rdfsRange
-	 */
-	@Basic
-	public String getRdfsRange() {
-	
-		return rdfsRange;
-	}
-
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-
-		return "PatternMapping [id=" + id + ", uri=" + uri + ", patterns=" + patterns + ", rdfsDomain=" + rdfsDomain + ", rdfsRange=" + rdfsRange + "]";
-	}
-	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -169,7 +107,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((patterns == null) ? 0 : patterns.hashCode());
-		result = prime * result + ((uri == null) ? 0 : uri.hashCode());
+		result = prime * result + ((property == null) ? 0 : property.hashCode());
 		return result;
 	}
 
@@ -193,14 +131,29 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 		else
 			if (!patterns.equals(other.patterns))
 				return false;
-		if (uri == null) {
-			if (other.uri != null)
+		if (property == null) {
+			if (other.property != null)
 				return false;
 		}
 		else
-			if (!uri.equals(other.uri))
+			if (!property.equals(other.property))
 				return false;
 		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("PatternMapping [property=");
+		builder.append(property.getUri());
+		builder.append(", patternsSize=");
+		builder.append(patterns.size());
+		builder.append("]");
+		return builder.toString();
 	}
 
 	/**
@@ -214,5 +167,23 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 	public Pattern getPatternByNaturalLanguageRepresentation(int patternHashCode) { 
 		
 		return this.patternMap.get(patternHashCode);
+	}
+
+	/**
+	 * @param property the property to set
+	 */
+	public void setProperty(Property property) {
+
+		this.property = property;
+	}
+
+	/**
+	 * @return the property
+	 */
+	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@JoinColumn(name="property_id")
+	public Property getProperty() {
+
+		return property;
 	}
 }

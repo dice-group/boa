@@ -34,12 +34,11 @@ public class PatternDao extends AbstractDao {
     }
     
     /**
-     * return null!!!!
+     * return empty pattern
      */
     public Pattern createNewEntity() {
 
-    	new RuntimeException("dont use this constructor!");
-		return null;
+    	return (Pattern) super.saveOrUpdateEntity(new Pattern());
 	}
 
     /**

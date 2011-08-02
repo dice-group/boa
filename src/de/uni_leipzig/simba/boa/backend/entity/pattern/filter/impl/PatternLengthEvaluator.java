@@ -1,13 +1,13 @@
 /**
  * 
  */
-package de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.filter.impl;
 
 import de.uni_leipzig.simba.boa.backend.configuration.Initializeable;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluator;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 
@@ -15,7 +15,7 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
  * @author Daniel Gerber
  *
  */
-public class PatternLengthEvaluator extends Initializeable implements PatternEvaluator {
+public class PatternLengthEvaluator extends Initializeable implements PatternFilter {
 
 	private final NLPediaLogger logger		= new NLPediaLogger(PatternLengthEvaluator.class);
 	private final int maxPatternChunkLength = new Integer(NLPediaSettings.getInstance().getSetting("maxPatternLenght")).intValue();
@@ -41,7 +41,7 @@ public class PatternLengthEvaluator extends Initializeable implements PatternEva
 	 * 
 	 * @param patternMapping the mapping whose pattern should be checked
 	 */
-	@Override public void evaluatePattern(PatternMapping patternMapping) {
+	@Override public void filterPattern(PatternMapping patternMapping) {
 		
 		for ( Pattern p : patternMapping.getPatterns() ) {
 			

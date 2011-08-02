@@ -33,7 +33,9 @@ import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.SearchResult;
 
 
 public class NerTagUtf8Test {
@@ -80,17 +82,16 @@ public class NerTagUtf8Test {
 			PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 			
 			PatternMapping mapping = new PatternMapping();
+			mapping.setProperty(new Property());
 			
-			for ( String result : searcher.getResults() ) {
+			for ( SearchResult result : searcher.getResults() ) {
 				
-				String[] resultArray = result.split("-;-");
-				
-				mapping.setUri(resultArray[0]);
-				mapping.setRdfsDomain(resultArray[2]);
-				mapping.setRdfsRange(resultArray[3]);
+				mapping.getProperty().setUri(result.getProperty());
+				mapping.getProperty().setRdfsDomain(result.getRdfsDomain());
+				mapping.getProperty().setRdfsRange(result.getRdfsRange());
 				
 				Pattern p = new Pattern();
-				p.setNaturalLanguageRepresentation(resultArray[1]);
+				p.setNaturalLanguageRepresentation(result.getNaturalLanguageRepresentation());
 				mapping.addPattern(p);
 				pmDao.createAndSavePatternMapping(mapping);
 			}

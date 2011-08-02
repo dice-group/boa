@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -14,7 +16,10 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 /**
  * 
@@ -58,6 +63,8 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	 * 
 	 */
 	private PatternMapping patternMapping;
+
+//	private Set<Triple> learnedFromTriples;
 	
 	/**
 	 * 
@@ -119,6 +126,8 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	public Pattern(){
 		
 		this.confidence = -1D;
+		this.learnedFrom = new HashMap<String,Integer>();
+		this.patternMapping = null;
 	}
 	
 	/**
@@ -316,8 +325,8 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * @return the patternMapping
 	 */
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name = "pattern_mapping_id", updatable = false, insertable = false, nullable=false)
+	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	//@JoinColumn(name = "pattern_mapping_id")//, updatable = false, insertable = false, nullable=true)
 	public PatternMapping getPatternMapping() {
 
 		return patternMapping;
@@ -393,9 +402,9 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	}
 
 
-	public double retrieveMaxLearnedFrom() {
+	public int retrieveMaxLearnedFrom() {
 
-		double maximum = 0;
+		int maximum = 0;
 		for ( Entry<String,Integer> entry : this.learnedFrom.entrySet() ) {
 			
 			maximum = Math.max(entry.getValue(), maximum);
@@ -479,7 +488,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	public void updateTempConfidence(double tempConfidence) {
 
 		this.tempConfidence = tempConfidence;
-	}
+	}	
 
 
 	/**
@@ -498,6 +507,25 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 
 		return globalConfidence;
 	}
+
+
+//	/**
+//	 * @param learnedTriple the learnedTriple to set
+//	 */
+//	public void setLearnedFromTriples(Set<Triple> learnedFromTriples) {
+//
+//		this.learnedFromTriples = learnedFromTriples;
+//	}
+
+
+	/**
+	 * @return the learnedTriple
+	 */
+//	@OneToMany(fetch = FetchType.EAGER, mappedBy="id")
+//	public Set<Triple> getLearnedFromTriples() {
+//
+//		return learnedFromTriples;
+//	}
 }
 
 //@CollectionOfElements(fetch = FetchType.EAGER)

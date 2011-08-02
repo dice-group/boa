@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.filter;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 
@@ -7,17 +7,17 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
  * 
  * @author Daniel Gerber
  */
-public interface PatternEvaluator {
+public interface PatternFilter {
 
 	/**
-	 * Found pattern mappings need to be evaluated, e.g. pattern mappings 
+	 * Found pattern mappings need to be filtered, e.g. pattern mappings 
 	 * with patterns which do not contain a certain amount of words or 
 	 * only contain stop-words need to be filtered. Furthermore checked 
 	 * patterns need to be evaluated, if they deliver suitable results. 
 	 * This method should be used to check patterns for a given characteristic 
 	 * like the examples above. 
 	 * 
-	 * @param pattern mapping - The pattern mapping to be evaluated
+	 * @param pattern mapping - The pattern mapping to be filter
 	 */
-	public void evaluatePattern(PatternMapping patternMapping);
+	public void filterPattern(PatternMapping patternMapping);
 }

@@ -68,7 +68,7 @@ public class PatternDaoTest {
 	    
 	    PatternMapping mapping = (PatternMapping) patternMappingDao.createNewEntity();
 	    
-	    mapping.setUri("http://rdf/ns/.xml.as");
+	    mapping.getProperty().setUri("http://rdf/ns/.xml.as");
 	    mapping.addPattern(pattern1);
 	    mapping.addPattern(pattern2);
 	    
@@ -113,9 +113,9 @@ public class PatternDaoTest {
 		
 		for (PatternMapping mapping : mappings) {
 			
-			System.out.println(mapping.getUri());
-			System.out.println(mapping.getRdfsRange());
-			System.out.println(mapping.getRdfsDomain());
+			System.out.println(mapping.getProperty().getUri());
+			System.out.println(mapping.getProperty().getRdfsRange());
+			System.out.println(mapping.getProperty().getRdfsDomain());
 			System.out.println();
 		}
 		
@@ -125,9 +125,9 @@ public class PatternDaoTest {
 		
 		for (PatternMapping mapping : mappings) {
 			
-			System.out.println(mapping.getUri());
-			System.out.println(mapping.getRdfsRange());
-			System.out.println(mapping.getRdfsDomain());
+			System.out.println(mapping.getProperty().getUri());
+			System.out.println(mapping.getProperty().getRdfsRange());
+			System.out.println(mapping.getProperty().getRdfsDomain());
 			System.out.println();
 		}
 	}
@@ -147,8 +147,8 @@ public class PatternDaoTest {
 	    mapping1.addPattern(pattern1);
 	    mapping2.addPattern(pattern2);
 	    
-	    mapping1.setUri("http://rdf/ns/.xml.as");
-	    mapping1.setUri("http://rdf/ns/.xml.ab");
+	    mapping1.getProperty().setUri("http://rdf/ns/.xml.as");
+	    mapping1.getProperty().setUri("http://rdf/ns/.xml.ab");
 	    
 	    patternMappingDao.updatePatternMapping(mapping1);
 	    patternMappingDao.updatePatternMapping(mapping2);

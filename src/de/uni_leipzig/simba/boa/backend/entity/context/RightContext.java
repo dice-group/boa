@@ -151,6 +151,20 @@ public final class RightContext extends Context {
         	this.words.add(words[i]);
         }
 	}
+
+	@Override
+	public int getSuitableEntityDistance(String entityType) {
+
+		String entityMapping = Context.namedEntityRecognitionMappings.get(entityType);
+		
+		for (int i = 0; i < this.words.size(); i++) {
+			
+			if ( this.words.get(i).contains(entityMapping) ) return i + 1; // start with 1 to avoid division by zero
+		}
+		return 0;
+	}
+	
+	
 		
 //		String regex = "";
 //		

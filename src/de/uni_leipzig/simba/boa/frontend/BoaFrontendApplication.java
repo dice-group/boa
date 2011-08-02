@@ -194,7 +194,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				gridLayout.addComponent(rdfsDomainLabel, 1, 0);
 				gridLayout.setComponentAlignment(rdfsDomainLabel, Alignment.MIDDLE_LEFT);
 				
-				Link rdfsDomainLink = new Link(pm.getRdfsDomain(), new ExternalResource(pm.getRdfsDomain()));
+				Link rdfsDomainLink = new Link(pm.getProperty().getRdfsDomain(), new ExternalResource(pm.getProperty().getRdfsDomain()));
 				gridLayout.addComponent(rdfsDomainLink, 2, 0);
 				gridLayout.setComponentAlignment(rdfsDomainLink, Alignment.MIDDLE_LEFT);
 				
@@ -202,7 +202,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				gridLayout.addComponent(rdfsRangeLabel, 3, 0);
 				gridLayout.setComponentAlignment(rdfsRangeLabel, Alignment.MIDDLE_RIGHT);
 				
-				Link rdfsRangeLink = new Link(pm.getRdfsRange(), new ExternalResource(pm.getRdfsRange()));
+				Link rdfsRangeLink = new Link(pm.getProperty().getRdfsRange(), new ExternalResource(pm.getProperty().getRdfsRange()));
 				gridLayout.addComponent(rdfsRangeLink, 4, 0);
 				gridLayout.setComponentAlignment(rdfsRangeLink, Alignment.MIDDLE_LEFT);
 				

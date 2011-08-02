@@ -1,9 +1,9 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.filter.impl;
 
 import de.uni_leipzig.simba.boa.backend.configuration.Initializeable;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluator;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 
@@ -13,7 +13,7 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
  * 
  * @author Daniel Gerber
  */
-public class StartsWithEvaluator extends Initializeable implements PatternEvaluator {
+public class StartsWithEvaluator extends Initializeable implements PatternFilter {
 
 	private final NLPediaLogger logger = new NLPediaLogger(StartsWithEvaluator.class);
 
@@ -26,7 +26,7 @@ public class StartsWithEvaluator extends Initializeable implements PatternEvalua
 	/**
 	 * 
 	 */
-	@Override public void evaluatePattern(PatternMapping patternMapping) {
+	@Override public void filterPattern(PatternMapping patternMapping) {
 
 		for ( Pattern p : patternMapping.getPatterns() ) {
 		

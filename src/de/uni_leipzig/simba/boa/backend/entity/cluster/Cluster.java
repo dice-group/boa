@@ -216,7 +216,7 @@ public class Cluster extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		int i = 0;
 		for ( Pattern p : this.getPattern() ) {
 			
-			if ( p.getPatternMapping().getUri().equals(uri) ) i++;
+			if ( p.getPatternMapping().getProperty().getUri().equals(uri) ) i++;
 		}
 		return i;
 	}
@@ -247,9 +247,9 @@ public class Cluster extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		for ( Pattern p : this.getPattern() ) {
 			
 			// no uri yet in the list -> so add it with 0 as probability
-			if ( !this.getUriAffiliationPropabilities().keySet().contains(p.getPatternMapping().getUri()) ) {
+			if ( !this.getUriAffiliationPropabilities().keySet().contains(p.getPatternMapping().getProperty().getUri()) ) {
 				
-				this.uriAffiliationPropabilities.put(p.getPatternMapping().getUri(), 0d);  
+				this.uriAffiliationPropabilities.put(p.getPatternMapping().getProperty().getUri(), 0d);  
 			}
 		}
 	}
@@ -279,7 +279,7 @@ public class Cluster extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		List<Pattern> patternList = new ArrayList<Pattern>();
 		for ( Pattern p : this.pattern ) {
 			
-			if ( p.getPatternMapping().getUri().equals(uri) ) patternList.add(p);
+			if ( p.getPatternMapping().getProperty().getUri().equals(uri) ) patternList.add(p);
 		}
 		return patternList;
 	}
@@ -298,7 +298,7 @@ public class Cluster extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		int occurrences = 0;
 		for ( Pattern p : this.pattern ) {
 			
-			if ( p.getPatternMapping().getUri().equals(uri) ) occurrences += p.getNumberOfOccurrences();
+			if ( p.getPatternMapping().getProperty().getUri().equals(uri) ) occurrences += p.getNumberOfOccurrences();
 		}
 		return occurrences;
 	}

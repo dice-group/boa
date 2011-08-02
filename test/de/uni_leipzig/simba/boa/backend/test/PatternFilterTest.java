@@ -11,15 +11,15 @@ import org.junit.Test;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluator;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluatorFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilterFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 /**
  * 
  * @author Daniel Gerber
  */
-public class PatternEvaluatorTest {
+public class PatternFilterTest {
 
 	// initialize logging and settings
 	NLPediaSetup setup = null;
@@ -27,14 +27,14 @@ public class PatternEvaluatorTest {
 
 	public static junit.framework.Test suite() {
 		
-		return new JUnit4TestAdapter(PatternEvaluatorTest.class);
+		return new JUnit4TestAdapter(PatternFilterTest.class);
 	}
 	
 	@Before
 	public void setUp() {
 		
 		this.setup = new NLPediaSetup(true);
-		this.logger = new NLPediaLogger(PatternEvaluatorTest.class);
+		this.logger = new NLPediaLogger(PatternFilterTest.class);
 	}
 
 	@After
@@ -62,15 +62,16 @@ public class PatternEvaluatorTest {
 		p2.addLearnedFrom("ASD" + "-;-" + "ASD");
 		
 		PatternMapping pm = new PatternMapping();
-		pm.setRdfsDomain("http://dbpedia.org/ontology/Company");
-		pm.setRdfsRange("http://dbpedia.org/ontology/Company");
+		pm.getProperty().setUri("http://dbpedia.org/ontology/asdasd");
+		pm.getProperty().setRdfsDomain("http://dbpedia.org/ontology/Company");
+		pm.getProperty().setRdfsRange("http://dbpedia.org/ontology/Company");
 		pm.addPattern(p1).addPattern(p2);
 		
 		System.out.println(p1.getLearnedFrom());
 		
-		for ( PatternEvaluator pe : PatternEvaluatorFactory.getInstance().getPatternEvaluatorMap().values()) {
+		for ( PatternFilter pe : PatternFilterFactory.getInstance().getPatternFilterMap().values()) {
 			
-			pe.evaluatePattern(pm);
+			pe.filterPattern(pm);
 		}
 		
 //		System.out.println("p1: " + p1.isUseForPatternEvaluation());

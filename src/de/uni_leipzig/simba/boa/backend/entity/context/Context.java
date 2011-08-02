@@ -88,6 +88,13 @@ public abstract class Context {
 	 * @param entityType
 	 * @return
 	 */
+	public abstract int getSuitableEntityDistance(String entityType);
+	
+	/**
+	 * 
+	 * @param entityType
+	 * @return
+	 */
 	public abstract String getSuitableEntity(String entityType);
 
 	/**

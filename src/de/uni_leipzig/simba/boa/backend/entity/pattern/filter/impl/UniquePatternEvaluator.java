@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.filter.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -6,11 +6,11 @@ import java.util.Map;
 import de.uni_leipzig.simba.boa.backend.configuration.Initializeable;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluator;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 
-public class UniquePatternEvaluator extends Initializeable implements PatternEvaluator {
+public class UniquePatternEvaluator extends Initializeable implements PatternFilter {
 
 	private final NLPediaLogger logger					= new NLPediaLogger(StopWordPatternEvaluator.class);
 	private List<PatternMapping> mappings				= null;
@@ -25,7 +25,7 @@ public class UniquePatternEvaluator extends Initializeable implements PatternEva
 	public void initialize() {
 
 		// we need to read all pattern mappings into RAM to avoid querying for every pattern
-//		this.mappings = PatternEvaluationCommand.patternMappingList;
+//		this.mappings = PatternFilteringCommand.patternMappingList;
 //		this.patterns = new HashMap<String, Integer>();
 //		
 //		int i = 0;
@@ -49,7 +49,7 @@ public class UniquePatternEvaluator extends Initializeable implements PatternEva
 	}
 
 	@Override
-	public void evaluatePattern(PatternMapping patternMapping) {
+	public void filterPattern(PatternMapping patternMapping) {
 
 		for ( Pattern p : patternMapping.getPatterns() ) {
 			

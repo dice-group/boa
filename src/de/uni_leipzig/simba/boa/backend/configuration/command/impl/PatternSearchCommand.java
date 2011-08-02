@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.crawl.RelationFinder;
@@ -16,6 +18,9 @@ import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
+import de.uni_leipzig.simba.boa.backend.search.SearchResult;
+import de.uni_leipzig.simba.boa.backend.search.SearchResultComparator;
 import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchThread;
 import de.uni_leipzig.simba.boa.backend.search.concurrent.PrintProgressTask;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;
@@ -27,7 +32,7 @@ import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 public class PatternSearchCommand implements Command {
 
 	private final NLPediaLogger logger					= new NLPediaLogger(PatternSearchCommand.class);
-	private final Map<String,PatternMapping> mappings	= new HashMap<String,PatternMapping>();
+	private final List<PatternMapping> mappings			= new ArrayList<PatternMapping>();
 	private Integer foundInIteration 					= null;
 	
 	@Override
@@ -52,7 +57,7 @@ public class PatternSearchCommand implements Command {
 		
 		int numberOfSearchThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfSearchThreads")).intValue();
 		
-		List<String> results = new ArrayList<String>(labels.size() * 10);//Collections.synchronizedList(new ArrayList<String>(labels.size()*10));
+		List<SearchResult> results = new ArrayList<SearchResult>(labels.size() * 10);//Collections.synchronizedList(new ArrayList<String>(labels.size()*10));
 		
 		List<List<String[]>> labelSubLists = ListUtil.split(labels, labels.size() / numberOfSearchThreads);
 		
@@ -101,7 +106,7 @@ public class PatternSearchCommand implements Command {
 		
 		try {
 
-			Collections.sort(results);
+			Collections.sort(results, new SearchResultComparator());
 		
 			int size = results.size();
 			
@@ -113,19 +118,18 @@ public class PatternSearchCommand implements Command {
 			
 			PatternMapping currentMapping = null;
 			
-			for ( String patternMappingString : results) {
+			for ( SearchResult searchResult : results) {
 				
-				String[] line = patternMappingString.split("-;-");
-				String property			= line[0];
-				String patternString	= line[1];
-				String range			= line[2];
-				String domain			= line[3];
-				String label1			= line[4];
-				String label2			= line[5];
-				String documentId		= line[6];
+				String propertyUri		= searchResult.getProperty();
+				String patternString	= searchResult.getNaturalLanguageRepresentation();
+				String range			= searchResult.getRdfsRange();
+				String domain			= searchResult.getRdfsDomain();
+				String label1			= searchResult.getFirstLabel();
+				String label2			= searchResult.getSecondLabel();
+				Integer documentId		= new Integer(searchResult.getIndexId());
 				
 				// next line is for the same property
-				if ( property.equals(currentProperty) ) {
+				if ( propertyUri.equals(currentProperty) ) {
 					
 					// previous line had the same pattern
 					if ( patternString.equals(currentPattern) ) {
@@ -151,22 +155,23 @@ public class PatternSearchCommand implements Command {
 				// so create a new pattern mapping
 				else {
 					
-					currentMapping = new PatternMapping(property);
-					currentMapping.setRdfsRange(range);
-					currentMapping.setRdfsDomain(domain);
+					String label = StringUtils.join(propertyUri.replace("http://dbpedia.org/ontology/", "").split("(?=\\p{Upper})"), " ");
+					Property p = new Property(propertyUri, label , range, domain);
 					
-					Pattern p = new Pattern(patternString, "");
-					p.setFoundInIteration(this.foundInIteration);
-					p.addLearnedFrom(label1 + "-;-" + label2);
-					p.setPatternMapping(currentMapping);
-					p.addLuceneDocIds(Integer.valueOf(documentId));
+					currentMapping = new PatternMapping(p);
 					
-					currentMapping.addPattern(p);
+					Pattern pattern = new Pattern(patternString, "");
+					pattern.setFoundInIteration(this.foundInIteration);
+					pattern.addLearnedFrom(label1 + "-;-" + label2);
+					pattern.setPatternMapping(currentMapping);
+					pattern.addLuceneDocIds(documentId);
 					
-					this.mappings.put(property, currentMapping);
+					currentMapping.addPattern(pattern); // do we need this?
+					
+					this.mappings.add(currentMapping);
 				}
 				
-				currentProperty = property;
+				currentProperty = propertyUri;
 				currentPattern = patternString;
 			}
 			System.out.println("All pattern mappings read in " + (System.currentTimeMillis() - startPatternReading) + "ms!");
@@ -176,7 +181,7 @@ public class PatternSearchCommand implements Command {
 			
 			PatternMappingDao pmd = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 
-			for (PatternMapping mapping : this.mappings.values()) {
+			for (PatternMapping mapping : this.mappings) {
 
 				pmd.createAndSavePatternMapping(mapping);
 			}

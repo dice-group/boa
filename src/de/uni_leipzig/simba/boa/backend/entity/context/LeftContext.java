@@ -156,4 +156,16 @@ public class LeftContext extends Context {
            this.words.add(words[i]);
         }
 	}
+
+	@Override
+	public int getSuitableEntityDistance(String entityType) {
+
+		String entityMapping = Context.namedEntityRecognitionMappings.get(entityType);
+		
+		for (int i = this.words.size() - 1, j = 1; i >= 0 ; i--, j++) {
+			
+			if ( this.words.get(i).contains(entityMapping) ) return j;
+		}
+		return 0;
+	}
 }

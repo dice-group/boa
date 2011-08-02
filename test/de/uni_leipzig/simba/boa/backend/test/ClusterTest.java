@@ -45,8 +45,7 @@ public class ClusterTest {
 		Cluster cluster = new Cluster();
 		cluster.setName("This is a test cluster");
 		
-		PatternMapping mapping1 = new PatternMapping();
-		mapping1.setUri("type");
+		PatternMapping mapping1 = new PatternMapping("uri", "label", "range", "domain");
 		
 		Pattern p1 = new Pattern();
 		p1.setNaturalLanguageRepresentation("x is a y");
@@ -61,8 +60,7 @@ public class ClusterTest {
 		mapping1.addPattern(p1);
 		mapping1.addPattern(p2);
 		
-		PatternMapping mapping2 = new PatternMapping();
-		mapping2.setUri("city");
+		PatternMapping mapping2 = new PatternMapping("city/URI", "label", "range", "domian");
 		
 		Pattern p3 = new Pattern();
 		p3.setNaturalLanguageRepresentation("x is never y");

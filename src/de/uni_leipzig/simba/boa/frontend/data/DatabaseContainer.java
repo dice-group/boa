@@ -49,7 +49,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 
 		List<String> uris = new ArrayList<String>();
 		for (PatternMapping pm : pmDao.findPatternMappingsWithoutPattern(null)) {
-			uris.add(pm.getUri());
+			uris.add(pm.getProperty().getUri());
 		}
 		return uris;
 	}

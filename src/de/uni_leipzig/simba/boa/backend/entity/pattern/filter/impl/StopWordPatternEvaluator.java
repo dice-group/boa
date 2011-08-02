@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.filter.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +8,7 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.Initializeable;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluator;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 /**
@@ -16,7 +16,7 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
  * 
  * @author Daniel Gerber
  */
-public class StopWordPatternEvaluator extends Initializeable implements PatternEvaluator {
+public class StopWordPatternEvaluator extends Initializeable implements PatternFilter {
 	
 	private final NLPediaLogger logger = new NLPediaLogger(StopWordPatternEvaluator.class);
 
@@ -35,7 +35,7 @@ public class StopWordPatternEvaluator extends Initializeable implements PatternE
 	}
 	
 	@Override
-	public void evaluatePattern(PatternMapping patternMapping) {
+	public void filterPattern(PatternMapping patternMapping) {
 		
 		for ( Pattern p : patternMapping.getPatterns() ) {
 			

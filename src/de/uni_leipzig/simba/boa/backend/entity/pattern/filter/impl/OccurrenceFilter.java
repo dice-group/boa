@@ -1,23 +1,25 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.filter.impl;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
-import de.uni_leipzig.simba.boa.backend.configuration.Initializeable;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluator;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
-
-public class OccurrenceEvaluator extends Initializeable implements PatternEvaluator {
+/**
+ * 
+ * @author Daniel Gerber
+ */
+public class OccurrenceFilter implements PatternFilter {
 
 	private static final int NUMBER_OF_OCCURRENCES_THRESHOLD = 5;
 	private static final int NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD = 2;
-	private final NLPediaLogger logger = new NLPediaLogger(OccurrenceEvaluator.class);
+	private final NLPediaLogger logger = new NLPediaLogger(OccurrenceFilter.class);
 	
 	@Override
-	public void evaluatePattern(PatternMapping patternMapping) {
+	public void filterPattern(PatternMapping patternMapping) {
 
 		for ( Pattern p : patternMapping.getPatterns() ) {
 			
@@ -29,7 +31,7 @@ public class OccurrenceEvaluator extends Initializeable implements PatternEvalua
 						
 						p.getNumberOfOccurrences() 
 						>= 
-						OccurrenceEvaluator.NUMBER_OF_OCCURRENCES_THRESHOLD 
+						OccurrenceFilter.NUMBER_OF_OCCURRENCES_THRESHOLD 
 				);
 				
 				int counter = 0;
@@ -39,7 +41,7 @@ public class OccurrenceEvaluator extends Initializeable implements PatternEvalua
 					Map<String,Integer> learnedFrom = p.getLearnedFrom();
 					for (Entry<String,Integer> entry : learnedFrom.entrySet()) {
 						
-						if ( entry.getValue() > OccurrenceEvaluator.NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD ) counter++;
+						if ( entry.getValue() > OccurrenceFilter.NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD ) counter++;
 					}
 					
 					if ( counter < 1 ) p.setUseForPatternEvaluation(false);
@@ -64,11 +66,5 @@ public class OccurrenceEvaluator extends Initializeable implements PatternEvalua
 				}
 			}
 		}
-	}
-
-	@Override
-	public void initialize() {
-
-		// nothing to do here
 	}
 }

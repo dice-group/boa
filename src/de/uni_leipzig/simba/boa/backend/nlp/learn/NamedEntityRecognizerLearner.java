@@ -207,7 +207,7 @@ public class NamedEntityRecognizerLearner {
 				writers.put(type, writer);
 				if ( type.equals("School") ) System.out.println("school is richtig");
 			}
-			System.out.println("There are " + types.size() + " different classes or writers resp. in the map.");
+			System.out.println("\nThere are " + types.size() + " different classes or writers resp. in the map.");
 			System.out.println("Defined writers: " + writers.keySet());
 			
 			for (String sentence : sentences.values()) {

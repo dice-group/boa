@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.filter;
 
 import java.util.List;
 import java.util.Map;
@@ -10,13 +10,13 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
  * 
  * @author Daniel Gerber
  */
-public class PatternEvaluationThread extends Thread {
+public class PatternFilteringThread extends Thread {
 
 	private List<PatternMapping> patternMappings = null;
 	
-	private final NLPediaLogger logger = new NLPediaLogger(PatternEvaluationThread.class);
+	private final NLPediaLogger logger = new NLPediaLogger(PatternFilteringThread.class);
 
-	public PatternEvaluationThread(List<PatternMapping> list) {
+	public PatternFilteringThread(List<PatternMapping> list) {
 
 		this.patternMappings = list;
 	}
@@ -24,10 +24,10 @@ public class PatternEvaluationThread extends Thread {
 	@Override
 	public void run() {
 		
-		Map<String,PatternEvaluator> patternEvaluators = PatternEvaluatorFactory.getInstance().getPatternEvaluatorMap();
+		Map<String,PatternFilter> patternEvaluators = PatternFilterFactory.getInstance().getPatternFilterMap();
 		
 		// go through all evaluators
-		for ( PatternEvaluator patternEvaluator : patternEvaluators.values() ) {
+		for ( PatternFilter patternEvaluator : patternEvaluators.values() ) {
 
 			this.logger.info(patternEvaluator.getClass().getSimpleName() + " started from " + this.getName() +"!");
 			
@@ -35,7 +35,7 @@ public class PatternEvaluationThread extends Thread {
 			for (PatternMapping patternMapping : patternMappings ) {
 			
 				this.logger.debug("Evaluating pattern: " + patternMapping);
-				patternEvaluator.evaluatePattern(patternMapping);
+				patternEvaluator.filterPattern(patternMapping);
 			}
 			this.logger.info(patternEvaluator.getClass().getSimpleName() + " from " + this.getName() + " finished!");
 		}

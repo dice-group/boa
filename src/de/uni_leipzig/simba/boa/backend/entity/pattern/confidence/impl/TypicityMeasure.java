@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.impl;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -15,7 +15,7 @@ import org.apache.lucene.queryParser.ParseException;
 
 import de.uni_leipzig.simba.boa.backend.configuration.Initializeable;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternEvaluationCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternFilteringCommand;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
@@ -23,7 +23,8 @@ import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
 import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.evaluation.PatternEvaluator;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeasure;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
@@ -34,12 +35,11 @@ import edu.stanford.nlp.process.DocumentPreprocessor;
  * @author Daniel Gerber
  *
  */
-public class DomainAndRangeEvaluator extends Initializeable implements PatternEvaluator {
+public class TypicityMeasure implements ConfidenceMeasure {
 
-	private final NLPediaLogger logger					= new NLPediaLogger(DomainAndRangeEvaluator.class);
+	private final NLPediaLogger logger					= new NLPediaLogger(TypicityMeasure.class);
 	private NamedEntityRecognizer ner;
 	private final int maxNumberOfEvaluationSentences 	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfEvalDocuments"));
-	private PatternDao patternDao						= (PatternDao) DaoFactory.getInstance().createDAO(PatternDao.class);
 	
 	private PatternSearcher patternSearcher;
 	
@@ -48,13 +48,13 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 	private DocumentPreprocessor preprocessor;
 	private StringBuilder stringBuilder;
 	
-	public DomainAndRangeEvaluator() {}
+	public TypicityMeasure() {}
 	
 	/* (non-Javadoc)
 	 * @see simba.nlpedia.entity.pattern.evaluation.PatternEvaluator#evaluatePattern(simba.nlpedia.entity.pattern.PatternMapping)
 	 */
 	@Override
-	public void evaluatePattern(PatternMapping patternMapping) {
+	public void measureConfidence(PatternMapping patternMapping) {
 		
 		try {
 			
@@ -71,8 +71,8 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 
 		try {
 			
-			String domainUri	= patternMapping.getRdfsDomain();
-			String rangeUri		= patternMapping.getRdfsRange();
+			String domainUri	= patternMapping.getProperty().getRdfsDomain();
+			String rangeUri		= patternMapping.getProperty().getRdfsRange();
 			
 			double domainCorrectness;
 			double rangeCorrectness;
@@ -101,16 +101,13 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					this.logger.debug("Querying index for pattern \"" + patternWithOutVariables + "\" took "+((new Date().getTime() - start )/1000 )+"s and returned " +sentences.size() + " sentences.");
 					this.logger.debug("Pattern \"" + patternWithOutVariables + "\" returned " + sentences.size() + " results.");
 					
-					int correctDomain	= 0;
-					int correctRange	= 0;
+					double correctDomain	= 0;
+					double correctRange		= 0;
 					
 					for (String foundString : sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0,this.maxNumberOfEvaluationSentences - 1) : sentences) {
 						
 						start = new Date().getTime();
 						nerTagged = this.ner.recognizeEntitiesInString(foundString);
-						System.out.println("NER tag string: \"" + foundString + "\" took "+((new Date().getTime() - start )/1000 )+"s.");
-						System.out.println("NER tag string: " + nerTagged);
-						this.logger.debug("NER tag string: \"" + foundString + "\" took "+((new Date().getTime() - start )/1000 )+"s.");
 						segmentedFoundString = this.segmentString(foundString);
 						segmentedPattern = this.segmentString(patternWithOutVariables);
 						
@@ -123,22 +120,22 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 								
 								if ( leftContext.containsSuitableEntity(domainUri) ) {
 									
-									correctDomain++;
+									correctDomain += (1D / (double)leftContext.getSuitableEntityDistance(domainUri));
 								}
 								if ( rightContext.containsSuitableEntity(rangeUri) ) {
 									
-									correctRange++;
+									correctRange += (1D / (double)rightContext.getSuitableEntityDistance(rangeUri));
 								}
 							}
 							else {
 								
 								if ( leftContext.containsSuitableEntity(rangeUri) ) {
 									
-									correctDomain++;
+									correctRange += (1D / (double)leftContext.getSuitableEntityDistance(rangeUri));
 								}
 								if ( rightContext.containsSuitableEntity(domainUri) ) {
 									
-									correctRange++;
+									correctDomain += (1D / (double)rightContext.getSuitableEntityDistance(domainUri));
 								}
 							}
 						}
@@ -151,41 +148,12 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 					domainCorrectness = (double) correctDomain / (double) sentences.size();
 					rangeCorrectness = (double) correctRange / (double) sentences.size();
 					
-					// ########################################################
-					
 					double typicity = 0D;
-					double support = 0D;
-					double specificity = 0D;
 					
 					typicity = (domainCorrectness + rangeCorrectness) / (2D);//* (double) sentences.size());
 					typicity = Double.isNaN(typicity) ? 0d : typicity * (double) (Math.log((int)(sentences.size() + 1)) / Math.log(2));
 					
-					specificity = (Math.log(PatternEvaluationCommand.NUMBER_OF_PATTERN_MAPPINGS / this.getNumberOfPatternMappingsWithPattern(pattern.getNaturalLanguageRepresentation())) / Math.log(2));
-					
-					support = (double) (Math.log((int)(pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2)) * 
-								(double) (Math.log((pattern.retrieveCountLearnedFrom() + 1)) / Math.log(2));
-					
-					pattern.setSupport(support);
 					pattern.setTypicity(typicity);
-					pattern.setSpecificity(specificity);
-					
-					System.out.println(pattern.getNaturalLanguageRepresentation());
-					System.out.println("Support: \t\t" + pattern.getSupport());
-					System.out.println("Specificity:\t" + pattern.getSpecificity());
-					System.out.println("Typicity:\t" + pattern.getTypicity());
-					
-					pattern.updateTempConfidence(support * typicity * specificity);
-					
-					// ########################################################
-					
-					// we wont need to see them in the view
-					if ( pattern.retrieveTempConfidence() <= 0 ) pattern.setUseForPatternEvaluation(false);
-					
-					if ( pattern.retrieveTempConfidence() <= 0 ) {
-						
-						System.out.println(" does not fit in domain/range.\n"); // continued from upper system.out.print()
-						this.logger.debug("Pattern " +  pattern.getNaturalLanguageRepresentation() + " does not fit in domain/range.");
-					}
 				}
 			}
 		}
@@ -197,11 +165,6 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	private int getNumberOfPatternMappingsWithPattern(String naturalLanguageRepresentation) {
-
-		return this.patternDao.countPatternMappingsWithSameNaturalLanguageRepresenation(naturalLanguageRepresentation);
 	}
 
 	private String segmentString(String sentence) {
@@ -220,12 +183,5 @@ public class DomainAndRangeEvaluator extends Initializeable implements PatternEv
 			return stringBuilder.toString().trim();
 		}
 		return "";
-	}
-
-	@Override
-	public void initialize() {
-
-		// TODO Auto-generated method stub
-		
 	}
 }

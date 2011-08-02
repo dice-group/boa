@@ -33,7 +33,7 @@ public class StartQueryCommand implements Command {
 			System.out.println("askdlasd");
 			
 			PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
-			Set<String> results = ((TreeSet<String>) patternSearcher.getExactMatchSentences(keyphrase, 10));
+			Set<String> results = ((TreeSet<String>) patternSearcher.getExactMatchSentences(keyphrase, 1000));
 			
 			for (String sentence : results) {
 				

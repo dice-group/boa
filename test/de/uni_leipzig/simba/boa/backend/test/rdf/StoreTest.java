@@ -12,8 +12,6 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.Model;
-import de.uni_leipzig.simba.boa.backend.rdf.Property;
-import de.uni_leipzig.simba.boa.backend.rdf.PropertyDao;
 import de.uni_leipzig.simba.boa.backend.rdf.store.Store;
 
 public class StoreTest {
@@ -58,23 +56,6 @@ public class StoreTest {
 
 //		model1.addStatement(model1.createStatement(model1.createResource("http://person.de/daniel"), model1.createProperty("http://person.de/likes"), model1.createResource("http://person.de/jules")));
 		assertFalse(model1.getNumberOfStatements() == 1);
-	}
-	
-	@Test
-	public void testPropertyCreation() {
-		
-		PropertyDao dao = new PropertyDao(this.store.createModelIfNotExists("rdf_test_model"));
-
-		Property property1 = dao.createAndSaveProperty("http://example.com/property/language", Constants.OWL_DATATYPE_PROPERTY, "the language of a label", "http://example.com/class/Article", "http://example.com/class/Language");
-		Property property2 = dao.findPropertyByUriWithDomainRangeLabelType("http://example.com/property/language");
-		
-		assertTrue(property1 != null);
-		assertTrue(property2 != null);
-		assertTrue(property1.getUri() + " vs. " + property2.getUri(),		property1.getUri() == property2.getUri());
-		assertTrue(property1.getDomain() + " vs. " + property2.getDomain(),	property1.getDomain() == property2.getDomain());
-		assertTrue(property1.getRange() + " vs. " + property2.getRange(),	property1.getRange() == property2.getRange());
-		assertTrue(property1.getLabel() + " vs. " + property2.getLabel(),	property1.getLabel().equals(property2.getLabel()));
-		assertTrue(property1.getType() + " vs. " + property2.getType(),		property1.getType() == property2.getType());
 	}
 	
 	@Test
