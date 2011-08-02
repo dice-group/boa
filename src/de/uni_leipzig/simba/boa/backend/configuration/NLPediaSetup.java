@@ -73,7 +73,7 @@ public class NLPediaSetup {
 			
 			if ( isTestCase ) {
 				
-				this.settings.setSetting("hibernateConnectionUrl", "jdbc:mysql://127.0.0.1:3306/de_wiki_loc");
+				this.settings.setSetting("hibernateConnectionUrl", "jdbc:mysql://127.0.0.1:3306/testcase");
 				this.settings.setSetting("hibernateHbm2ddlAuto", "create");
 			}
 			
