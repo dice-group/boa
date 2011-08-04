@@ -3,7 +3,6 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.filter;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.uni_leipzig.simba.boa.backend.configuration.Initializeable;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 

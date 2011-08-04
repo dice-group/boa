@@ -80,9 +80,9 @@ public class PatternMappingDao extends AbstractDao {
 			String queryString = "select p.id, p.naturalLanguageRepresentation, " +
 									"p.confidence, p.globalConfidence, p.numberOfOccurrences, p.useForPatternEvaluation, p.luceneDocIds, " +
 									"p.specificity, p.typicity, p.support " + 
-								 "from pattern_mapping as pm, pattern as p " +
-								 "where pm.uri='"+pm.getProperty().getUri().trim()+"' and pm.id = p.pattern_mapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0 or p.confidence > 0) " +
-								 "order by pm.uri;"; 
+								 "from pattern_mapping as pm, pattern as p, resource as r " +
+								 "where r.uri='"+pm.getProperty().getUri().trim()+"' and pm.property_id = r.id and r.DTYPE = 'PROPERTY' and pm.id = p.patternMapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0) " +
+								 "order by r.uri;"; 
 			
 			Query query = session.createSQLQuery(queryString);
 			
@@ -153,15 +153,14 @@ public class PatternMappingDao extends AbstractDao {
 			tx = session.beginTransaction();
 			
 			String queryString = (uri == null) 
-				? 		"select distinct(pm.id), pm.uri, pm.rdfsRange, pm.rdfsDomain " +
-						"from pattern_mapping as pm, pattern as p " +
-						"where pm.id = p.pattern_mapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0 or p.confidence > 0) " +
-						"order by pm.uri;"
-				: "select pm.id, pm.uri, pm.rdfsRange, pm.rdfsDomain from pattern_mapping as pm where uri=:uri"; 
+				? 		"select distinct(pm.id), r.uri, r.rdfsRange, r.rdfsDomain " +
+						"from pattern_mapping as pm, pattern as p, resource as r " +
+						"where pm.id = p.patternMapping_id and (p.specificity > 0 or p.support > 0 or p.typicity > 0) and pm.property_id = r.id and r.DTYPE = 'PROPERTY' " +
+						"order by r.uri;"
+				: "select pm.id, r.uri, r.rdfsRange, r.rdfsDomain from pattern_mapping as pm, resource as r where pm.property_id = r.id and r.DTYPE = 'PROPERTY' and r.uri='"+uri+"';"; 
 			
 			
 			Query query = session.createSQLQuery(queryString);
-			if ( uri != null ) query.setString("uri", uri);;
 			
 			List<Object[]> objs = query.list();
 			for (Object[] obj : objs) {
@@ -190,5 +189,42 @@ public class PatternMappingDao extends AbstractDao {
 	public Entity createNewEntity() {
 
 		throw new RuntimeException("Do not use this method!");
+	}
+
+	public void deleteAllPatternMappings() {
+
+		Transaction tx = null;
+		Session session = null;
+		
+		try {
+			
+			session = HibernateFactory.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+			
+			String queryString = "delete from pattern_mapping;";			
+			Query query = session.createSQLQuery(queryString);
+			query.executeUpdate();
+			
+			queryString = "delete from pattern;";
+			query = session.createSQLQuery(queryString);
+			query.executeUpdate();
+			
+			queryString = "delete from pattern_learned_from;";
+			query = session.createSQLQuery(queryString);
+			query.executeUpdate();
+			
+			tx.commit();
+		}
+		catch (HibernateException he) {
+			
+			HibernateFactory.rollback(tx);
+			super.logger.error("Error...", he);
+			he.printStackTrace();
+		}
+		finally {
+			
+			HibernateFactory.closeSession(session);
+		}// TODO Auto-generated method stub
+		
 	}
 }

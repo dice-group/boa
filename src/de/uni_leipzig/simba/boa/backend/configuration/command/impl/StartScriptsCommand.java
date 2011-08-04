@@ -29,7 +29,7 @@ public class StartScriptsCommand implements Command {
 		    		System.out.println("\t\t0. Go back");
 		    		System.out.println("\t\t1. Create sentence per line file");
 		    		System.out.println("\t\t2. Ask DBpedia for triples");
-		    		System.out.println("\t\t3. Reset pattern evaluation");
+		    		System.out.println("\t\t3. Reset pattern confidence measures");
 		    		System.out.println("\t\t4. Create learned from distribution");
 		    		System.out.println("\t\t5. Create knowledge statistics");
 		    		System.out.println("\t\t6. Train NER model");

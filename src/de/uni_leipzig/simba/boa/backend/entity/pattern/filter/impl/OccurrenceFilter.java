@@ -14,7 +14,7 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
  */
 public class OccurrenceFilter implements PatternFilter {
 
-	private static final int NUMBER_OF_OCCURRENCES_THRESHOLD = 5;
+	private static final int NUMBER_OF_OCCURRENCES_THRESHOLD = 3;
 	private static final int NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD = 2;
 	private final NLPediaLogger logger = new NLPediaLogger(OccurrenceFilter.class);
 	
@@ -45,24 +45,6 @@ public class OccurrenceFilter implements PatternFilter {
 					}
 					
 					if ( counter < 1 ) p.setUseForPatternEvaluation(false);
-					else {
-						
-						
-					}
-				}
-				
-				if ( !p.isUseForPatternEvaluation() ) {
-					
-					if ( counter <= 1 ) {
-						
-						System.out.println("Pattern " + p.getNaturalLanguageRepresentation() + " does not occur often enough with the same entites.");
-						this.logger.debug("Pattern " +  p.getNaturalLanguageRepresentation() + " does not occur often enough with the same entites.");
-					}
-					else {
-						
-						System.out.println("Pattern " + p.getNaturalLanguageRepresentation() + " does not occur often enough.");
-						this.logger.debug("Pattern " +  p.getNaturalLanguageRepresentation() + " does not occur often enough.");
-					}
 				}
 			}
 		}

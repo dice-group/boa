@@ -7,10 +7,8 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CrawlingCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateIndexCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateKnowledgeCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.ExitCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.LimesCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternFilteringCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternSearchCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PrintOptionCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.StartQueryCommand;
@@ -55,9 +53,9 @@ public class NLPedia {
 				switch (option) {
 					
 					case 0: // Exit key pressed
-						Command exitOptionCommand = new ExitCommand(System.out, setup);
-						exitOptionCommand.execute();
-						break;
+						
+						System.out.println("Good Bye!");
+						System.exit(1);
 				
 					case 1: // show the options of nlpedia
 						Command printOptionCommand = new PrintOptionCommand(System.out);
@@ -76,8 +74,8 @@ public class NLPedia {
 						
 					case 4: // evaluate pattern
 						long start4 = new Date().getTime(); 
-						Command patternEvaluationCommand = new PatternFilteringCommand();
-						patternEvaluationCommand.execute();
+//						Command patternEvaluationCommand = new PatternConfidenceMeasureCommand();
+//						patternEvaluationCommand.execute();
 						System.out.println("Pattern search took: " + (new Date().getTime() - start4) + "ms");
 						break;
 						
@@ -88,7 +86,7 @@ public class NLPedia {
 						
 					case 6: // start looking for patterns in index and write them to the db
 						Command patternSearchCommand = new PatternSearchCommand();
-						((PatternSearchCommand)patternSearchCommand).setFoundInIteration(0);
+						((PatternSearchCommand)patternSearchCommand).setIteration(0);
 						patternSearchCommand.execute();
 						break;
 						
@@ -118,28 +116,14 @@ public class NLPedia {
 						break;
 						
 					case 12: // start scripts here
-						Command createKnowledgeCommand = new CreateKnowledgeCommand();
-						createKnowledgeCommand.execute();
+//						Command createKnowledgeCommand = new CreateKnowledgeCommand();
+//						createKnowledgeCommand.execute();
 						break;
 						
 					case 13:
 						
-						long start13 = new Date().getTime();
-
-						// search the patterns
-						Command patternSearchCommand1 = new PatternSearchCommand();
-						((PatternSearchCommand)patternSearchCommand1).setFoundInIteration(0);
-						patternSearchCommand1.execute();
-						
-						// evaluate them
-						Command patternEvaluationCommand1 = new PatternFilteringCommand();
-						patternEvaluationCommand1.execute();
-						
-						// generate rdf
-						Command createKnowledgeCommand1 = new CreateKnowledgeCommand();
-						createKnowledgeCommand1.execute();
-						
-						System.out.println("Pattern search took: " + (new Date().getTime() - start13) + "ms");
+						Command iterationCommand = new IterationCommand();
+						iterationCommand.execute();
 						break;
 						
 					default: // option not supported

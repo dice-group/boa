@@ -1,9 +1,9 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.lucene.queryParser.ParseException;
 
@@ -30,17 +30,14 @@ public class StartQueryCommand implements Command {
 			Scanner scanner = new Scanner(System.in);
 			String keyphrase = scanner.nextLine();
 			
-			System.out.println("askdlasd");
-			
 			PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
-			Set<String> results = ((TreeSet<String>) patternSearcher.getExactMatchSentences(keyphrase, 1000));
-			
-			for (String sentence : results) {
+			List<String> sentences = new ArrayList<String>(patternSearcher.getExactMatchSentences(keyphrase, 1000));
+			for (String sentence : sentences) {
 				
 				System.out.println(sentence);
 			}
-			System.out.println("Size of result list for keyphrase querying:\t" + results.size());
-			this.logger.debug("Size of result list for keyphrase querying:\t" + results.size());
+			System.out.println("Size of result list for keyphrase querying:\t" + sentences.size());
+			this.logger.debug("Size of result list for keyphrase querying:\t" + sentences.size());
 		}
 		catch (IOException ioe) {
 			

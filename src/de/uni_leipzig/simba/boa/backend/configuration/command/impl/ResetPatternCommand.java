@@ -1,5 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
+import java.util.List;
+
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
@@ -16,14 +18,16 @@ public class ResetPatternCommand implements Command {
 		
 		PatternDao patternDao = (PatternDao) DaoFactory.getInstance().createDAO(PatternDao.class);
 		
-		for (Pattern p: patternDao.findAllPatterns()) {
+		List<Pattern> patternList = patternDao.findAllPatterns();
+		
+		for (Pattern p: patternList ) {
 			
 			p.setUseForPatternEvaluation(true);
 			p.setConfidence(-1D);
 			p.setSpecificity(-1D);
 			p.setSupport(-1D);
 			p.setTypicity(-1D);
-			patternDao.updatePattern(p);
 		}
+		patternDao.batchSaveOrUpdatePattern(patternList);
 	}
 }

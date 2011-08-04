@@ -7,8 +7,6 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.entity.EvaluationResult;
-import de.uni_leipzig.simba.boa.backend.entity.cluster.Cluster;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -50,6 +48,7 @@ public class HibernateFactory {
 										        .setProperty("hibernate.connection.password", 		NLPediaSettings.getInstance().getSetting("hibernateConnectionPassword"))
 										        .setProperty("hibernate.dialect", 					NLPediaSettings.getInstance().getSetting("hibernateDialect"))
 										        .setProperty("hibernate.hbm2ddl.auto",				NLPediaSettings.getInstance().getSetting("hibernateHbm2ddlAuto"))
+										        .setProperty("hibernate.jdbc.batch_size", 			NLPediaSettings.getInstance().getSetting("hibernate.jdbc.batch_size"))
 										        .setProperty("hibernate.connection.autoReconnect", 	"true")
 										        .buildSessionFactory();
     	}
@@ -76,6 +75,7 @@ public class HibernateFactory {
         .setProperty("hibernate.connection.password", 		"root")
         .setProperty("hibernate.dialect", 					"org.hibernate.dialect.MySQLDialect")
         .setProperty("hibernate.hbm2ddl.auto",				"update")
+        .setProperty("hibernate.jdbc.batch_size", 			NLPediaSettings.getInstance().getSetting("hibernate.jdbc.batch_size"))
         .setProperty("hibernate.connection.autoReconnect", 	"true")
         .buildSessionFactory();
     }

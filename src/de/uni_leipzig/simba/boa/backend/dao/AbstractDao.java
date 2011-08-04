@@ -18,7 +18,7 @@ import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
  */
 public abstract class AbstractDao {
 
-	private Session session;
+	protected Session session;
 	private Transaction tx;
 	
 	protected String name;

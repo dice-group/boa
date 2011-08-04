@@ -1,23 +1,17 @@
 package de.uni_leipzig.simba.boa.backend.rdf.entity;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.ForeignKey;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 
@@ -60,32 +54,14 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity 
 	
 		return subject;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 
-		StringBuilder builder = new StringBuilder();
-		builder.append("Triple [subject=");
-		builder.append(subject.uri);
-		builder.append(", property=");
-		builder.append(property.uri);
-		builder.append(", object=");
-		builder.append(object.uri);
-		builder.append(", learnedInIteration=");
-		builder.append(learnedInIteration);
-		builder.append(", isCorrect=");
-		builder.append(isCorrect);
-		builder.append(", confidence=");
-		builder.append(confidence);
-		builder.append(", learnedFromPatterns=");
-		builder.append(learnedFromPatterns.size());
-		builder.append(", id=");
-		builder.append(id);
-		builder.append("]");
-		return builder.toString();
+		return "Triple [" + subject + ", " + property + ", " + object + ", " + confidence + " ]";
 	}
 
 	/**
@@ -185,6 +161,15 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity 
 	
 		this.learnedFromPatterns = learnedFromPatterns;
 	}
+	
+	/**
+	 * 
+	 * @param pattern
+	 */
+	public void addLearnedFromPattern(Pattern pattern) {
+
+		this.learnedFromPatterns.add(pattern);
+	}
 
 	/**
 	 * @param isCorrect the isCorrect to set
@@ -201,5 +186,56 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity 
 	public boolean isCorrect() {
 
 		return isCorrect;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((object == null) ? 0 : object.hashCode());
+		result = prime * result + ((property == null) ? 0 : property.hashCode());
+		result = prime * result + ((subject == null) ? 0 : subject.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Triple other = (Triple) obj;
+		if (object == null) {
+			if (other.object != null)
+				return false;
+		}
+		else
+			if (!object.equals(other.object))
+				return false;
+		if (property == null) {
+			if (other.property != null)
+				return false;
+		}
+		else
+			if (!property.equals(other.property))
+				return false;
+		if (subject == null) {
+			if (other.subject != null)
+				return false;
+		}
+		else
+			if (!subject.equals(other.subject))
+				return false;
+		return true;
 	}
 }

@@ -3,7 +3,6 @@ package de.uni_leipzig.simba.boa.backend.search;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,10 +13,9 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.SimpleAnalyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
+import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -28,10 +26,9 @@ import org.apache.lucene.search.Searcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
-import org.springframework.util.StringUtils;
 
-import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 /**
  * 
@@ -39,8 +36,8 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
  */
 public class PatternSearcher {
 	
-	private final static int maxPatternChunkLength = 10;//new Integer(NLPediaSettings.getInstance().getSetting("maxPatternLenght")).intValue();
-	private final static int minPatternChunkLenght = 2;//new Integer(NLPediaSettings.getInstance().getSetting("minPatternLenght")).intValue();
+	private final static int maxPatternChunkLength = new Integer(NLPediaSettings.getInstance().getSetting("maxPatternLenght")).intValue();
+	private final static int minPatternChunkLenght = new Integer(NLPediaSettings.getInstance().getSetting("minPatternLenght")).intValue();
 
 	public static final Set<String> stopwords = new HashSet<String>();
 	static {
@@ -67,16 +64,14 @@ public class PatternSearcher {
 										"zu","zum","zur","Ÿber");
 	}
 	
-	
 	private Directory directory = null;
 	private Analyzer analyzer = null;
 	private Searcher indexSearcher = null;
 
 	private QueryParser parser;
-	private QueryParser exactMatchParser = null;
 	private List<SearchResult> results;
 	private ScoreDoc[] hits;
-	private Document hitDoc = null;
+
 	private Pattern p1 = null;
 	private Matcher m1 = null;
 	private Pattern p2 = null;
@@ -85,35 +80,14 @@ public class PatternSearcher {
 	public PatternSearcher(String indexDir) throws IOException, ParseException {
 
 		this.directory = FSDirectory.open(new File(indexDir));
-		this.analyzer = new StandardAnalyzer(Version.LUCENE_30);
+		this.analyzer = new WhitespaceAnalyzer();
 
 		// create index searcher in read only mode
 		this.indexSearcher = new IndexSearcher(directory, true);
-		this.parser = new QueryParser(Version.LUCENE_30,"sentence", this.analyzer);
-		this.exactMatchParser = new QueryParser(Version.LUCENE_30, "sentence", new SimpleAnalyzer());
+		this.parser = new QueryParser(Version.LUCENE_30, "sentence", this.analyzer);
 
 		this.results = new ArrayList<SearchResult>();
 		this.hits = null;
-	}
-
-	public Set<String> getSentencesWithString(String keyphrase, int maxNumberOfDocuments) throws ParseException, IOException {
-
-		Query query = parser.parse("+sentence:'" + QueryParser.escape(keyphrase) + "'");
-		ScoreDoc[] hits = indexSearcher.search(query, null, maxNumberOfDocuments).scoreDocs;
-
-		Set<String> list = new TreeSet<String>();
-		for (int i = 0; i < hits.length; i++) {
-
-			String sentence = indexSearcher.doc(hits[i].doc).get("sentence");
-
-			// how is exact matching possible? right now filter for exact string
-			// afterwards
-			if (sentence.contains(keyphrase) && !sentence.contains("/")) {
-
-				list.add(sentence);
-			}
-		}
-		return ((TreeSet) list).descendingSet();
 	}
 
 	/**
@@ -164,101 +138,83 @@ public class PatternSearcher {
 	 * @throws ParseException
 	 *             , IOException
 	 */
-	public void queryPattern(String label1, String label2, String property, String range, String domain, boolean isLabel1Subject) throws ParseException, IOException {
+	public void queryPattern(Triple triple) throws ParseException, IOException {
 
-		Query query = parser.parse("+sentence:\"" + QueryParser.escape(label1) + "\" && +sentence:\"" + QueryParser.escape(label2) + "\"");
+		String subjectLabel = triple.getSubject().getLabel();
+		String objectLabel = triple.getObject().getLabel();
+		
+		Query query = parser.parse("+sentence:\"" + QueryParser.escape(subjectLabel) + "\" && +sentence:\"" + QueryParser.escape(objectLabel) + "\"");
 
 		int maxNumberOfDocuments = Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
 
 		hits = indexSearcher.search(query, null, maxNumberOfDocuments).scoreDocs;
+		
+		p1 = Pattern.compile("(\\b" + Pattern.quote(subjectLabel) + "\\b)(.*?)(\\b" + Pattern.quote(objectLabel) + "\\b)", Pattern.CASE_INSENSITIVE);
+		p2 = Pattern.compile("(\\b" + Pattern.quote(objectLabel) + "\\b)(.*?)(\\b" + Pattern.quote(subjectLabel) + "\\b)", Pattern.CASE_INSENSITIVE);
 
+		Map<Integer,String> matches = new HashMap<Integer,String>();
+		
 		for (int i = 0; i < hits.length; i++) {
 
-			hitDoc = indexSearcher.doc(hits[i].doc);
-
-			String naturalLanguageRepresentation = "";
-			if (isLabel1Subject) {
-
-				p1 = Pattern.compile("(\\b" + label1 + "\\b)(.*?)(\\b" + label2 + "\\b)", Pattern.CASE_INSENSITIVE);
-				m1 = p1.matcher(hitDoc.get("sentence"));
-				p2 = Pattern.compile("(\\b" + label2 + "\\b)(.*?)(\\b" + label1 + "\\b)", Pattern.CASE_INSENSITIVE);
-				m2 = p2.matcher(hitDoc.get("sentence"));
-
-				String match1 = "";
-				while (m1.find())
-					match1 = m1.group();
-				String match2 = "";
-				while (m2.find())
-					match2 = m2.group();
-
-				if (!match1.isEmpty()) { 
+			String sentence = indexSearcher.doc(hits[i].doc).get("sentence");
+			Map<Integer,String> currentMatches = new HashMap<Integer,String>();
+			
+			// the subject of the triple is the domain of the property so, replace every occurrence with ?D?
+			if ( triple.getSubject().getType().equals(triple.getProperty().getRdfsDomain()) ) {
+				
+				m1 = p1.matcher(sentence);
+				m2 = p2.matcher(sentence);
+				// collect the matches
+				while (m1.find()) currentMatches.put(hits[i].doc, m1.group());
+				while (m2.find()) currentMatches.put(hits[i].doc, m2.group());
+				
+				// replace the entity labels with ?D? and ?R?
+				for (String match : currentMatches.values() ) {
 					
-					naturalLanguageRepresentation = match1.replaceFirst("(?i)" + label1, "?D?");
-					naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)" + label2, "?R?");
-				}
-				if (!match2.isEmpty()) {
-
-					naturalLanguageRepresentation = match2.replaceFirst("(?i)" + label1, "?D?");
-					naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)" + label2, "?R?");
+					match = match.replaceAll("(?i)" + subjectLabel, "?D?");
+					match = match.replaceAll("(?i)" + objectLabel, "?R?");
 				}
 			}
 			else {
+				
+				m1 = p1.matcher(sentence);
+				m2 = p2.matcher(sentence);
 
-				p1 = Pattern.compile("(\\b" + label1 + "\\b)(.*?)(\\b" + label2 + "\\b)", Pattern.CASE_INSENSITIVE);
-				m1 = p1.matcher(hitDoc.get("sentence"));
-				p2 = Pattern.compile("(\\b" + label2 + "\\b)(.*?)(\\b" + label1 + "\\b)", Pattern.CASE_INSENSITIVE);
-				m2 = p2.matcher(hitDoc.get("sentence"));
-
-				String match1 = "";
-				while (m1.find())
-					match1 = m1.group();
-				String match2 = "";
-				while (m2.find())
-					match2 = m2.group();
-
-				if (!match1.isEmpty()) {
+				while (m1.find()) currentMatches.put(hits[i].doc, m1.group());
+				while (m2.find()) currentMatches.put(hits[i].doc, m2.group());
+				
+				for ( String match : currentMatches.values() ) {
 					
-					naturalLanguageRepresentation = match1.replaceFirst("(?i)" + label1, "?R?");
-					naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)" + label2, "?D?");
-				}
-				if (!match2.isEmpty()) {
-
-					naturalLanguageRepresentation = match2.replaceFirst("(?i)" + label1, "?R?");
-					naturalLanguageRepresentation = naturalLanguageRepresentation.replaceAll("(?i)" + label2, "?D?");
+					match = match.replaceAll("(?i)" + subjectLabel, "?R?");
+					match = match.replaceAll("(?i)" + objectLabel, "?D?");
 				}
 			}
-
-			if ( property.length() > 0 && this.isPatternSuitable(naturalLanguageRepresentation) ) {
+			// add the matches found in one sentence to the whole list
+			matches.putAll(currentMatches);
+		}
+		// create a search result for all found patterns
+		for ( Map.Entry<Integer,String> entry : matches.entrySet() ) {
+			
+			// but only for those who are suitable
+			if ( !entry.getValue().isEmpty() && this.isPatternSuitable(entry.getValue()) ) {
 				
 				SearchResult result = new SearchResult();
-				result.setProperty(property);
-				result.setNaturalLanguageRepresentation(naturalLanguageRepresentation);
-				result.setRdfsRange(range);
-				result.setRdfsDomain(domain);
-				result.setFirstLabel(label1);
-				result.setSecondLabel(label2);
-				result.setIndexId(hits[i].doc);
+				result.setProperty(triple.getProperty().getUri());
+				result.setNaturalLanguageRepresentation(entry.getValue());
+				result.setRdfsRange(triple.getProperty().getRdfsRange());
+				result.setRdfsDomain(triple.getProperty().getRdfsDomain());
+				result.setFirstLabel(triple.getSubject().getLabel());
+				result.setSecondLabel(triple.getObject().getLabel());
+				result.setIndexId(entry.getKey());
 				this.results.add(result);
 			}
 		}
 	}
 	
-//	public static void main(String[] args) {
-//
-//		System.out.println(isPatternSuitable("?D? and is a ?R?"));
-//		System.out.println(isPatternSuitable("?R? and is a better ?D?"));
-//		System.out.println(isPatternSuitable("?E? and ?R?"));
-//		System.out.println(isPatternSuitable("?? and ?R?"));
-//		System.out.println(isPatternSuitable("?D? and which has way too manny string between the one and the other thing ?R?"));
-//		System.out.println(isPatternSuitable("?? and ?R?"));
-//		System.out.println(isPatternSuitable("an ?D? and ?R?"));
-//		System.out.println(isPatternSuitable("an ?D? and ?R? and ?D?"));
-//	}
-
 	private boolean isPatternSuitable(String naturalLanguageRepresentation) {
 
 		// patterns are only allowed to have 256 characters
-		if (naturalLanguageRepresentation.length() > 256) 
+		if (naturalLanguageRepresentation.length() > 256 || naturalLanguageRepresentation.isEmpty()) 
 			return false;
 		
 		// pattern need to start with either ?D? or ?R? and have to end with ?D? or ?R?
@@ -267,7 +223,7 @@ public class PatternSearcher {
 			return false;
 		
 		// patterns need to have only one domain and only one range
-		if ( StringUtils.countOccurrencesOf(naturalLanguageRepresentation, "?D?") != 1 || StringUtils.countOccurrencesOf(naturalLanguageRepresentation, "?R?") != 1 )			
+		if ( StringUtils.countMatches(naturalLanguageRepresentation, "?D?") != 1 || StringUtils.countMatches(naturalLanguageRepresentation, "?R?") != 1 )			
 			return false;
 		
 		// patterns need to be bigger/equal than min chunk size and smaller/equal then max chunk size
@@ -307,20 +263,14 @@ public class PatternSearcher {
 
 	public Set<String> getExactMatchSentences(String keyphrase, int maxNumberOfDocuments)  throws ParseException, IOException {
 
-		ScoreDoc[] hits = indexSearcher.search(exactMatchParser.parse("\""+QueryParser.escape(keyphrase)+"\""), null, maxNumberOfDocuments).scoreDocs;
+		ScoreDoc[] hits = indexSearcher.search(this.parser.parse("\""+QueryParser.escape(keyphrase)+"\""), null, maxNumberOfDocuments).scoreDocs;
 		TreeSet<String> list = new TreeSet<String>();
-
+		
+		// reverse order because longer sentences come last, longer sentences most likely contain less it,he,she 
 		for (int i = hits.length - 1; i >= 0; i--) {
 			
-			// get the indexed string
-			String sentence = indexSearcher.doc(hits[i].doc).get("sentence");
-			
-			// convert to UTF8
-			byte[] bytes = sentence.getBytes("UTF-8");
-			String testString = new String(bytes, "UTF-8");
-			
-			// only add it if also "," are contained (remember lucene does not match ",")
-			if ( testString.contains(keyphrase)) list.add(testString);
+			// get the indexed string and put it in the result
+			list.add(indexSearcher.doc(hits[i].doc).get("sentence"));
 		}
 		return list;
 	}

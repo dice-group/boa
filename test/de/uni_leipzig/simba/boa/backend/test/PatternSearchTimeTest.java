@@ -42,7 +42,7 @@ public class PatternSearchTimeTest {
 		
 		long start = System.currentTimeMillis();
 		Command patternSearchCommand = new PatternSearchCommand();
-		((PatternSearchCommand)patternSearchCommand).setFoundInIteration(0);
+		((PatternSearchCommand)patternSearchCommand).setIteration(0);
 		patternSearchCommand.execute();
 		System.out.println("Time took "+ (System.currentTimeMillis() - start));
 	}

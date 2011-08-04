@@ -26,7 +26,7 @@ public class WriteRelationToFileCommand implements Command {
 	
 	private final NLPediaLogger logger = new NLPediaLogger(WriteRelationToFileCommand.class);
 	
-	private final String language = "EN";
+	private final String language = "en";
 	
 	/**
 	 * 
@@ -158,37 +158,37 @@ public class WriteRelationToFileCommand implements Command {
 	private void getPlaceObjectKnowledge(String queryPlaceObject) {
 
 		ResultSet resultSet = this.getResultSet(queryPlaceObject);
-		this.handleObjectQuery("/Users/gerb/de_place_object.txt", resultSet);
+		this.handleObjectQuery("/Users/gerb/place_object.txt", resultSet);
 	}
 
 	private void getPlaceSubjectKnowledge(String queryPlaceSubject) {
 
 		ResultSet resultSet = this.getResultSet(queryPlaceSubject);
-		this.handleSubjectQuery("/Users/gerb/de_place_subject.txt", resultSet);
+		this.handleSubjectQuery("/Users/gerb/place_subject.txt", resultSet);
 	}
 
 	private void getOrganisationObjectKnowledge(String queryOrganisationObject) {
 
 		ResultSet resultSet = this.getResultSet(queryOrganisationObject);
-		this.handleObjectQuery("/Users/gerb/de_organisation_object.txt", resultSet);
+		this.handleObjectQuery("/Users/gerb/organisation_object.txt", resultSet);
 	}
 
 	private void getOrganisationSubjectKnowledge(String queryOrganisationSubject) {
 
 		ResultSet resultSet = this.getResultSet(queryOrganisationSubject);
-		this.handleSubjectQuery("/Users/gerb/de_organisation_subject.txt", resultSet);
+		this.handleSubjectQuery("/Users/gerb/organisation_subject.txt", resultSet);
 	}
 
 	private void getPersonObjectKnowledge(String queryPersonObject) {
 
 		ResultSet resultSet = this.getResultSet(queryPersonObject);
-		this.handleObjectQuery("/Users/gerb/de_person_object.txt", resultSet);
+		this.handleObjectQuery("/Users/gerb/person_object.txt", resultSet);
 	}
 
 	private void getPersonSubjectKnowledge(String queryPersonSubject) {
 
 		ResultSet resultSet = this.getResultSet(queryPersonSubject);
-		this.handleSubjectQuery("/Users/gerb/de_person_subject.txt", resultSet);
+		this.handleSubjectQuery("/Users/gerb/person_subject.txt", resultSet);
 	}
 		
 	private void handleSubjectQuery(String fileName, ResultSet resultSet) {
@@ -221,7 +221,7 @@ public class WriteRelationToFileCommand implements Command {
 						String range = solution.get("rangep1") == null ? "null" : solution.get("rangep1").toString();
 						String domain = solution.get("domainp1") == null ? "null" : solution.get("domainp1").toString();
 						
-						writer.write(s1l + " ||| " + solution.get("p1").toString() + " ||| " + o1l + " ||| " + range + " ||| " + domain + " ||| isSubject");
+						writer.write(solution.get("s1").toString() + " ||| " + s1l + " ||| " + solution.get("p1").toString() + " ||| " + solution.get("o1").toString() + " ||| " + o1l + " ||| " + range + " ||| " + domain + " ||| isSubject");
 						writer.write(System.getProperty("line.separator"));
 					}
 				}
@@ -277,7 +277,7 @@ public class WriteRelationToFileCommand implements Command {
 						String range = solution.get("rangep2") == null ? "null" : solution.get("rangep2").toString();
 						String domain = solution.get("domainp2") == null ? "null" : solution.get("domainp2").toString();
 						
-						writer.write(s2l + " ||| " + solution.get("p2").toString() + " ||| " + o2l + " ||| " + range + " ||| " + domain + " ||| isObject");
+						writer.write(solution.get("s2").toString() + " ||| " + s2l + " ||| " + solution.get("p2").toString() + " ||| " + solution.get("o2").toString() + " ||| " + o2l + " ||| " + range + " ||| " + domain + " ||| isObject");
 						writer.write(System.getProperty("line.separator"));
 					}
 				}

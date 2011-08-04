@@ -17,13 +17,15 @@ public class SupportMeasure implements ConfidenceMeasure {
 
 		long start = new Date().getTime();
 		
-		for (Pattern p : mapping.getPatterns()) {
+		for (Pattern pattern : mapping.getPatterns()) {
+			
+			if ( !pattern.isUseForPatternEvaluation() ) continue;
 			
 			double support = 
-				(double) (Math.log((p.retrieveMaxLearnedFrom() + 1)) / Math.log(2)) * 
-				(double) (Math.log((p.retrieveCountLearnedFrom() + 1)) / Math.log(2));
+				(double) (Math.log((pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2)) * 
+				(double) (Math.log((pattern.retrieveCountLearnedFrom() + 1)) / Math.log(2));
 			
-			p.setSupport(support);
+			pattern.setSupport(support);
 		}
 		System.out.println("Support measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}

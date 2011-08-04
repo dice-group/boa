@@ -1,6 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.search;
 
-import java.util.Comparator;
 
 
 public class SearchResult {

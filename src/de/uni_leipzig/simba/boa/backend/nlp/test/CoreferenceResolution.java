@@ -2,10 +2,8 @@ package de.uni_leipzig.simba.boa.backend.nlp.test;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 
 import edu.stanford.nlp.dcoref.CorefChain;

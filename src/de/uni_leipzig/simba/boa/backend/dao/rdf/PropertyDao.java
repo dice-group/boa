@@ -2,8 +2,11 @@ package de.uni_leipzig.simba.boa.backend.dao.rdf;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+
 import de.uni_leipzig.simba.boa.backend.dao.AbstractDao;
-import de.uni_leipzig.simba.boa.backend.persistance.Entity;
+import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 
 public class PropertyDao extends AbstractDao {
@@ -46,6 +49,17 @@ public class PropertyDao extends AbstractDao {
     public Property findProperty(int id) {
     	
         return (Property) super.findEntityById(Property.class, id);
+    }
+    
+    public Property findPropertyByUri(String uri) {
+    	
+		session = HibernateFactory.getSessionFactory().openSession();
+		Criteria criteria = session.createCriteria(Property.class);
+        criteria.add(Restrictions.eq("uri", uri));
+        criteria.setMaxResults(1);
+        List<Property> propertyList = criteria.list();
+        if ( propertyList.size() == 1) return propertyList.get(0);
+        return null;
     }
 
     /**

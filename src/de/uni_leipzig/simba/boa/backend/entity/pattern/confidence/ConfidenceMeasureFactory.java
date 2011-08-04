@@ -3,7 +3,6 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.confidence;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.uni_leipzig.simba.boa.backend.configuration.Initializeable;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 
@@ -48,13 +47,13 @@ public class ConfidenceMeasureFactory {
 	}
 	
 	/**
-	 * Returns the pattern filter specified by the class. If no 
-	 * filter was found null is returned.
+	 * Returns the pattern confidence measures specified by the class. If no 
+	 * confidence measures was found null is returned.
 	 * 
-	 * @param clazz - the class for the filter
+	 * @param clazz - the class for the confidence measure
 	 * @return the requested pattern filter or null if not found
 	 */
-	public ConfidenceMeasure getPatternFilter(Class clazz) {
+	public ConfidenceMeasure getConfidenceMeasure(Class clazz) {
 		
 		ConfidenceMeasureFactory.logger.debug("There is/are " + ConfidenceMeasureFactory.confidenceMeasureMap.size() + " confidence measure(s) available!");
 		
@@ -75,16 +74,16 @@ public class ConfidenceMeasureFactory {
 	/**
 	 * @param confidenceMeasureMap the confidenceMeasureMap to set
 	 */
-	public void setPatternFilterMap(Map<String,ConfidenceMeasure> confidenceMeasureMap) {
+	public void setConfidenceMeasureMap(Map<String,ConfidenceMeasure> confidenceMeasureMap) {
 
 		ConfidenceMeasureFactory.confidenceMeasureMap = confidenceMeasureMap;
 	}
 
 	/**
-	 * @return the patternFilterMap
+	 * @return the confidenceMeasureMap
 	 */
 	public Map<String,ConfidenceMeasure> getConfidenceMeasureMap() {
 
-		return confidenceMeasureMap;
+		return ConfidenceMeasureFactory.confidenceMeasureMap;
 	}
 }

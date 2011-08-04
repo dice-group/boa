@@ -8,6 +8,7 @@ import org.apache.lucene.queryParser.ParseException;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.SearchResult;
 
@@ -17,16 +18,16 @@ import de.uni_leipzig.simba.boa.backend.search.SearchResult;
  */
 public class PatternSearchThread extends Thread {
 
-	private List<String[]> labels;
+	private List<Triple> triples;
 	private PatternSearcher patternSearcher;
 	private NLPediaLogger logger;
 	
 	// the 
 	private int i = 0;
 	
-	public PatternSearchThread(List<String[]> labels) {
+	public PatternSearchThread(List<Triple> triples) {
 		
-		this.labels = labels;
+		this.triples = triples;
 		this.logger = new NLPediaLogger(PatternSearchThread.class);
 		
 		try {
@@ -47,20 +48,19 @@ public class PatternSearchThread extends Thread {
 	
 	public String getProgress() {
 		
-		return NumberFormat.getPercentInstance().format((double) i / (double)this.labels.size());
+		return NumberFormat.getPercentInstance().format((double) i / (double) this.triples.size());
 	}
 	
 	public void run() {
 		
 		try {
 			
-			for (i = 0; i < labels.size() ; i++) {
+			for (i = 0; i < triples.size() ; i++) {
 				
-//				System.out.println(this.getName() + ": " + i);
-				
-				if ( !labels.get(i)[0].equals(labels.get(i)[2]) && !labels.get(i)[0].contains("?") && !labels.get(i)[2].contains("?")) {
+				// filter subject and objects with the same label and resources which have ? in their labels
+				if ( !triples.get(i).getSubject().getLabel().equals(triples.get(i).getObject().getLabel()) && !triples.get(i).getSubject().getLabel().contains("?") && !triples.get(i).getObject().getLabel().contains("?")) {
 					
-					patternSearcher.queryPattern(labels.get(i)[0], labels.get(i)[2], labels.get(i)[1], labels.get(i)[3], labels.get(i)[4], labels.get(i)[5].equals("isSubject") ? true : false);
+					patternSearcher.queryPattern(triples.get(i));
 				}
 			}
 			System.out.println(this.getName() + ": 100%!");

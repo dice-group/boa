@@ -8,6 +8,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.dao.AbstractDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
@@ -69,6 +70,27 @@ public class PatternDao extends AbstractDao {
         super.saveOrUpdateEntity(pattern);
     }
 
+    public void batchSaveOrUpdatePattern(List<Pattern> pattern) {
+    	
+    	Session session = HibernateFactory.getSessionFactory().openSession();
+    	Transaction tx = session.beginTransaction();
+    	int batchSize = Integer.valueOf(NLPediaSettings.getInstance().getSetting("hibernate.jdbc.batch_size"));
+    	   
+    	for ( int i = 0; i < pattern.size() ; i++ ) {
+    	    
+    	    session.saveOrUpdate(pattern.get(i));
+    	    
+    	    if ( i % batchSize == 0 ) { 
+    	        //flush a batch of inserts and release memory:
+    	        session.flush();
+    	        session.clear();
+    	    }
+    	}
+    	   
+    	tx.commit();
+    	session.close();
+    }
+    
     /**
      * 
      * @return
@@ -90,7 +112,7 @@ public class PatternDao extends AbstractDao {
 			session = HibernateFactory.getSessionFactory().openSession();
 			tx = session.beginTransaction();
 			
-			String sql = "select count(distinct(pattern_mapping_id)) from pattern where naturalLanguageRepresentation=:naturalLanguageRepresentation";
+			String sql = "select count(distinct(patternMapping_id)) from pattern where naturalLanguageRepresentation=:naturalLanguageRepresentation";
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setString("naturalLanguageRepresentation", naturalLanguageRepresentation);
 			

@@ -282,51 +282,6 @@ public class SentenceFilter {
 				reasons.add(reason);
 			}
 		}
-		// send repaired sentences to filtering again and add good sentences to return value
-//		this.validSentences.addAll(this.repairedSentences);
-		
-//		int[] errors = new int[26];
-//		
-//		for (String reasonString : reasons) {
-//			
-//			for ( String error : reasonString.split(" ") ){
-//				
-//				if ( !error.equals("") ) {
-//					errors[new Integer(error).intValue()]++;
-//				}
-//			}
-//		}
-//		
-//		for ( int i = 0 ; i < errors.length ; i++) {
-//			
-//			this.logger.debug("Error: " + i + ": " + errors[i]);
-//		}
-		
-//		try {
-//			
-//			Writer writer;
-//			writer = new PrintWriter(new BufferedWriter(new FileWriter(NLPediaSettings.getInstance().getSetting("sentenceErrorFile"), true)));
-//			for (String error : this.invalidSentences ) {
-//				
-//				writer.write(error);
-//				writer.write(System.getProperty("line.separator"));
-//			}
-//			writer.close();
-//			
-//			writer = new PrintWriter(new BufferedWriter(new FileWriter(NLPediaSettings.getInstance().getSetting("sentenceRepairedFile"), true)));
-//			for (String error : this.repairedSentences ) {
-//				
-//				writer.write(error);
-//				writer.write(System.getProperty("line.separator"));
-//			}
-//			writer.close();
-//		}
-//		catch (IOException e) {
-//			
-//			e.printStackTrace();
-//			this.logger.debug("Writing error sentences did not finish correctly..", e);
-//		}
-		
 		return validSentences;
 	}
 }

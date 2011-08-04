@@ -6,6 +6,7 @@ import java.util.List;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.HierarchicalContainer;
 
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
@@ -18,8 +19,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 	public static final Object DATABASE_PROPERTY_NAME = "database_name";
 	public static final Object URI_NAME = "database_name";
 	
-	public static final String[] DATABASE_IDS = new String[]{"en_wiki_loc", "en_wiki_per", "en_wiki_org", "en_wiki_all", "en_news_loc", "en_news_per", "en_news_org", "en_news_all", "de_wiki_all"};
-//	public static final String[] DATABASE_IDS = new String[]{"en_wiki_loc", "de_wiki_all"};
+	public static final String[] DATABASE_IDS = NLPediaSettings.getInstance().getSetting("frontend.databases").split(",");
 	
 	public DatabaseContainer() {
 		

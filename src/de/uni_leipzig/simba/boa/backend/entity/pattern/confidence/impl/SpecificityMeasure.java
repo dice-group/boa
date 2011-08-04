@@ -2,7 +2,7 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.impl;
 
 import java.util.Date;
 
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternFilteringCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternConfidenceMeasureCommand;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
@@ -22,14 +22,16 @@ public class SpecificityMeasure implements ConfidenceMeasure {
 
 		long start = new Date().getTime();
 		
-		for (Pattern p : mapping.getPatterns()) {
+		for (Pattern pattern : mapping.getPatterns()) {
 			
-			double specificity = PatternFilteringCommand.NUMBER_OF_PATTERN_MAPPINGS / 
-					this.getNumberOfPatternMappingsWithPattern(p.getNaturalLanguageRepresentation()); 
+			if ( !pattern.isUseForPatternEvaluation() ) continue;
+			
+			double specificity = PatternConfidenceMeasureCommand.NUMBER_OF_PATTERN_MAPPINGS / 
+					(double) this.getNumberOfPatternMappingsWithPattern(pattern.getNaturalLanguageRepresentation()); 
 				
 			specificity = Math.log(specificity) / Math.log(2);
 			
-			p.setSpecificity(specificity);
+			pattern.setSpecificity(specificity);
 		}
 		System.out.println("Specificity measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}

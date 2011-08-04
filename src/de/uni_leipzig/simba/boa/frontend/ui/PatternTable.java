@@ -1,7 +1,5 @@
 package de.uni_leipzig.simba.boa.frontend.ui;
 
-import java.text.DecimalFormat;
-
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
