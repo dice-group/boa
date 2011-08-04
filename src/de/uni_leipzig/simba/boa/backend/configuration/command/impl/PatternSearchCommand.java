@@ -126,8 +126,6 @@ public class PatternSearchCommand implements Command {
 				
 				String propertyUri		= searchResult.getProperty();
 				String patternString	= searchResult.getNaturalLanguageRepresentation();
-				String range			= searchResult.getRdfsRange();
-				String domain			= searchResult.getRdfsDomain();
 				String label1			= searchResult.getFirstLabel();
 				String label2			= searchResult.getSecondLabel();
 				Integer documentId		= new Integer(searchResult.getIndexId());
@@ -220,7 +218,7 @@ public class PatternSearchCommand implements Command {
 
 	private Map<Integer, Triple> createTripleMap(List<Triple> allTriples) {
 
-		for (Triple t : allTriples) {
+		for (Triple t : allTriples.subList(0, 1000)) {
 			
 			this.triples.put(t.hashCode(), t);
 		}

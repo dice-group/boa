@@ -152,8 +152,6 @@ public class PatternSearcher {
 		p1 = Pattern.compile("(\\b" + Pattern.quote(subjectLabel) + "\\b)(.*?)(\\b" + Pattern.quote(objectLabel) + "\\b)", Pattern.CASE_INSENSITIVE);
 		p2 = Pattern.compile("(\\b" + Pattern.quote(objectLabel) + "\\b)(.*?)(\\b" + Pattern.quote(subjectLabel) + "\\b)", Pattern.CASE_INSENSITIVE);
 
-		Map<Integer,String> matches = new HashMap<Integer,String>();
-		
 		for (int i = 0; i < hits.length; i++) {
 
 			String sentence = indexSearcher.doc(hits[i].doc).get("sentence");
@@ -187,6 +185,20 @@ public class PatternSearcher {
 					
 					match = match.replaceAll("(?i)" + subjectLabel, "?D?");
 					match = match.replaceAll("(?i)" + objectLabel, "?R?");
+					
+					// but only for those who are suitable
+					if ( !match.isEmpty() && this.isPatternSuitable(match) ) {
+						
+						SearchResult result = new SearchResult();
+						result.setProperty(triple.getProperty().getUri());
+						result.setNaturalLanguageRepresentation(match);
+						result.setRdfsRange(triple.getProperty().getRdfsRange());
+						result.setRdfsDomain(triple.getProperty().getRdfsDomain());
+						result.setFirstLabel(triple.getSubject().getLabel());
+						result.setSecondLabel(triple.getObject().getLabel());
+						result.setIndexId(hits[i].doc);
+						this.results.add(result);
+					}
 				}
 			}
 			else {
@@ -215,26 +227,21 @@ public class PatternSearcher {
 					
 					match = match.replaceAll("(?i)" + subjectLabel, "?R?");
 					match = match.replaceAll("(?i)" + objectLabel, "?D?");
+					
+					// but only for those who are suitable
+					if ( !match.isEmpty() && this.isPatternSuitable(match) ) {
+						
+						SearchResult result = new SearchResult();
+						result.setProperty(triple.getProperty().getUri());
+						result.setNaturalLanguageRepresentation(match);
+						result.setRdfsRange(triple.getProperty().getRdfsRange());
+						result.setRdfsDomain(triple.getProperty().getRdfsDomain());
+						result.setFirstLabel(triple.getSubject().getLabel());
+						result.setSecondLabel(triple.getObject().getLabel());
+						result.setIndexId(hits[i].doc);
+						this.results.add(result);
+					}
 				}
-			}
-			// add the matches found in one sentence to the whole list
-			matches.putAll(currentMatches);
-		}
-		// create a search result for all found patterns
-		for ( Map.Entry<Integer,String> entry : matches.entrySet() ) {
-			
-			// but only for those who are suitable
-			if ( !entry.getValue().isEmpty() && this.isPatternSuitable(entry.getValue()) ) {
-				
-				SearchResult result = new SearchResult();
-				result.setProperty(triple.getProperty().getUri());
-				result.setNaturalLanguageRepresentation(entry.getValue());
-				result.setRdfsRange(triple.getProperty().getRdfsRange());
-				result.setRdfsDomain(triple.getProperty().getRdfsDomain());
-				result.setFirstLabel(triple.getSubject().getLabel());
-				result.setSecondLabel(triple.getObject().getLabel());
-				result.setIndexId(entry.getKey());
-				this.results.add(result);
 			}
 		}
 	}
