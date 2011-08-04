@@ -47,21 +47,21 @@ public class PatternSearcher {
 										"the","www","before",",","after",";","like","and","such",
 										"-LRB-","-RRB-","aber","als","am","an","auch","auf","aus",
 										"bei","bin","bis","bist","da","dadurch","daher","darum",
-										"das","da§","dass","dein","deine","dem","den","der","des",
+										"das","daÃŸ","dass","dein","deine","dem","den","der","des",
 										"dessen","deshalb","die","dies","dieser","dieses","doch",
 										"dort","du","durch","ein","eine","einem","einen","einer",
-										"eines","er","es","euer","eure","fŸr","hatte","hatten",
+										"eines","er","es","euer","eure","fÃ¼r","hatte","hatten",
 										"hattest","hattet","hier","hinter","ich","ihr","ihre","im",
 										"in","ist","ja","jede","jedem","jeden","jeder","jedes",
-										"jener","jenes","jetzt","kann","kannst","kšnnen","kšnnt",
-										"machen","mein","meine","mit","mu§","mu§t","musst","mŸssen",
-										"mŸ§t","nach","nachdem","nein","nicht","nun","oder","seid",
+										"jener","jenes","jetzt","kann","kannst","kÃ¶nnen","kÃ¶nnt",
+										"machen","mein","meine","mit","muÃŸ","muÃŸt","musst","mÃ¼ssen",
+										"mÃ¼ÃŸt","nach","nachdem","nein","nicht","nun","oder","seid",
 										"sein","seine","sich","sie","sind","soll","sollen","sollst",
 										"sollt","sonst","soweit","sowie","und","unser unsere","unter",
 										"vom","von","vor","wann","warum","was","weiter","weitere",
 										"wenn","wer","werde","werden","werdet","weshalb","wie",
 										"wieder","wieso","wir","wird","wirst","wo","woher","wohin",
-										"zu","zum","zur","Ÿber");
+										"zu","zum","zur","Ã¼ber");
 	}
 	
 	private Directory directory = null;
