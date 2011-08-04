@@ -66,6 +66,7 @@
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/colt.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/commons-codec-1.4.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/commons-collections-3.1.jar"/>
+		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/commons-lang3-3.0.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/commons-logging-1.1.1.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/crawler4j-2.2.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/dom4j-1.6.1.jar"/>
@@ -104,7 +105,6 @@
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/vaadin-6.5.7.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/xercesImpl-2.7.1.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/xom.jar"/>
-		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/commons-collections-3.1.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/cugar/colt.jar"/>
 		 	<fileset dir="${base.dir}/WebContent/WEB-INF/lib/cugar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/cugar/Cugar.jar"/>
