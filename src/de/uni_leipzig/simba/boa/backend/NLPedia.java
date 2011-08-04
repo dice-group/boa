@@ -9,6 +9,8 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CrawlingComma
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateIndexCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.LimesCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternConfidenceMeasureCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternFilterCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternSearchCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PrintOptionCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.StartQueryCommand;
@@ -73,10 +75,17 @@ public class NLPedia {
 						break;
 						
 					case 4: // evaluate pattern
-						long start4 = new Date().getTime(); 
-//						Command patternEvaluationCommand = new PatternConfidenceMeasureCommand();
-//						patternEvaluationCommand.execute();
-						System.out.println("Pattern search took: " + (new Date().getTime() - start4) + "ms");
+
+						long start4 = new Date().getTime();
+						// filter patterns
+						Command patternFilterCommand = new PatternFilterCommand(null);
+						patternFilterCommand.execute();
+						
+						// calculate confidence, hand over the filtered patterns
+						Command patternConfidenceMeasureCommand = new PatternConfidenceMeasureCommand(((PatternFilterCommand) patternFilterCommand).getPatternMappingList());
+						patternConfidenceMeasureCommand.execute();
+						
+						System.out.println("Pattern filter and confidence measurement took: " + (new Date().getTime() - start4) + "ms");
 						break;
 						
 					case 5: // query a single phrase
