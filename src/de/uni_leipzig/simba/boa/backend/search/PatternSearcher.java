@@ -162,6 +162,20 @@ public class PatternSearcher {
 			// the subject of the triple is the domain of the property so, replace every occurrence with ?D?
 			if ( triple.getSubject().getType().equals(triple.getProperty().getRdfsDomain()) ) {
 				
+//				String[] match1 = StringUtils.substringsBetween(sentence, subjectLabel, objectLabel);
+//				for (int j = 0 ; j < match1.length ; j++ ) {
+//					
+//					match1[j] = "?D?" + match1[j] + "?R?";
+//					currentMatches.put(hits[i].doc, match1[j]);
+//				}
+//				
+//				String[] match2 = StringUtils.substringsBetween(sentence, objectLabel, subjectLabel);
+//				for (int j = 0 ; j < match2.length ; j++ ) { 
+//					
+//					match2[j] = "?R?" + match2[j] + "?D?";
+//					currentMatches.put(hits[i].doc, match2[j]);
+//				}
+				
 				m1 = p1.matcher(sentence);
 				m2 = p2.matcher(sentence);
 				// collect the matches
@@ -176,6 +190,20 @@ public class PatternSearcher {
 				}
 			}
 			else {
+				
+//				String[] match1 = StringUtils.substringsBetween(sentence, subjectLabel, objectLabel);
+//				for (int j = 0 ; j < match1.length ; j++ ) {
+//					
+//					match1[j] = "?R?" + match1[j] + "?D?";
+//					currentMatches.put(hits[i].doc, match1[j]);
+//				}
+//				
+//				String[] match2 = StringUtils.substringsBetween(sentence, objectLabel, subjectLabel);
+//				for (int j = 0 ; j < match2.length ; j++ ) { 
+//					
+//					match2[j] = "?D?" + match2[j] + "?R?";
+//					currentMatches.put(hits[i].doc, match2[j]);
+//				}
 				
 				m1 = p1.matcher(sentence);
 				m2 = p2.matcher(sentence);
