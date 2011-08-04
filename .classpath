@@ -59,5 +59,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jgrapht.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/fastutil.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/YAGO-NAGA.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-lang3-3.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
