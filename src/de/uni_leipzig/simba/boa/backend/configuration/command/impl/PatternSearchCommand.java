@@ -218,7 +218,7 @@ public class PatternSearchCommand implements Command {
 
 	private Map<Integer, Triple> createTripleMap(List<Triple> allTriples) {
 
-		for (Triple t : allTriples.subList(0, 1000)) {
+		for (Triple t : allTriples) {
 			
 			this.triples.put(t.hashCode(), t);
 		}
