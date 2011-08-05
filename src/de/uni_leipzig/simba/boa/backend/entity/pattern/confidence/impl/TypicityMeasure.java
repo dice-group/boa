@@ -154,23 +154,34 @@ public class TypicityMeasure implements ConfidenceMeasure {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		catch (NullPointerException npe) {
+			
+			npe.printStackTrace();
+		}
 		System.out.println("Typicity measuring for pattern_mapping: " + patternMapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}
 
 	private String segmentString(String sentence) {
 		
-		this.stringReader = new StringReader(sentence);
-		this.preprocessor = new DocumentPreprocessor(stringReader,  DocumentPreprocessor.DocType.Plain);
-		
-		Iterator<List<HasWord>> iter = this.preprocessor.iterator();
-		while ( iter.hasNext() ) {
+		try {
 			
-			stringBuilder = new StringBuilder();
+			this.stringReader = new StringReader(sentence);
+			this.preprocessor = new DocumentPreprocessor(stringReader,  DocumentPreprocessor.DocType.Plain);
 			
-			for ( HasWord word : iter.next() ) {
-				stringBuilder.append(word.toString() + " ");
+			Iterator<List<HasWord>> iter = this.preprocessor.iterator();
+			while ( iter.hasNext() ) {
+				
+				stringBuilder = new StringBuilder();
+				
+				for ( HasWord word : iter.next() ) {
+					stringBuilder.append(word.toString() + " ");
+				}
+				return stringBuilder.toString().trim();
 			}
-			return stringBuilder.toString().trim();
+		}
+		catch (ArrayIndexOutOfBoundsException aioobe) {
+			
+			logger.debug("Could not segment string...", aioobe);
 		}
 		return "";
 	}

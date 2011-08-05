@@ -77,7 +77,7 @@ public class NamedEntityRecognizer {
 	 * @param sentence
 	 * @return
 	 */
-	public String recognizeEntitiesInString(String sentence) {
+	public String recognizeEntitiesInString(String sentence) throws java.lang.NullPointerException {
 		
 		this.buffer = new StringBuilder();
 		
