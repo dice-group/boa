@@ -94,7 +94,7 @@ public class NLPedia {
 						break;
 						
 					case 6: // start looking for patterns in index and write them to the db
-						Command patternSearchCommand = new PatternSearchCommand();
+						Command patternSearchCommand = new PatternSearchCommand(null);
 						((PatternSearchCommand)patternSearchCommand).setIteration(0);
 						patternSearchCommand.execute();
 						break;

@@ -20,6 +20,8 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 public class LoadKnowledgeCommand implements Command {
 
+	private List<Triple> tripleList = new ArrayList<Triple>();
+	
 	public static void main(String[] args) {
 
 		NLPediaSetup s = new NLPediaSetup(false);
@@ -37,7 +39,6 @@ public class LoadKnowledgeCommand implements Command {
 
 		List<String[]> labels =  RelationFinder.getRelationFromFile("");
 		Map<String,Resource> resourceMap = new HashMap<String, Resource>();
-		List<Triple> tripleList = new ArrayList<Triple>();
 		
 		int i = 0;
 		
@@ -123,5 +124,10 @@ public class LoadKnowledgeCommand implements Command {
 		tripleDao.batchSaveOrUpdate(tripleList);
 		
 		System.out.println("Loading background knowledge took " + (new Date().getTime() - start) + "ms.");
+	}
+	
+	public List<Triple> getTriples(){
+		
+		return this.tripleList;
 	}
 }

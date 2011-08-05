@@ -20,8 +20,8 @@ public class IterationCommand implements Command {
 		long start = new Date().getTime();
 		
 //		// load the SPARQL dump into the database
-//		Command loadKnowledgeCommand = new LoadKnowledgeCommand();
-//		loadKnowledgeCommand.execute();
+		Command loadKnowledgeCommand = new LoadKnowledgeCommand();
+		loadKnowledgeCommand.execute();
 		
 		for ( int i = 1 ; i <= iterations ; i++) {
 			
@@ -29,7 +29,7 @@ public class IterationCommand implements Command {
 			System.out.println("Starting iteration " + i + "!");
 			
 			// search the patterns
-			Command patternSearchCommand = new PatternSearchCommand();
+			Command patternSearchCommand = new PatternSearchCommand(((LoadKnowledgeCommand)loadKnowledgeCommand).getTriples());
 			((PatternSearchCommand) patternSearchCommand).setIteration(i);
 			patternSearchCommand.execute();
 			

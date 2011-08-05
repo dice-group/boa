@@ -42,12 +42,17 @@ public class PatternSearchCommand implements Command {
 	private TripleDao tripleDao		= (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
 	private PropertyDao propertyDao	= (PropertyDao) DaoFactory.getInstance().createDAO(PropertyDao.class);
 	
+	public PatternSearchCommand(List<Triple> triples) {
+
+		if ( triples != null ) this.triples = this.createTripleMap(triples);
+		else this.triples	= this.createTripleMap(tripleDao.findAllTriples());
+	}
+
 	@Override
 	public void execute() {
 
 		Date startSearchDate = new Date();
 		
-		this.triples	= this.createTripleMap(tripleDao.findAllTriples());
 		this.properties	= this.createPropertyMap(propertyDao.findAllProperties());
 		
 		System.out.println("Number of search operations: " + triples.size() + " for input file " + NLPediaSettings.getInstance().getSetting("labelOutputFile"));
