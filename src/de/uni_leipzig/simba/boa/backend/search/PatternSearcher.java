@@ -161,17 +161,23 @@ public class PatternSearcher {
 			if ( triple.getSubject().getType().equals(triple.getProperty().getRdfsDomain()) ) {
 				
 				String[] match1 = StringUtils.substringsBetween(sentence, subjectLabel, objectLabel);
-				for (int j = 0 ; j < match1.length ; j++ ) {
+				if ( match1 != null ) {
 					
-					match1[j] = "?D? " + match1[j].trim() + " ?R?";
-					currentMatches.put(hits[i].doc, match1[j]);
+					for (int j = 0 ; j < match1.length ; j++ ) {
+						
+						match1[j] = "?D? " + match1[j].trim() + " ?R?";
+						currentMatches.put(hits[i].doc, match1[j]);
+					}
 				}
 				
 				String[] match2 = StringUtils.substringsBetween(sentence, objectLabel, subjectLabel);
-				for (int j = 0 ; j < match2.length ; j++ ) { 
+				if ( match2 != null ) {
 					
-					match2[j] = "?R? " + match2[j].trim() + " ?D?";
-					currentMatches.put(hits[i].doc, match2[j]);
+					for (int j = 0 ; j < match2.length ; j++ ) { 
+						
+						match2[j] = "?R? " + match2[j].trim() + " ?D?";
+						currentMatches.put(hits[i].doc, match2[j]);
+					}
 				}
 				
 //				m1 = p1.matcher(sentence);
@@ -204,17 +210,23 @@ public class PatternSearcher {
 			else {
 				
 				String[] match1 = StringUtils.substringsBetween(sentence, subjectLabel, objectLabel);
-				for (int j = 0 ; j < match1.length ; j++ ) {
+				if ( match1 != null ) {
 					
-					match1[j] = "?R? " + match1[j].trim() + " ?D?";
-					currentMatches.put(hits[i].doc, match1[j]);
+					for (int j = 0 ; j < match1.length ; j++ ) {
+						
+						match1[j] = "?R? " + match1[j].trim() + " ?D?";
+						currentMatches.put(hits[i].doc, match1[j]);
+					}
 				}
 				
 				String[] match2 = StringUtils.substringsBetween(sentence, objectLabel, subjectLabel);
-				for (int j = 0 ; j < match2.length ; j++ ) { 
+				if ( match2 != null ) {
 					
-					match2[j] = "?D? " + match2[j].trim() + " ?R?";
-					currentMatches.put(hits[i].doc, match2[j]);
+					for (int j = 0 ; j < match2.length ; j++ ) { 
+						
+						match2[j] = "?D? " + match2[j].trim() + " ?R?";
+						currentMatches.put(hits[i].doc, match2[j]);
+					}
 				}
 				
 //				m1 = p1.matcher(sentence);
