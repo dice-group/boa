@@ -55,8 +55,8 @@ public class RelationFinder {
 			
 			try {
 
-				BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(LABEL_OUTPUT_FILE + "_subject.txt"))));
-
+				BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(LABEL_OUTPUT_FILE + "_subject.txt"), "UTF-8"));
+				
 				String line;
 				while ((line = br.readLine()) != null) {
 
@@ -84,8 +84,8 @@ public class RelationFinder {
 			
 			try {
 
-				BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(LABEL_OUTPUT_FILE + "_object.txt"))));
-
+				BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(LABEL_OUTPUT_FILE + "_object.txt"), "UTF-8"));
+				
 				String line;
 				while ((line = br.readLine()) != null) {
 
