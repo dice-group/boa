@@ -149,8 +149,8 @@ public class PatternSearcher {
 
 		hits = indexSearcher.search(query, null, maxNumberOfDocuments).scoreDocs;
 		
-		p1 = Pattern.compile("(\\b" + Pattern.quote(subjectLabel) + "\\b)(.*?)(\\b" + Pattern.quote(objectLabel) + "\\b)", Pattern.CASE_INSENSITIVE);
-		p2 = Pattern.compile("(\\b" + Pattern.quote(objectLabel) + "\\b)(.*?)(\\b" + Pattern.quote(subjectLabel) + "\\b)", Pattern.CASE_INSENSITIVE);
+//		p1 = Pattern.compile("(\\b" + Pattern.quote(subjectLabel) + "\\b)(.*?)(\\b" + Pattern.quote(objectLabel) + "\\b)", Pattern.CASE_INSENSITIVE);
+//		p2 = Pattern.compile("(\\b" + Pattern.quote(objectLabel) + "\\b)(.*?)(\\b" + Pattern.quote(subjectLabel) + "\\b)", Pattern.CASE_INSENSITIVE);
 
 		for (int i = 0; i < hits.length; i++) {
 
@@ -160,31 +160,31 @@ public class PatternSearcher {
 			// the subject of the triple is the domain of the property so, replace every occurrence with ?D?
 			if ( triple.getSubject().getType().equals(triple.getProperty().getRdfsDomain()) ) {
 				
-//				String[] match1 = StringUtils.substringsBetween(sentence, subjectLabel, objectLabel);
-//				for (int j = 0 ; j < match1.length ; j++ ) {
-//					
-//					match1[j] = "?D?" + match1[j] + "?R?";
-//					currentMatches.put(hits[i].doc, match1[j]);
-//				}
-//				
-//				String[] match2 = StringUtils.substringsBetween(sentence, objectLabel, subjectLabel);
-//				for (int j = 0 ; j < match2.length ; j++ ) { 
-//					
-//					match2[j] = "?R?" + match2[j] + "?D?";
-//					currentMatches.put(hits[i].doc, match2[j]);
-//				}
+				String[] match1 = StringUtils.substringsBetween(sentence, subjectLabel, objectLabel);
+				for (int j = 0 ; j < match1.length ; j++ ) {
+					
+					match1[j] = "?D? " + match1[j].trim() + " ?R?";
+					currentMatches.put(hits[i].doc, match1[j]);
+				}
 				
-				m1 = p1.matcher(sentence);
-				m2 = p2.matcher(sentence);
-				// collect the matches
-				while (m1.find()) currentMatches.put(hits[i].doc, m1.group());
-				while (m2.find()) currentMatches.put(hits[i].doc, m2.group());
+				String[] match2 = StringUtils.substringsBetween(sentence, objectLabel, subjectLabel);
+				for (int j = 0 ; j < match2.length ; j++ ) { 
+					
+					match2[j] = "?R? " + match2[j].trim() + " ?D?";
+					currentMatches.put(hits[i].doc, match2[j]);
+				}
+				
+//				m1 = p1.matcher(sentence);
+//				m2 = p2.matcher(sentence);
+//				// collect the matches
+//				while (m1.find()) currentMatches.put(hits[i].doc, m1.group());
+//				while (m2.find()) currentMatches.put(hits[i].doc, m2.group());
 				
 				// replace the entity labels with ?D? and ?R?
 				for (String match : currentMatches.values() ) {
 					
-					match = match.replaceAll("(?i)" + subjectLabel, "?D?");
-					match = match.replaceAll("(?i)" + objectLabel, "?R?");
+//					match = match.replaceAll("(?i)" + subjectLabel, "?D?");
+//					match = match.replaceAll("(?i)" + objectLabel, "?R?");
 					
 					// but only for those who are suitable
 					if ( !match.isEmpty() && this.isPatternSuitable(match) ) {
@@ -203,30 +203,30 @@ public class PatternSearcher {
 			}
 			else {
 				
-//				String[] match1 = StringUtils.substringsBetween(sentence, subjectLabel, objectLabel);
-//				for (int j = 0 ; j < match1.length ; j++ ) {
-//					
-//					match1[j] = "?R?" + match1[j] + "?D?";
-//					currentMatches.put(hits[i].doc, match1[j]);
-//				}
-//				
-//				String[] match2 = StringUtils.substringsBetween(sentence, objectLabel, subjectLabel);
-//				for (int j = 0 ; j < match2.length ; j++ ) { 
-//					
-//					match2[j] = "?D?" + match2[j] + "?R?";
-//					currentMatches.put(hits[i].doc, match2[j]);
-//				}
+				String[] match1 = StringUtils.substringsBetween(sentence, subjectLabel, objectLabel);
+				for (int j = 0 ; j < match1.length ; j++ ) {
+					
+					match1[j] = "?R? " + match1[j].trim() + " ?D?";
+					currentMatches.put(hits[i].doc, match1[j]);
+				}
 				
-				m1 = p1.matcher(sentence);
-				m2 = p2.matcher(sentence);
-
-				while (m1.find()) currentMatches.put(hits[i].doc, m1.group());
-				while (m2.find()) currentMatches.put(hits[i].doc, m2.group());
+				String[] match2 = StringUtils.substringsBetween(sentence, objectLabel, subjectLabel);
+				for (int j = 0 ; j < match2.length ; j++ ) { 
+					
+					match2[j] = "?D? " + match2[j].trim() + " ?R?";
+					currentMatches.put(hits[i].doc, match2[j]);
+				}
+				
+//				m1 = p1.matcher(sentence);
+//				m2 = p2.matcher(sentence);
+//
+//				while (m1.find()) currentMatches.put(hits[i].doc, m1.group());
+//				while (m2.find()) currentMatches.put(hits[i].doc, m2.group());
 				
 				for ( String match : currentMatches.values() ) {
 					
-					match = match.replaceAll("(?i)" + subjectLabel, "?R?");
-					match = match.replaceAll("(?i)" + objectLabel, "?D?");
+//					match = match.replaceAll("(?i)" + subjectLabel, "?R?");
+//					match = match.replaceAll("(?i)" + objectLabel, "?D?");
 					
 					// but only for those who are suitable
 					if ( !match.isEmpty() && this.isPatternSuitable(match) ) {
