@@ -66,27 +66,27 @@ public class TypicityMeasure implements ConfidenceMeasure {
 			e.printStackTrace();
 		}
 
-		try {
+		String domainUri	= patternMapping.getProperty().getRdfsDomain();
+		String rangeUri		= patternMapping.getProperty().getRdfsRange();
+		
+		double domainCorrectness;
+		double rangeCorrectness;
+		
+		String nerTagged;
+		String segmentedFoundString;
+		String segmentedPattern;
+		
+		Context leftContext;
+		Context rightContext;
+		
+		if ( this.ner == null ) this.ner = new NamedEntityRecognizer();
+		
+		for (Pattern pattern : patternMapping.getPatterns()) {
 			
-			String domainUri	= patternMapping.getProperty().getRdfsDomain();
-			String rangeUri		= patternMapping.getProperty().getRdfsRange();
+			if ( !pattern.isUseForPatternEvaluation() ) continue;
 			
-			double domainCorrectness;
-			double rangeCorrectness;
+			try {
 			
-			String nerTagged;
-			String segmentedFoundString;
-			String segmentedPattern;
-			
-			Context leftContext;
-			Context rightContext;
-			
-			if ( this.ner == null ) this.ner = new NamedEntityRecognizer();
-			
-			for (Pattern pattern : patternMapping.getPatterns()) {
-				
-				if ( !pattern.isUseForPatternEvaluation() ) continue;
-				
 				boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
 				String patternWithOutVariables = this.segmentString(pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim());
 						
@@ -102,7 +102,7 @@ public class TypicityMeasure implements ConfidenceMeasure {
 					segmentedPattern = this.segmentString(patternWithOutVariables);
 					
 					try {
-
+	
 						leftContext = new LeftContext(nerTagged, segmentedFoundString, segmentedPattern);
 						rightContext = new RightContext(nerTagged, segmentedFoundString, segmentedPattern);
 						
@@ -133,8 +133,12 @@ public class TypicityMeasure implements ConfidenceMeasure {
 						//ioob.printStackTrace();
 						this.logger.error("Could not create context for string " + segmentedFoundString + ". NER tagged: " + nerTagged + " pattern: "  + patternWithOutVariables);
 					}
+					catch (NullPointerException npe) {
+						
+						this.logger.error("IOExcpetion", npe);
+					}
 				}
-				
+			
 				domainCorrectness = (double) correctDomain / (double) sentences.size();
 				rangeCorrectness = (double) correctRange / (double) sentences.size();
 				
@@ -145,22 +149,22 @@ public class TypicityMeasure implements ConfidenceMeasure {
 				
 				pattern.setTypicity(typicity);
 			}
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			this.logger.error("IOExcpetion", e);
-		}
-		catch (ParseException e) {
-			// TODO Auto-generated catch block
-			this.logger.error("IOExcpetion", e);
-		}
-		catch (NullPointerException npe) {
-			
-			this.logger.error("IOExcpetion", npe);
-		}
-		catch (java.lang.ArrayIndexOutOfBoundsException aioobe) {
-			
-			this.logger.error("IOExcpetion", aioobe);
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				this.logger.error("IOExcpetion: ", e);
+			}
+			catch (ParseException e) {
+				// TODO Auto-generated catch block
+				this.logger.error("ParseException: ", e);
+			}
+			catch (NullPointerException npe) {
+				
+				this.logger.error("NullPointerException: ", npe);
+			}
+			catch (java.lang.ArrayIndexOutOfBoundsException aioobe) {
+				
+				this.logger.error("ArrayIndexOutOfBoundsException: ", aioobe);
+			}
 		}
 		System.out.println("Typicity measuring for pattern_mapping: " + patternMapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}
