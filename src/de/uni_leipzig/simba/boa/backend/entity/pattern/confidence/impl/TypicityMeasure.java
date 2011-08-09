@@ -148,15 +148,19 @@ public class TypicityMeasure implements ConfidenceMeasure {
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.logger.error("IOExcpetion", e);
 		}
 		catch (ParseException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.logger.error("IOExcpetion", e);
 		}
 		catch (NullPointerException npe) {
 			
-			npe.printStackTrace();
+			this.logger.error("IOExcpetion", npe);
+		}
+		catch (java.lang.ArrayIndexOutOfBoundsException aioobe) {
+			
+			this.logger.error("IOExcpetion", aioobe);
 		}
 		System.out.println("Typicity measuring for pattern_mapping: " + patternMapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}
