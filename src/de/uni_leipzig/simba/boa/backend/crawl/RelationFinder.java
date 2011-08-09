@@ -61,11 +61,17 @@ public class RelationFinder {
 				while ((line = br.readLine()) != null) {
 
 					String[] lineParts = line.split(" \\|\\|\\| ");
-
-					if (!lineParts[1].equals("disambiguates") && !lineParts[1].equals("blankName") && !lineParts[1].equals("wikiPageWikiLink") ) {
-						
-						// uri, label1 (Domain), uri, label2 (Range), property, range, domain, isSubject;
-						resultsSet.add(new String[] { lineParts[0], lineParts[1], lineParts[2], lineParts[3], lineParts[4], lineParts[5], lineParts[6], lineParts[7] });
+					
+					if (lineParts.length == 8 ) {
+					
+						if (!lineParts[1].equals("disambiguates") && !lineParts[1].equals("blankName") && !lineParts[1].equals("wikiPageWikiLink") ) {
+							
+							// uri, label1 (Domain), uri, label2 (Range), property, range, domain, isSubject;
+							resultsSet.add(new String[] { lineParts[0], lineParts[1], lineParts[2], lineParts[3], lineParts[4], lineParts[5], lineParts[6], lineParts[7] });
+						}
+					}
+					else {
+						System.out.println("ERROR: " + line);
 					}
 				}
 				br.close();
@@ -84,11 +90,18 @@ public class RelationFinder {
 				while ((line = br.readLine()) != null) {
 
 					String[] lineParts = line.split(" \\|\\|\\| ");
-
-					// uri, label1 (range), property, uri, label2 (domain), range, domain, isSubject;
-					if (!lineParts[1].equals("disambiguates") && !lineParts[1].equals("blankName") && !lineParts[1].equals("wikiPageWikiLink") ) {
+					
+					if (lineParts.length == 8 ) {
 						
-						resultsSet.add(new String[] { lineParts[3], lineParts[4], lineParts[2], lineParts[0], lineParts[1], lineParts[5], lineParts[6], lineParts[7]});
+						// uri, label1 (range), property, uri, label2 (domain), range, domain, isSubject;
+						if (!lineParts[1].equals("disambiguates") && !lineParts[1].equals("blankName") && !lineParts[1].equals("wikiPageWikiLink") ) {
+							
+							resultsSet.add(new String[] { lineParts[3], lineParts[4], lineParts[2], lineParts[0], lineParts[1], lineParts[5], lineParts[6], lineParts[7]});
+						}
+					}
+					else {
+						
+						System.out.println("ERROR: " + line);
 					}
 				}
 				br.close();
