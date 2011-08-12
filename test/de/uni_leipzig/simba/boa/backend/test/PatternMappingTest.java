@@ -64,33 +64,48 @@ public class PatternMappingTest {
 		Property p2 = propertyDao.createNewEntity();
 		p2.setUri("http://dbpedia.org/ontology/property2");
 		propertyDao.updateProperty(p2);
+		Property p3 = propertyDao.createNewEntity();
+		p3.setUri("http://dbpedia.org/ontology/property3");
+		propertyDao.updateProperty(p3);
 		
 		PatternMappingDao patternMappingDao	= (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 		PatternMapping mapping1 = patternMappingDao.createNewEntity(p1);
-		PatternMapping mapping2 = patternMappingDao.createNewEntity(p1);
+		PatternMapping mapping2 = patternMappingDao.createNewEntity(p2);
+		PatternMapping mapping3 = patternMappingDao.createNewEntity(p3);
 		
-		assertTrue(patternMappingDao.findAllPatternMappings().size() == 2);
+		assertTrue(patternMappingDao.findAllPatternMappings().size() == 3);
 		assertTrue(patternMappingDao.findPatternMapping(1).getProperty().getUri().equals(mapping1.getProperty().getUri()));
 
 		PatternDao patternDao	= (PatternDao) DaoFactory.getInstance().createDAO(PatternDao.class);
 		
 		Pattern pa1 = patternDao.createNewEntity();
 		pa1.setNaturalLanguageRepresentation("the 1st pattern");
-		pa1.setPatternMapping(mapping1);
+		pa1.addPatternMapping(mapping1);
 		patternDao.updatePattern(pa1);
 		
 		Pattern pa2 = patternDao.createNewEntity();
 		pa2.setNaturalLanguageRepresentation("the 2nd pattern");
-		pa2.setPatternMapping(mapping1);
+		pa2.addPatternMapping(mapping1);
+		pa2.addPatternMapping(mapping2);
 		patternDao.updatePattern(pa2);
 		
 		Pattern pa3 = patternDao.createNewEntity();
 		pa3.setNaturalLanguageRepresentation("the 3rd pattern");
-		pa3.setPatternMapping(mapping2);
+		pa3.addPatternMapping(mapping3);
 		patternDao.updatePattern(pa3);
+		
+		mapping1.addPattern(pa1);
+		mapping2.addPattern(pa2);
+		mapping2.addPattern(pa3);
+		mapping3.addPattern(pa3);
 		
 		patternMappingDao.updatePatternMapping(mapping1);
 		patternMappingDao.updatePatternMapping(mapping2);
+		patternMappingDao.updatePatternMapping(mapping3);
+		
+		System.out.println("Size1: " + mapping1.getPatterns().size());
+		System.out.println("Size2: " + mapping2.getPatterns().size());
+		System.out.println("Size3: " + mapping3.getPatterns().size());
 		
 		ResourceDao resourceDao	= (ResourceDao) DaoFactory.getInstance().createDAO(ResourceDao.class);
 		Resource r1 = resourceDao.createNewEntity();

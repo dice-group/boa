@@ -50,12 +50,12 @@ public class ClusterTest {
 		Pattern p1 = new Pattern();
 		p1.setNaturalLanguageRepresentation("x is a y");
 		p1.setNumberOfOccurrences(4);
-		p1.setPatternMapping(mapping1);
+		p1.addPatternMapping(mapping1);
 		
 		Pattern p2 = new Pattern();
 		p2.setNaturalLanguageRepresentation("x has a y");
 		p2.setNumberOfOccurrences(4);
-		p2.setPatternMapping(mapping1);
+		p2.addPatternMapping(mapping1);
 
 		mapping1.addPattern(p1);
 		mapping1.addPattern(p2);
@@ -65,7 +65,7 @@ public class ClusterTest {
 		Pattern p3 = new Pattern();
 		p3.setNaturalLanguageRepresentation("x is never y");
 		p3.setNumberOfOccurrences(13);
-		p3.setPatternMapping(mapping2);
+		p3.addPatternMapping(mapping2);
 		
 		mapping2.addPattern(p3);
 		

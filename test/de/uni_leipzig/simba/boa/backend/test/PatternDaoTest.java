@@ -59,12 +59,11 @@ public class PatternDaoTest {
 	    
 	    Pattern pattern1 = new Pattern("x is a y", "x is a y");
 	    
-	    pattern1.setConfidence(5.4);
-	    pattern1.setConfidence(5.4);
+	    pattern1.setConfidenceForIteration(1,5.4);
 	    
 	    Pattern pattern2 = new Pattern("x is a y", "x is a y");
 	    
-	    pattern2.setConfidence(5.4);
+	    pattern2.setConfidenceForIteration(1,5.4);
 	    
 	    PatternMapping mapping = (PatternMapping) patternMappingDao.createNewEntity();
 	    
@@ -152,7 +151,5 @@ public class PatternDaoTest {
 	    
 	    patternMappingDao.updatePatternMapping(mapping1);
 	    patternMappingDao.updatePatternMapping(mapping2);
-
-	    assertEquals(5, patternDao.countPatternMappingsWithSameNaturalLanguageRepresenation("?D? in the county of ?R?"));
 	}
 }

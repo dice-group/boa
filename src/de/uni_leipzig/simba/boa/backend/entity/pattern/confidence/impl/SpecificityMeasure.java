@@ -2,6 +2,7 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.impl;
 
 import java.util.Date;
 
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternConfidenceMeasureCommand;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
@@ -27,21 +28,13 @@ public class SpecificityMeasure implements ConfidenceMeasure {
 			if ( !pattern.isUseForPatternEvaluation() ) continue;
 			
 			double specificity = PatternConfidenceMeasureCommand.NUMBER_OF_PATTERN_MAPPINGS / 
-					(double) this.getNumberOfPatternMappingsWithPattern(pattern.getNaturalLanguageRepresentation()); 
+					(double) pattern.getPatternMappings().size(); 
 				
 			specificity = Math.log(specificity) / Math.log(2);
 			
+			pattern.setSpecificityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, specificity);
 			pattern.setSpecificity(specificity);
 		}
 		System.out.println("Specificity measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
-	}
-	
-	/**
-	 * @param naturalLanguageRepresentation
-	 * @return the number of pattern mappings which have a pattern with the same natural language representation
-	 */
-	private int getNumberOfPatternMappingsWithPattern(String naturalLanguageRepresentation) {
-
-		return this.patternDao.countPatternMappingsWithSameNaturalLanguageRepresenation(naturalLanguageRepresentation);
 	}
 }

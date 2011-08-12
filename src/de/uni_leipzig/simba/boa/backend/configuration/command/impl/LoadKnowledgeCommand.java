@@ -44,7 +44,7 @@ public class LoadKnowledgeCommand implements Command {
 		
 		for ( String[] line : labels ) {
 			
-//			if (i++==10) break;
+			if (i++==1000) break;
 			
 			String subjectUri		= "";
 			String subjectLabel		= "";

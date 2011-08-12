@@ -106,7 +106,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 			Panel p = new Panel();
 			// setze linken teil auf die modelle
 			horizontalSplitPanel.setFirstComponent(rdfTree);
-			// in den rechten teil kommt die erklŠrung
+			// in den rechten teil kommt die erklï¿½rung
 			horizontalSplitPanel.setSecondComponent(p);
 			horizontalSplitPanel.setSplitPosition(400, HorizontalSplitPanel.UNITS_PIXELS);
 		}
@@ -116,7 +116,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 			p.addComponent(new Label("Hier kann man sich die Patterns anschauen"));
 			// setze linken teil auf die modelle
 			horizontalSplitPanel.setFirstComponent(tree);			
-			// in denrechten teil kommt die erklŠrung
+			// in denrechten teil kommt die erklï¿½rung
 			horizontalSplitPanel.setSecondComponent(p);
 			horizontalSplitPanel.setSplitPosition(400, HorizontalSplitPanel.UNITS_PIXELS);
 		}
@@ -126,7 +126,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 			p.addComponent(new Label("Hier kann man SPARQL Queries starten!"));
 			// setze linken teil auf die modelle
 			horizontalSplitPanel.setFirstComponent(rdfSparqlTree);			
-			// in denrechten teil kommt die erklŠrung
+			// in denrechten teil kommt die erklï¿½rung
 			horizontalSplitPanel.setSecondComponent(p);
 			horizontalSplitPanel.setSplitPosition(130, HorizontalSplitPanel.UNITS_PIXELS);
 		}
@@ -180,8 +180,8 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				HibernateFactory.changeConnection(this.currentDatabase);
 				
 				PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
-				PatternMapping pm = pmDao.findPatternMappingsWithoutPattern(uri).get(0);
-				pm = pmDao.findPatternMappingWithoutZeroConfidencePattern(pm);
+				PatternMapping pm = pmDao.findPatternMappingByUri(uri);//pmDao.findPatternMappingsWithoutPattern(uri).get(0);
+//				pm = pmDao.findPatternMappingWithoutZeroConfidencePattern(pm);
 				
 				GridLayout gridLayout = new GridLayout(5,6);
 				gridLayout.setSpacing(true);
@@ -189,6 +189,8 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				gridLayout.setSizeFull();
 				
 				gridLayout.addComponent(new Label(""), 0, 0);
+				
+				System.out.println("asdasd" + pm.getProperty());
 				
 				Label rdfsDomainLabel = new Label("rdfs:domain (?D?)");
 				gridLayout.addComponent(rdfsDomainLabel, 1, 0);

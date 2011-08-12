@@ -3,10 +3,13 @@ package de.uni_leipzig.simba.boa.backend.dao.pattern;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import de.uni_leipzig.simba.boa.backend.dao.AbstractDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
@@ -14,6 +17,8 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.persistance.Entity;
 import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 
 /**
@@ -92,14 +97,14 @@ public class PatternMappingDao extends AbstractDao {
 				Pattern pattern = new Pattern();
 				pattern.setId((Integer) obj[0]);
 				pattern.setNaturalLanguageRepresentation((String) obj[1]);
-				pattern.setConfidence((Double) obj[2]);
+				pattern.setConfidenceForIteration(1, ((Double) obj[2]));
 				pattern.setGlobalConfidence((Double) obj[3]);
 				pattern.setNumberOfOccurrences((Integer) obj[4]);
 				pattern.setUseForPatternEvaluation((Boolean) obj[5]);
 				pattern.setLuceneDocIds((String) obj[6]);
-				pattern.setSpecificity((Double) obj[7]);
-				pattern.setTypicity((Double) obj[8]);
-				pattern.setSupport((Double) obj[9]);
+				pattern.setSpecificityForIteration(1, (Double) obj[7]);
+				pattern.setTypicityForIteration(1, (Double) obj[8]);
+				pattern.setSupportForIteration(1 , (Double) obj[9]);
 				
 				pm.addPattern(pattern);
 			}
@@ -165,7 +170,7 @@ public class PatternMappingDao extends AbstractDao {
 			List<Object[]> objs = query.list();
 			for (Object[] obj : objs) {
 				
-				PatternMapping pm = new PatternMapping((String) obj[1], "", (String) obj[2], (String) obj[3]);
+				PatternMapping pm = new PatternMapping((String) obj[1], "", (String) obj[3], (String) obj[2]);
 				pm.setId((Integer) obj[0]);
 				objects.add(pm);
 			}
@@ -226,5 +231,22 @@ public class PatternMappingDao extends AbstractDao {
 			HibernateFactory.closeSession(session);
 		}// TODO Auto-generated method stub
 		
+	}
+
+	public List<String> findPatternMappingsWithPatterns() {
+
+		Session session = HibernateFactory.getSessionFactory().openSession();
+    	String queryString = "select distinct(prop.uri) from pattern_mapping as pm, resource as prop ,pattern_mapping_pattern as pmp, pattern as p  where pm.id = pmp.pattern_mapping_id and pmp.pattern_id = p.id and pm.property_id = prop.id and p.confidence > 0;";
+        return session.createSQLQuery(queryString).list();
+	}
+	
+	public PatternMapping findPatternMappingByUri(String uri) {
+
+		Session session = HibernateFactory.getSessionFactory().openSession();
+    	List<PatternMapping> resourceList = session.createCriteria(PatternMapping.class)
+    							.createCriteria("property").add(Restrictions.eq("uri", uri))
+    							.list();
+    	
+        return this.findPatternMapping(resourceList.get(0).getId());
 	}
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
 import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
 import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
@@ -53,19 +54,22 @@ public class TypicityMeasure implements ConfidenceMeasure {
 		
 		long start = new Date().getTime();
 		
-		try {
+		if ( this.patternSearcher == null ) {
 			
-			this.patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+			try {
+				
+				this.patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		
 		String domainUri	= patternMapping.getProperty().getRdfsDomain();
 		String rangeUri		= patternMapping.getProperty().getRdfsRange();
 		
@@ -147,6 +151,7 @@ public class TypicityMeasure implements ConfidenceMeasure {
 				typicity = (domainCorrectness + rangeCorrectness) / (2D);//* (double) sentences.size());
 				typicity = Double.isNaN(typicity) ? 0d : typicity * (double) (Math.log((int)(sentences.size() + 1)) / Math.log(2));
 				
+				pattern.setTypicityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, typicity);
 				pattern.setTypicity(typicity);
 			}
 			catch (IOException e) {

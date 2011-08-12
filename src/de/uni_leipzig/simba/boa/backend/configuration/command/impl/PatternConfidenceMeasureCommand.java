@@ -111,14 +111,16 @@ public class PatternConfidenceMeasureCommand implements Command {
 				
 				if ( !pattern.isUseForPatternEvaluation() ) continue;
 				
-				double specificity = pattern.getSpecificity();
-				double typicity = pattern.getTypicity();
-				double support = pattern.getSupport();
+				double specificity = pattern.getSpecificityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
+				double typicity = pattern.getTypicityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
+				double support = pattern.getSupportForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
 				
-				pattern.setConfidence(3 * typicity + 2 * support + 1 * specificity);
+				double confidence = 3 * typicity + 2 * support + 1 * specificity;
+				pattern.setConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, confidence);
+				pattern.setConfidence(confidence);
 				
-				maxConfidenceForPatternMapping		= Math.max(maxConfidenceForPatternMapping, pattern.getConfidence());
-				maxConfidenceForAllPatternMappings	= Math.max(maxConfidenceForAllPatternMappings, pattern.getConfidence());
+				maxConfidenceForPatternMapping		= Math.max(maxConfidenceForPatternMapping, confidence);
+				maxConfidenceForAllPatternMappings	= Math.max(maxConfidenceForAllPatternMappings, confidence);
 			}
 			
 			// set local maximums
@@ -126,10 +128,14 @@ public class PatternConfidenceMeasureCommand implements Command {
 				
 				if ( !Double.isNaN(maxConfidenceForPatternMapping) && !Double.isInfinite(maxConfidenceForPatternMapping) && pattern.isUseForPatternEvaluation() ) {
 				
-					pattern.setConfidence(pattern.getConfidence() /  maxConfidenceForPatternMapping);
+					pattern.setConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, pattern.getConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER) /  maxConfidenceForPatternMapping);
+					pattern.setConfidence(pattern.getConfidence() / maxConfidenceForPatternMapping);
 				}
-				else 
-					pattern.setConfidence(0d);
+				else {
+					
+					pattern.setConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, 0D);
+					pattern.setConfidence(0D);
+				}
 			}
 		}
 		

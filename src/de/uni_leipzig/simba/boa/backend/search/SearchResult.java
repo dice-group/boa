@@ -10,6 +10,7 @@ public class SearchResult {
 	private String rdfsDomain;
 	private String firstLabel;
 	private String secondLabel;
+	private String posTags;
 	private int indexId;
 	
 	/**
@@ -147,5 +148,21 @@ public class SearchResult {
 		builder.append(indexId);
 		builder.append("]");
 		return builder.toString();
+	}
+	
+	/**
+	 * @return
+	 */
+	public String getPosTags(){
+		
+		return this.posTags;
+	}
+
+	/**
+	 * @param posTagsForSentence
+	 */
+	public void setPosTags(String posTagsForSentence) {
+
+		this.posTags = posTagsForSentence;
 	}
 }

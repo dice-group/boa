@@ -34,6 +34,8 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.SearchResult;
 
@@ -77,7 +79,22 @@ public class NerTagUtf8Test {
 			
 			PatternSearcher searcher = new PatternSearcher("/Users/gerb/Development/workspaces/experimental/nlpedia/de_wiki/index/test");
 			
-			searcher.queryPattern("Serie MacGyver", "Alan Smithee", "http://property/test.de", "http:/range.de", "http://domain.de", true);
+			Property prop = new Property();
+			prop.setUri("http://property/test.de");
+			prop.setRdfsDomain("http://domain.de");
+			prop.setRdfsRange("http:/range.de");
+			
+			Resource s = new Resource();
+			s.setLabel("Serie MacGyver");
+			Resource o = new Resource();
+			o.setLabel("Alan Smithee");
+			
+			Triple triple = new Triple();
+			triple.setSubject(s);
+			triple.setProperty(prop);
+			triple.setObject(o);
+			
+			searcher.queryPattern(triple);
 			
 			PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 			
@@ -101,7 +118,7 @@ public class NerTagUtf8Test {
 			System.out.println(pm.getPatterns().get(0).getNaturalLanguageRepresentation());
 
 			QueryParser exactMatchParser = new QueryParser(Version.LUCENE_30, "sentence", new SimpleAnalyzer());
-			ScoreDoc[] hits = indexSearcher.search(exactMatchParser.parse("\"SchulmŠdchen\""), null, 10).scoreDocs;
+			ScoreDoc[] hits = indexSearcher.search(exactMatchParser.parse("\"Schulmï¿½dchen\""), null, 10).scoreDocs;
 			
 			assertTrue("One sentence contains the keyword:", hits.length == 1);
 		}

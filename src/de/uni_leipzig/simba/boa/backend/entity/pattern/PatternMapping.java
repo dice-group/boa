@@ -2,13 +2,18 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -36,7 +41,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 	/**
 	 * 
 	 */
-	private List<Pattern> patterns;
+	private Set<Pattern> patterns;
 	
 	/**
 	 * default constructor needed for hibernate
@@ -52,7 +57,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 	public PatternMapping(String uri, String label, String domain, String range) {
 		
 		this.property	= new Property(uri, label, range, domain);
-		this.patterns	= new ArrayList<Pattern>();
+		this.patterns	= new HashSet<Pattern>();
 		this.patternMap	= new HashMap<Integer,Pattern>();
 	}
 
@@ -65,16 +70,25 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 	public PatternMapping(Property property) {
 
 		this.property = property;
-		this.patterns = new ArrayList<Pattern>();
+		this.patterns = new HashSet<Pattern>();
 		this.patternMap	= new HashMap<Integer,Pattern>();
 	}
 
 	/**
 	 * @return the patterns
 	 */
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	@JoinColumn(name = "patternMapping_id", nullable = true, updatable = true, insertable = true)
-	public List<Pattern> getPatterns() {
+//	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+//	@JoinColumn(name = "patternMapping_id", nullable = true, updatable = true, insertable = true)
+	@ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	  @JoinTable(name = "pattern_mapping_pattern",
+	    joinColumns = {
+	      @JoinColumn(name="pattern_mapping_id")//, unique = true)           
+	    },
+	    inverseJoinColumns = {
+	      @JoinColumn(name="pattern_id")
+	    }
+	  )
+	public Set<Pattern> getPatterns() {
 	
 		return patterns;
 	}
@@ -82,7 +96,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 	/**
 	 * @param patterns the patterns to set
 	 */
-	public void setPatterns(List<Pattern> patterns) {
+	public void setPatterns(Set<Pattern> patterns) {
 	
 		this.patterns = patterns;
 	}
@@ -97,7 +111,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 		this.patternMap.put(pattern.getNaturalLanguageRepresentation().hashCode(), pattern);
 		return this;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -106,7 +120,6 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((patterns == null) ? 0 : patterns.hashCode());
 		result = prime * result + ((property == null) ? 0 : property.hashCode());
 		return result;
 	}
@@ -124,13 +137,6 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 		if (getClass() != obj.getClass())
 			return false;
 		PatternMapping other = (PatternMapping) obj;
-		if (patterns == null) {
-			if (other.patterns != null)
-				return false;
-		}
-		else
-			if (!patterns.equals(other.patterns))
-				return false;
 		if (property == null) {
 			if (other.property != null)
 				return false;

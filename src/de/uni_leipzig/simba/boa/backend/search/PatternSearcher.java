@@ -28,6 +28,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.nlp.PosTagger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 /**
@@ -39,6 +40,8 @@ public class PatternSearcher {
 	private final static int maxPatternChunkLength = new Integer(NLPediaSettings.getInstance().getSetting("maxPatternLenght")).intValue();
 	private final static int minPatternChunkLenght = new Integer(NLPediaSettings.getInstance().getSetting("minPatternLenght")).intValue();
 
+	private PosTagger posTagger;
+	
 	public static final Set<String> stopwords = new HashSet<String>();
 	static {
 		Collections.addAll(stopwords, 	"I","a","about","an","are","as","at","be","by","com","for",
@@ -72,10 +75,10 @@ public class PatternSearcher {
 	private List<SearchResult> results;
 	private ScoreDoc[] hits;
 
-	private Pattern p1 = null;
-	private Matcher m1 = null;
-	private Pattern p2 = null;
-	private Matcher m2 = null;
+//	private Pattern p1 = null;
+//	private Matcher m1 = null;
+//	private Pattern p2 = null;
+//	private Matcher m2 = null;
 
 	public PatternSearcher(String indexDir) throws IOException, ParseException {
 
@@ -88,6 +91,8 @@ public class PatternSearcher {
 
 		this.results = new ArrayList<SearchResult>();
 		this.hits = null;
+		
+		this.posTagger = new PosTagger();
 	}
 
 	/**
@@ -203,6 +208,7 @@ public class PatternSearcher {
 						result.setFirstLabel(triple.getSubject().getLabel());
 						result.setSecondLabel(triple.getObject().getLabel());
 						result.setIndexId(hits[i].doc);
+						result.setPosTags(this.posTagger.getPosTagsForSentence(match.substring(0, match.length() - 3).substring(3), subjectLabel, objectLabel));
 						this.results.add(result);
 					}
 				}
@@ -248,9 +254,10 @@ public class PatternSearcher {
 						result.setNaturalLanguageRepresentation(match);
 						result.setRdfsRange(triple.getProperty().getRdfsRange());
 						result.setRdfsDomain(triple.getProperty().getRdfsDomain());
-						result.setFirstLabel(triple.getSubject().getLabel());
-						result.setSecondLabel(triple.getObject().getLabel());
+						result.setFirstLabel(triple.getObject().getLabel());
+						result.setSecondLabel(triple.getSubject().getLabel());
 						result.setIndexId(hits[i].doc);
+						result.setPosTags(this.posTagger.getPosTagsForSentence(match.substring(0, match.length() - 3).substring(3), subjectLabel, objectLabel));
 						this.results.add(result);
 					}
 				}

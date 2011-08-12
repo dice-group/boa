@@ -75,8 +75,8 @@ public class CreateKnowledgeCommand implements Command {
 					
 					System.out.println("\tCreating new knowledge with pattern: " + pattern.getNaturalLanguageRepresentation());
 
-					String domainUri = pattern.getPatternMapping().getProperty().getRdfsDomain();
-					String rangeUri = pattern.getPatternMapping().getProperty().getRdfsRange();
+					String domainUri = mapping.getProperty().getRdfsDomain();
+					String rangeUri = mapping.getProperty().getRdfsRange();
 
 					String patternWithOutVariables = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
 
@@ -212,7 +212,7 @@ public class CreateKnowledgeCommand implements Command {
 						
 						for ( Pattern patternLearnedFrom : triple.getLearnedFromPatterns() ) {
 							
-							sumOfConfidence += patternLearnedFrom.getConfidence();
+							sumOfConfidence += patternLearnedFrom.getConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
 						}
 						triple.setConfidence(sumOfConfidence * numberOfPatternsLearnedFrom);
 						maxConfidenceForTriple = Math.max(triple.getConfidence(), maxConfidenceForTriple);
@@ -255,7 +255,7 @@ public class CreateKnowledgeCommand implements Command {
 			@Override
 			public int compare(Pattern pattern1, Pattern pattern2) {
 
-				return pattern2.getConfidence().compareTo(pattern1.getConfidence());
+				return pattern2.getConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER).compareTo(pattern1.getConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER));
 			}
 		});
 

@@ -2,6 +2,7 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.impl;
 
 import java.util.Date;
 
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeasure;
@@ -25,6 +26,7 @@ public class SupportMeasure implements ConfidenceMeasure {
 				(double) (Math.log((pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2)) * 
 				(double) (Math.log((pattern.retrieveCountLearnedFrom() + 1)) / Math.log(2));
 			
+			pattern.setSupportForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, support);
 			pattern.setSupport(support);
 		}
 		System.out.println("Support measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");

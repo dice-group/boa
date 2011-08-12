@@ -1,27 +1,23 @@
 package de.uni_leipzig.simba.boa.backend.nlp;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Properties;
 
-import opennlp.tools.postag.POSModel;
-import opennlp.tools.postag.POSTagger;
-import opennlp.tools.postag.POSTaggerME;
-import opennlp.tools.tokenize.Tokenizer;
-import opennlp.tools.tokenize.TokenizerME;
-import opennlp.tools.tokenize.TokenizerModel;
-import opennlp.tools.util.InvalidFormatException;
+import org.apache.commons.lang3.StringUtils;
+
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
-
+/**
+ * 
+ * @author Daniel Gerber
+ */
 public class PosTagger {
 
-	private InputStream posTaggerModelFile = null;
-	private InputStream tokenModelFile = null;
-	
-	private POSTagger posTagger;
-	private Tokenizer tokenizer;
+	private MaxentTagger tagger;
 	
 	private final NLPediaLogger logger = new NLPediaLogger(PosTagger.class);
 	
@@ -29,23 +25,9 @@ public class PosTagger {
 	
 		try {
 		
-			this.logger.info("Reading training data for POS tagger! ");
-			posTaggerModelFile = new FileInputStream("data/training/en-pos-maxent.bin");
-
-			POSModel posModel = new POSModel(posTaggerModelFile);
-			this.posTagger = new POSTaggerME(posModel);
-			
-			this.logger.info("Reading training data for tokenizing! ");
-			tokenModelFile = new FileInputStream("data/training/en-token.bin");
-
-			TokenizerModel tokenizerModel = new TokenizerModel(tokenModelFile);
-			this.tokenizer = new TokenizerME(tokenizerModel);
+			this.tagger = new MaxentTagger(NLPediaSettings.getInstance().getSetting("pos.tagger.model"));
 		}
-		catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (InvalidFormatException e) {
+		catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -53,70 +35,38 @@ public class PosTagger {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		finally {	
-			
-			if (posTaggerModelFile != null) {
-			
-				try {
-					posTaggerModelFile.close();
-					
-				}
-				catch(Exception e) { e.printStackTrace(); } // nothing to do here
-			}
-			if (tokenModelFile != null) {
-				
-				try {
-					tokenModelFile.close();
-					
-				}
-				catch(Exception e) { e.printStackTrace(); } // nothing to do here
-			}
-		}
+	}
+
+	/**
+	 * 
+	 * @param sentence
+	 * @return
+	 */
+	public String tagSentence(String sentence)  {
+		
+		return tagger.tagString(sentence);
 	}
 	
 	/**
-	 * Tags a sentence with POS Tags from the OpenNLP framework. The provided sentence
-	 * does not get modified. The output provided by this method looks something like this:
-	 * "House/NN is/VP red/AP".  
+	 * all input strings get trimmed
 	 * 
-	 * @param sentence - the sentence to be tagged
-	 * @return a new string with POS tags 
+	 * @param sentence the sentence to be tagged in this case a pattern most likely
+	 * @param label1 the label left of the pattern
+	 * @param label2 the label right of the pattern
+	 * @return an pos annotated string
 	 */
-	public String posTagSentence(String sentence){
+	public String getPosTagsForSentence(String sentence, String label1, String label2) {
 		
-		StringBuffer tokenizedSentence = new StringBuffer();
-		
-		String[] tokens = this.tokenizer.tokenize(sentence);
-		String[] tags	= this.posTagger.tag(tokens);
-		
-		if ( tokens.length == tags.length ) {
+		// add the labels ot the front/end to improve accuracy and tag it 
+		String[] taggedSentence = this.tagSentence(label1.trim() + " " + sentence.trim() + " " + label2.trim()).split(" ");
+		String[] sentenceWithoutLabels = // remove the tagged labels 
+			Arrays.copyOfRange(taggedSentence, label1.split(" ").length, taggedSentence.length - label2.split(" ").length );
+		// remove the words, to only have the pos tags
+		StringBuilder builder = new StringBuilder();
+		for ( String s : sentenceWithoutLabels ) {
 			
-			for ( int i = 0; i < tokens.length; i++) {
-				
-				tokenizedSentence.append(tokens[i] + "/" + tags[i] + " ");
-			}
-			return tokenizedSentence.toString();
+			builder.append(s.substring(s.lastIndexOf("/") + 1) + " ");
 		}
-		return null;
-	}
-	
-	/**
-	 * This method returns true if the provided sentence contains a noun phrase.
-	 * The tags to check if this is true are "_NN", "_NN$", "_NNS", "_NNS$",
-	 * "_NP", "_NP$", "_NPS", "_NPS$", "_NR" from the OpenNLP Framework. This
-	 * method does not modify the given sentence.  
-	 * 
-	 * @param sentence - String the sentence to check
-	 * @return true if the sentence contains a noun phrase, false otherwise
-	 */
-	public boolean containsNounPhrase(String sentence) {
-		
-		String[] possibleSubjectTags = new String[]{"/NN", "/NN$", "/NNS", "/NNS$",	"/NP", "/NP$", "/NPS", "/NPS$", "/NR"};
-		
-		for ( String nounPhrase : possibleSubjectTags) {
-			
-			if ( sentence.contains(nounPhrase) ) return true;
-		}
-		return false;
+		return builder.toString().trim();
 	}
 }

@@ -8,6 +8,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.AskDb
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.CreateLearndFromDistributionCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.KnowledgeStatisticsCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.PlainTextToSentencePerLineCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.PosDistributionCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.TrainNerModelCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
@@ -33,6 +34,7 @@ public class StartScriptsCommand implements Command {
 		    		System.out.println("\t\t4. Create learned from distribution");
 		    		System.out.println("\t\t5. Create knowledge statistics");
 		    		System.out.println("\t\t6. Train NER model");
+		    		System.out.println("\t\t7. Create pos distirbution");
 		    		System.out.println("\t\t");
 		    		System.out.println("");
 		    		
@@ -87,6 +89,12 @@ public class StartScriptsCommand implements Command {
 							Command trainNerModelCommand = new TrainNerModelCommand();
 							trainNerModelCommand.execute();
 							break;
+							
+						case 7:
+							
+							Command posDistributionCommand = new PosDistributionCommand();
+							posDistributionCommand.execute();
+							break;	
 					
 						default: // option not supported
 							Command unkownOptionCommand = new UnknownOptionCommand(System.out);

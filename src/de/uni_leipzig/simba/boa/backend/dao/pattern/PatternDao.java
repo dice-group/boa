@@ -99,41 +99,5 @@ public class PatternDao extends AbstractDao {
     	
         return (List<Pattern>) super.findAllEntitiesByClass(Pattern.class);
     }
-    
-	public int countPatternMappingsWithSameNaturalLanguageRepresenation(String naturalLanguageRepresentation) {
-
-		Session session = null;
-		Transaction tx = null;
-		
-		BigInteger numberOfPatternMappings = BigInteger.valueOf(0);
-		
-		try {
-			
-			session = HibernateFactory.getSessionFactory().openSession();
-			tx = session.beginTransaction();
-			
-			String sql = "select count(distinct(patternMapping_id)) from pattern where naturalLanguageRepresentation=:naturalLanguageRepresentation";
-			SQLQuery query = session.createSQLQuery(sql);
-			query.setString("naturalLanguageRepresentation", naturalLanguageRepresentation);
-			
-			   List<BigInteger> listCounter = (List<BigInteger>)query.list();
-			   if (!listCounter.isEmpty()) {
-				   numberOfPatternMappings = listCounter.get(0);
-			   }
-			
-			tx.commit();
-		}
-		catch (HibernateException he) {
-			
-			he.printStackTrace();
-			HibernateFactory.rollback(tx);
-			logger.error("Could not find pattern with naturalLanguageRepresentation: " + naturalLanguageRepresentation, he);
-		}
-		finally {
-			
-			HibernateFactory.closeSession(session);
-		}
-		return numberOfPatternMappings.intValue();
-	}
 }
 
