@@ -90,6 +90,11 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * 
 	 */
+	private Double similarity = -1D;
+	
+	/**
+	 * 
+	 */
 	private Map<Integer,Double> confidences = new HashMap<Integer,Double>();
 	
 	/**
@@ -144,6 +149,14 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	public String getNaturalLanguageRepresentation() {
 	
 		return this.naturalLanguageRepresentation;
+	}
+	
+	/**
+	 * @return the NLR with ?D? and ?R?
+	 */
+	public String retrieveNaturalLanguageRepresentationWithoutVariables() {
+		
+		return this.naturalLanguageRepresentation.substring(0, this.naturalLanguageRepresentation.length() - 3).substring(3).trim();
 	}
 	
 	/**
@@ -672,6 +685,23 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 //
 //		this.learnedFromTriples = learnedFromTriples;
 //	}
+
+	/**
+	 * @param similarity the similarity to set
+	 */
+	public void setSimilarity(Double similarity) {
+
+		this.similarity = similarity;
+	}
+
+	/**
+	 * @return the similarity
+	 */
+	@Basic
+	public Double getSimilarity() {
+
+		return similarity;
+	}
 
 
 	/**
