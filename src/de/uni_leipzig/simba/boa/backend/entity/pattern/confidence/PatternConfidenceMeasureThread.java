@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.confidence;
 
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +17,16 @@ public class PatternConfidenceMeasureThread extends Thread {
 	
 	private final NLPediaLogger logger = new NLPediaLogger(PatternConfidenceMeasureThread.class);
 
+	private int patternToMeasure;
+
 	public PatternConfidenceMeasureThread(List<PatternMapping> list) {
 
 		this.patternMappings = list;
+		
+		for ( PatternMapping pm : this.patternMappings ) {
+			
+			this.patternToMeasure += pm.getPatterns().size();
+		}
 	}
 	
 	@Override
@@ -44,5 +52,10 @@ public class PatternConfidenceMeasureThread extends Thread {
 	public List<PatternMapping> getConfidenceMeasuredPatternMappings(){
 		
 		return this.patternMappings;
+	}
+
+	public String getProgress() {
+
+		return "0";//NumberFormat.getPercentInstance().format((double) i / (double) patternToMeasure);
 	}
 }

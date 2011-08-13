@@ -35,13 +35,14 @@ public class IterationCommand implements Command {
 			patternSearchCommand.execute();
 			
 			// filter patterns
-//			Command patternFilterCommand = new PatternFilterCommand(((PatternSearchCommand) patternSearchCommand).getPatternMappings());
+			Command patternFilterCommand = new PatternFilterCommand(((PatternSearchCommand) patternSearchCommand).getPatternMappings());
 //			Command patternFilterCommand = new PatternFilterCommand(null);
-//			patternFilterCommand.execute();
+			patternFilterCommand.execute();
 			
 			// calculate confidence, hand over the filtered patterns
-//			Command patternConfidenceMeasureCommand = new PatternConfidenceMeasureCommand(((PatternFilterCommand) patternFilterCommand).getPatternMappingList());
-//			patternConfidenceMeasureCommand.execute();
+//			Command patternConfidenceMeasureCommand = new PatternConfidenceMeasureCommand(((PatternSearchCommand) patternSearchCommand).getPatternMappings());
+			Command patternConfidenceMeasureCommand = new PatternConfidenceMeasureCommand(((PatternFilterCommand) patternFilterCommand).getPatternMappingList());
+			patternConfidenceMeasureCommand.execute();
 			
 			// generate rdf
 //			List<PatternMapping> patternMappings = ((PatternConfidenceMeasureCommand) patternConfidenceMeasureCommand).getPatternMappingList();

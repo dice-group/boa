@@ -30,6 +30,11 @@ public class SpecificityMeasure implements ConfidenceMeasure {
 			double specificity = PatternConfidenceMeasureCommand.NUMBER_OF_PATTERN_MAPPINGS / 
 					(double) pattern.getPatternMappings().size(); 
 				
+			System.out.println(String.format("Number of mappings: %s and %s for the pattern: %s" ,
+					PatternConfidenceMeasureCommand.NUMBER_OF_PATTERN_MAPPINGS,
+					pattern.getPatternMappings().size(),
+					pattern.getId() + ": " + pattern.getNaturalLanguageRepresentation() ));
+			
 			specificity = Math.log(specificity) / Math.log(2);
 			
 			pattern.setSpecificityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, specificity);

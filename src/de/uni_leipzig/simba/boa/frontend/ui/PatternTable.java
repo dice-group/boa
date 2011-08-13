@@ -59,7 +59,7 @@ public class PatternTable extends Table {
 			// Format by property type
 	        if (property.getType() == Double.class) {
 	        	
-	        	return OutputFormatter.format((Double) property.getValue(), "#.##");
+	        	return OutputFormatter.format((Double) property.getValue(), "####.##");
 	        }
 
 	        return super.formatPropertyValue(rowId, colId, property);

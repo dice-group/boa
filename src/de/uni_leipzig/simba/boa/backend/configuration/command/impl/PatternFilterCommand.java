@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class PatternFilterCommand implements Command {
 	private final NLPediaLogger logger = new NLPediaLogger(PatternFilterCommand.class);
 	
 	private PatternMappingDao patternMappingDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
-	private List<PatternMapping> patternMappingList = null;
+	private Map<Integer,PatternMapping> patternMappings = null;
 
 	/**
 	 * Creates a new filter command for pattern mappings
@@ -28,10 +29,16 @@ public class PatternFilterCommand implements Command {
 	 * @param patternMappings a list of pattern mappings, if patternMappings == null
 	 * a database call will retrieve them
 	 */
-	public PatternFilterCommand(List<PatternMapping> patternMappings) {
+	public PatternFilterCommand(Map<Integer,PatternMapping> patternMappings) {
 		
-		if (patternMappings != null) this.patternMappingList = patternMappings;
-		else this.patternMappingList = this.patternMappingDao.findAllPatternMappings();
+		if (patternMappings != null) this.patternMappings = patternMappings;
+		else {
+			
+			for ( PatternMapping pm : this.patternMappingDao.findAllPatternMappings()) {
+				
+				this.patternMappings.put(pm.getProperty().getUri().hashCode(), pm);
+			}
+		}
 	}
 	
 	@Override
@@ -45,7 +52,7 @@ public class PatternFilterCommand implements Command {
 			this.logger.info(patternEvaluator.getClass().getSimpleName() + " started!");
 			
 			// and check each pattern mapping
-			for ( PatternMapping patternMapping : this.patternMappingList ) {
+			for ( PatternMapping patternMapping : this.patternMappings.values() ) {
 			
 				this.logger.debug("Evaluating pattern: " + patternMapping);
 				System.out.println("Starting to filter pattern mapping: " + patternMapping.getProperty().getUri() + " with filter: " + patternEvaluator.getClass().getSimpleName());
@@ -60,16 +67,16 @@ public class PatternFilterCommand implements Command {
 	/**
 	 * @return the patternMappingList
 	 */
-	public List<PatternMapping> getPatternMappingList() {
+	public Map<Integer,PatternMapping> getPatternMappingList() {
 	
-		return this.patternMappingList;
+		return this.patternMappings;
 	}
 
 	/**
 	 * @param patternMappingList the patternMappingList to set
 	 */
-	public void setPatternMappingList(List<PatternMapping> patternMappingList) {
+	public void setPatternMappingList(Map<Integer,PatternMapping> patternMappings) {
 	
-		this.patternMappingList = patternMappingList;
+		this.patternMappings = patternMappings;
 	}
 }

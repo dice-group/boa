@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
+import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.PatternConfidenceMeasureThread;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 
@@ -29,6 +30,17 @@ public class PrintProgressTask extends TimerTask {
 			if ( t instanceof PatternSearchThread ) {
 				
 				int progress = Integer.valueOf(  ((PatternSearchThread)t).getProgress().replaceAll("%", "") );
+				overallProgress += progress;
+				
+				if ( progress != 100 ) {
+					
+					System.out.println(t.getName() + ": " + progress + "%.");
+					this.logger.debug(t.getName() + ": " + progress + "%.");
+				}
+			}
+			if ( t instanceof PatternConfidenceMeasureThread ) {
+				
+				int progress = Integer.valueOf( ((PatternConfidenceMeasureThread)t).getProgress().replaceAll("%", "") );
 				overallProgress += progress;
 				
 				if ( progress != 100 ) {

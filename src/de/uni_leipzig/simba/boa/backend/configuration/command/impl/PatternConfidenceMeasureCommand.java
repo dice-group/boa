@@ -1,6 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -29,9 +30,9 @@ public class PatternConfidenceMeasureCommand implements Command {
 	
 	public static double NUMBER_OF_PATTERN_MAPPINGS;
 
-	public PatternConfidenceMeasureCommand(List<PatternMapping> patternMappingList) {
+	public PatternConfidenceMeasureCommand(Map<Integer,PatternMapping> patternMappingList) {
 		
-		this.patternMappingList = patternMappingList;
+		this.patternMappingList = new ArrayList<PatternMapping>(patternMappingList.values());
 		PatternConfidenceMeasureCommand.NUMBER_OF_PATTERN_MAPPINGS = (double) this.patternMappingList.size();
 	}
 	
@@ -115,7 +116,7 @@ public class PatternConfidenceMeasureCommand implements Command {
 				double typicity = pattern.getTypicityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
 				double support = pattern.getSupportForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
 				
-				double confidence = 3 * typicity + 2 * support + 1 * specificity;
+				double confidence = 3 * typicity + 2 * support + 1 * specificity + 10 * pattern.getSimilarity();
 				pattern.setConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, confidence);
 				pattern.setConfidence(confidence);
 				

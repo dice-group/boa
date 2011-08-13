@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Timer;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -33,10 +34,10 @@ public class PatternSearchCommand implements Command {
 
 	private final NLPediaLogger logger					= new NLPediaLogger(PatternSearchCommand.class);
 	
-	private List<PatternMapping> mappings				= new ArrayList<PatternMapping>();
+	private Map<Integer,PatternMapping> mappings		= new HashMap<Integer,PatternMapping>();
 	private Map<Integer,Triple> triples 				= new HashMap<Integer,Triple>();
 	private Map<Integer,Property> properties			= new HashMap<Integer,Property>();
-	private Map<Integer,Pattern> patterns				= new HashMap<Integer,Pattern>();
+	private Map<Integer,Map<Integer,Pattern>> patterns	= new HashMap<Integer,Map<Integer,Pattern>>();
 	
 	private TripleDao tripleDao		= (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
 	private PropertyDao propertyDao	= (PropertyDao) DaoFactory.getInstance().createDAO(PropertyDao.class);
@@ -138,7 +139,7 @@ public class PatternSearchCommand implements Command {
 				if ( propertyUri.equals(currentProperty) ) {
 					
 					// add the patterns to the list with the hash-code of the natural language representation
-					Pattern pattern = this.patterns.get(patternString.hashCode());
+					Pattern pattern = this.patterns.get(propertyUri.hashCode()).get(patternString.hashCode()); //(patternString.hashCode());
 					
 					// pattern was not found, create a new pattern 
 					if ( pattern == null ) {
@@ -150,7 +151,16 @@ public class PatternSearchCommand implements Command {
 						pattern.addPatternMapping(currentMapping);
 						pattern.addLuceneDocIds(Integer.valueOf(documentId));
 						
-						this.patterns.put(patternString.hashCode(), pattern);
+						if ( this.patterns.get(propertyUri.hashCode()) != null ) {
+							
+							this.patterns.get(propertyUri.hashCode()).put(patternString.hashCode(), pattern);
+						}
+						else {
+							
+							Map<Integer,Pattern> patternMap = new HashMap<Integer,Pattern>();
+							patternMap.put(patternString.hashCode(), pattern);
+							this.patterns.put(propertyUri.hashCode(), patternMap);
+						}
 					}
 					// pattern already created, just add new values
 					else {
@@ -158,6 +168,7 @@ public class PatternSearchCommand implements Command {
 						pattern.increaseNumberOfOccurrences();
 						pattern.addLearnedFrom(label1 + "-;-" + label2);
 						pattern.addLuceneDocIds(Integer.valueOf(documentId));
+						pattern.addPatternMapping(currentMapping);
 						
 						// add the current pattern to the current mapping
 						currentMapping.addPattern(pattern);
@@ -172,7 +183,12 @@ public class PatternSearchCommand implements Command {
 					p.setUri(propertyUri);
 					p = this.properties.get(p.hashCode());
 					
-					currentMapping = new PatternMapping(p);
+					currentMapping = this.mappings.get(propertyUri);
+					
+					if ( currentMapping == null ) {
+						
+						currentMapping = new PatternMapping(p);
+					}
 					
 					Pattern pattern = new Pattern(patternString);
 					pattern.setFoundInIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
@@ -183,8 +199,17 @@ public class PatternSearchCommand implements Command {
 					
 					currentMapping.addPattern(pattern);
 					
-					this.patterns.put(patternString.hashCode(), pattern);
-					this.mappings.add(currentMapping);
+					if ( this.patterns.get(propertyUri.hashCode()) != null ) {
+						
+						this.patterns.get(propertyUri.hashCode()).put(patternString.hashCode(), pattern);
+					}
+					else {
+						
+						Map<Integer,Pattern> patternMap = new HashMap<Integer,Pattern>();
+						patternMap.put(patternString.hashCode(), pattern);
+						this.patterns.put(propertyUri.hashCode(), patternMap);
+					}
+					this.mappings.put(propertyUri.hashCode(), currentMapping);
 				}
 				
 				currentProperty = propertyUri;
@@ -199,7 +224,7 @@ public class PatternSearchCommand implements Command {
 			// delete all because we generate them once again
 			pmd.deleteAllPatternMappings();
 			
-			for (PatternMapping mapping : this.mappings) {
+			for (PatternMapping mapping : this.mappings.values()) {
 
 				pmd.createAndSavePatternMapping(mapping);
 			}
@@ -239,7 +264,7 @@ public class PatternSearchCommand implements Command {
 	/**
 	 * @return
 	 */
-	public List<PatternMapping> getPatternMappings(){
+	public Map<Integer,PatternMapping> getPatternMappings(){
 		
 		return this.mappings;
 	}

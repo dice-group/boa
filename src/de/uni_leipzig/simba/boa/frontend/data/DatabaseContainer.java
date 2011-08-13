@@ -25,12 +25,13 @@ public class DatabaseContainer extends HierarchicalContainer{
 	public static final Object DATABASE_PROPERTY_NAME = "database_name";
 	public static final Object URI_NAME = "database_name";
 	
-	public static final String[] DATABASE_IDS = NLPediaSettings.getInstance().getSetting("frontend.databases").split(",");
-	private PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+	public static final String[] DATABASE_IDS = new String[]{"en_wiki_all", "en_news_all"};//NLPediaSettings.getInstance().getSetting("frontend.databases").split(",");
 	
 	public DatabaseContainer() {
 		
 		Item item = null;
+		
+		PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 		
 		for (int i = 0; i < DATABASE_IDS.length; i++) {
 			
@@ -42,6 +43,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 			for (int j = 0; j < uris.size(); j++) {
 				
 				String uriId = DATABASE_IDS[i] + ":" + urisIterator.next();
+				System.out.println(uriId);
 				item = this.addItem(uriId);
 				this.setParent(uriId, DATABASE_IDS[i]);
 				this.setChildrenAllowed(uriId, false);
