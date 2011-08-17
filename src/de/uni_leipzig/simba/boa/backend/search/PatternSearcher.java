@@ -37,8 +37,8 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
  */
 public class PatternSearcher {
 	
-	private final static int maxPatternChunkLength = new Integer(NLPediaSettings.getInstance().getSetting("maxPatternLenght")).intValue();
-	private final static int minPatternChunkLenght = new Integer(NLPediaSettings.getInstance().getSetting("minPatternLenght")).intValue();
+//	private final static int maxPatternChunkLength = new Integer(NLPediaSettings.getInstance().getSetting("maxPatternLenght")).intValue();
+//	private final static int minPatternChunkLenght = new Integer(NLPediaSettings.getInstance().getSetting("minPatternLenght")).intValue();
 
 	private PosTagger posTagger;
 	
@@ -145,8 +145,8 @@ public class PatternSearcher {
 	 */
 	public void queryPattern(Triple triple) throws ParseException, IOException {
 
-		String subjectLabel = triple.getSubject().getLabel();
-		String objectLabel = triple.getObject().getLabel();
+		String subjectLabel = this.removeBrackets(triple.getSubject().getLabel());
+		String objectLabel = this.removeBrackets(triple.getObject().getLabel());
 		
 		Query query = parser.parse("+sentence:\"" + QueryParser.escape(subjectLabel) + "\" && +sentence:\"" + QueryParser.escape(objectLabel) + "\"");
 
@@ -265,6 +265,11 @@ public class PatternSearcher {
 		}
 	}
 	
+	private String removeBrackets(String label) {
+
+		return label.substring(0, label.indexOf("(") - 1);
+	}
+
 	private boolean isPatternSuitable(String naturalLanguageRepresentation) {
 
 		// patterns are only allowed to have 256 characters
@@ -281,18 +286,18 @@ public class PatternSearcher {
 			return false;
 		
 		// patterns need to be bigger/equal than min chunk size and smaller/equal then max chunk size
-		String[] naturalLanguageRepresentationChunks = naturalLanguageRepresentation.substring(0, naturalLanguageRepresentation.length() - 3).substring(3).trim().split(" ");
-		if ( naturalLanguageRepresentationChunks.length > maxPatternChunkLength || naturalLanguageRepresentationChunks.length < minPatternChunkLenght )
-			return false;
+//		String[] naturalLanguageRepresentationChunks = naturalLanguageRepresentation.substring(0, naturalLanguageRepresentation.length() - 3).substring(3).trim().split(" ");
+//		if ( naturalLanguageRepresentationChunks.length > maxPatternChunkLength || naturalLanguageRepresentationChunks.length < minPatternChunkLenght )
+//			return false;
 		
 		// true or correct if the number of stop-words in the pattern is not equal to the number of tokens
 		// patterns containing only stop-words can't be used, because they are way to general 
-		int numberOfStopWordsInPattern = 0;
-		for ( String token : naturalLanguageRepresentationChunks ) {
-			if ( stopwords.contains(token) ) numberOfStopWordsInPattern++;
-		}
-		if ( naturalLanguageRepresentationChunks.length == numberOfStopWordsInPattern )
-			return false;
+//		int numberOfStopWordsInPattern = 0;
+//		for ( String token : naturalLanguageRepresentationChunks ) {
+//			if ( stopwords.contains(token) ) numberOfStopWordsInPattern++;
+//		}
+//		if ( naturalLanguageRepresentationChunks.length == numberOfStopWordsInPattern )
+//			return false;
 		
 		// patterns shall not start with "and" or "and ," because this is the conjunction of sentences and does not carry meaning
 		if ( naturalLanguageRepresentation.startsWith("and ") || naturalLanguageRepresentation.startsWith("and,") || naturalLanguageRepresentation.startsWith("and ,") ) 
