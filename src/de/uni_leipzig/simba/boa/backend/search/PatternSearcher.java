@@ -269,8 +269,10 @@ public class PatternSearcher {
 		
 		String temp =  label;
 		try {
-		
-			label = label.substring(0, label.indexOf("(") - 1);
+			
+			if ( label.contains("(") ) {
+				label = label.substring(0, label.indexOf("(") - 1);
+			}
 		}
 		catch ( NullPointerException nlp ) {
 			
