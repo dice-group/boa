@@ -274,7 +274,7 @@ public class PatternSearcher {
 				label = label.substring(0, label.indexOf("(") - 1);
 			}
 		}
-		catch ( NullPointerException nlp ) {
+		catch ( StringIndexOutOfBoundsException nlp ) {
 			
 			System.out.println("Label: \"" + temp + "\"");
 			System.out.println("Fixed Label: \"" + label + "\"");
