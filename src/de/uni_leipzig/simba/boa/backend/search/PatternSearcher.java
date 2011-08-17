@@ -266,8 +266,17 @@ public class PatternSearcher {
 	}
 	
 	private String removeBrackets(String label) {
-
-		if (label.contains("(")) label = label.substring(0, label.indexOf("(") - 1);
+		
+		String temp =  label;
+		try {
+		
+			label = label.substring(0, label.indexOf("(") - 1);
+		}
+		catch ( NullPointerException nlp ) {
+			
+			System.out.println("Label: \"" + temp + "\"");
+			System.out.println("Fixed Label: \"" + label + "\"");
+		}
 		return label;
 	}
 
