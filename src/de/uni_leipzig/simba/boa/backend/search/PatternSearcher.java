@@ -270,7 +270,7 @@ public class PatternSearcher {
 		String temp =  label;
 		try {
 			
-			if ( label.contains("(") ) {
+			if ( label.contains("(") && !label.startsWith("(")) {
 				label = label.substring(0, label.indexOf("(") - 1);
 			}
 		}
