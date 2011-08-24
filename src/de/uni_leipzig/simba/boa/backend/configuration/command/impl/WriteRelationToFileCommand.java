@@ -26,7 +26,7 @@ public class WriteRelationToFileCommand implements Command {
 	
 	private final NLPediaLogger logger = new NLPediaLogger(WriteRelationToFileCommand.class);
 	
-	private final String language = "en";
+	private final String language = "de";
 	
 	/**
 	 * 

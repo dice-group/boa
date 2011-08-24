@@ -57,5 +57,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/fastutil.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/YAGO-NAGA.jar"/>
 	<classpathentry kind="lib" path="/utk/lib/commons-lang3-3.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/simmetrics_jar_v1_6_2_d07_02_07.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

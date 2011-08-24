@@ -34,10 +34,11 @@ public class DatabaseContainer extends HierarchicalContainer{
 		PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 		
 		for (int i = 0; i < DATABASE_IDS.length; i++) {
+
+			HibernateFactory.changeConnection(DATABASE_IDS[i]);
 			
 			item = this.addItem(DATABASE_IDS[i]);
 			this.setChildrenAllowed(DATABASE_IDS[i], true);
-			
 			List<String> uris = pmDao.findPatternMappingsWithPatterns();// getUrisForDatabases(DATABASE_IDS[i]);
 			Iterator<String> urisIterator = uris.iterator();
 			for (int j = 0; j < uris.size(); j++) {
