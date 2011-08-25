@@ -14,10 +14,12 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 public class PatternConfidenceMeasureThread extends Thread {
 
 	private List<PatternMapping> patternMappings = null;
+	private Map<String,ConfidenceMeasure> confidenceMeasures = ConfidenceMeasureFactory.getInstance().getConfidenceMeasureMap();
 	
 	private final NLPediaLogger logger = new NLPediaLogger(PatternConfidenceMeasureThread.class);
 
 	private int patternToMeasure;
+	private int i = 0;
 
 	public PatternConfidenceMeasureThread(List<PatternMapping> list) {
 
@@ -27,12 +29,11 @@ public class PatternConfidenceMeasureThread extends Thread {
 			
 			this.patternToMeasure += pm.getPatterns().size();
 		}
+		this.patternToMeasure *= confidenceMeasures.size();
 	}
 	
 	@Override
 	public void run() {
-		
-		Map<String,ConfidenceMeasure> confidenceMeasures = ConfidenceMeasureFactory.getInstance().getConfidenceMeasureMap();
 		
 		// go through all confidenceMeasure
 		for ( ConfidenceMeasure confidenceMeasure : confidenceMeasures.values() ) {
@@ -41,9 +42,10 @@ public class PatternConfidenceMeasureThread extends Thread {
 			
 			// and check each pattern mapping
 			for (PatternMapping patternMapping : patternMappings ) {
-			
+				
 				this.logger.debug("Calculation of confidence for mapping: " + patternMapping.getProperty().getUri());
 				confidenceMeasure.measureConfidence(patternMapping);
+				this.i += patternMapping.getPatterns().size(); 
 			}
 			this.logger.info(confidenceMeasure.getClass().getSimpleName() + " from " + this.getName() + " finished!");
 		}
@@ -56,6 +58,6 @@ public class PatternConfidenceMeasureThread extends Thread {
 
 	public String getProgress() {
 
-		return "0";//NumberFormat.getPercentInstance().format((double) i / (double) patternToMeasure);
+		return NumberFormat.getPercentInstance().format((double) i / (double) patternToMeasure);
 	}
 }

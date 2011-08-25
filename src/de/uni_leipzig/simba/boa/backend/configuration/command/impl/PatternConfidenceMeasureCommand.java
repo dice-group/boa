@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
@@ -15,6 +16,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeas
 import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeasureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.PatternConfidenceMeasureThread;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.search.concurrent.PrintProgressTask;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 
 /**
@@ -58,6 +60,10 @@ public class PatternConfidenceMeasureCommand implements Command {
 				System.out.println(t.getName() + " started!");
 				this.logger.info(t.getName() + " started!");
 			}
+			
+			Timer timer = new Timer();
+			timer.schedule(new PrintProgressTask(threadList), 0, 3000);
+			
 			// wait for all to finish
 			for ( Thread t : threadList ) {
 				
@@ -69,6 +75,7 @@ public class PatternConfidenceMeasureCommand implements Command {
 					e.printStackTrace();
 				}
 			}
+			timer.cancel();
 			
 			for ( Thread t: threadList ) {
 				

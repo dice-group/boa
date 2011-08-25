@@ -212,23 +212,6 @@ public class PatternSearchCommand implements Command {
 				}
 				currentProperty = propertyUri;
 			}
-			
-			for (PatternMapping pm : this.mappings.values()) {
-				
-				if ( pm.getProperty().getUri().equals("http://dbpedia.org/ontology/foundationPerson1") || pm.getProperty().getUri().equals("http://dbpedia.org/ontology/foundationPerson") ) {
-					
-					System.out.println(pm.getProperty().getUri());
-					for (Pattern p : pm.getPatterns()) {
-						
-						System.out.println("\t"+p.getNaturalLanguageRepresentation() + " occ: " + p.getNumberOfOccurrences());
-						for (PatternMapping mapp : p.getPatternMappings() ) {
-							
-							System.out.println("PM: " + mapp.getProperty().getUri());
-						}
-					}
-				}
-			}
-			
 			System.out.println("All pattern mappings read in " + (System.currentTimeMillis() - startPatternReading) + "ms!");
 			this.logger.info("All pattern mappings read in " + (System.currentTimeMillis() - startPatternReading) + "ms!");
 			
