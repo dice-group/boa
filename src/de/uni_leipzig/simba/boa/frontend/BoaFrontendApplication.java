@@ -21,11 +21,13 @@ import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.terminal.ExternalResource;
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
@@ -345,6 +347,22 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		
 		horizontalSplitPanel.setSplitPosition(400, HorizontalSplitPanel.UNITS_PIXELS);
 		horizontalSplitPanel.setFirstComponent(tree);
+		
+		Label preformattedText = new Label(
+                "This is a first GUI version of BOA\n" +
+				"\t1. Select a corpus on the left side\n" +
+				"\t2. Select a property in the tree\n" +
+				"\t3. View the patterns\n" +
+				"\t4. Click on a pattern to see the details!\n");
+        preformattedText.setContentMode(Label.CONTENT_PREFORMATTED);
+		
+		Panel p =  new Panel();
+		Embedded e = new Embedded("The BOA Architecture", new ThemeResource("images/BOA_Architecture.png"));
+		e.setWidth(700, Sizeable.UNITS_PIXELS);
+		p.setSizeFull();
+		p.addComponent(preformattedText);
+		p.addComponent(e);
+        horizontalSplitPanel.setSecondComponent(p);
 		
 		this.getMainWindow().setContent(layout);
 	}

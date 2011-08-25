@@ -145,8 +145,10 @@ public class PatternSearcher {
 	 */
 	public void queryPattern(Triple triple) throws ParseException, IOException {
 
-		String subjectLabel = this.removeBrackets(triple.getSubject().getLabel());
-		String objectLabel = this.removeBrackets(triple.getObject().getLabel());
+		String subjectLabel = triple.getSubject().getLabel();
+		String objectLabel	= triple.getObject().getLabel();
+		
+		System.out.println(subjectLabel + " " + objectLabel);
 		
 		Query query = parser.parse("+sentence:\"" + QueryParser.escape(subjectLabel) + "\" && +sentence:\"" + QueryParser.escape(objectLabel) + "\"");
 
@@ -284,6 +286,8 @@ public class PatternSearcher {
 
 	private boolean isPatternSuitable(String naturalLanguageRepresentation) {
 
+		String patternWithoutVariables = naturalLanguageRepresentation.substring(0, naturalLanguageRepresentation.length() - 3).substring(3).trim();
+		
 		// patterns are only allowed to have 256 characters
 		if (naturalLanguageRepresentation.length() > 256 || naturalLanguageRepresentation.isEmpty()) 
 			return false;
@@ -298,7 +302,7 @@ public class PatternSearcher {
 			return false;
 		
 		// patterns need to be bigger/equal than min chunk size and smaller/equal then max chunk size
-		String[] naturalLanguageRepresentationChunks = naturalLanguageRepresentation.substring(0, naturalLanguageRepresentation.length() - 3).substring(3).trim().split(" ");
+		String[] naturalLanguageRepresentationChunks = patternWithoutVariables.split(" ");
 		if ( naturalLanguageRepresentationChunks.length > maxPatternChunkLength || naturalLanguageRepresentationChunks.length < minPatternChunkLenght )
 			return false;
 		
@@ -312,7 +316,7 @@ public class PatternSearcher {
 			return false;
 		
 		// patterns shall not start with "and" or "and ," because this is the conjunction of sentences and does not carry meaning
-		if ( naturalLanguageRepresentation.startsWith("and ") || naturalLanguageRepresentation.startsWith("and,") || naturalLanguageRepresentation.startsWith("and ,") ) 
+		if ( patternWithoutVariables.startsWith("and ") || patternWithoutVariables.startsWith("and,") || patternWithoutVariables.startsWith("and ,") ) 
 			return false;
 		
 		return true;

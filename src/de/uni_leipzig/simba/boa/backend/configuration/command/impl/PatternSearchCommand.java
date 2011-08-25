@@ -161,6 +161,8 @@ public class PatternSearchCommand implements Command {
 							patternMap.put(patternString.hashCode(), pattern);
 							this.patterns.put(propertyUri.hashCode(), patternMap);
 						}
+						// add the current pattern to the current mapping
+						currentMapping.addPattern(pattern);
 					}
 					// pattern already created, just add new values
 					else {
@@ -169,13 +171,10 @@ public class PatternSearchCommand implements Command {
 						pattern.addLearnedFrom(label1 + "-;-" + label2);
 						pattern.addLuceneDocIds(Integer.valueOf(documentId));
 						pattern.addPatternMapping(currentMapping);
-						
-						// add the current pattern to the current mapping
-						currentMapping.addPattern(pattern);
 					}
 				}
 				// next line contains pattern for other property
-				// so create a new pattern mapping
+				// so create a new pattern mapping and a new pattern
 				else {
 					
 					// create it to use the proper hash function, the properties map has a COMPLETE list of all properties
@@ -183,7 +182,7 @@ public class PatternSearchCommand implements Command {
 					p.setUri(propertyUri);
 					p = this.properties.get(p.hashCode());
 					
-					currentMapping = this.mappings.get(propertyUri);
+					currentMapping = this.mappings.get(propertyUri.hashCode());
 					
 					if ( currentMapping == null ) {
 						
@@ -211,9 +210,25 @@ public class PatternSearchCommand implements Command {
 					}
 					this.mappings.put(propertyUri.hashCode(), currentMapping);
 				}
-				
 				currentProperty = propertyUri;
 			}
+			
+			for (PatternMapping pm : this.mappings.values()) {
+				
+				if ( pm.getProperty().getUri().equals("http://dbpedia.org/ontology/foundationPerson1") || pm.getProperty().getUri().equals("http://dbpedia.org/ontology/foundationPerson") ) {
+					
+					System.out.println(pm.getProperty().getUri());
+					for (Pattern p : pm.getPatterns()) {
+						
+						System.out.println("\t"+p.getNaturalLanguageRepresentation() + " occ: " + p.getNumberOfOccurrences());
+						for (PatternMapping mapp : p.getPatternMappings() ) {
+							
+							System.out.println("PM: " + mapp.getProperty().getUri());
+						}
+					}
+				}
+			}
+			
 			System.out.println("All pattern mappings read in " + (System.currentTimeMillis() - startPatternReading) + "ms!");
 			this.logger.info("All pattern mappings read in " + (System.currentTimeMillis() - startPatternReading) + "ms!");
 			

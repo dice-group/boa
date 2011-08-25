@@ -61,18 +61,18 @@ public class LoadKnowledgeCommand implements Command {
 			if ( isSubject ) { 
 				
 				subjectUri 		= line[0];
-				subjectLabel	= line[1];
+				subjectLabel	= line[1].replaceAll("\\(.+?\\)", "").trim();
 				objectUri		= line[3];
-				objectLabel		= line[4];
+				objectLabel		= line[4].replaceAll("\\(.+?\\)", "").trim();
 				subjectType		= domain;
 				objectType		= range;
 			}
 			else {
 				
 				subjectUri 		= line[3];
-				subjectLabel	= line[4];
+				subjectLabel	= line[4].replaceAll("\\(.+?\\)", "").trim();
 				objectUri		= line[0];
-				objectLabel		= line[1];
+				objectLabel		= line[1].replaceAll("\\(.+?\\)", "").trim();
 				subjectType		= range;
 				objectType		= domain;
 			}

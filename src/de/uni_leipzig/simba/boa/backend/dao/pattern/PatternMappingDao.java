@@ -1,7 +1,9 @@
 package de.uni_leipzig.simba.boa.backend.dao.pattern;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -236,7 +238,7 @@ public class PatternMappingDao extends AbstractDao {
 	public List<String> findPatternMappingsWithPatterns() {
 
 		Session session = HibernateFactory.getSessionFactory().openSession();
-    	String queryString = "select distinct(prop.uri) from pattern_mapping as pm, resource as prop ,pattern_mapping_pattern as pmp, pattern as p  where pm.id = pmp.pattern_mapping_id and pmp.pattern_id = p.id and pm.property_id = prop.id and p.confidence > 0 and p.numberOfOccurrences > 10;";
+    	String queryString = "select distinct(prop.uri) from pattern_mapping as pm, resource as prop, pattern_mapping_pattern as pmp, pattern as p  where pm.id = pmp.pattern_mapping_id and pmp.pattern_id = p.id and pm.property_id = prop.id and p.confidence > 0 and p.numberOfOccurrences > 3;";
         List<String> results = (List<String>) session.createSQLQuery(queryString).list();
         HibernateFactory.closeSession(session);
         return results;
@@ -252,5 +254,23 @@ public class PatternMappingDao extends AbstractDao {
     	HibernateFactory.closeSession(session);
     	
         return this.findPatternMapping(resourceList.get(0).getId());
+	}
+	
+	public Double findPatternMappingsWithSamePattern(String pattern) {
+		
+		String sqlQuery = 
+				"select distinct (pattern_mapping.id) " +
+				"from pattern, pattern_mapping, pattern_mapping_pattern " +
+				"where " +
+					"pattern_mapping_pattern.pattern_id = pattern.id " +
+					"and pattern_mapping_pattern.pattern_mapping_id = pattern_mapping.id " +
+					"and pattern.naturalLanguageRepresentation = :pattern ";
+		Session session = HibernateFactory.getSessionFactory().openSession();
+		
+		Query query = session.createSQLQuery(sqlQuery);
+		query.setString("pattern", pattern);
+        Set<Integer> results = new HashSet<Integer>(query.list());
+        HibernateFactory.closeSession(session);
+        return Double.valueOf(results.size());
 	}
 }
