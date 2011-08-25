@@ -148,7 +148,7 @@ public class PatternSearcher {
 		String subjectLabel = triple.getSubject().getLabel();
 		String objectLabel	= triple.getObject().getLabel();
 		
-		System.out.println(subjectLabel + " " + objectLabel);
+//		System.out.println(subjectLabel + " " + objectLabel);
 		
 		Query query = parser.parse("+sentence:\"" + QueryParser.escape(subjectLabel) + "\" && +sentence:\"" + QueryParser.escape(objectLabel) + "\"");
 
