@@ -302,7 +302,7 @@ public class PatternSearcher {
 			return false;
 		
 		// patterns need to be bigger/equal than min chunk size and smaller/equal then max chunk size
-		String[] naturalLanguageRepresentationChunks = patternWithoutVariables.split(" ");
+		String[] naturalLanguageRepresentationChunks = patternWithoutVariables.toLowerCase().split(" ");
 		if ( naturalLanguageRepresentationChunks.length > maxPatternChunkLength || naturalLanguageRepresentationChunks.length < minPatternChunkLenght )
 			return false;
 		
@@ -310,7 +310,7 @@ public class PatternSearcher {
 		// patterns containing only stop-words can't be used, because they are way to general 
 		int numberOfStopWordsInPattern = 0;
 		for ( String token : naturalLanguageRepresentationChunks ) {
-			if ( stopwords.contains(token.toLowerCase()) ) numberOfStopWordsInPattern++;
+			if ( stopwords.contains(token) ) numberOfStopWordsInPattern++;
 		} // TODO filter out "," "-" characters
 		if ( naturalLanguageRepresentationChunks.length == numberOfStopWordsInPattern )
 			return false;
