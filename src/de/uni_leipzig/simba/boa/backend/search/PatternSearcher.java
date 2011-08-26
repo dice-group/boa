@@ -44,7 +44,7 @@ public class PatternSearcher {
 	
 	public static final Set<String> stopwords = new HashSet<String>();
 	static {
-		Collections.addAll(stopwords, 	"I","a","about","an","are","as","at","be","by","com","for",
+		Collections.addAll(stopwords, 	"i","a","about","an","are","as","at","be","by","com","for",
 										"from","how","in","is","it","of","on","or","that","the",
 										"this","to","was","what","when","where","who","will","with",
 										"the","www","before",",","after",";","like","and","such",
@@ -310,8 +310,8 @@ public class PatternSearcher {
 		// patterns containing only stop-words can't be used, because they are way to general 
 		int numberOfStopWordsInPattern = 0;
 		for ( String token : naturalLanguageRepresentationChunks ) {
-			if ( stopwords.contains(token) ) numberOfStopWordsInPattern++;
-		}
+			if ( stopwords.contains(token.toLowerCase()) ) numberOfStopWordsInPattern++;
+		} // TODO filter out "," "-" characters
 		if ( naturalLanguageRepresentationChunks.length == numberOfStopWordsInPattern )
 			return false;
 		
