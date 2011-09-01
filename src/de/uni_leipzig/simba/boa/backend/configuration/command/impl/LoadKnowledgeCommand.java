@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -42,16 +44,20 @@ public class LoadKnowledgeCommand implements Command {
 		Map<String,Resource> resourceMap = new HashMap<String, Resource>();
 		
 		int i = 0;
+		Pattern pattern = Pattern.compile("\\(.+?\\)");
+	    Matcher matcher;
 		
 		for ( String[] line : labels ) {
 			
-//			if (i++==100) break;
+			if (i++==1000) break;
 			
 			String subjectUri		= "";
 			String subjectLabel		= "";
+			String subjectContext	= "";
 			String subjectType		= "";
 			String objectUri		= "";
 			String objectLabel		= "";
+			String objectContext	= "";
 			String objectType		= "";
 			String predicate		= line[2];
 			String range			= line[5];
@@ -62,8 +68,13 @@ public class LoadKnowledgeCommand implements Command {
 			if ( isSubject ) { 
 				
 				subjectUri 		= line[0];
+			    matcher = pattern.matcher(line[1]);
+			    while (matcher.find()) { subjectContext = matcher.group(); }
 				subjectLabel	= line[1].replaceAll("\\(.+?\\)", "").trim();
+				
 				objectUri		= line[3];
+			    matcher			= pattern.matcher(line[4]);
+			    while (matcher.find()) { objectContext = matcher.group(); }
 				objectLabel		= line[4].replaceAll("\\(.+?\\)", "").trim();
 				subjectType		= domain;
 				objectType		= range;
@@ -72,10 +83,15 @@ public class LoadKnowledgeCommand implements Command {
 				
 				subjectUri 		= line[3];
 				subjectLabel	= line[4].replaceAll("\\(.+?\\)", "").trim();
+				subjectType		= range;
+				matcher			= pattern.matcher(line[4]);
+			    while (matcher.find()) { subjectContext = matcher.group(); }
+				
 				objectUri		= line[0];
 				objectLabel		= line[1].replaceAll("\\(.+?\\)", "").trim();
-				subjectType		= range;
 				objectType		= domain;
+				matcher			= pattern.matcher(line[1]);
+			    while (matcher.find()) { objectContext = matcher.group(); }
 			}
 			
 			// create the resource: subject if not found
@@ -86,6 +102,9 @@ public class LoadKnowledgeCommand implements Command {
 				sub.setUri(subjectUri);
 				sub.setLabel(subjectLabel);
 				sub.setType(subjectType);
+				if ( subjectContext.length() > 0 ) {
+					sub.setContext(subjectContext.substring(1, subjectContext.length()-1));	
+				}
 				resourceMap.put(subjectUri, sub);
 			}
 			
@@ -110,6 +129,9 @@ public class LoadKnowledgeCommand implements Command {
 				obj.setUri(objectUri);
 				obj.setLabel(objectLabel);
 				obj.setType(objectType);
+				if ( objectContext.length() > 0 ) {
+					obj.setContext(objectContext.substring(1, objectContext.length()-1));
+				}
 				resourceMap.put(objectUri, obj);
 			}
 			

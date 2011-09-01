@@ -77,6 +77,23 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 		return type;
 	}
 	
+	/**
+	 * @return the context
+	 */
+	@Basic
+	public String getContext() {
+	
+		return context;
+	}
+
+	/**
+	 * @param context the context to set
+	 */
+	public void setContext(String context) {
+	
+		this.context = context;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

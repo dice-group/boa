@@ -26,7 +26,6 @@ public class ReverbMeasure implements ConfidenceMeasure {
 
 	static {
 		// this is a hack to load the training data for reverb
-		System.out.println(NLPediaSettings.getInstance().getSetting("reverbTrainingDirectory"));
 		DefaultObjects.setPath(NLPediaSettings.getInstance().getSetting("reverbTrainingDirectory"));
 	}
 	
