@@ -63,6 +63,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/guava-r07.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/reverb.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/weka-3-6-4.jar"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/utk"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/utk.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
