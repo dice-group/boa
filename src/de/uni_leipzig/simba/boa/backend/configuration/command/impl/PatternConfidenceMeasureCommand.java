@@ -34,7 +34,14 @@ public class PatternConfidenceMeasureCommand implements Command {
 
 	public PatternConfidenceMeasureCommand(Map<Integer,PatternMapping> patternMappingList) {
 		
-		this.patternMappingList = new ArrayList<PatternMapping>(patternMappingList.values());
+		if ( patternMappingList != null ){
+		
+			this.patternMappingList = new ArrayList<PatternMapping>(patternMappingList.values());
+		}
+		else {
+			
+			this.patternMappingList = this.patternMappingDao.findAllPatternMappings();
+		}
 		PatternConfidenceMeasureCommand.NUMBER_OF_PATTERN_MAPPINGS = (double) this.patternMappingList.size();
 	}
 	
@@ -119,16 +126,16 @@ public class PatternConfidenceMeasureCommand implements Command {
 				
 				if ( !pattern.isUseForPatternEvaluation() ) continue;
 				
-				double specificity = pattern.getSpecificityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
-				double typicity = pattern.getTypicityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
-				double support = pattern.getSupportForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
+//				double specificity = pattern.getSpecificityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
+//				double typicity = pattern.getTypicityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
+//				double support = pattern.getSupportForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
+//				
+//				double confidence = 3 * typicity + 2 * support + 1 * specificity + 10 * pattern.getSimilarity();
+//				pattern.setConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, confidence);
+//				pattern.setConfidence(confidence);
 				
-				double confidence = 3 * typicity + 2 * support + 1 * specificity + 10 * pattern.getSimilarity();
-				pattern.setConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, confidence);
-				pattern.setConfidence(confidence);
-				
-				maxConfidenceForPatternMapping		= Math.max(maxConfidenceForPatternMapping, confidence);
-				maxConfidenceForAllPatternMappings	= Math.max(maxConfidenceForAllPatternMappings, confidence);
+//				maxConfidenceForPatternMapping		= Math.max(maxConfidenceForPatternMapping, confidence);
+//				maxConfidenceForAllPatternMappings	= Math.max(maxConfidenceForAllPatternMappings, confidence);
 			}
 			
 			// set local maximums
@@ -136,13 +143,13 @@ public class PatternConfidenceMeasureCommand implements Command {
 				
 				if ( !Double.isNaN(maxConfidenceForPatternMapping) && !Double.isInfinite(maxConfidenceForPatternMapping) && pattern.isUseForPatternEvaluation() ) {
 				
-					pattern.setConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, pattern.getConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER) /  maxConfidenceForPatternMapping);
-					pattern.setConfidence(pattern.getConfidence() / maxConfidenceForPatternMapping);
+//					pattern.setConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, pattern.getConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER) /  maxConfidenceForPatternMapping);
+//					pattern.setConfidence(pattern.getConfidence() / maxConfidenceForPatternMapping);
 				}
 				else {
 					
-					pattern.setConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, 0D);
-					pattern.setConfidence(0D);
+//					pattern.setConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, 0D);
+//					pattern.setConfidence(0D);
 				}
 			}
 		}
@@ -154,10 +161,10 @@ public class PatternConfidenceMeasureCommand implements Command {
 				
 				if ( !Double.isNaN(maxConfidenceForAllPatternMappings) && !Double.isInfinite(maxConfidenceForAllPatternMappings) && pattern.isUseForPatternEvaluation() ) {
 					
-					pattern.setGlobalConfidence(pattern.getConfidence() /  maxConfidenceForAllPatternMappings);
+//					pattern.setGlobalConfidence(pattern.getConfidence() /  maxConfidenceForAllPatternMappings);
 				}
-				else 
-					pattern.setGlobalConfidence(0d);
+//				else 
+//					;pattern.setGlobalConfidence(0d);
 			}
 			
 			System.out.println("Updating pattern mapping " + mapping.getProperty().getUri());

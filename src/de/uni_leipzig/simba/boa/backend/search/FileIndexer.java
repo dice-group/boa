@@ -10,10 +10,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -41,10 +43,10 @@ import de.uni_leipzig.simba.boa.backend.util.ProgressBarUtil;
  * files into this index based on the input of the user.
  */
 public class FileIndexer {
-
+	
+	private static NLPediaSetup setup = new NLPediaSetup(true);
 	private NLPediaLogger logger = new NLPediaLogger(FileIndexer.class);
-	private NamedEntityRecognizer nerTagger = new NamedEntityRecognizer();
-	private int numberOfTrainedSentences = 0;
+	private static NamedEntityRecognizer nerTagger = new NamedEntityRecognizer();
 
 	private IndexWriter writer;
 
@@ -119,10 +121,6 @@ public class FileIndexer {
 //							ProgressBarUtil.printProgBar((int) ((((double) j) / ((double) linesOfFile)) * 100));
 						}
 						
-						if ( numberOfTrainedSentences <= 510 ) {
-						
-							line = this.createTrainingData(line);
-						}
 						if ( line != null ) {	
 							doc = new Document();
 							// doc.add(new Field("sentence", line, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
@@ -151,7 +149,13 @@ public class FileIndexer {
 		}
 		this.logger.info("Added " + writer.numDocs() + " files to index");
 	}
-
+	
+	private static final String NER_PERSON = "_I-ORG";
+	private static final String NER_LOCATION = "_I-ORG";
+	private static final String NER_ORGANISATION = "_I-ORG";
+//	private static final String NER_PERSON = "_PERSON";
+//	private static final String NER_ORGANISATION = "_ORGANIZATION";
+//	private static final String NER_LOCATION = "_LOCATION";
 	/**
 	 * This methods first needs to check if the line is smaller than 256 characters. Then it
 	 * has to NER tag the sentence and if the sentence contains two or more entities then this will be
@@ -159,165 +163,86 @@ public class FileIndexer {
 	 * 
 	 * @param line
 	 */
-	private String createTrainingData(String line) {
+	private static boolean sentenceContainsMoreThanTwoEntities(String line) {
 
-		// sentence to long for evaluation
-//		if ( line.length() >= 128 || line.length() <= 100 ) return line;
-		
 		String nerTaggedLine = nerTagger.recognizeEntitiesInString(line);
-		System.out.println(nerTaggedLine);
 		
-		if ( (nerTaggedLine.contains("_PERSON") && nerTaggedLine.contains("_ORGANIZATION")) || 
-			 (nerTaggedLine.contains("_ORGANIZATION") && nerTaggedLine.contains("_LOCATION"))	|| 
-			 (nerTaggedLine.contains("_LOCATION") && nerTaggedLine.contains("_PERSON")) ) {
-			
-			writeSentenceToTrainingFile(line);
-			return null;
-		}
-		List<String> occurrences =  new ArrayList<String>();
-		String[] orgs = StringUtils.substringsBetween(line, "_ORGANIZATION", "_ORGANIZATION");
-		String[] pers = StringUtils.substringsBetween(line, "_PERSON", "_PERSON");
-		String[] locs = StringUtils.substringsBetween(line, "_LOCATION", "_LOCATION");
-		
-		if ( orgs != null ) occurrences.addAll(Arrays.asList(orgs));
-		if ( pers != null ) occurrences.addAll(Arrays.asList(pers));
-		if ( locs != null ) occurrences.addAll(Arrays.asList(locs));
-		
-		int i = 0;
-		List<String> tokens = Arrays.asList(nerTaggedLine.split("_O "));
-		for (String token : tokens) {
-			
-			if ( token.contains("_PERSON") || token.contains("_ORGANIZATION") || token.contains("_ORGANIZATION") ) {
-				i++;
-			}
-		}
-		if ( i >= 2 ) {
-			
-			writeSentenceToTrainingFile(line);
-			return null;
-		}
-		return line;
-	}
-	
-	private void writeSentenceToTrainingFile(String line) {
-
-		try {
-			
-			this.numberOfTrainedSentences++;
-			
-			BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/gerb/EVALUATION_500_WIKI.txt", true), "UTF-8"));
-			br.write(line);
-			br.write(Constants.NEW_LINE_SEPARATOR);
-			br.close();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static void main(String[] args) throws IOException {
-		
-		File directory = new File("/Users/gerb/_EVAL/");
-		File files[] = directory.listFiles();
-		Random randomGenerator = new Random();
-		
-		for (File file : files) {
-			
-			// calculate the lines to get randomly from the file
-			Set<Integer> lines = new HashSet<Integer>();
-			int linesOfFile = FileUtil.countLinesOfFile(file.getAbsolutePath());
-		    for (int idx = 1 ; idx <= 550 ; idx++) {
-		    	
-		    	int y = randomGenerator.nextInt(linesOfFile);
-		    	while ( lines.contains(y) ) y = randomGenerator.nextInt(linesOfFile + 1);
-		    	lines.add(y);
-		    }
-		    
-		    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/gerb/EVAL_SENT.txt"), "UTF-8"));
-		    
-		    for ( Integer lineNumber : lines ) {
-		    	
-		    	BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-		    	
-		    	for (int i = 1 ; i <= lineNumber; i++ ) {
-		    		
-		    		String tempLine = br.readLine();
-		    		if ( i == lineNumber ) {
-		    			
-		    			bw.write(tempLine);
-		    			bw.write(Constants.NEW_LINE_SEPARATOR);
-		    		}
-		    	}
-		    	br.close();
-		    }
-		    bw.close();
-		}
-	}
-	
-	
-//	public static void main(String[] args) throws IOException {
-//		
-//		NLPediaSetup setup = new NLPediaSetup(true);
-//		File directory = new File(NLPediaSettings.getInstance().getSetting("sentenceFileDirectory"));
-//		File files[] = directory.listFiles();
-//		
-//		NamedEntityRecognizer tagger = new NamedEntityRecognizer();
-//		
-//		for (File file : files) {
-//			
-//			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/gerb/SENTENCES_2_ENTITIES.txt", true), "UTF-8"));
-//			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-//			String line = null;
-//			
-//			int i = 0;
-//			while ((line = br.readLine()) != null) { i++;
-//				
-//				System.out.println(i);
-//				String nerTagged = tagger.recognizeEntitiesInString(line);
-//				
-//				if ( containsMoreThanOneEntity(nerTagged) ) {
-//					
-//					bw.write(line);
-//					bw.write(Constants.NEW_LINE_SEPARATOR);
-//				}
-//			}
-//			
-//			bw.close();
-//			br.close();
-//		}
-//	}
-
-	private static boolean containsMoreThanOneEntity(String nerTaggedLine) {
-
-		// two different tags were found
-		if ( (nerTaggedLine.contains("_PERSON") && nerTaggedLine.contains("_ORGANIZATION")) || 
-			 (nerTaggedLine.contains("_ORGANIZATION") && nerTaggedLine.contains("_LOCATION"))	|| 
-			 (nerTaggedLine.contains("_LOCATION") && nerTaggedLine.contains("_PERSON")) ) {
+		if ( (nerTaggedLine.contains(NER_PERSON) && nerTaggedLine.contains(NER_ORGANISATION)) || 
+			 (nerTaggedLine.contains(NER_ORGANISATION) && nerTaggedLine.contains(NER_LOCATION))	|| 
+			 (nerTaggedLine.contains(NER_LOCATION) && nerTaggedLine.contains(NER_PERSON)) ) {
 			
 			return true;
 		}
-		
-		// check for two tags of the same kind
 		List<String> occurrences =  new ArrayList<String>();
-		String[] orgs = StringUtils.substringsBetween(nerTaggedLine, "_ORGANIZATION", "_ORGANIZATION");
-		String[] pers = StringUtils.substringsBetween(nerTaggedLine, "_PERSON", "_PERSON");
-		String[] locs = StringUtils.substringsBetween(nerTaggedLine, "_LOCATION", "_LOCATION");
+		String[] orgs = StringUtils.substringsBetween(line, NER_ORGANISATION, NER_ORGANISATION);
+		String[] pers = StringUtils.substringsBetween(line, NER_PERSON, NER_PERSON);
+		String[] locs = StringUtils.substringsBetween(line, NER_LOCATION, NER_LOCATION);
 		
 		if ( orgs != null ) occurrences.addAll(Arrays.asList(orgs));
 		if ( pers != null ) occurrences.addAll(Arrays.asList(pers));
 		if ( locs != null ) occurrences.addAll(Arrays.asList(locs));
 		
-		// use _O as tag separator so succeeding tags get combined to one token 
-		// -> A_Person B_Person of_O C_Person D_Person
-		// -> [A_Person B_Person], [of], [C_Person D_Person]
 		int i = 0;
 		List<String> tokens = Arrays.asList(nerTaggedLine.split("_O "));
 		for (String token : tokens) {
 			
-			if ( token.contains("_PERSON") || token.contains("_ORGANIZATION") || token.contains("_ORGANIZATION") ) i++;
-			if ( i >= 2 ) return true;
+			if ( token.contains(NER_PERSON) || token.contains(NER_ORGANISATION) || token.contains(NER_ORGANISATION) ) {
+				i++;
+			}
+			if ( i >= 2 ) {
+				
+				return true;
+			}
 		}
 		return false;
+	}
+	
+	public static void main(String[] args) throws IOException {
+		
+		File file = new File("/Users/gerb/Development/workspaces/experimental/nlpedia/de_wiki/sentences/sentences.txt");
+		Random randomGenerator = new Random();
+		
+		// calculate the lines to get randomly from the file
+		List<Integer> lines = new ArrayList<Integer>();
+		int linesOfFile = FileUtil.countLinesOfFile(file.getAbsolutePath());
+		System.out.printf("The file has %s lines.\n", linesOfFile);
+		
+	    for (int idx = 1 ; idx <= 100000 ; idx++) {
+	    	
+	    	int y = randomGenerator.nextInt(linesOfFile);
+	    	while ( lines.contains(y) ) y = randomGenerator.nextInt(linesOfFile + 1);
+	    	lines.add(y);
+	    }
+	    Collections.sort(lines);
+	    System.out.println("Random lines calculated!");
+	    
+	    String line;
+	    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+	    
+	    List<String> sentencesToWrite = new ArrayList<String>();
+	    for ( int i = 0, j = 0 ; i < linesOfFile ; i++ ) {
+	    	
+	    	line = br.readLine();
+	    	
+	    	if ( i == lines.get(j) ) {
+	    		
+	    		if ( line.length() < 128 && line.length() > 80 && sentenceContainsMoreThanTwoEntities(line) ) {
+	    			
+	    			System.out.println(line);
+	    			sentencesToWrite.add(line);
+	    		}
+	    		j++;
+	    	}
+	    	if (j == lines.size() - 1 ) break;
+	    }
+	    Collections.shuffle(sentencesToWrite);
+	    	
+	    Writer bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/gerb/DE_EVAL_SENT.txt"), "UTF-8"));
+	    for (String sent : sentencesToWrite.subList(0, 599) ) {
+	    	bw.write(sent);
+			bw.write(Constants.NEW_LINE_SEPARATOR);
+	    }
+	    bw.close();
+	    br.close();
 	}
 }

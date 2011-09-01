@@ -11,6 +11,7 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 	protected String uri;
 	protected String label;
 	protected String type;
+	protected String context;
 	
 	/**
 	 * 

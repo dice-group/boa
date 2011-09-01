@@ -64,7 +64,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	private NLPediaLogger logger = new NLPediaLogger(BoaFrontendApplication.class);
 
 	private Button evaluationButton = new Button("Evaluation");
-	private Button databasesButton = new Button("Corpora");
+	private Button databasesButton = new Button("Home");
 	private Button sparqlButton = new Button("SPARQL");
 	private Button startQuery = new Button("Query"); 
 	
@@ -114,13 +114,14 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		}
 		else if ( source == this.databasesButton ) {
 			
-			Panel p = new Panel();
-			p.addComponent(new Label("Hier kann man sich die Patterns anschauen"));
-			// setze linken teil auf die modelle
-			horizontalSplitPanel.setFirstComponent(tree);			
-			// in denrechten teil kommt die erkl�rung
-			horizontalSplitPanel.setSecondComponent(p);
-			horizontalSplitPanel.setSplitPosition(400, HorizontalSplitPanel.UNITS_PIXELS);
+//			Panel p = new Panel();
+//			p.addComponent(new Label("Hier kann man sich die Patterns anschauen"));
+//			// setze linken teil auf die modelle
+//			horizontalSplitPanel.setFirstComponent(tree);			
+//			// in denrechten teil kommt die erkl�rung
+//			horizontalSplitPanel.setSecondComponent(p);
+//			horizontalSplitPanel.setSplitPosition(400, HorizontalSplitPanel.UNITS_PIXELS);
+			this.buildHomeLayout();
 		}
 		else if ( source == this.sparqlButton ) {
 			
@@ -167,7 +168,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 			}
 		}
 	}
-	
+
 	public void itemClick(ItemClickEvent event) {
 		
 		if (event.getSource() == tree) {
@@ -182,38 +183,36 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				HibernateFactory.changeConnection(this.currentDatabase);
 				
 				PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
-				PatternMapping pm = pmDao.findPatternMappingByUri(uri);//pmDao.findPatternMappingsWithoutPattern(uri).get(0);
-//				pm = pmDao.findPatternMappingWithoutZeroConfidencePattern(pm);
+				PatternMapping pm = pmDao.findPatternMappingByUri(uri);
 				
-				GridLayout gridLayout = new GridLayout(5,6);
+				GridLayout gridLayout = new GridLayout(3,3);
 				gridLayout.setSpacing(true);
-				gridLayout.setMargin(false);
+				gridLayout.setMargin(true);
 				gridLayout.setSizeFull();
 				
-				gridLayout.addComponent(new Label(""), 0, 0);
-				
-				System.out.println("asdasd" + pm.getProperty());
-				
 				Label rdfsDomainLabel = new Label("rdfs:domain (?D?)");
-				gridLayout.addComponent(rdfsDomainLabel, 1, 0);
-				gridLayout.setComponentAlignment(rdfsDomainLabel, Alignment.MIDDLE_LEFT);
-				
 				Link rdfsDomainLink = new Link(pm.getProperty().getRdfsDomain(), new ExternalResource(pm.getProperty().getRdfsDomain()));
-				gridLayout.addComponent(rdfsDomainLink, 2, 0);
-				gridLayout.setComponentAlignment(rdfsDomainLink, Alignment.MIDDLE_LEFT);
+				gridLayout.addComponent(rdfsDomainLabel,0,0);
+				gridLayout.addComponent(rdfsDomainLink,1,0);
 				
 				Label rdfsRangeLabel = new Label("rdfs:range (?R?)");
-				gridLayout.addComponent(rdfsRangeLabel, 3, 0);
-				gridLayout.setComponentAlignment(rdfsRangeLabel, Alignment.MIDDLE_RIGHT);
-				
 				Link rdfsRangeLink = new Link(pm.getProperty().getRdfsRange(), new ExternalResource(pm.getProperty().getRdfsRange()));
-				gridLayout.addComponent(rdfsRangeLink, 4, 0);
-				gridLayout.setComponentAlignment(rdfsRangeLink, Alignment.MIDDLE_LEFT);
+				gridLayout.addComponent(rdfsRangeLabel,0,1);
+				gridLayout.addComponent(rdfsRangeLink,1,1);
+				
+				Label rdfsLabel = new Label("rdfs:label");
+				Label rdfsLabelString = new Label(pm.getProperty().getLabel());
+				gridLayout.addComponent(rdfsLabel,0,2);
+				gridLayout.addComponent(rdfsLabelString,1,2);
+				
+				VerticalSplitPanel vPanel = new VerticalSplitPanel();
+				vPanel.setFirstComponent(gridLayout);
+				vPanel.setSplitPosition(25);
 				
 				try {
 					
 					this.patternTable = new PatternTable(this, new PatternContainer(pm));
-					gridLayout.addComponent(patternTable, 0, 1, 4, 5);
+					vPanel.setSecondComponent(this.patternTable);
 				}
 				catch (InstantiationException e) {
 					// TODO Auto-generated catch block
@@ -223,7 +222,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				this.horizontalSplitPanel.setSecondComponent(gridLayout);
+				this.horizontalSplitPanel.setSecondComponent(vPanel);
 			}
 		}
 		else if (event.getSource() == rdfSparqlTree) {
@@ -348,21 +347,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		horizontalSplitPanel.setSplitPosition(400, HorizontalSplitPanel.UNITS_PIXELS);
 		horizontalSplitPanel.setFirstComponent(tree);
 		
-		Label preformattedText = new Label(
-                "This is a first GUI version of BOA\n" +
-				"\t1. Select a corpus on the left side\n" +
-				"\t2. Select a property in the tree\n" +
-				"\t3. View the patterns\n" +
-				"\t4. Click on a pattern to see the details!\n");
-        preformattedText.setContentMode(Label.CONTENT_PREFORMATTED);
-		
-		Panel p =  new Panel();
-		Embedded e = new Embedded("The BOA Architecture", new ThemeResource("images/BOA_Architecture.png"));
-		e.setWidth(700, Sizeable.UNITS_PIXELS);
-		p.setSizeFull();
-		p.addComponent(preformattedText);
-		p.addComponent(e);
-        horizontalSplitPanel.setSecondComponent(p);
+		this.buildHomeLayout();
 		
 		this.getMainWindow().setContent(layout);
 	}
@@ -371,16 +356,16 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		
 		GridLayout lo = new GridLayout(30,1);
 		lo.addComponent(databasesButton,0,0);
-		lo.addComponent(evaluationButton,1,0);
-		lo.addComponent(sparqlButton,2,0);
+//		lo.addComponent(evaluationButton,1,0);
+//		lo.addComponent(sparqlButton,2,0);
 		
-		evaluationButton.addListener((ClickListener) this);
+//		evaluationButton.addListener((ClickListener) this);
+//		sparqlButton.addListener((ClickListener) this);
 		databasesButton.addListener((ClickListener) this);
-		sparqlButton.addListener((ClickListener) this);
 		
-		evaluationButton.setIcon(new ThemeResource("icons/32/folder-add.png"));
-		databasesButton.setIcon(new ThemeResource("icons/32/users.png"));
-		sparqlButton.setIcon(new ThemeResource("icons/32/document-edit.png"));
+//		evaluationButton.setIcon(new ThemeResource("icons/32/folder-add.png"));
+//		sparqlButton.setIcon(new ThemeResource("icons/32/document-edit.png"));
+		databasesButton.setIcon(new ThemeResource("icons/32/globe.png"));
 		
 		lo.setMargin(true);
 		lo.setSpacing(false);
@@ -395,6 +380,32 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 //		lo.setExpandRatio(em, 1);
 
 		return lo;
+	}
+	
+	private void buildHomeLayout() {
+
+		Label preformattedText = new Label(
+				"<b><h1>BOA - a framework for BOostrapping the datA web.</h1></b><br/>" +
+				"The idea behind BOA is to use the Data Web as background knowledge for the extraction of " +
+				"natural language patterns that represent predicates found on the Data Web. These patterns " +
+				"are used to extract instance knowledge from natural language text. This knowledge is " +
+				"finally fed back into the Data Web, therewith closing the loop. <br/><br/>" +
+                "This is a first GUI version of BOA:\n" +
+				"<ol><li>Select a corpus on the left side</li>" +
+				"<li>Select a property in the tree</li>" +
+				"<li>View the patterns</li>" +
+				"<li>Click on a pattern to see the details!</li></ol>" +
+				"<b>The BOA Architecture:</b>");
+        preformattedText.setContentMode(Label.CONTENT_XHTML);
+		
+        
+		Panel p =  new Panel();
+		Embedded e = new Embedded("", new ThemeResource("images/BOA_Architecture.png"));
+		e.setWidth(700, Sizeable.UNITS_PIXELS);
+		p.setSizeFull();
+		p.addComponent(preformattedText);
+		p.addComponent(e);
+        horizontalSplitPanel.setSecondComponent(p);
 	}
 
 	@Override

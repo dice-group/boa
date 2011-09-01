@@ -41,17 +41,17 @@ public class PatternTest {
 	@Test
 	public void testPattern() {
 	
-		Pattern p0 = new Pattern("?X? is a ?Y?", "?X? is a ?Y?");
+		Pattern p0 = new Pattern("?X? is a ?Y?");
 		p0.setConfidenceForIteration(1, 0.3);
 		p0.setNumberOfOccurrences(766);
 		p0.setUseForPatternEvaluation(true);
 		
-		Pattern p1 = new Pattern("?X? is an ?Y?", "?X? is an ?Y?");
+		Pattern p1 = new Pattern("?X? is an ?Y?");
 		p1.setConfidenceForIteration(1, 0.34);
 		p1.setNumberOfOccurrences(7626);
 		p1.setUseForPatternEvaluation(false);
 		
-		Pattern p2 = new Pattern("?X? is an ?Y?","?X? is an ?Y?");
+		Pattern p2 = new Pattern("?X? is an ?Y?");
 		p2.setConfidenceForIteration(1, 0.34);
 		p2.setNumberOfOccurrences(7626);
 		p2.setUseForPatternEvaluation(false);

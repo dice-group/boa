@@ -75,17 +75,9 @@ public class NLPedia {
 						break;
 						
 					case 4: // evaluate pattern
-
-						long start4 = new Date().getTime();
-						// filter patterns
-//						Command patternFilterCommand = new PatternFilterCommand(null);
-//						patternFilterCommand.execute();
-//						
-//						// calculate confidence, hand over the filtered patterns
-//						Command patternConfidenceMeasureCommand = new PatternConfidenceMeasureCommand(((PatternFilterCommand) patternFilterCommand).getPatternMappingList());
-//						patternConfidenceMeasureCommand.execute();
-						
-						System.out.println("Pattern filter and confidence measurement took: " + (new Date().getTime() - start4) + "ms");
+						// calculate confidence, hand over the filtered patterns
+						Command patternConfidenceMeasureCommand = new PatternConfidenceMeasureCommand(null);
+						patternConfidenceMeasureCommand.execute();
 						break;
 						
 					case 5: // query a single phrase

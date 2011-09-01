@@ -28,6 +28,13 @@ public class ResetPatternCommand implements Command {
 			p.setSpecificities(new HashMap<Integer,Double>());
 			p.setSupports(new HashMap<Integer,Double>());
 			p.setTypicities(new HashMap<Integer,Double>());
+			p.setReverbs(new HashMap<Integer,Double>());
+			p.setSimilarity(-1D);
+			p.setSupport(-1D);
+			p.setSpecificity(-1D);
+			p.setTypicity(-1D);
+			p.setReverb(-1D);
+			p.setGeneralizedPattern("");
 		}
 		patternDao.batchSaveOrUpdatePattern(patternList);
 	}

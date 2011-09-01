@@ -1,6 +1,10 @@
 package de.uni_leipzig.simba.boa.backend.rdf.entity;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -34,8 +38,9 @@ public class Property extends Resource {
 
 	private String rdfsRange;
 	private String rdfsDomain;
+	private String synsets;
 	private PatternMapping patternMapping;
-
+	
 	public Property(String uri, String label, String rdfsRange, String rdfsDomain) {
 
 		super(uri, label);
@@ -98,5 +103,32 @@ public class Property extends Resource {
 	public PatternMapping getPatternMapping() {
 
 		return patternMapping;
+	}
+
+
+	/**
+	 * @return the synsets
+	 */
+	@Column(length=5012)
+	public String getSynsets() {
+
+		return synsets;
+	}
+	
+	/**
+	 * @return the synsets
+	 */
+	public List<String> retrieveSynsetsForLabel(){
+		
+		return Arrays.asList(this.synsets.split(","));
+	}
+
+
+	/**
+	 * @param synsets the synsets to set
+	 */
+	public void setSynsets(String synsets) {
+
+		this.synsets = synsets;
 	}
 }

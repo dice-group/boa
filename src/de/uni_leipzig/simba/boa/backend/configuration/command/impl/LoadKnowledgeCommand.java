@@ -16,6 +16,7 @@ import de.uni_leipzig.simba.boa.backend.dao.rdf.TripleDao;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
+import de.uni_leipzig.simba.boa.backend.wordnet.query.WordnetQuery;
 
 
 public class LoadKnowledgeCommand implements Command {
@@ -97,6 +98,7 @@ public class LoadKnowledgeCommand implements Command {
 				p.setRdfsDomain(domain);
 				p.setRdfsRange(range);
 				p.setLabel(StringUtils.join(predicate.replace("http://dbpedia.org/ontology/", "").split("(?=\\p{Upper})"), " ").toLowerCase());
+				p.setSynsets(StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(p.getLabel()), ","));
 				resourceMap.put(predicate, p);
 			}
 			

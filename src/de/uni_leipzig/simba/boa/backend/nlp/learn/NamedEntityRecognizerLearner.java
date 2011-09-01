@@ -8,8 +8,10 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -245,15 +247,16 @@ public class NamedEntityRecognizerLearner {
 		}
 	}
 	
-	private static String getFavoredTag(List<String> regexMatches) {
+	private static String getFavoredTag(Collection<String> regexMatches) {
 
 		if (regexMatches != null && regexMatches.size() > 0 ) {
 			
 			Map<String,Integer> counts =  new HashMap<String,Integer>();
 			
-			for (int i = 0; i < regexMatches.size() ; i++) {
+			Iterator<String> iter = regexMatches.iterator();
+			while (iter.hasNext()) {
 				
-				String s = regexMatches.get(i).substring(3);
+				String s = iter.next().substring(3);
 				if ( counts.containsKey(s) ) {
 					
 					counts.put(s, counts.get(s) + 1);

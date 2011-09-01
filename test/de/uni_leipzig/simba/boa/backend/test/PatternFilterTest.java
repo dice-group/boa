@@ -46,14 +46,14 @@ public class PatternFilterTest {
 	@Test
 	public void testStopWordPatternEvaluator() {
 		
-		Pattern p1 = new Pattern("?D? impoundment of the ?R?", "");
+		Pattern p1 = new Pattern("?D? impoundment of the ?R?");
 		p1.setUseForPatternEvaluation(true);
 		p1.setNumberOfOccurrences(4);
 		p1.addLearnedFrom("ASD" + "-;-" + "ASD");
 		p1.addLearnedFrom("ASD" + "-;-" + "ASD");
 		p1.addLearnedFrom("ASD" + "-;-" + "ASD");
 		
-		Pattern p2 = new Pattern("?R? , which flows into ?D?", "");
+		Pattern p2 = new Pattern("?R? , which flows into ?D?");
 		p2.setUseForPatternEvaluation(true);
 		p2.setNumberOfOccurrences(4);
 		p2.addLearnedFrom("ASD" + "-;-" + "ASD");

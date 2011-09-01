@@ -42,9 +42,9 @@ public class PatternSearcher {
 
 	private PosTagger posTagger;
 	
-	public static final Set<String> stopwords = new HashSet<String>();
+	public static final Set<String> STOP_WORDS = new HashSet<String>();
 	static {
-		Collections.addAll(stopwords, 	"i","a","about","an","are","as","at","be","by","com","for",
+		Collections.addAll(STOP_WORDS, 	",","-","i","a","about","an","are","as","at","be","by","com","for",
 										"from","how","in","is","it","of","on","or","that","the",
 										"this","to","was","what","when","where","who","will","with",
 										"the","www","before",",","after",";","like","and","such",
@@ -267,23 +267,6 @@ public class PatternSearcher {
 		}
 	}
 	
-	private String removeBrackets(String label) {
-		
-		String temp =  label;
-		try {
-			
-			if ( label.contains("(") && !label.startsWith("(")) {
-				label = label.substring(0, label.indexOf("(") - 1);
-			}
-		}
-		catch ( StringIndexOutOfBoundsException nlp ) {
-			
-			System.out.println("Label: \"" + temp + "\"");
-			System.out.println("Fixed Label: \"" + label + "\"");
-		}
-		return label;
-	}
-
 	private boolean isPatternSuitable(String naturalLanguageRepresentation) {
 
 		String patternWithoutVariables = naturalLanguageRepresentation.substring(0, naturalLanguageRepresentation.length() - 3).substring(3).trim();
@@ -310,7 +293,7 @@ public class PatternSearcher {
 		// patterns containing only stop-words can't be used, because they are way to general 
 		int numberOfStopWordsInPattern = 0;
 		for ( String token : naturalLanguageRepresentationChunks ) {
-			if ( stopwords.contains(token) ) numberOfStopWordsInPattern++;
+			if ( STOP_WORDS.contains(token) ) numberOfStopWordsInPattern++;
 		} // TODO filter out "," "-" characters
 		if ( naturalLanguageRepresentationChunks.length == numberOfStopWordsInPattern )
 			return false;

@@ -10,6 +10,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -41,6 +42,11 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	 * 
 	 */
 	private String posTaggedString;
+	
+	/**
+	 * 
+	 */
+	private String generalizedPattern;
 	
 	/**
 	 * 
@@ -85,6 +91,11 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * 
 	 */
+	private Double reverb = -1D;
+	
+	/**
+	 * 
+	 */
 	private Double specificity = -1D;
 	
 	/**
@@ -111,6 +122,11 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	 * 
 	 */
 	private Map<Integer,Double> specificities = new HashMap<Integer,Double>();
+	
+	/**
+	 * 
+	 */
+	private Map<Integer,Double> reverbs = new HashMap<Integer,Double>();
 
 	/**
 	 * @param naturalLanguageRepresentation the naturalLanguageRepresentation to set
@@ -347,7 +363,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * @return the learnedFrom
 	 */
-	@ElementCollection(/*fetch = FetchType.EAGER*/)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name="pattern_learned_from")
 	public Map<String,Integer> getLearnedFrom() {
 
@@ -393,8 +409,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	public List<Integer> retrieveLuceneDocIdsAsList(){
 		
 		List<Integer> ids = new ArrayList<Integer>();
-		System.out.println( this.luceneDocIds);
-		
 		String[] s = this.luceneDocIds.substring(1).split("\\$");
 		for (String id : s) {
 			
@@ -442,7 +456,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		this.confidences.put(iteration, confidence);
 	}
 
-	@ElementCollection(/*fetch = FetchType.EAGER*/)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name="pattern_confidences")
 	public Map<Integer,Double> getConfidences() {
 
@@ -457,7 +471,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * @return the support
 	 */
-	@ElementCollection(/*fetch = FetchType.EAGER*/)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name="pattern_supports")
 	public Map<Integer,Double> getSupports() {
 	
@@ -495,7 +509,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * @return the typicity
 	 */
-	@ElementCollection(/*fetch = FetchType.EAGER*/)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name="pattern_typicities")
 	public Map<Integer,Double> getTypicities() {
 	
@@ -533,7 +547,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * @return the specificity
 	 */
-	@ElementCollection(/*fetch = FetchType.EAGER*/)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name="pattern_specificities")
 	public Map<Integer,Double> getSpecificities() {
 	
@@ -619,6 +633,15 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		if ( maxIteration > 0 ) return this.typicities.get(maxIteration);
 		else return -1D;
 	}
+	
+	public Double retrieveMostRecentReverb(){
+		
+		int maxIteration = 0;
+		for ( Integer i : this.reverbs.keySet() ) maxIteration = Math.max(maxIteration, i);
+		
+		if ( maxIteration > 0 ) return this.reverbs.get(maxIteration);
+		else return -1D;
+	}
 
 	@Basic
 	public Double getConfidence() {
@@ -678,13 +701,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	
 		this.specificity = specificity;
 	}
-//	/**
-//	 * @param learnedTriple the learnedTriple to set
-//	 */
-//	public void setLearnedFromTriples(Set<Triple> learnedFromTriples) {
-//
-//		this.learnedFromTriples = learnedFromTriples;
-//	}
 
 	/**
 	 * @param similarity the similarity to set
@@ -703,6 +719,68 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		return similarity;
 	}
 
+	/**
+	 * @return the reverbs
+	 */
+	@ElementCollection(fetch = FetchType.EAGER)
+	@JoinTable(name="pattern_reverbs")
+	public Map<Integer,Double> getReverbs() {
+
+		return reverbs;
+	}
+
+	/**
+	 * @param reverbs the reverbs to set
+	 */
+	public void setReverbs(Map<Integer,Double> reverbs) {
+
+		this.reverbs = reverbs;
+	}
+
+	/**
+	 * @param iteration number of the iteration
+	 * @return the reverb score for the specified iteration
+	 */
+	public Double getReverbForIteration(Integer iteration){
+		
+		Double reverbs = -1D;
+		if ( this.reverbs.containsKey(iteration) ) return this.reverbs.get(iteration);
+		return reverbs;
+	}
+
+	/**
+	 * @return the reverb
+	 */
+	@Basic
+	public Double getReverb() {
+
+		return reverb;
+	}
+
+	/**
+	 * @param reverb the reverb to set
+	 */
+	public void setReverb(Double reverb) {
+
+		this.reverb = reverb;
+	}
+
+	/**
+	 * @return the generalizedPattern
+	 */
+	@Basic
+	public String getGeneralizedPattern() {
+
+		return generalizedPattern;
+	}
+
+	/**
+	 * @param generalizedPattern the generalizedPattern to set
+	 */
+	public void setGeneralizedPattern(String generalizedPattern) {
+
+		this.generalizedPattern = generalizedPattern;
+	}
 
 	/**
 	 * @return the learnedTriple

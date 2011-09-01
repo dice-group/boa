@@ -118,7 +118,7 @@ public class NerTagUtf8Test {
 			System.out.println(pm.getPatterns().get(0).getNaturalLanguageRepresentation());
 
 			QueryParser exactMatchParser = new QueryParser(Version.LUCENE_30, "sentence", new SimpleAnalyzer());
-			ScoreDoc[] hits = indexSearcher.search(exactMatchParser.parse("\"Schulm�dchen\""), null, 10).scoreDocs;
+			ScoreDoc[] hits = indexSearcher.search(exactMatchParser.parse("\"Schulmädchen\""), null, 10).scoreDocs;
 			
 			assertTrue("One sentence contains the keyword:", hits.length == 1);
 		}
