@@ -25,7 +25,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 	public static final Object DATABASE_PROPERTY_NAME = "database_name";
 	public static final Object URI_NAME = "database_name";
 	
-	public static final String[] DATABASE_IDS = new String[]{"en_wiki_all", "en_news_all"};//NLPediaSettings.getInstance().getSetting("frontend.databases").split(",");
+	public static final String[] DATABASE_IDS = NLPediaSettings.getInstance().getSetting("frontend.databases").split(",");
 	
 	public DatabaseContainer() {
 		

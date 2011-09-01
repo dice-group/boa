@@ -6,6 +6,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationComm
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeasure;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 /**
  * 
@@ -13,6 +14,8 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeas
  */
 public class SupportMeasure implements ConfidenceMeasure {
 
+	private NLPediaLogger logger = new NLPediaLogger(SupportMeasure.class);
+	
 	@Override
 	public void measureConfidence(PatternMapping mapping) {
 
@@ -29,6 +32,6 @@ public class SupportMeasure implements ConfidenceMeasure {
 			pattern.setSupportForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, support);
 			pattern.setSupport(support);
 		}
-		System.out.println("Support measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
+		this.logger.info("Support measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}
 }

@@ -1,6 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.confidence;
 
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,7 @@ public class PatternConfidenceMeasureThread extends Thread {
 		for ( ConfidenceMeasure confidenceMeasure : confidenceMeasures.values() ) {
 
 			this.logger.info(confidenceMeasure.getClass().getSimpleName() + " started from " + this.getName() +"!");
+			long start = new Date().getTime();
 			
 			// and check each pattern mapping
 			for (PatternMapping patternMapping : patternMappings ) {
@@ -47,7 +49,7 @@ public class PatternConfidenceMeasureThread extends Thread {
 				confidenceMeasure.measureConfidence(patternMapping);
 				this.i += patternMapping.getPatterns().size(); 
 			}
-			this.logger.info(confidenceMeasure.getClass().getSimpleName() + " from " + this.getName() + " finished!");
+			this.logger.info(confidenceMeasure.getClass().getSimpleName() + " from " + this.getName() + " finished in " + (new Date().getTime() - start) + "ms!");
 		}
 	}
 	

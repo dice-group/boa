@@ -143,6 +143,10 @@ public class IndexBroker {
 			q = parser.parse(query);
 			return searcher.search(q, 10);
 		}
+		catch (NullPointerException npe){
+			
+			this.logger.debug(npe.getMessage());
+		}
 		catch (ParseException ex) {
 			
 			this.logger.debug(ex.getMessage());

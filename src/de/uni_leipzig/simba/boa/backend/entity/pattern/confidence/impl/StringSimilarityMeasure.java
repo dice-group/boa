@@ -12,6 +12,7 @@ import uk.ac.shef.wit.simmetrics.similaritymetrics.QGramsDistance;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeasure;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.SimilarityAssessor;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.WordNotFoundException;
@@ -20,6 +21,7 @@ import de.uni_leipzig.simba.boa.backend.wordnet.similarity.WordNotFoundException
 public class StringSimilarityMeasure implements ConfidenceMeasure {
 
 	private SimilarityAssessor similarityAssessor = new SimilarityAssessor();
+	private NLPediaLogger logger = new NLPediaLogger(StringSimilarityMeasure.class);
 	
 	@Override
 	public void measureConfidence(PatternMapping mapping) {
@@ -50,11 +52,8 @@ public class StringSimilarityMeasure implements ConfidenceMeasure {
 				// go through all words and synset combination and sum up the similarity
 				for ( String token : tokens ) {
 					
-					System.out.println("token: " + token);
-
 					for ( String wordFrom : wordsToCompare ) {
 					
-						System.out.println("\twordform: " + wordFrom);
 						try {
 							
 							similarity = Math.max(similarity, this.similarityAssessor.getSimilarity(wordFrom, token));
@@ -62,7 +61,7 @@ public class StringSimilarityMeasure implements ConfidenceMeasure {
 						}
 						catch (WordNotFoundException e) {
 							
-							System.out.println("Word not found: " + e);
+							this.logger.error("Word not found: " + e);
 						}
 					}
 				}

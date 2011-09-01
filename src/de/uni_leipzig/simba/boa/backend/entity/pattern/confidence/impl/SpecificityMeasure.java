@@ -10,6 +10,7 @@ import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeasure;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 /**
  * 
@@ -18,6 +19,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeas
 public class SpecificityMeasure implements ConfidenceMeasure {
 	
 	private PatternMappingDao patternMappingDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+	private NLPediaLogger logger = new NLPediaLogger(SpecificityMeasure.class);
 
 	@Override
 	public void measureConfidence(PatternMapping mapping) {
@@ -36,6 +38,6 @@ public class SpecificityMeasure implements ConfidenceMeasure {
 			pattern.setSpecificityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, specificity);
 			pattern.setSpecificity(specificity);
 		}
-		System.out.println("Specificity measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
+		logger.info("Specificity measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}
 }

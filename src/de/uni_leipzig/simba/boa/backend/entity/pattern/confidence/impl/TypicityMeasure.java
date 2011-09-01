@@ -105,41 +105,45 @@ public class TypicityMeasure implements ConfidenceMeasure {
 					segmentedFoundString = this.segmentString(foundString);
 					segmentedPattern = this.segmentString(patternWithOutVariables);
 					
-					try {
-	
-						leftContext = new LeftContext(nerTagged, segmentedFoundString, segmentedPattern);
-						rightContext = new RightContext(nerTagged, segmentedFoundString, segmentedPattern);
+					if ( nerTagged != null && segmentedFoundString != null && segmentedPattern != null &&
+							nerTagged.length() > 0 && segmentedFoundString.length() > 0 && segmentedPattern.length() > 0 ) {
 						
-						if ( beginsWithDomain ) {
+						try {
 							
-							if ( leftContext.containsSuitableEntity(domainUri) ) {
+							leftContext = new LeftContext(nerTagged, segmentedFoundString, segmentedPattern);
+							rightContext = new RightContext(nerTagged, segmentedFoundString, segmentedPattern);
+							
+							if ( beginsWithDomain ) {
 								
-								correctDomain += (1D / (double)leftContext.getSuitableEntityDistance(domainUri));
+								if ( leftContext.containsSuitableEntity(domainUri) ) {
+									
+									correctDomain += (1D / (double)leftContext.getSuitableEntityDistance(domainUri));
+								}
+								if ( rightContext.containsSuitableEntity(rangeUri) ) {
+									
+									correctRange += (1D / (double)rightContext.getSuitableEntityDistance(rangeUri));
+								}
 							}
-							if ( rightContext.containsSuitableEntity(rangeUri) ) {
+							else {
 								
-								correctRange += (1D / (double)rightContext.getSuitableEntityDistance(rangeUri));
+								if ( leftContext.containsSuitableEntity(rangeUri) ) {
+									
+									correctRange += (1D / (double)leftContext.getSuitableEntityDistance(rangeUri));
+								}
+								if ( rightContext.containsSuitableEntity(domainUri) ) {
+									
+									correctDomain += (1D / (double)rightContext.getSuitableEntityDistance(domainUri));
+								}
 							}
 						}
-						else {
-							
-							if ( leftContext.containsSuitableEntity(rangeUri) ) {
-								
-								correctRange += (1D / (double)leftContext.getSuitableEntityDistance(rangeUri));
-							}
-							if ( rightContext.containsSuitableEntity(domainUri) ) {
-								
-								correctDomain += (1D / (double)rightContext.getSuitableEntityDistance(domainUri));
-							}
+						catch ( IndexOutOfBoundsException ioob ) {
+							//ioob.printStackTrace();
+							this.logger.error("Could not create context for string " + segmentedFoundString + ". NER tagged: " + nerTagged + " pattern: "  + patternWithOutVariables);
 						}
-					}
-					catch ( IndexOutOfBoundsException ioob ) {
-						//ioob.printStackTrace();
-						this.logger.error("Could not create context for string " + segmentedFoundString + ". NER tagged: " + nerTagged + " pattern: "  + patternWithOutVariables);
-					}
-					catch (NullPointerException npe) {
-						
-						this.logger.error("IOExcpetion", npe);
+						catch (NullPointerException npe) {
+							
+							this.logger.error("IOExcpetion", npe);
+						}
 					}
 				}
 			
@@ -171,7 +175,7 @@ public class TypicityMeasure implements ConfidenceMeasure {
 				this.logger.error("ArrayIndexOutOfBoundsException: ", aioobe);
 			}
 		}
-		System.out.println("Typicity measuring for pattern_mapping: " + patternMapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
+		this.logger.info("Typicity measuring for pattern_mapping: " + patternMapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}
 
 	private String segmentString(String sentence) {

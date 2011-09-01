@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.vaadin.data.util.BeanItemContainer;
 
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 
@@ -18,7 +19,7 @@ public class PatternContainer extends BeanItemContainer<Pattern> implements Seri
 			
 			for ( Pattern p : pm.getPatterns()) {
 				
-				if ( p.getNumberOfOccurrences() > 15 && p.getConfidence() > 0 ) {
+				if ( p.getNumberOfOccurrences() >= Integer.valueOf(NLPediaSettings.getInstance().getSetting("occurrence.view.threshold"))  && p.getConfidence() > 0 ) {
 					
 					//here we can switch between different confidence functions and therewith overwrite the value from the database
 //					double confidence = p.getSimilarity() + p.getTypicity() + p.getSupport() + p.getSpecificity(); 
