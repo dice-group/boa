@@ -12,10 +12,10 @@ import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 public class PatternTable extends Table {
 	
 	public static final Object[] NATURAL_COL_ORDER = new Object[] {
-		 "id",	"confidence",	"similarity"	,"support",	"typicity",	"specificity",	"naturalLanguageRepresentation", "posTaggedString",	"numberOfOccurrences"};
+		 "id",	"confidence",	"similarity"	,"support",	"typicity",	"specificity",	"reverb",	"numberOfOccurrences",	"generalizedPattern",	"naturalLanguageRepresentation", "posTaggedString"};
 
 	public static final String[] COL_HEADERS_ENGLISH = new String[] {
-		 "id",	"CONF",			"SIM"			,"SUPP",	"TYP",		"SPEC",			"NLR", 							 "POS tags", 		"OCC" };
+		 "id",	"CONF",			"SIM"			,"SUPP",	"TYP",		"SPEC",			"RVRB",		"OCC",					"GEN",					"NLR", 							 "POS" };
 	
 	public PatternTable(BoaFrontendApplication app, Container dataSource) {
 		
@@ -36,7 +36,8 @@ public class PatternTable extends Table {
 		setColumnWidth(NATURAL_COL_ORDER[3],50);
 		setColumnWidth(NATURAL_COL_ORDER[4],50);
 		setColumnWidth(NATURAL_COL_ORDER[5],50);
-		setColumnWidth(NATURAL_COL_ORDER[8],50);
+		setColumnWidth(NATURAL_COL_ORDER[6],50);
+		setColumnWidth(NATURAL_COL_ORDER[7],50);
 		
 		setColumnCollapsingAllowed(true);
 		setColumnReorderingAllowed(true);

@@ -106,6 +106,16 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * 
 	 */
+	private double maxLearnedFrom = -1D;
+
+	/**
+	 * 
+	 */
+	private double countLearnedFrom = -1D;
+	
+	/**
+	 * 
+	 */
 	private Map<Integer,Double> confidences = new HashMap<Integer,Double>();
 	
 	/**
@@ -780,6 +790,40 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	public void setGeneralizedPattern(String generalizedPattern) {
 
 		this.generalizedPattern = generalizedPattern;
+	}
+
+	/**
+	 * @return the maxLearnedFrom
+	 */
+	@Basic
+	public double getMaxLearnedFrom() {
+
+		return maxLearnedFrom;
+	}
+
+	/**
+	 * @param maxLearnedFrom the maxLearnedFrom to set
+	 */
+	public void setMaxLearnedFrom(double maxLearnedFrom) {
+
+		this.maxLearnedFrom = maxLearnedFrom;
+	}
+
+	@Basic
+	/**
+	 * @return the countLearnedFrom
+	 */
+	public double getCountLearnedFrom() {
+
+		return countLearnedFrom;
+	}
+
+	/**
+	 * @param countLearnedFrom the countLearnedFrom to set
+	 */
+	public void setCountLearnedFrom(double countLearnedFrom) {
+
+		this.countLearnedFrom = countLearnedFrom;
 	}
 
 	/**

@@ -25,10 +25,13 @@ public class SupportMeasure implements ConfidenceMeasure {
 			
 			if ( !pattern.isUseForPatternEvaluation() ) continue;
 			
-			double support = 
-				(double) (Math.log((pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2)) * 
-				(double) (Math.log((pattern.retrieveCountLearnedFrom() + 1)) / Math.log(2));
+			double maxLearnedFrom = (double) (Math.log((pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2));
+			double countLearnedFrom = (double) (Math.log((pattern.retrieveCountLearnedFrom() + 1)) / Math.log(2));
 			
+			double support = maxLearnedFrom * countLearnedFrom;
+			
+			pattern.setMaxLearnedFrom(maxLearnedFrom);
+			pattern.setCountLearnedFrom(countLearnedFrom);
 			pattern.setSupportForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, support);
 			pattern.setSupport(support);
 		}
