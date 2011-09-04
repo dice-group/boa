@@ -3,6 +3,7 @@ package de.uni_leipzig.simba.boa.backend.search;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,11 +45,11 @@ public class PatternSearcher {
 	
 	public static final Set<String> STOP_WORDS = new HashSet<String>();
 	static {
-		Collections.addAll(STOP_WORDS, 	",","-","i","a","about","an","are","as","at","be","by","com","for",
+		Collections.addAll(STOP_WORDS, 	",","-","i","a","about","an", "and","are","as","at","be","by","com","for",
 										"from","how","in","is","it","of","on","or","that","the",
 										"this","to","was","what","when","where","who","will","with",
 										"the","www","before",",","after",";","like","and","such",
-										"-LRB-","-RRB-","aber","als","am","an","auch","auf","aus",
+										"-LRB-","-RRB-","-lrb-","-rrb-","aber","als","am","an","auch","auf","aus",
 										"bei","bin","bis","bist","da","dadurch","daher","darum",
 										"das","daß","dass","dein","deine","dem","den","der","des",
 										"dessen","deshalb","die","dies","dieser","dieses","doch",
@@ -285,17 +286,11 @@ public class PatternSearcher {
 			return false;
 		
 		// patterns need to be bigger/equal than min chunk size and smaller/equal then max chunk size
-		String[] naturalLanguageRepresentationChunks = patternWithoutVariables.toLowerCase().split(" ");
-		if ( naturalLanguageRepresentationChunks.length > maxPatternChunkLength || naturalLanguageRepresentationChunks.length < minPatternChunkLenght )
-			return false;
-		
 		// true or correct if the number of stop-words in the pattern is not equal to the number of tokens
-		// patterns containing only stop-words can't be used, because they are way to general 
-		int numberOfStopWordsInPattern = 0;
-		for ( String token : naturalLanguageRepresentationChunks ) {
-			if ( STOP_WORDS.contains(token) ) numberOfStopWordsInPattern++;
-		} // TODO filter out "," "-" characters
-		if ( naturalLanguageRepresentationChunks.length == numberOfStopWordsInPattern )
+		// patterns containing only stop-words can't be used, because they are way to general
+		List<String> naturalLanguageRepresentationChunks = Arrays.asList(patternWithoutVariables.toLowerCase().split(" "));
+		naturalLanguageRepresentationChunks.removeAll(STOP_WORDS);
+		if ( naturalLanguageRepresentationChunks.size() > maxPatternChunkLength || naturalLanguageRepresentationChunks.size() < minPatternChunkLenght )
 			return false;
 		
 		// patterns shall not start with "and" or "and ," because this is the conjunction of sentences and does not carry meaning
