@@ -3,6 +3,7 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.filter.impl;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
@@ -14,8 +15,8 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
  */
 public class OccurrenceFilter implements PatternFilter {
 
-	private static final int NUMBER_OF_OCCURRENCES_THRESHOLD = 3;
-	private static final int NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD = 2;
+	private static final int NUMBER_OF_OCCURRENCES_THRESHOLD = Integer.valueOf(NLPediaSettings.getInstance().getSetting("number.of.occurrence.threshold"));
+	private static final int NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD = Integer.valueOf(NLPediaSettings.getInstance().getSetting("number.of.occurrence.threshold"));
 	private final NLPediaLogger logger = new NLPediaLogger(OccurrenceFilter.class);
 	
 	@Override

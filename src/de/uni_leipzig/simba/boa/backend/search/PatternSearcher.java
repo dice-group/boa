@@ -47,7 +47,7 @@ public class PatternSearcher {
 	static {
 		Collections.addAll(STOP_WORDS, 	",","-","i","a","about","an", "and","are","as","at","be","by","com","for",
 										"from","how","in","is","it","of","on","or","that","the",
-										"this","to","was","what","when","where","who","will","with",
+										"this","to","what","when","where","who","will","with",
 										"the","www","before",",","after",";","like","and","such",
 										"-LRB-","-RRB-","-lrb-","-rrb-","aber","als","am","an","auch","auf","aus",
 										"bei","bin","bis","bist","da","dadurch","daher","darum",
@@ -62,7 +62,7 @@ public class PatternSearcher {
 										"müßt","nach","nachdem","nein","nicht","nun","oder","seid",
 										"sein","seine","sich","sie","sind","soll","sollen","sollst",
 										"sollt","sonst","soweit","sowie","und","unser unsere","unter",
-										"vom","von","vor","wann","warum","was","weiter","weitere",
+										"vom","von","vor","wann","warum","weiter","weitere",
 										"wenn","wer","werde","werden","werdet","weshalb","wie",
 										"wieder","wieso","wir","wird","wirst","wo","woher","wohin",
 										"zu","zum","zur","über");
