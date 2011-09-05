@@ -45,7 +45,7 @@ public class PatternSearcher {
 	
 	public static final Set<String> STOP_WORDS = new HashSet<String>();
 	static {
-		Collections.addAll(STOP_WORDS, 	",","-","i","a","about","an", "and","are","as","at","be","by","com","for",
+		Collections.addAll(STOP_WORDS, 	" ",",","-","i","a","about","an", "and","are","as","at","be","by","com","for",
 										"from","how","in","is","it","of","on","or","that","the",
 										"this","to","what","when","where","who","will","with",
 										"the","www","before",",","after",";","like","and","such",
