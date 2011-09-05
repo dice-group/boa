@@ -29,50 +29,43 @@ public class StringSimilarityMeasure implements ConfidenceMeasure {
 		// we calculate the qgram distance between the NLR and the label of the property
 		for ( Pattern pattern : mapping.getPatterns() ) {
 			
-			if ( pattern.isUseForPatternEvaluation() ) {
+			if ( !pattern.isUseForPatternEvaluation() ) continue;
 				
-				// get the NLR and remove all stopwords
-				String naturalLanguageRepresentation = pattern.retrieveNaturalLanguageRepresentationWithoutVariables();
-				Set<String> tokens = new HashSet<String>(Arrays.asList(naturalLanguageRepresentation.split(" ")));
-				tokens.removeAll(PatternSearcher.STOP_WORDS);
+			// get the NLR and remove all stopwords
+			String naturalLanguageRepresentation = pattern.retrieveNaturalLanguageRepresentationWithoutVariables();
+			Set<String> tokens = new HashSet<String>(Arrays.asList(naturalLanguageRepresentation.split(" ")));
+			tokens.removeAll(PatternSearcher.STOP_WORDS);
+			
+			double similarity = 0D;
+			
+			List<String> wordsToCompare;
+			
+			if ( !mapping.getProperty().retrieveSynsetsForLabel().isEmpty() ) {
 				
-				double similarity = 0D;
+				wordsToCompare = mapping.getProperty().retrieveSynsetsForLabel();
+			}
+			else {
 				
-				List<String> wordsToCompare;
+				wordsToCompare = Arrays.asList(mapping.getProperty().getLabel().split(" "));
+			}
+			
+			// go through all words and synset combination and sum up the similarity
+			for ( String token : tokens ) {
 				
-				if ( !mapping.getProperty().retrieveSynsetsForLabel().isEmpty() ) {
-					
-					wordsToCompare = mapping.getProperty().retrieveSynsetsForLabel();
-				}
-				else {
-					
-					wordsToCompare = Arrays.asList(mapping.getProperty().getLabel().split(" "));
-				}
+				for ( String wordFrom : wordsToCompare ) {
 				
-				// go through all words and synset combination and sum up the similarity
-				for ( String token : tokens ) {
-					
-					for ( String wordFrom : wordsToCompare ) {
-					
-						try {
-							
-							similarity = Math.max(similarity, this.similarityAssessor.getSimilarity(wordFrom, token));
-							System.out.println("\tsimilarity: " + similarity);
-						}
-						catch (WordNotFoundException e) {
-							
-							this.logger.error("Word not found: " + e);
-						}
+					try {
+						
+						similarity = Math.max(similarity, this.similarityAssessor.getSimilarity(wordFrom, token));
+						System.out.println("\tsimilarity: " + similarity);
+					}
+					catch (WordNotFoundException e) {
+						
+						this.logger.error("Word not found: " + e);
 					}
 				}
-				pattern.setSimilarity(similarity);
 			}
-//			AbstractStringMetric metric = new QGramsDistance();
-//			pattern.setSimilarity(
-//					Double.valueOf(
-//							metric.getSimilarity(
-//									pattern.retrieveNaturalLanguageRepresentationWithoutVariables(), 
-//									mapping.getProperty().getLabel())));
+			pattern.setSimilarity(similarity);
 		}
 	}
 }

@@ -61,6 +61,8 @@ public class ReverbMeasure implements ConfidenceMeasure {
 		try {
 			
 			for ( Pattern p : mapping.getPatterns()) {
+				
+				if ( !p.isUseForPatternEvaluation() ) continue;
 
 				Set<Double> scores		= new HashSet<Double>();
 				Set<String> relations	= new HashSet<String>();
