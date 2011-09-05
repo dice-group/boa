@@ -288,7 +288,7 @@ public class PatternSearcher {
 		// patterns need to be bigger/equal than min chunk size and smaller/equal then max chunk size
 		// true or correct if the number of stop-words in the pattern is not equal to the number of tokens
 		// patterns containing only stop-words can't be used, because they are way to general
-		List<String> naturalLanguageRepresentationChunks = Arrays.asList(patternWithoutVariables.toLowerCase().split(" "));
+		Set<String> naturalLanguageRepresentationChunks = new HashSet<String>(Arrays.asList(patternWithoutVariables.toLowerCase().split(" ")));
 		naturalLanguageRepresentationChunks.removeAll(STOP_WORDS);
 		if ( naturalLanguageRepresentationChunks.size() > maxPatternChunkLength || naturalLanguageRepresentationChunks.size() < minPatternChunkLenght )
 			return false;
