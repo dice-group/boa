@@ -50,7 +50,7 @@ public class TypicityMeasure implements ConfidenceMeasure {
 	 * @see simba.nlpedia.entity.pattern.evaluation.PatternEvaluator#evaluatePattern(simba.nlpedia.entity.pattern.PatternMapping)
 	 */
 	@Override
-	public void measureConfidence(PatternMapping patternMapping) {
+	public void measureConfidence(PatternMapping mapping) {
 		
 		long start = new Date().getTime();
 		
@@ -70,8 +70,8 @@ public class TypicityMeasure implements ConfidenceMeasure {
 			}
 		}
 		
-		String domainUri	= patternMapping.getProperty().getRdfsDomain();
-		String rangeUri		= patternMapping.getProperty().getRdfsRange();
+		String domainUri	= mapping.getProperty().getRdfsDomain();
+		String rangeUri		= mapping.getProperty().getRdfsRange();
 		
 		double domainCorrectness;
 		double rangeCorrectness;
@@ -84,10 +84,14 @@ public class TypicityMeasure implements ConfidenceMeasure {
 		Context rightContext;
 		
 		if ( this.ner == null ) this.ner = new NamedEntityRecognizer();
+
+		System.out.println("Mapping: " +mapping.getProperty().getUri());
 		
-		for (Pattern pattern : patternMapping.getPatterns()) {
+		for (Pattern pattern : mapping.getPatterns()) {
 			
 			if ( !pattern.isUseForPatternEvaluation() ) continue;
+			
+			System.out.println("\tPattern: " +pattern.getNaturalLanguageRepresentation());
 			
 			try {
 			
@@ -100,6 +104,8 @@ public class TypicityMeasure implements ConfidenceMeasure {
 				double correctRange		= 0;
 				
 				for (String foundString : sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0,this.maxNumberOfEvaluationSentences - 1) : sentences) {
+					
+					System.out.println(foundString);
 					
 					nerTagged = this.ner.recognizeEntitiesInString(foundString);
 					segmentedFoundString = this.segmentString(foundString);
@@ -175,7 +181,7 @@ public class TypicityMeasure implements ConfidenceMeasure {
 				this.logger.error("ArrayIndexOutOfBoundsException: ", aioobe);
 			}
 		}
-		this.logger.info("Typicity measuring for pattern_mapping: " + patternMapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
+		this.logger.info("Typicity measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}
 
 	private String segmentString(String sentence) {
