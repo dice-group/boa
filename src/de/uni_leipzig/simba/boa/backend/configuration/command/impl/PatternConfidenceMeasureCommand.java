@@ -70,7 +70,7 @@ public class PatternConfidenceMeasureCommand implements Command {
 			}
 			
 			Timer timer = new Timer();
-			timer.schedule(new PrintProgressTask(threadList), 0, 3000);
+			timer.schedule(new PrintProgressTask(threadList), 0, 30000);
 			
 			// wait for all to finish
 			for ( Thread t : threadList ) {
@@ -132,7 +132,7 @@ public class PatternConfidenceMeasureCommand implements Command {
 				double typicity = pattern.getTypicityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
 				double support = pattern.getSupportForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
 				
-				System.out.println(String.format("%s: %s, %s, %s", pattern.getNaturalLanguageRepresentation(), specificity, typicity, support));
+//				System.out.println(String.format("%s: %s, %s, %s", pattern.getNaturalLanguageRepresentation(), specificity, typicity, support));
 				
 				double confidence = 10 * typicity + 2 * support + 1 * specificity + 10 * pattern.getSimilarity() + 4 * pattern.getReverb();
 				pattern.setConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, confidence);
