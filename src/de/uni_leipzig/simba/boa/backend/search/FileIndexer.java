@@ -99,7 +99,7 @@ public class FileIndexer {
 			this.logger.info("Indexing file " + file + " with index ");
 
 			long fileSize = file.length();
-//			int linesOfFile = FileUtil.countLinesOfFile(file.getAbsolutePath());
+			int linesOfFile = FileUtil.countLinesOfFile(file.getAbsolutePath());
 
 			System.out.println("\nIndexing file[" + (i++) + "] " + file);
 			System.out.println("File size: " + (double) fileSize / (1024 * 1024) + "MB and ");
@@ -118,16 +118,13 @@ public class FileIndexer {
 
 						if (j++ % 50000 == 0) {
 
-//							ProgressBarUtil.printProgBar((int) ((((double) j) / ((double) linesOfFile)) * 100));
+							ProgressBarUtil.printProgBar((int) ((((double) j) / ((double) linesOfFile)) * 100));
 						}
-						
-						if ( line != null ) {	
-							doc = new Document();
-							// doc.add(new Field("sentence", line, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
-							doc.add(new Field("sentence", line, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
-
-							this.writer.addDocument(doc);
-						}
+					
+						doc = new Document();
+						doc.add(new Field("sentence", line, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO));
+						doc.add(new Field("sentence-lc", line.toLowerCase(), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
+						this.writer.addDocument(doc);
 					}
 					br.close();
 					this.logger.info("Added: " + file.getAbsolutePath() + " to index.");
