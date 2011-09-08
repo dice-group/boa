@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.rdf.entity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -120,11 +121,12 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 	public List<String> retrieveLabels(){
 		
 		List<String> labels = Arrays.asList(this.surfaceForms.split("_&_"));
-		if ( labels.contains(this.label.toLowerCase()) ) {
+		if ( labels != null && labels.contains(this.label.toLowerCase()) ) {
 			return labels;
 		}
 		else {
 			
+			labels = new ArrayList<String>();
 			labels.add(this.label.toLowerCase());
 			return labels;
 		}
