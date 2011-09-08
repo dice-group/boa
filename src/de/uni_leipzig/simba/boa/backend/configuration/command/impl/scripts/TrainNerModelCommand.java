@@ -14,7 +14,7 @@ public class TrainNerModelCommand implements Command {
 //		String pathToDBpediaOntology = scanner.next();
 //		System.out.print("Enter path of output file:\t");
 //		String pathToTrainedSentenceFile = scanner.next();
-//		System.out.print("Enter path of labels file:\t");
+//		System.out.print("Enter path of surfaceForms file:\t");
 //		String pathToLabelsFile = scanner.next();
 //		System.out.print("Enter path of types file:\t");
 //		String pathToTypesFile = scanner.next();

@@ -57,9 +57,9 @@ public class PosTagger {
 	 */
 	public String getPosTagsForSentence(String sentence, String label1, String label2) {
 		
-		// add the labels ot the front/end to improve accuracy and tag it 
+		// add the surfaceForms ot the front/end to improve accuracy and tag it 
 		String[] taggedSentence = this.tagSentence(label1.trim() + " " + sentence.trim() + " " + label2.trim()).split(" ");
-		String[] sentenceWithoutLabels = // remove the tagged labels 
+		String[] sentenceWithoutLabels = // remove the tagged surfaceForms 
 			Arrays.copyOfRange(taggedSentence, label1.split(" ").length, taggedSentence.length - label2.split(" ").length );
 		// remove the words, to only have the pos tags
 		StringBuilder builder = new StringBuilder();

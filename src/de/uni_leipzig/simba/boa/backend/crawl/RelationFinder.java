@@ -37,13 +37,15 @@ public class RelationFinder {
 
 					String[] lineParts = line.split(" \\|\\|\\| ");
 
-					if ( lineParts[7].trim().equals("isSubject") ) {
+					// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN ||| 9_isSubject/isObject
+					
+					if ( lineParts[9].trim().equals("isSubject") ) {
 						
-						resultsSet.add(new String[] { lineParts[0], lineParts[1], lineParts[2], lineParts[3], lineParts[4], lineParts[5], lineParts[6], lineParts[7] });
+						resultsSet.add(new String[] { lineParts[0], lineParts[1], lineParts[2], lineParts[3], lineParts[4], lineParts[5], lineParts[6], lineParts[7], lineParts[8], lineParts[9] });
 					}
-					if ( lineParts[7].trim().equals("isObject") ) {
+					if ( lineParts[9].trim().equals("isObject") ) {
 						
-						resultsSet.add(new String[] { lineParts[3], lineParts[4], lineParts[2], lineParts[0], lineParts[1], lineParts[5], lineParts[6], lineParts[7]});
+						resultsSet.add(new String[] { lineParts[4], lineParts[5], lineParts[6], lineParts[3], lineParts[0], lineParts[1], lineParts[2], lineParts[7], lineParts[8], lineParts[9] });
 					}
 				}
 				br.close();

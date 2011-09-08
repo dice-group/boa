@@ -154,6 +154,10 @@ public class IndexBroker {
 		catch (IOException ex) {
 			ex.printStackTrace();
 		}
+		catch (ArrayIndexOutOfBoundsException aiooe) {
+			
+			this.logger.debug(aiooe.getMessage());
+		}
 		return null;
 	}
 	

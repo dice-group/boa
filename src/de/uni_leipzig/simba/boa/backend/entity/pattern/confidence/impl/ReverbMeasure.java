@@ -29,16 +29,19 @@ public class ReverbMeasure implements ConfidenceMeasure {
 		DefaultObjects.setPath(NLPediaSettings.getInstance().getSetting("reverbTrainingDirectory"));
 	}
 	
+	private boolean isInitialized = false;
+	
 	private ReVerbExtractor extractor;
 	private ReVerbConfFunction scoreFunc;
-	
 	private PatternSearcher searcher;
 
 	/**
 	 * init the ReVerb-Toolkit
 	 */
-	public ReverbMeasure() {
+	public ReverbMeasure() {}
 
+	private void init() {
+		
 		try {
 			
 			searcher	= new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
@@ -53,22 +56,30 @@ public class ReverbMeasure implements ConfidenceMeasure {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		this.isInitialized = true;
 	}
-
+	
 	@Override
 	public void measureConfidence(PatternMapping mapping) {
 
+		if ( !this.isInitialized ) this.init();
+		
 		try {
 			
-			for ( Pattern p : mapping.getPatterns()) {
+//			System.out.println("Mapping: " +mapping.getProperty().getUri());
+			
+			for ( Pattern pattern : mapping.getPatterns()) {
 				
-				if ( !p.isUseForPatternEvaluation() ) continue;
+				if ( !pattern.isUseForPatternEvaluation() ) continue;
+				
+//				System.out.println("\tPattern: " +pattern.getNaturalLanguageRepresentation());
 
 				Set<Double> scores		= new HashSet<Double>();
 				Set<String> relations	= new HashSet<String>();
 				
 				// for all sentences we found the pattern in
-				for (String sentence : getReverbMeasureEvaluationSentences(p)) {
+				for (String sentence : getReverbMeasureEvaluationSentences(pattern)) {
 					
 					// let ReVerb create the chunked sentences
 					for (ChunkedSentence sent : DefaultObjects.getDefaultSentenceReader(new StringReader(sentence)).getSentences()) {
@@ -77,7 +88,7 @@ public class ReverbMeasure implements ConfidenceMeasure {
 						for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
 	
 							// we only want to add scores of relations, which are substring of our relations
-							if ( StringUtil.isSubstringOf(extr.getRelation().toString(), p.getNaturalLanguageRepresentation()) ) {
+							if ( StringUtil.isSubstringOf(extr.getRelation().toString(), pattern.getNaturalLanguageRepresentation()) ) {
 	
 								scores.add(scoreFunc.getConf(extr));
 								relations.add(extr.getRelation().toString());
@@ -85,9 +96,10 @@ public class ReverbMeasure implements ConfidenceMeasure {
 						}
 					}
 				}
+				double score = MathUtil.getAverage(scores);
 				// update the pattern
-				p.setReverb(MathUtil.getAverage(scores));
-				p.setGeneralizedPattern(StringUtil.getLongestSubstring(relations));
+				pattern.setReverb(score >= 0 ? score : 0); // -1 is not useful for confidence
+				pattern.setGeneralizedPattern(StringUtil.getLongestSubstring(relations));
 			}
 		}
 		catch (IOException e) {

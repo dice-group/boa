@@ -29,6 +29,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+//import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.nlp.PosTagger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
@@ -38,8 +39,11 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
  */
 public class PatternSearcher {
 	
-	private final static int maxPatternChunkLength = new Integer(NLPediaSettings.getInstance().getSetting("maxPatternLenght")).intValue();
-	private final static int minPatternChunkLenght = new Integer(NLPediaSettings.getInstance().getSetting("minPatternLenght")).intValue();
+//	static {NLPediaSetup s=new NLPediaSetup(true);}
+	
+	private final static int MAX_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getInstance().getSetting("maxPatternLenght")).intValue();
+	private final static int MIN_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getInstance().getSetting("minPatternLenght")).intValue();
+	private final static int MAX_NUMBER_OF_DOCUMENTS = Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
 
 	private PosTagger posTagger;
 	
@@ -76,11 +80,6 @@ public class PatternSearcher {
 	private List<SearchResult> results;
 	private ScoreDoc[] hits;
 
-//	private Pattern p1 = null;
-//	private Matcher m1 = null;
-//	private Pattern p2 = null;
-//	private Matcher m2 = null;
-
 	public PatternSearcher(String indexDir) throws IOException, ParseException {
 
 		this.directory = FSDirectory.open(new File(indexDir));
@@ -88,7 +87,7 @@ public class PatternSearcher {
 
 		// create index searcher in read only mode
 		this.indexSearcher = new IndexSearcher(directory, true);
-		this.parser = new QueryParser(Version.LUCENE_30, "sentence", this.analyzer);
+		this.parser = new QueryParser(Version.LUCENE_30, "sentence-lc", this.analyzer);
 
 		this.results = new ArrayList<SearchResult>();
 		this.hits = null;
@@ -146,126 +145,139 @@ public class PatternSearcher {
 	 */
 	public void queryPattern(Triple triple) throws ParseException, IOException {
 
-		String subjectLabel = triple.getSubject().getLabel();
-		String objectLabel	= triple.getObject().getLabel();
+		List<String> subjectLabels = triple.getSubject().retrieveLabels();
+		List<String> objectLabels = triple.getObject().retrieveLabels();
 		
-//		System.out.println(subjectLabel + " " + objectLabel);
-		
-		Query query = parser.parse("+sentence:\"" + QueryParser.escape(subjectLabel) + "\" && +sentence:\"" + QueryParser.escape(objectLabel) + "\"");
-
-		int maxNumberOfDocuments = Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
-
-		hits = indexSearcher.search(query, null, maxNumberOfDocuments).scoreDocs;
-		
-//		p1 = Pattern.compile("(\\b" + Pattern.quote(subjectLabel) + "\\b)(.*?)(\\b" + Pattern.quote(objectLabel) + "\\b)", Pattern.CASE_INSENSITIVE);
-//		p2 = Pattern.compile("(\\b" + Pattern.quote(objectLabel) + "\\b)(.*?)(\\b" + Pattern.quote(subjectLabel) + "\\b)", Pattern.CASE_INSENSITIVE);
-
-		for (int i = 0; i < hits.length; i++) {
-
-			String sentence = indexSearcher.doc(hits[i].doc).get("sentence");
-			Map<Integer,String> currentMatches = new HashMap<Integer,String>();
+		for ( String sLabel : subjectLabels ) {
 			
-			// the subject of the triple is the domain of the property so, replace every occurrence with ?D?
-			if ( triple.getSubject().getType().equals(triple.getProperty().getRdfsDomain()) ) {
+			for ( String oLabel : objectLabels ) {
 				
-				String[] match1 = StringUtils.substringsBetween(sentence, subjectLabel, objectLabel);
-				if ( match1 != null ) {
+				String subjectLabel = sLabel;
+				String objectLabel	= oLabel;
+				
+				Query query = parser.parse("+sentence-lc:\"" + QueryParser.escape(subjectLabel) + "\" && +sentence-lc:\"" + QueryParser.escape(objectLabel) + "\"");
+				hits = indexSearcher.search(query, null, MAX_NUMBER_OF_DOCUMENTS).scoreDocs;
+
+				for (int i = 0; i < hits.length; i++) {
+
+					String sentenceLowerCase = indexSearcher.doc(hits[i].doc).get("sentence-lc");
+					String sentenceNormalCase = indexSearcher.doc(hits[i].doc).get("sentence");
 					
-					for (int j = 0 ; j < match1.length ; j++ ) {
+					Map<Integer,String> currentMatches = new HashMap<Integer,String>();
+					
+					boolean isSubject = triple.getSubject().getType().equals(triple.getProperty().getRdfsDomain());
+					
+					// the subject of the triple is the domain of the property so, replace every occurrence with ?D?
+					if ( isSubject ) {
 						
-						match1[j] = "?D? " + match1[j].trim() + " ?R?";
-						currentMatches.put(hits[i].doc, match1[j]);
+						String[] match1 = StringUtils.substringsBetween(sentenceLowerCase, subjectLabel, objectLabel);
+						if ( match1 != null ) {
+							
+							for (int j = 0 ; j < match1.length ; j++ ) {
+								
+								match1[j] = "?D? " + match1[j].trim() + " ?R?";
+								currentMatches.put(hits[i].doc, match1[j]);
+							}
+						}
+						
+						String[] match2 = StringUtils.substringsBetween(sentenceLowerCase, objectLabel, subjectLabel);
+						if ( match2 != null ) {
+							
+							for (int j = 0 ; j < match2.length ; j++ ) { 
+								
+								match2[j] = "?R? " + match2[j].trim() + " ?D?";
+								currentMatches.put(hits[i].doc, match2[j]);
+							}
+						}
+						this.addSearchResults(currentMatches, triple, hits[i], isSubject, sentenceLowerCase, sentenceNormalCase);
 					}
-				}
-				
-				String[] match2 = StringUtils.substringsBetween(sentence, objectLabel, subjectLabel);
-				if ( match2 != null ) {
-					
-					for (int j = 0 ; j < match2.length ; j++ ) { 
+					else {
 						
-						match2[j] = "?R? " + match2[j].trim() + " ?D?";
-						currentMatches.put(hits[i].doc, match2[j]);
-					}
-				}
-				
-//				m1 = p1.matcher(sentence);
-//				m2 = p2.matcher(sentence);
-//				// collect the matches
-//				while (m1.find()) currentMatches.put(hits[i].doc, m1.group());
-//				while (m2.find()) currentMatches.put(hits[i].doc, m2.group());
-				
-				// replace the entity labels with ?D? and ?R?
-				for (String match : currentMatches.values() ) {
-					
-//					match = match.replaceAll("(?i)" + subjectLabel, "?D?");
-//					match = match.replaceAll("(?i)" + objectLabel, "?R?");
-					
-					// but only for those who are suitable
-					if ( !match.isEmpty() && this.isPatternSuitable(match) ) {
+						String[] match1 = StringUtils.substringsBetween(sentenceLowerCase, subjectLabel, objectLabel);
+						if ( match1 != null ) {
+							
+							for (int j = 0 ; j < match1.length ; j++ ) {
+								
+								match1[j] = "?R? " + match1[j].trim() + " ?D?";
+								currentMatches.put(hits[i].doc, match1[j]);
+							}
+						}
 						
-						SearchResult result = new SearchResult();
-						result.setProperty(triple.getProperty().getUri());
-						result.setNaturalLanguageRepresentation(match);
-						result.setRdfsRange(triple.getProperty().getRdfsRange());
-						result.setRdfsDomain(triple.getProperty().getRdfsDomain());
-						result.setFirstLabel(triple.getSubject().getLabel());
-						result.setSecondLabel(triple.getObject().getLabel());
-						result.setIndexId(hits[i].doc);
-						result.setPosTags(this.posTagger.getPosTagsForSentence(match.substring(0, match.length() - 3).substring(3), subjectLabel, objectLabel));
-						this.results.add(result);
-					}
-				}
-			}
-			else {
-				
-				String[] match1 = StringUtils.substringsBetween(sentence, subjectLabel, objectLabel);
-				if ( match1 != null ) {
-					
-					for (int j = 0 ; j < match1.length ; j++ ) {
-						
-						match1[j] = "?R? " + match1[j].trim() + " ?D?";
-						currentMatches.put(hits[i].doc, match1[j]);
-					}
-				}
-				
-				String[] match2 = StringUtils.substringsBetween(sentence, objectLabel, subjectLabel);
-				if ( match2 != null ) {
-					
-					for (int j = 0 ; j < match2.length ; j++ ) { 
-						
-						match2[j] = "?D? " + match2[j].trim() + " ?R?";
-						currentMatches.put(hits[i].doc, match2[j]);
-					}
-				}
-				
-//				m1 = p1.matcher(sentence);
-//				m2 = p2.matcher(sentence);
-//
-//				while (m1.find()) currentMatches.put(hits[i].doc, m1.group());
-//				while (m2.find()) currentMatches.put(hits[i].doc, m2.group());
-				
-				for ( String match : currentMatches.values() ) {
-					
-//					match = match.replaceAll("(?i)" + subjectLabel, "?R?");
-//					match = match.replaceAll("(?i)" + objectLabel, "?D?");
-					
-					// but only for those who are suitable
-					if ( !match.isEmpty() && this.isPatternSuitable(match) ) {
-						
-						SearchResult result = new SearchResult();
-						result.setProperty(triple.getProperty().getUri());
-						result.setNaturalLanguageRepresentation(match);
-						result.setRdfsRange(triple.getProperty().getRdfsRange());
-						result.setRdfsDomain(triple.getProperty().getRdfsDomain());
-						result.setFirstLabel(triple.getObject().getLabel());
-						result.setSecondLabel(triple.getSubject().getLabel());
-						result.setIndexId(hits[i].doc);
-						result.setPosTags(this.posTagger.getPosTagsForSentence(match.substring(0, match.length() - 3).substring(3), subjectLabel, objectLabel));
-						this.results.add(result);
+						String[] match2 = StringUtils.substringsBetween(sentenceLowerCase, objectLabel, subjectLabel);
+						if ( match2 != null ) {
+							
+							for (int j = 0 ; j < match2.length ; j++ ) { 
+								
+								match2[j] = "?D? " + match2[j].trim() + " ?R?";
+								currentMatches.put(hits[i].doc, match2[j]);
+							}
+						}
+						this.addSearchResults(currentMatches, triple, hits[i], isSubject, sentenceLowerCase, sentenceNormalCase);
 					}
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Create the search results
+	 * 
+	 * @param currentMatches
+	 * @param triple
+	 * @param hit
+	 * @param isSubject
+	 */
+	private void addSearchResults(Map<Integer,String> currentMatches, Triple triple, ScoreDoc hit, boolean isSubject, String sentenceLowerCase, String sentenceNormalCase) {
+
+		for ( String match : currentMatches.values() ) {
+
+			String nlr = this.getCorrectCaseNLR(sentenceLowerCase, sentenceNormalCase, match);
+			
+			// but only for those who are suitable
+			if ( !match.isEmpty() && this.isPatternSuitable(match) ) {
+				
+				SearchResult result = new SearchResult();
+				result.setProperty(triple.getProperty().getUri());
+				result.setNaturalLanguageRepresentation(nlr);
+				result.setRdfsRange(triple.getProperty().getRdfsRange());
+				result.setRdfsDomain(triple.getProperty().getRdfsDomain());
+				// the subject of the triple is the domain of the property so, replace every occurrence with ?D?
+				if (isSubject) {
+					result.setFirstLabel(triple.getSubject().getLabel());
+					result.setSecondLabel(triple.getObject().getLabel());
+				}
+				else {
+					result.setFirstLabel(triple.getObject().getLabel());
+					result.setSecondLabel(triple.getSubject().getLabel());
+				}
+				result.setIndexId(hit.doc);
+				result.setPosTags(this.posTagger.getPosTagsForSentence(match.substring(0, match.length() - 3).substring(3), triple.getSubject().getLabel(), triple.getObject().getLabel()));
+				this.results.add(result);
+			}
+		}
+	}
+	
+	private static String getCorrectCaseNLR(String lowerCase, String normalCase, String pattern) {
+		
+		String firstVariable = pattern.substring(0, 3);
+		String secondVariable = pattern.substring(pattern.length() - 3, pattern.length());
+		
+		// remove ?D? and ?R?
+		pattern = pattern.substring(0, pattern.length() - 3).substring(3).trim();
+		// get the start of the pattern and got until its end
+		int start = lowerCase.indexOf(pattern);
+		int end = start + pattern.length();
+		return firstVariable + " " + normalCase.substring(start, end) + " " + secondVariable;
+	}
+	
+	public static void main(String[] args) {
+
+		String lowerCase = "anarchist themes can be found in the works of taoist sages laozi and zhuangzi .";
+		String upperCase = "Anarchist themes can be found in the works of Taoist sages Laozi and Zhuangzi .";
+		String pattern = "?D? can be found in ?R?";
+		
+		System.out.println(getCorrectCaseNLR(lowerCase,upperCase,pattern)); 
+		
 	}
 	
 	private boolean isPatternSuitable(String naturalLanguageRepresentation) {
@@ -290,7 +302,7 @@ public class PatternSearcher {
 		// patterns containing only stop-words can't be used, because they are way to general
 		Set<String> naturalLanguageRepresentationChunks = new HashSet<String>(Arrays.asList(patternWithoutVariables.toLowerCase().split(" ")));
 		naturalLanguageRepresentationChunks.removeAll(STOP_WORDS);
-		if ( naturalLanguageRepresentationChunks.size() > maxPatternChunkLength || naturalLanguageRepresentationChunks.size() < minPatternChunkLenght )
+		if ( naturalLanguageRepresentationChunks.size() > MAX_PATTERN_CHUNK_LENGTH || naturalLanguageRepresentationChunks.size() < MIN_PATTERN_CHUNK_LENGTH )
 			return false;
 		
 		// patterns shall not start with "and" or "and ," because this is the conjunction of sentences and does not carry meaning
@@ -316,7 +328,7 @@ public class PatternSearcher {
 
 	public Set<String> getExactMatchSentences(String keyphrase, int maxNumberOfDocuments)  throws ParseException, IOException {
 
-		ScoreDoc[] hits = indexSearcher.search(this.parser.parse("\""+QueryParser.escape(keyphrase)+"\""), null, maxNumberOfDocuments).scoreDocs;
+		ScoreDoc[] hits = indexSearcher.search(this.parser.parse("+sentence-lc:\"" + QueryParser.escape(keyphrase.toLowerCase()) + "\""), null, maxNumberOfDocuments).scoreDocs;
 		TreeSet<String> list = new TreeSet<String>();
 		
 		// reverse order because longer sentences come last, longer sentences most likely contain less it,he,she 

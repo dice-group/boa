@@ -19,11 +19,15 @@ public class SupportMeasure implements ConfidenceMeasure {
 	@Override
 	public void measureConfidence(PatternMapping mapping) {
 
+//		System.out.println("Mapping: " +mapping.getProperty().getUri());
+		
 		long start = new Date().getTime();
 		
 		for (Pattern pattern : mapping.getPatterns()) {
 			
 			if ( !pattern.isUseForPatternEvaluation() ) continue;
+			
+//			System.out.println("\tPattern: " +pattern.getNaturalLanguageRepresentation());
 			
 			double maxLearnedFrom = (double) (Math.log((pattern.retrieveMaxLearnedFrom() + 1)) / Math.log(2));
 			double countLearnedFrom = (double) (Math.log((pattern.retrieveCountLearnedFrom() + 1)) / Math.log(2));

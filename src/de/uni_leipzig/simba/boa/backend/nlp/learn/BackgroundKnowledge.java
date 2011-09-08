@@ -35,7 +35,7 @@ public class BackgroundKnowledge implements Serializable {
 	public BackgroundKnowledge(String pathToTypesFile, String pathToLabelsFile) {
 		
 		long start = new Date().getTime();
-		System.out.print("Reading labels ... ");
+		System.out.print("Reading surfaceForms ... ");
 		this.readLabels(pathToLabelsFile);
 		System.out.print("DONE in " + (new Date().getTime() - start) + "ms!\n");
 		
@@ -153,7 +153,7 @@ public class BackgroundKnowledge implements Serializable {
 	}
 	
 	/**
-	 * @param labels the labels to set
+	 * @param surfaceForms the surfaceForms to set
 	 */
 	public void setLabels(Map<String, String> labels) {
 
@@ -161,7 +161,7 @@ public class BackgroundKnowledge implements Serializable {
 	}
 	
 	/**
-	 * @return the labels
+	 * @return the surfaceForms
 	 */
 	public Map<String, String> getLabels() {
 

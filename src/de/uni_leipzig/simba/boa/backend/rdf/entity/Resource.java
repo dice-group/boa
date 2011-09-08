@@ -1,6 +1,10 @@
 package de.uni_leipzig.simba.boa.backend.rdf.entity;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -12,6 +16,7 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 	protected String label;
 	protected String type;
 	protected String context;
+	protected String surfaceForms;
 	
 	/**
 	 * 
@@ -92,6 +97,45 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 	public void setContext(String context) {
 	
 		this.context = context;
+	}
+	
+	/**
+	 * @return the surfaceForms
+	 */
+	@Basic
+	@Column(length=2048)
+	public String getSurfaceForms() {
+	
+		return this.surfaceForms;
+	}
+	
+	/**
+	 * Since we save the list of surface forms as a single string in the database
+	 * we need to split them into a list in java. if the surface forms do not contain
+	 * the regular label (wiki page title) the label gets added to the list of surface
+	 * forms.
+	 * 
+	 * @return a list of surface forms
+	 */
+	public List<String> retrieveLabels(){
+		
+		List<String> labels = Arrays.asList(this.surfaceForms.split("_&_"));
+		if ( labels.contains(this.label.toLowerCase()) ) {
+			return labels;
+		}
+		else {
+			
+			labels.add(this.label.toLowerCase());
+			return labels;
+		}
+	}
+
+	/**
+	 * @param surfaceForms the surfaceForms to set
+	 */
+	public void setSurfaceForms(String labels) {
+	
+		this.surfaceForms = labels;
 	}
 
 	/* (non-Javadoc)

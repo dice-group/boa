@@ -57,7 +57,7 @@ public class PatternSearchThread extends Thread {
 			
 			for (i = 0; i < triples.size() ; i++) {
 				
-				// filter subject and objects with the same label and resources which have ? in their labels
+				// filter subject and objects with the same label and resources which have ? in their surfaceForms
 				if ( !triples.get(i).getSubject().getLabel().equals(triples.get(i).getObject().getLabel()) && !triples.get(i).getSubject().getLabel().contains("?") && !triples.get(i).getObject().getLabel().contains("?")) {
 					
 					patternSearcher.queryPattern(triples.get(i));

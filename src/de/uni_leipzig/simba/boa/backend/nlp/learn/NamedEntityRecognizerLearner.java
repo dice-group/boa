@@ -116,7 +116,7 @@ public class NamedEntityRecognizerLearner {
 			System.out.print("DONE in " + (new Date().getTime() - start) + "ms!\n");
 		}
 		
-		System.out.println("There are " + knowledge.getLabels().size() + " labels to search.");
+		System.out.println("There are " + knowledge.getLabels().size() + " surfaceForms to search.");
 		System.out.println("There are " + knowledge.getTypes().size() + " types to search.");
 		System.out.println("The maximum number of sentences is " + this.maxNumberOfDocuments);
 
@@ -125,7 +125,7 @@ public class NamedEntityRecognizerLearner {
 		Map<String,Set<String>> types = knowledge.getTypes();
 		Map<String,String> labels = knowledge.getLabels();
 		
-		// go through each type since not all labels have types
+		// go through each type since not all surfaceForms have types
 		for ( Entry<String,Set<String>> entry : types.entrySet() ) {
 				
 			try {

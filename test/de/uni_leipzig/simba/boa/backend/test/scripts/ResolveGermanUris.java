@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -22,6 +23,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.semanticweb.yars.nx.Node;
+import org.semanticweb.yars.nx.parser.NxParser;
+
 import javatools.administrative.Sleep;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
@@ -35,12 +39,49 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
+import com.hp.hpl.jena.util.FileManager;
 
 public class ResolveGermanUris {
 
 	private Map<String, String> enUriToDeLabelMapping = new HashMap<String, String>();
 
+//	public static void main(String[] args) throws FileNotFoundException, IOException {
+//	    String fileNameOrUri = "/Users/gerb/Downloads/08-09-2011/labels_de.nt";
+//	    Model model = ModelFactory.createDefaultModel();
+//	    InputStream is = FileManager.get().open(fileNameOrUri);
+//	    if (is != null) {
+//	        model.read(is, null, "N-TRIPLE");
+//	        model.write(System.out, "TURTLE");
+//	    } else {
+//	        System.err.println("cannot read " + fileNameOrUri);;
+//	    }
+//		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("/Users/gerb/Downloads/08-09-2011/labels_de.nt"), "UTF-8"));
+//		
+//		String line;
+//		while ((line = br.readLine()) != null) {
+//			
+//			System.out.println(line);
+//		}
+//		
+//		br.close();
+//		
+//		NxParser nxp = new NxParser(new FileInputStream("/Users/gerb/Downloads/08-09-2011/labels_de.nt"),false);
+//		
+//		  while (nxp.hasNext()) {
+//		    Node[] ns = nxp.next();
+//					
+//		    for (Node n: ns) {
+//		      System.out.print(n.toN3());
+//		      System.out.print(" ");
+//		    }
+//		    System.out.println(".");
+//		  }
+//	}
+	
+	
 	public static void main(String[] args) throws Exception {
 
 		NLPediaSetup setup = new NLPediaSetup(true);
@@ -51,7 +92,7 @@ public class ResolveGermanUris {
 
 	private void transformEnglishFile() throws IOException {
 
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/gerb/Downloads/02-09-2011/all_de.n3"), "UTF-8"));
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/gerb/Downloads/02-09-2011/all_de.txt"), "UTF-8"));
 
 		List<String[]> relations = RelationFinder.getRelationFromFile("");
 		for (String[] line : relations) {
