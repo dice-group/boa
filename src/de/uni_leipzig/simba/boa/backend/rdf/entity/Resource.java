@@ -2,7 +2,9 @@ package de.uni_leipzig.simba.boa.backend.rdf.entity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -118,18 +120,15 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 	 * 
 	 * @return a list of surface forms
 	 */
-	public List<String> retrieveLabels(){
+	public Set<String> retrieveLabels(){
 		
-		List<String> labels = Arrays.asList(this.surfaceForms.split("_&_"));
-		if ( labels != null && labels.contains(this.label.toLowerCase()) ) {
-			return labels;
-		}
-		else {
+		Set<String> labels = new HashSet<String>();
+		for ( String s : this.surfaceForms.split("_&_")) {
 			
-			labels = new ArrayList<String>();
-			labels.add(this.label.toLowerCase());
-			return labels;
+			labels.add(s);
 		}
+		labels.add(this.label.toLowerCase());
+		return labels;
 	}
 
 	/**

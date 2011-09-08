@@ -145,8 +145,8 @@ public class PatternSearcher {
 	 */
 	public void queryPattern(Triple triple) throws ParseException, IOException {
 
-		List<String> subjectLabels = triple.getSubject().retrieveLabels();
-		List<String> objectLabels = triple.getObject().retrieveLabels();
+		Set<String> subjectLabels = triple.getSubject().retrieveLabels();
+		Set<String> objectLabels = triple.getObject().retrieveLabels();
 		
 		for ( String sLabel : subjectLabels ) {
 			
@@ -257,7 +257,7 @@ public class PatternSearcher {
 		}
 	}
 	
-	private static String getCorrectCaseNLR(String lowerCase, String normalCase, String pattern) {
+	private String getCorrectCaseNLR(String lowerCase, String normalCase, String pattern) {
 		
 		String firstVariable = pattern.substring(0, 3);
 		String secondVariable = pattern.substring(pattern.length() - 3, pattern.length());
@@ -276,7 +276,7 @@ public class PatternSearcher {
 		String upperCase = "Anarchist themes can be found in the works of Taoist sages Laozi and Zhuangzi .";
 		String pattern = "?D? can be found in ?R?";
 		
-		System.out.println(getCorrectCaseNLR(lowerCase,upperCase,pattern)); 
+//		System.out.println(getCorrectCaseNLR(lowerCase,upperCase,pattern)); 
 		
 	}
 	
