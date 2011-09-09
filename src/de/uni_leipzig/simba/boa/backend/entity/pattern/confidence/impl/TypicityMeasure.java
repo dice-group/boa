@@ -95,10 +95,10 @@ public class TypicityMeasure implements ConfidenceMeasure {
 			
 			try {
 			
-				boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
-				String patternWithOutVariables = this.segmentString(pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim());
-						
-				List<String> sentences = new ArrayList<String>(patternSearcher.getExactMatchSentences(patternWithOutVariables, maxNumberOfEvaluationSentences));//.getSentencesWithString(patternWithOutVariables, this.maxNumberOfDocuments));
+				boolean beginsWithDomain = pattern.isDomainFirst();
+				String patternWithOutVariables = this.segmentString(pattern.getNaturalLanguageRepresentationWithoutVariables());
+				
+				final List<String> sentences = new ArrayList<String>(patternSearcher.getExactMatchSentences(patternWithOutVariables, maxNumberOfEvaluationSentences));
 				
 				double correctDomain	= 0;
 				double correctRange		= 0;

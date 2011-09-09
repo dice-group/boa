@@ -84,6 +84,23 @@ public class ConfidenceMeasureFactory {
 	 */
 	public Map<String,ConfidenceMeasure> getConfidenceMeasureMap() {
 
-		return ConfidenceMeasureFactory.confidenceMeasureMap;
+		Map<String,ConfidenceMeasure> map = new HashMap<String,ConfidenceMeasure>();
+		for ( Map.Entry<String,ConfidenceMeasure> entry : ConfidenceMeasureFactory.confidenceMeasureMap.entrySet() ) {
+			
+			try {
+				
+				map.put(entry.getKey(), entry.getValue().getClass().newInstance());
+			}
+			catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return map;
 	}
 }

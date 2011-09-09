@@ -12,10 +12,10 @@ import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 public class PatternTable extends Table {
 	
 	public static final Object[] NATURAL_COL_ORDER = new Object[] {
-		 "id",	"confidence",	"similarity"	,"support",	"typicity",	"specificity",	"reverb",	"countLearnedFrom", "maxLearnedFrom",	"generalizedPattern",	"naturalLanguageRepresentation", "posTaggedString"};
+		 "id",	"confidence",	"similarity"	,"support",	"typicity",	"specificity",	"reverb",	"numberOfOccurrences", 	"maxLearnedFrom",	"learnedFromPairs", "generalizedPattern",	"naturalLanguageRepresentation", "posTaggedString"};
 
 	public static final String[] COL_HEADERS_ENGLISH = new String[] {
-		 "id",	"CONF",			"SIM"			,"SUPP",	"TYP",		"SPEC",			"RVRB",		"OCC",				"MAX",				"GEN",					"NLR", 							 "POS" };
+		 "id",	"CONF",			"SIM"			,"SUPP",	"TYP",		"SPEC",			"RVRB",		"OCC",					"MAX",				"PAIR",				"GEN",					"NLR", 							 "POS" };
 	
 	public PatternTable(BoaFrontendApplication app, Container dataSource) {
 		
@@ -31,14 +31,15 @@ public class PatternTable extends Table {
 		sort();
 		
 		setColumnWidth(NATURAL_COL_ORDER[0],40);
-		setColumnWidth(NATURAL_COL_ORDER[1],40);
-		setColumnWidth(NATURAL_COL_ORDER[2],40);
-		setColumnWidth(NATURAL_COL_ORDER[3],40);
-		setColumnWidth(NATURAL_COL_ORDER[4],40);
-		setColumnWidth(NATURAL_COL_ORDER[5],40);
-		setColumnWidth(NATURAL_COL_ORDER[6],40);
-		setColumnWidth(NATURAL_COL_ORDER[7],40);
-		setColumnWidth(NATURAL_COL_ORDER[8],40);
+		setColumnWidth(NATURAL_COL_ORDER[1],30);
+		setColumnWidth(NATURAL_COL_ORDER[2],30);
+		setColumnWidth(NATURAL_COL_ORDER[3],30);
+		setColumnWidth(NATURAL_COL_ORDER[4],30);
+		setColumnWidth(NATURAL_COL_ORDER[5],30);
+		setColumnWidth(NATURAL_COL_ORDER[6],30);
+		setColumnWidth(NATURAL_COL_ORDER[7],30);
+		setColumnWidth(NATURAL_COL_ORDER[8],30);
+		setColumnWidth(NATURAL_COL_ORDER[9],30);
 		
 		setColumnCollapsingAllowed(true);
 		setColumnReorderingAllowed(true);

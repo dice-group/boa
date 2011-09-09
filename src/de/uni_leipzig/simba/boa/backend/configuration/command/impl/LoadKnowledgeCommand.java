@@ -73,7 +73,7 @@ public class LoadKnowledgeCommand implements Command {
 		// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN ||| 9_isSubject/isObject
 		for ( String[] line : labels ) {
 			
-			if (i++==10) break;
+			if (i++==1000) break;
 			
 			String subjectUri		= "";
 			String subjectLabel		= "";

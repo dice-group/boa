@@ -31,6 +31,8 @@ public class PatternConfidenceMeasureThread extends Thread {
 			this.patternToMeasure += pm.getPatterns().size();
 		}
 		this.patternToMeasure *= confidenceMeasures.size();
+		
+		System.out.println("Pattern to measure: " + this.patternToMeasure);
 	}
 	
 	@Override

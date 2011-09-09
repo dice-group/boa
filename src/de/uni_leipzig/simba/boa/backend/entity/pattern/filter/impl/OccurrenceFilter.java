@@ -16,7 +16,9 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 public class OccurrenceFilter implements PatternFilter {
 
 	private static final int NUMBER_OF_OCCURRENCES_THRESHOLD = Integer.valueOf(NLPediaSettings.getInstance().getSetting("number.of.occurrence.threshold"));
-	private static final int NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD = Integer.valueOf(NLPediaSettings.getInstance().getSetting("number.of.occurrence.threshold"));
+	private static final int NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD = Integer.valueOf(NLPediaSettings.getInstance().getSetting("number.of.unique.occurrence.threshold"));
+	private static final int NUMBER_OF_LEARNED_PAIRS = Integer.valueOf(NLPediaSettings.getInstance().getSetting("number.of.learned.pairs"));
+	
 	private final NLPediaLogger logger = new NLPediaLogger(OccurrenceFilter.class);
 	
 	@Override
@@ -27,18 +29,17 @@ public class OccurrenceFilter implements PatternFilter {
 			// skip this evaluation, because it was characterized as not suitable in a previous evaluation
 			if ( p.isUseForPatternEvaluation() ) {
 				
-				// this patterns is possibly random, so discard its
+				// discard only patterns which might occur randomly
 				p.setUseForPatternEvaluation(
 						
-						p.getNumberOfOccurrences() 
-						>= 
-						OccurrenceFilter.NUMBER_OF_OCCURRENCES_THRESHOLD 
+						p.getNumberOfOccurrences() >= OccurrenceFilter.NUMBER_OF_OCCURRENCES_THRESHOLD 
 				);
 				
 				int counter = 0;
 				
 				if ( p.isUseForPatternEvaluation() ) {
 					
+					// look if there are pairs available between the pattern occurs more than NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD
 					Map<String,Integer> learnedFrom = p.getLearnedFrom();
 					for (Entry<String,Integer> entry : learnedFrom.entrySet()) {
 						
@@ -46,6 +47,15 @@ public class OccurrenceFilter implements PatternFilter {
 					}
 					
 					if ( counter < 1 ) p.setUseForPatternEvaluation(false);
+					
+					if ( p.isUseForPatternEvaluation() ) {
+						
+						// look if there are more than NUMBER_OF_LEARNED_PAIRS pairs the pattern was learned from
+						p.setUseForPatternEvaluation(
+							
+								p.getLearnedFrom().size() >= OccurrenceFilter.NUMBER_OF_LEARNED_PAIRS
+						);
+					}
 				}
 			}
 		}

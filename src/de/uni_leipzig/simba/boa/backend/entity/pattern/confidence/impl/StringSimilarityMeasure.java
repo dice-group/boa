@@ -36,7 +36,7 @@ public class StringSimilarityMeasure implements ConfidenceMeasure {
 //			System.out.println("\tPattern: " +pattern.getNaturalLanguageRepresentation());
 			
 			// get the NLR and remove all stopwords
-			String naturalLanguageRepresentation = pattern.retrieveNaturalLanguageRepresentationWithoutVariables();
+			String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentationWithoutVariables();
 			Set<String> tokens = new HashSet<String>(Arrays.asList(naturalLanguageRepresentation.split(" ")));
 			tokens.removeAll(PatternSearcher.STOP_WORDS);
 			

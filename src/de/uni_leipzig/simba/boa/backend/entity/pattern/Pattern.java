@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * 
@@ -106,16 +107,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * 
 	 */
-	private double maxLearnedFrom = -1D;
-
-	/**
-	 * 
-	 */
-	private double countLearnedFrom = -1D;
-	
-	/**
-	 * 
-	 */
 	private Map<Integer,Double> confidences = new HashMap<Integer,Double>();
 	
 	/**
@@ -180,7 +171,8 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * @return the NLR with ?D? and ?R?
 	 */
-	public String retrieveNaturalLanguageRepresentationWithoutVariables() {
+	@Transient
+	public String getNaturalLanguageRepresentationWithoutVariables() {
 		
 		return this.naturalLanguageRepresentation.substring(0, this.naturalLanguageRepresentation.length() - 3).substring(3).trim();
 	}
@@ -795,48 +787,32 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * @return the maxLearnedFrom
 	 */
-	@Basic
+	@Transient
 	public double getMaxLearnedFrom() {
 
-		return maxLearnedFrom;
+		int max = 0;
+		for ( Map.Entry<String, Integer> entry : this.learnedFrom.entrySet()) {
+			
+			max = Math.max(max, entry.getValue());
+		}
+		return max;
 	}
-
+	
 	/**
-	 * @param maxLearnedFrom the maxLearnedFrom to set
+	 * 
+	 * @return
 	 */
-	public void setMaxLearnedFrom(double maxLearnedFrom) {
-
-		this.maxLearnedFrom = maxLearnedFrom;
+	@Transient
+	public int getLearnedFromPairs() {
+		
+		return this.getLearnedFrom().size(); 
 	}
-
-	@Basic
+	
 	/**
-	 * @return the countLearnedFrom
+	 * @return true if the pattern starts with ?D?
 	 */
-	public double getCountLearnedFrom() {
-
-		return countLearnedFrom;
+	public boolean isDomainFirst() {
+		
+		return this.naturalLanguageRepresentation.startsWith("?D?") ? true : false;
 	}
-
-	/**
-	 * @param countLearnedFrom the countLearnedFrom to set
-	 */
-	public void setCountLearnedFrom(double countLearnedFrom) {
-
-		this.countLearnedFrom = countLearnedFrom;
-	}
-
-	/**
-	 * @return the learnedTriple
-	 */
-//	@OneToMany(/*fetch = FetchType.EAGER*/, mappedBy="id")
-//	public Set<Triple> getLearnedFromTriples() {
-//
-//		return learnedFromTriples;
-//	}
 }
-
-//@CollectionOfElements(/*fetch = FetchType.EAGER*/)
-//@JoinTable(name = "Pattern_naturalLanguageRepresentationByLanguage", joinColumns = @JoinColumn(name = "id"))
-//@org.hibernate.annotations.MapKey(columns = {@Column(name = "naturalLanguageRepresentationByLanguage_KEY")})
-//@Column(name = "naturalLanguageRepresentation", length=1024)

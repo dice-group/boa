@@ -34,8 +34,6 @@ public class SupportMeasure implements ConfidenceMeasure {
 			
 			double support = maxLearnedFrom * countLearnedFrom;
 			
-			pattern.setMaxLearnedFrom(maxLearnedFrom);
-			pattern.setCountLearnedFrom(countLearnedFrom);
 			pattern.setSupportForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, support);
 			pattern.setSupport(support);
 		}
