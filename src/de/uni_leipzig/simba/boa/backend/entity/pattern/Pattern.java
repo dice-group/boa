@@ -811,6 +811,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * @return true if the pattern starts with ?D?
 	 */
+	@Transient
 	public boolean isDomainFirst() {
 		
 		return this.naturalLanguageRepresentation.startsWith("?D?") ? true : false;
