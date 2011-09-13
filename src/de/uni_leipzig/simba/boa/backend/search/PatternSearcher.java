@@ -29,7 +29,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-//import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.nlp.PosTagger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
@@ -39,7 +39,7 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
  */
 public class PatternSearcher {
 	
-//	static {NLPediaSetup s=new NLPediaSetup(true);}
+	static {NLPediaSetup s=new NLPediaSetup(true);}
 	
 	private final static int MAX_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getInstance().getSetting("maxPatternLenght")).intValue();
 	private final static int MIN_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getInstance().getSetting("minPatternLenght")).intValue();
@@ -148,12 +148,11 @@ public class PatternSearcher {
 		Set<String> subjectLabels = triple.getSubject().retrieveLabels();
 		Set<String> objectLabels = triple.getObject().retrieveLabels();
 		
-		for ( String sLabel : subjectLabels ) {
-			
-			for ( String oLabel : objectLabels ) {
-				
-				String subjectLabel = sLabel;
-				String objectLabel	= oLabel;
+		System.out.println(triple);
+
+		// go through all surface form combinations
+		for ( String subjectLabel : subjectLabels ) {
+			for ( String objectLabel : objectLabels ) {
 				
 				Query query = parser.parse("+sentence-lc:\"" + QueryParser.escape(subjectLabel) + "\" && +sentence-lc:\"" + QueryParser.escape(objectLabel) + "\"");
 				hits = indexSearcher.search(query, null, MAX_NUMBER_OF_DOCUMENTS).scoreDocs;
@@ -161,59 +160,29 @@ public class PatternSearcher {
 				for (int i = 0; i < hits.length; i++) {
 
 					String sentenceLowerCase = indexSearcher.doc(hits[i].doc).get("sentence-lc");
-					String sentenceNormalCase = indexSearcher.doc(hits[i].doc).get("sentence");
 					
 					Map<Integer,String> currentMatches = new HashMap<Integer,String>();
 					
-					boolean isSubject = triple.getSubject().getType().equals(triple.getProperty().getRdfsDomain());
+					String[] match1 = StringUtils.substringsBetween(sentenceLowerCase, subjectLabel, objectLabel);
+					if ( match1 != null ) {
+						
+						for (int j = 0 ; j < match1.length ; j++ ) {
+							
+							match1[j] = "?D? " + match1[j].trim() + " ?R?";
+							currentMatches.put(hits[i].doc, match1[j]);
+						}
+					}
 					
-					// the subject of the triple is the domain of the property so, replace every occurrence with ?D?
-					if ( isSubject ) {
+					String[] match2 = StringUtils.substringsBetween(sentenceLowerCase, objectLabel, subjectLabel);
+					if ( match2 != null ) {
 						
-						String[] match1 = StringUtils.substringsBetween(sentenceLowerCase, subjectLabel, objectLabel);
-						if ( match1 != null ) {
+						for (int j = 0 ; j < match2.length ; j++ ) { 
 							
-							for (int j = 0 ; j < match1.length ; j++ ) {
-								
-								match1[j] = "?D? " + match1[j].trim() + " ?R?";
-								currentMatches.put(hits[i].doc, match1[j]);
-							}
+							match2[j] = "?R? " + match2[j].trim() + " ?D?";
+							currentMatches.put(hits[i].doc, match2[j]);
 						}
-						
-						String[] match2 = StringUtils.substringsBetween(sentenceLowerCase, objectLabel, subjectLabel);
-						if ( match2 != null ) {
-							
-							for (int j = 0 ; j < match2.length ; j++ ) { 
-								
-								match2[j] = "?R? " + match2[j].trim() + " ?D?";
-								currentMatches.put(hits[i].doc, match2[j]);
-							}
-						}
-						this.addSearchResults(currentMatches, triple, hits[i], isSubject, sentenceLowerCase, sentenceNormalCase);
 					}
-					else {
-						
-						String[] match1 = StringUtils.substringsBetween(sentenceLowerCase, subjectLabel, objectLabel);
-						if ( match1 != null ) {
-							
-							for (int j = 0 ; j < match1.length ; j++ ) {
-								
-								match1[j] = "?R? " + match1[j].trim() + " ?D?";
-								currentMatches.put(hits[i].doc, match1[j]);
-							}
-						}
-						
-						String[] match2 = StringUtils.substringsBetween(sentenceLowerCase, objectLabel, subjectLabel);
-						if ( match2 != null ) {
-							
-							for (int j = 0 ; j < match2.length ; j++ ) { 
-								
-								match2[j] = "?D? " + match2[j].trim() + " ?R?";
-								currentMatches.put(hits[i].doc, match2[j]);
-							}
-						}
-						this.addSearchResults(currentMatches, triple, hits[i], isSubject, sentenceLowerCase, sentenceNormalCase);
-					}
+					this.addSearchResults(currentMatches, triple, hits[i], sentenceLowerCase, indexSearcher.doc(hits[i].doc).get("sentence"));
 				}
 			}
 		}
@@ -227,10 +196,10 @@ public class PatternSearcher {
 	 * @param hit
 	 * @param isSubject
 	 */
-	private void addSearchResults(Map<Integer,String> currentMatches, Triple triple, ScoreDoc hit, boolean isSubject, String sentenceLowerCase, String sentenceNormalCase) {
+	private void addSearchResults(Map<Integer,String> currentMatches, Triple triple, ScoreDoc hit, String sentenceLowerCase, String sentenceNormalCase) {
 
 		for ( String match : currentMatches.values() ) {
-
+			
 			String nlr = this.getCorrectCaseNLR(sentenceLowerCase, sentenceNormalCase, match);
 			
 			// but only for those who are suitable
@@ -242,7 +211,7 @@ public class PatternSearcher {
 				result.setRdfsRange(triple.getProperty().getRdfsRange());
 				result.setRdfsDomain(triple.getProperty().getRdfsDomain());
 				// the subject of the triple is the domain of the property so, replace every occurrence with ?D?
-				if (isSubject) {
+				if (nlr.startsWith("?D?")) {
 					result.setFirstLabel(triple.getSubject().getLabel());
 					result.setSecondLabel(triple.getObject().getLabel());
 				}
@@ -276,6 +245,25 @@ public class PatternSearcher {
 		String upperCase = "Anarchist themes can be found in the works of Taoist sages Laozi and Zhuangzi .";
 		String pattern = "?D? can be found in ?R?";
 		
+		String test =  "it lies 123 km south of tirana , the capital of albania .";
+		
+		String[] matches = StringUtils.substringsBetween(test, "albania", "tirana");
+		
+		if ( matches != null ) {
+			for (String s : matches){
+				
+				System.out.println(s);;
+			}
+		}
+		System.out.println();
+		matches = StringUtils.substringsBetween(test, "tirana","albania");
+		if ( matches != null ) {
+			for (String s : matches){
+				
+				System.out.println(s);;
+			}			
+		}
+		
 //		System.out.println(getCorrectCaseNLR(lowerCase,upperCase,pattern)); 
 		
 	}
@@ -299,10 +287,13 @@ public class PatternSearcher {
 		
 		// patterns need to be bigger/equal than min chunk size and smaller/equal then max chunk size
 		// true or correct if the number of stop-words in the pattern is not equal to the number of tokens
-		// patterns containing only stop-words can't be used, because they are way to general
 		Set<String> naturalLanguageRepresentationChunks = new HashSet<String>(Arrays.asList(patternWithoutVariables.toLowerCase().split(" ")));
+		if ( naturalLanguageRepresentationChunks.size() >= MAX_PATTERN_CHUNK_LENGTH || naturalLanguageRepresentationChunks.size() <= MIN_PATTERN_CHUNK_LENGTH )
+			return false;
+		
+		// patterns containing only stop-words can't be used, because they are way to general
 		naturalLanguageRepresentationChunks.removeAll(STOP_WORDS);
-		if ( naturalLanguageRepresentationChunks.size() > MAX_PATTERN_CHUNK_LENGTH || naturalLanguageRepresentationChunks.size() < MIN_PATTERN_CHUNK_LENGTH )
+		if (naturalLanguageRepresentationChunks.size() == 0 ) 
 			return false;
 		
 		// patterns shall not start with "and" or "and ," because this is the conjunction of sentences and does not carry meaning
@@ -335,7 +326,7 @@ public class PatternSearcher {
 		for (int i = hits.length - 1; i >= 0; i--) {
 			
 			// get the indexed string and put it in the result
-			list.add(indexSearcher.doc(hits[i].doc).get("sentence"));
+			list.add(indexSearcher.doc(hits[i].doc).get("sentence-lc"));
 		}
 		return list;
 	}

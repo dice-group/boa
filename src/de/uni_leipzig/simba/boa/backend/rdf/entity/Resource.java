@@ -125,7 +125,7 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 		Set<String> labels = new HashSet<String>();
 		for ( String s : this.surfaceForms.split("_&_")) {
 			
-			labels.add(s);
+			labels.add(s.trim());
 		}
 		labels.add(this.label.toLowerCase());
 		return labels;

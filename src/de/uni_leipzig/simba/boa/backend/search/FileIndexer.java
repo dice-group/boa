@@ -11,12 +11,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -37,6 +40,8 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
 import de.uni_leipzig.simba.boa.backend.util.ProgressBarUtil;
+import edu.stanford.nlp.ling.HasWord;
+import edu.stanford.nlp.process.DocumentPreprocessor;
 
 /**
  * This terminal application creates an Apache Lucene index in a folder and adds
@@ -194,9 +199,42 @@ public class FileIndexer {
 		return false;
 	}
 	
+	private static void createFile() throws IOException {
+		
+		File file = new File("/Users/gerb/Downloads/12-09-2011/short_abstracts_en.nt");
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+		
+		Writer bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/gerb/en_abstracts_sentences.txt"), "UTF-8"));
+
+		
+		String line = "";
+		while ((line = br.readLine()) != null ) {
+			
+			line = org.apache.commons.lang.StringEscapeUtils.unescapeJava(line.substring(line.indexOf("\"")+1, line.indexOf("\"@en")));
+			StringReader stringReader = new StringReader(line);
+			DocumentPreprocessor preprocessor = new DocumentPreprocessor(stringReader,  DocumentPreprocessor.DocType.Plain);
+			
+			Iterator<List<HasWord>> iter = preprocessor.iterator();
+			while ( iter.hasNext() ) {
+				
+				StringBuilder stringBuilder = new StringBuilder();
+				
+				for ( HasWord word : iter.next() ) {
+					stringBuilder.append(word.toString() + " ");
+				}
+				
+				bw.write(stringBuilder.toString() + Constants.NEW_LINE_SEPARATOR);
+			}
+		}
+		br.close();
+	    bw.close();
+	}
+	
 	public static void main(String[] args) throws IOException {
 		
-		File file = new File("/Users/gerb/Development/workspaces/experimental/nlpedia/de_wiki/sentences/sentences.txt");
+//		createFile();
+		
+		File file = new File("/Users/gerb/en_abstracts_sentences.txt");
 		Random randomGenerator = new Random();
 		
 		// calculate the lines to get randomly from the file
@@ -225,7 +263,7 @@ public class FileIndexer {
 	    		
 	    		if ( line.length() < 128 && line.length() > 80 && sentenceContainsMoreThanTwoEntities(line) ) {
 	    			
-	    			System.out.println(line);
+//	    			System.out.println(line);
 	    			sentencesToWrite.add(line);
 	    		}
 	    		j++;
@@ -234,8 +272,8 @@ public class FileIndexer {
 	    }
 	    Collections.shuffle(sentencesToWrite);
 	    	
-	    Writer bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/gerb/DE_EVAL_SENT.txt"), "UTF-8"));
-	    for (String sent : sentencesToWrite.subList(0, 599) ) {
+	    Writer bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/gerb/en_eval_sentences_2k.txt"), "UTF-8"));
+	    for (String sent : sentencesToWrite.subList(0, 2000) ) {
 	    	bw.write(sent);
 			bw.write(Constants.NEW_LINE_SEPARATOR);
 	    }

@@ -21,7 +21,7 @@ public class IterationCommand implements Command {
 		
 		long start = new Date().getTime();
 		
-//		// load the SPARQL dump into the database
+		// load the SPARQL dump into the database
 		Command loadKnowledgeCommand = new LoadKnowledgeCommand();
 		loadKnowledgeCommand.execute();
 		
