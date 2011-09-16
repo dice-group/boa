@@ -87,6 +87,11 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * 
 	 */
+	private Double tfIdf = 0D;
+	
+	/**
+	 * 
+	 */
 	private Double typicity = -1D;
 	
 	/**
@@ -820,5 +825,22 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	public boolean isDomainFirst() {
 		
 		return this.naturalLanguageRepresentation.startsWith("?D?") ? true : false;
+	}
+
+	/**
+	 * @return the tfIdf
+	 */
+	@Basic
+	public Double getTfIdf() {
+
+		return tfIdf;
+	}
+
+	/**
+	 * @param tfIdf the tfIdf to set
+	 */
+	public void setTfIdf(Double tfIdf) {
+
+		this.tfIdf = tfIdf;
 	}
 }

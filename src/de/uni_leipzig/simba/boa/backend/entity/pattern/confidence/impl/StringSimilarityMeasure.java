@@ -9,6 +9,7 @@ import org.apache.commons.collections.ListUtils;
 
 import uk.ac.shef.wit.simmetrics.similaritymetrics.AbstractStringMetric;
 import uk.ac.shef.wit.simmetrics.similaritymetrics.QGramsDistance;
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeasure;
@@ -38,7 +39,7 @@ public class StringSimilarityMeasure implements ConfidenceMeasure {
 			// get the NLR and remove all stopwords
 			String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentationWithoutVariables();
 			Set<String> tokens = new HashSet<String>(Arrays.asList(naturalLanguageRepresentation.split(" ")));
-			tokens.removeAll(PatternSearcher.STOP_WORDS);
+			tokens.removeAll(Constants.STOP_WORDS);
 			
 			double similarity = 0D;
 			
