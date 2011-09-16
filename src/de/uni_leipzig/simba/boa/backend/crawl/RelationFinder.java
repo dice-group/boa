@@ -32,42 +32,21 @@ public class RelationFinder {
 
 				BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(filename))));
 
-				int i = 0, j = 0;
-				
 				String line;
 				while ((line = br.readLine()) != null) {
 
 					String[] lineParts = line.split(" \\|\\|\\| ");
 					
-					if ( i < 100 && lineParts[3].equals("http://dbpedia.org/ontology/subsidiary") ) {
+					// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN ||| 9_isSubject/isObject
+					
+					if ( lineParts[9].trim().equals("isSubject") ) {
 						
-						i++;
-						// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN ||| 9_isSubject/isObject
-						
-						if ( lineParts[9].trim().equals("isSubject") ) {
-							
-							resultsSet.add(new String[] { lineParts[0], lineParts[1], lineParts[2], lineParts[3], lineParts[4], lineParts[5], lineParts[6], lineParts[7], lineParts[8], lineParts[9] });
-						}
-						if ( lineParts[9].trim().equals("isObject") ) {
-							
-							resultsSet.add(new String[] { lineParts[4], lineParts[5], lineParts[6], lineParts[3], lineParts[0], lineParts[1], lineParts[2], lineParts[7], lineParts[8], lineParts[9] });
-						}
+						resultsSet.add(new String[] { lineParts[0], lineParts[1], lineParts[2], lineParts[3], lineParts[4], lineParts[5], lineParts[6], lineParts[7], lineParts[8], lineParts[9] });
 					}
-					if ( j < 100 && lineParts[3].equals("http://dbpedia.org/ontology/capital") ) {
+					if ( lineParts[9].trim().equals("isObject") ) {
 						
-						j++;
-						// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN ||| 9_isSubject/isObject
-						
-						if ( lineParts[9].trim().equals("isSubject") ) {
-							
-							resultsSet.add(new String[] { lineParts[0], lineParts[1], lineParts[2], lineParts[3], lineParts[4], lineParts[5], lineParts[6], lineParts[7], lineParts[8], lineParts[9] });
-						}
-						if ( lineParts[9].trim().equals("isObject") ) {
-							
-							resultsSet.add(new String[] { lineParts[4], lineParts[5], lineParts[6], lineParts[3], lineParts[0], lineParts[1], lineParts[2], lineParts[7], lineParts[8], lineParts[9] });
-						}
+						resultsSet.add(new String[] { lineParts[4], lineParts[5], lineParts[6], lineParts[3], lineParts[0], lineParts[1], lineParts[2], lineParts[7], lineParts[8], lineParts[9] });
 					}
-					if ( i  ==  100 && j == 100) break;
 				}
 				br.close();
 			}
