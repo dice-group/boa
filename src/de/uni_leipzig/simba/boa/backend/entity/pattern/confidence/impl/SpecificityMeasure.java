@@ -39,8 +39,8 @@ public class SpecificityMeasure implements ConfidenceMeasure {
 				
 			specificity = Math.log(specificity) / Math.log(2);
 			
-			pattern.setSpecificityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, specificity);
-			pattern.setSpecificity(specificity);
+			pattern.setSpecificityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, specificity >= 0 ? specificity : 0);
+			pattern.setSpecificity(specificity >= 0 ? specificity : 0);
 		}
 		logger.info("Specificity measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}

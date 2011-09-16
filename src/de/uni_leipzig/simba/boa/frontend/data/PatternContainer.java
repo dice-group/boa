@@ -19,7 +19,6 @@ public class PatternContainer extends BeanItemContainer<Pattern> implements Seri
 			
 			for ( Pattern p : pm.getPatterns()) {
 				
-//				if ( p.getNumberOfOccurrences() >= Integer.valueOf(NLPediaSettings.getInstance().getSetting("occurrence.view.threshold"))  && p.getConfidence() > 0 ) {
 				if ( p.isUseForPatternEvaluation() ) {
 					//here we can switch between different confidence functions and therewith overwrite the value from the database
 //					double confidence = p.getSimilarity() + p.getTypicity() + p.getSupport() + p.getSpecificity(); 

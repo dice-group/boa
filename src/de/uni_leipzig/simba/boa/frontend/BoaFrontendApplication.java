@@ -44,6 +44,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
+import de.uni_leipzig.simba.boa.backend.dao.rdf.TripleDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -52,10 +53,12 @@ import de.uni_leipzig.simba.boa.backend.rdf.Model;
 import de.uni_leipzig.simba.boa.backend.rdf.store.Store;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.frontend.data.PatternContainer;
+import de.uni_leipzig.simba.boa.frontend.data.TripleContainer;
 import de.uni_leipzig.simba.boa.frontend.ui.DatabaseNavigationTree;
 import de.uni_leipzig.simba.boa.frontend.ui.PatternTable;
 import de.uni_leipzig.simba.boa.frontend.ui.RdfModelTree;
 import de.uni_leipzig.simba.boa.frontend.ui.StatementForm;
+import de.uni_leipzig.simba.boa.frontend.ui.TripleTable;
 
 @SuppressWarnings("serial")
 public class BoaFrontendApplication extends Application implements ItemClickListener, Action.Handler, Button.ClickListener, TextChangeListener {
@@ -63,13 +66,13 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	private NLPediaSetup setup = new NLPediaSetup(false);
 	private NLPediaLogger logger = new NLPediaLogger(BoaFrontendApplication.class);
 
-	private Button evaluationButton = new Button("Evaluation");
+	private Button triplesButton = new Button("Evaluation");
 	private Button databasesButton = new Button("Home");
 	private Button sparqlButton = new Button("SPARQL");
 	private Button startQuery = new Button("Query"); 
 	
 	private DatabaseNavigationTree tree;
-	private RdfModelTree rdfTree;
+	private DatabaseNavigationTree tripleTree;
 	private RdfModelTree rdfSparqlTree;
 	private PatternTable patternTable;
 	
@@ -78,6 +81,8 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	
 	private HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
 	private String currentDatabase;
+	
+	private TripleDao tripleDao = (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
 
 	@Override
 	public void init() {
@@ -103,13 +108,13 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		
 		final Button source = event.getButton();
 		
-		if (source == this.evaluationButton) {
+		if (source == this.triplesButton) {
 			
-			Panel p = new Panel();
+			TripleTable table = new TripleTable(this, tripleTree.getFirstUri());
 			// setze linken teil auf die modelle
-			horizontalSplitPanel.setFirstComponent(rdfTree);
+			horizontalSplitPanel.setFirstComponent(tripleTree);
 			// in den rechten teil kommt die erkl�rung
-			horizontalSplitPanel.setSecondComponent(p);
+			horizontalSplitPanel.setSecondComponent(table);
 			horizontalSplitPanel.setSplitPosition(400, HorizontalSplitPanel.UNITS_PIXELS);
 		}
 		else if ( source == this.databasesButton ) {
@@ -253,15 +258,18 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	        
 	        this.horizontalSplitPanel.setSecondComponent(verticalSplitPanel);
 		}
-		else if (event.getSource() == rdfTree) {
+		else if (event.getSource() == tripleTree) {
 			
 			String itemId = (String) event.getItemId();
 			
 			if (itemId != null) {
 				
-				Panel p = new Panel();
-				p.addComponent(new StatementForm(this, itemId));
-				this.horizontalSplitPanel.setSecondComponent(p);
+				String uri				= itemId.substring(itemId.indexOf(":") + 1);
+				TripleTable table 		= new TripleTable(this, uri);
+				// setze linken teil auf die modelle
+				horizontalSplitPanel.setFirstComponent(tripleTree);
+				// in den rechten teil kommt die erkl�rung
+				horizontalSplitPanel.setSecondComponent(table);
 			}
 		}
 		else if (event.getSource() == this.patternTable ) {
@@ -274,10 +282,10 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				
 				String indexDir = NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory");
 				indexDir = indexDir.replace("/index/stanfordnlp", "");
-				System.out.println("indexDir: " +indexDir);
-				System.out.println("indexDir.substring(indexDir.lastIndexOf()+1): " + indexDir.substring(indexDir.lastIndexOf("/")+1));
+//				System.out.println("indexDir: " +indexDir);
+//				System.out.println("indexDir.substring(indexDir.lastIndexOf()+1): " + indexDir.substring(indexDir.lastIndexOf("/")+1));
 				indexDir = indexDir.replace(indexDir.substring(indexDir.lastIndexOf("/")+1), "");
-				System.out.println("indexDir: " + indexDir);
+//				System.out.println("indexDir: " + indexDir);
 				indexDir = indexDir + currentDatabase.substring(0,currentDatabase.lastIndexOf("_")) + "/index/stanfordnlp";
 				
 				PatternSearcher patternSearcher = new PatternSearcher(indexDir);
@@ -335,7 +343,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		this.setTheme("boa");
 		
 		this.tree = new DatabaseNavigationTree(this);
-		this.rdfTree = new RdfModelTree(this);
+		this.tripleTree = new DatabaseNavigationTree(this);
 		this.rdfSparqlTree = new RdfModelTree(this);
 		
 		VerticalLayout layout = new VerticalLayout();
@@ -356,14 +364,14 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		
 		GridLayout lo = new GridLayout(30,1);
 		lo.addComponent(databasesButton,0,0);
-//		lo.addComponent(evaluationButton,1,0);
+		lo.addComponent(triplesButton,1,0);
 //		lo.addComponent(sparqlButton,2,0);
 		
-//		evaluationButton.addListener((ClickListener) this);
+		triplesButton.addListener((ClickListener) this);
 //		sparqlButton.addListener((ClickListener) this);
 		databasesButton.addListener((ClickListener) this);
 		
-//		evaluationButton.setIcon(new ThemeResource("icons/32/folder-add.png"));
+		triplesButton.setIcon(new ThemeResource("icons/32/folder-add.png"));
 //		sparqlButton.setIcon(new ThemeResource("icons/32/document-edit.png"));
 		databasesButton.setIcon(new ThemeResource("icons/32/globe.png"));
 		
@@ -405,6 +413,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		p.setSizeFull();
 		p.addComponent(preformattedText);
 		p.addComponent(e);
+		horizontalSplitPanel.setFirstComponent(tree);
         horizontalSplitPanel.setSecondComponent(p);
 	}
 

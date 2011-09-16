@@ -297,12 +297,17 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 			if (!naturalLanguageRepresentation.equals(other.naturalLanguageRepresentation))
 				return false;
 		if (patternMappings == null) {
-			if (other.patternMappings != null)
+			if (other.patternMappings != null) {
+				
 				return false;
+			}
 		}
 		else
-			if (!patternMappings.equals(other.patternMappings))
+			if (!patternMappings.equals(other.patternMappings)) {
+				
 				return false;
+			}
+				
 		return true;
 	}
 

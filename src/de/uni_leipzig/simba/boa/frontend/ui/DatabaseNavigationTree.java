@@ -1,5 +1,7 @@
 package de.uni_leipzig.simba.boa.frontend.ui;
 
+import java.util.Iterator;
+
 import com.vaadin.event.Action;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Tree;
@@ -30,5 +32,16 @@ public class DatabaseNavigationTree extends Tree {
 		 */
 		setSelectable(true);
 		setNullSelectionAllowed(false);
+	}
+	
+	public String getFirstUri(){
+		
+		Iterator i = this.items.getItemIds().iterator();
+		while (i.hasNext() ) {
+			
+			String uri = (String) i.next();
+			if (uri.contains(":") ) return uri.substring(uri.indexOf(":") + 1 );
+		}
+		return "NOTHING";
 	}
 }

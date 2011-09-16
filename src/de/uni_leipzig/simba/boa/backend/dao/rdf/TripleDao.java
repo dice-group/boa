@@ -94,6 +94,19 @@ public class TripleDao extends AbstractDao {
     	tx.commit();
     	session.close();
     }
+    
+    @SuppressWarnings("unchecked")
+	public List<Triple> findNewTriplesForUri(String uri) {
+
+		Session session = HibernateFactory.getSessionFactory().openSession();
+    	List<Triple> triples = session.createCriteria(Triple.class)
+    							.add(Restrictions.eq("correct", false))
+    							.createCriteria("property").add(Restrictions.eq("uri", uri))
+    							.list();
+    	
+    	session.close();
+		return triples;
+	}
 
 	@SuppressWarnings("unchecked")
 	public Triple findTripleBySubjectPredicateObject(Resource subject, Property property, Resource object) {

@@ -7,6 +7,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CrawlingCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateIndexCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateKnowledgeCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.LimesCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternConfidenceMeasureCommand;
@@ -116,8 +117,8 @@ public class NLPedia {
 						break;
 						
 					case 12: // start scripts here
-//						Command createKnowledgeCommand = new CreateKnowledgeCommand();
-//						createKnowledgeCommand.execute();
+						Command createKnowledgeCommand = new CreateKnowledgeCommand(null, null);
+						createKnowledgeCommand.execute();
 						break;
 						
 					case 13:

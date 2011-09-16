@@ -15,7 +15,7 @@ public class PatternTable extends Table {
 		 "id",	"confidence",	"similarity"	,"support",	"typicity",	"specificity",	"reverb",	"numberOfOccurrences", 	"maxLearnedFrom",	"learnedFromPairs", "generalizedPattern",	"naturalLanguageRepresentation", "posTaggedString"};
 
 	public static final String[] COL_HEADERS_ENGLISH = new String[] {
-		 "id",	"CONF",			"SIM"			,"SUPP",	"TYP",		"SPEC",			"RVRB",		"OCC",					"MAX",				"PAIR",				"GEN",					"NLR", 							 "POS" };
+		 "id",	"SCR",			"SIM"			,"SUPP",	"TYP",		"SPEC",			"RVRB",		"OCC",					"MAX",				"PAIR",				"GEN",					"NLR", 							 "POS" };
 	
 	public PatternTable(BoaFrontendApplication app, Container dataSource) {
 		

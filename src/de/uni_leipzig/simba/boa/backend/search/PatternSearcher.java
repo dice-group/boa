@@ -38,40 +38,25 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
  * @author Daniel Gerber
  */
 public class PatternSearcher {
-	
-	static {NLPediaSetup s=new NLPediaSetup(true);}
-	
+
 	private final static int MAX_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getInstance().getSetting("maxPatternLenght")).intValue();
 	private final static int MIN_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getInstance().getSetting("minPatternLenght")).intValue();
 	private final static int MAX_NUMBER_OF_DOCUMENTS = Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
 
 	private PosTagger posTagger;
-	
+
 	public static final Set<String> STOP_WORDS = new HashSet<String>();
 	static {
-		Collections.addAll(STOP_WORDS, 	" ",",","-","i","a","about","an", "and","are","as","at","be","by","com","for",
-										"from","how","in","is","it","of","on","or","that","the",
-										"this","to","what","when","where","who","will","with",
-										"the","www","before",",","after",";","like","and","such",
-										"-LRB-","-RRB-","-lrb-","-rrb-","aber","als","am","an","auch","auf","aus",
-										"bei","bin","bis","bist","da","dadurch","daher","darum",
-										"das","daß","dass","dein","deine","dem","den","der","des",
-										"dessen","deshalb","die","dies","dieser","dieses","doch",
-										"dort","du","durch","ein","eine","einem","einen","einer",
-										"eines","er","es","euer","eure","für","hatte","hatten",
-										"hattest","hattet","hier","hinter","ich","ihr","ihre","im",
-										"in","ist","ja","jede","jedem","jeden","jeder","jedes",
-										"jener","jenes","jetzt","kann","kannst","können","könnt",
-										"machen","mein","meine","mit","muß","mußt","musst","müssen",
-										"müßt","nach","nachdem","nein","nicht","nun","oder","seid",
-										"sein","seine","sich","sie","sind","soll","sollen","sollst",
-										"sollt","sonst","soweit","sowie","und","unser unsere","unter",
-										"vom","von","vor","wann","warum","weiter","weitere",
-										"wenn","wer","werde","werden","werdet","weshalb","wie",
-										"wieder","wieso","wir","wird","wirst","wo","woher","wohin",
-										"zu","zum","zur","über");
+		Collections.addAll(STOP_WORDS, " ", ",", "-", "i", "a", "about", "an", "and", "are", "as", "at", "be", "by", "com", "for", "from", "how", "in", "is", "it", "of", "on", "or", "that", "the",
+				"this", "to", "what", "when", "where", "who", "will", "with", "the", "www", "before", ",", "after", ";", "like", "and", "such", "-LRB-", "-RRB-", "-lrb-", "-rrb-", "aber", "als",
+				"am", "an", "auch", "auf", "aus", "bei", "bin", "bis", "bist", "da", "dadurch", "daher", "darum", "das", "daß", "dass", "dein", "deine", "dem", "den", "der", "des", "dessen",
+				"deshalb", "die", "dies", "dieser", "dieses", "doch", "dort", "du", "durch", "ein", "eine", "einem", "einen", "einer", "eines", "er", "es", "euer", "eure", "für", "hatte", "hatten",
+				"hattest", "hattet", "hier", "hinter", "ich", "ihr", "ihre", "im", "in", "ist", "ja", "jede", "jedem", "jeden", "jeder", "jedes", "jener", "jenes", "jetzt", "kann", "kannst",
+				"können", "könnt", "machen", "mein", "meine", "mit", "muß", "mußt", "musst", "müssen", "müßt", "nach", "nachdem", "nein", "nicht", "nun", "oder", "seid", "sein", "seine", "sich",
+				"sie", "sind", "soll", "sollen", "sollst", "sollt", "sonst", "soweit", "sowie", "und", "unser unsere", "unter", "vom", "von", "vor", "wann", "warum", "weiter", "weitere", "wenn",
+				"wer", "werde", "werden", "werdet", "weshalb", "wie", "wieder", "wieso", "wir", "wird", "wirst", "wo", "woher", "wohin", "zu", "zum", "zur", "über");
 	}
-	
+
 	private Directory directory = null;
 	private Analyzer analyzer = null;
 	private Searcher indexSearcher = null;
@@ -91,7 +76,7 @@ public class PatternSearcher {
 
 		this.results = new ArrayList<SearchResult>();
 		this.hits = null;
-		
+
 		this.posTagger = new PosTagger();
 	}
 
@@ -147,37 +132,35 @@ public class PatternSearcher {
 
 		Set<String> subjectLabels = triple.getSubject().retrieveLabels();
 		Set<String> objectLabels = triple.getObject().retrieveLabels();
-		
-		System.out.println(triple);
 
 		// go through all surface form combinations
-		for ( String subjectLabel : subjectLabels ) {
-			for ( String objectLabel : objectLabels ) {
-				
+		for (String subjectLabel : subjectLabels) {
+			for (String objectLabel : objectLabels) {
+
 				Query query = parser.parse("+sentence-lc:\"" + QueryParser.escape(subjectLabel) + "\" && +sentence-lc:\"" + QueryParser.escape(objectLabel) + "\"");
 				hits = indexSearcher.search(query, null, MAX_NUMBER_OF_DOCUMENTS).scoreDocs;
 
 				for (int i = 0; i < hits.length; i++) {
 
 					String sentenceLowerCase = indexSearcher.doc(hits[i].doc).get("sentence-lc");
-					
-					Map<Integer,String> currentMatches = new HashMap<Integer,String>();
-					
+
+					Map<Integer, String> currentMatches = new HashMap<Integer, String>();
+
 					String[] match1 = StringUtils.substringsBetween(sentenceLowerCase, subjectLabel, objectLabel);
-					if ( match1 != null ) {
-						
-						for (int j = 0 ; j < match1.length ; j++ ) {
-							
+					if (match1 != null) {
+
+						for (int j = 0; j < match1.length; j++) {
+
 							match1[j] = "?D? " + match1[j].trim() + " ?R?";
 							currentMatches.put(hits[i].doc, match1[j]);
 						}
 					}
-					
+
 					String[] match2 = StringUtils.substringsBetween(sentenceLowerCase, objectLabel, subjectLabel);
-					if ( match2 != null ) {
-						
-						for (int j = 0 ; j < match2.length ; j++ ) { 
-							
+					if (match2 != null) {
+
+						for (int j = 0; j < match2.length; j++) {
+
 							match2[j] = "?R? " + match2[j].trim() + " ?D?";
 							currentMatches.put(hits[i].doc, match2[j]);
 						}
@@ -187,7 +170,7 @@ public class PatternSearcher {
 			}
 		}
 	}
-	
+
 	/**
 	 * Create the search results
 	 * 
@@ -196,21 +179,22 @@ public class PatternSearcher {
 	 * @param hit
 	 * @param isSubject
 	 */
-	private void addSearchResults(Map<Integer,String> currentMatches, Triple triple, ScoreDoc hit, String sentenceLowerCase, String sentenceNormalCase) {
+	private void addSearchResults(Map<Integer, String> currentMatches, Triple triple, ScoreDoc hit, String sentenceLowerCase, String sentenceNormalCase) {
 
-		for ( String match : currentMatches.values() ) {
-			
+		for (String match : currentMatches.values()) {
+
 			String nlr = this.getCorrectCaseNLR(sentenceLowerCase, sentenceNormalCase, match);
-			
+
 			// but only for those who are suitable
-			if ( !match.isEmpty() && this.isPatternSuitable(match) ) {
-				
+			if (!match.isEmpty() && this.isPatternSuitable(match)) {
+
 				SearchResult result = new SearchResult();
 				result.setProperty(triple.getProperty().getUri());
 				result.setNaturalLanguageRepresentation(nlr);
 				result.setRdfsRange(triple.getProperty().getRdfsRange());
 				result.setRdfsDomain(triple.getProperty().getRdfsDomain());
-				// the subject of the triple is the domain of the property so, replace every occurrence with ?D?
+				// the subject of the triple is the domain of the property so,
+				// replace every occurrence with ?D?
 				if (nlr.startsWith("?D?")) {
 					result.setFirstLabel(triple.getSubject().getLabel());
 					result.setSecondLabel(triple.getObject().getLabel());
@@ -225,12 +209,12 @@ public class PatternSearcher {
 			}
 		}
 	}
-	
+
 	private String getCorrectCaseNLR(String lowerCase, String normalCase, String pattern) {
-		
+
 		String firstVariable = pattern.substring(0, 3);
 		String secondVariable = pattern.substring(pattern.length() - 3, pattern.length());
-		
+
 		// remove ?D? and ?R?
 		pattern = pattern.substring(0, pattern.length() - 3).substring(3).trim();
 		// get the start of the pattern and got until its end
@@ -238,68 +222,75 @@ public class PatternSearcher {
 		int end = start + pattern.length();
 		return firstVariable + " " + normalCase.substring(start, end) + " " + secondVariable;
 	}
-	
+
 	public static void main(String[] args) {
 
 		String lowerCase = "anarchist themes can be found in the works of taoist sages laozi and zhuangzi .";
 		String upperCase = "Anarchist themes can be found in the works of Taoist sages Laozi and Zhuangzi .";
 		String pattern = "?D? can be found in ?R?";
-		
-		String test =  "it lies 123 km south of tirana , the capital of albania .";
-		
+
+		String test = "it lies 123 km south of tirana , the capital of albania .";
+
 		String[] matches = StringUtils.substringsBetween(test, "albania", "tirana");
-		
-		if ( matches != null ) {
-			for (String s : matches){
-				
-				System.out.println(s);;
+
+		if (matches != null) {
+			for (String s : matches) {
+
+				System.out.println(s);
+				;
 			}
 		}
 		System.out.println();
-		matches = StringUtils.substringsBetween(test, "tirana","albania");
-		if ( matches != null ) {
-			for (String s : matches){
-				
-				System.out.println(s);;
-			}			
+		matches = StringUtils.substringsBetween(test, "tirana", "albania");
+		if (matches != null) {
+			for (String s : matches) {
+
+				System.out.println(s);
+				;
+			}
 		}
-		
-//		System.out.println(getCorrectCaseNLR(lowerCase,upperCase,pattern)); 
-		
+
+		// System.out.println(getCorrectCaseNLR(lowerCase,upperCase,pattern));
+
 	}
-	
+
 	private boolean isPatternSuitable(String naturalLanguageRepresentation) {
 
 		String patternWithoutVariables = naturalLanguageRepresentation.substring(0, naturalLanguageRepresentation.length() - 3).substring(3).trim();
-		
+
 		// patterns are only allowed to have 256 characters
-		if (naturalLanguageRepresentation.length() > 256 || naturalLanguageRepresentation.isEmpty()) 
+		if (naturalLanguageRepresentation.length() > 256 || naturalLanguageRepresentation.isEmpty())
 			return false;
-		
-		// pattern need to start with either ?D? or ?R? and have to end with ?D? or ?R?
-		if ( (!naturalLanguageRepresentation.startsWith("?D?") && !naturalLanguageRepresentation.startsWith("?R?")) 
-				|| (!naturalLanguageRepresentation.endsWith("?D?") && !naturalLanguageRepresentation.endsWith("?R?")) ) 
+
+		// pattern need to start with either ?D? or ?R? and have to end with ?D?
+		// or ?R?
+		if ((!naturalLanguageRepresentation.startsWith("?D?") && !naturalLanguageRepresentation.startsWith("?R?"))
+				|| (!naturalLanguageRepresentation.endsWith("?D?") && !naturalLanguageRepresentation.endsWith("?R?")))
 			return false;
-		
+
 		// patterns need to have only one domain and only one range
-		if ( StringUtils.countMatches(naturalLanguageRepresentation, "?D?") != 1 || StringUtils.countMatches(naturalLanguageRepresentation, "?R?") != 1 )			
+		if (StringUtils.countMatches(naturalLanguageRepresentation, "?D?") != 1 || StringUtils.countMatches(naturalLanguageRepresentation, "?R?") != 1)
 			return false;
-		
-		// patterns need to be bigger/equal than min chunk size and smaller/equal then max chunk size
-		// true or correct if the number of stop-words in the pattern is not equal to the number of tokens
+
+		// patterns need to be bigger/equal than min chunk size and
+		// smaller/equal then max chunk size
+		// true or correct if the number of stop-words in the pattern is not
+		// equal to the number of tokens
 		Set<String> naturalLanguageRepresentationChunks = new HashSet<String>(Arrays.asList(patternWithoutVariables.toLowerCase().split(" ")));
-		if ( naturalLanguageRepresentationChunks.size() >= MAX_PATTERN_CHUNK_LENGTH || naturalLanguageRepresentationChunks.size() <= MIN_PATTERN_CHUNK_LENGTH )
+		if (naturalLanguageRepresentationChunks.size() >= MAX_PATTERN_CHUNK_LENGTH || naturalLanguageRepresentationChunks.size() <= MIN_PATTERN_CHUNK_LENGTH)
 			return false;
-		
-		// patterns containing only stop-words can't be used, because they are way to general
+
+		// patterns containing only stop-words can't be used, because they are
+		// way to general
 		naturalLanguageRepresentationChunks.removeAll(STOP_WORDS);
-		if (naturalLanguageRepresentationChunks.size() == 0 ) 
+		if (naturalLanguageRepresentationChunks.size() == 0)
 			return false;
-		
-		// patterns shall not start with "and" or "and ," because this is the conjunction of sentences and does not carry meaning
-		if ( patternWithoutVariables.startsWith("and ") || patternWithoutVariables.startsWith("and,") || patternWithoutVariables.startsWith("and ,") ) 
+
+		// patterns shall not start with "and" or "and ," because this is the
+		// conjunction of sentences and does not carry meaning
+		if (patternWithoutVariables.startsWith("and ") || patternWithoutVariables.startsWith("and,") || patternWithoutVariables.startsWith("and ,"))
 			return false;
-		
+
 		return true;
 	}
 
@@ -317,16 +308,17 @@ public class PatternSearcher {
 		this.indexSearcher.close();
 	}
 
-	public Set<String> getExactMatchSentences(String keyphrase, int maxNumberOfDocuments)  throws ParseException, IOException {
+	public Set<String> getExactMatchSentences(String keyphrase, int maxNumberOfDocuments) throws ParseException, IOException {
 
 		ScoreDoc[] hits = indexSearcher.search(this.parser.parse("+sentence-lc:\"" + QueryParser.escape(keyphrase.toLowerCase()) + "\""), null, maxNumberOfDocuments).scoreDocs;
 		TreeSet<String> list = new TreeSet<String>();
-		
-		// reverse order because longer sentences come last, longer sentences most likely contain less it,he,she 
+
+		// reverse order because longer sentences come last, longer sentences
+		// most likely contain less it,he,she
 		for (int i = hits.length - 1; i >= 0; i--) {
-			
+
 			// get the indexed string and put it in the result
-			list.add(indexSearcher.doc(hits[i].doc).get("sentence-lc"));
+			list.add(indexSearcher.doc(hits[i].doc).get("sentence"));
 		}
 		return list;
 	}

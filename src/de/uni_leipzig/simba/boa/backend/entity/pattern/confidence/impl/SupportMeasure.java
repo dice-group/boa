@@ -34,8 +34,8 @@ public class SupportMeasure implements ConfidenceMeasure {
 			
 			double support = maxLearnedFrom * countLearnedFrom;
 			
-			pattern.setSupportForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, support);
-			pattern.setSupport(support);
+			pattern.setSupportForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, support >= 0 ? support : 0);
+			pattern.setSupport(support >= 0 ? support : 0);
 		}
 		this.logger.info("Support measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}

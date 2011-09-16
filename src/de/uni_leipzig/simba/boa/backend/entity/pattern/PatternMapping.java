@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 
 /**
  * 
@@ -90,7 +91,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 	  )
 	public Set<Pattern> getPatterns() {
 	
-		return patterns;
+		return this.patterns;
 	}
 	
 	/**
@@ -110,6 +111,12 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 		this.patterns.add(pattern);
 		this.patternMap.put(pattern.getNaturalLanguageRepresentation().hashCode(), pattern);
 		return this;
+	}
+	
+	public void removePattern(Pattern pattern) {
+		
+//		pattern = this.patternMap.remove(pattern.getNaturalLanguageRepresentation().hashCode());
+//		this.patterns.remove(pattern);
 	}
 
 	/* (non-Javadoc)

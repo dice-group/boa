@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import de.danielgerber.format.OutputFormatter;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 
 @Entity
@@ -61,7 +62,7 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity 
 	@Override
 	public String toString() {
 
-		return "Triple [" + subject.uri + ", " + property.uri + ", " + object.uri + ", " + confidence + " ]";
+		return "Triple [" + subject.uri + ", " + property.uri + ", " + object.uri + ", " + OutputFormatter.format(confidence, "#.##") + " ]";
 	}
 
 	/**

@@ -49,7 +49,6 @@ import edu.stanford.nlp.process.DocumentPreprocessor;
  */
 public class FileIndexer {
 	
-	private static NLPediaSetup setup = new NLPediaSetup(true);
 	private NLPediaLogger logger = new NLPediaLogger(FileIndexer.class);
 	private static NamedEntityRecognizer nerTagger = new NamedEntityRecognizer();
 

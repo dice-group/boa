@@ -1,9 +1,15 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.filter.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
+import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
@@ -21,10 +27,17 @@ public class OccurrenceFilter implements PatternFilter {
 	
 	private final NLPediaLogger logger = new NLPediaLogger(OccurrenceFilter.class);
 	
+	private PatternDao patternDao = (PatternDao) DaoFactory.getInstance().createDAO(PatternDao.class);
+	
 	@Override
 	public void filterPattern(PatternMapping patternMapping) {
 
+		// collect all patterns which do not fit the filters, can't modify list while iteration
+		Set<Pattern> newPatterns = new HashSet<Pattern>();
+		
 		for ( Pattern p : patternMapping.getPatterns() ) {
+			
+			System.out.println(p.getNaturalLanguageRepresentation());
 			
 			// skip this evaluation, because it was characterized as not suitable in a previous evaluation
 			if ( p.isUseForPatternEvaluation() ) {
@@ -58,6 +71,12 @@ public class OccurrenceFilter implements PatternFilter {
 					}
 				}
 			}
+			// check after filter were applied if pattern is still suitable
+			if ( p.isUseForPatternEvaluation() )	newPatterns.add(p);
+			else									this.patternDao.deletePattern(p); 
 		}
+		
+		// replace the old patterns with the ones with survived the filtering
+		patternMapping.setPatterns(newPatterns);
 	}
 }

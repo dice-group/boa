@@ -45,11 +45,11 @@ public class IterationCommand implements Command {
 			patternConfidenceMeasureCommand.execute();
 			
 			// generate rdf
-//			List<PatternMapping> patternMappings = ((PatternConfidenceMeasureCommand) patternConfidenceMeasureCommand).getPatternMappingList();
-//			Map<Integer,Triple>	triples	= ((PatternSearchCommand) patternSearchCommand).getTriples();
-//			Command createKnowledgeCommand = new CreateKnowledgeCommand(patternMappings, triples);
+			patternMappings = ((PatternConfidenceMeasureCommand) patternConfidenceMeasureCommand).getPatternMappingList();
+			triples	= ((PatternSearchCommand) patternSearchCommand).getTriples();
+			Command createKnowledgeCommand = new CreateKnowledgeCommand(patternMappings, triples);
 //			Command createKnowledgeCommand = new CreateKnowledgeCommand(patternMappings, null);
-//			createKnowledgeCommand.execute();
+			createKnowledgeCommand.execute();
 			
 			System.out.println("Iteration " + CURRENT_ITERATION_NUMBER + " took " + ((new Date().getTime() - startIteration) / 1000) + "s." );
 		}

@@ -25,28 +25,27 @@ import de.uni_leipzig.simba.boa.backend.wordnet.query.WordnetQuery;
 
 public class LoadKnowledgeCommand implements Command {
 
-	private static List<String> allowedProperties;
 	private List<Triple> tripleList = new ArrayList<Triple>();
-	static {
-		
-		allowedProperties = Arrays.asList("http://dbpedia.org/ontology/crosses","http://dbpedia.org/ontology/locatedInArea","http://dbpedia.org/ontology/manager",
-				"http://dbpedia.org/ontology/creator","http://dbpedia.org/ontology/operator","http://dbpedia.org/ontology/unitaryAuthority",
-				"http://dbpedia.org/ontology/notableCommander","http://dbpedia.org/ontology/capital","http://dbpedia.org/ontology/ceremonialCounty",
-				"http://dbpedia.org/ontology/place","http://dbpedia.org/ontology/foundationPerson","http://dbpedia.org/ontology/hubAirport",
-				"http://dbpedia.org/ontology/child","http://dbpedia.org/ontology/cinematography","http://dbpedia.org/ontology/architect",
-				"http://dbpedia.org/ontology/influencedBy","http://dbpedia.org/ontology/regionServed","http://dbpedia.org/ontology/garrison",
-				"http://dbpedia.org/ontology/commandStructure","http://dbpedia.org/ontology/leftTributary","http://dbpedia.org/ontology/rightTributary",
-				"http://dbpedia.org/ontology/mother","http://dbpedia.org/ontology/militaryUnit","http://dbpedia.org/ontology/recordPlace",
-				"http://dbpedia.org/ontology/father","http://dbpedia.org/ontology/tenant","http://dbpedia.org/ontology/musicComposer",
-				"http://dbpedia.org/ontology/network","http://dbpedia.org/ontology/sisterStation","http://dbpedia.org/ontology/guest",
-				"http://dbpedia.org/ontology/managerClub","http://dbpedia.org/ontology/leaderName","http://dbpedia.org/ontology/nearestCity",
-				"http://dbpedia.org/ontology/publisher","http://dbpedia.org/ontology/author","http://dbpedia.org/ontology/coachedTeam",
-				"http://dbpedia.org/ontology/spouse","http://dbpedia.org/ontology/affiliation","http://dbpedia.org/ontology/ground",
-				"http://dbpedia.org/ontology/riverMouth","http://dbpedia.org/ontology/musicalArtist","http://dbpedia.org/ontology/musicalBand",
-				"http://dbpedia.org/ontology/award","http://dbpedia.org/ontology/writer","http://dbpedia.org/ontology/almaMater",
-				"http://dbpedia.org/ontology/occupation","http://dbpedia.org/ontology/formerTeam","http://dbpedia.org/ontology/deathPlace",
-				"http://dbpedia.org/ontology/birthPlace","http://dbpedia.org/ontology/trainer");
-	}
+//	static {
+//		
+//		allowedProperties = Arrays.asList("http://dbpedia.org/ontology/crosses","http://dbpedia.org/ontology/locatedInArea","http://dbpedia.org/ontology/manager",
+//				"http://dbpedia.org/ontology/creator","http://dbpedia.org/ontology/operator","http://dbpedia.org/ontology/unitaryAuthority",
+//				"http://dbpedia.org/ontology/notableCommander","http://dbpedia.org/ontology/capital","http://dbpedia.org/ontology/ceremonialCounty",
+//				"http://dbpedia.org/ontology/place","http://dbpedia.org/ontology/foundationPerson","http://dbpedia.org/ontology/hubAirport",
+//				"http://dbpedia.org/ontology/child","http://dbpedia.org/ontology/cinematography","http://dbpedia.org/ontology/architect",
+//				"http://dbpedia.org/ontology/influencedBy","http://dbpedia.org/ontology/regionServed","http://dbpedia.org/ontology/garrison",
+//				"http://dbpedia.org/ontology/commandStructure","http://dbpedia.org/ontology/leftTributary","http://dbpedia.org/ontology/rightTributary",
+//				"http://dbpedia.org/ontology/mother","http://dbpedia.org/ontology/militaryUnit","http://dbpedia.org/ontology/recordPlace",
+//				"http://dbpedia.org/ontology/father","http://dbpedia.org/ontology/tenant","http://dbpedia.org/ontology/musicComposer",
+//				"http://dbpedia.org/ontology/network","http://dbpedia.org/ontology/sisterStation","http://dbpedia.org/ontology/guest",
+//				"http://dbpedia.org/ontology/managerClub","http://dbpedia.org/ontology/leaderName","http://dbpedia.org/ontology/nearestCity",
+//				"http://dbpedia.org/ontology/publisher","http://dbpedia.org/ontology/author","http://dbpedia.org/ontology/coachedTeam",
+//				"http://dbpedia.org/ontology/spouse","http://dbpedia.org/ontology/affiliation","http://dbpedia.org/ontology/ground",
+//				"http://dbpedia.org/ontology/riverMouth","http://dbpedia.org/ontology/musicalArtist","http://dbpedia.org/ontology/musicalBand",
+//				"http://dbpedia.org/ontology/award","http://dbpedia.org/ontology/writer","http://dbpedia.org/ontology/almaMater",
+//				"http://dbpedia.org/ontology/occupation","http://dbpedia.org/ontology/formerTeam","http://dbpedia.org/ontology/deathPlace",
+//				"http://dbpedia.org/ontology/birthPlace","http://dbpedia.org/ontology/trainer");
+//	}
 	
 	public static void main(String[] args) {
 
@@ -66,14 +65,11 @@ public class LoadKnowledgeCommand implements Command {
 		List<String[]> labels =  RelationFinder.getRelationFromFile(NLPediaSettings.getInstance().getSetting("labelOutputFile"));
 		Map<String,Resource> resourceMap = new HashMap<String, Resource>();
 		
-		int i = 0;
 		Pattern pattern = Pattern.compile("\\(.+?\\)");
 	    Matcher matcher;
 
 		// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN ||| 9_isSubject/isObject
 		for ( String[] line : labels ) {
-			
-			if (i++==1000) break;
 			
 			String subjectUri		= "";
 			String subjectLabel		= "";
@@ -176,11 +172,8 @@ public class LoadKnowledgeCommand implements Command {
 			triple.setSubject(sub);
 			triple.setProperty(p);
 			triple.setObject(obj);
-			// only top 50 patterns get search
-//			if ( allowedProperties.contains(triple.getProperty().getUri()) ) {
-				
-				tripleList.add(triple);
-//			}
+			
+			tripleList.add(triple);
 		}
 		System.out.println("Starting to batch save triples to database!");
 		tripleDao.batchSaveOrUpdate(tripleList);

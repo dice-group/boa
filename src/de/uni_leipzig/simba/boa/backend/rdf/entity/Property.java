@@ -35,7 +35,7 @@ public class Property extends Resource {
 		builder.append("]");
 		return builder.toString();
 	}
-
+	
 	private String rdfsRange;
 	private String rdfsDomain;
 	private String synsets;

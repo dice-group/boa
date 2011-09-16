@@ -14,6 +14,7 @@ import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
 import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
@@ -85,13 +86,9 @@ public class TypicityMeasure implements ConfidenceMeasure {
 		
 		if ( this.ner == null ) this.ner = new NamedEntityRecognizer();
 
-		System.out.println("Mapping: " +mapping.getProperty().getUri());
-		
 		for (Pattern pattern : mapping.getPatterns()) {
 			
 			if ( !pattern.isUseForPatternEvaluation() ) continue;
-			
-			System.out.println("\tPattern: " +pattern.getNaturalLanguageRepresentation());
 			
 			try {
 			
@@ -183,7 +180,11 @@ public class TypicityMeasure implements ConfidenceMeasure {
 		}
 		this.logger.info("Typicity measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}
+	
+	public static void main(String[] args) {
 
+		String s = "Microsoft is a company located in Redmond.";
+	}
 	private String segmentString(String sentence) {
 		
 		try {
