@@ -89,9 +89,13 @@ public class ReverbMeasure implements ConfidenceMeasure {
 	
 							// we only want to add scores of relations, which are substring of our relations
 							if ( StringUtil.isSubstringOf(extr.getRelation().toString(), pattern.getNaturalLanguageRepresentation()) ) {
-	
-								scores.add(scoreFunc.getConf(extr));
-								relations.add(extr.getRelation().toString());
+								
+								double score = scoreFunc.getConf(extr); 
+								if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
+									
+									scores.add(score);
+									relations.add(extr.getRelation().toString());
+								}
 							}
 						}
 					}

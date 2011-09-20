@@ -54,9 +54,6 @@ public class PatternConfidenceMeasureCommand implements Command {
 		// split the mappings into several lists
 		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads));
 		
-		System.out.println("All: " + patternMappingList);
-		for ( List<PatternMapping> lists : patternMappingSubLists) System.out.println("\""+lists.size());
-		
 		List<Thread> threadList = new ArrayList<Thread>();
 		List<PatternMapping> results = new ArrayList<PatternMapping>();
 		

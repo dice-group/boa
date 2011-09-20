@@ -61,7 +61,11 @@ public class StringSimilarityMeasure implements ConfidenceMeasure {
 				
 					try {
 						
-						similarity = Math.max(similarity, this.similarityAssessor.getSimilarity(wordFrom, token));
+						double sim = this.similarityAssessor.getSimilarity(wordFrom, token);
+						if ( !Double.isInfinite(sim) && !Double.isNaN(sim) ) {
+							
+							similarity = Math.max(similarity, sim);
+						}
 					}
 					catch (WordNotFoundException e) {
 						
@@ -69,7 +73,7 @@ public class StringSimilarityMeasure implements ConfidenceMeasure {
 					}
 				}
 			}
-			pattern.setSimilarity(similarity);
+			pattern.setSimilarity(similarity >= 0 ? similarity : 0);
 		}
 	}
 }

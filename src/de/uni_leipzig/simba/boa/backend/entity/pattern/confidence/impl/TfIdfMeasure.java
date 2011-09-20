@@ -37,7 +37,11 @@ public class TfIdfMeasure implements ConfidenceMeasure {
 				// we don't want stop-words
 				if ( tokens.containsKey(s) ) {
 					
-					tfIdfScore += tokens.get(s).getTfIdf(mapping.getPatterns().size());
+					double score = tokens.get(s).getTfIdf(mapping.getPatterns().size());
+					if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
+						
+						tfIdfScore += score;
+					}
 				}
 			}
 			p.setTfIdf(tfIdfScore);
