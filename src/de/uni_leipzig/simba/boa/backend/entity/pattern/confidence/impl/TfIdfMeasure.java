@@ -44,7 +44,7 @@ public class TfIdfMeasure implements ConfidenceMeasure {
 		}
 	}
 	
-	private static class Token {
+	class Token {
 		
 		private int frequency;
 		private int documentFrequency;

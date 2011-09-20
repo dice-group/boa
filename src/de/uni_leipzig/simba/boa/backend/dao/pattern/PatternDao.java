@@ -1,7 +1,9 @@
 package de.uni_leipzig.simba.boa.backend.dao.pattern;
 
 import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
@@ -99,5 +101,26 @@ public class PatternDao extends AbstractDao {
     	
         return (List<Pattern>) super.findAllEntitiesByClass(Pattern.class);
     }
+
+	public void deletePatterns(Set<Pattern> wrongPatterns) {
+
+		Session session = HibernateFactory.getSessionFactory().openSession();
+    	Transaction tx = session.beginTransaction();
+    	int batchSize = Integer.valueOf(NLPediaSettings.getInstance().getSetting("hibernate.jdbc.batch_size"));
+    	
+    	Iterator<Pattern> iter = wrongPatterns.iterator();
+    	for ( int i = 0 ; i < wrongPatterns.size() ; i++ ) {
+    	    
+    	    session.delete(iter.next());
+    	    
+    	    if ( i % batchSize == 0 ) { 
+    	        session.flush();
+    	        session.clear();
+    	    }
+    	}
+    	   
+    	tx.commit();
+    	session.close();
+	}
 }
 

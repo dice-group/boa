@@ -33,7 +33,8 @@ public class OccurrenceFilter implements PatternFilter {
 	public void filterPattern(PatternMapping patternMapping) {
 
 		// collect all patterns which do not fit the filters, can't modify list while iteration
-		Set<Pattern> newPatterns = new HashSet<Pattern>();
+		Set<Pattern> correctPatterns = new HashSet<Pattern>();
+		Set<Pattern> wrongPatterns = new HashSet<Pattern>();
 		
 		for ( Pattern p : patternMapping.getPatterns() ) {
 			
@@ -66,17 +67,24 @@ public class OccurrenceFilter implements PatternFilter {
 						// look if there are more than NUMBER_OF_LEARNED_PAIRS pairs the pattern was learned from
 						p.setUseForPatternEvaluation(
 							
-								p.getLearnedFrom().size() >= OccurrenceFilter.NUMBER_OF_LEARNED_PAIRS
+								learnedFrom.size() >= OccurrenceFilter.NUMBER_OF_LEARNED_PAIRS
 						);
 					}
 				}
 			}
 			// check after filter were applied if pattern is still suitable
-			if ( p.isUseForPatternEvaluation() )	newPatterns.add(p);
-			else									this.patternDao.deletePattern(p); 
+			if ( p.isUseForPatternEvaluation() ) {
+				
+				correctPatterns.add(p);
+			}
+			else {
+				
+				wrongPatterns.add(p); 
+			}
 		}
-		
-		// replace the old patterns with the ones with survived the filtering
-		patternMapping.setPatterns(newPatterns);
+		// delete the old patterns 
+		this.patternDao.deletePatterns(wrongPatterns);
+		// and replace them with the ones which survived the filtering
+		patternMapping.setPatterns(correctPatterns);
 	}
 }
