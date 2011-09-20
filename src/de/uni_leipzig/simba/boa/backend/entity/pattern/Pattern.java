@@ -72,17 +72,17 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * 
 	 */
-	private Double globalConfidence = -1D;
+	private Double globalConfidence = 0D;
 	
 	/**
 	 * 
 	 */
-	private Double confidence = -1D;
+	private Double confidence = 0D;
 	
 	/**
 	 * 
 	 */
-	private Double support = -1D;
+	private Double support = 0D;
 	
 	/**
 	 * 
@@ -92,22 +92,22 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * 
 	 */
-	private Double typicity = -1D;
+	private Double typicity = 0D;
 	
 	/**
 	 * 
 	 */
-	private Double reverb = -1D;
+	private Double reverb = 0D;
 	
 	/**
 	 * 
 	 */
-	private Double specificity = -1D;
+	private Double specificity = 0D;
 	
 	/**
 	 * 
 	 */
-	private Double similarity = -1D;
+	private Double similarity = 0D;
 	
 	/**
 	 * 

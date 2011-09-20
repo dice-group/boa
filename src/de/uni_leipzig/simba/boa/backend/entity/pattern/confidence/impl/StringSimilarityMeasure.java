@@ -27,14 +27,10 @@ public class StringSimilarityMeasure implements ConfidenceMeasure {
 	@Override
 	public void measureConfidence(PatternMapping mapping) {
 
-//		System.out.println("Mapping: " +mapping.getProperty().getUri());
-		
 		// we calculate the qgram distance between the NLR and the label of the property
 		for ( Pattern pattern : mapping.getPatterns() ) {
 			
 			if ( !pattern.isUseForPatternEvaluation() ) continue;
-			
-//			System.out.println("\tPattern: " +pattern.getNaturalLanguageRepresentation());
 			
 			// get the NLR and remove all stopwords
 			String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentationWithoutVariables();

@@ -67,14 +67,10 @@ public class ReverbMeasure implements ConfidenceMeasure {
 		
 		try {
 			
-//			System.out.println("Mapping: " +mapping.getProperty().getUri());
-			
 			for ( Pattern pattern : mapping.getPatterns()) {
 				
 				if ( !pattern.isUseForPatternEvaluation() ) continue;
 				
-//				System.out.println("\tPattern: " +pattern.getNaturalLanguageRepresentation());
-
 				Set<Double> scores		= new HashSet<Double>();
 				Set<String> relations	= new HashSet<String>();
 				
@@ -86,12 +82,12 @@ public class ReverbMeasure implements ConfidenceMeasure {
 						
 						// and extract all binary relations
 						for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
-	
-							// we only want to add scores of relations, which are substring of our relations
-							if ( StringUtil.isSubstringOf(extr.getRelation().toString(), pattern.getNaturalLanguageRepresentation()) ) {
+
+							double score = scoreFunc.getConf(extr); 
+							if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
 								
-								double score = scoreFunc.getConf(extr); 
-								if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
+								// we only want to add scores of relations, which are substring of our relations
+								if ( StringUtil.isSubstringOf(extr.getRelation().toString(), pattern.getNaturalLanguageRepresentation()) ) {
 									
 									scores.add(score);
 									relations.add(extr.getRelation().toString());

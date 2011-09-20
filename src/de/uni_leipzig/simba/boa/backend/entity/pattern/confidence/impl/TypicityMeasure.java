@@ -102,8 +102,6 @@ public class TypicityMeasure implements ConfidenceMeasure {
 				
 				for (String foundString : sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0,this.maxNumberOfEvaluationSentences - 1) : sentences) {
 					
-					System.out.println(foundString);
-					
 					nerTagged = this.ner.recognizeEntitiesInString(foundString);
 					segmentedFoundString = this.segmentString(foundString);
 					segmentedPattern = this.segmentString(patternWithOutVariables);
