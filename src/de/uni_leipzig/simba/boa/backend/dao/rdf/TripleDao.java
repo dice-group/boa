@@ -100,7 +100,7 @@ public class TripleDao extends AbstractDao {
 
    		Session session = HibernateFactory.getSessionFactory().openSession();
        	List<Triple> triples = session.createCriteria(Triple.class)
-       							.add(Restrictions.eq("correct", false))
+       							.add(Restrictions.eq("correct", true))
        							.list();
        	
        	session.close();
