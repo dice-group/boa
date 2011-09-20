@@ -34,11 +34,8 @@ public class OccurrenceFilter implements PatternFilter {
 
 		// collect all patterns which do not fit the filters, can't modify list while iteration
 		Set<Pattern> correctPatterns = new HashSet<Pattern>();
-		Set<Pattern> wrongPatterns = new HashSet<Pattern>();
 		
 		for ( Pattern p : patternMapping.getPatterns() ) {
-			
-			System.out.println(p.getNaturalLanguageRepresentation());
 			
 			// skip this evaluation, because it was characterized as not suitable in a previous evaluation
 			if ( p.isUseForPatternEvaluation() ) {
@@ -77,14 +74,8 @@ public class OccurrenceFilter implements PatternFilter {
 				
 				correctPatterns.add(p);
 			}
-			else {
-				
-				wrongPatterns.add(p); 
-			}
 		}
-		// delete the old patterns 
-		this.patternDao.deletePatterns(wrongPatterns);
-		// and replace them with the ones which survived the filtering
+		// replace them with the ones which survived the filtering
 		patternMapping.setPatterns(correctPatterns);
 	}
 }

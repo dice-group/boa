@@ -102,6 +102,10 @@ public class ReverbMeasure implements ConfidenceMeasure {
 				pattern.setGeneralizedPattern(StringUtil.getLongestSubstring(relations));
 			}
 		}
+		catch (NullPointerException npe) {
+			// TODO Auto-generated catch block
+			npe.printStackTrace();
+		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

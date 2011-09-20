@@ -45,7 +45,7 @@ public class PatternSearchCommand implements Command {
 	public PatternSearchCommand(List<Triple> triples) {
 
 		if ( triples != null ) this.triples = this.createTripleMap(triples);
-		else this.triples	= this.createTripleMap(tripleDao.findAllTriples());
+		else this.triples	= this.createTripleMap(tripleDao.findCorrectTriples());
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class PatternSearchCommand implements Command {
 		
 		int numberOfSearchThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfSearchThreads")).intValue();
 		
-		List<SearchResult> results = new ArrayList<SearchResult>(triples.size() * 10);//Collections.synchronizedList(new ArrayList<String>(surfaceForms.size()*10));
+		List<SearchResult> results = new ArrayList<SearchResult>(triples.size() * 10);
 		List<List<Triple>> triplesSubLists = ListUtil.split(new ArrayList<Triple>(triples.values()), triples.size() / numberOfSearchThreads);
 		
 		List<Thread> threadList = new ArrayList<Thread>();
@@ -218,9 +218,11 @@ public class PatternSearchCommand implements Command {
 			long startSaveDB = System.currentTimeMillis();
 			
 			PatternMappingDao pmd = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
-			
 			// delete all because we generate them once again
 			pmd.deleteAllPatternMappings();
+			
+			// filter the patterns which do not abide certain tresholds
+			new PatternFilterCommand(this.mappings).execute();
 			
 			for (PatternMapping mapping : this.mappings.values()) {
 
