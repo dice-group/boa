@@ -102,7 +102,6 @@ public class TripleDao extends AbstractDao {
        	List<Triple> triples = session.createCriteria(Triple.class)
        							.add(Restrictions.eq("correct", true))
        							.list();
-       	
        	session.close();
    		return triples;
    	}
@@ -129,7 +128,7 @@ public class TripleDao extends AbstractDao {
     							.createCriteria("property").add(Restrictions.eq("uri", property.getUri()))
     							.createCriteria("object").add(Restrictions.eq("uri", object.getUri()))
     							.list();
-    	
+    	session.close();
 		return triples.size() > 0 ? triples.get(0) : null;
 	}
 }

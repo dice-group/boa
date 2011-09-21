@@ -66,7 +66,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	private NLPediaSetup setup = new NLPediaSetup(false);
 	private NLPediaLogger logger = new NLPediaLogger(BoaFrontendApplication.class);
 
-	private Button triplesButton = new Button("Evaluation");
+	private Button triplesButton = new Button("Triples");
 	private Button databasesButton = new Button("Home");
 	private Button sparqlButton = new Button("SPARQL");
 	private Button startQuery = new Button("Query"); 

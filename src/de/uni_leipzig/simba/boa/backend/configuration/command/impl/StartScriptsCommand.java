@@ -35,6 +35,7 @@ public class StartScriptsCommand implements Command {
 		    		System.out.println("\t\t5. Create knowledge statistics");
 		    		System.out.println("\t\t6. Train NER model");
 		    		System.out.println("\t\t7. Create pos distirbution");
+		    		System.out.println("\t\t8. Load knowledge");
 		    		System.out.println("\t\t");
 		    		System.out.println("");
 		    		
@@ -96,6 +97,12 @@ public class StartScriptsCommand implements Command {
 							posDistributionCommand.execute();
 							break;	
 					
+						case 8:
+							
+							Command loadKnowledgeCommand = new LoadKnowledgeCommand();
+							loadKnowledgeCommand.execute();
+							break;	
+							
 						default: // option not supported
 							Command unkownOptionCommand = new UnknownOptionCommand(System.out);
 							unkownOptionCommand.execute();

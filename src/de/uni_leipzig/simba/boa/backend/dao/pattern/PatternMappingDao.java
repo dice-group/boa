@@ -128,16 +128,13 @@ public class PatternMappingDao extends AbstractDao {
 			}
 			
 			tx.commit();
+			session.close();
 		}
 		catch (HibernateException he) {
 			
 			HibernateFactory.rollback(tx);
 			super.logger.error("Error...", he);
 			he.printStackTrace();
-		}
-		finally {
-			
-			HibernateFactory.closeSession(session);
 		}
 		return objects;
 	}
@@ -190,7 +187,7 @@ public class PatternMappingDao extends AbstractDao {
 		Session session = HibernateFactory.getSessionFactory().openSession();
     	String queryString = "select distinct(prop.uri) from pattern_mapping as pm, resource as prop, pattern_mapping_pattern as pmp, pattern as p  where pm.id = pmp.pattern_mapping_id and pmp.pattern_id = p.id and pm.property_id = prop.id and p.confidence > 0 and p.numberOfOccurrences >= " + NLPediaSettings.getInstance().getSetting("occurrence.view.threshold") +" order by prop.uri;";
         List<String> results = (List<String>) session.createSQLQuery(queryString).list();
-        HibernateFactory.closeSession(session);
+        session.close();
         return results;
 	}
 	
@@ -200,9 +197,7 @@ public class PatternMappingDao extends AbstractDao {
     	List<PatternMapping> resourceList = session.createCriteria(PatternMapping.class)
     							.createCriteria("property").add(Restrictions.eq("uri", uri))
     							.list();
-    	
-    	HibernateFactory.closeSession(session);
-    	
+    	session.close();
         return this.findPatternMapping(resourceList.get(0).getId());
 	}
 	
@@ -220,7 +215,7 @@ public class PatternMappingDao extends AbstractDao {
 		Query query = session.createSQLQuery(sqlQuery);
 		query.setString("pattern", pattern);
         Set<Integer> results = new HashSet<Integer>(query.list());
-        HibernateFactory.closeSession(session);
+        session.close();
         return Double.valueOf(results.size());
 	}
 }
