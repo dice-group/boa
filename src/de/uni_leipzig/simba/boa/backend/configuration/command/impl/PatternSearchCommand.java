@@ -135,11 +135,6 @@ public class PatternSearchCommand implements Command {
 				String posTagged		= searchResult.getPosTags();
 				Integer documentId		= new Integer(searchResult.getIndexId());
 	
-				
-				System.out.println(String.format("%s %s %s", label1, patternString, label2));	
-				
-				
-				
 				// next line is for the same property
 				if ( propertyUri.equals(currentProperty) ) {
 					
