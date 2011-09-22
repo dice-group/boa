@@ -125,9 +125,13 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 		Set<String> labels = new HashSet<String>();
 		for ( String s : this.surfaceForms.split("_&_")) {
 			
-			labels.add(s.trim());
+			// avoid labels with only one character like the TV station "A" 
+			if ( s.length() > 1 ) {
+				
+				labels.add(" " + s.trim() + " ");
+			}
 		}
-		labels.add(this.label.toLowerCase());
+		if ( this.label.length() > 1 ) labels.add(" " + this.label.toLowerCase() + " ");
 		return labels;
 	}
 

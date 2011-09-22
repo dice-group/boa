@@ -110,10 +110,10 @@ public abstract class AbstractDao {
 			HibernateFactory.rollback(this.tx);
 			this.logger.error("Could not find entity with id: " + id, he);
 		}
-		finally {
-			
-			HibernateFactory.closeSession(session);
-		}
+//		finally {
+//			
+//			HibernateFactory.closeSession(session);
+//		}
 		return obj;
 	}
 

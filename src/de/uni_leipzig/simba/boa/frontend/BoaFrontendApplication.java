@@ -189,7 +189,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				
 				PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 				PatternMapping pm = pmDao.findPatternMappingByUri(uri);
-				
+				System.out.println(pm);
 				GridLayout gridLayout = new GridLayout(3,3);
 				gridLayout.setSpacing(true);
 				gridLayout.setMargin(true);

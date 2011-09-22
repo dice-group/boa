@@ -54,7 +54,7 @@ public class OccurrenceFilter implements PatternFilter {
 					Map<String,Integer> learnedFrom = p.getLearnedFrom();
 					for (Entry<String,Integer> entry : learnedFrom.entrySet()) {
 						
-						if ( entry.getValue() > OccurrenceFilter.NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD ) counter++;
+						if ( entry.getValue() >= OccurrenceFilter.NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD ) counter++;
 					}
 					
 					if ( counter < 1 ) p.setUseForPatternEvaluation(false);

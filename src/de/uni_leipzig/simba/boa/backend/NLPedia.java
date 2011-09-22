@@ -1,5 +1,7 @@
 package de.uni_leipzig.simba.boa.backend;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -28,12 +30,15 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
  */
 public class NLPedia {
 
-	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 
+		// this is used to surpress the "error" messages from stanford etc.
+		PrintStream newErr = new PrintStream(new ByteArrayOutputStream());
+		System.setErr(newErr);
+		
 		// Initialize logging, settings, factories etc., needs to be FIRST call!!
 		NLPediaSetup setup = new NLPediaSetup(false);
 		NLPediaLogger logger = new NLPediaLogger(NLPedia.class);
