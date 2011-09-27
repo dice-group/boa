@@ -6,6 +6,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.AskDbpediaForTriple;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.CreateLearndFromDistributionCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.CreateQuestionAnsweringIndexCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.KnowledgeStatisticsCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.PlainTextToSentencePerLineCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.PosDistributionCommand;
@@ -36,6 +37,7 @@ public class StartScriptsCommand implements Command {
 		    		System.out.println("\t\t6. Train NER model");
 		    		System.out.println("\t\t7. Create pos distirbution");
 		    		System.out.println("\t\t8. Load knowledge");
+		    		System.out.println("\t\t9. Create pattern index");
 		    		System.out.println("\t\t");
 		    		System.out.println("");
 		    		
@@ -101,6 +103,12 @@ public class StartScriptsCommand implements Command {
 							
 							Command loadKnowledgeCommand = new LoadKnowledgeCommand();
 							loadKnowledgeCommand.execute();
+							break;
+							
+						case 9:
+							
+							Command createQaIndexCommand = new CreateQuestionAnsweringIndexCommand();
+							createQaIndexCommand.execute();
 							break;	
 							
 						default: // option not supported
