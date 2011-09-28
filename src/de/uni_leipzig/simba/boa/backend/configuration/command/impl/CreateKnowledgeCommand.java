@@ -29,6 +29,8 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.DbpediaUriRetrieval;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
+import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrategy;
 
 /**
  * 
@@ -68,7 +70,7 @@ public class CreateKnowledgeCommand implements Command {
 			for (PatternMapping mapping : this.patternMappingList) {
 
 				// take the top n scored patterns
-				List<Pattern> patternList	= this.getTopNPattern(mapping);
+				List<Pattern> patternList	= PatternUtil.getTopNPattern(mapping, PatternSelectionStrategy.SAFE, 3, 0.6D);
 				
 				System.out.println(String.format("Creating knowledge for mapping: %s and top-%s patterns", mapping.getProperty().getUri(), patternList.size()));
 
@@ -240,44 +242,6 @@ public class CreateKnowledgeCommand implements Command {
 		catch (IndexOutOfBoundsException ioob) {
 
 			this.logger.error("Could not create context for string " + sentence + ". NER tagged: " + nerTaggedSentence + " pattern: " + pattern.getNaturalLanguageRepresentationWithoutVariables());
-		}
-	}
-	
-
-	private List<Pattern> getTopNPattern(PatternMapping mapping) {
-
-		List<Pattern> patternList = new ArrayList<Pattern>();
-
-		for (Pattern p : mapping.getPatterns()) {
-
-			if ( p.getConfidence() > 0.6 ) {
-
-				patternList.add(p);
-			}
-		}
-		
-		int topN = 0;
-		// too few patterns so we wont create anything for this pattern
-		if ( patternList.size() < 3 ) return Collections.<Pattern>emptyList();
-		else {
-			
-			if ( patternList.size() >= 3 && patternList.size() < 5) topN = 1;
-			if ( patternList.size() >= 5 && patternList.size() < 10 ) topN = 2;
-			if ( patternList.size() >= 10 && patternList.size() < 20 ) topN = 3;
-			if ( patternList.size() >= 20 ) topN = 5;
-
-			// sort the pattern by their confidence in descending order
-			Collections.sort(patternList, new Comparator<Pattern>() {
-
-				@Override
-				public int compare(Pattern pattern1, Pattern pattern2) {
-
-					return pattern2.getConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER).compareTo(pattern1.getConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER));
-				}
-			});
-
-			return patternList.size() > topN ? patternList.subList(0, topN) : patternList;
-
 		}
 	}
 	

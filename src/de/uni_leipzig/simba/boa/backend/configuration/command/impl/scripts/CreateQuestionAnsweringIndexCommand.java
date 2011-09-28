@@ -93,7 +93,7 @@ public class CreateQuestionAnsweringIndexCommand implements Command {
 		String searchPhrase = "host";
 		double confidenceThreshold = 0D;
 		
-		Query query1 = new WildcardQuery(new Term("nlr", searchPhrase));
+		Query query1 = new TermQuery(new Term("nlr", searchPhrase));
 		Query query2 = NumericRangeQuery.newDoubleRange("confidence", confidenceThreshold, 1D, true, true);
 
 		BooleanQuery booleanQuery = new BooleanQuery();

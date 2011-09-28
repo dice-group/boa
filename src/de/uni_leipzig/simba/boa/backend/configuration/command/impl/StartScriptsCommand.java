@@ -38,6 +38,7 @@ public class StartScriptsCommand implements Command {
 		    		System.out.println("\t\t7. Create pos distirbution");
 		    		System.out.println("\t\t8. Load knowledge");
 		    		System.out.println("\t\t9. Create pattern index");
+		    		System.out.println("\t\t10. Create machine learning input");
 		    		System.out.println("\t\t");
 		    		System.out.println("");
 		    		
@@ -109,7 +110,13 @@ public class StartScriptsCommand implements Command {
 							
 							Command createQaIndexCommand = new CreateQuestionAnsweringIndexCommand();
 							createQaIndexCommand.execute();
-							break;	
+							break;
+							
+						case 10:
+							
+							Command createMLCommand = new CreateMachineLearningCommand();
+							createMLCommand.execute();
+							break;
 							
 						default: // option not supported
 							Command unkownOptionCommand = new UnknownOptionCommand(System.out);
