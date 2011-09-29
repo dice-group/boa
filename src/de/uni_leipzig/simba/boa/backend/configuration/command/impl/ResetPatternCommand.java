@@ -29,11 +29,12 @@ public class ResetPatternCommand implements Command {
 			p.setSupports(new HashMap<Integer,Double>());
 			p.setTypicities(new HashMap<Integer,Double>());
 			p.setReverbs(new HashMap<Integer,Double>());
-			p.setSimilarity(-1D);
-			p.setSupport(-1D);
-			p.setSpecificity(-1D);
-			p.setTypicity(-1D);
-			p.setReverb(-1D);
+			p.setSimilarity(0D);
+			p.setSupport(0D);
+			p.setSpecificity(0D);
+			p.setTypicity(0D);
+			p.setReverb(0D);
+			p.setTfIdf(0D);
 			p.setGeneralizedPattern("");
 		}
 		patternDao.batchSaveOrUpdatePattern(patternList);
