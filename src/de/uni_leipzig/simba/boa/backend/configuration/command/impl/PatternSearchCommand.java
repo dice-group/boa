@@ -45,7 +45,7 @@ public class PatternSearchCommand implements Command {
 	public PatternSearchCommand(List<Triple> triples) {
 
 		if ( triples != null ) this.triples = this.createTripleMap(triples);
-		else this.triples	= this.createTripleMap(tripleDao.findCorrectTriples());
+		else this.triples	= this.createTripleMap(tripleDao.findAllTriples());
 	}
 
 	@Override
@@ -225,8 +225,11 @@ public class PatternSearchCommand implements Command {
 			new PatternFilterCommand(this.mappings).execute();
 			
 			for (PatternMapping mapping : this.mappings.values()) {
-
-				pmd.createAndSavePatternMapping(mapping);
+				
+				if ( mapping.getPatterns().size() > 0 ) {
+					
+					pmd.createAndSavePatternMapping(mapping);
+				}
 			}
 			System.out.println("All pattern mappings ("+this.mappings.size()+") saved to database! " + (System.currentTimeMillis() - startSaveDB) + "ms!");
 			this.logger.info("All pattern mappings saved to database! " + (System.currentTimeMillis() - startSaveDB) + "ms!");
