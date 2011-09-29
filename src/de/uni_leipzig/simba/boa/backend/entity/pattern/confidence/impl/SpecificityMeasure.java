@@ -33,9 +33,11 @@ public class SpecificityMeasure implements ConfidenceMeasure {
 			double specificity = PatternConfidenceMeasureCommand.NUMBER_OF_PATTERN_MAPPINGS / 
 					patternMappingDao.findPatternMappingsWithSamePattern(pattern.getNaturalLanguageRepresentation()); 
 				
+			System.out.println(String.format("PatternMapping: <%s> with pattern: <%s> maxLearnedFrom: %s countLearnedFrom: %s ", mapping.getProperty().getUri(), pattern.getNaturalLanguageRepresentation(),
+					PatternConfidenceMeasureCommand.NUMBER_OF_PATTERN_MAPPINGS, patternMappingDao.findPatternMappingsWithSamePattern(pattern.getNaturalLanguageRepresentation())));
+			
 			specificity = Math.log(specificity) / Math.log(2);
 			
-			pattern.setSpecificityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, specificity >= 0 ? specificity : 0);
 			pattern.setSpecificity(specificity >= 0 ? specificity : 0);
 			
 			if ( specificity <= 0 ) {
