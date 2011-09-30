@@ -29,6 +29,7 @@ public class ResetPatternCommand implements Command {
 			p.setSupports(new HashMap<Integer,Double>());
 			p.setTypicities(new HashMap<Integer,Double>());
 			p.setReverbs(new HashMap<Integer,Double>());
+			p.setConfidence(0D);
 			p.setSimilarity(0D);
 			p.setSupport(0D);
 			p.setSpecificity(0D);

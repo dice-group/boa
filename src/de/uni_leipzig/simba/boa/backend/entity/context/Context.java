@@ -156,7 +156,7 @@ public abstract class Context {
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Museum","LOC");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/NaturalPlace","LOC");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Park","LOC");
-		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Person","LOC");
+		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Place","LOC");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/PopulatedPlace","LOC");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/PowerStation","LOC");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/ProtectedArea","LOC");
@@ -301,7 +301,7 @@ public abstract class Context {
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/MixedMartialArtsLeague","ORG");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/MotorcycleRacingLeague","ORG");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Non-ProfitOrganisation","ORG");
-		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Organisat1ion", "ORG");
+		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Organisation", "ORG");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/PaintballLeague","ORG");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/PoliticalParty","ORG");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/PoloLeague","ORG");
