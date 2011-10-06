@@ -5,12 +5,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
@@ -23,30 +26,40 @@ public class WriteRelationToFileCommand implements Command {
 	private final String SPARQL_ENDPOINT_URI	= NLPediaSettings.getInstance().getSetting("dbpediaSparqlEndpoint");
 	private final String DBPEDIA_DEFAULT_GRAPH	= NLPediaSettings.getInstance().getSetting("dbpediaDefaultGraph");
 	private final String LABEL_OUTPUT_FILE		= NLPediaSettings.getInstance().getSetting("labelOutputFile");
+	private static final int LIMIT				= 100000;
 	
 	private final NLPediaLogger logger = new NLPediaLogger(WriteRelationToFileCommand.class);
 	
-	private final String language = "de";
+	private static final String language = "en";
+	
+	private enum Type { Subject, Object }; 
+	
+	public static void main(String[] args) {
+
+		NLPediaSetup setup = new NLPediaSetup(true);
+		WriteRelationToFileCommand c = new WriteRelationToFileCommand();
+		c.execute();
+	}
 	
 	/**
 	 * 
 	 */
 	public void execute() {
 		
-		String queryPersonSubject		= this.createQueryPersonSubject();
-		String queryPersonObject		= this.createQueryPersonObject();
-		this.getPersonSubjectKnowledge(queryPersonSubject);
-		this.getPersonObjectKnowledge(queryPersonObject);
-		
-		String queryPlaceSubject		= this.createQueryPlaceSubject();
-		String queryPlaceObject			= this.createQueryPlaceObject();
-		this.getPlaceSubjectKnowledge(queryPlaceSubject);
-		this.getPlaceObjectKnowledge(queryPlaceObject);
-		
-		String queryOrganisationSubject	= this.createQueryOrganisationSubject();
+//		String queryPersonSubject		= createQueryPersonSubject();
+//		String queryPersonObject		= this.createQueryPersonObject();
+//		getKnowledge(queryPersonSubject, "/Users/gerb/en.txt", Type.Subject);
+//		getKnowledge(queryPersonObject, "/Users/gerb/en.txt", Type.Object);
+//		
+//		String queryPlaceSubject		= this.createQueryPlaceSubject();
+//		String queryPlaceObject			= this.createQueryPlaceObject();
+//		getKnowledge(queryPlaceSubject, "/Users/gerb/en.txt", Type.Subject);
+//		getKnowledge(queryPlaceObject, "/Users/gerb/en.txt", Type.Object);
+//		
+//		String queryOrganisationSubject	= this.createQueryOrganisationSubject();
 		String queryOrganisationObject	= this.createQueryOrganisationObject();
-		this.getOrganisationSubjectKnowledge(queryOrganisationSubject);
-		this.getOrganisationObjectKnowledge(queryOrganisationObject);
+//		getKnowledge(queryOrganisationSubject, "/Users/gerb/en.txt", Type.Subject);
+		getKnowledge(queryOrganisationObject, "/Users/gerb/en.txt", Type.Object);
 	}
 
 	private String createQueryOrganisationObject() {
@@ -63,7 +76,9 @@ public class WriteRelationToFileCommand implements Command {
 			 "	FILTER (  langMatches( lang(?s2l), \""+language+"\" )  && langMatches( lang(?o2l), \""+language+"\" ) ) " +
 			 "	?p2  rdfs:range  ?rangep2 . " +
 			 "	?p2  rdfs:domain ?domainp2 . " +
-			"}";
+			 "} " +
+			 "LIMIT " + LIMIT +  " " +
+			 "OFFSET &OFFSET";
 	}
 
 	private String createQueryOrganisationSubject() {
@@ -80,7 +95,9 @@ public class WriteRelationToFileCommand implements Command {
 			 "	FILTER (  langMatches( lang(?s1l), \""+language+"\" )  && langMatches( lang(?o1l), \""+language+"\" ) ) " +
 			 "	?p1  rdfs:range  ?rangep1 . " +
 			 "	?p1  rdfs:domain ?domainp1 . " +
-			"}";
+			 "} " +
+			 "LIMIT " + LIMIT +  " " +
+			 "OFFSET &OFFSET";
 	}
 
 	private String createQueryPlaceObject() {
@@ -97,7 +114,9 @@ public class WriteRelationToFileCommand implements Command {
 			 "	FILTER (  langMatches( lang(?s2l), \""+language+"\" )  && langMatches( lang(?o2l), \""+language+"\" ) ) " +
 			 "	?p2  rdfs:range  ?rangep2 . " +
 			 "	?p2  rdfs:domain ?domainp2 . " +
-			"}";
+			 "} " +
+			 "LIMIT " + LIMIT +  " " +
+			 "OFFSET &OFFSET";
 	}
 
 	private String createQueryPlaceSubject() {
@@ -114,7 +133,9 @@ public class WriteRelationToFileCommand implements Command {
 			 "	FILTER (  langMatches( lang(?s1l), \""+language+"\" )  && langMatches( lang(?o1l), \""+language+"\" ) ) " +
 			 "	?p1  rdfs:range  ?rangep1 . " +
 			 "	?p1  rdfs:domain ?domainp1 . " +
-			"}";
+			 "} " +
+			 "LIMIT " + LIMIT +  " " +
+			 "OFFSET &OFFSET";
 	}
 
 	private String createQueryPersonObject() {
@@ -131,12 +152,12 @@ public class WriteRelationToFileCommand implements Command {
 			 "	FILTER (  langMatches( lang(?s2l), \""+language+"\" )  && langMatches( lang(?o2l), \""+language+"\" ) ) " +
 			 "	?p2  rdfs:range  ?rangep2 . " +
 			 "	?p2  rdfs:domain ?domainp2 . " +
-			"}";
-		
-		// s2l + " ||| " + solution.get("p2").toString() + " ||| " + o2l + " ||| " + range + " ||| " + domain + " ||| isObject";
+			 "} " +
+			 "LIMIT " + LIMIT +  " " +
+			 "OFFSET &OFFSET";
 	}
 
-	private String createQueryPersonSubject() {
+	private static String createQueryPersonSubject() {
 
 		return 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
@@ -150,71 +171,63 @@ public class WriteRelationToFileCommand implements Command {
 			 "	FILTER (  langMatches( lang(?s1l), \""+language+"\" )  && langMatches( lang(?o1l), \""+language+"\" ) ) " +
 			 "	?p1  rdfs:range  ?rangep1 . " +
 			 "	?p1  rdfs:domain ?domainp1 . " +
-			"}";
-		
-		// s1l + " ||| " + solution.get("p1").toString() + " ||| " + o1l + " ||| " + range + " ||| " + domain + " ||| isSubject";
+			"} " +
+			"LIMIT " + LIMIT +  " " +
+			"OFFSET &OFFSET";
 	}
 
-	private void getPlaceObjectKnowledge(String queryPlaceObject) {
+//	private void getPlaceObjectKnowledge(String queryPlaceObject) {
+//
+//		ResultSet resultSet = this.getResultSet(queryPlaceObject);
+//		this.handleObjectQuery("/Users/gerb/place_object.txt", resultSet);
+//	}
+//
+//	private void getPlaceSubjectKnowledge(String queryPlaceSubject) {
+//
+//		ResultSet resultSet = this.getResultSet(queryPlaceSubject);
+//		this.handleSubjectQuery("/Users/gerb/place_subject.txt", resultSet);
+//	}
+//
+//	private void getOrganisationObjectKnowledge(String queryOrganisationObject) {
+//
+//		ResultSet resultSet = this.getResultSet(queryOrganisationObject);
+//		this.handleObjectQuery("/Users/gerb/organisation_object.txt", resultSet);
+//	}
+//
+//	private void getOrganisationSubjectKnowledge(String queryOrganisationSubject) {
+//
+//		ResultSet resultSet = this.getResultSet(queryOrganisationSubject);
+//		this.handleSubjectQuery("/Users/gerb/organisation_subject.txt", resultSet);
+//	}
+//
+//	private void getPersonObjectKnowledge(String queryPersonObject) {
+//
+//		ResultSet resultSet = this.getResultSet(queryPersonObject);
+//		this.handleObjectQuery("/Users/gerb/person_object.txt", resultSet);
+//	}
 
-		ResultSet resultSet = this.getResultSet(queryPlaceObject);
-		this.handleObjectQuery("/Users/gerb/place_object.txt", resultSet);
-	}
-
-	private void getPlaceSubjectKnowledge(String queryPlaceSubject) {
-
-		ResultSet resultSet = this.getResultSet(queryPlaceSubject);
-		this.handleSubjectQuery("/Users/gerb/place_subject.txt", resultSet);
-	}
-
-	private void getOrganisationObjectKnowledge(String queryOrganisationObject) {
-
-		ResultSet resultSet = this.getResultSet(queryOrganisationObject);
-		this.handleObjectQuery("/Users/gerb/organisation_object.txt", resultSet);
-	}
-
-	private void getOrganisationSubjectKnowledge(String queryOrganisationSubject) {
-
-		ResultSet resultSet = this.getResultSet(queryOrganisationSubject);
-		this.handleSubjectQuery("/Users/gerb/organisation_subject.txt", resultSet);
-	}
-
-	private void getPersonObjectKnowledge(String queryPersonObject) {
-
-		ResultSet resultSet = this.getResultSet(queryPersonObject);
-		this.handleObjectQuery("/Users/gerb/person_object.txt", resultSet);
-	}
-
-	private void getPersonSubjectKnowledge(String queryPersonSubject) {
-
-		ResultSet resultSet = this.getResultSet(queryPersonSubject);
-		this.handleSubjectQuery("/Users/gerb/person_subject.txt", resultSet);
-	}
-		
-	private void handleSubjectQuery(String fileName, ResultSet resultSet) {
+	private void handleSubjectQuery(String fileName, List<QuerySolution> resultSets) {
 
 		Writer writer = null;
 		
 		try {
 			
-			writer =  new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
+			writer =  new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)));
 			
-			while (resultSet.hasNext()) {
+			for (QuerySolution solution : resultSets) {
 				
-				QuerySolution solution = resultSet.next();
-
 				if (solution.get("s1") != null && solution.get("p1") != null && solution.get("o1") != null) {
-
+	
 					if (solution.get("o1l") != null) {
-
+	
 						String s1l = solution.get("s1l").toString(), o1l = solution.get("o1l").toString();
-
+	
 						if (o1l.contains("@")) {
-
+	
 							o1l = o1l.substring(0, o1l.lastIndexOf("@"));
 						}
 						if (s1l.contains("@")) {
-
+	
 							s1l = s1l.substring(0, s1l.lastIndexOf("@"));
 						}
 						
@@ -246,18 +259,16 @@ public class WriteRelationToFileCommand implements Command {
 		}
 	}
 	
-	private void handleObjectQuery(String fileName, ResultSet resultSet) {
+	private void handleObjectQuery(String fileName, List<QuerySolution> resultSets) {
 
 		
 		Writer writer = null;
 		
 		try {
 			
-			writer =  new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
+			writer =  new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)));
 			
-			while (resultSet.hasNext()) {
-				
-				QuerySolution solution = resultSet.next();
+			for (QuerySolution solution : resultSets) {
 
 				if (solution.get("s2") != null && solution.get("p2") != null && solution.get("o2") != null) {
 					
@@ -302,14 +313,38 @@ public class WriteRelationToFileCommand implements Command {
 		}
 	}
 
-	private ResultSet getResultSet(String query) {
+	private void getKnowledge(String query, String fileName, Type type) {
 		
-		QueryEngineHTTP qexec = new QueryEngineHTTP(SPARQL_ENDPOINT_URI, query);
-		qexec.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
 		logger.info("Querying started for query: " + query);
 		long start = System.currentTimeMillis();
-		ResultSet rs =  qexec.execSelect();
+		
+		int offset = 0;
+		while (true) {
+			
+			System.out.println(query.replaceAll("&OFFSET", String.valueOf(offset)));
+			
+			QueryEngineHTTP qexec = new QueryEngineHTTP(SPARQL_ENDPOINT_URI, query.replaceAll("&OFFSET", String.valueOf(offset)));
+			qexec.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
+
+			List<QuerySolution> resultSetList = new ArrayList<QuerySolution>();
+			
+			ResultSet rs  = qexec.execSelect();
+			while (rs.hasNext()) resultSetList.add(rs.next());
+			offset = offset + LIMIT;
+			
+			if ( !resultSetList.isEmpty() ) {
+
+				if ( type == Type.Subject ) {
+
+					this.handleSubjectQuery(fileName, resultSetList);
+				}
+				else {
+					
+					this.handleObjectQuery(fileName, resultSetList);
+				}
+			}
+			else break;
+		}
 		logger.info("Querying ended for query in " + (System.currentTimeMillis() - start) + "ms: " + query);
-		return rs;
 	}
 }

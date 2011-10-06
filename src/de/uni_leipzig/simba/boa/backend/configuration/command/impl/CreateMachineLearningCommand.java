@@ -58,7 +58,7 @@ public class CreateMachineLearningCommand implements Command {
 			
 			Writer writer = new PrintWriter(new BufferedWriter(new FileWriter("/home/gerber/machine_learning_input.txt")));
 			
-			int i = -1;
+			int i = 0;
 			for ( Pair pair : pairs ) {
 				
 				if ( i++ == 100 ) break;

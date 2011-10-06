@@ -17,11 +17,11 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternFilter
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternSearchCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PrintOptionCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.StartQueryCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.StartScriptsCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.StartStatisticsCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOptionCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.WriteRelationToFileCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.WriteUrlsToFileCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.StartScriptsCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 /**

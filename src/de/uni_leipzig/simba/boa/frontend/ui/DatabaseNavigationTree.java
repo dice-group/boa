@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import com.vaadin.event.Action;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
+import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Tree;
 
 import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
@@ -25,6 +26,10 @@ public class DatabaseNavigationTree extends Tree {
 		this.setImmediate(true);
 		
 		this.expandItem(DatabaseContainer.DATABASE_IDS[0]);
+
+		// Set tree to show the 'uri_name' property as caption for items
+        this.setItemCaptionPropertyId(DatabaseContainer.DISPLAY_NAME);
+        this.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
 		
 		/*
 		 * We want items to be selectable but do not want the user to be able to

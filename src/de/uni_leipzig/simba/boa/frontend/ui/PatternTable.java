@@ -30,17 +30,17 @@ public class PatternTable extends Table {
 		setSortAscending(false);
 		sort();
 		
-		setColumnWidth(NATURAL_COL_ORDER[0],40);
-		setColumnWidth(NATURAL_COL_ORDER[1],30);
-		setColumnWidth(NATURAL_COL_ORDER[2],30);
-		setColumnWidth(NATURAL_COL_ORDER[3],30);
-		setColumnWidth(NATURAL_COL_ORDER[4],30);
-		setColumnWidth(NATURAL_COL_ORDER[5],30);
-		setColumnWidth(NATURAL_COL_ORDER[6],30);
-		setColumnWidth(NATURAL_COL_ORDER[7],30);
-		setColumnWidth(NATURAL_COL_ORDER[8],30);
-		setColumnWidth(NATURAL_COL_ORDER[9],30);
-		setColumnWidth(NATURAL_COL_ORDER[10],30);
+		setColumnWidth(NATURAL_COL_ORDER[0],50);
+		setColumnWidth(NATURAL_COL_ORDER[1],40);
+		setColumnWidth(NATURAL_COL_ORDER[2],40);
+		setColumnWidth(NATURAL_COL_ORDER[3],40);
+		setColumnWidth(NATURAL_COL_ORDER[4],40);
+		setColumnWidth(NATURAL_COL_ORDER[5],40);
+		setColumnWidth(NATURAL_COL_ORDER[6],40);
+		setColumnWidth(NATURAL_COL_ORDER[7],40);
+		setColumnWidth(NATURAL_COL_ORDER[8],40);
+		setColumnWidth(NATURAL_COL_ORDER[9],40);
+		setColumnWidth(NATURAL_COL_ORDER[10],40);
 		
 		setColumnCollapsingAllowed(true);
 		setColumnReorderingAllowed(true);

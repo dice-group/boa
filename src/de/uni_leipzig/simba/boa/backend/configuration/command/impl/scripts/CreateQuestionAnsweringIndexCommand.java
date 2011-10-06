@@ -1,7 +1,11 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -65,7 +69,7 @@ public class CreateQuestionAnsweringIndexCommand implements Command {
 				for (Pattern pattern : mapping.getPatterns() ) {
 					
 					System.out.println(String.format("Adding pattern %s", pattern.getNaturalLanguageRepresentationWithoutVariables()));
-					
+
 					Document doc = new Document();
 					doc.add(new Field("uri", mapping.getProperty().getUri(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 					doc.add(new Field("nlr", pattern.getNaturalLanguageRepresentationWithoutVariables().trim(), Field.Store.YES, Field.Index.ANALYZED));

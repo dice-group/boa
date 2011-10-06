@@ -276,6 +276,7 @@ public abstract class Context {
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/BowlingLeague","ORG");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/BoxingLeague","ORG");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/BroadcastNetwork","ORG");
+		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Broadcast","ORG");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Broadcaster","ORG");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/CanadianFootballLeague","ORG");
 		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/CanadianFootballTeam","ORG");

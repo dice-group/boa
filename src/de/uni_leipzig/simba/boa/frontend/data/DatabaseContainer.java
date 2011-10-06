@@ -22,32 +22,43 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 @SuppressWarnings("serial")
 public class DatabaseContainer extends HierarchicalContainer{
 
-	public static final Object DATABASE_PROPERTY_NAME = "database_name";
-	public static final Object URI_NAME = "database_name";
+	public static final Object DATABASE_ID	= "database_name";
+	public static final Object URI			= "uri";
+	public static final Object DISPLAY_NAME	= "name";
 	
-	public static final String[] DATABASE_IDS = new String[]{"en_wiki_exp"};//NLPediaSettings.getInstance().getSetting("frontend.databases").split(",");
+	public static final String[] DATABASE_IDS = new String[]{"en_wiki_exp,en_news_exp"};//NLPediaSettings.getInstance().getSetting("frontend.databases").split(",");
+	
+	private PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 	
 	public DatabaseContainer() {
 		
 		Item item = null;
 		
-		PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+		this.addContainerProperty(URI, String.class, null);
+		this.addContainerProperty(DATABASE_ID, String.class, null);
+		this.addContainerProperty(DISPLAY_NAME, String.class, null);
 		
-		for (int i = 0; i < DATABASE_IDS.length; i++) {
+		for (String database : DATABASE_IDS) {
 
-			HibernateFactory.changeConnection(DATABASE_IDS[i]);
+			HibernateFactory.changeConnection(database);
 			
-			item = this.addItem(DATABASE_IDS[i]);
-			this.setChildrenAllowed(DATABASE_IDS[i], true);
-			List<String> uris = pmDao.findPatternMappingsWithPatterns();// getUrisForDatabases(DATABASE_IDS[i]);
-			Iterator<String> urisIterator = uris.iterator();
-			for (int j = 0; j < uris.size(); j++) {
+			// the database has the URIs as children
+			item = this.addItem(database);
+			item.getItemProperty(DISPLAY_NAME).setValue(database);
+			this.setChildrenAllowed(database, true);
+			
+			for (String uri : pmDao.findPatternMappingsWithPatterns()) {
 				
-				String uriId = DATABASE_IDS[i] + ":" + urisIterator.next();
-				System.out.println(uriId);
-				item = this.addItem(uriId);
-				this.setParent(uriId, DATABASE_IDS[i]);
-				this.setChildrenAllowed(uriId, false);
+				String itemID = database + ":" + uri;
+				
+				item = this.addItem(itemID);
+				item.getItemProperty(DISPLAY_NAME).setValue(uri.replace("http://dbpedia.org/ontology/", "dbpedia-owl:"));
+				item.getItemProperty(URI).setValue(uri);
+				item.getItemProperty(DATABASE_ID).setValue(database);
+				
+				// add the parent of the newly added item (URI) and prohibit children
+				this.setParent(itemID, database);
+				this.setChildrenAllowed(itemID, false);
 			}
 		}
 	}

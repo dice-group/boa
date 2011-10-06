@@ -52,6 +52,7 @@ import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
 import de.uni_leipzig.simba.boa.backend.rdf.Model;
 import de.uni_leipzig.simba.boa.backend.rdf.store.Store;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.frontend.data.DatabaseContainer;
 import de.uni_leipzig.simba.boa.frontend.data.PatternContainer;
 import de.uni_leipzig.simba.boa.frontend.data.TripleContainer;
 import de.uni_leipzig.simba.boa.frontend.ui.DatabaseNavigationTree;
@@ -115,7 +116,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 			horizontalSplitPanel.setFirstComponent(tripleTree);
 			// in den rechten teil kommt die erkl�rung
 			horizontalSplitPanel.setSecondComponent(table);
-			horizontalSplitPanel.setSplitPosition(400, HorizontalSplitPanel.UNITS_PIXELS);
+			horizontalSplitPanel.setSplitPosition(280, HorizontalSplitPanel.UNITS_PIXELS);
 		}
 		else if ( source == this.databasesButton ) {
 			
@@ -182,14 +183,15 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 			
 			if (itemId != null) {
 				
-				this.currentDatabase 	= itemId.substring(0, itemId.indexOf(":"));
-				String uri				= itemId.substring(itemId.indexOf(":") + 1);
+				String database = (String) this.tree.getItem(itemId).getItemProperty(DatabaseContainer.DATABASE_ID).getValue();
+				String uri = (String) this.tree.getItem(itemId).getItemProperty(DatabaseContainer.URI).getValue();
 				
+				this.currentDatabase 	= database;
 				HibernateFactory.changeConnection(this.currentDatabase);
 				
 				PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 				PatternMapping pm = pmDao.findPatternMappingByUri(uri);
-				System.out.println(pm);
+
 				GridLayout gridLayout = new GridLayout(3,3);
 				gridLayout.setSpacing(true);
 				gridLayout.setMargin(true);
@@ -278,15 +280,16 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 			
 			try {
 				
-				String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentation().substring(0, pattern.getNaturalLanguageRepresentation().length() - 3).substring(3).trim();
+				String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentationWithoutVariables();
 				
+				// TODO this needs to be fixed someway else!!! otherwise its not working on the server
 				String indexDir = NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory");
-				indexDir = indexDir.replace("/index/stanfordnlp", "");
-//				System.out.println("indexDir: " +indexDir);
-//				System.out.println("indexDir.substring(indexDir.lastIndexOf()+1): " + indexDir.substring(indexDir.lastIndexOf("/")+1));
-				indexDir = indexDir.replace(indexDir.substring(indexDir.lastIndexOf("/")+1), "");
-//				System.out.println("indexDir: " + indexDir);
-				indexDir = indexDir + currentDatabase.substring(0,currentDatabase.lastIndexOf("_")) + "/index/stanfordnlp";
+//				indexDir = indexDir.replace("/index/stanfordnlp", "");
+////				System.out.println("indexDir: " +indexDir);
+////				System.out.println("indexDir.substring(indexDir.lastIndexOf()+1): " + indexDir.substring(indexDir.lastIndexOf("/")+1));
+//				indexDir = indexDir.replace(indexDir.substring(indexDir.lastIndexOf("/")+1), "");
+////				System.out.println("indexDir: " + indexDir);
+//				indexDir = indexDir + currentDatabase.substring(0,currentDatabase.lastIndexOf("_")) + "/index/stanfordnlp";
 				
 				PatternSearcher patternSearcher = new PatternSearcher(indexDir);
 				TreeSet<String> results = (TreeSet<String>) patternSearcher.getExactMatchSentences(naturalLanguageRepresentation, 1000);
@@ -352,7 +355,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		layout.addComponent(horizontalSplitPanel);
 		layout.setExpandRatio(horizontalSplitPanel, 1);
 		
-		horizontalSplitPanel.setSplitPosition(400, HorizontalSplitPanel.UNITS_PIXELS);
+		horizontalSplitPanel.setSplitPosition(280, HorizontalSplitPanel.UNITS_PIXELS);
 		horizontalSplitPanel.setFirstComponent(tree);
 		
 		this.buildHomeLayout();

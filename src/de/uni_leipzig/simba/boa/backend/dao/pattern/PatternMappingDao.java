@@ -188,7 +188,7 @@ public class PatternMappingDao extends AbstractDao {
 	public List<String> findPatternMappingsWithPatterns() {
 
 		Session session = HibernateFactory.getSessionFactory().openSession();
-    	String queryString = "select distinct(prop.uri) from pattern_mapping as pm, resource as prop, pattern_mapping_pattern as pmp, pattern as p  where pm.id = pmp.pattern_mapping_id and pmp.pattern_id = p.id and pm.property_id = prop.id order by prop.uri;";
+    	String queryString = "select distinct(prop.uri) from pattern_mapping as pm, resource as prop, pattern_mapping_pattern as pmp, pattern as p  where pm.id = pmp.pattern_mapping_id and pmp.pattern_id = p.id and pm.property_id = prop.id and p.support > 0 order by prop.uri;";
         List<String> results = (List<String>) session.createSQLQuery(queryString).list();
         HibernateFactory.closeSession(session);
         return results;

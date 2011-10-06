@@ -1,16 +1,13 @@
-package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
+package de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts;
 
 import java.util.Scanner;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.AskDbpediaForTriple;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.CreateLearndFromDistributionCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.CreateQuestionAnsweringIndexCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.KnowledgeStatisticsCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.PlainTextToSentencePerLineCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.PosDistributionCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.TrainNerModelCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateMachineLearningCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.LoadKnowledgeCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.ResetPatternCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOptionCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 
