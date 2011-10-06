@@ -63,7 +63,7 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 	 * @return the uri
 	 */
 	@Basic
-	@Column(length=1024)
+	@Column(length=2048)
 	public String getUri() {
 
 		return uri;
