@@ -63,6 +63,9 @@ public class LoadKnowledgeCommand implements Command {
 		TripleDao tripleDao		= (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
 
 		List<String[]> labels =  RelationFinder.getRelationFromFile(NLPediaSettings.getInstance().getSetting("labelOutputFile"));
+		
+		System.out.println(String.format("There are %s strings in the LoadKnowledgeCommand from RelationFinder!", labels.size()));
+		
 		Map<String,Resource> resourceMap = new HashMap<String, Resource>();
 		
 		Pattern pattern = Pattern.compile("\\(.+?\\)");
@@ -175,7 +178,7 @@ public class LoadKnowledgeCommand implements Command {
 			
 			tripleList.add(triple);
 		}
-		System.out.println("Starting to batch save triples to database!");
+		System.out.println(String.format("Starting to batch save %s triples to database!", tripleList.size()));
 		tripleDao.batchSaveOrUpdate(tripleList);
 		
 		System.out.println("Loading background knowledge took " + (new Date().getTime() - start) + "ms.");
