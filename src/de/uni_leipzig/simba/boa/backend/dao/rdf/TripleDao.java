@@ -71,7 +71,9 @@ public class TripleDao extends AbstractDao {
     @SuppressWarnings("unchecked")
 	public List<Triple> findAllTriples() {
     	
-        return (List<Triple>) super.findAllEntitiesByClass(Triple.class);
+    	List<Triple> triples = (List<Triple>) super.findAllEntitiesByClass(Triple.class);
+    	System.out.println(String.format("findAllTriples returned %s triples", triples.size()));
+        return triples;
     }
     
     public void batchSaveOrUpdate(List<Triple> triples) {

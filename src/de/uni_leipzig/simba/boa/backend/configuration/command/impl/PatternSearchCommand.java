@@ -221,7 +221,7 @@ public class PatternSearchCommand implements Command {
 			// delete all because we generate them once again
 			pmd.deleteAllPatternMappings();
 			
-			// filter the patterns which do not abide certain tresholds
+			// filter the patterns which do not abide certain thresholds
 			new PatternFilterCommand(this.mappings).execute();
 			
 			for (PatternMapping mapping : this.mappings.values()) {

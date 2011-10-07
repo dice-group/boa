@@ -20,6 +20,8 @@ import org.encog.neural.networks.training.propagation.resilient.ResilientPropaga
 import org.encog.util.obj.SerializeObject;
 import org.encog.util.simple.EncogUtility;
 
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+
 /**
  *
  * @author ngonga
@@ -32,12 +34,22 @@ public class ConfidenceLearner {
     public double minError = 0.05;
     public double maxHiddenToInputRatio = 3;
     public int maxEpochs = 10000;
+    
+    private static final String NETWORK_FILE			= NLPediaSettings.getInstance().getSetting("neuronal.network.network.file");
+    private static final String LEARN_FILE				= NLPediaSettings.getInstance().getSetting("neuronal.network.learn.file");
+    private static final String EVAL_OUTPUT_FILE		= NLPediaSettings.getInstance().getSetting("neuronal.network.eval.output.file");
+    private static final String N_FOLD_CROSS_VALIDATION = NLPediaSettings.getInstance().getSetting("neuronal.network.n.fold.cross.validation");
 
     /** Default constructor
      * 
      */
     public ConfidenceLearner() {
-        network = null;
+        
+    	if (!new File(NETWORK_FILE).exists()) {
+            runEval(LEARN_FILE, EVAL_OUTPUT_FILE, NETWORK_FILE, Integer.valueOf(N_FOLD_CROSS_VALIDATION));
+        } else {
+            network = getNetwork(NETWORK_FILE);
+        }
     }
 
     /** Constructor. If a network file exists, then network is read out of it. Else
@@ -184,7 +196,7 @@ public class ConfidenceLearner {
             while (s != null) {
                 String split[] = s.split("\t");
                 MLData entry = new BasicMLData(split.length - 1);
-                for (int i = 2; i < split.length - 1; i++) {
+                for (int i = 0; i < split.length - 1; i++) {
                     entry.add(i, Double.parseDouble(split[i]));
                 }
                 //maps each entry to the expected value                
@@ -210,7 +222,6 @@ public class ConfidenceLearner {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String s = reader.readLine();
-            int counter = 0;
             while (s != null) {
                 String split[] = s.split("\t");
                 MLData entry = new BasicMLData(split.length - 1);
@@ -223,7 +234,6 @@ public class ConfidenceLearner {
                 System.out.println(entry + " -> " + ideal);
                 data.add(entry, ideal);
                 s = reader.readLine();
-                counter++;
             }
         } catch (Exception e) {
             e.printStackTrace();

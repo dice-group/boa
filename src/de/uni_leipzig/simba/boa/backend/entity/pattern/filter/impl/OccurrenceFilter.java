@@ -1,19 +1,15 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.filter.impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
-import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+//import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 /**
  * 
@@ -25,9 +21,7 @@ public class OccurrenceFilter implements PatternFilter {
 	private static final int NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD = Integer.valueOf(NLPediaSettings.getInstance().getSetting("number.of.unique.occurrence.threshold"));
 	private static final int NUMBER_OF_LEARNED_PAIRS = Integer.valueOf(NLPediaSettings.getInstance().getSetting("number.of.learned.pairs"));
 	
-	private final NLPediaLogger logger = new NLPediaLogger(OccurrenceFilter.class);
-	
-	private PatternDao patternDao = (PatternDao) DaoFactory.getInstance().createDAO(PatternDao.class);
+//	private final NLPediaLogger logger = new NLPediaLogger(OccurrenceFilter.class);
 	
 	@Override
 	public void filterPattern(PatternMapping patternMapping) {

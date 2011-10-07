@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
@@ -17,6 +18,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeas
 import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeasureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.PatternConfidenceMeasureThread;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.ml.ConfidenceLearner;
 import de.uni_leipzig.simba.boa.backend.search.concurrent.PrintProgressTask;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 
@@ -30,6 +32,8 @@ public class PatternConfidenceMeasureCommand implements Command {
 	
 	private PatternMappingDao patternMappingDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 	private List<PatternMapping> patternMappingList = null;
+	
+	private Double reverbMax = 0D, supportMax = 0D, specificityMax = 0D, typicityMax = 0D, occMax = 0D, simMax = 0D, tfIdfMax = 0D, maxMax = 0D, pairMax = 0D;
 	
 	public static double NUMBER_OF_PATTERN_MAPPINGS;
 
@@ -117,59 +121,74 @@ public class PatternConfidenceMeasureCommand implements Command {
 
 		System.out.println("All confidence measurement threads are finished. Start to calculate normalized confidence!");
 		
-		double maxConfidenceForAllPatternMappings = 0;
-		
-		for (PatternMapping pm : results ) {
-			
-			// calculate local and global maxima
-			double maxConfidenceForPatternMapping = 0;
-			
-			for (Pattern pattern : pm.getPatterns() ) {
-				
-				if ( !pattern.isUseForPatternEvaluation() ) continue;
-				
-				double specificity	= pattern.getSpecificity() >= 0	? pattern.getSpecificity()	: 0;
-				double typicity		= pattern.getTypicity() >= 0	? pattern.getTypicity()		: 0;
-				double support		= pattern.getSupport() >= 0		? pattern.getSupport()		: 0;
-				double similarity	= pattern.getSimilarity() >= 0	? pattern.getSimilarity()	: 0;
-				double reverb		= pattern.getReverb() >= 0		? pattern.getReverb()		: 0;
-				
-				double confidence = 10 * typicity + 2 * support + 1 * specificity + 10 * similarity + 4 * reverb;
-//				pattern.setConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, confidence);
-				pattern.setConfidence(confidence);
-				
-				maxConfidenceForPatternMapping		= Math.max(maxConfidenceForPatternMapping, confidence);
-				maxConfidenceForAllPatternMappings	= Math.max(maxConfidenceForAllPatternMappings, confidence);
-			}
-			
-			// set local maximums
-			for ( Pattern pattern : pm.getPatterns() ) {
-				
-				if ( !Double.isNaN(maxConfidenceForPatternMapping) && !Double.isInfinite(maxConfidenceForPatternMapping) && pattern.isUseForPatternEvaluation() ) {
-				
-					pattern.setConfidence(pattern.getConfidence() / maxConfidenceForPatternMapping);
-				}
-				else {
-					
-					pattern.setConfidence(0D);
-				}
-			}
-		}
+//		double maxConfidenceForAllPatternMappings = 0;
+//		
+//		for (PatternMapping pm : results ) {
+//			
+//			// calculate local and global maxima
+//			double maxConfidenceForPatternMapping = 0;
+//			
+//			for (Pattern pattern : pm.getPatterns() ) {
+//				
+//				if ( !pattern.isUseForPatternEvaluation() ) continue;
+//				
+//				double specificity	= pattern.getSpecificity() >= 0	? pattern.getSpecificity()	: 0;
+//				double typicity		= pattern.getTypicity() >= 0	? pattern.getTypicity()		: 0;
+//				double support		= pattern.getSupport() >= 0		? pattern.getSupport()		: 0;
+//				double similarity	= pattern.getSimilarity() >= 0	? pattern.getSimilarity()	: 0;
+//				double reverb		= pattern.getReverb() >= 0		? pattern.getReverb()		: 0;
+//				
+//				double confidence = 10 * typicity + 2 * support + 1 * specificity + 10 * similarity + 4 * reverb;
+//				pattern.setConfidence(confidence);
+//				
+//				maxConfidenceForPatternMapping		= Math.max(maxConfidenceForPatternMapping, confidence);
+//				maxConfidenceForAllPatternMappings	= Math.max(maxConfidenceForAllPatternMappings, confidence);
+//			}
+//			
+//			// set local maximums
+//			for ( Pattern pattern : pm.getPatterns() ) {
+//				
+//				if ( !Double.isNaN(maxConfidenceForPatternMapping) && !Double.isInfinite(maxConfidenceForPatternMapping) && pattern.isUseForPatternEvaluation() ) {
+//				
+//					pattern.setConfidence(pattern.getConfidence() / maxConfidenceForPatternMapping);
+//				}
+//				else {
+//					
+//					pattern.setConfidence(0D);
+//				}
+//			}
+//		}
 		// begin updating the pattern mappings
 		long start = new Date().getTime();
+		
+		ConfidenceLearner learner = new ConfidenceLearner();
 		
 		// set global maxima and update pattern mappings and cascade
 		for ( PatternMapping mapping : results ) {
 			
-//			for ( Pattern pattern : mapping.getPatterns() ) {
-//				
-//				if ( !Double.isNaN(maxConfidenceForAllPatternMappings) && !Double.isInfinite(maxConfidenceForAllPatternMappings) && pattern.isUseForPatternEvaluation() ) {
-//					
-//					pattern.setGlobalConfidence(pattern.getConfidence() /  maxConfidenceForAllPatternMappings);
-//				}
-//				else 
-//					pattern.setGlobalConfidence(0d);
-//			}
+			// resets the maximums and calculates for this mapping the new values
+			this.calculateMaximas(mapping);
+			
+			// score each pattern
+			for ( Pattern pattern : mapping.getPatterns() ) {
+				
+				// build the output for the neuronal network
+				StringBuilder builder = new StringBuilder();
+				builder.append(mapping.getProperty().getUri() + "\t");
+				builder.append(pattern.getNaturalLanguageRepresentation() + "\t");
+				builder.append(pattern.getReverb() / reverbMax + "\t");
+				builder.append(pattern.getSupport() / supportMax + "\t");
+				builder.append(pattern.getSpecificity() / specificityMax + "\t");
+				builder.append(pattern.getTypicity() / typicityMax + "\t");
+				builder.append(new Double(pattern.getNumberOfOccurrences()) / occMax + "\t");
+				builder.append(pattern.getSimilarity() / simMax + "\t");
+				builder.append(pattern.getTfIdf() / tfIdfMax + "\t");
+				builder.append(pattern.getLearnedFromPairs() / pairMax + "\t");
+				builder.append(pattern.getMaxLearnedFrom() / maxMax + "\t" + Constants.NEW_LINE_SEPARATOR);
+				
+				Double score = learner.getConfidence(builder.toString());
+				pattern.setConfidence(score);
+			}
 			this.logger.info("Updating pattern mapping " + mapping.getProperty().getUri());
 			this.patternMappingDao.updatePatternMapping(mapping);
 		}
@@ -195,5 +214,33 @@ public class PatternConfidenceMeasureCommand implements Command {
 	public void setPatternMappingList(List<PatternMapping> patternMappingList) {
 	
 		this.patternMappingList = patternMappingList;
+	}
+	
+	private void calculateMaximas(PatternMapping mapping) {
+
+		//reset the pattern maximums 
+		this.reverbMax		= 0D;
+		this.supportMax 	= 0D;
+		this.specificityMax = 0D;
+		this.typicityMax 	= 0D;
+		this.occMax 		= 0D;
+		this.simMax 		= 0D;
+		this.tfIdfMax 		= 0D;
+		this.pairMax 		= 0D;
+		this.maxMax 		= 0D;
+		
+		// reverbMax, supportMax, specificityMax, typicityMax, occMax, simMax, tfIdfMax, maxMax, pairMax;
+		for ( Pattern p: mapping.getPatterns()) {
+			
+			this.reverbMax		= Math.max(this.reverbMax, p.getReverb() == null ? 0D : p.getReverb());
+			this.supportMax 	= Math.max(this.supportMax, p.getSupport() == null ? 0D : p.getSupport());
+			this.specificityMax = Math.max(this.specificityMax, p.getSpecificity() == null ? 0D : p.getSpecificity());
+			this.typicityMax 	= Math.max(this.typicityMax, p.getTypicity() == null ? 0D : p.getTypicity());
+			this.occMax 		= Math.max(this.occMax, p.getNumberOfOccurrences() == null ? 0D : p.getNumberOfOccurrences());
+			this.simMax 		= Math.max(this.simMax, p.getSimilarity() == null ? 0D : p.getSimilarity());
+			this.tfIdfMax 		= Math.max(this.tfIdfMax, p.getTfIdf() == null ? 0D : p.getTfIdf());
+			this.pairMax 		= Math.max(this.pairMax, p.getLearnedFromPairs());
+			this.maxMax 		= Math.max(this.maxMax, p.getMaxLearnedFrom());
+		}
 	}
 }
