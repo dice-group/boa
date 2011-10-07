@@ -129,7 +129,7 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 			// avoid labels with only one character like the TV station "A" 
 			if ( s.length() > 1 ) {
 				
-				labels.add(" " + s.trim() + " ");
+				labels.add(" " + s.trim().toLowerCase() + " ");
 			}
 		}
 		if ( this.label.length() > 1 ) labels.add(" " + this.label.toLowerCase() + " ");
