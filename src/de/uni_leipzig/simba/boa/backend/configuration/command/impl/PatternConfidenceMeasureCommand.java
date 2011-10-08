@@ -186,10 +186,10 @@ public class PatternConfidenceMeasureCommand implements Command {
 				builder.append(pattern.getLearnedFromPairs() / pairMax + "\t");
 				builder.append(pattern.getMaxLearnedFrom() / maxMax + "\t");
 				
-				Double score = this.learner.getConfidence(builder.toString());
-				pattern.setConfidence(score);
+//				Double score = this.learner.getConfidence(builder.toString());
+//				pattern.setConfidence(score);
 				
-				System.out.println(pattern.getNaturalLanguageRepresentation() + ": " +score);
+//				System.out.println(pattern.getNaturalLanguageRepresentation() + ": " +score);
 			}
 			this.logger.info("Updating pattern mapping " + mapping.getProperty().getUri());
 			this.patternMappingDao.updatePatternMapping(mapping);
