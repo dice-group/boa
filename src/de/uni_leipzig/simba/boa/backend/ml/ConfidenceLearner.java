@@ -38,7 +38,6 @@ public class ConfidenceLearner {
 	public double maxHiddenToInputRatio = 3;
 	public int maxEpochs = 10000;
 
-	private static final NLPediaSetup setup = new NLPediaSetup(true);
 	private static final String NETWORK_FILE = NLPediaSettings.getInstance().getSetting("neuronal.network.network.file");
 	private static final String LEARN_FILE = NLPediaSettings.getInstance().getSetting("neuronal.network.learn.file");
 	private static final String EVAL_OUTPUT_FILE = NLPediaSettings.getInstance().getSetting("neuronal.network.eval.output.file");
