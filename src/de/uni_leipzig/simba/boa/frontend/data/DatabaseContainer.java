@@ -26,7 +26,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 	public static final Object URI			= "uri";
 	public static final Object DISPLAY_NAME	= "name";
 	
-	public static final String[] DATABASE_IDS = new String[]{"en_wiki_exp,en_news_exp"};//NLPediaSettings.getInstance().getSetting("frontend.databases").split(",");
+	public static final String[] DATABASE_IDS = new String[]{"en_wiki_exp","en_news_exp"};//NLPediaSettings.getInstance().getSetting("frontend.databases").split(",");
 	
 	private PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 	

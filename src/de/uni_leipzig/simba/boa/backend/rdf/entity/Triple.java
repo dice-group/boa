@@ -20,7 +20,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 
 @Entity
 @Table(name="triple")
-@BatchSize(size=100000)
+//@BatchSize(size=100000)
 public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity {
 
 	private Resource subject;
@@ -38,7 +38,7 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity 
 		this.subject = subject;
 		this.property = property;
 		this.object = object;
-		this.confidence = -1d;
+		this.confidence = 0d;
 		this.learnedInIteration = -1;
 		this.learnedFromPatterns = new HashSet<Pattern>();
 	}

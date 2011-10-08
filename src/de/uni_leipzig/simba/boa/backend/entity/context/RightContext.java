@@ -144,7 +144,7 @@ public final class RightContext extends Context {
 	 */
 	private void createRightContext(String nerTaggedString, String sentenceWithoutNerTags) throws StringIndexOutOfBoundsException {
 
-		String leftPatternString = sentenceWithoutNerTags.substring(0, sentenceWithoutNerTags.indexOf(this.pattern) - 1).trim();
+		String leftPatternString = sentenceWithoutNerTags.substring(0, sentenceWithoutNerTags.toLowerCase().indexOf(this.pattern.toLowerCase()) - 1).trim();
 		String[] words = nerTaggedString.split(" ");
 		
         for(int i = leftPatternString.split(" ").length + this.pattern.split(" ").length; i < words.length; i++){

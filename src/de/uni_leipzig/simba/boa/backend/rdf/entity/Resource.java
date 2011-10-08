@@ -11,6 +11,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import de.uni_leipzig.simba.boa.backend.entity.context.Context;
+
 @Entity
 @Table(name="resource")
 public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entity {
@@ -124,13 +126,19 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 	public Set<String> retrieveLabels(){
 		
 		Set<String> labels = new HashSet<String>();
-		for ( String s : this.surfaceForms.split("_&_")) {
+		for ( String s : this.surfaceForms.toLowerCase().split("_&_")) {
 			
 			// avoid labels with only one character like the TV station "A" 
 			if ( s.length() > 1 ) {
 				
-				labels.add(" " + s.trim().toLowerCase() + " ");
+				labels.add(" " + s.trim() + " ");
 			}
+			// this is very experimental 
+//			if ( Context.namedEntityRecognitionMappings.get(this.type).equals("PER") ) {
+//				
+//				labels.add("he");
+//				labels.add("she");
+//			}
 		}
 		if ( this.label.length() > 1 ) labels.add(" " + this.label.toLowerCase() + " ");
 		return labels;

@@ -122,6 +122,13 @@ public class ContextTest {
 		
 		assertTrue("Orsha".equals(leftContext7.getSuitableEntity("http://dbpedia.org/ontology/PopulatedPlace")));
 		assertTrue("Belarus".equals(rightContext7.getSuitableEntity("http://dbpedia.org/ontology/City")));
+		
+		testAnnotated				= "Uprock_O was_O created_O in_O Brooklyn_B-LOC ,_O N.Y._B-LOC and_O breaking_O was_O created_O in_O the_B-LOC Bronx_I-LOC ._O";
+		test						= "Uprock was created in Brooklyn , N.Y. and breaking was created in the Bronx .";
+		patternWithOutVariables1	= "created in the";
+		
+		Context leftContext8 = new LeftContext(testAnnotated,test, patternWithOutVariables1);
+		Context rightContext8 = new RightContext(testAnnotated,test, patternWithOutVariables1);
 	}
 	
 	@Test

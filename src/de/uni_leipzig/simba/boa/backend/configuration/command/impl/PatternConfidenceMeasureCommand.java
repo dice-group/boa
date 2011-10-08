@@ -30,6 +30,7 @@ public class PatternConfidenceMeasureCommand implements Command {
 
 	private final NLPediaLogger logger = new NLPediaLogger(PatternConfidenceMeasureCommand.class);
 	
+	private ConfidenceLearner learner = new ConfidenceLearner();
 	private PatternMappingDao patternMappingDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 	private List<PatternMapping> patternMappingList = null;
 	
@@ -161,8 +162,6 @@ public class PatternConfidenceMeasureCommand implements Command {
 		// begin updating the pattern mappings
 		long start = new Date().getTime();
 		
-		ConfidenceLearner learner = new ConfidenceLearner();
-		
 		// set global maxima and update pattern mappings and cascade
 		for ( PatternMapping mapping : results ) {
 			
@@ -186,8 +185,10 @@ public class PatternConfidenceMeasureCommand implements Command {
 				builder.append(pattern.getLearnedFromPairs() / pairMax + "\t");
 				builder.append(pattern.getMaxLearnedFrom() / maxMax + "\t" + Constants.NEW_LINE_SEPARATOR);
 				
-				Double score = learner.getConfidence(builder.toString());
+				Double score = this.learner.getConfidence(builder.toString());
 				pattern.setConfidence(score);
+				
+				System.out.println(pattern.getNaturalLanguageRepresentation() + ": " +score);
 			}
 			this.logger.info("Updating pattern mapping " + mapping.getProperty().getUri());
 			this.patternMappingDao.updatePatternMapping(mapping);

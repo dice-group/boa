@@ -28,6 +28,8 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+import com.hp.hpl.jena.graph.query.regexptrees.Paren;
+
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
@@ -128,7 +130,7 @@ public class PatternSearcher {
 
 				Query query = parser.parse("+sentence-lc:\"" + QueryParser.escape(subjectLabel) + "\" && +sentence-lc:\"" + QueryParser.escape(objectLabel) + "\"");
 				hits = indexSearcher.search(query, null, MAX_NUMBER_OF_DOCUMENTS).scoreDocs;
-
+				
 				for (int i = 0; i < hits.length; i++) {
 
 					String sentenceLowerCase = indexSearcher.doc(hits[i].doc).get("sentence-lc");
