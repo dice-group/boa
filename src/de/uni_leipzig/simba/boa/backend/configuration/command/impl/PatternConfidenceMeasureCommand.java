@@ -9,6 +9,7 @@ import java.util.Timer;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
@@ -183,7 +184,7 @@ public class PatternConfidenceMeasureCommand implements Command {
 				builder.append(pattern.getSimilarity() / simMax + "\t");
 				builder.append(pattern.getTfIdf() / tfIdfMax + "\t");
 				builder.append(pattern.getLearnedFromPairs() / pairMax + "\t");
-				builder.append(pattern.getMaxLearnedFrom() / maxMax + "\t" + Constants.NEW_LINE_SEPARATOR);
+				builder.append(pattern.getMaxLearnedFrom() / maxMax + "\t");
 				
 				Double score = this.learner.getConfidence(builder.toString());
 				pattern.setConfidence(score);
@@ -197,6 +198,25 @@ public class PatternConfidenceMeasureCommand implements Command {
 		
 		// set this so that the next command does not need to query them from the database again
 		this.patternMappingList = results;
+	}
+	
+	public static void main(String[] args) {
+
+		PatternConfidenceMeasureCommand c = new PatternConfidenceMeasureCommand(null);
+		StringBuilder builder = new StringBuilder();
+		builder.append("http://uri.de" + "\t");
+		builder.append("?D? is a ?R?" + "\t");
+		builder.append(0.1 + "\t");
+		builder.append(0.1 + "\t");
+		builder.append(0.1 + "\t");
+		builder.append(0.1 + "\t");
+		builder.append(0.1 + "\t");
+		builder.append(0.1 + "\t");
+		builder.append(0.1 + "\t");
+		builder.append(0.1 + "\t");
+		builder.append(0.1 + "\t");
+		
+		System.out.println(c.learner.getConfidence(builder.toString()));
 	}
 
 	

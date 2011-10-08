@@ -141,7 +141,6 @@ public class ConfidenceLearner {
 		summary.append("\n");
 		// remember best confidence for serialization
 		bestAccuracy = 0;
-
 		double avgAcc;
 
 		for (double error = maxError; error >= minError; error = error - errorDecrement) {
@@ -208,7 +207,8 @@ public class ConfidenceLearner {
 				}
 			}
 		}
-//		System.out.println("Got " + result.getRecordCount() + " records for training");
+		// System.out.println("Got " + result.getRecordCount() +
+		// " records for training");
 		return result;
 	}
 
@@ -275,7 +275,7 @@ public class ConfidenceLearner {
 				// maps each entry to the expected value
 				BasicMLData ideal = new BasicMLData(1);
 				ideal.add(0, new Double(split[split.length - 1]));
-				System.out.println(entry + " -> " + ideal);
+//				System.out.println(entry + " -> " + ideal);
 				data.add(entry, ideal);
 				s = reader.readLine();
 			}
@@ -444,7 +444,7 @@ public class ConfidenceLearner {
 
 		String split[] = s.split("\t");
 		MLData data = new BasicMLData(split.length);
-		for (int i = 0; i < split.length; i++) {
+		for (int i = 2; i < split.length; i++) {
 			data.add(i, Double.parseDouble(split[i]));
 		}
 		return data;
@@ -525,9 +525,9 @@ public class ConfidenceLearner {
 	public static void main(String args[]) {
 
 		ConfidenceLearner dr = new ConfidenceLearner();
-		
+
 		String input = "0.0\t0.0\t0.0\t0.0\t0.01866977829638273\t0.0\t0.0\t0.0016778523489932886\t0.039603960396039604";
-		
+
 		System.out.println(dr.getConfidence(input));
 	}
 }
