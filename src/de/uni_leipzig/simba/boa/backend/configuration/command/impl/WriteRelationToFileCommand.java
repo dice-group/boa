@@ -23,17 +23,17 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
  */
 public class WriteRelationToFileCommand implements Command {
 
-	private final String SPARQL_ENDPOINT_URI	= NLPediaSettings.getInstance().getSetting("dbpediaSparqlEndpoint");
-	private final String DBPEDIA_DEFAULT_GRAPH	= NLPediaSettings.getInstance().getSetting("dbpediaDefaultGraph");
-	private static final int LIMIT				= 10000;
+	private static final NLPediaSetup setup 			= new NLPediaSetup(true);
+	private static final String SPARQL_ENDPOINT_URI		= NLPediaSettings.getInstance().getSetting("dbpediaSparqlEndpoint");
+	private static final String DBPEDIA_DEFAULT_GRAPH	= NLPediaSettings.getInstance().getSetting("dbpediaDefaultGraph");
+	private static final int LIMIT						= 10000;
 	
-	private final NLPediaLogger logger = new NLPediaLogger(WriteRelationToFileCommand.class);
+	private static final NLPediaLogger logger = new NLPediaLogger(WriteRelationToFileCommand.class);
 	
 	private static final String language = "en";
 	
 	public static void main(String[] args) {
 
-		NLPediaSetup setup = new NLPediaSetup(true);
 		WriteRelationToFileCommand c = new WriteRelationToFileCommand();
 		c.execute();
 	}
@@ -43,23 +43,50 @@ public class WriteRelationToFileCommand implements Command {
 	 */
 	public void execute() {
 		
-		String queryPersonSubject		= this.createQuerySubject("http://dbpedia.org/ontology/Person");
-		String queryPersonObject		= this.createQueryObject("http://dbpedia.org/ontology/Person");
-		getKnowledge(queryPersonSubject, "/home/gerber/en_new.txt");
-		getKnowledge(queryPersonObject, "/home/gerber/en_new.txt");
+		new Thread(new Runnable() { public void run() {
+			
+			String queryPersonSubject		= createQuerySubject("http://dbpedia.org/ontology/Person");
+			getKnowledge(queryPersonSubject, "/home/gerber/en_person.txt");
+			
+			System.out.println("person subject done");
+			
+			String queryPersonObject		= createQueryObject("http://dbpedia.org/ontology/Person");
+			getKnowledge(queryPersonObject,  "/home/gerber/en_person.txt");
+			
+			System.out.println("person object done");
+			
+		}}).start();
 		
-		String queryPlaceSubject		= this.createQuerySubject("http://dbpedia.org/ontology/Place");
-		String queryPlaceObject			= this.createQueryObject("http://dbpedia.org/ontology/Place");
-		getKnowledge(queryPlaceSubject, "/home/gerber/en_new.txt");
-		getKnowledge(queryPlaceObject, "/home/gerber/en_new.txt");
+		new Thread(new Runnable() { public void run() {
+			
+			String queryPlaceSubject		= createQuerySubject("http://dbpedia.org/ontology/Place");
+			getKnowledge(queryPlaceSubject, "/home/gerber/en_place.txt");
+			
+			System.out.println("place subject done");
+			
+			String queryPlaceObject			= createQueryObject("http://dbpedia.org/ontology/Place");
+			getKnowledge(queryPlaceObject,  "/home/gerber/en_place.txt");
+
+			System.out.println("place object done");
+			
+		}}).start();
 		
-		String queryOrganisationSubject	= this.createQuerySubject("http://dbpedia.org/ontology/Organisation");
-		String queryOrganisationObject	= this.createQueryObject("http://dbpedia.org/ontology/Organisation");
-		getKnowledge(queryOrganisationSubject, "/home/gerber/en_new.txt");
-		getKnowledge(queryOrganisationObject, "/home/gerber/en_new.txt");
+		new Thread(new Runnable() { public void run() {
+			
+			String queryOrganisationSubject	= createQuerySubject("http://dbpedia.org/ontology/Organisation");
+			getKnowledge(queryOrganisationSubject, "/home/gerber/en_organisation.txt");
+			
+			System.out.println("organisation subject done");
+			
+			String queryOrganisationObject	= createQueryObject("http://dbpedia.org/ontology/Organisation");
+			getKnowledge(queryOrganisationObject, "/home/gerber/en_organisation.txt");
+			
+			System.out.println("organisation object done");
+			
+		}}).start();
 	}
 
-	private String createQueryObject(String typeUri) {
+	private static String createQueryObject(String typeUri) {
 
 		return 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
@@ -78,7 +105,7 @@ public class WriteRelationToFileCommand implements Command {
 			 "OFFSET &OFFSET";
 	}
 
-	private String createQuerySubject(String typeUri) {
+	private static String createQuerySubject(String typeUri) {
 
 		return 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
@@ -97,7 +124,7 @@ public class WriteRelationToFileCommand implements Command {
 			 "OFFSET &OFFSET";
 	}
 
-	private void handleQuery(String fileName, List<QuerySolution> resultSets) {
+	private static void handleQuery(String fileName, List<QuerySolution> resultSets) {
 
 		Writer writer = null;
 		
@@ -151,7 +178,7 @@ public class WriteRelationToFileCommand implements Command {
 		}
 	}
 	
-	private void getKnowledge(String query, String fileName) {
+	private static void getKnowledge(String query, String fileName) {
 		
 		logger.info("Querying started for query: " + query);
 		long start = System.currentTimeMillis();
@@ -159,7 +186,7 @@ public class WriteRelationToFileCommand implements Command {
 		int offset = 0;
 		while (true) {
 			
-			System.out.println(query.replaceAll("&OFFSET", String.valueOf(offset)));
+//			System.out.println(query.replaceAll("&OFFSET", String.valueOf(offset)));
 			
 			QueryEngineHTTP qexec = new QueryEngineHTTP(SPARQL_ENDPOINT_URI, query.replaceAll("&OFFSET", String.valueOf(offset)));
 			qexec.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
@@ -172,7 +199,7 @@ public class WriteRelationToFileCommand implements Command {
 			
 			if ( !resultSetList.isEmpty() ) {
 
-				this.handleQuery(fileName, resultSetList);
+				handleQuery(fileName, resultSetList);
 			}
 			else break;
 		}
