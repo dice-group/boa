@@ -46,12 +46,12 @@ public class WriteRelationToFileCommand implements Command {
 		new Thread(new Runnable() { public void run() {
 			
 			String queryPersonSubject		= createQuerySubject("http://dbpedia.org/ontology/Person");
-			getKnowledge(queryPersonSubject, "/home/gerber/en_person.txt");
+			getKnowledge(queryPersonSubject, "/home/gerber/en_person_s.txt");
 			
 			System.out.println("person subject done");
 			
 			String queryPersonObject		= createQueryObject("http://dbpedia.org/ontology/Person");
-			getKnowledge(queryPersonObject,  "/home/gerber/en_person.txt");
+			getKnowledge(queryPersonObject,  "/home/gerber/en_person_o.txt");
 			
 			System.out.println("person object done");
 			
@@ -60,12 +60,12 @@ public class WriteRelationToFileCommand implements Command {
 		new Thread(new Runnable() { public void run() {
 			
 			String queryPlaceSubject		= createQuerySubject("http://dbpedia.org/ontology/Place");
-			getKnowledge(queryPlaceSubject, "/home/gerber/en_place.txt");
+			getKnowledge(queryPlaceSubject, "/home/gerber/en_place_s.txt");
 			
 			System.out.println("place subject done");
 			
 			String queryPlaceObject			= createQueryObject("http://dbpedia.org/ontology/Place");
-			getKnowledge(queryPlaceObject,  "/home/gerber/en_place.txt");
+			getKnowledge(queryPlaceObject,  "/home/gerber/en_place_o.txt");
 
 			System.out.println("place object done");
 			
@@ -74,12 +74,12 @@ public class WriteRelationToFileCommand implements Command {
 		new Thread(new Runnable() { public void run() {
 			
 			String queryOrganisationSubject	= createQuerySubject("http://dbpedia.org/ontology/Organisation");
-			getKnowledge(queryOrganisationSubject, "/home/gerber/en_organisation.txt");
+			getKnowledge(queryOrganisationSubject, "/home/gerber/en_organisation_s.txt");
 			
 			System.out.println("organisation subject done");
 			
 			String queryOrganisationObject	= createQueryObject("http://dbpedia.org/ontology/Organisation");
-			getKnowledge(queryOrganisationObject, "/home/gerber/en_organisation.txt");
+			getKnowledge(queryOrganisationObject, "/home/gerber/en_organisation_o.txt");
 			
 			System.out.println("organisation object done");
 			
