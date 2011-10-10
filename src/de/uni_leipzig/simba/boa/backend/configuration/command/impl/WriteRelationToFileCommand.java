@@ -50,6 +50,10 @@ public class WriteRelationToFileCommand implements Command {
 			
 			System.out.println("person subject done");
 			
+		}}).start();
+		
+		new Thread(new Runnable() { public void run() {
+			
 			String queryPersonObject		= createQueryObject("http://dbpedia.org/ontology/Person");
 			getKnowledge(queryPersonObject,  "/home/gerber/en_person_o.txt");
 			
@@ -64,6 +68,10 @@ public class WriteRelationToFileCommand implements Command {
 			
 			System.out.println("place subject done");
 			
+		}}).start();
+		
+		new Thread(new Runnable() { public void run() {
+			
 			String queryPlaceObject			= createQueryObject("http://dbpedia.org/ontology/Place");
 			getKnowledge(queryPlaceObject,  "/home/gerber/en_place_o.txt");
 
@@ -71,19 +79,19 @@ public class WriteRelationToFileCommand implements Command {
 			
 		}}).start();
 		
-		new Thread(new Runnable() { public void run() {
-			
-			String queryOrganisationSubject	= createQuerySubject("http://dbpedia.org/ontology/Organisation");
-			getKnowledge(queryOrganisationSubject, "/home/gerber/en_organisation_s.txt");
-			
-			System.out.println("organisation subject done");
-			
-			String queryOrganisationObject	= createQueryObject("http://dbpedia.org/ontology/Organisation");
-			getKnowledge(queryOrganisationObject, "/home/gerber/en_organisation_o.txt");
-			
-			System.out.println("organisation object done");
-			
-		}}).start();
+//		new Thread(new Runnable() { public void run() {
+//			
+//			String queryOrganisationSubject	= createQuerySubject("http://dbpedia.org/ontology/Organisation");
+//			getKnowledge(queryOrganisationSubject, "/home/gerber/en_organisation_s.txt");
+//			
+//			System.out.println("organisation subject done");
+//			
+//			String queryOrganisationObject	= createQueryObject("http://dbpedia.org/ontology/Organisation");
+//			getKnowledge(queryOrganisationObject, "/home/gerber/en_organisation_o.txt");
+//			
+//			System.out.println("organisation object done");
+//			
+//		}}).start();
 	}
 
 	private static String createQueryObject(String typeUri) {
