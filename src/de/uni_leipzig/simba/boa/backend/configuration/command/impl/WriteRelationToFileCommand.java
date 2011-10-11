@@ -43,14 +43,14 @@ public class WriteRelationToFileCommand implements Command {
 	 */
 	public void execute() {
 		
-		new Thread(new Runnable() { public void run() {
-			
-			String queryPersonSubject		= createQuerySubject("http://dbpedia.org/ontology/Person");
-			getKnowledge(queryPersonSubject, 835000,"/home/gerber/en_person_s.txt");
-			
-			System.out.println("person subject done");
-			
-		}}).start();
+//		new Thread(new Runnable() { public void run() {
+//			
+//			String queryPersonSubject		= createQuerySubject("http://dbpedia.org/ontology/Person");
+//			getKnowledge(queryPersonSubject, 835000,"/home/gerber/en_person_s.txt");
+//			
+//			System.out.println("person subject done");
+//			
+//		}}).start();
 		
 //		new Thread(new Runnable() { public void run() {
 //			
@@ -61,14 +61,14 @@ public class WriteRelationToFileCommand implements Command {
 //			
 //		}}).start();
 		
-		new Thread(new Runnable() { public void run() {
+//		new Thread(new Runnable() { public void run() {
 			
 			String queryPlaceSubject		= createQuerySubject("http://dbpedia.org/ontology/Place");
 			getKnowledge(queryPlaceSubject, 541000,"/home/gerber/en_place_s.txt");
 			
 			System.out.println("place subject done");
 			
-		}}).start();
+//		}}).start();
 		
 //		new Thread(new Runnable() { public void run() {
 //			
