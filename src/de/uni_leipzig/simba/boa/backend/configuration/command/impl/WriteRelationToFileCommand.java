@@ -26,7 +26,7 @@ public class WriteRelationToFileCommand implements Command {
 	private static final NLPediaSetup setup 			= new NLPediaSetup(true);
 	private static final String SPARQL_ENDPOINT_URI		= NLPediaSettings.getInstance().getSetting("dbpediaSparqlEndpoint");
 	private static final String DBPEDIA_DEFAULT_GRAPH	= NLPediaSettings.getInstance().getSetting("dbpediaDefaultGraph");
-	private static final int LIMIT						= 10000;
+	private static final int LIMIT						= 1000;
 	
 	private static final NLPediaLogger logger = new NLPediaLogger(WriteRelationToFileCommand.class);
 	
@@ -46,48 +46,52 @@ public class WriteRelationToFileCommand implements Command {
 		new Thread(new Runnable() { public void run() {
 			
 			String queryPersonSubject		= createQuerySubject("http://dbpedia.org/ontology/Person");
-			getKnowledge(queryPersonSubject, "/home/gerber/en_person_s.txt");
+			getKnowledge(queryPersonSubject, 743000,"/home/gerber/en_person_s.txt");
 			
 			System.out.println("person subject done");
 			
 		}}).start();
 		
-		new Thread(new Runnable() { public void run() {
-			
-			String queryPersonObject		= createQueryObject("http://dbpedia.org/ontology/Person");
-			getKnowledge(queryPersonObject,  "/home/gerber/en_person_o.txt");
-			
-			System.out.println("person object done");
-			
-		}}).start();
+//		new Thread(new Runnable() { public void run() {
+//			
+//			String queryPersonObject		= createQueryObject("http://dbpedia.org/ontology/Person");
+//			getKnowledge(queryPersonObject, 275000, "/Users/gerb/en_person_o.txt");
+//			
+//			System.out.println("person object done");
+//			
+//		}}).start();
 		
 		new Thread(new Runnable() { public void run() {
 			
 			String queryPlaceSubject		= createQuerySubject("http://dbpedia.org/ontology/Place");
-			getKnowledge(queryPlaceSubject, "/home/gerber/en_place_s.txt");
+			getKnowledge(queryPlaceSubject, 461000,"/home/gerber/en_place_s.txt");
 			
 			System.out.println("place subject done");
 			
 		}}).start();
 		
-		new Thread(new Runnable() { public void run() {
-			
-			String queryPlaceObject			= createQueryObject("http://dbpedia.org/ontology/Place");
-			getKnowledge(queryPlaceObject,  "/home/gerber/en_place_o.txt");
-
-			System.out.println("place object done");
-			
-		}}).start();
+//		new Thread(new Runnable() { public void run() {
+//			
+//			String queryPlaceObject			= createQueryObject("http://dbpedia.org/ontology/Place");
+//			getKnowledge(queryPlaceObject, 847000, "/Users/gerb/en_place_o.txt");
+//
+//			System.out.println("place object done");
+//			
+//		}}).start();
 		
 //		new Thread(new Runnable() { public void run() {
 //			
 //			String queryOrganisationSubject	= createQuerySubject("http://dbpedia.org/ontology/Organisation");
-//			getKnowledge(queryOrganisationSubject, "/home/gerber/en_organisation_s.txt");
+//			getKnowledge(queryOrganisationSubject, "/Users/gerb/en_organisation_s.txt");
 //			
 //			System.out.println("organisation subject done");
 //			
+//		}}).start();
+//		
+//		new Thread(new Runnable() { public void run() {
+//			
 //			String queryOrganisationObject	= createQueryObject("http://dbpedia.org/ontology/Organisation");
-//			getKnowledge(queryOrganisationObject, "/home/gerber/en_organisation_o.txt");
+//			getKnowledge(queryOrganisationObject, "/Users/gerb/en_organisation_o.txt");
 //			
 //			System.out.println("organisation object done");
 //			
@@ -186,12 +190,12 @@ public class WriteRelationToFileCommand implements Command {
 		}
 	}
 	
-	private static void getKnowledge(String query, String fileName) {
+	private static void getKnowledge(String query, int offset1, String fileName) {
 		
 		logger.info("Querying started for query: " + query);
 		long start = System.currentTimeMillis();
 		
-		int offset = 0;
+		int offset = offset1;
 		while (true) {
 			
 //			System.out.println(query.replaceAll("&OFFSET", String.valueOf(offset)));
