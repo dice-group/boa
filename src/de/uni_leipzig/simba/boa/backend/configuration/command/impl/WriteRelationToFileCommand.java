@@ -23,7 +23,7 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
  */
 public class WriteRelationToFileCommand implements Command {
 
-	private static final NLPediaSetup setup 			= new NLPediaSetup(true);
+//	private static final NLPediaSetup setup 			= new NLPediaSetup(true);
 	private static final String SPARQL_ENDPOINT_URI		= NLPediaSettings.getInstance().getSetting("dbpediaSparqlEndpoint");
 	private static final String DBPEDIA_DEFAULT_GRAPH	= NLPediaSettings.getInstance().getSetting("dbpediaDefaultGraph");
 	private static final int LIMIT						= 10000;
@@ -46,7 +46,7 @@ public class WriteRelationToFileCommand implements Command {
 		new Thread(new Runnable() { public void run() {
 			
 			String queryPersonSubject		= createQuerySubject("http://dbpedia.org/ontology/Person");
-			getKnowledge(queryPersonSubject, 743000,"/home/gerber/en_person_s.txt");
+			getKnowledge(queryPersonSubject, 835000,"/home/gerber/en_person_s.txt");
 			
 			System.out.println("person subject done");
 			
@@ -64,7 +64,7 @@ public class WriteRelationToFileCommand implements Command {
 		new Thread(new Runnable() { public void run() {
 			
 			String queryPlaceSubject		= createQuerySubject("http://dbpedia.org/ontology/Place");
-			getKnowledge(queryPlaceSubject, 461000,"/home/gerber/en_place_s.txt");
+			getKnowledge(queryPlaceSubject, 541000,"/home/gerber/en_place_s.txt");
 			
 			System.out.println("place subject done");
 			
