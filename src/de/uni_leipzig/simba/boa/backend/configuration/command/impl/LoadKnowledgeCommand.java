@@ -178,8 +178,6 @@ public class LoadKnowledgeCommand implements Command {
 		}
 		System.out.println(String.format("Starting to batch save %s triples to database!", tripleHashToTriple.size()));
 		
-		System.exit(0);
-		
 		this.triples = new ArrayList<Triple>(tripleHashToTriple.values());
 		tripleDao.batchSaveOrUpdate(this.triples);
 		
