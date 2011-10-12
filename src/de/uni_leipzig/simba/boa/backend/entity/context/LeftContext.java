@@ -152,7 +152,9 @@ public class LeftContext extends Context {
 		String leftPatternString = sentenceWithoutNerTags.substring(0, sentenceWithoutNerTags.toLowerCase().indexOf(this.pattern.toLowerCase()) - 1).trim();
         String[] words = nerTaggedString.split(" ");
         
-        for(int i = 0; i < leftPatternString.split(" ").length; i++){
+        // add one token from the pattern to the left context
+        // this is for cases where one part of the entity left to the pattern occurs inside the pattern like: ?D? Dickens 's novel ?R?
+        for(int i = 0; i < leftPatternString.split(" ").length + 1; i++){
            this.words.add(words[i]);
         }
 	}

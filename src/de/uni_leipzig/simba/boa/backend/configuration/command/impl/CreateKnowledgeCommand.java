@@ -145,7 +145,7 @@ public class CreateKnowledgeCommand implements Command {
 
 				if (leftContext.containsSuitableEntity(domainUri) && rightContext.containsSuitableEntity(rangeUri)) {
 
-					if (leftContext.getSuitableEntityDistance(domainUri) <= 3 && rightContext.getSuitableEntityDistance(rangeUri) <= 3 ) {
+					if ( leftContext.getSuitableEntityDistance(domainUri) <= 4 && rightContext.getSuitableEntityDistance(rangeUri) <= 4 ) {
 						
 						String subjectLabel = leftContext.getSuitableEntity(domainUri);
 						String objectLabel = rightContext.getSuitableEntity(rangeUri);

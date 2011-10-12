@@ -292,7 +292,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 //				indexDir = indexDir + currentDatabase.substring(0,currentDatabase.lastIndexOf("_")) + "/index/stanfordnlp";
 				
 				PatternSearcher patternSearcher = new PatternSearcher(indexDir);
-				TreeSet<String> results = (TreeSet<String>) patternSearcher.getExactMatchSentences(naturalLanguageRepresentation, 1000);
+				TreeSet<String> results = (TreeSet<String>) patternSearcher.getExactMatchSentences(naturalLanguageRepresentation, 100);
 				
 				StringBuilder builder = new StringBuilder();
 				builder.append("<h2>Search for label \""+ naturalLanguageRepresentation+"\" in the index returned " + results.size() + " results.</h2>");

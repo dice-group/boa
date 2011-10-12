@@ -7,10 +7,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,6 +32,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+import de.danielgerber.file.FilenameFilters;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
@@ -46,36 +50,44 @@ public class CreateSurfaceFormList {
 	public static void main(String[] args) throws IOException {
 
 		NLPediaSetup s = new NLPediaSetup(true);
-		Map<String,Set<String>> urisToLabels = getSurfaceForms();
-//		printSurfaceFormsToFile(urisToLabels);
+		Map<String,Set<String>> urisToLabels = readSurfaceForms();
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("/Users/gerb/en.txt"))));
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/gerb/en_surface.txt"), "UTF-8"));
+		File directory = new File("/Users/gerb/Development/workspaces/experimental/nlpedia/en_wiki/relation");
 		
-		String line;
-		while ((line = br.readLine()) != null) {
+		Writer writer =  new PrintWriter(new BufferedWriter(new FileWriter("/Users/gerb/en_surface.txt", true)));
 		
-			String[] lineParts = line.split(" \\|\\|\\| ");
+		for ( File f : directory.listFiles(FilenameFilters.getTxtFilter())) {
 			
-			String firstUri		= lineParts[0];
-			String secondUri	= lineParts[3];
+			System.out.println("Reading file " + f.getName());
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(f))));
+			
+			String line;
+			while ((line = br.readLine()) != null) {
+			
+				String[] lineParts = line.split(" \\|\\|\\| ");
+				
+				String firstUri		= lineParts[0];
+				String secondUri	= lineParts[3];
 
-			if ( urisToLabels.get(firstUri) != null ) {
-				
-				lineParts[1] = lineParts[1] + " ||| " + StringUtils.join(urisToLabels.get(firstUri), "_&_");
+				if ( urisToLabels.get(firstUri) != null ) {
+					
+					lineParts[1] = lineParts[1] + " ||| " + StringUtils.join(urisToLabels.get(firstUri), "_&_");
+				}
+				else {
+					lineParts[1] = lineParts[1] + " ||| " + lineParts[1].toLowerCase();
+				}
+				if ( urisToLabels.get(secondUri) != null ) {
+					
+					lineParts[4] = lineParts[4] + " ||| " + StringUtils.join(urisToLabels.get(secondUri), "_&_");
+				}
+				else {
+					lineParts[4] = lineParts[4] + " ||| " + lineParts[4].toLowerCase();
+				}
+				writer.write(StringUtils.join(lineParts, " ||| ") + Constants.NEW_LINE_SEPARATOR);
 			}
-			else {
-				lineParts[1] = lineParts[1] + " ||| " + lineParts[1].toLowerCase();
-			}
-			if ( urisToLabels.get(secondUri) != null ) {
-				
-				lineParts[4] = lineParts[4] + " ||| " + StringUtils.join(urisToLabels.get(secondUri), "_&_");
-			}
-			else {
-				lineParts[4] = lineParts[4] + " ||| " + lineParts[4].toLowerCase();
-			}
-			writer.write(StringUtils.join(lineParts, " ||| ") + Constants.NEW_LINE_SEPARATOR);
 		}
+		
 		writer.close();
 	}
 	
@@ -87,6 +99,24 @@ public class CreateSurfaceFormList {
 			writer.write(entry.getKey() + "\t" + StringUtils.join(entry.getValue(), "\t") + Constants.NEW_LINE_SEPARATOR);
 		}
 		writer.close();
+	}
+	
+	
+	private static Map<String,Set<String>> readSurfaceForms() throws IOException {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("/Users/gerb/uri_surface_form.tsv"))));
+		
+		Map<String,Set<String>> uriToLabels = new HashMap<String,Set<String>>();
+		
+		String line = "";
+		while ( (line = br.readLine()) != null ) {
+			
+			String[] lineParts = line.split("\t");
+			
+			uriToLabels.put(lineParts[0], new HashSet<String>(Arrays.asList(Arrays.copyOfRange(lineParts, 1, lineParts.length))));
+		}
+		br.close();
+		return uriToLabels;
 	}
 	
 	private static Map<String,Set<String>> getSurfaceForms() throws IOException {
@@ -116,8 +146,8 @@ public class CreateSurfaceFormList {
 		return uriToLabels;
 	}
 	
-	private void createMappings() {
-		
+//	private void createMappings() {
+//		
 //		Directory directory = FSDirectory.open(new File("/Users/gerb/Downloads/06-09-2011/tmp/Index.wikipediaTraining.Merged.SnowballAnalyzer.DefaultSimilarity.fresh"));
 //		// create index searcher in read only mode
 //		IndexSearcher indexSearcher = new IndexSearcher(directory, true);
@@ -148,6 +178,6 @@ public class CreateSurfaceFormList {
 //			for (String sss : e.getValue()) writer1.write(e.getKey() + "\t" + sss + Constants.NEW_LINE_SEPARATOR);
 //		}
 //		writer1.close();
-
-	}
+//
+//	}
 }

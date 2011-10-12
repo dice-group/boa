@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.lucene.queryParser.ParseException;
 
@@ -44,6 +47,14 @@ public class TypicityMeasure implements ConfidenceMeasure {
 	private Reader stringReader;
 	private DocumentPreprocessor preprocessor;
 	private StringBuilder stringBuilder;
+	private static final Map<String,String> BRACKETS = new HashMap<String,String>();
+	static {
+		
+		BRACKETS.put("-LRB-", "(");
+		BRACKETS.put("-RRB-", ")");
+		BRACKETS.put("-LQB-", "{");
+		BRACKETS.put("-RQB-", "}");
+	}
 	
 	public TypicityMeasure() {}
 	
@@ -102,7 +113,7 @@ public class TypicityMeasure implements ConfidenceMeasure {
 				
 				for (String foundString : sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0,this.maxNumberOfEvaluationSentences - 1) : sentences) {
 					
-					nerTagged = this.ner.recognizeEntitiesInString(foundString);
+					nerTagged = this.ner.recognizeEntitiesInString(this.replaceBrackets(foundString));
 					segmentedFoundString = this.segmentString(foundString);
 					segmentedPattern = this.segmentString(patternWithOutVariables);
 					
@@ -156,7 +167,6 @@ public class TypicityMeasure implements ConfidenceMeasure {
 				typicity = (domainCorrectness + rangeCorrectness) / (2D);//* (double) sentences.size());
 				typicity = Double.isNaN(typicity) ? 0d : typicity * (double) (Math.log((int)(sentences.size() + 1)) / Math.log(2));
 				
-				pattern.setTypicityForIteration(IterationCommand.CURRENT_ITERATION_NUMBER, typicity);
 				pattern.setTypicity(typicity);
 			}
 			catch (IOException e) {
@@ -179,6 +189,18 @@ public class TypicityMeasure implements ConfidenceMeasure {
 		this.logger.info("Typicity measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}
 	
+	private String replaceBrackets(String foundString) {
+
+		for (Map.Entry<String, String> bracket : TypicityMeasure.BRACKETS.entrySet()) {
+			
+			if ( foundString.contains(bracket.getKey())) {
+	
+				foundString = foundString.replace(bracket.getKey(), bracket.getValue());
+			}
+		}
+		return foundString;
+	}
+
 	public static void main(String[] args) {
 
 		String s = "Microsoft is a company located in Redmond.";

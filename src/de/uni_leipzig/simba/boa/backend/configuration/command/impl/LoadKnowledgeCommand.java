@@ -25,7 +25,8 @@ import de.uni_leipzig.simba.boa.backend.wordnet.query.WordnetQuery;
 
 public class LoadKnowledgeCommand implements Command {
 
-	private List<Triple> tripleList = new ArrayList<Triple>();
+	private Map<Integer,Triple> tripleHashToTriple = new HashMap<Integer,Triple>();
+	private List<Triple> triples = new ArrayList<Triple>();
 //	static {
 //		
 //		allowedProperties = Arrays.asList("http://dbpedia.org/ontology/crosses","http://dbpedia.org/ontology/locatedInArea","http://dbpedia.org/ontology/manager",
@@ -71,59 +72,57 @@ public class LoadKnowledgeCommand implements Command {
 		Pattern pattern = Pattern.compile("\\(.+?\\)");
 	    Matcher matcher;
 
-		// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN ||| 9_isSubject/isObject
+		// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN
 		for ( String[] line : labels ) {
 			
+			// all subject information
 			String subjectUri		= "";
 			String subjectLabel		= "";
 			String subjectLabels	= "";
 			String subjectContext	= "";
 			String subjectType		= "";
+			
+			// all object information
 			String objectUri		= "";
 			String objectLabel		= "";
 			String objectLabels		= "";
 			String objectContext	= "";
 			String objectType		= "";
+			
+			// all predicate information
 			String predicate		= line[3];
 			String range			= line[7];
 			String domain			= line[8];
 			
-			boolean isSubject		= line[9].equals("isSubject") ? true : false;
+			// ################ SUBJECT ############################
 			
-			if ( isSubject ) { 
-				
-				subjectUri 		= line[0];
-			    matcher = pattern.matcher(line[1]);
-			    while (matcher.find()) { subjectContext = matcher.group(); }
-				subjectLabel	= line[1].replaceAll("\\(.+?\\)", "").trim();
-				
-				objectUri		= line[4];
-			    matcher			= pattern.matcher(line[5]);
-			    while (matcher.find()) { objectContext = matcher.group(); }
-				objectLabel		= line[5].replaceAll("\\(.+?\\)", "").trim();
-				
-				subjectLabels	= line[2];
-				objectLabels	= line[6];
-				subjectType		= domain;
-				objectType		= range;
-			}
-			else {
-				
-				subjectUri 		= line[4];
-				subjectLabel	= line[5].replaceAll("\\(.+?\\)", "").trim();
-				matcher			= pattern.matcher(line[5]);
-			    while (matcher.find()) { subjectContext = matcher.group(); }
-				
-				objectUri		= line[0];
-				objectLabel		= line[1].replaceAll("\\(.+?\\)", "").trim();
-				matcher			= pattern.matcher(line[1]);
-			    while (matcher.find()) { objectContext = matcher.group(); }
-
-			    subjectType		= range;
-			    objectType		= domain;
-			    subjectLabels	= line[6];
-			    objectLabels	= line[2];
-			}
+			// uri of the subject
+			subjectUri 		= line[0];
+			// context like person: heist_(artist)
+		    matcher = pattern.matcher(line[1]);
+		    while (matcher.find()) { subjectContext = matcher.group(); }
+		    // subject label without text in brackets
+			subjectLabel	= line[1].replaceAll("\\(.+?\\)", "").trim();
+			// labels from wikipedia surface forms
+			subjectLabels	= line[2];
+			// rdf:type of the subject
+			subjectType		= domain;
+			
+			// ################ OBJECT ############################
+			
+			// uri of the object
+			objectUri		= line[4];
+			// context like person: heist_(artist)
+		    matcher			= pattern.matcher(line[5]);
+		    while (matcher.find()) { objectContext = matcher.group(); }
+			// object label without text in brackets
+		    objectLabel		= line[5].replaceAll("\\(.+?\\)", "").trim();
+			// labels from wikipedia surface forms
+			objectLabels	= line[6];
+			// rdf:type of the object
+			objectType		= range;
+			
+			// ################ resources: subject, property, object ############################
 			
 			// create the resource: subject if not found
 			Resource sub = resourceMap.get(subjectUri);
@@ -132,7 +131,7 @@ public class LoadKnowledgeCommand implements Command {
 				sub = new Resource();
 				sub.setUri(subjectUri);
 				sub.setLabel(subjectLabel);
-				sub.setSurfaceForms(subjectLabels);
+				sub.setSurfaceForms(subjectLabels.toLowerCase());
 				sub.setType(subjectType);
 				if ( subjectContext.length() > 0 ) {
 					sub.setContext(subjectContext.substring(1, subjectContext.length()-1));	
@@ -160,7 +159,7 @@ public class LoadKnowledgeCommand implements Command {
 				obj = new Resource();
 				obj.setUri(objectUri);
 				obj.setLabel(objectLabel);
-				obj.setSurfaceForms(objectLabels);
+				obj.setSurfaceForms(objectLabels.toLowerCase());
 				obj.setType(objectType);
 				if ( objectContext.length() > 0 ) {
 					obj.setContext(objectContext.substring(1, objectContext.length()-1));
@@ -170,22 +169,25 @@ public class LoadKnowledgeCommand implements Command {
 			
 			// create and save the triple
 			Triple triple = new Triple();
-			triple.setLearnedInIteration(0);
 			triple.setCorrect(true);
 			triple.setSubject(sub);
 			triple.setProperty(p);
 			triple.setObject(obj);
 			
-			tripleList.add(triple);
+			tripleHashToTriple.put(triple.hashCode(),triple);
 		}
-		System.out.println(String.format("Starting to batch save %s triples to database!", tripleList.size()));
-		tripleDao.batchSaveOrUpdate(tripleList);
+		System.out.println(String.format("Starting to batch save %s triples to database!", tripleHashToTriple.size()));
+		
+		System.exit(0);
+		
+		this.triples = new ArrayList<Triple>(tripleHashToTriple.values());
+		tripleDao.batchSaveOrUpdate(this.triples);
 		
 		System.out.println("Loading background knowledge took " + (new Date().getTime() - start) + "ms.");
 	}
 	
 	public List<Triple> getTriples(){
-		
-		return this.tripleList;
+
+		return this.triples;
 	}
 }

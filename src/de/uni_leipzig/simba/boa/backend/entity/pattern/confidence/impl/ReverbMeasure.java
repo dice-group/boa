@@ -87,7 +87,8 @@ public class ReverbMeasure implements ConfidenceMeasure {
 							if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
 								
 								// we only want to add scores of relations, which are substring of our relations
-								if ( StringUtil.isSubstringOf(extr.getRelation().toString(), pattern.getNaturalLanguageRepresentation()) ) {
+								// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
+								if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pattern.getNaturalLanguageRepresentation()) ) {
 									
 									scores.add(score);
 									relations.add(extr.getRelation().toString());

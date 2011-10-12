@@ -62,12 +62,12 @@ public class WriteRelationToFileCommand implements Command {
 //		}}).start();
 		
 //		new Thread(new Runnable() { public void run() {
-			
-			String queryPlaceSubject		= createQuerySubject("http://dbpedia.org/ontology/Place");
-			getKnowledge(queryPlaceSubject, 541000,"/home/gerber/en_place_s.txt");
-			
-			System.out.println("place subject done");
-			
+//			
+//			String queryPlaceSubject		= createQuerySubject("http://dbpedia.org/ontology/Place");
+//			getKnowledge(queryPlaceSubject, 541000,"/home/gerber/en_place_s.txt");
+//			
+//			System.out.println("place subject done");
+//			
 //		}}).start();
 		
 //		new Thread(new Runnable() { public void run() {

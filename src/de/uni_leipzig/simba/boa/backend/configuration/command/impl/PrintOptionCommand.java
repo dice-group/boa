@@ -27,8 +27,8 @@ public class PrintOptionCommand implements Command {
 			"||     1. Print options                               ||\n" + 
 			"||     2. Start crawling                              ||\n" + 
 			"||     3. Create Lucene index                         ||\n" + 
-			"||     4. Evaluate patterns                           ||\n" + 
-			"||     5. Query keyphrase                             ||\n" +
+			"||     4. Measure patterns                            ||\n" + 
+			"||     5. Score patterns                              ||\n" +
 			"||     6. Search for patterns                         ||\n" +
 			"||     7. Get relations from dbpedia                  ||\n" +
 			"||     8. Write urls for crawling to file             ||\n" +
@@ -36,7 +36,8 @@ public class PrintOptionCommand implements Command {
 			"||    10. Start Scripts                               ||\n" + 
 			"||    11. Start Limes and BorderFlow                  ||\n" + 
 			"||    12. Query text with patterns                    ||\n" + 
-			"||    13. Search - Evaluation - Generate              ||\n" + 
+			"||    13. Query keyphrase                             ||\n" +
+			"||    14. Search - Evaluation - Generate              ||\n" +
 			"========================================================\n";
 		
 		this.out.println(options);

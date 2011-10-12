@@ -14,6 +14,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationComm
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.LimesCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternConfidenceMeasureCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternFilterCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternScoreCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternSearchCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PrintOptionCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.StartQueryCommand;
@@ -87,8 +88,8 @@ public class NLPedia {
 						break;
 						
 					case 5: // query a single phrase
-						Command startQueryCommand = new StartQueryCommand();
-						startQueryCommand.execute();
+						Command patternScoreCommand = new PatternScoreCommand(null);
+						patternScoreCommand.execute();
 						break;
 						
 					case 6: // start looking for patterns in index and write them to the db
@@ -126,7 +127,12 @@ public class NLPedia {
 						createKnowledgeCommand.execute();
 						break;
 						
-					case 13:
+					case 13: 
+						Command startQueryCommand = new StartQueryCommand();
+						startQueryCommand.execute();
+						break;
+						
+					case 14:
 						
 						Command iterationCommand = new IterationCommand();
 						iterationCommand.execute();

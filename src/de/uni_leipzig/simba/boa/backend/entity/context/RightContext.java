@@ -144,10 +144,13 @@ public final class RightContext extends Context {
 	 */
 	private void createRightContext(String nerTaggedString, String sentenceWithoutNerTags) throws StringIndexOutOfBoundsException {
 
-		String leftPatternString = sentenceWithoutNerTags.substring(0, sentenceWithoutNerTags.toLowerCase().indexOf(this.pattern.toLowerCase()) - 1).trim();
+		// finds the string which comes before the pattern
+		String rightPatternString = sentenceWithoutNerTags.substring(0, sentenceWithoutNerTags.toLowerCase().indexOf(this.pattern.toLowerCase()) - 1).trim();
 		String[] words = nerTaggedString.split(" ");
 		
-        for(int i = leftPatternString.split(" ").length + this.pattern.split(" ").length; i < words.length; i++){
+		// start from the leftContext.length + pattern.length - 1
+		// because we want to add the last word on the right side next to the pattern to the right context
+        for(int i = rightPatternString.split(" ").length + this.pattern.split(" ").length; i < words.length; i++){
         	this.words.add(words[i]);
         }
 	}

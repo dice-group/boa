@@ -65,5 +65,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/utk.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/vaadin-6.6.6.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/encog-core-3.0.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/scms-nlptoolbox"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

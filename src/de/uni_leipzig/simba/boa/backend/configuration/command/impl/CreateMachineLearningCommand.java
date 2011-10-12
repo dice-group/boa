@@ -41,18 +41,18 @@ public class CreateMachineLearningCommand implements Command {
 		// collect all the patterns
 		for ( PatternMapping mapping : pmDao.findAllPatternMappings() ) {
 			
-			this.calculateMaximas(mapping);
+			// get x patterns for each mapping and add it with the mapping URI to the map 
+			List<Pattern> patterns = new ArrayList<Pattern>(mapping.getPatterns()); 
+			Collections.shuffle(patterns);//PatternUtil.getTopNPattern(mapping, PatternSelectionStrategy.ALL, 5, null);
 			
-			// get the top 5 patterns for each mapping and add it with the mapping URI to the map 
-			List<Pattern> patterns = PatternUtil.getTopNPattern(mapping, PatternSelectionStrategy.ALL, 5, null); 
-			for ( Pattern pattern : patterns ) pairs.add(new Pair(mapping, pattern));
-					
+			for ( int i = 0; i < 5 && i < patterns.size() ; i++) {
+				
+				pairs.add(new Pair(mapping, patterns.get(i)));
+			}
 			System.out.println(String.format("Added %s patterns for mapping %s", patterns.size(), mapping.getProperty().getUri()));
 		}
 		System.out.println(String.format("Found %s patterns at all", pairs.size()));
 		Collections.shuffle(pairs);
-		System.out.println(String.format("reverbMax: %s\nsupportMax: %s\nspecificityMax: %s\ntypicityMax: %s\noccMax: %s\nsimMax: %s\ntfIdfMax: %s\npairMax: %s\nmaxMax: %s\n ", 
-				reverbMax, supportMax, specificityMax, typicityMax, occMax, simMax, tfIdfMax, maxMax, pairMax));
 		
 		try {
 			
@@ -61,8 +61,10 @@ public class CreateMachineLearningCommand implements Command {
 			int i = 0;
 			for ( Pair pair : pairs ) {
 				
-				if ( i++ == 100 ) break;
+				if ( i++ == 200 ) break;
 				
+				// create the maximum only for the current mapping
+				this.calculateMaximas(pair.mapping);
 				writer.write(this.createLine(pair.mapping, pair.pattern));
 			}
 			writer.close();
@@ -94,6 +96,16 @@ public class CreateMachineLearningCommand implements Command {
 
 	private void calculateMaximas(PatternMapping mapping) {
 
+		reverbMax		= 0D;
+		supportMax 		= 0D;
+		specificityMax 	= 0D;
+		typicityMax 	= 0D;
+		occMax 			= 0D;
+		simMax 			= 0D;
+		tfIdfMax 		= 0D;
+		pairMax 		= 0D;
+		maxMax 			= 0D;
+		
 		// reverbMax, supportMax, specificityMax, typicityMax, occMax, simMax, tfIdfMax, maxMax, pairMax;
 		for ( Pattern p: mapping.getPatterns()) {
 			
