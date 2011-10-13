@@ -48,7 +48,6 @@ public class PatternConfidenceMeasureCommand implements Command {
 		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads));
 		
 		List<Thread> threadList = new ArrayList<Thread>();
-		List<PatternMapping> results = new ArrayList<PatternMapping>();
 		
 		// start all threads
 		for (int i = 0 ; i < numberOfConfidenceMeasureThreads ; i++ ) {
@@ -77,16 +76,17 @@ public class PatternConfidenceMeasureCommand implements Command {
 			}
 		}
 		timer.cancel();
-		
+	
+		System.out.println("All confidence measurement threads are finished.\n Starting to update pattern mappings..");
 		for ( Thread t: threadList ) {
 			
-			results.addAll(((PatternConfidenceMeasureThread)t).getConfidenceMeasuredPatternMappings());
+			for ( PatternMapping mapping : ((PatternConfidenceMeasureThread)t).getConfidenceMeasuredPatternMappings() ) {
+				
+				this.patternMappingDao.updatePatternMapping(mapping);
+			}
+			// set this so that the next command does not need to query them from the database again
+			this.patternMappingList.addAll(((PatternConfidenceMeasureThread)t).getConfidenceMeasuredPatternMappings());
 		}
-
-		System.out.println("All confidence measurement threads are finished.");
-		
-		// set this so that the next command does not need to query them from the database again
-		this.patternMappingList = results;
 	}
 	
 	public static void main(String[] args) {
