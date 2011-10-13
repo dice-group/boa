@@ -10,7 +10,6 @@ public class LeftContext extends Context {
 		this.words = new ArrayList<String>();
 		this.setPattern(patternWithOutVariables);
 		this.createLeftContext(nerTaggedString, sentence);
-		this.buffer = patternWithOutVariables.trim().split(" ")[0];
 	}
 
 	@Override

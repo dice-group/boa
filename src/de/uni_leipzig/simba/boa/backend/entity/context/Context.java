@@ -15,8 +15,6 @@ public abstract class Context {
 	protected List<String> words;
 	protected String pattern;
 	
-	protected String buffer;
-	
 	protected NamedEntityRecognizer ner;
 	
 	/**
@@ -121,6 +119,15 @@ public abstract class Context {
 		
 		System.out.println(query);
 	}
+	
+	public static final Map<String,String> nerToolClassMappings = new HashMap<String,String>();
+	static {
+		
+		nerToolClassMappings.put("ORG","ORGANIZATION");
+		nerToolClassMappings.put("LOC","LOCATION");
+		nerToolClassMappings.put("PER","PERSON");
+	}
+	
 	
 	public static final Map<String,String> namedEntityRecognitionMappings = new HashMap<String,String>();
 	static {

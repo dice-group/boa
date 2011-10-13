@@ -1,5 +1,8 @@
 package de.uni_leipzig.simba.boa.backend.test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import junit.framework.JUnit4TestAdapter;
 
 import nlpbox.nlpbox.NLPBox;
@@ -10,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.impl.help.SentenceIterator;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 public class FoxTest {
@@ -39,15 +43,23 @@ public class FoxTest {
 	@Test
 	public void testFox() {
 
-		String test = "During the reign of Maria Theresa, Neustift once suffered a particularly bad wine harvest.";
-		System.out.println(test);
-		
+		List<String> testSentences = Arrays.asList(
+				"The Nobel Prize-winning chemist and physicist Francis William Aston was born in Harborne in 1877.",
+				"Dos Passos was born in Chicago, Illinois, the illegitimate son of John Randolph Dos Passos (1844 - 1917).",
+				"Walter Guinness was born in Dublin, Ireland, the third son of the 1st Earl of Iveagh ."
+				);
+
 		NLPBox fox =  new NLPBox();
 		
-		System.out.println("test");
-		for ( Entity entity : fox.getNER(test) ){
+		for (String sentence :  testSentences) {
 			
-			System.out.println(entity);
+			for ( Entity entity : fox.getNER(sentence) ) {
+				
+				String entityLabel	= entity.text;
+				String entityType	= entity.type;
+				
+				
+			}
 		}
 	}
 }
