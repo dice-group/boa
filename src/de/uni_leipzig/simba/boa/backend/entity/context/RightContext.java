@@ -12,7 +12,6 @@ public final class RightContext extends Context {
 		this.createRightContext(nerTaggedString, sentence);
 		
 		String[] patternChunks = patternWithOutVariables.split(" "); 
-		this.buffer = patternChunks[patternChunks.length - 1];
 	}
 	
 	@Override

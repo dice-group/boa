@@ -58,7 +58,7 @@ public class Entity {
 	 * @return the id
 	 */
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public int getId() {
 	
 		return id;
