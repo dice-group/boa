@@ -52,7 +52,7 @@ public class PatternConfidenceMeasureCommand implements Command {
 		int numberOfConfidenceMeasureThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfConfidenceMeasureThreads")).intValue();
 		
 		// split the mappings into several lists
-		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads));
+		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (int) Math.ceil((patternMappingList.size() / numberOfConfidenceMeasureThreads)));
 		
 		int count= 0, j = 0;
 		for (List<PatternMapping> list : patternMappingSubLists) {
