@@ -46,13 +46,20 @@ public class PatternConfidenceMeasureCommand implements Command {
 		PatternConfidenceMeasureCommand.NUMBER_OF_PATTERN_MAPPINGS = (double) this.patternMappingList.size();
 	}
 	
+	public static void main(String[] args) {
+
+		System.out.println( 268 / 20);
+		System.out.println( Math.ceil(268 / 20));
+		System.out.println( (268 / 20) + 1);
+	}
+	
 	@Override
 	public void execute() {
 		
 		int numberOfConfidenceMeasureThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfConfidenceMeasureThreads")).intValue();
 		
 		// split the mappings into several lists
-		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (int) Math.ceil((patternMappingList.size() / numberOfConfidenceMeasureThreads)));
+		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads) + 1);
 		
 		int count= 0, j = 0;
 		for (List<PatternMapping> list : patternMappingSubLists) {
@@ -110,10 +117,6 @@ public class PatternConfidenceMeasureCommand implements Command {
 			// set this so that the next command does not need to query them from the database again
 			this.patternMappingList.addAll(((PatternConfidenceMeasureThread)t).getConfidenceMeasuredPatternMappings());
 		}
-	}
-	
-	public static void main(String[] args) {
-
 	}
 	
 	/**
