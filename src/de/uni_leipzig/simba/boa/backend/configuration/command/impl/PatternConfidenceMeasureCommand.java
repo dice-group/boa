@@ -35,6 +35,13 @@ public class PatternConfidenceMeasureCommand implements Command {
 		else {
 			
 			this.patternMappingList = this.patternMappingDao.findAllPatternMappings();
+			
+			for (PatternMapping patternMapping : this.patternMappingList ) {
+				if ( patternMapping.getProperty().getUri().equals("http://dbpedia.org/ontology/almaMater") ) {
+					
+					System.out.println("The fucking mapping has been loaded by the dao....");
+				}	
+			}
 		}
 		PatternConfidenceMeasureCommand.NUMBER_OF_PATTERN_MAPPINGS = (double) this.patternMappingList.size();
 	}
@@ -47,10 +54,18 @@ public class PatternConfidenceMeasureCommand implements Command {
 		// split the mappings into several lists
 		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads));
 		
-		int count= 0;
+		int count= 0, j = 0;
 		for (List<PatternMapping> list : patternMappingSubLists) {
 			
 			count += list.size();
+			
+			for (PatternMapping patternMapping : list ) {
+				if ( patternMapping.getProperty().getUri().equals("http://dbpedia.org/ontology/almaMater") ) {
+					
+					System.out.println("The list number " + j + " has the fuckking mapping");
+				}	
+			}
+			j++;
 		}
 		System.out.println(String.format("Found %s pattern mappings in database, %s mappings got distributed to confidence measure threads", patternMappingList.size(), count));
 		
