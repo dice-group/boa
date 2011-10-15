@@ -47,7 +47,12 @@ public class PatternConfidenceMeasureThread extends Thread {
 			// and check each pattern mapping
 			for (PatternMapping patternMapping : patternMappings ) {
 				
-				this.logger.debug("Calculation of confidence for mapping: " + patternMapping.getProperty().getUri());
+				if ( patternMapping.getProperty().getUri().equals("http://dbpedia.org/ontology/almaMater") ) {
+					
+					System.out.println("THis is this fucking mapping....");
+				}
+				
+				this.logger.info("Calculation of confidence for mapping: " + patternMapping.getProperty().getUri());
 				confidenceMeasure.measureConfidence(patternMapping);
 				this.i += patternMapping.getPatterns().size(); 
 			}

@@ -61,7 +61,7 @@ public class PatternConfidenceMeasureCommand implements Command {
 		for (int i = 0 ; i < numberOfConfidenceMeasureThreads ; i++ ) {
 			
 			Thread t = new PatternConfidenceMeasureThread(patternMappingSubLists.get(i));
-			t.setName("PatternConfidenceMeasureThread-" + (i + 1));
+			t.setName("PatternConfidenceMeasureThread-" + (i + 1) + "-" + patternMappingSubLists.get(i).size());
 			threadList.add(i, t);
 			t.start();
 			System.out.println(t.getName() + " started!");
