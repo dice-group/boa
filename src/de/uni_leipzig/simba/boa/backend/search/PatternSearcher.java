@@ -27,6 +27,7 @@ import org.apache.lucene.search.Searcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
+import org.apache.lucene.search.TotalHitCountCollector;
 
 import com.hp.hpl.jena.graph.query.regexptrees.Paren;
 
@@ -55,6 +56,9 @@ public class PatternSearcher {
 	private QueryParser parser;
 	private List<SearchResult> results;
 	private ScoreDoc[] hits;
+	
+	private static String indexDir = "";
+	private static PatternSearcher INSTANCE;
 
 	public PatternSearcher(String indexDir) throws IOException, ParseException {
 
@@ -69,6 +73,27 @@ public class PatternSearcher {
 		this.hits = null;
 
 		this.posTagger = new PosTagger();
+	}
+	
+	public static PatternSearcher getInstance(String indexDir) {
+		
+		if ( PatternSearcher.INSTANCE == null || !PatternSearcher.indexDir.equals(indexDir) ) {
+			
+			try {
+				
+				PatternSearcher.INSTANCE = new PatternSearcher(indexDir);
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+			
+		return PatternSearcher.INSTANCE;
 	}
 
 	/**
@@ -121,14 +146,31 @@ public class PatternSearcher {
 	 */
 	public void queryPattern(Triple triple) throws ParseException, IOException {
 
-		Set<String> subjectLabels = triple.getSubject().retrieveLabels();
-		Set<String> objectLabels = triple.getObject().retrieveLabels();
+		boolean inverse = false;
+		
+		Set<String> firstLabels = triple.getSubject().retrieveLabels();
+		Set<String> secondLabels = triple.getObject().retrieveLabels();
 
+		// switch the labels in case we have more subject labels than object labels
+		if ( firstLabels.size() > secondLabels.size() ) {
+			
+			inverse = true;
+			
+			firstLabels = triple.getObject().retrieveLabels();
+			secondLabels = triple.getSubject().retrieveLabels();
+		}
+		
 		// go through all surface form combinations
-		for (String subjectLabel : subjectLabels) {
-			for (String objectLabel : objectLabels) {
+		for (String firstLabel : firstLabels) {
 
-				Query query = parser.parse("+sentence-lc:\"" + QueryParser.escape(subjectLabel) + "\" && +sentence-lc:\"" + QueryParser.escape(objectLabel) + "\"");
+			// check if we find at least sentences with the first token, if not we can skip this search word combination
+			TotalHitCountCollector collector = new TotalHitCountCollector();
+			indexSearcher.search(parser.parse("+sentence-lc:\"" + QueryParser.escape(firstLabel) + "\""), collector);
+			if (collector.getTotalHits() == 0 ) continue; 
+			
+			for (String secondLabel : secondLabels) {
+
+				Query query = parser.parse("+sentence-lc:\"" + QueryParser.escape(firstLabel) + "\" && +sentence-lc:\"" + QueryParser.escape(secondLabel) + "\"");
 				hits = indexSearcher.search(query, null, MAX_NUMBER_OF_DOCUMENTS).scoreDocs;
 				
 				for (int i = 0; i < hits.length; i++) {
@@ -136,8 +178,17 @@ public class PatternSearcher {
 					String sentenceLowerCase = indexSearcher.doc(hits[i].doc).get("sentence-lc");
 
 					Map<Integer, String> currentMatches = new HashMap<Integer, String>();
-
-					String[] match1 = StringUtils.substringsBetween(sentenceLowerCase, subjectLabel, objectLabel);
+					
+					// the switching is neccessary because it could be possible that we change the label sets, see above 					
+					String[] match1; 
+					if ( !inverse ) {
+						match1 = StringUtils.substringsBetween(sentenceLowerCase, firstLabel, secondLabel);
+					}
+					else {
+						
+						match1 = StringUtils.substringsBetween(sentenceLowerCase, secondLabel, firstLabel);
+					}
+					
 					if (match1 != null) {
 
 						for (int j = 0; j < match1.length; j++) {
@@ -147,7 +198,15 @@ public class PatternSearcher {
 						}
 					}
 
-					String[] match2 = StringUtils.substringsBetween(sentenceLowerCase, objectLabel, subjectLabel);
+					// the switching is neccessary because it could be possible that we change the label sets, see above 
+					String[] match2; 
+					if ( !inverse ) {
+						match2 = StringUtils.substringsBetween(sentenceLowerCase, secondLabel, firstLabel);
+					}
+					else {
+						
+						match2 = StringUtils.substringsBetween(sentenceLowerCase, firstLabel, secondLabel);
+					}
 					if (match2 != null) {
 
 						for (int j = 0; j < match2.length; j++) {
