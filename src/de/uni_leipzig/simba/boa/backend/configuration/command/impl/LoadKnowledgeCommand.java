@@ -1,11 +1,16 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,12 +53,12 @@ public class LoadKnowledgeCommand implements Command {
 //				"http://dbpedia.org/ontology/birthPlace","http://dbpedia.org/ontology/trainer");
 //	}
 	
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
 
 //		NLPediaSetup s = new NLPediaSetup(false);
 //		LoadKnowledgeCommand c = new LoadKnowledgeCommand();
 //		c.execute();
-	}
+//	}
 	
 	@Override
 	public void execute() {
@@ -91,6 +96,7 @@ public class LoadKnowledgeCommand implements Command {
 			
 			// all predicate information
 			String predicate		= line[3];
+			String predicateType	= line[4].startsWith("http://") ? "owl:ObjectProperty" : "owl:DatatypeProperty";
 			String range			= line[7];
 			String domain			= line[8];
 			
@@ -147,6 +153,7 @@ public class LoadKnowledgeCommand implements Command {
 				p.setUri(predicate);
 				p.setRdfsDomain(domain);
 				p.setRdfsRange(range);
+				p.setType(predicateType);
 				p.setLabel(StringUtils.join(predicate.replace("http://dbpedia.org/ontology/", "").split("(?=\\p{Upper})"), " ").toLowerCase());
 				p.setSynsets(StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(p.getLabel()), ","));
 				resourceMap.put(predicate, p);
@@ -157,12 +164,26 @@ public class LoadKnowledgeCommand implements Command {
 			if ( obj == null ) {
 				
 				obj = new Resource();
-				obj.setUri(objectUri);
-				obj.setLabel(objectLabel);
-				obj.setSurfaceForms(objectLabels.toLowerCase());
 				obj.setType(objectType);
-				if ( objectContext.length() > 0 ) {
-					obj.setContext(objectContext.substring(1, objectContext.length()-1));
+				
+				// object properties have there own labels
+				if ( predicateType.equals("owl:ObjectProperty") ) {
+					
+					obj.setUri(objectUri);
+					obj.setLabel(objectLabel);
+					obj.setSurfaceForms(objectLabels.toLowerCase());
+					// only resources have context information
+					if ( objectContext.length() > 0 ) {
+						obj.setContext(objectContext.substring(1, objectContext.length()-1));
+					}
+				}
+				// for datatype properties we need to create some surface forms
+				else {
+					
+					// they dont have uris so create random strings
+					obj.setUri(UUID.randomUUID().toString());
+					obj.setLabel(objectLabel);
+					obj.setSurfaceForms(this.createDatatypePropertyLabels(predicateType, objectLabel));
 				}
 				resourceMap.put(objectUri, obj);
 			}
@@ -184,8 +205,74 @@ public class LoadKnowledgeCommand implements Command {
 		System.out.println("Loading background knowledge took " + (new Date().getTime() - start) + "ms.");
 	}
 	
+	private String createDatatypePropertyLabels(String predicateType, String objectLabel) {
+
+		StringBuffer labels = new StringBuffer();
+		
+		if ( predicateType.equals("http://www.w3.org/2001/XMLSchema#date") ) {
+			
+			try {
+				
+				String d = getDateString("2011-07-11", "yyyy-MM-dd", "d");
+				String MM = getDateString("2011-07-11", "yyyy-MM-dd", "MM");
+				String MMM = getDateString("2011-07-11", "yyyy-MM-dd", "MMM");
+				String MMMM = getDateString("2011-07-11", "yyyy-MM-dd", "MMMM");
+				String yy = getDateString("2011-07-11", "yyyy-MM-dd", "yy");
+				String yyyy = getDateString("2011-07-11", "yyyy-MM-dd", "yyyy");
+				
+				labels.append(d + getOrdinalFor(Integer.valueOf(d)) + " of " + MMMM + " " + yyyy).append("_&_").
+				append(d + " " + MMMM + " " + yyyy).append("_&_").
+				append(d + "." + MM + "." + yyyy).append("_&_").
+				append(d + "." + MM + "." + yy).append("_&_").
+				append(d + " " + MMM + " " + yyyy).append("_&_").
+				append(d + " " + MMMM  + " '" + yy).append("_&_").
+				append(d + " " + MMM  + " '" + yy).append("_&_").
+				append(MMMM + " " + yyyy).append("_&_").
+				append(MMM + " " + yyyy).append("_&_").
+				append(MMMM).append("_&_").
+				append(yyyy);
+			}
+			catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return labels.toString();
+	}
+
 	public List<Triple> getTriples(){
 
 		return this.triples;
 	}
+	
+	public static void main(String[] args) throws ParseException {
+
+	}
+	
+	private static String getDateString(String dateString, String fromPattern, String toPattern) throws ParseException {
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(fromPattern);
+		Date date1 = simpleDateFormat.parse(dateString);
+		simpleDateFormat.applyPattern(toPattern);
+		return simpleDateFormat.format(date1);
+	}
+	
+	public static String getOrdinalFor(int value) {
+		 int hundredRemainder = value % 100;
+		 int tenRemainder = value % 10;
+		 if(hundredRemainder - tenRemainder == 10) {
+		  return "th";
+		 }
+		 
+		 switch (tenRemainder) {
+		  case 1:
+		   return "st";
+		  case 2:
+		   return "nd";
+		  case 3:
+		   return "rd";
+		  default:
+		   return "th";
+		 }
+		}
 }

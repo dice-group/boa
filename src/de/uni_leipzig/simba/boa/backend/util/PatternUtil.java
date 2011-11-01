@@ -1,12 +1,19 @@
 package de.uni_leipzig.simba.boa.backend.util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.apache.lucene.queryParser.ParseException;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 
 
 public class PatternUtil {
@@ -35,7 +42,7 @@ public class PatternUtil {
 		 */
 		SAFE
 	}
-
+	
 	/**
 	 * 
 	 * @param mapping
@@ -92,5 +99,34 @@ public class PatternUtil {
 		// return the list from 0 to topN or the whole list if the list is smaller-equal than topN
 		// since subList's "to" is exclusive this means from 0 to 3 -> top3 pattern 
 		return patternList.size() > topN ? patternList.subList(0, topN) : patternList;
+	}
+	
+	/**
+	 * 
+	 * @param indexDir
+	 * @param pattern
+	 * @param maxHits
+	 * @return
+	 */
+	public static Set<String> exactQueryIndex(String indexDir, Pattern pattern, int maxHits){
+
+		try {
+			
+			return PatternSearcher.getInstance(indexDir).getExactMatchSentences(pattern.getNaturalLanguageRepresentationWithoutVariables(), maxHits);
+		}
+		catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new HashSet<String>();
+	}
+	
+	public static List<String> getLuceneDocuments(String indexDir, List<Integer> luceneDocIds) {
+		
+		return PatternSearcher.getInstance(indexDir).getSentences(luceneDocIds);
 	}
 }

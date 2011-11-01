@@ -82,4 +82,14 @@ public class PatternSearchThread extends Thread {
 		
 		return this.patternSearcher.getResults();
 	}
+
+	public int getNumberOfDoneSearches() {
+
+		return this.i;
+	}
+	
+	public int getNumberOfSearches() {
+		
+		return this.triples.size();
+	}
 }

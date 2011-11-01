@@ -33,8 +33,8 @@ public class PrintProgressTask extends TimerTask {
 				overallProgress += progress;
 				
 				if ( progress != 100 ) {
-					
-					System.out.println(t.getName() + ": " + progress + "%.");
+				
+					System.out.println(t.getName() + ": " + progress + "%. " + ((PatternSearchThread)t).getNumberOfSearches() +"/"+ ((PatternSearchThread)t).getNumberOfSearches());
 					this.logger.debug(t.getName() + ": " + progress + "%.");
 				}
 			}

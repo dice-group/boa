@@ -203,6 +203,9 @@ public class PatternMappingDao extends AbstractDao {
     	
     	HibernateFactory.closeSession(session);
     	
+//    	if ( resourceList.size() > 0 ) return resourceList.get(0);
+//    	else return null;
+    	
         return this.findPatternMapping(resourceList.get(0).getId());
 	}
 	
