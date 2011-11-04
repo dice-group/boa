@@ -48,6 +48,7 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 	 * @return the label
 	 */
 	@Basic
+	@Column(length=2048)
 	public String getLabel() {
 
 		return label;
