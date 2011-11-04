@@ -50,8 +50,8 @@ public class WriteRelationToFileCommand implements Command {
 		
 		try {
 			
-//			queryObjectProperties();
-			queryDatatypeProperties();
+//			queryDatatypeProperties();
+			queryObjectProperties();
 		}
 		catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -69,74 +69,40 @@ public class WriteRelationToFileCommand implements Command {
 
 	private void queryDatatypeProperties() throws UnsupportedEncodingException, FileNotFoundException, IOException {
 
-		List<String> datatypePropertyUris = FileUtil.readFileInList(NLPediaSettings.getInstance().getSetting("crawlDirectory") + "properties_to_query.txt", "UTF-8");
+		List<String> datatypePropertyUris = FileUtil.readFileInList(NLPediaSettings.getInstance().getSetting("crawlDirectory") + "datatype_properties_to_query.txt", "UTF-8");
 		for ( String datatypePropertyUri : datatypePropertyUris ) {
 			
 			String personQuery = createDatatypePropertyQueryObject("http://dbpedia.org/ontology/Person", datatypePropertyUri);
 			String organisationQuery = createDatatypePropertyQueryObject("http://dbpedia.org/ontology/Organisation", datatypePropertyUri);
 			String placeQuery = createDatatypePropertyQueryObject("http://dbpedia.org/ontology/Place", datatypePropertyUri);
 			
-			getKnowledge(personQuery, 0,		"/Users/gerb/"+datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length())+".txt");
-			getKnowledge(organisationQuery, 0,	"/Users/gerb/"+datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length())+".txt");
-			getKnowledge(placeQuery, 0,			"/Users/gerb/"+datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length())+".txt");
+			getKnowledge(personQuery, 0,		"/Users/gerb/TTTTT/datatype/"+datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length())+".txt");
+			getKnowledge(organisationQuery, 0,	"/Users/gerb/TTTTT/datatype/"+datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length())+".txt");
+			getKnowledge(placeQuery, 0,			"/Users/gerb/TTTTT/datatype/"+datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length())+".txt");
 		}
 	}
 
-	private void queryObjectProperties() {
-
-		new Thread(new Runnable() { public void run() {
-			
-			String queryPersonSubject		= createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Person");
-			getKnowledge(queryPersonSubject, 0,"/Users/gerb/de_person_s.txt");
-			
-			System.out.println("person subject done");
-			
-		}}).start();
+	private void queryObjectProperties() throws UnsupportedEncodingException, FileNotFoundException, IOException {
 		
-		new Thread(new Runnable() { public void run() {
+		List<String> objectPropertyUris = FileUtil.readFileInList(NLPediaSettings.getInstance().getSetting("crawlDirectory") + "object_properties_to_query.txt", "UTF-8");
+		for ( String objectPropertyUri : objectPropertyUris ) {
 			
-			String queryPersonObject		= createObjectPropertyQueryObject("http://dbpedia.org/ontology/Person");
-			getKnowledge(queryPersonObject, 0, "/Users/gerb/de_person_o.txt");
+			String personObjectQuery = 			createObjectPropertyQueryObject("http://dbpedia.org/ontology/Person", objectPropertyUri);
+			String personSubjectQuery = 		createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Person", objectPropertyUri);
 			
-			System.out.println("person object done");
+			String organisationObjectQuery = 	createObjectPropertyQueryObject("http://dbpedia.org/ontology/Organisation", objectPropertyUri);
+			String organisationSubjectQuery = 	createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Organisation", objectPropertyUri);
 			
-		}}).start();
-		
-		new Thread(new Runnable() { public void run() {
+			String placeObjectQuery =			createObjectPropertyQueryObject("http://dbpedia.org/ontology/Place", objectPropertyUri);
+			String placeSubjectQuery =			createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Place", objectPropertyUri);
 			
-			String queryPlaceSubject		= createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Place");
-			getKnowledge(queryPlaceSubject, 0,"/Users/gerb/de_place_s.txt");
-			
-			System.out.println("place subject done");
-			
-		}}).start();
-		
-		new Thread(new Runnable() { public void run() {
-			
-			String queryPlaceObject			= createObjectPropertyQueryObject("http://dbpedia.org/ontology/Place");
-			getKnowledge(queryPlaceObject, 0, "/Users/gerb/de_place_o.txt");
-
-			System.out.println("place object done");
-			
-		}}).start();
-		
-		new Thread(new Runnable() { public void run() {
-			
-			String queryOrganisationSubject	= createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Organisation");
-			getKnowledge(queryOrganisationSubject, 0,"/Users/gerb/de_organisation_s.txt");
-			
-			System.out.println("organisation subject done");
-			
-		}}).start();
-		
-		new Thread(new Runnable() { public void run() {
-			
-			String queryOrganisationObject	= createObjectPropertyQueryObject("http://dbpedia.org/ontology/Organisation");
-			getKnowledge(queryOrganisationObject, 0,"/Users/gerb/de_organisation_o.txt");
-			
-			System.out.println("organisation object done");
-			
-		}}).start();
+			getKnowledge(personObjectQuery, 0,		"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+			getKnowledge(personSubjectQuery, 0,		"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+			getKnowledge(organisationObjectQuery, 0,	"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+			getKnowledge(organisationSubjectQuery, 0,	"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+			getKnowledge(placeObjectQuery, 0,			"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+			getKnowledge(placeSubjectQuery, 0,			"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+		}
 	}
 	
 	private static String createDatatypePropertyQueryObject(String entityTypeUri, String propertyUri) {
@@ -144,55 +110,61 @@ public class WriteRelationToFileCommand implements Command {
 		return 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>  " +
-			"SELECT ?s ?sl ?p ?o ?range ?domain " +
+			"SELECT ?s ?sl <"+propertyUri+"> ?o ?o ?range ?domain " +
 			"WHERE {" +
 			 "	?s rdfs:label ?sl . " +
-			 "  ?s rdf:type <"+ entityTypeUri + "> . " + 
+//			 "  ?s rdf:type <"+ entityTypeUri + "> . " + 
 			 "  ?s <" + propertyUri + "> ?o . " +
-			 "	FILTER (   lang(?sl)= \""+language+"\" && str(?p) = \""+propertyUri+"\" ) . " +
-			 "	?p rdfs:range  ?range . " +
-			 "	?p rdfs:domain ?domain . " +
+			 "	FILTER (   lang(?sl)= \""+language+"\" ) . " + //&& str(?p) = \""+propertyUri+"\" ) . " +
+			 "	OPTIONAL { " +
+			 "		<"+propertyUri+">  rdfs:range  ?range . " +
+			 "		<"+propertyUri+">  rdfs:domain ?domain . " +
+			 "	} " +
 			 "} " +
 			 "LIMIT " + LIMIT +  " " +
 			 "OFFSET &OFFSET";
 	}
 	
 
-	private static String createObjectPropertyQueryObject(String typeUri) {
+	private static String createObjectPropertyQueryObject(String typeUri, String property) {
 
 		return 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>  " +
-			"SELECT ?s ?sl ?p ?o ?ol ?range ?domain " +
+			"SELECT ?s ?sl <"+property+"> ?o ?ol ?range ?domain " +
 			"WHERE {" +
 			 "	?s rdfs:label ?sl . " + 
-			 "  ?s ?p ?o . " +
-			 "	?o rdf:type <"+typeUri+"> . " +
+			 "  ?s <"+property+"> ?o . " +
+//			 "	?o rdf:type <"+typeUri+"> . " +
 			 "  ?o rdfs:label ?ol . " +
 //			 "	FILTER (  langMatches( lang(?sl), \""+language+"\" )  && langMatches( lang(?ol), \""+language+"\" ) ) " +
 			 "	FILTER (   lang(?sl)= \""+language+"\"  &&  lang(?ol)= \""+language+"\"  ) " +
-			 "	?p rdfs:range  ?range . " +
-			 "	?p rdfs:domain ?domain . " +
+			 "	OPTIONAL { " +
+			 "		<"+property+">  rdfs:range  ?range . " +
+			 "		<"+property+">  rdfs:domain ?domain . " +
+			 "	} " +
 			 "} " +
-			 "LIMIT " + LIMIT +  " " +
+			 "LIMIT " + LIMIT + " " +
 			 "OFFSET &OFFSET";
 	}
 
-	private static String createObjectPropertyQuerySubject(String typeUri) {
+	private static String createObjectPropertyQuerySubject(String typeUri, String property) {
 
 		return 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>  " +
-			"SELECT ?s ?sl ?p ?o ?ol ?range ?domain " +
+			"SELECT ?s ?sl <"+property+"> ?o ?ol ?range ?domain " +
 			"WHERE {" +
-			 "	?s rdf:type <"+typeUri+"> . " +
+//			 "	?s rdf:type <"+typeUri+"> . " +
 			 "  ?s rdfs:label ?sl . " +
-			 "	?s ?p ?o . " +
+			 "	?s <"+property+"> ?o . " +
 			 "	?o rdfs:label ?ol ." +
 			 //"	FILTER (  langMatches( lang(?sl), \""+language+"\" )  && langMatches( lang(?ol), \""+language+"\" ) ) " +
 			 "	FILTER (   lang(?sl)= \""+language+"\"  &&  lang(?ol)= \""+language+"\"  ) " +
-			 "	?p  rdfs:range  ?range . " +
-			 "	?p  rdfs:domain ?domain . " +
+			 "	OPTIONAL {" +
+			 "		<"+property+">  rdfs:range  ?range . " +
+			 "		<"+property+">  rdfs:domain ?domain . " +
+			 "	}" +
 			 "} " +
 			 "LIMIT " + LIMIT +  " " +
 			 "OFFSET &OFFSET";
@@ -211,12 +183,12 @@ public class WriteRelationToFileCommand implements Command {
 				// ?s ?sl ?p ?o ?range ?domain
 				String subject = solution.get("s").toString();
 				String subjectLabel = solution.get("sl").toString().substring(0, solution.get("sl").toString().lastIndexOf("@"));;
-				String property = solution.get("p").toString();
+				String property = solution.get("callret-2").toString();
 				String object = solution.get("o").toString();
-				if ( object.contains("@"+language) ) object.substring(0, object.lastIndexOf("@"));
+				if ( object.contains("@"+language) ) object = object.substring(0, object.lastIndexOf("@"));
 				if ( object.contains("^^") ) object = object.substring(0, solution.get("o").toString().indexOf("^"));
-				String range = solution.get("range").toString();
-				String domain = solution.get("domain").toString();
+				String range = solution.get("range") == null ? "null" : solution.get("range").toString();
+				String domain = solution.get("domain") == null ? "null" : solution.get("domain").toString();
 				
 				writer.write(subject + " ||| " + subjectLabel + " ||| " + property + " ||| " + object + " ||| " + object + " ||| " + range + " ||| " + domain);
 				writer.write(System.getProperty("line.separator"));
@@ -251,7 +223,7 @@ public class WriteRelationToFileCommand implements Command {
 			
 			for (QuerySolution solution : resultSets) {
 				
-				if (solution.get("s") != null && solution.get("p") != null && solution.get("o") != null) {
+				if (solution.get("s") != null && solution.get("callret-2") != null && solution.get("o") != null) {
 	
 					if (solution.get("ol") != null) {
 	
@@ -270,7 +242,7 @@ public class WriteRelationToFileCommand implements Command {
 						String range = solution.get("range") == null ? "null" : solution.get("range").toString();
 						String domain = solution.get("domain") == null ? "null" : solution.get("domain").toString();
 						
-						writer.write(solution.get("s").toString() + " ||| " + sl + " ||| " + solution.get("p").toString() + " ||| " + solution.get("o").toString() + " ||| " + ol + " ||| " + range + " ||| " + domain);
+						writer.write(solution.get("s").toString() + " ||| " + sl + " ||| " + solution.get("callret-2").toString() + " ||| " + solution.get("o").toString() + " ||| " + ol + " ||| " + range + " ||| " + domain);
 						writer.write(System.getProperty("line.separator"));
 					}
 				}

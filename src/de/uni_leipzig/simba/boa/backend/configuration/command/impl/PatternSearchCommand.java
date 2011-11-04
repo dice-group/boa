@@ -70,7 +70,7 @@ public class PatternSearchCommand implements Command {
 		int numberOfSearchThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfSearchThreads")).intValue();
 		
 		List<SearchResult> results = new ArrayList<SearchResult>(triples.size() * 10);
-		List<List<Triple>> triplesSubLists = ListUtil.split(new ArrayList<Triple>(triples.values()), triples.size() / numberOfSearchThreads);
+		List<List<Triple>> triplesSubLists = ListUtil.split(new ArrayList<Triple>(triples.values()), (triples.size() / numberOfSearchThreads) + 1 );
 		
 		List<Thread> threadList = new ArrayList<Thread>();
 		

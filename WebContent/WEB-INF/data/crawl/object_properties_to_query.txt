@@ -1,0 +1,16 @@
+http://dbpedia.org/ontology/birthPlace
+http://dbpedia.org/ontology/album
+http://dbpedia.org/ontology/spouse
+http://dbpedia.org/ontology/series
+http://dbpedia.org/ontology/location
+http://dbpedia.org/ontology/author
+http://dbpedia.org/ontology/foundationPlace
+http://dbpedia.org/ontology/developer
+http://dbpedia.org/ontology/starring
+http://dbpedia.org/ontology/producer
+http://dbpedia.org/ontology/league
+http://dbpedia.org/ontology/genre
+http://dbpedia.org/ontology/language
+http://dbpedia.org/ontology/publisher
+http://dbpedia.org/ontology/keyPerson
+http://dbpedia.org/ontology/spokenIn

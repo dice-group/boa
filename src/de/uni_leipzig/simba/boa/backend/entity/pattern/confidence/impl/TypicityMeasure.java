@@ -127,25 +127,27 @@ public class TypicityMeasure implements ConfidenceMeasure {
 							
 							if ( beginsWithDomain ) {
 								
-								if ( leftContext.containsSuitableEntity(domainUri) ) {
-									
-									correctDomain += (1D / (double)leftContext.getSuitableEntityDistance(domainUri));
-								}
-								if ( rightContext.containsSuitableEntity(rangeUri) ) {
-									
-									correctRange += (1D / (double)rightContext.getSuitableEntityDistance(rangeUri));
-								}
+								if ( leftContext.containsSuitableEntity(domainUri) ) 
+									correctDomain++; //+= (1D / (double)leftContext.getSuitableEntityDistance(domainUri));
+								else
+									correctDomain--;
+								
+								if ( rightContext.containsSuitableEntity(rangeUri) )
+									correctRange++; //+= (1D / (double)rightContext.getSuitableEntityDistance(rangeUri));
+								else
+									correctRange--;
 							}
 							else {
 								
-								if ( leftContext.containsSuitableEntity(rangeUri) ) {
-									
-									correctRange += (1D / (double)leftContext.getSuitableEntityDistance(rangeUri));
-								}
-								if ( rightContext.containsSuitableEntity(domainUri) ) {
-									
-									correctDomain += (1D / (double)rightContext.getSuitableEntityDistance(domainUri));
-								}
+								if ( leftContext.containsSuitableEntity(rangeUri) )
+									correctRange++; // += (1D / (double)leftContext.getSuitableEntityDistance(rangeUri));
+								else
+									correctRange--;
+								
+								if ( rightContext.containsSuitableEntity(domainUri) )
+									correctDomain++; // += (1D / (double)rightContext.getSuitableEntityDistance(domainUri));
+								else
+									correctDomain--;
 							}
 						}
 						catch ( IndexOutOfBoundsException ioob ) {
@@ -165,7 +167,8 @@ public class TypicityMeasure implements ConfidenceMeasure {
 				double typicity = 0D;
 				
 				typicity = (domainCorrectness + rangeCorrectness) / (2D);//* (double) sentences.size());
-				typicity = Double.isNaN(typicity) ? 0d : typicity * (double) (Math.log((int)(sentences.size() + 1)) / Math.log(2));
+				typicity = Double.isNaN(typicity) ? 0d : typicity;// * (double) (Math.log((int)(sentences.size() + 1)) / Math.log(2));
+				typicity = 1D / (1D + Math.exp(-10D * (typicity - 0.5D)));
 				
 				pattern.setTypicity(typicity);
 			}
@@ -203,7 +206,42 @@ public class TypicityMeasure implements ConfidenceMeasure {
 
 	public static void main(String[] args) {
 
-		String s = "Microsoft is a company located in Redmond.";
+		NLPediaSetup setup = new NLPediaSetup(true);
+		String[] sentences = new String[]{
+				"Anton Vandieken was born on the 4 July 1909 .",
+				"Apolo Nsibambi was born on 27 November 1938 .",
+				"Arcadie Gherasim was born on August 24 , 1957 .",
+				"Archilochus was born on the island of Paros .",
+				"Arulappa was born on 28 August 1924 to Smt .",
+				"Asencio was born on 5 April 1919 .",
+				"Ashiqur Rahman was born on December 18 , 1986 .",
+				"Ashley Billington was born on January 16 , 1969 .",
+				"Ashley Bowen was born on January 8 , 1728 .",
+				"Atif was born on 15 February 1988 .",
+				"Aurifici was born on 9 April 1739 at Ucria .",
+				"Austin was born on October 20 , 1920 .",
+				"Avery was born on July 25 , 1912 .",
+				"Ayodele Arise was born on 5 October 1956 .",
+				"BIOGRAPHYHe was born on June 2 , 1959 .",
+				"Bache was born on 21 August 1839 .",
+				"Bandy was born on July 14 , 1893 .",
+				"Banks was born on July 28 , 1949 .",
+				"Barreto was born on 1957 in Rio de Janeiro .",
+				"Barta was born on June 17 , 1957 .",
+				"Barthe was born on 5 March 1986 in Avignon .",
+				"Barwell F.C. badgeHe was born on 2 October 1936 .",
+				"Basil Cave was born on 14 November 1865 .",
+				"Bassey Ewa-Henshaw was born on 4 May 1943 .",
+				"I love baseball."};
+		
+		NamedEntityRecognizer ner = new NamedEntityRecognizer();
+		
+		for (String s : sentences){
+			
+			System.out.println(s);
+			System.out.println(ner.recognizeEntitiesInString(s));
+			System.out.println();
+		}
 	}
 	private String segmentString(String sentence) {
 		

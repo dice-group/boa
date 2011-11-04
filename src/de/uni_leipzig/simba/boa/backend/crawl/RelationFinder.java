@@ -15,7 +15,6 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 public class RelationFinder {
 	
-	private static final String LABEL_OUTPUT_FOLDER			= NLPediaSettings.getInstance().getSetting("labelOutputFile");
 	private static final NLPediaLogger logger				= new NLPediaLogger(RelationFinder.class); 
 	
 	/**
@@ -29,7 +28,7 @@ public class RelationFinder {
 		
 		List<String[]> resultsSet = new ArrayList<String[]>();
 
-		File files[] = new File (LABEL_OUTPUT_FOLDER).listFiles(new FilenameFilter(){
+		File files[] = new File (filename).listFiles(new FilenameFilter(){
 			@Override
 			public boolean accept(File dir, String name) {
 
@@ -54,7 +53,7 @@ public class RelationFinder {
 			catch (Exception e) {
 
 				e.printStackTrace();
-				logger.error("Could not read file: " + LABEL_OUTPUT_FOLDER, e);
+				logger.error("Could not read file: " + file.getName(), e);
 			}
 		}
 		return resultsSet;
