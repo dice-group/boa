@@ -48,7 +48,7 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 	 * @return the label
 	 */
 	@Basic
-	@Column(length=4096)
+	@Column(length=1000)
 	public String getLabel() {
 
 		return label;
@@ -110,7 +110,7 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 	 * @return the surfaceForms
 	 */
 	@Basic
-	@Column(length=2048)
+	@Column(length=5000)
 	public String getSurfaceForms() {
 	
 		return this.surfaceForms;

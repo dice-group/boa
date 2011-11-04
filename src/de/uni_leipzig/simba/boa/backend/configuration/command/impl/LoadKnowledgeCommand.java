@@ -81,6 +81,10 @@ public class LoadKnowledgeCommand implements Command {
 		
 		Pattern pattern = Pattern.compile("\\(.+?\\)");
 	    Matcher matcher;
+	    
+	    int maxLabel = 0;
+		int maxLabels = 0;
+		
 
 		// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN
 		for ( String[] line : labels ) {
@@ -197,9 +201,18 @@ public class LoadKnowledgeCommand implements Command {
 			triple.setProperty(p);
 			triple.setObject(obj);
 			
+			maxLabel = Math.max(subjectLabel.length(), maxLabel);
+			maxLabel = Math.max(objectLabel.length(), maxLabel);
+			
+			maxLabels = Math.max(subjectLabels.length(), maxLabels);
+			maxLabels = Math.max(objectLabels.length(), maxLabels);
+			
 			tripleHashToTriple.put(triple.hashCode(),triple);
 		}
 		System.out.println(String.format("Starting to batch save %s triples to database!", tripleHashToTriple.size()));
+		
+		System.out.println("labels: " + maxLabel);
+		System.out.println("surface forms: " + maxLabels);
 		
 		this.triples = new ArrayList<Triple>(tripleHashToTriple.values());
 		tripleDao.batchSaveOrUpdate(this.triples);

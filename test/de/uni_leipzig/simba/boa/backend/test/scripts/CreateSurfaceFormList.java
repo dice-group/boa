@@ -78,6 +78,7 @@ public class CreateSurfaceFormList {
 		Writer writer =  new PrintWriter(new BufferedWriter(new FileWriter("/Users/gerb/en_pred_surface.txt", true)));
 		
 		urisToLabels = readSurfaceForms();
+		Set<String> linesToWrite = new HashSet<String>();
 		
 		for ( File f : FileUtils.listFiles(directory, HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE) ) {
 			
@@ -185,9 +186,12 @@ public class CreateSurfaceFormList {
 				}
 				
 				// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN				
-				writer.write(StringUtils.join(lineParts, " ||| ") + Constants.NEW_LINE_SEPARATOR);
+				linesToWrite.add(StringUtils.join(lineParts, " ||| "));
 			}
 		}
+		// only write unique lines to file
+		for (String sent : linesToWrite) writer.write(sent + Constants.NEW_LINE_SEPARATOR);
+		
 		writer1.close();
 		writer.close();
 	}
