@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
@@ -55,6 +56,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.crawl.RelationFinder;
 import de.uni_leipzig.simba.boa.backend.extraction.EnglishNumberToWords;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import edu.stanford.nlp.util.StringUtils;
 
 /**
@@ -64,25 +66,32 @@ import edu.stanford.nlp.util.StringUtils;
  * @author gerb
  */
 public class CreateSurfaceFormList {
-	
-	private static Writer writer1;
+
+	private static NLPediaLogger logger = new NLPediaLogger(CreateSurfaceFormList.class);
 	private static Map<String,Set<String>> urisToLabels;
 	
 	public static void main(String[] args) throws IOException {
+		System.out.println(String.format("%.0f", 177717233 / 1000000.0));
+		System.out.println(String.format("%.0f", 1777172332 / 1000000000.0));
 		
-		writer1 =  new PrintWriter(new BufferedWriter(new FileWriter("/Users/gerb/stupid_datatypes.txt", true)));
 		
-		NLPediaSetup s = new NLPediaSetup(true);
+		System.exit(0);
 		
-		File directory = new File("/Users/gerb/Development/workspaces/experimental/files/relation");
-		Writer writer =  new PrintWriter(new BufferedWriter(new FileWriter("/Users/gerb/en_pred_surface.txt", true)));
+		
+		File directory = new File("/Users/gerb/Development/workspaces/experimental/en_wiki_exp/relation/plain");
 		
 		urisToLabels = readSurfaceForms();
-		Set<String> linesToWrite = new HashSet<String>();
 		
 		for ( File f : FileUtils.listFiles(directory, HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE) ) {
 			
 			System.out.println("Reading file " + f.getName());
+			String lastPart = f.getAbsolutePath().replace("/"+f.getName(), "");
+			lastPart = lastPart.substring(lastPart.lastIndexOf("/") + 1);
+			String fileName = directory.getAbsolutePath().substring(0, directory.getAbsolutePath().lastIndexOf("/")) + "/surface/"+ lastPart + "/" + f.getName();
+			new File(directory.getAbsolutePath().substring(0, directory.getAbsolutePath().lastIndexOf("/")) + "/surface/"+ lastPart + "/").mkdir();
+			
+			Set<String> linesToWrite = new HashSet<String>();
+			Writer writer =  new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)));
 			
 			BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(f))));
 			
@@ -138,13 +147,13 @@ public class CreateSurfaceFormList {
 						catch (ParseException e) {
 							
 							// dont add this triple because the date could not get parsed
-							writer1.write(e.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
+							logger.error(e.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
 							continue;
 						}
 						catch (NumberFormatException nfe) {
 							
 							// dont add this triple because the date could not get parsed
-							writer1.write(nfe.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
+							logger.error(nfe.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
 							continue;
 						}
 					}
@@ -173,13 +182,13 @@ public class CreateSurfaceFormList {
 						}
 						catch (ParseException e) {
 							// dont add this triple because the date could not get parsed
-							writer1.write(e.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
+							logger.error(e.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
 							continue;
 						}
 						catch (NumberFormatException nfe) {
 							
 							// dont add this triple because the date could not get parsed
-							writer1.write(nfe.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
+							logger.error(nfe.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
 							continue;
 						}
 					}
@@ -188,12 +197,11 @@ public class CreateSurfaceFormList {
 				// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN				
 				linesToWrite.add(StringUtils.join(lineParts, " ||| "));
 			}
+			
+			// only write unique lines to file
+			for (String sent : linesToWrite) writer.write(sent + Constants.NEW_LINE_SEPARATOR);
+			writer.close();
 		}
-		// only write unique lines to file
-		for (String sent : linesToWrite) writer.write(sent + Constants.NEW_LINE_SEPARATOR);
-		
-		writer1.close();
-		writer.close();
 	}
 	
 	private static String createDatatypePropertyLabels(String objectLabel, String predicateType) throws ParseException, NumberFormatException, IOException {
@@ -265,33 +273,11 @@ public class CreateSurfaceFormList {
 		}
 		else if ( predicateType.equals("http://www.w3.org/2001/XMLSchema#nonNegativeInteger") ) {
 			
-			if ( objectLabel.contains(".") ) objectLabel = objectLabel.replaceAll("\\.[0-9]+$", "");
-			Integer i = Integer.valueOf(objectLabel);
-			Set<String> variations = new HashSet<String>();
-			if ( i == 1 ) variations.add("first");
-			if ( i == 2 ) variations.add("second");
-			if ( i == 3 ) variations.add("third");
-			if ( i == 4 ) variations.add("fourth");
-			if ( i == 5 ) variations.add("fifth");
-			variations.add(i.toString());
-			variations.add(String.valueOf(((i/5)*5))); // rounded down to next 5: 104 -> 100
-			variations.add(String.valueOf(((i/10)*10))); // rounded down to next 10
-			variations.add(String.valueOf(((i/100)*100))); // rounded down to next 100
-			variations.add(String.valueOf(((i/1000)*1000))); // rounded down to next 1000
-			if ( i >= 0) variations.add(EnglishNumberToWords.convert(i));
-			labels.append(StringUtils.join(variations, "_&_"));
+			labels.append(handleNonNegativeInteger(objectLabel));
 		}
 		else if ( predicateType.equals("http://www.w3.org/2001/XMLSchema#string") ) {
 			
-			Set<String> variations = new HashSet<String>();
-			NGramTokenizer ngt = new NGramTokenizer();
-			ngt.setDelimiters(" ");
-			ngt.setNGramMaxSize(2);
-			ngt.setNGramMinSize(2);
-			ngt.tokenize("this is a ngrma thingy");
-			while (ngt.hasMoreElements())
-				variations.add(String.valueOf(ngt.nextElement()));
-			labels.append(StringUtils.join(variations, "_&_"));
+			labels.append(handleString(objectLabel));
 		}
 		else if ( predicateType.equals("http://www.w3.org/2001/XMLSchema#date") ) {
 			
@@ -317,12 +303,63 @@ public class CreateSurfaceFormList {
 		}
 		else {
 			
-			writer1.write("There is something obiously wrong: " + objectLabel + "  " + predicateType);
+			logger.error("There is something obiously wrong: " + objectLabel + "  " + predicateType);
 		}
 		
 		return labels.toString();
 	}
 	
+	private static String handleString(String objectLabel) {
+
+		Set<String> variations = new HashSet<String>();
+		
+		// create some ngrams
+		NGramTokenizer ngt = new NGramTokenizer();
+		ngt.setDelimiters(" ");
+		ngt.setNGramMaxSize(2);
+		ngt.setNGramMinSize(2);
+		ngt.tokenize(objectLabel);
+		while (ngt.hasMoreElements())
+			variations.add(String.valueOf(ngt.nextElement()));
+		
+		Set<String> surfaceForms = urisToLabels.get(objectLabel.replace(" ", "_"));
+		// replace whitespace with _ and try to get surface forms from the "index"
+		if ( surfaceForms != null ) variations.addAll(surfaceForms);
+		
+		// for some labels there are multiple ones coded in divided by comma  
+		if (objectLabel.contains(",")) variations.addAll(Arrays.asList(objectLabel.split(",")));
+		
+		// sepcial cases
+		if (objectLabel.contains("C++") ) variations.add("C + +");
+		if (objectLabel.contains("C#") ) variations.add("C #");
+		
+		return StringUtils.join(variations, "_&_");
+	}
+
+	private static String handleNonNegativeInteger(String parseCandidate) {
+
+		if ( parseCandidate.contains(".") ) parseCandidate = parseCandidate.replaceAll("\\.[0-9]+$", "");
+		Integer i = Integer.valueOf(parseCandidate);
+		Set<String> variations = new HashSet<String>();
+		if ( i == 1 ) variations.add("first");
+		if ( i == 2 ) variations.add("second");
+		if ( i == 3 ) variations.add("third");
+		if ( i == 4 ) variations.add("fourth");
+		if ( i == 5 ) variations.add("fifth");
+		if ( i > 0 && i < 32 ) variations.add(i + getOrdinalFor(i));
+		variations.add(i.toString());
+		variations.add(String.valueOf(((i/5)*5))); // rounded down to next 5: 104 -> 100
+		variations.add(String.valueOf(((i/10)*10))); // rounded down to next 10
+		if ( i > 100 ) variations.add(String.valueOf(((i/100)*100))); // rounded down to next 100
+		if ( i > 1000 )variations.add(String.valueOf(((i/1000)*1000))); // rounded down to next 1000
+		if ( i > 1000000 ) variations.add(String.format("%.1f", i / 1000000.0));
+		if ( i > 1000000 ) variations.add(String.format("%.0f", i / 1000000.0));
+		if ( i > 1000000000 ) variations.add(String.format("%.1f", i / 1000000000.0));
+		if ( i > 1000000000 ) variations.add(String.format("%.0f", i / 1000000000.0));
+		
+		return StringUtils.join(variations, "_&_");
+	}
+
 	private static String getDateString(String dateString, String fromPattern, String toPattern) throws ParseException {
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(fromPattern);

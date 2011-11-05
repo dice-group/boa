@@ -24,6 +24,7 @@ public class PrintProgressTask extends TimerTask {
 	public void run() {
 
 		int overallProgress = 0;
+		int doneSearches = 0;
 		
 		for ( Thread t : this.threadList ) {
 			
@@ -31,6 +32,7 @@ public class PrintProgressTask extends TimerTask {
 				
 				int progress = Integer.valueOf(  ((PatternSearchThread)t).getProgress().replaceAll("%", "") );
 				overallProgress += progress;
+				doneSearches += ((PatternSearchThread)t).getNumberOfDoneSearches();
 				
 				if ( progress != 100 ) {
 				
@@ -52,6 +54,7 @@ public class PrintProgressTask extends TimerTask {
 		}
 		System.out.println("Overall progress " + NumberFormat.getPercentInstance().format((double)overallProgress / (double)(this.threadList.size()*100)) + " at " + DateFormat.getTimeInstance().format(new Date()));
 		this.logger.debug("Overall progress " + NumberFormat.getPercentInstance().format((double)overallProgress / (double)(this.threadList.size()*100)) + " at " + DateFormat.getTimeInstance().format(new Date()));
+		System.out.println("Overall done searches: " + doneSearches + " / " + ((PatternSearchThread)threadList.get(0)).getNumberOfSearches() * threadList.size());
 		System.out.println("########################################################################################");
 		this.logger.debug("########################################################################################");
 	}

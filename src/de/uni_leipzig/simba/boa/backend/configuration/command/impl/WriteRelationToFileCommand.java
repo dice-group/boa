@@ -50,7 +50,7 @@ public class WriteRelationToFileCommand implements Command {
 		
 		try {
 			
-//			queryDatatypeProperties();
+			queryDatatypeProperties();
 			queryObjectProperties();
 		}
 		catch (UnsupportedEncodingException e) {
