@@ -10,6 +10,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.HiddenFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
+
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
@@ -28,15 +32,7 @@ public class RelationFinder {
 		
 		List<String[]> resultsSet = new ArrayList<String[]>();
 
-		File files[] = new File (filename).listFiles(new FilenameFilter(){
-			@Override
-			public boolean accept(File dir, String name) {
-
-				return name.endsWith(".txt");
-			}
-		});
-		
-		for ( File file : files ) {
+		for ( File file : FileUtils.listFiles(new File(filename), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE) ) {
 			
 			System.out.println(String.format("Reading background knowledge from file %s", file.getName()));
 			

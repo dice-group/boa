@@ -73,7 +73,7 @@ public class LoadKnowledgeCommand implements Command {
 		
 		TripleDao tripleDao		= (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
 
-		List<String[]> labels =  RelationFinder.getRelationFromFile(NLPediaSettings.getInstance().getSetting("labelOutputFile"));
+		List<String[]> labels =  RelationFinder.getRelationFromFile(NLPediaSettings.getInstance().getSetting("surfaceRelationFiles"));
 		
 		System.out.println(String.format("There are %s strings in the LoadKnowledgeCommand from RelationFinder!", labels.size()));
 		
