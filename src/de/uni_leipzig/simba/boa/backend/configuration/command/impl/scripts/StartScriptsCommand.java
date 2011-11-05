@@ -9,6 +9,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.LoadKnowledge
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.ResetPatternCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOptionCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.test.scripts.CreateSurfaceFormCommand;
 
 
 public class StartScriptsCommand implements Command {
@@ -36,6 +37,7 @@ public class StartScriptsCommand implements Command {
 		    		System.out.println("\t\t8. Load knowledge");
 		    		System.out.println("\t\t9. Create pattern index");
 		    		System.out.println("\t\t10. Create machine learning input");
+		    		System.out.println("\t\t11. Create surface forms");
 		    		System.out.println("\t\t");
 		    		System.out.println("");
 		    		
@@ -113,6 +115,12 @@ public class StartScriptsCommand implements Command {
 							
 							Command createMLCommand = new CreateMachineLearningCommand();
 							createMLCommand.execute();
+							break;
+							
+						case 11:
+							
+							Command createSurfaceFormCommand = new CreateSurfaceFormCommand();
+							createSurfaceFormCommand.execute();
 							break;
 							
 						default: // option not supported

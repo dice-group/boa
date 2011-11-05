@@ -66,9 +66,9 @@ import edu.stanford.nlp.util.StringUtils;
  * 
  * @author gerb
  */
-public class CreateSurfaceFormList implements Command {
+public class CreateSurfaceFormCommand implements Command {
 
-	private static NLPediaLogger logger = new NLPediaLogger(CreateSurfaceFormList.class);
+	private static NLPediaLogger logger = new NLPediaLogger(CreateSurfaceFormCommand.class);
 	private static Map<String,Set<String>> urisToLabels;
 	
 	public void execute() {
