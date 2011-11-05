@@ -404,7 +404,7 @@ public class CreateSurfaceFormCommand implements Command {
 	
 	private Map<String,Set<String>> readSurfaceForms() throws IOException {
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("/Users/gerb/uri_surface_form.tsv"))));
+		BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(NLPediaSettings.getInstance().getSetting("surfaceFormsTSV")))));
 		
 		Map<String,Set<String>> uriToLabels = new HashMap<String,Set<String>>();
 		
