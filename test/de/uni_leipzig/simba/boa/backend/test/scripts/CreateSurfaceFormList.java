@@ -54,6 +54,7 @@ import de.danielgerber.file.FilenameFilters;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
+import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.crawl.RelationFinder;
 import de.uni_leipzig.simba.boa.backend.extraction.EnglishNumberToWords;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -65,146 +66,147 @@ import edu.stanford.nlp.util.StringUtils;
  * 
  * @author gerb
  */
-public class CreateSurfaceFormList {
+public class CreateSurfaceFormList implements Command {
 
 	private static NLPediaLogger logger = new NLPediaLogger(CreateSurfaceFormList.class);
 	private static Map<String,Set<String>> urisToLabels;
 	
-	public static void main(String[] args) throws IOException {
-		System.out.println(String.format("%.0f", 177717233 / 1000000.0));
-		System.out.println(String.format("%.0f", 1777172332 / 1000000000.0));
+	public void execute() {
 		
+		File directory = new File(NLPediaSettings.getInstance().getSetting("plainRelationFiles"));
 		
-		System.exit(0);
-		
-		
-		File directory = new File("/Users/gerb/Development/workspaces/experimental/en_wiki_exp/relation/plain");
-		
-		urisToLabels = readSurfaceForms();
-		
-		for ( File f : FileUtils.listFiles(directory, HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE) ) {
+		try {
 			
-			System.out.println("Reading file " + f.getName());
-			String lastPart = f.getAbsolutePath().replace("/"+f.getName(), "");
-			lastPart = lastPart.substring(lastPart.lastIndexOf("/") + 1);
-			String fileName = directory.getAbsolutePath().substring(0, directory.getAbsolutePath().lastIndexOf("/")) + "/surface/"+ lastPart + "/" + f.getName();
-			new File(directory.getAbsolutePath().substring(0, directory.getAbsolutePath().lastIndexOf("/")) + "/surface/"+ lastPart + "/").mkdir();
+			urisToLabels = readSurfaceForms();
 			
-			Set<String> linesToWrite = new HashSet<String>();
-			Writer writer =  new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)));
-			
-			BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(f))));
-			
-			String line;
-			while ((line = br.readLine()) != null) {
-			
-				// 0_URI1 ||| 1_LABEL1 ||| 2_PROP ||| 3_URI2 ||| 4_LABEL2 ||| 5_RANGE ||| 6_DOMAIN
-				String[] lineParts = line.split(" \\|\\|\\| ");
+			for ( File f : FileUtils.listFiles(directory, HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE) ) {
 				
-				// some labels contain new line characters
-				if ( lineParts.length != 7 ) {
+				System.out.println("Reading file " + f.getName());
+				String lastPart = f.getAbsolutePath().replace("/"+f.getName(), "");
+				lastPart = lastPart.substring(lastPart.lastIndexOf("/") + 1);
+				String fileName = directory.getAbsolutePath().substring(0, directory.getAbsolutePath().lastIndexOf("/")) + "/surface/"+ lastPart + "/" + f.getName();
+				new File(directory.getAbsolutePath().substring(0, directory.getAbsolutePath().lastIndexOf("/")) + "/surface/"+ lastPart + "/").mkdir();
+				
+				Set<String> linesToWrite = new HashSet<String>();
+				Writer writer =  new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)));
+				
+				BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(f))));
+				
+				String line;
+				while ((line = br.readLine()) != null) {
+				
+					// 0_URI1 ||| 1_LABEL1 ||| 2_PROP ||| 3_URI2 ||| 4_LABEL2 ||| 5_RANGE ||| 6_DOMAIN
+					String[] lineParts = line.split(" \\|\\|\\| ");
 					
-//					System.out.println(line);
-					continue;
-				}
-				
-				String firstUri		= lineParts[0];
-				String secondUri	= lineParts[3];
-				
-				// we found labels for the resource in the surface form file
-				if ( urisToLabels.get(firstUri) != null ) {
-					
-					lineParts[1] = lineParts[1] + " ||| " + StringUtils.join(urisToLabels.get(firstUri), "_&_").toLowerCase();
-				}
-				else {
-					lineParts[1] = lineParts[1] + " ||| " + lineParts[1].toLowerCase();
-				}
-				
-				// property namespace labels and uris are mixed in objects of tripel
-				if ( lineParts[2].contains("/property/") ) {
-					
-					// so we found a uri where it doesn't belong try to get a name for it 
-					if ( lineParts[3].startsWith("http://") ) {
+					// some labels contain new line characters
+					if ( lineParts.length != 7 ) {
 						
-						// we found labels for the resource in the surface form file
-						if ( urisToLabels.get(secondUri) != null ) {
-							
-							Set<String> labels = urisToLabels.get(secondUri);
-							String firstLabel = labels.iterator().next();
-							lineParts[4] = firstLabel + " ||| " + StringUtils.join(labels, "_&_").toLowerCase();
-							lineParts[3] = firstLabel; // there cant be an uri as second resource so replace them
-						}
-						// no label found, we dont want to add an uri as a label so skip this triple
-						else continue;
+//						System.out.println(line);
+						continue;
 					}
-					// so we found some text, try to make some sense of it and create surface forms
+					
+					String firstUri		= lineParts[0];
+					String secondUri	= lineParts[3];
+					
+					// we found labels for the resource in the surface form file
+					if ( urisToLabels.get(firstUri) != null ) {
+						
+						lineParts[1] = lineParts[1] + " ||| " + StringUtils.join(urisToLabels.get(firstUri), "_&_").toLowerCase();
+					}
 					else {
-						
-						try {
-							
-							lineParts[4] = lineParts[4] + " ||| " + createDatatypePropertyLabels(lineParts[4], lineParts[5]).toLowerCase();
-						}
-						catch (ParseException e) {
-							
-							// dont add this triple because the date could not get parsed
-							logger.error(e.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
-							continue;
-						}
-						catch (NumberFormatException nfe) {
-							
-							// dont add this triple because the date could not get parsed
-							logger.error(nfe.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
-							continue;
-						}
+						lineParts[1] = lineParts[1] + " ||| " + lineParts[1].toLowerCase();
 					}
-				}
-				// ontology namespace, so object properties do ONLY have resources as object, datatype properties do only have strings attached 
-				else {
 					
-					// object property found
-					if ( lineParts[3].startsWith("http://") ) {
+					// property namespace labels and uris are mixed in objects of tripel
+					if ( lineParts[2].contains("/property/") ) {
 						
-						// we found labels for the resource in the surface form file
-						if ( urisToLabels.get(secondUri) != null ) {
+						// so we found a uri where it doesn't belong try to get a name for it 
+						if ( lineParts[3].startsWith("http://") ) {
 							
-							lineParts[4] = lineParts[4] + " ||| " + StringUtils.join(urisToLabels.get(secondUri), "_&_").toLowerCase();
+							// we found labels for the resource in the surface form file
+							if ( urisToLabels.get(secondUri) != null ) {
+								
+								Set<String> labels = urisToLabels.get(secondUri);
+								String firstLabel = labels.iterator().next();
+								lineParts[4] = firstLabel + " ||| " + StringUtils.join(labels, "_&_").toLowerCase();
+								lineParts[3] = firstLabel; // there cant be an uri as second resource so replace them
+							}
+							// no label found, we dont want to add an uri as a label so skip this triple
+							else continue;
 						}
+						// so we found some text, try to make some sense of it and create surface forms
 						else {
 							
-							lineParts[4] = lineParts[4] + " ||| " + lineParts[4].toLowerCase();
+							try {
+								
+								lineParts[4] = lineParts[4] + " ||| " + createDatatypePropertyLabels(lineParts[4], lineParts[5]).toLowerCase();
+							}
+							catch (ParseException e) {
+								
+								// dont add this triple because the date could not get parsed
+								logger.error(e.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
+								continue;
+							}
+							catch (NumberFormatException nfe) {
+								
+								// dont add this triple because the date could not get parsed
+								logger.error(nfe.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
+								continue;
+							}
 						}
 					}
-					// datatype property found, create surface forms
+					// ontology namespace, so object properties do ONLY have resources as object, datatype properties do only have strings attached 
 					else {
 						
-						try {
-							lineParts[4] = lineParts[4] + " ||| " + createDatatypePropertyLabels(lineParts[4], lineParts[5]).toLowerCase();
-						}
-						catch (ParseException e) {
-							// dont add this triple because the date could not get parsed
-							logger.error(e.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
-							continue;
-						}
-						catch (NumberFormatException nfe) {
+						// object property found
+						if ( lineParts[3].startsWith("http://") ) {
 							
-							// dont add this triple because the date could not get parsed
-							logger.error(nfe.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
-							continue;
+							// we found labels for the resource in the surface form file
+							if ( urisToLabels.get(secondUri) != null ) {
+								
+								lineParts[4] = lineParts[4] + " ||| " + StringUtils.join(urisToLabels.get(secondUri), "_&_").toLowerCase();
+							}
+							else {
+								
+								lineParts[4] = lineParts[4] + " ||| " + lineParts[4].toLowerCase();
+							}
+						}
+						// datatype property found, create surface forms
+						else {
+							
+							try {
+								lineParts[4] = lineParts[4] + " ||| " + createDatatypePropertyLabels(lineParts[4], lineParts[5]).toLowerCase();
+							}
+							catch (ParseException e) {
+								// dont add this triple because the date could not get parsed
+								logger.error(e.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
+								continue;
+							}
+							catch (NumberFormatException nfe) {
+								
+								// dont add this triple because the date could not get parsed
+								logger.error(nfe.getLocalizedMessage() + " _:_ " + line + Constants.NEW_LINE_SEPARATOR);
+								continue;
+							}
 						}
 					}
+					
+					// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN				
+					linesToWrite.add(StringUtils.join(lineParts, " ||| "));
 				}
 				
-				// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN				
-				linesToWrite.add(StringUtils.join(lineParts, " ||| "));
+				// only write unique lines to file
+				for (String sent : linesToWrite) writer.write(sent + Constants.NEW_LINE_SEPARATOR);
+				writer.close();
 			}
-			
-			// only write unique lines to file
-			for (String sent : linesToWrite) writer.write(sent + Constants.NEW_LINE_SEPARATOR);
-			writer.close();
+		}
+		catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 	
-	private static String createDatatypePropertyLabels(String objectLabel, String predicateType) throws ParseException, NumberFormatException, IOException {
+	private String createDatatypePropertyLabels(String objectLabel, String predicateType) throws ParseException, NumberFormatException, IOException {
 
 		StringBuffer labels = new StringBuffer();
 		
@@ -309,7 +311,7 @@ public class CreateSurfaceFormList {
 		return labels.toString();
 	}
 	
-	private static String handleString(String objectLabel) {
+	private String handleString(String objectLabel) {
 
 		Set<String> variations = new HashSet<String>();
 		
@@ -336,7 +338,7 @@ public class CreateSurfaceFormList {
 		return StringUtils.join(variations, "_&_");
 	}
 
-	private static String handleNonNegativeInteger(String parseCandidate) {
+	private String handleNonNegativeInteger(String parseCandidate) {
 
 		if ( parseCandidate.contains(".") ) parseCandidate = parseCandidate.replaceAll("\\.[0-9]+$", "");
 		Integer i = Integer.valueOf(parseCandidate);
@@ -360,7 +362,7 @@ public class CreateSurfaceFormList {
 		return StringUtils.join(variations, "_&_");
 	}
 
-	private static String getDateString(String dateString, String fromPattern, String toPattern) throws ParseException {
+	private String getDateString(String dateString, String fromPattern, String toPattern) throws ParseException {
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(fromPattern);
 		Date date1 = simpleDateFormat.parse(dateString);
@@ -368,7 +370,7 @@ public class CreateSurfaceFormList {
 		return simpleDateFormat.format(date1);
 	}
 	
-	public static String getOrdinalFor(int value) {
+	public String getOrdinalFor(int value) {
 
 		int hundredRemainder = value % 100;
 		int tenRemainder = value % 10;
@@ -388,7 +390,7 @@ public class CreateSurfaceFormList {
 		}
 	}
 
-	private static void printSurfaceFormsToFile(Map<String, Set<String>> urisToLabels ) throws IOException {
+	private void printSurfaceFormsToFile(Map<String, Set<String>> urisToLabels ) throws IOException {
 		
 		urisToLabels = getSurfaceForms();
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/gerb/uriToSurfaceForm.txt"), "UTF-8"));
@@ -400,7 +402,7 @@ public class CreateSurfaceFormList {
 	}
 	
 	
-	private static Map<String,Set<String>> readSurfaceForms() throws IOException {
+	private Map<String,Set<String>> readSurfaceForms() throws IOException {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("/Users/gerb/uri_surface_form.tsv"))));
 		
@@ -417,7 +419,7 @@ public class CreateSurfaceFormList {
 		return uriToLabels;
 	}
 	
-	private static Map<String,Set<String>> getSurfaceForms() throws IOException {
+	private Map<String,Set<String>> getSurfaceForms() throws IOException {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("/Users/gerb/Development/workspaces/experimental/surface_forms-Wikipedia-TitRedDis.tsv"))));
 		
