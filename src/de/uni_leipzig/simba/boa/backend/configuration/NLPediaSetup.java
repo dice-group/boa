@@ -6,7 +6,7 @@ import java.util.Date;
 import org.springframework.beans.BeansException;
 
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeasureFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilterFactory;
 import de.uni_leipzig.simba.boa.backend.logging.LoggingConfigurator;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -85,8 +85,8 @@ public class NLPediaSetup {
 			BeanUtility.getBeansOfType(setupFile, PatternFilterFactory.class);
 			logger.info("Initialized PatternFilterFactory...");
 			
-			BeanUtility.getBeansOfType(setupFile, ConfidenceMeasureFactory.class);
-			logger.info("Initialized ConfidenceMeasureFactory...");
+			BeanUtility.getBeansOfType(setupFile, FeatureFactory.class);
+			logger.info("Initialized FeatureFactory...");
 		}
 		catch (BeansException be) {
 			

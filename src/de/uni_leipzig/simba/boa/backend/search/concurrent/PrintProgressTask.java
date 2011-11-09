@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
-import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.PatternConfidenceMeasureThread;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.PatternScoreThread;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 
@@ -40,9 +40,9 @@ public class PrintProgressTask extends TimerTask {
 					this.logger.debug(t.getName() + ": " + progress + "%.");
 				}
 			}
-			if ( t instanceof PatternConfidenceMeasureThread ) {
+			if ( t instanceof PatternScoreThread ) {
 				
-				int progress = Integer.valueOf( ((PatternConfidenceMeasureThread)t).getProgress().replaceAll("%", "") );
+				int progress = Integer.valueOf( ((PatternScoreThread)t).getProgress().replaceAll("%", "") );
 				overallProgress += progress;
 				
 				if ( progress != 100 ) {
@@ -54,7 +54,7 @@ public class PrintProgressTask extends TimerTask {
 		}
 		System.out.println("Overall progress " + NumberFormat.getPercentInstance().format((double)overallProgress / (double)(this.threadList.size()*100)) + " at " + DateFormat.getTimeInstance().format(new Date()));
 		this.logger.debug("Overall progress " + NumberFormat.getPercentInstance().format((double)overallProgress / (double)(this.threadList.size()*100)) + " at " + DateFormat.getTimeInstance().format(new Date()));
-		System.out.println("Overall done searches: " + doneSearches + " / " + ((PatternSearchThread)threadList.get(0)).getNumberOfSearches() * threadList.size());
+//		System.out.println("Overall done searches: " + doneSearches + " / " + ((PatternSearchThread)threadList.get(0)).getNumberOfSearches() * threadList.size());
 		System.out.println("########################################################################################");
 		this.logger.debug("########################################################################################");
 	}

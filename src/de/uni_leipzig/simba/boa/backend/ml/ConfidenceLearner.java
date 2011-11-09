@@ -1,12 +1,13 @@
 package de.uni_leipzig.simba.boa.backend.ml;
 
-import org.encog.neural.networks.ContainsFlat;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.Map;
+
 import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLData;
 import org.encog.ml.data.MLDataPair;
@@ -14,16 +15,15 @@ import org.encog.ml.data.MLDataSet;
 import org.encog.ml.data.basic.BasicMLData;
 import org.encog.ml.data.basic.BasicMLDataSet;
 import org.encog.neural.networks.BasicNetwork;
+import org.encog.neural.networks.ContainsFlat;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.neural.networks.training.Train;
 import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
 import org.encog.util.obj.SerializeObject;
 import org.encog.util.simple.EncogUtility;
 
-import cern.colt.Arrays;
-
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
 
 /**
  * 
@@ -236,48 +236,15 @@ public class ConfidenceLearner {
 			while (s != null) {
 				String split[] = s.split("\t");
 				MLData entry = new BasicMLData(split.length - 1);
-				for (int i = 2; i < split.length - 1; i++) {
+				for (int i = 4; i < split.length; i++) {
 					entry.add(i, Double.parseDouble(split[i]));
 				}
 				// maps each entry to the expected value
 				BasicMLData ideal = new BasicMLData(1);
-				ideal.add(0, new Double(split[split.length - 1]));
+				ideal.add(0, new Double(split[3]));
 				data[counter % n].add(entry, ideal);
 				s = reader.readLine();
 				counter++;
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return data;
-	}
-
-	/**
-	 * Get a data set from a file
-	 * 
-	 * @param file
-	 *            Input file
-	 * @return Data set
-	 */
-	public MLDataSet getData(String file) {
-
-		MLDataSet data = new BasicMLDataSet();
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String s = reader.readLine();
-			while (s != null) {
-				String split[] = s.split("\t");
-				MLData entry = new BasicMLData(split.length - 1);
-				for (int i = 0; i < split.length - 1; i++) {
-					entry.add(i, Double.parseDouble(split[i]));
-				}
-				// maps each entry to the expected value
-				BasicMLData ideal = new BasicMLData(1);
-				ideal.add(0, new Double(split[split.length - 1]));
-//				System.out.println(entry + " -> " + ideal);
-				data.add(entry, ideal);
-				s = reader.readLine();
 			}
 		}
 		catch (Exception e) {
@@ -330,34 +297,6 @@ public class ConfidenceLearner {
 		network.addLayer(new BasicLayer(new ActivationSigmoid(), false, outputSize));
 		network.getStructure().finalizeStructure();
 		network.reset();
-		return network;
-	}
-
-	/**
-	 * @deprecated
-	 * 
-	 * @param inputDataFile
-	 * @param inputSize
-	 * @param hiddenSize
-	 * @param outputSize
-	 * @param outputFile
-	 * @param error
-	 * @return
-	 */
-	public BasicNetwork trainToFile(String inputDataFile, int inputSize, int hiddenSize, int outputSize, String outputFile, double error) {
-
-		BasicNetwork network = generateBasicNetwork(inputSize, hiddenSize, outputSize);
-		MLDataSet dataSet = getData(inputDataFile);
-		// train
-		EncogUtility.trainToError(network, dataSet, error);
-		// evaluate
-		EncogUtility.evaluate(network, dataSet);
-		try {
-			SerializeObject.save(new File(outputFile), network);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
 		return network;
 	}
 
@@ -516,9 +455,9 @@ public class ConfidenceLearner {
 	 *            Entry
 	 * @return Confidence
 	 */
-	public double getConfidence(String entry) {
+	public double getConfidence(Map<Feature,Double> entry) {
 
-		MLData data = getSingleEntry(entry);
+		MLData data = getSingleEntry(entry.toString());
 		return network.compute(data).getData(0);
 	}
 
@@ -528,6 +467,6 @@ public class ConfidenceLearner {
 
 		String input = "0.0\t0.0\t0.0\t0.0\t0.01866977829638273\t0.0\t0.0\t0.0016778523489932886\t0.039603960396039604";
 
-		System.out.println(dr.getConfidence(input));
+//		System.out.println(dr.getConfidence(input));
 	}
 }

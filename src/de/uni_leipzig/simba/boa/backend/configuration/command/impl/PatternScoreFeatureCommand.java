@@ -9,8 +9,9 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.PatternConfidenceMeasureThread;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.PatternScoreThread;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.concurrent.PrintProgressTask;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;
@@ -19,14 +20,14 @@ import de.uni_leipzig.simba.boa.backend.util.ListUtil;
  * 
  * @author Daniel Gerber
  */
-public class PatternConfidenceMeasureCommand implements Command {
+public class PatternScoreFeatureCommand implements Command {
 
-	private final NLPediaLogger logger					= new NLPediaLogger(PatternConfidenceMeasureCommand.class);
+	private final NLPediaLogger logger					= new NLPediaLogger(PatternScoreFeatureCommand.class);
 	private final PatternMappingDao patternMappingDao	= (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 	private List<PatternMapping> patternMappingList		= null;
 	public static double NUMBER_OF_PATTERN_MAPPINGS;
 
-	public PatternConfidenceMeasureCommand(Map<Integer,PatternMapping> patternMappingList) {
+	public PatternScoreFeatureCommand(Map<Integer,PatternMapping> patternMappingList) {
 		
 		if ( patternMappingList != null ){
 		
@@ -35,15 +36,8 @@ public class PatternConfidenceMeasureCommand implements Command {
 		else {
 			
 			this.patternMappingList = this.patternMappingDao.findAllPatternMappings();
-			
-			for (PatternMapping patternMapping : this.patternMappingList ) {
-				if ( patternMapping.getProperty().getUri().equals("http://dbpedia.org/ontology/almaMater") ) {
-					
-					System.out.println("The fucking mapping has been loaded by the dao....");
-				}	
-			}
 		}
-		PatternConfidenceMeasureCommand.NUMBER_OF_PATTERN_MAPPINGS = (double) this.patternMappingList.size();
+		PatternScoreFeatureCommand.NUMBER_OF_PATTERN_MAPPINGS = (double) this.patternMappingList.size();
 	}
 	
 	public static void main(String[] args) {
@@ -61,29 +55,17 @@ public class PatternConfidenceMeasureCommand implements Command {
 		// split the mappings into several lists
 		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads) + 1);
 		
-		int count= 0, j = 0;
-		for (List<PatternMapping> list : patternMappingSubLists) {
-			
-			count += list.size();
-			
-			for (PatternMapping patternMapping : list ) {
-				if ( patternMapping.getProperty().getUri().equals("http://dbpedia.org/ontology/almaMater") ) {
-					
-					System.out.println("The list number " + j + " has the fuckking mapping");
-				}	
-			}
-			j++;
-		}
+		int count= 0;
+		for (List<PatternMapping> list : patternMappingSubLists) count += list.size();
 		System.out.println(String.format("Found %s pattern mappings in database, %s mappings got distributed to confidence measure threads", patternMappingList.size(), count));
-		
 		
 		List<Thread> threadList = new ArrayList<Thread>();
 		
 		// start all threads
 		for (int i = 0 ; i < numberOfConfidenceMeasureThreads ; i++ ) {
 			
-			Thread t = new PatternConfidenceMeasureThread(patternMappingSubLists.get(i));
-			t.setName("PatternConfidenceMeasureThread-" + (i + 1) + "-" + patternMappingSubLists.get(i).size());
+			Thread t = new PatternScoreThread(patternMappingSubLists.get(i));
+			t.setName("PatternScoreThread-" + (i + 1) + "-" + patternMappingSubLists.get(i).size());
 			threadList.add(i, t);
 			t.start();
 			System.out.println(t.getName() + " started!");
@@ -110,12 +92,12 @@ public class PatternConfidenceMeasureCommand implements Command {
 		System.out.println("All confidence measurement threads are finished.\n Starting to update pattern mappings..");
 		for ( Thread t: threadList ) {
 			
-			for ( PatternMapping mapping : ((PatternConfidenceMeasureThread)t).getConfidenceMeasuredPatternMappings() ) {
+			for ( PatternMapping mapping : ((PatternScoreThread)t).getScoredPatternMappings() ) {
 				
 				this.patternMappingDao.updatePatternMapping(mapping);
 			}
 			// set this so that the next command does not need to query them from the database again
-			this.patternMappingList.addAll(((PatternConfidenceMeasureThread)t).getConfidenceMeasuredPatternMappings());
+			this.patternMappingList.addAll(((PatternScoreThread)t).getScoredPatternMappings());
 		}
 	}
 	

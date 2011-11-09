@@ -1,8 +1,5 @@
 package de.uni_leipzig.simba.boa.backend;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.Date;
 import java.util.Scanner;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
@@ -12,8 +9,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateIndexCo
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateKnowledgeCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.LimesCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternConfidenceMeasureCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternFilterCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternScoreFeatureCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternScoreCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternSearchCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PrintOptionCommand;
@@ -37,8 +33,8 @@ public class NLPedia {
 	public static void main(String[] args) {
 
 		// this is used to surpress the "error" messages from stanford etc.
-		PrintStream newErr = new PrintStream(new ByteArrayOutputStream());
-		System.setErr(newErr);
+//		PrintStream newErr = new PrintStream(new ByteArrayOutputStream());
+//		System.setErr(newErr);
 		
 		// Initialize logging, settings, factories etc., needs to be FIRST call!!
 		NLPediaSetup setup = new NLPediaSetup(false);
@@ -83,7 +79,7 @@ public class NLPedia {
 						
 					case 4: // evaluate pattern
 						// calculate confidence, hand over the filtered patterns
-						Command patternConfidenceMeasureCommand = new PatternConfidenceMeasureCommand(null);
+						Command patternConfidenceMeasureCommand = new PatternScoreFeatureCommand(null);
 						patternConfidenceMeasureCommand.execute();
 						break;
 						

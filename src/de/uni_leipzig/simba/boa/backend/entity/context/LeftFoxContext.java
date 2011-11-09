@@ -5,10 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import edu.stanford.nlp.util.StringUtils;
-
 import nlpbox.nlpbox.NLPBox;
 import nlpbox.util.Entity;
+import edu.stanford.nlp.util.StringUtils;
 
 public class LeftFoxContext extends LeftContext {
 

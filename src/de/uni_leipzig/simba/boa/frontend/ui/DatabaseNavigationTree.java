@@ -16,6 +16,7 @@ public class DatabaseNavigationTree extends Tree {
 	public DatabaseNavigationTree(BoaFrontendApplication app) {
 		
 		this.setContainerDataSource(new DatabaseContainer());
+//		this.setContainerDataSource(DatabaseContainer.getTestDatabaseContainer());
 		
 		this.addListener((ItemClickListener) app);
 

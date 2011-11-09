@@ -131,6 +131,7 @@ public class StartScriptsCommand implements Command {
 				catch (Exception e) {
 					
 					System.out.println("Unknown option selected! Most likely your fingers are too fat... try clicking with a pencil!\n");
+					e.printStackTrace();
 					logger.error("Something went wrong during option selection", e);
 				}
 				finally {

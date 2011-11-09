@@ -1,13 +1,12 @@
 /**
  * 
  */
-package de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,13 +17,12 @@ import org.apache.lucene.queryParser.ParseException;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
 import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
 import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeasure;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
@@ -35,18 +33,13 @@ import edu.stanford.nlp.process.DocumentPreprocessor;
  * @author Daniel Gerber
  *
  */
-public class TypicityMeasure implements ConfidenceMeasure {
+public class TypicityFeature implements Feature {
 
-	private final NLPediaLogger logger					= new NLPediaLogger(TypicityMeasure.class);
+	private final NLPediaLogger logger					= new NLPediaLogger(TypicityFeature.class);
 	private NamedEntityRecognizer ner;
 	private final int maxNumberOfEvaluationSentences 	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfTypicityConfidenceMeasureDocuments"));
 	
 	private PatternSearcher patternSearcher;
-	
-	// used for sentence segmentation
-	private Reader stringReader;
-	private DocumentPreprocessor preprocessor;
-	private StringBuilder stringBuilder;
 	private static final Map<String,String> BRACKETS = new HashMap<String,String>();
 	static {
 		
@@ -56,13 +49,24 @@ public class TypicityMeasure implements ConfidenceMeasure {
 		BRACKETS.put("-RQB-", "}");
 	}
 	
-	public TypicityMeasure() {}
+	// used for sentence segmentation
+	private Reader stringReader;
+	private DocumentPreprocessor preprocessor;
+	private StringBuilder stringBuilder;
+	
+	public TypicityFeature() {}
+	
+	@Override
+	public void score(List<PatternMapping> mapping) {
+
+		// nothing to do here
+	}
 	
 	/* (non-Javadoc)
 	 * @see simba.nlpedia.entity.pattern.evaluation.PatternEvaluator#evaluatePattern(simba.nlpedia.entity.pattern.PatternMapping)
 	 */
 	@Override
-	public void measureConfidence(PatternMapping mapping) {
+	public void scoreMapping(PatternMapping mapping) {
 		
 		long start = new Date().getTime();
 		
@@ -129,25 +133,25 @@ public class TypicityMeasure implements ConfidenceMeasure {
 								
 								if ( leftContext.containsSuitableEntity(domainUri) ) 
 									correctDomain++; //+= (1D / (double)leftContext.getSuitableEntityDistance(domainUri));
-								else
-									correctDomain--;
+//								else
+//									correctDomain--;
 								
 								if ( rightContext.containsSuitableEntity(rangeUri) )
 									correctRange++; //+= (1D / (double)rightContext.getSuitableEntityDistance(rangeUri));
-								else
-									correctRange--;
+//								else
+//									correctRange--;
 							}
 							else {
 								
 								if ( leftContext.containsSuitableEntity(rangeUri) )
 									correctRange++; // += (1D / (double)leftContext.getSuitableEntityDistance(rangeUri));
-								else
-									correctRange--;
+//								else
+//									correctRange--;
 								
 								if ( rightContext.containsSuitableEntity(domainUri) )
 									correctDomain++; // += (1D / (double)rightContext.getSuitableEntityDistance(domainUri));
-								else
-									correctDomain--;
+//								else
+//									correctDomain--;
 							}
 						}
 						catch ( IndexOutOfBoundsException ioob ) {
@@ -164,13 +168,12 @@ public class TypicityMeasure implements ConfidenceMeasure {
 				domainCorrectness = (double) correctDomain / (double) sentences.size();
 				rangeCorrectness = (double) correctRange / (double) sentences.size();
 				
-				double typicity = 0D;
+				double typicity = ((domainCorrectness + rangeCorrectness) / 2) * Math.log(sentences.size() + 1);
 				
-				typicity = (domainCorrectness + rangeCorrectness) / (2D);//* (double) sentences.size());
-				typicity = Double.isNaN(typicity) ? 0d : typicity;// * (double) (Math.log((int)(sentences.size() + 1)) / Math.log(2));
-				typicity = 1D / (1D + Math.exp(-10D * (typicity - 0.5D)));
-				
-				pattern.setTypicity(typicity);
+				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_CORRECT_DOMAIN_NUMBER, domainCorrectness >= 0 ? domainCorrectness : 0);
+				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_CORRECT_RANGE_NUMBER, rangeCorrectness >= 0 ? rangeCorrectness : 0);
+				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_SENTENCES, Math.log(sentences.size() + 1));
+				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY, typicity);
 			}
 			catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -194,7 +197,7 @@ public class TypicityMeasure implements ConfidenceMeasure {
 	
 	private String replaceBrackets(String foundString) {
 
-		for (Map.Entry<String, String> bracket : TypicityMeasure.BRACKETS.entrySet()) {
+		for (Map.Entry<String, String> bracket : TypicityFeature.BRACKETS.entrySet()) {
 			
 			if ( foundString.contains(bracket.getKey())) {
 	

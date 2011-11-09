@@ -1,31 +1,32 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.collections.ListUtils;
-
-import uk.ac.shef.wit.simmetrics.similaritymetrics.AbstractStringMetric;
-import uk.ac.shef.wit.simmetrics.similaritymetrics.QGramsDistance;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeasure;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.SimilarityAssessor;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.WordNotFoundException;
 
 
-public class StringSimilarityMeasure implements ConfidenceMeasure {
+public class StringSimilarityFeature implements Feature {
 
 	private SimilarityAssessor similarityAssessor = new SimilarityAssessor();
-	private NLPediaLogger logger = new NLPediaLogger(StringSimilarityMeasure.class);
+	private NLPediaLogger logger = new NLPediaLogger(StringSimilarityFeature.class);
 	
 	@Override
-	public void measureConfidence(PatternMapping mapping) {
+	public void score(List<PatternMapping> mappings) {
+
+		// nothing to do here
+	}
+	
+	@Override
+	public void scoreMapping(PatternMapping mapping) {
 
 		// we calculate the qgram distance between the NLR and the label of the property
 		for ( Pattern pattern : mapping.getPatterns() ) {
@@ -69,7 +70,7 @@ public class StringSimilarityMeasure implements ConfidenceMeasure {
 					}
 				}
 			}
-			pattern.setSimilarity(similarity >= 0 ? similarity : 0);
+			pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.WORDNET_DISTANCE, similarity >= 0 ? similarity : 0);
 		}
 	}
 }

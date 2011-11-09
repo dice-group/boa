@@ -1,11 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.nlp;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Properties;
-
-import org.apache.commons.lang3.StringUtils;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;

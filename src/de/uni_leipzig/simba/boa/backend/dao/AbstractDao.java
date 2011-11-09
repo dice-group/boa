@@ -43,7 +43,7 @@ public abstract class AbstractDao {
 		try {
 
 			this.startOperation();
-			entity.setLastModified(new Date());
+//			entity.setLastModified(new Date());
 			this.session.saveOrUpdate(entity);
 			this.tx.commit();
 		}

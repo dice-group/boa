@@ -1,12 +1,7 @@
 package de.uni_leipzig.simba.boa.frontend.ui;
 
-import java.util.Collection;
-
-import com.vaadin.data.Container;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.util.AbstractBeanContainer;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Table;
 

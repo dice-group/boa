@@ -8,22 +8,19 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
-import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrategy;
-
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 
 public class CreateMachineLearningCommand implements Command {
 
-	private Double reverbMax = 0D, supportMax = 0D, specificityMax = 0D, typicityMax = 0D, occMax = 0D, simMax = 0D, tfIdfMax = 0D, maxMax = 0D, pairMax = 0D;
-	
 	public static void main(String[] args) {
 
 		NLPediaSetup s = new NLPediaSetup(false);
@@ -55,17 +52,14 @@ public class CreateMachineLearningCommand implements Command {
 		Collections.shuffle(pairs);
 		
 		try {
-			
-			Writer writer = new PrintWriter(new BufferedWriter(new FileWriter("/home/gerber/machine_learning_input.txt")));
+			Writer writer = new PrintWriter(new BufferedWriter(new FileWriter("/Users/gerb/machine_learning_input.txt")));
+//			Writer writer = new PrintWriter(new BufferedWriter(new FileWriter("/home/gerber/machine_learning_input.txt")));
 			
 			int i = 0;
 			for ( Pair pair : pairs ) {
 				
 				if ( i++ == 200 ) break;
-				
-				// create the maximum only for the current mapping
-				this.calculateMaximas(pair.mapping);
-				writer.write(this.createLine(pair.mapping, pair.pattern));
+				writer.write(FeatureHelper.createNetworkTrainingFileLine(pair.getMapping(), pair.getPattern()));
 			}
 			writer.close();
 		}
@@ -75,52 +69,6 @@ public class CreateMachineLearningCommand implements Command {
 		}
 	}
 	
-	private String createLine(PatternMapping mapping, Pattern pattern) {
-
-		StringBuilder builder = new StringBuilder();
-		
-		builder.append(mapping.getProperty().getUri() + "\t");
-		builder.append(pattern.getNaturalLanguageRepresentation() + "\t");
-		builder.append(pattern.getReverb() / reverbMax + "\t");
-		builder.append(pattern.getSupport() / supportMax + "\t");
-		builder.append(pattern.getSpecificity() / specificityMax + "\t");
-		builder.append(pattern.getTypicity() / typicityMax + "\t");
-		builder.append(new Double(pattern.getNumberOfOccurrences()) / occMax + "\t");
-		builder.append(pattern.getSimilarity() / simMax + "\t");
-		builder.append(pattern.getTfIdf() / tfIdfMax + "\t");
-		builder.append(pattern.getLearnedFromPairs() / pairMax + "\t");
-		builder.append(pattern.getMaxLearnedFrom() / maxMax + "\t" + Constants.NEW_LINE_SEPARATOR);
-		
-		return builder.toString();
-	}
-
-	private void calculateMaximas(PatternMapping mapping) {
-
-		reverbMax		= 0D;
-		supportMax 		= 0D;
-		specificityMax 	= 0D;
-		typicityMax 	= 0D;
-		occMax 			= 0D;
-		simMax 			= 0D;
-		tfIdfMax 		= 0D;
-		pairMax 		= 0D;
-		maxMax 			= 0D;
-		
-		// reverbMax, supportMax, specificityMax, typicityMax, occMax, simMax, tfIdfMax, maxMax, pairMax;
-		for ( Pattern p: mapping.getPatterns()) {
-			
-			reverbMax		= Math.max(reverbMax, p.getReverb() == null ? 0D : p.getReverb());
-			supportMax 		= Math.max(supportMax, p.getSupport() == null ? 0D : p.getSupport());
-			specificityMax 	= Math.max(specificityMax, p.getSpecificity() == null ? 0D : p.getSpecificity());
-			typicityMax 	= Math.max(typicityMax, p.getTypicity() == null ? 0D : p.getTypicity());
-			occMax 			= Math.max(occMax, p.getNumberOfOccurrences() == null ? 0D : p.getNumberOfOccurrences());
-			simMax 			= Math.max(simMax, p.getSimilarity() == null ? 0D : p.getSimilarity());
-			tfIdfMax 		= Math.max(tfIdfMax, p.getTfIdf() == null ? 0D : p.getTfIdf());
-			pairMax 		= Math.max(pairMax, p.getLearnedFromPairs());
-			maxMax 			= Math.max(maxMax, p.getMaxLearnedFrom());
-		}
-	}
-
 	private class Pair {
 		
 		private PatternMapping mapping;

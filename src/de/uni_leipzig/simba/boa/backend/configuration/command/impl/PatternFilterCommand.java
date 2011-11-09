@@ -1,7 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;

@@ -1,11 +1,7 @@
 package de.uni_leipzig.simba.boa.frontend;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.TreeSet;
-
-import org.apache.lucene.queryParser.ParseException;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -23,7 +19,6 @@ import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.terminal.ExternalResource;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -51,14 +46,12 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
 import de.uni_leipzig.simba.boa.backend.rdf.Model;
 import de.uni_leipzig.simba.boa.backend.rdf.store.Store;
-import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.frontend.data.DatabaseContainer;
 import de.uni_leipzig.simba.boa.frontend.data.PatternContainer;
-import de.uni_leipzig.simba.boa.frontend.data.TripleContainer;
 import de.uni_leipzig.simba.boa.frontend.ui.DatabaseNavigationTree;
 import de.uni_leipzig.simba.boa.frontend.ui.PatternTable;
+import de.uni_leipzig.simba.boa.frontend.ui.PatternWindow;
 import de.uni_leipzig.simba.boa.frontend.ui.RdfModelTree;
-import de.uni_leipzig.simba.boa.frontend.ui.StatementForm;
 import de.uni_leipzig.simba.boa.frontend.ui.TripleTable;
 
 @SuppressWarnings("serial")
@@ -68,7 +61,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	private NLPediaLogger logger = new NLPediaLogger(BoaFrontendApplication.class);
 
 	private Button triplesButton = new Button("Triples");
-	private Button databasesButton = new Button("Home");
+	private Button databasesButton = new Button("Pattern Library");
 	private Button sparqlButton = new Button("SPARQL");
 	private Button startQuery = new Button("Query"); 
 	
@@ -81,7 +74,11 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	private String sparqlQueryModel = "";
 	
 	private HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
-	private String currentDatabase;
+	
+	public static String CURRENT_DATABASE;
+	public static String CURRENT_INDEX_DIR = "";
+	
+	private PatternMapping currentPatternMapping;
 	
 	private TripleDao tripleDao = (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
 
@@ -89,20 +86,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	public void init() {
 		
 		buildMainLayout();
-	}
-	
-	@Override
-	public Action[] getActions(Object target, Object sender) {
-
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void handleAction(Action action, Object sender, Object target) {
-
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void buttonClick(ClickEvent event) {
@@ -185,32 +168,42 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				
 				String database = (String) this.tree.getItem(itemId).getItemProperty(DatabaseContainer.DATABASE_ID).getValue();
 				String uri = (String) this.tree.getItem(itemId).getItemProperty(DatabaseContainer.URI).getValue();
+//				String id = (String) this.tree.getItem(itemId).getItemProperty(DatabaseContainer.PATTERN_MAPPING_ID).getValue();
 				
-				this.currentDatabase 	= database;
-				HibernateFactory.changeConnection(this.currentDatabase);
+				BoaFrontendApplication.CURRENT_DATABASE		= database;
+				BoaFrontendApplication.CURRENT_INDEX_DIR	= NLPediaSettings.getInstance().getSetting(BoaFrontendApplication.CURRENT_DATABASE);
+				HibernateFactory.changeConnection(BoaFrontendApplication.CURRENT_DATABASE);
 				
 				PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
-				PatternMapping pm = pmDao.findPatternMappingByUri(uri);
+				this.currentPatternMapping = pmDao.findPatternMappingByUri(uri);
+//				this.currentPatternMapping = new PatternMapping("http://dbpedia.org/ontology/capital", "capital", "http://dbpedia.org/ontology/PopulatedPlace", "http://dbpedia.org/ontology/City");
 
-				GridLayout gridLayout = new GridLayout(3,3);
+				GridLayout gridLayout = new GridLayout(4,4);
 				gridLayout.setSpacing(true);
 				gridLayout.setMargin(true);
 				gridLayout.setSizeFull();
 				
+				Label uriLabel = new Label("URI:");
+				Link uriLink = new Link(this.currentPatternMapping.getProperty().getUri(), new ExternalResource(this.currentPatternMapping.getProperty().getUri()));
+				gridLayout.addComponent(uriLabel,0,0);
+				gridLayout.addComponent(uriLink,1,0);
+				
 				Label rdfsDomainLabel = new Label("rdfs:domain (?D?)");
-				Link rdfsDomainLink = new Link(pm.getProperty().getRdfsDomain(), new ExternalResource(pm.getProperty().getRdfsDomain()));
-				gridLayout.addComponent(rdfsDomainLabel,0,0);
-				gridLayout.addComponent(rdfsDomainLink,1,0);
+				String domain = this.currentPatternMapping.getProperty().getRdfsDomain() == null ? "not defined" : this.currentPatternMapping.getProperty().getRdfsDomain();
+				Link rdfsDomainLink = new Link(domain, new ExternalResource(domain));
+				gridLayout.addComponent(rdfsDomainLabel,0,1);
+				gridLayout.addComponent(rdfsDomainLink,1,1);
 				
 				Label rdfsRangeLabel = new Label("rdfs:range (?R?)");
-				Link rdfsRangeLink = new Link(pm.getProperty().getRdfsRange(), new ExternalResource(pm.getProperty().getRdfsRange()));
-				gridLayout.addComponent(rdfsRangeLabel,0,1);
-				gridLayout.addComponent(rdfsRangeLink,1,1);
+				String range = this.currentPatternMapping.getProperty().getRdfsRange() == null ? "not defined" : this.currentPatternMapping.getProperty().getRdfsRange();
+				Link rdfsRangeLink = new Link(range, new ExternalResource(range));
+				gridLayout.addComponent(rdfsRangeLabel,0,2);
+				gridLayout.addComponent(rdfsRangeLink,1,2);
 				
 				Label rdfsLabel = new Label("rdfs:label");
-				Label rdfsLabelString = new Label(pm.getProperty().getLabel());
-				gridLayout.addComponent(rdfsLabel,0,2);
-				gridLayout.addComponent(rdfsLabelString,1,2);
+				Label rdfsLabelString = new Label(this.currentPatternMapping.getProperty().getLabel());
+				gridLayout.addComponent(rdfsLabel,0,3);
+				gridLayout.addComponent(rdfsLabelString,1,3);
 				
 				VerticalSplitPanel vPanel = new VerticalSplitPanel();
 				vPanel.setFirstComponent(gridLayout);
@@ -218,7 +211,8 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				
 				try {
 					
-					this.patternTable = new PatternTable(this, new PatternContainer(pm));
+					this.patternTable = new PatternTable(this, new PatternContainer(this.currentPatternMapping));
+//					this.patternTable = new PatternTable(this, PatternContainer.createTestPatternContainer());
 					vPanel.setSecondComponent(this.patternTable);
 				}
 				catch (InstantiationException e) {
@@ -277,69 +271,16 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		else if (event.getSource() == this.patternTable ) {
 			
 			Pattern pattern = (Pattern) event.getItemId();
-			
-			try {
-				
-				String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentationWithoutVariables();
-				
-				// TODO this needs to be fixed someway else!!! otherwise its not working on the server
-				String indexDir = NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory");
-//				indexDir = indexDir.replace("/index/stanfordnlp", "");
-////				System.out.println("indexDir: " +indexDir);
-////				System.out.println("indexDir.substring(indexDir.lastIndexOf()+1): " + indexDir.substring(indexDir.lastIndexOf("/")+1));
-//				indexDir = indexDir.replace(indexDir.substring(indexDir.lastIndexOf("/")+1), "");
-////				System.out.println("indexDir: " + indexDir);
-//				indexDir = indexDir + currentDatabase.substring(0,currentDatabase.lastIndexOf("_")) + "/index/stanfordnlp";
-				
-				PatternSearcher patternSearcher = new PatternSearcher(indexDir);
-				TreeSet<String> results = (TreeSet<String>) patternSearcher.getExactMatchSentences(naturalLanguageRepresentation, 100);
-				
-				StringBuilder builder = new StringBuilder();
-				builder.append("<h2>Search for label \""+ naturalLanguageRepresentation+"\" in the index returned " + results.size() + " results.</h2>");
-				
-				Iterator<String> iter = results.iterator(); 
-				int i = 0;
-				while ( iter.hasNext() && i++ < 100) {
-
-					String sentence = iter.next();
-					sentence = sentence.replaceFirst(naturalLanguageRepresentation, "<span style=\"color: red;\">"+naturalLanguageRepresentation+"</span>");
-					builder.append(i + ". " + sentence + "<br/>");
-					if (iter.hasNext()) builder.append("<hr/>");
-				}
-				
-				builder.append("<h2>Pattern learned from:</h2>");
-				iter = patternSearcher.getSentences(new ArrayList<Integer>(pattern.retrieveLuceneDocIdsAsList())).iterator();
-				i = 1;
-				while (iter.hasNext()) {
-					
-					String sentence = iter.next();
-					sentence = sentence.replaceFirst(naturalLanguageRepresentation, "<span style=\"color: red;\">"+naturalLanguageRepresentation+"</span>");
-					builder.append(i++ + ". " + sentence + "<br/>");
-					if (iter.hasNext()) builder.append("<hr/>");
-				}
-				
-				Window subwindow = new Window("Details for pattern: \""+naturalLanguageRepresentation+"\"");
-		        subwindow.setModal(true);
-		        VerticalLayout layout = (VerticalLayout) subwindow.getContent();
-		        layout.setMargin(true);
-		        layout.setSpacing(true);
-		        Label content = new Label(builder.toString(), Label.CONTENT_XHTML);
-		        subwindow.addComponent(content);
-		        subwindow.setWidth("1200px");
-		        subwindow.setResizable(false);
-		        this.getMainWindow().addWindow(subwindow);
-			}
-			catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	        this.getMainWindow().addWindow(new PatternWindow(this, pattern, this.currentPatternMapping));
 		}
 	}
 	
+	private TreeSet<String> createDummySentences() {
+
+		return new TreeSet<String>(Arrays.asList("Humboldt University of Berlin is the oldest university in Germany's capital city, Berlin.", 
+				"As well as all of this, Germany's capital city Berlin is one of the biggest and liveliest in Europe, with the country's politicians mixing with office workers, artists and young people who love to party!"));
+	}
+
 	private void buildMainLayout() {
 		
 		this.setMainWindow(new Window("Boa Frontend"));
@@ -366,16 +307,17 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	private GridLayout createToolbar() {
 		
 		GridLayout lo = new GridLayout(30,1);
+		databasesButton.setWidth("70px");
 		lo.addComponent(databasesButton,0,0);
 		lo.addComponent(triplesButton,1,0);
-//		lo.addComponent(sparqlButton,2,0);
+		lo.addComponent(sparqlButton,2,0);
 		
 		triplesButton.addListener((ClickListener) this);
-//		sparqlButton.addListener((ClickListener) this);
+		sparqlButton.addListener((ClickListener) this);
 		databasesButton.addListener((ClickListener) this);
 		
 		triplesButton.setIcon(new ThemeResource("icons/32/folder-add.png"));
-//		sparqlButton.setIcon(new ThemeResource("icons/32/document-edit.png"));
+		sparqlButton.setIcon(new ThemeResource("icons/32/document-edit.png"));
 		databasesButton.setIcon(new ThemeResource("icons/32/globe.png"));
 		
 		lo.setMargin(true);
@@ -426,5 +368,18 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public Action[] getActions(Object target, Object sender) {
 
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void handleAction(Action action, Object sender, Object target) {
+
+		// TODO Auto-generated method stub
+		
+	}
 }

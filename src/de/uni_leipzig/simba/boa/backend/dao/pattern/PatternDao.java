@@ -1,12 +1,9 @@
 package de.uni_leipzig.simba.boa.backend.dao.pattern;
 
-import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.HibernateException;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

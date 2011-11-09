@@ -7,7 +7,10 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
+import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
 
 
 public class ResetPatternCommand implements Command {
@@ -17,27 +20,20 @@ public class ResetPatternCommand implements Command {
 
 		NLPediaSetup setup = new NLPediaSetup(false);
 		
-		PatternDao patternDao = (PatternDao) DaoFactory.getInstance().createDAO(PatternDao.class);
+		PatternMappingDao patternMappingDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 		
-		List<Pattern> patternList = patternDao.findAllPatterns();
+		List<PatternMapping> patternMappingList = patternMappingDao.findAllPatternMappings();
 		
-		for (Pattern p: patternList ) {
+		for (PatternMapping mapping: patternMappingList ) {
 			
-			p.setUseForPatternEvaluation(true);
-			p.setConfidences(new HashMap<Integer,Double>());
-			p.setSpecificities(new HashMap<Integer,Double>());
-			p.setSupports(new HashMap<Integer,Double>());
-			p.setTypicities(new HashMap<Integer,Double>());
-			p.setReverbs(new HashMap<Integer,Double>());
-			p.setConfidence(0D);
-			p.setSimilarity(0D);
-			p.setSupport(0D);
-			p.setSpecificity(0D);
-			p.setTypicity(0D);
-			p.setReverb(0D);
-			p.setTfIdf(0D);
-			p.setGeneralizedPattern("");
+			for ( Pattern p : mapping.getPatterns() ) {
+				
+				p.setUseForPatternEvaluation(true);
+				p.setConfidence(0D);
+				p.setGeneralizedPattern("");
+				p.setFeatures(new HashMap<Feature,Double>());
+			}
+			patternMappingDao.updatePatternMapping(mapping);
 		}
-		patternDao.batchSaveOrUpdatePattern(patternList);
 	}
 }

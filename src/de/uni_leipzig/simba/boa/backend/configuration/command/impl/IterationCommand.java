@@ -29,11 +29,11 @@ public class IterationCommand implements Command {
 			patternSearchCommand.execute();
 			
 			// calculate confidence measure values, hand over the filtered patterns
-			Command patternConfidenceMeasureCommand = new PatternConfidenceMeasureCommand(((PatternSearchCommand) patternSearchCommand).getPatternMappings());
+			Command patternConfidenceMeasureCommand = new PatternScoreFeatureCommand(((PatternSearchCommand) patternSearchCommand).getPatternMappings());
 			patternConfidenceMeasureCommand.execute();
 			
 			// calculate confidence with neuronal network
-			Command patternScoreCommand = new PatternScoreCommand(((PatternConfidenceMeasureCommand)patternConfidenceMeasureCommand).getPatternMappingList());
+			Command patternScoreCommand = new PatternScoreCommand(((PatternScoreFeatureCommand)patternConfidenceMeasureCommand).getPatternMappingList());
 			patternScoreCommand.execute();
 			
 			// generate rdf

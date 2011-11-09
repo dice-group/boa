@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -13,7 +13,7 @@ import de.danielgerber.string.StringUtil;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.confidence.ConfidenceMeasure;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import edu.washington.cs.knowitall.extractor.ReVerbExtractor;
 import edu.washington.cs.knowitall.extractor.conf.ConfidenceFunctionException;
@@ -22,7 +22,8 @@ import edu.washington.cs.knowitall.nlp.ChunkedSentence;
 import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
 import edu.washington.cs.knowitall.util.DefaultObjects;
 
-public class ReverbMeasure implements ConfidenceMeasure {
+
+public class ReverbFeature implements Feature {
 
 	static {
 		// this is a hack to load the training data for reverb
@@ -38,7 +39,7 @@ public class ReverbMeasure implements ConfidenceMeasure {
 	/**
 	 * init the ReVerb-Toolkit
 	 */
-	public ReverbMeasure() {}
+	public ReverbFeature() {}
 
 	private void init() {
 		
@@ -61,7 +62,13 @@ public class ReverbMeasure implements ConfidenceMeasure {
 	}
 	
 	@Override
-	public void measureConfidence(PatternMapping mapping) {
+	public void score(List<PatternMapping> mappings) {
+
+		// nothing to do here
+	}
+	
+	@Override
+	public void scoreMapping(PatternMapping mapping) {
 
 		if ( !this.isInitialized ) this.init();
 		
@@ -99,7 +106,7 @@ public class ReverbMeasure implements ConfidenceMeasure {
 				}
 				double score = MathUtil.getAverage(scores);
 				// update the pattern
-				pattern.setReverb(score >= 0 ? score : 0); // -1 is not useful for confidence
+				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.REVERB, score >= 0 ? score : 0); // -1 is not useful for confidence
 				pattern.setGeneralizedPattern(StringUtil.getLongestSubstring(relations));
 			}
 		}

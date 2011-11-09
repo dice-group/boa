@@ -10,8 +10,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.ListUtils;
-
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
@@ -50,7 +48,7 @@ public class WriteRelationToFileCommand implements Command {
 		
 		try {
 			
-			queryDatatypeProperties();
+//			queryDatatypeProperties();
 			queryObjectProperties();
 		}
 		catch (UnsupportedEncodingException e) {
@@ -88,20 +86,20 @@ public class WriteRelationToFileCommand implements Command {
 		for ( String objectPropertyUri : objectPropertyUris ) {
 			
 			String personObjectQuery = 			createObjectPropertyQueryObject("http://dbpedia.org/ontology/Person", objectPropertyUri);
-			String personSubjectQuery = 		createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Person", objectPropertyUri);
+//			String personSubjectQuery = 		createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Person", objectPropertyUri);
 			
 			String organisationObjectQuery = 	createObjectPropertyQueryObject("http://dbpedia.org/ontology/Organisation", objectPropertyUri);
-			String organisationSubjectQuery = 	createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Organisation", objectPropertyUri);
+//			String organisationSubjectQuery = 	createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Organisation", objectPropertyUri);
 			
 			String placeObjectQuery =			createObjectPropertyQueryObject("http://dbpedia.org/ontology/Place", objectPropertyUri);
-			String placeSubjectQuery =			createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Place", objectPropertyUri);
+//			String placeSubjectQuery =			createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Place", objectPropertyUri);
 			
 			getKnowledge(personObjectQuery, 0,		"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-			getKnowledge(personSubjectQuery, 0,		"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+//			getKnowledge(personSubjectQuery, 0,		"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
 			getKnowledge(organisationObjectQuery, 0,	"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-			getKnowledge(organisationSubjectQuery, 0,	"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+//			getKnowledge(organisationSubjectQuery, 0,	"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
 			getKnowledge(placeObjectQuery, 0,			"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-			getKnowledge(placeSubjectQuery, 0,			"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+//			getKnowledge(placeSubjectQuery, 0,			"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
 		}
 	}
 	
@@ -135,7 +133,7 @@ public class WriteRelationToFileCommand implements Command {
 			"WHERE {" +
 			 "	?s rdfs:label ?sl . " + 
 			 "  ?s <"+property+"> ?o . " +
-//			 "	?o rdf:type <"+typeUri+"> . " +
+			 "	?o rdf:type <"+typeUri+"> . " +
 			 "  ?o rdfs:label ?ol . " +
 //			 "	FILTER (  langMatches( lang(?sl), \""+language+"\" )  && langMatches( lang(?ol), \""+language+"\" ) ) " +
 			 "	FILTER (   lang(?sl)= \""+language+"\"  &&  lang(?ol)= \""+language+"\"  ) " +

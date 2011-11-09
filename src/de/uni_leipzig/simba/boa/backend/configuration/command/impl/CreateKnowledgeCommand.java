@@ -1,9 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +103,7 @@ public class CreateKnowledgeCommand implements Command {
 							double sumOfConfidence = 0;
 							for ( Pattern patternLearnedFrom : triple.getLearnedFromPatterns() ) {
 								
-								sumOfConfidence += patternLearnedFrom.getConfidenceForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
+								sumOfConfidence += patternLearnedFrom.getConfidence();//ForIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
 							}
 							triple.setConfidence(sumOfConfidence * numberOfPatternsLearnedFrom);
 							maxConfidenceForTriple = Math.max(triple.getConfidence(), maxConfidenceForTriple);

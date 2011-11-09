@@ -5,23 +5,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.dao.AbstractDao;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.persistance.Entity;
 import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 
 /**

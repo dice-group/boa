@@ -9,7 +9,6 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
-//import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 /**
  * 

@@ -7,14 +7,24 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.engine.Cascade;
+
+import de.danielgerber.format.OutputFormatter;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 
 /**
  * 
@@ -72,68 +82,18 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * 
 	 */
-	private Double globalConfidence = 0D;
-	
-	/**
-	 * 
-	 */
 	private Double confidence = 0D;
 	
 	/**
 	 * 
 	 */
-	private Double support = 0D;
+	private Map<Feature, Double> features;
 	
 	/**
 	 * 
 	 */
-	private Double tfIdf = 0D;
+	private static final String FEATURE_FILE_COLUMN_SEPARATOR = "\t";
 	
-	/**
-	 * 
-	 */
-	private Double typicity = 0D;
-	
-	/**
-	 * 
-	 */
-	private Double reverb = 0D;
-	
-	/**
-	 * 
-	 */
-	private Double specificity = 0D;
-	
-	/**
-	 * 
-	 */
-	private Double similarity = 0D;
-	
-	/**
-	 * 
-	 */
-	private Map<Integer,Double> confidences = new HashMap<Integer,Double>();
-	
-	/**
-	 * 
-	 */
-	private Map<Integer,Double> supports = new HashMap<Integer,Double>();
-	
-	/**
-	 * 
-	 */
-	private Map<Integer,Double> typicities = new HashMap<Integer,Double>();
-	
-	/**
-	 * 
-	 */
-	private Map<Integer,Double> specificities = new HashMap<Integer,Double>();
-	
-	/**
-	 * 
-	 */
-	private Map<Integer,Double> reverbs = new HashMap<Integer,Double>();
-
 	/**
 	 * @param naturalLanguageRepresentation the naturalLanguageRepresentation to set
 	 */
@@ -141,11 +101,12 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	
 		this.naturalLanguageRepresentation = naturalLanguageRepresentation;
 	}
-
+	
 	public Pattern(){
 		
 		this.learnedFrom = new HashMap<String,Integer>();
 		this.patternMappings = new ArrayList<PatternMapping>();
+		this.features = new HashMap<Feature,Double>();
 	}
 	
 	/**
@@ -162,6 +123,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		this.numberOfOccurrences = 1;
 		this.useForPatternEvaluation = true;
 		this.luceneDocIds = "";
+		this.features = new HashMap<Feature,Double>();
 	}
 
 	/**
@@ -262,8 +224,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		builder.append(learnedFrom);
 		builder.append(", luceneDocIds=");
 		builder.append(luceneDocIds);
-		builder.append(", confidence=");
-		builder.append(confidences);
 		builder.append("]");
 		return builder.toString();
 	}
@@ -448,213 +408,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		return this.learnedFrom.size();
 	}
 
-	/**
-	 * @param iteration number of the iteration
-	 * @return the confidence for the specified iteration
-	 */
-	public Double getConfidenceForIteration(Integer iteration){
-		
-		Double confidence = -1D;
-		if ( this.confidences.containsKey(iteration) ) return this.confidences.get(iteration);
-		return confidence;
-	}
-	
-	/**
-	 * @param iteration the iteration in which the support was calculated
-	 * @param support the support value
-	 */
-	public void setConfidenceForIteration(Integer iteration, Double confidence) {
-		
-		this.confidences.put(iteration, confidence);
-	}
-
-	@ElementCollection(fetch = FetchType.EAGER)
-	@JoinTable(name="pattern_confidences")
-	public Map<Integer,Double> getConfidences() {
-
-		return this.confidences;
-	}
-
-	public void setConfidences(Map<Integer,Double> confidences) {
-
-		this.confidences = confidences;
-	}
-
-	/**
-	 * @return the support
-	 */
-	@ElementCollection(fetch = FetchType.EAGER)
-	@JoinTable(name="pattern_supports")
-	public Map<Integer,Double> getSupports() {
-	
-		return this.supports;
-	}
-	
-	/**
-	 * @param support the support to set
-	 */
-	public void setSupports(Map<Integer,Double> supports) {
-	
-		this.supports = supports;
-	}
-	
-	/**
-	 * @param iteration number of the iteration
-	 * @return the support for the specified iteration
-	 */
-	public Double getSupportForIteration(Integer iteration){
-		
-		Double confidence = -1D;
-		if ( this.supports.containsKey(iteration) ) return this.supports.get(iteration);
-		return confidence;
-	}
-	
-	/**
-	 * @param iteration the iteration in which the support was calculated
-	 * @param support the support value
-	 */
-	public void setSupportForIteration(Integer iteration, Double support) {
-		
-		this.supports.put(iteration, support);
-	}
-	
-	/**
-	 * @return the typicity
-	 */
-	@ElementCollection(fetch = FetchType.EAGER)
-	@JoinTable(name="pattern_typicities")
-	public Map<Integer,Double> getTypicities() {
-	
-		return this.typicities;
-	}
-
-	/**
-	 * @param typicity the typicity to set
-	 */
-	public void setTypicities(Map<Integer,Double> typicities) {
-	
-		this.typicities = typicities;
-	}
-	
-	/**
-	 * @param iteration number of the iteration
-	 * @return the typicity for the specified iteration
-	 */
-	public Double getTypicityForIteration(Integer iteration){
-		
-		Double confidence = -1D;
-		if ( this.typicities.containsKey(iteration) ) return this.typicities.get(iteration);
-		return confidence;
-	}
-	
-	/**
-	 * @param iteration the iteration in which the typicity was calculated
-	 * @param typicity the typicity value
-	 */
-	public void setTypicityForIteration(Integer iteration, Double typicity) {
-		
-		this.typicities.put(iteration, typicity);
-	}
-
-	/**
-	 * @return the specificity
-	 */
-	@ElementCollection(fetch = FetchType.EAGER)
-	@JoinTable(name="pattern_specificities")
-	public Map<Integer,Double> getSpecificities() {
-	
-		return this.specificities;
-	}
-
-	/**
-	 * @param specificity the specificity to set
-	 */
-	public void setSpecificities(Map<Integer,Double> specificities) {
-	
-		this.specificities = specificities;
-	}
-	
-	/**
-	 * @param iteration number of the iteration
-	 * @return the specificity for the specified iteration
-	 */
-	public Double getSpecificityForIteration(Integer iteration){
-		
-		Double confidence = -1D;
-		if ( this.specificities.containsKey(iteration) ) return this.specificities.get(iteration);
-		return confidence;
-	}
-	
-	/**
-	 * @param iteration, the iteration in which the specificity was calculated
-	 * @param specificity, the specificity value
-	 */
-	public void setSpecificityForIteration(Integer iteration, Double specificity) {
-		
-		this.specificities.put(iteration, specificity);
-	}
-
-	/**
-	 * @param globalConfidence the globalConfidence to set
-	 */
-	public void setGlobalConfidence(Double globalConfidence) {
-
-		this.globalConfidence = globalConfidence;
-	}
-
-	/**
-	 * @return the globalConfidence
-	 */
-	public Double getGlobalConfidence() {
-
-		return globalConfidence;
-	}
-
-	public Double retrieveMostRecentConfidence(){
-		
-		int maxIteration = 0;
-		for ( Integer i : this.confidences.keySet() ) maxIteration = Math.max(maxIteration, i);
-		
-		if ( maxIteration > 0 ) return this.confidences.get(maxIteration);
-		else return -1D;
-	}
-	
-	public Double retrieveMostRecentSupport(){
-			
-		int maxIteration = 0;
-		for ( Integer i : this.supports.keySet() ) maxIteration = Math.max(maxIteration, i);
-		
-		if ( maxIteration > 0 ) return this.supports.get(maxIteration);
-		else return -1D;
-	}
-
-	public Double retrieveMostRecentSpecificity(){
-		
-		int maxIteration = 0;
-		for ( Integer i : this.specificities.keySet() ) maxIteration = Math.max(maxIteration, i);
-		
-		if ( maxIteration > 0 ) return this.specificities.get(maxIteration);
-		else return -1D;
-	}
-	
-	public Double retrieveMostRecentTypicity(){
-		
-		int maxIteration = 0;
-		for ( Integer i : this.typicities.keySet() ) maxIteration = Math.max(maxIteration, i);
-		
-		if ( maxIteration > 0 ) return this.typicities.get(maxIteration);
-		else return -1D;
-	}
-	
-	public Double retrieveMostRecentReverb(){
-		
-		int maxIteration = 0;
-		for ( Integer i : this.reverbs.keySet() ) maxIteration = Math.max(maxIteration, i);
-		
-		if ( maxIteration > 0 ) return this.reverbs.get(maxIteration);
-		else return -1D;
-	}
-
 	@Basic
 	public Double getConfidence() {
 
@@ -664,117 +417,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	public void setConfidence(Double confidence) {
 
 		this.confidence = confidence;
-	}
-
-	/**
-	 * @return the support
-	 */
-	public Double getSupport() {
-	
-		return support;
-	}
-	
-	/**
-	 * @param support the support to set
-	 */
-	public void setSupport(Double support) {
-	
-		this.support = support;
-	}
-	
-	/**
-	 * @return the typicity
-	 */
-	public Double getTypicity() {
-	
-		return typicity;
-	}
-
-	/**
-	 * @param typicity the typicity to set
-	 */
-	public void setTypicity(Double typicity) {
-	
-		this.typicity = typicity;
-	}
-
-	/**
-	 * @return the specificity
-	 */
-	public Double getSpecificity() {
-	
-		return specificity;
-	}
-
-	/**
-	 * @param specificity the specificity to set
-	 */
-	public void setSpecificity(Double specificity) {
-	
-		this.specificity = specificity;
-	}
-
-	/**
-	 * @param similarity the similarity to set
-	 */
-	public void setSimilarity(Double similarity) {
-
-		this.similarity = similarity;
-	}
-
-	/**
-	 * @return the similarity
-	 */
-	@Basic
-	public Double getSimilarity() {
-
-		return similarity;
-	}
-
-	/**
-	 * @return the reverbs
-	 */
-	@ElementCollection(fetch = FetchType.EAGER)
-	@JoinTable(name="pattern_reverbs")
-	public Map<Integer,Double> getReverbs() {
-
-		return reverbs;
-	}
-
-	/**
-	 * @param reverbs the reverbs to set
-	 */
-	public void setReverbs(Map<Integer,Double> reverbs) {
-
-		this.reverbs = reverbs;
-	}
-
-	/**
-	 * @param iteration number of the iteration
-	 * @return the reverb score for the specified iteration
-	 */
-	public Double getReverbForIteration(Integer iteration){
-		
-		Double reverbs = -1D;
-		if ( this.reverbs.containsKey(iteration) ) return this.reverbs.get(iteration);
-		return reverbs;
-	}
-
-	/**
-	 * @return the reverb
-	 */
-	@Basic
-	public Double getReverb() {
-
-		return reverb;
-	}
-
-	/**
-	 * @param reverb the reverb to set
-	 */
-	public void setReverb(Double reverb) {
-
-		this.reverb = reverb;
 	}
 
 	/**
@@ -827,20 +469,77 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 		return this.naturalLanguageRepresentation.startsWith("?D?") ? true : false;
 	}
 
+//	/**
+//	 * @return the featureMap
+//	 */
+//	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//	@JoinColumn(name="feature_map_fk")
+//	public FeatureMap getFeatureMap() {
+//
+//		return featureMap;
+//	}
+//
+//	/**
+//	 * @param featureMap the featureMap to set
+//	 */
+//	public void setFeatureMap(FeatureMap featureMap) {
+//
+//		this.featureMap = featureMap;
+//	}
+	
 	/**
-	 * @return the tfIdf
+	 * @return the features
 	 */
-	@Basic
-	public Double getTfIdf() {
+	@ElementCollection(fetch = FetchType.EAGER)
+	@JoinTable(name="pattern_features")
+	public Map<Feature,Double> getFeatures() {
 
-		return tfIdf;
+		return features;
 	}
-
+	
 	/**
-	 * @param tfIdf the tfIdf to set
+	 * 
+	 * @param features
 	 */
-	public void setTfIdf(Double tfIdf) {
+	public void setFeatures(Map<Feature,Double> features) {
+		
+		this.features = features;
+	}
+	
+	public String buildFeatureString(PatternMapping mapping){
+		
+		StringBuffer output = new StringBuffer();
 
-		this.tfIdf = tfIdf;
+		for ( Feature feature : Feature.values() ) {
+			
+			// exclude everything which is not activated
+			if ( feature.useForPatternFeatureLearning() ) {
+				
+				System.out.println(feature);
+				
+				// non zero to one values have to be normalized
+				if ( !feature.isZeroToOneValue() ) {
+					
+					Double maximum = 0D;
+					// take every mapping into account to find the maximum value
+					if ( feature.needsGlobalNormalization() ) {
+						
+						maximum = FeatureHelper.calculateGlobalMaximum(feature);
+					}
+					// only use the current mapping to find the maximum
+					else {
+						
+						maximum = FeatureHelper.calculateLocalMaximum(mapping, feature);
+					}
+					output.append(OutputFormatter.format((this.features.get(feature) / maximum), "0.00000") + FEATURE_FILE_COLUMN_SEPARATOR);
+				}
+				// we dont need to normalize a 0-1 value
+				else {
+					
+					output.append(OutputFormatter.format(this.features.get(feature), "0.00000") + FEATURE_FILE_COLUMN_SEPARATOR);
+				}
+			}
+		}
+		return output.toString();
 	}
 }

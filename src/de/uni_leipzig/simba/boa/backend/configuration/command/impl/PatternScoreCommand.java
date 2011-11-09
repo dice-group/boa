@@ -18,9 +18,6 @@ public class PatternScoreCommand implements Command {
 	// the logger
 	private final NLPediaLogger logger = new NLPediaLogger(PatternScoreCommand.class);
 	
-	// all variables which are used in the neuronal network
-	private Double reverbMax = 0D, supportMax = 0D, specificityMax = 0D, typicityMax = 0D, occMax = 0D, simMax = 0D, tfIdfMax = 0D, maxMax = 0D, pairMax = 0D;
-	
 	// the dao to retrieve all mappings
 	private PatternMappingDao patternMappingDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 	
@@ -51,27 +48,10 @@ public class PatternScoreCommand implements Command {
 		// set global maxima and update pattern mappings and cascade
 		for ( PatternMapping mapping : mappings ) {
 			
-			// resets the maximums and calculates for this mapping the new values
-			this.calculateMaximas(mapping);
-			
 			// score each pattern
 			for ( Pattern pattern : mapping.getPatterns() ) {
 				
-				// build the output for the neuronal network
-				StringBuilder builder = new StringBuilder()
-					.append(mapping.getProperty().getUri() + "\t")
-					.append(pattern.getNaturalLanguageRepresentation() + "\t")
-					.append(pattern.getReverb() / reverbMax + "\t")
-					.append(pattern.getSupport() / supportMax + "\t")
-					.append(pattern.getSpecificity() / specificityMax + "\t")
-					.append(pattern.getTypicity() / typicityMax + "\t")
-					.append(new Double(pattern.getNumberOfOccurrences()) / occMax + "\t")
-					.append(pattern.getSimilarity() / simMax + "\t")
-					.append(pattern.getTfIdf() / tfIdfMax + "\t")
-					.append(pattern.getLearnedFromPairs() / pairMax + "\t")
-					.append(pattern.getMaxLearnedFrom() / maxMax + "\t");
-				
-				Double score = this.learner.getConfidence(builder.toString());
+				Double score = this.learner.getConfidence(pattern.getFeatures());
 				pattern.setConfidence(
 						score == Double.NaN || 
 						score == Double.NEGATIVE_INFINITY || 
@@ -86,34 +66,6 @@ public class PatternScoreCommand implements Command {
 		System.out.println("Updating PatternMappings took " + (new Date().getTime() - start) + "ms.");
 	}
 	
-	private void calculateMaximas(PatternMapping mapping) {
-
-		//reset the pattern maximums 
-		this.reverbMax		= 0D;
-		this.supportMax 	= 0D;
-		this.specificityMax = 0D;
-		this.typicityMax 	= 0D;
-		this.occMax 		= 0D;
-		this.simMax 		= 0D;
-		this.tfIdfMax 		= 0D;
-		this.pairMax 		= 0D;
-		this.maxMax 		= 0D;
-		
-		// reverbMax, supportMax, specificityMax, typicityMax, occMax, simMax, tfIdfMax, maxMax, pairMax;
-		for ( Pattern p: mapping.getPatterns()) {
-			
-			this.reverbMax		= Math.max(this.reverbMax, p.getReverb() == null ? 0D : p.getReverb());
-			this.supportMax 	= Math.max(this.supportMax, p.getSupport() == null ? 0D : p.getSupport());
-			this.specificityMax = Math.max(this.specificityMax, p.getSpecificity() == null ? 0D : p.getSpecificity());
-			this.typicityMax 	= Math.max(this.typicityMax, p.getTypicity() == null ? 0D : p.getTypicity());
-			this.occMax 		= Math.max(this.occMax, p.getNumberOfOccurrences() == null ? 0D : p.getNumberOfOccurrences());
-			this.simMax 		= Math.max(this.simMax, p.getSimilarity() == null ? 0D : p.getSimilarity());
-			this.tfIdfMax 		= Math.max(this.tfIdfMax, p.getTfIdf() == null ? 0D : p.getTfIdf());
-			this.pairMax 		= Math.max(this.pairMax, p.getLearnedFromPairs());
-			this.maxMax 		= Math.max(this.maxMax, p.getMaxLearnedFrom());
-		}
-	}
-
 	public List<PatternMapping> getPatternMappingList() {
 
 		return this.mappings;

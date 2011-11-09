@@ -16,43 +16,43 @@ import javax.persistence.MappedSuperclass;
 public class Entity {
 
 	protected int id;
-	protected final Date creationDate = new Date();
-	protected Date lastModified = new Date();
+//	protected final Date creationDate = new Date();
+//	protected Date lastModified = new Date();
 
 	/**
 	 * @return the creationDate
 	 */
-	public void setCreationDate(Date date) {
-	
-		// dont change anything
-	}
+//	public void setCreationDate(Date date) {
+//	
+//		// dont change anything
+//	}
 	
 	/**
 	 * @return the creationDate
 	 */
-	@Basic
-	public Date getCreationDate() {
-	
-		return creationDate;
-	}
+//	@Basic
+//	public Date getCreationDate() {
+//	
+//		return creationDate;
+//	}
 
 	/**
 	 * @return the lastModified
 	 */
-	@Basic
-	public Date getLastModified() {
-	
-		return lastModified;
-	}
+//	@Basic
+//	public Date getLastModified() {
+//	
+//		return lastModified;
+//	}
 
 	
 	/**
 	 * @param lastModified the lastModified to set
 	 */
-	public void setLastModified(Date lastModified) {
-	
-		this.lastModified = lastModified;
-	}
+//	public void setLastModified(Date lastModified) {
+//	
+//		this.lastModified = lastModified;
+//	}
 
 	/**
 	 * @return the id
