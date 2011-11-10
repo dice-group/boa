@@ -42,7 +42,7 @@ public class PrintProgressTask extends TimerTask {
 			}
 			if ( t instanceof PatternScoreThread ) {
 
-				System.out.println(((PatternScoreThread)t).getProgress());
+//				System.out.println(((PatternScoreThread)t).getProgress());
 				int progress = Integer.valueOf( ((PatternScoreThread)t).getProgress().replaceAll("%", "") );
 				
 				overallProgress += progress;
