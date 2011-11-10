@@ -90,7 +90,7 @@ public class IndexBroker {
 	 * guarantees that only one instance of the broker will be allowed for each
 	 * Java Virtual Machine launched.
 	 */
-	private static IndexBroker INSTANCE;
+//	private static IndexBroker INSTANCE;
 
 	/**
 	 * The Constructor. Has private access to allow the implementation of the
@@ -98,7 +98,7 @@ public class IndexBroker {
 	 * sets the default field to lookup and the defualt operator that is to be
 	 * assumed when more than one token is given.
 	 */
-	private IndexBroker() {
+	public IndexBroker() {
 
 		try {
 
@@ -120,14 +120,14 @@ public class IndexBroker {
 	 * 
 	 * @return IndexBroker
 	 */
-	public static IndexBroker getInstance() {
-
-		if (INSTANCE == null) {
-			INSTANCE = new IndexBroker();
-		}
-
-		return INSTANCE;
-	}
+//	public static IndexBroker getInstance() {
+//
+//		if (INSTANCE == null) {
+//			INSTANCE = new IndexBroker();
+//		}
+//
+//		return INSTANCE;
+//	}
 
 	/**
 	 * Returns the list of documents that fulfill the given query.
@@ -152,11 +152,17 @@ public class IndexBroker {
 			this.logger.debug(ex.getMessage());
 		}
 		catch (IOException ex) {
-			ex.printStackTrace();
+			
+			this.logger.debug(ex.getMessage());
 		}
 		catch (ArrayIndexOutOfBoundsException aiooe) {
 			
 			this.logger.debug(aiooe.getMessage());
+		}
+		catch (StringIndexOutOfBoundsException sioobe) {
+			
+			System.out.println(query);
+			this.logger.debug(sioobe.getMessage());
 		}
 		return null;
 	}

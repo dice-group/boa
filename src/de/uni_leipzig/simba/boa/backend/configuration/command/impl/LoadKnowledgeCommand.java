@@ -205,8 +205,8 @@ public class LoadKnowledgeCommand implements Command {
 		}
 		System.out.println(String.format("Starting to batch save %s triples to database!", tripleHashToTriple.size()));
 		
-		System.out.println("labels: " + maxLabel);
-		System.out.println("surface forms: " + maxLabels);
+		System.out.println("Maximum label size: " + maxLabel);
+		System.out.println("Maximum surface form size: " + maxLabels);
 		
 		this.triples = new ArrayList<Triple>(tripleHashToTriple.values());
 		tripleDao.batchSaveOrUpdate(this.triples);

@@ -42,6 +42,7 @@ public class PatternScoreThread extends Thread {
 		for ( Feature feature : features.values() ) {
 
 			this.logger.info(feature.getClass().getSimpleName() + " started from " + this.getName() +"!");
+			System.out.println(feature.getClass().getSimpleName() + " started from " + this.getName() +"!");
 			long start = new Date().getTime();
 			
 			// do global feature scoring
@@ -65,6 +66,8 @@ public class PatternScoreThread extends Thread {
 
 	public String getProgress() {
 
-		return NumberFormat.getPercentInstance().format((double) i / (double) patternToMeasure);
+		System.out.println("i " + i + " patterns: "+ patternToMeasure) ;
+		
+		return patternToMeasure != 0 ? NumberFormat.getPercentInstance().format((double) i / (double) patternToMeasure) : "100%";
 	}
 }

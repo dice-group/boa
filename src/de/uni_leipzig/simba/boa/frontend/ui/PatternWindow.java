@@ -96,6 +96,8 @@ public class PatternWindow extends Window {
 		hLayout2.setSpacing(true);
 		hLayout2.setWidth("350px");
 
+		System.out.println(this.pattern.getFeatures().get(Feature.WORDNET_DISTANCE));
+		
 		// similarity
 		HorizontalLayout hLayout3 = new HorizontalLayout();
 		Label simLabel = new Label("<b>Similarity: </b>", Label.CONTENT_XHTML);
@@ -106,6 +108,8 @@ public class PatternWindow extends Window {
 		hLayout3.setComponentAlignment(similarity, Alignment.MIDDLE_RIGHT);
 		hLayout3.setSpacing(true);
 		hLayout3.setWidth("350px");
+		
+		System.out.println("asdasdsd"+this.pattern.getFeatures().get(Feature.SUPPORT_NUMBER_OF_MAX_PAIRS_LEARNED_FROM));
 
 		// support
 		HorizontalLayout hLayout4 = new HorizontalLayout();
@@ -232,12 +236,12 @@ public class PatternWindow extends Window {
 		HorizontalLayout hLayout82 = new HorizontalLayout();
 		Label tfIdfLabel2 = new Label("<b>tf-idf: </b>", Label.CONTENT_XHTML);
 		Label tfIdf2 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.TF_IDF_TFIDF), "##.###")));
-		hLayout8.addComponent(tfIdfLabel2);
-		hLayout8.addComponent(tfIdf2);
-		hLayout8.setComponentAlignment(tfIdfLabel2, Alignment.MIDDLE_LEFT);
-		hLayout8.setComponentAlignment(tfIdf2, Alignment.MIDDLE_RIGHT);
-		hLayout8.setSpacing(true);
-		hLayout8.setWidth("350px");
+		hLayout82.addComponent(tfIdfLabel2);
+		hLayout82.addComponent(tfIdf2);
+		hLayout82.setComponentAlignment(tfIdfLabel2, Alignment.MIDDLE_LEFT);
+		hLayout82.setComponentAlignment(tfIdf2, Alignment.MIDDLE_RIGHT);
+		hLayout82.setSpacing(true);
+		hLayout82.setWidth("350px");
 		
 		// occurrence
 		HorizontalLayout hLayout9 = new HorizontalLayout();
@@ -276,10 +280,17 @@ public class PatternWindow extends Window {
 		leftVerticalLayout.addComponent(hLayout2);
 		leftVerticalLayout.addComponent(hLayout3);
 		leftVerticalLayout.addComponent(hLayout4);
+		leftVerticalLayout.addComponent(hLayout41);
+		leftVerticalLayout.addComponent(hLayout42);
 		leftVerticalLayout.addComponent(hLayout5);
+		leftVerticalLayout.addComponent(hLayout51);
+		leftVerticalLayout.addComponent(hLayout52);
+		leftVerticalLayout.addComponent(hLayout53);
 		leftVerticalLayout.addComponent(hLayout6);
 		leftVerticalLayout.addComponent(hLayout7);
 		leftVerticalLayout.addComponent(hLayout8);
+		leftVerticalLayout.addComponent(hLayout81);
+		leftVerticalLayout.addComponent(hLayout82);
 		leftVerticalLayout.addComponent(hLayout9);
 		leftVerticalLayout.addComponent(hLayout10);
 		leftVerticalLayout.addComponent(hLayout11);

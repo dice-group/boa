@@ -35,7 +35,7 @@ public class RelationFinder {
 			
 			try {
 				
-				BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(file))));
+				BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 				
 				String line;
 				while ((line = br.readLine()) != null) {

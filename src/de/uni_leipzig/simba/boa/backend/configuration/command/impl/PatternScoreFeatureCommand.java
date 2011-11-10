@@ -53,7 +53,9 @@ public class PatternScoreFeatureCommand implements Command {
 		int numberOfConfidenceMeasureThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfConfidenceMeasureThreads")).intValue();
 		
 		// split the mappings into several lists
-		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads) + 1);
+		List<List<PatternMapping>> patternMappingSubLists	= this.createPatternMappingSubLists(patternMappingList, numberOfConfidenceMeasureThreads);
+//		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads) + 1);
+		
 		
 		int count= 0;
 		for (List<PatternMapping> list : patternMappingSubLists) count += list.size();
@@ -101,6 +103,47 @@ public class PatternScoreFeatureCommand implements Command {
 		}
 	}
 	
+	private List<List<PatternMapping>> createPatternMappingSubLists(List<PatternMapping> patternMappingList, int numberOfConfidenceMeasureThreads) {
+		
+		// create the correct amount of sublists
+		List<List<PatternMapping>> list = new ArrayList<List<PatternMapping>>();
+		for (int i = 0; i < numberOfConfidenceMeasureThreads; i++) list.add(new ArrayList<PatternMapping>());
+		
+		System.out.println("Es gibt " + list.size() + " Threads.");
+		
+		// the maximum amount of patterns a sub list should contain
+		int numberOfPatternsProList = 0;
+		for ( PatternMapping mapping : patternMappingList ) numberOfPatternsProList += mapping.getPatterns().size();
+		System.out.println("pattern insgesamt " + numberOfPatternsProList);		
+		
+		numberOfPatternsProList = (numberOfPatternsProList / numberOfConfidenceMeasureThreads) + 1;
+		
+		System.out.println("numberOfPatternsProList ist " + numberOfPatternsProList + " groß.");
+				
+		int i = 0;
+		for (PatternMapping mapping : patternMappingList ) {
+			
+			if ( getNumberOfPatternsInPatternMappingList(list.get(i)) < numberOfPatternsProList ) {
+				
+				list.get(i).add(mapping);
+				System.out.println("mapping " + i + " has " + mapping.getPatterns().size() +" patterns");
+			}
+			else {
+				
+				list.get(i+1).add(mapping); // add it to the next list because the current one is full
+				i++; // switch to next list
+			}
+		}
+		return list;
+	}
+	
+	private int getNumberOfPatternsInPatternMappingList(List<PatternMapping> mappings) {
+		
+		int i = 0;
+		for (PatternMapping mapping : mappings ) i += mapping.getPatterns().size();
+		return i;
+	}
+
 	/**
 	 * @return the patternMappingList
 	 */

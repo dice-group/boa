@@ -64,7 +64,7 @@ public class SimilarityAssessor {
 	 */
 	public SimilarityAssessor() {
 
-		_broker = IndexBroker.getInstance();
+		_broker = new IndexBroker();
 	}
 
 	/**
