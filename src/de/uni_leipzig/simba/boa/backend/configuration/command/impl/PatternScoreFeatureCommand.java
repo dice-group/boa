@@ -53,8 +53,8 @@ public class PatternScoreFeatureCommand implements Command {
 		int numberOfConfidenceMeasureThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfConfidenceMeasureThreads")).intValue();
 		
 		// split the mappings into several lists
-		List<List<PatternMapping>> patternMappingSubLists	= this.createPatternMappingSubLists(patternMappingList, numberOfConfidenceMeasureThreads);
-//		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads) + 1);
+//		List<List<PatternMapping>> patternMappingSubLists	= this.createPatternMappingSubLists(patternMappingList, numberOfConfidenceMeasureThreads);
+		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads) + 1);
 		
 		
 		int count= 0;
