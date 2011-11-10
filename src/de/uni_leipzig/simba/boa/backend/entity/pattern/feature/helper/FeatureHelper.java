@@ -16,6 +16,22 @@ public class FeatureHelper {
 		Double maximum = 0D;
 		for ( Pattern pattern : mapping.getPatterns() ) {
 			
+			if ( pattern.getFeatures() != null ) {
+				
+				System.out.println("Features not null");
+				if (pattern.getFeatures().get(feature) != null ) {
+					
+					System.out.println("Feature: " + feature);
+				}
+				else {
+					
+					System.out.println("Feature not available");
+				}
+			}
+			else {
+				
+				System.out.println("Features null");
+			}
 			maximum = Math.max(maximum, pattern.getFeatures().get(feature));
 		}
 		return maximum;
