@@ -52,8 +52,8 @@ public class CreateMachineLearningCommand implements Command {
 		Collections.shuffle(pairs);
 		
 		try {
-			Writer writer = new PrintWriter(new BufferedWriter(new FileWriter("/Users/gerb/machine_learning_input.txt")));
-//			Writer writer = new PrintWriter(new BufferedWriter(new FileWriter("/home/gerber/machine_learning_input.txt")));
+//			Writer writer = new PrintWriter(new BufferedWriter(new FileWriter("/Users/gerb/machine_learning_input.txt")));
+			Writer writer = new PrintWriter(new BufferedWriter(new FileWriter("/home/gerber/machine_learning_input.txt")));
 			
 			int i = 0;
 			for ( Pair pair : pairs ) {
