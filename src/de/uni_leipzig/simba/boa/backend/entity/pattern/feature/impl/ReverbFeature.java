@@ -93,14 +93,8 @@ public class ReverbFeature implements Feature {
 					
 					try {
 					
-						ChunkedSentenceReader reader = this.createDefaultSentenceReader(sentence);
-								
-								//DefaultObjects.getDefaultSentenceReader(new StringReader(sentence));
-						
-						if (reader != null) {
-							
 							// let ReVerb create the chunked sentences
-							for (ChunkedSentence sent : reader.getSentences()) {
+							for (ChunkedSentence sent : this.createDefaultSentenceReader(sentence).getSentences()) {
 								
 								// and extract all binary relations
 								for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
@@ -118,7 +112,6 @@ public class ReverbFeature implements Feature {
 									}
 								}
 							}
-						}
 					}
 					catch (ArrayIndexOutOfBoundsException aioobe) {
 						
@@ -148,7 +141,7 @@ public class ReverbFeature implements Feature {
 //				e.printStackTrace();
 			}
 			catch (IOException e) {
-				
+				 
 				this.logger.error("There was a io excpetion in reverbmeasure", e);
 //				e.printStackTrace();
 			}
