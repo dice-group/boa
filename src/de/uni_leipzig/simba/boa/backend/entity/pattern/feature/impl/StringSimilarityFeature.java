@@ -31,8 +31,6 @@ public class StringSimilarityFeature implements Feature {
 		// we calculate the qgram distance between the NLR and the label of the property
 		for ( Pattern pattern : mapping.getPatterns() ) {
 			
-			if ( !pattern.isUseForPatternEvaluation() ) continue;
-			
 			// get the NLR and remove all stopwords
 			String naturalLanguageRepresentation = pattern.getNaturalLanguageRepresentationWithoutVariables();
 			Set<String> tokens = new HashSet<String>(Arrays.asList(naturalLanguageRepresentation.split(" ")));
@@ -66,7 +64,7 @@ public class StringSimilarityFeature implements Feature {
 					}
 					catch (WordNotFoundException e) {
 						
-						this.logger.error("Word not found: " + e);
+						this.logger.debug("Word not found: " + e);
 					}
 				}
 			}

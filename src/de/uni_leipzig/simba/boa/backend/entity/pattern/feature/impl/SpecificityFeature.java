@@ -33,8 +33,6 @@ public class SpecificityFeature implements Feature {
 		
 		for (Pattern pattern : mapping.getPatterns()) {
 			
-			if ( !pattern.isUseForPatternEvaluation() ) continue;
-			
 			double specificity = PatternScoreFeatureCommand.NUMBER_OF_PATTERN_MAPPINGS / 
 					patternMappingDao.findPatternMappingsWithSamePattern(pattern.getNaturalLanguageRepresentation()); 
 				

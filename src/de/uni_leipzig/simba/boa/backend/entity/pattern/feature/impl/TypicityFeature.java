@@ -103,8 +103,6 @@ public class TypicityFeature implements Feature {
 
 		for (Pattern pattern : mapping.getPatterns()) {
 			
-			if ( !pattern.isUseForPatternEvaluation() ) continue;
-			
 			try {
 			
 				boolean beginsWithDomain = pattern.isDomainFirst();
@@ -172,8 +170,8 @@ public class TypicityFeature implements Feature {
 				
 				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_CORRECT_DOMAIN_NUMBER, domainCorrectness >= 0 ? domainCorrectness : 0);
 				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_CORRECT_RANGE_NUMBER, rangeCorrectness >= 0 ? rangeCorrectness : 0);
-				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_SENTENCES, Math.log(sentences.size() + 1));
-				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY, typicity);
+				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_SENTENCES, Math.log(sentences.size() + 1)  >= 0 ? Math.log(sentences.size() + 1) : 0);
+				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY, typicity >= 0 ? typicity : 0 );
 			}
 			catch (IOException e) {
 				// TODO Auto-generated catch block

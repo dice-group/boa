@@ -72,9 +72,9 @@ public class TfIdfFeature implements Feature {
 						this.logger.error("There was a token not analyzed: " + s);
 					}
 				}
-				p.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_TFIDF, 	tfIdfScore);
-				p.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_TF, 		tfScore);
-				p.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_IDF, 		idfScore);
+				p.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_TFIDF, 	tfIdfScore	>= 0 ? tfIdfScore : 0);
+				p.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_TF, 		tfScore		>= 0 ? tfScore : 0);
+				p.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_IDF, 		idfScore	>= 0 ? idfScore : 0);
 			}
 		}
 	}
