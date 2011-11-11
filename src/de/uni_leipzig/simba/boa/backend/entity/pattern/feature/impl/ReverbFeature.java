@@ -72,8 +72,6 @@ public class ReverbFeature implements Feature {
 
 		if ( !this.isInitialized ) this.init();
 		
-		try {
-			
 			for ( Pattern pattern : mapping.getPatterns()) {
 				
 				if ( !pattern.isUseForPatternEvaluation() ) continue;
@@ -81,51 +79,57 @@ public class ReverbFeature implements Feature {
 				Set<Double> scores		= new HashSet<Double>();
 				Set<String> relations	= new HashSet<String>();
 				
-				// for all sentences we found the pattern in
-				for (String sentence : getReverbMeasureEvaluationSentences(pattern)) {
+				try {
 					
-					// let ReVerb create the chunked sentences
-					for (ChunkedSentence sent : DefaultObjects.getDefaultSentenceReader(new StringReader(sentence)).getSentences()) {
+					// for all sentences we found the pattern in
+					for (String sentence : getReverbMeasureEvaluationSentences(pattern)) {
 						
-						// and extract all binary relations
-						for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
-
-							double score = scoreFunc.getConf(extr); 
-							if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
+						try {
+						
+							// let ReVerb create the chunked sentences
+							for (ChunkedSentence sent : DefaultObjects.getDefaultSentenceReader(new StringReader(sentence)).getSentences()) {
 								
-								// we only want to add scores of relations, which are substring of our relations
-								// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
-								if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pattern.getNaturalLanguageRepresentation()) ) {
-									
-									scores.add(score);
-									relations.add(extr.getRelation().toString());
+								// and extract all binary relations
+								for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
+		
+									double score = scoreFunc.getConf(extr); 
+									if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
+										
+										// we only want to add scores of relations, which are substring of our relations
+										// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
+										if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pattern.getNaturalLanguageRepresentation()) ) {
+											
+											scores.add(score);
+											relations.add(extr.getRelation().toString());
+										}
+									}
 								}
 							}
 						}
+						catch (NullPointerException npe) {
+							// TODO Auto-generated catch block
+							npe.printStackTrace();
+						}
+						catch (ConfidenceFunctionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
+				catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				double score = MathUtil.getAverage(scores);
 				// update the pattern
 				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.REVERB, score >= 0 ? score : 0); // -1 is not useful for confidence
 				pattern.setGeneralizedPattern(StringUtil.getLongestSubstring(relations));
 			}
-		}
-		catch (NullPointerException npe) {
-			// TODO Auto-generated catch block
-			npe.printStackTrace();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (ConfidenceFunctionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	/**
