@@ -17,8 +17,13 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import edu.washington.cs.knowitall.extractor.ReVerbExtractor;
+import edu.washington.cs.knowitall.extractor.SentenceExtractor;
 import edu.washington.cs.knowitall.extractor.conf.ConfidenceFunctionException;
 import edu.washington.cs.knowitall.extractor.conf.ReVerbConfFunction;
+import edu.washington.cs.knowitall.extractor.mapper.BracketsRemover;
+import edu.washington.cs.knowitall.extractor.mapper.SentenceEndFilter;
+import edu.washington.cs.knowitall.extractor.mapper.SentenceLengthFilter;
+import edu.washington.cs.knowitall.extractor.mapper.SentenceStartFilter;
 import edu.washington.cs.knowitall.nlp.ChunkedSentence;
 import edu.washington.cs.knowitall.nlp.ChunkedSentenceReader;
 import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
@@ -88,7 +93,9 @@ public class ReverbFeature implements Feature {
 					
 					try {
 					
-						ChunkedSentenceReader reader = DefaultObjects.getDefaultSentenceReader(new StringReader(sentence));
+						ChunkedSentenceReader reader = this.createDefaultSentenceReader(sentence);
+								
+								//DefaultObjects.getDefaultSentenceReader(new StringReader(sentence));
 						
 						if (reader != null) {
 							
@@ -112,6 +119,10 @@ public class ReverbFeature implements Feature {
 								}
 							}
 						}
+					}
+					catch (ArrayIndexOutOfBoundsException aioobe) {
+						
+						this.logger.error(sentence, aioobe);
 					}
 					catch (IllegalArgumentException iae){
 						
@@ -147,6 +158,17 @@ public class ReverbFeature implements Feature {
 			pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.REVERB, score >= 0 ? score : 0); // -1 is not useful for confidence
 			pattern.setGeneralizedPattern(StringUtil.getLongestSubstring(relations));
 		}
+	}
+
+	private ChunkedSentenceReader createDefaultSentenceReader(String sentence) throws IOException {
+
+		SentenceExtractor extractor = new SentenceExtractor();
+		extractor.addMapper(new BracketsRemover());
+		extractor.addMapper(new SentenceEndFilter());
+		extractor.addMapper(new SentenceStartFilter());
+		extractor.addMapper(SentenceLengthFilter.minFilter(4));
+		ChunkedSentenceReader reader = new ChunkedSentenceReader(new StringReader(sentence), extractor);
+		return reader;
 	}
 
 	/**
