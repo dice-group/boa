@@ -20,6 +20,7 @@ import edu.washington.cs.knowitall.extractor.ReVerbExtractor;
 import edu.washington.cs.knowitall.extractor.conf.ConfidenceFunctionException;
 import edu.washington.cs.knowitall.extractor.conf.ReVerbConfFunction;
 import edu.washington.cs.knowitall.nlp.ChunkedSentence;
+import edu.washington.cs.knowitall.nlp.ChunkedSentenceReader;
 import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
 import edu.washington.cs.knowitall.util.DefaultObjects;
 
@@ -87,21 +88,26 @@ public class ReverbFeature implements Feature {
 					
 					try {
 					
-						// let ReVerb create the chunked sentences
-						for (ChunkedSentence sent : DefaultObjects.getDefaultSentenceReader(new StringReader(sentence)).getSentences()) {
+						ChunkedSentenceReader reader = DefaultObjects.getDefaultSentenceReader(new StringReader(sentence));
+						
+						if (reader != null) {
 							
-							// and extract all binary relations
-							for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
-	
-								double score = scoreFunc.getConf(extr); 
-								if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
-									
-									// we only want to add scores of relations, which are substring of our relations
-									// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
-									if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pattern.getNaturalLanguageRepresentation()) ) {
+							// let ReVerb create the chunked sentences
+							for (ChunkedSentence sent : reader.getSentences()) {
+								
+								// and extract all binary relations
+								for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
+		
+									double score = scoreFunc.getConf(extr); 
+									if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
 										
-										scores.add(score);
-										relations.add(extr.getRelation().toString());
+										// we only want to add scores of relations, which are substring of our relations
+										// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
+										if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pattern.getNaturalLanguageRepresentation()) ) {
+											
+											scores.add(score);
+											relations.add(extr.getRelation().toString());
+										}
 									}
 								}
 							}
@@ -109,8 +115,8 @@ public class ReverbFeature implements Feature {
 					}
 					catch (NullPointerException npe) {
 						
-						System.out.println(pattern.getNaturalLanguageRepresentation());
-						System.out.println(sentence);
+						this.logger.error(pattern.getNaturalLanguageRepresentation());
+						this.logger.error(sentence);
 						this.logger.error("There was a NullPointerException in reverbmeasure", npe);
 //						npe.printStackTrace();
 					}
