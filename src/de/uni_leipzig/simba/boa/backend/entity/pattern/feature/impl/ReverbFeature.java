@@ -113,6 +113,10 @@ public class ReverbFeature implements Feature {
 							}
 						}
 					}
+					catch (IllegalArgumentException iae){
+						
+						this.logger.error(sentence, iae);
+					}
 					catch (NullPointerException npe) {
 						
 						this.logger.error(pattern.getNaturalLanguageRepresentation());
