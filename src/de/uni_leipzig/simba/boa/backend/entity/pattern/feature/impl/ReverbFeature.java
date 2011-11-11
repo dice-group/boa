@@ -14,6 +14,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import edu.washington.cs.knowitall.extractor.ReVerbExtractor;
 import edu.washington.cs.knowitall.extractor.conf.ConfidenceFunctionException;
@@ -35,6 +36,8 @@ public class ReverbFeature implements Feature {
 	private ReVerbExtractor extractor;
 	private ReVerbConfFunction scoreFunc;
 	private PatternSearcher searcher;
+	
+	private NLPediaLogger logger = new NLPediaLogger(ReverbFeature.class);
 
 	/**
 	 * init the ReVerb-Toolkit
@@ -108,21 +111,25 @@ public class ReverbFeature implements Feature {
 						
 						System.out.println(pattern.getNaturalLanguageRepresentation());
 						System.out.println(sentence);
-						npe.printStackTrace();
+						this.logger.error("There was a NullPointerException in reverbmeasure", npe);
+//						npe.printStackTrace();
 					}
 					catch (ConfidenceFunctionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						
+						this.logger.error("There was a ConfidenceFunctionException in reverbmeasure", e);
+//						e.printStackTrace();
 					}
 				}
 			}
 			catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				
+				this.logger.error("There was a parse excpetion in reverbmeasure", e);
+//				e.printStackTrace();
 			}
 			catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				
+				this.logger.error("There was a io excpetion in reverbmeasure", e);
+//				e.printStackTrace();
 			}
 			
 			double score = MathUtil.getAverage(scores);

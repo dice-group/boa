@@ -126,11 +126,11 @@ public class SimilarityAssessor {
 		TopDocs synsets2 = _broker.getHits(word2 + ".*");
 
 		if (synsets1 == null || synsets1.totalHits == 0) {
-			throw new WordNotFoundException("Word " + word1 + " is not in the dictionary.");
+			throw new WordNotFoundException("Word \"" + word1 + "\" is not in the dictionary.");
 		}
 
 		if (synsets2 == null || synsets2.totalHits == 0) {
-			throw new WordNotFoundException("Word " + word2 + " is not in the dictionary.");
+			throw new WordNotFoundException("Word \"" + word2 + "\" is not in the dictionary.");
 		}
 
 		double current = 0;
