@@ -1,5 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper;
 
+import java.util.List;
+
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
@@ -10,37 +12,23 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
 public class FeatureHelper {
 	
 	private static PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+	private static List<PatternMapping> mappings = null;
 
 	public static Double calculateLocalMaximum(PatternMapping mapping, Feature feature){
 		
 		Double maximum = 0D;
-		for ( Pattern pattern : mapping.getPatterns() ) {
-			
-			if ( pattern.getFeatures() != null ) {
-				
-				System.out.println("Features not null");
-				if (pattern.getFeatures().get(feature) != null ) {
-					
-					System.out.println("Feature: " + feature);
-				}
-				else {
-					
-					System.out.println("Feature not available");
-				}
-			}
-			else {
-				
-				System.out.println("Features null");
-			}
+		for ( Pattern pattern : mapping.getPatterns() ) 
 			maximum = Math.max(maximum, pattern.getFeatures().get(feature));
-		}
+		
 		return maximum;
 	}
 	
 	public static Double calculateGlobalMaximum(Feature feature){
 		
+		if ( mappings == null ) mappings = pmDao.findAllPatternMappings();
+		
 		Double maximum = 0D;
-		for ( PatternMapping mapping : pmDao.findAllPatternMappings() ) {
+		for ( PatternMapping mapping : mappings ) {
 			
 			maximum = Math.max(maximum, calculateLocalMaximum(mapping, feature));
 		}
