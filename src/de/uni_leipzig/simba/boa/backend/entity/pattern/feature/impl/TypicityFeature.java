@@ -113,7 +113,7 @@ public class TypicityFeature implements Feature {
 				double correctDomain	= 0;
 				double correctRange		= 0;
 				
-				for (String foundString : sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0,this.maxNumberOfEvaluationSentences - 1) : sentences) {
+				for (String foundString : sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0, this.maxNumberOfEvaluationSentences) : sentences) {
 					
 					nerTagged = this.ner.recognizeEntitiesInString(this.replaceBrackets(foundString));
 					segmentedFoundString = this.segmentString(foundString);
