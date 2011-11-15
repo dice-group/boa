@@ -24,7 +24,7 @@ public class PatternScoreFeatureCommand implements Command {
 
 	private final NLPediaLogger logger					= new NLPediaLogger(PatternScoreFeatureCommand.class);
 	private final PatternMappingDao patternMappingDao	= (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
-	private List<PatternMapping> patternMappingList		= null;
+	public static List<PatternMapping> patternMappingList		= null;
 	public static double NUMBER_OF_PATTERN_MAPPINGS;
 
 	public PatternScoreFeatureCommand(Map<Integer,PatternMapping> patternMappingList) {
@@ -54,8 +54,7 @@ public class PatternScoreFeatureCommand implements Command {
 		
 		// split the mappings into several lists
 //		List<List<PatternMapping>> patternMappingSubLists	= this.createPatternMappingSubLists(patternMappingList, numberOfConfidenceMeasureThreads);
-		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads) + 1);
-		
+		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads) + 1 );
 		
 		int count= 0;
 		for (List<PatternMapping> list : patternMappingSubLists) count += list.size();
