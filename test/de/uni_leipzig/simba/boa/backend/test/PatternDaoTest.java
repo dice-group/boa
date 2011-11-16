@@ -57,13 +57,13 @@ public class PatternDaoTest {
 	    sentences.add("In dem Satz kommts auch vor.");
 	    sentences.add("Und in dem Satz kommts vor.");
 	    
-	    Pattern pattern1 = new Pattern("x is a y", "x is a y");
+	    Pattern pattern1 = new Pattern("x is a y");
 	    
-	    pattern1.setConfidenceForIteration(1,5.4);
+	    pattern1.setConfidence(5.4);
 	    
-	    Pattern pattern2 = new Pattern("x is a y", "x is a y");
+	    Pattern pattern2 = new Pattern("x is a y");
 	    
-	    pattern2.setConfidenceForIteration(1,5.4);
+	    pattern2.setConfidence(5.4);
 	    
 	    PatternMapping mapping = (PatternMapping) patternMappingDao.createNewEntity();
 	    
@@ -137,8 +137,8 @@ public class PatternDaoTest {
 		PatternDao patternDao 				= (PatternDao) DaoFactory.getInstance().createDAO(PatternDao.class);
 		PatternMappingDao patternMappingDao	= (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 		
-		Pattern pattern1 = new Pattern("?D? in the county of ?R?", "");
-	    Pattern pattern2 = new Pattern("?D? in the county of ?R?", "");
+		Pattern pattern1 = new Pattern("?D? in the county of ?R?");
+	    Pattern pattern2 = new Pattern("?D? in the county of ?R?");
 	    
 	    PatternMapping mapping1 = (PatternMapping) patternMappingDao.createNewEntity();
 	    PatternMapping mapping2 = (PatternMapping) patternMappingDao.createNewEntity();

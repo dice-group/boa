@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.help.SentenceIterator;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 public class FoxTest {

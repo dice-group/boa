@@ -115,7 +115,7 @@ public class NerTagUtf8Test {
 			
 			PatternMapping pm = pmDao.findPatternMapping(mapping.getId());
 			
-			System.out.println(pm.getPatterns().get(0).getNaturalLanguageRepresentation());
+			System.out.println(pm.getPatterns().iterator().next().getNaturalLanguageRepresentation());
 
 			QueryParser exactMatchParser = new QueryParser(Version.LUCENE_30, "sentence", new SimpleAnalyzer());
 			ScoreDoc[] hits = indexSearcher.search(exactMatchParser.parse("\"Schulmädchen\""), null, 10).scoreDocs;
