@@ -9,6 +9,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.LoadKnowledge
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.ResetPatternCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOptionCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.test.KeyphraseMetricCommand;
 
 
 public class StartScriptsCommand implements Command {
@@ -125,7 +126,7 @@ public class StartScriptsCommand implements Command {
 						
 						case 12:
 							
-							Command extractKeywordCommand = new CreateSurfaceFormCommand();
+							Command extractKeywordCommand = new KeyphraseMetricCommand();
 							extractKeywordCommand.execute();
 							break;
 							
