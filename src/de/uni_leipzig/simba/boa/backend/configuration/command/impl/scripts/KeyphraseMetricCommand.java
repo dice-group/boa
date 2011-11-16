@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.test;
+package de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -57,6 +57,7 @@ public class KeyphraseMetricCommand implements Command {
 	@Override
 	public void execute() {
 
+		System.out.println("Executing " + this.getClass().getName());
 		String wikipediaPath = "/home/gerber/nlpedia-data/dumps/AA";
 		List<File> files = new ArrayList<File>(FileUtils.listFiles(new File(wikipediaPath), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE));  
 		System.out.println("Found " + files.size() + " files.");
