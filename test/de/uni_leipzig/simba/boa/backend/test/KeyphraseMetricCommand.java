@@ -59,6 +59,7 @@ public class KeyphraseMetricCommand implements Command {
 
 		String wikipediaPath = "/home/gerber/nlpedia-data/dumps/AA";
 		List<File> files = new ArrayList<File>(FileUtils.listFiles(new File(wikipediaPath), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE));  
+		System.out.println("Found " + files.size() + " files.");
 		
 		List<Thread> threadList = new ArrayList<Thread>();
 		
