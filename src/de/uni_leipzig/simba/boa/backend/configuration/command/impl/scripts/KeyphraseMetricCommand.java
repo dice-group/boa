@@ -52,13 +52,14 @@ public class KeyphraseMetricCommand implements Command {
 	public static void main(String[] args) throws IOException {
 
 		KeyphraseMetricCommand km = new KeyphraseMetricCommand();
+		km.execute();
 	}
 	
 	@Override
 	public void execute() {
 
 		System.out.println("Executing " + this.getClass().getName());
-		String wikipediaPath = "/home/gerber/nlpedia-data/dumps/AA";
+		String wikipediaPath = "/home/gerber/nlpedia-data/dumps/AA"; //"/Users/gerb/Documents/Temp/wikipedia/extracted";
 		List<File> files = new ArrayList<File>(FileUtils.listFiles(new File(wikipediaPath), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE));  
 		System.out.println("Found " + files.size() + " files.");
 		
@@ -99,7 +100,7 @@ public class KeyphraseMetricCommand implements Command {
 		private CommonsHttpSolrServer server = null;
 		private Writer writer = null;
 
-		public AnalyzeWikipediaThread(File file) throws IOException {
+		public AnalyzeWikipediaThread(File file) throws MalformedURLException {
 			
 			this.file = file;
 			
@@ -208,7 +209,7 @@ public class KeyphraseMetricCommand implements Command {
             data += "&" + URLEncoder.encode("text", "UTF-8") + "=" + URLEncoder.encode(text, "UTF-8");
 
             // Send data
-            URL url = new URL("http://localhost:4043/api");
+            URL url = new URL("http://139.18.2.164:4043/api");
             URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
