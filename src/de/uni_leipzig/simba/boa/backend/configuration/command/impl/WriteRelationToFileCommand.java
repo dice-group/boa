@@ -94,8 +94,8 @@ public class WriteRelationToFileCommand implements Command {
 			String placeObjectQuery =			createObjectPropertyQueryObject("http://dbpedia.org/ontology/Place", objectPropertyUri);
 //			String placeSubjectQuery =			createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Place", objectPropertyUri);
 			
-			getKnowledge(personObjectQuery, 0,		"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-//			getKnowledge(personSubjectQuery, 0,		"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+			getKnowledge(personObjectQuery, 0,			"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+//			getKnowledge(personSubjectQuery, 0,			"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
 			getKnowledge(organisationObjectQuery, 0,	"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
 //			getKnowledge(organisationSubjectQuery, 0,	"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
 			getKnowledge(placeObjectQuery, 0,			"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
@@ -153,7 +153,7 @@ public class WriteRelationToFileCommand implements Command {
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>  " +
 			"SELECT ?s ?sl <"+property+"> ?o ?ol ?range ?domain " +
 			"WHERE {" +
-//			 "	?s rdf:type <"+typeUri+"> . " +
+			 "	?s rdf:type <"+typeUri+"> . " +
 			 "  ?s rdfs:label ?sl . " +
 			 "	?s <"+property+"> ?o . " +
 			 "	?o rdfs:label ?ol ." +

@@ -13,9 +13,9 @@ import edu.stanford.nlp.ling.CoreAnnotations.AnswerAnnotation;
 
 public class DbpediaNerTaggerTest {
 
-	private static AbstractSequenceClassifier classifier = new NERClassifierCombiner(
-		CRFClassifier.getClassifierNoExceptions("/Users/gerb/Desktop/person-ner-model.ser.gz"),
-		CRFClassifier.getClassifierNoExceptions("/Users/gerb/Desktop/musical-artist-ner-model.ser.gz")); 
+//	private static AbstractSequenceClassifier classifier = new NERClassifierCombiner(
+//		CRFClassifier.getClassifierNoExceptions("/Users/gerb/Desktop/person-ner-model.ser.gz"),
+//		CRFClassifier.getClassifierNoExceptions("/Users/gerb/Desktop/musical-artist-ner-model.ser.gz")); 
 		
 		//CRFClassifier.getClassifierNoExceptions("/Users/gerb/Desktop/person-ner-model.ser.gz");
 	private static String[] testSentences = new String[]{
@@ -84,22 +84,22 @@ public class DbpediaNerTaggerTest {
 	
 	public static String recognizeEntitiesInString(String sentence) throws java.lang.NullPointerException {
 		
-		StringBuilder buffer = new StringBuilder();
-		
-		for ( List<CoreLabel> thisSentence : ((List<List<CoreLabel>>) classifier.classify(sentence)) ) {
-		
-			for ( CoreLabel word : thisSentence ) {
-				
-				if ( word.get(AnswerAnnotation.class).equals("O") ) {
-					
-					buffer.append(word.word() + NamedEntityRecognizer.DELIMITER + "O ");
-				}
-				else {
-					
-					buffer.append(word.word() + NamedEntityRecognizer.DELIMITER + word.get(AnswerAnnotation.class) + " ");
-				}
-			}
-		}
-		return buffer.toString();
+//		StringBuilder buffer = new StringBuilder();
+//		
+//		for ( List<CoreLabel> thisSentence : ((List<List<CoreLabel>>) classifier.classify(sentence)) ) {
+//		
+//			for ( CoreLabel word : thisSentence ) {
+//				
+//				if ( word.get(AnswerAnnotation.class).equals("O") ) {
+//					
+//					buffer.append(word.word() + NamedEntityRecognizer.DELIMITER + "O ");
+//				}
+//				else {
+//					
+//					buffer.append(word.word() + NamedEntityRecognizer.DELIMITER + word.get(AnswerAnnotation.class) + " ");
+//				}
+//			}
+//		}
+		return null;//buffer.toString();
 	}
 }

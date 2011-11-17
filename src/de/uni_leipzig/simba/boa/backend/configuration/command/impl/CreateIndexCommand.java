@@ -32,7 +32,7 @@ public class CreateIndexCommand implements Command {
 			
 			new FileIndexer(indexDirectory, overwriteIndex, ramBufferMaxSizeInMb);
 		}
-		catch (IOException e) {
+		catch (Exception e) {
 			
 			this.logger.fatal("Indexing went wrong.", e);
 			e.printStackTrace();

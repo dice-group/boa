@@ -37,7 +37,7 @@ public class StartScriptsCommand implements Command {
 		    		System.out.println("\t\t9. Create pattern index");
 		    		System.out.println("\t\t10. Create machine learning input");
 		    		System.out.println("\t\t11. Create surface forms");
-		    		System.out.println("\t\t12. Extract keywords from wikipedia");
+//		    		System.out.println("\t\t12. Extract keywords from wikipedia");
 		    		System.out.println("\t\t");
 		    		System.out.println("");
 		    		
@@ -123,11 +123,11 @@ public class StartScriptsCommand implements Command {
 							createSurfaceFormCommand.execute();
 							break;
 						
-						case 12:
-							
-							Command extractKeywordCommand = new KeyphraseMetricCommand();
-							extractKeywordCommand.execute();
-							break;
+//						case 12:
+//							
+//							Command extractKeywordCommand = new KeyphraseMetricCommand();
+//							extractKeywordCommand.execute();
+//							break;
 							
 						default: // option not supported
 							Command unkownOptionCommand = new UnknownOptionCommand(System.out);

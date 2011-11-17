@@ -17,11 +17,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.HiddenFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -31,6 +35,7 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
+import de.uni_leipzig.simba.boa.backend.nlp.SentenceDetection;
 import de.uni_leipzig.simba.boa.backend.util.ProgressBarUtil;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
@@ -42,9 +47,10 @@ import edu.stanford.nlp.process.DocumentPreprocessor;
 public class FileIndexer {
 	
 	private NLPediaLogger logger = new NLPediaLogger(FileIndexer.class);
-	private static NamedEntityRecognizer nerTagger = new NamedEntityRecognizer();
+//	private static NamedEntityRecognizer nerTagger = new NamedEntityRecognizer();
 
 	private IndexWriter writer;
+	private SentenceDetection sentenceDetection = new SentenceDetection();
 
 	/**
 	 * Constructor
@@ -55,10 +61,94 @@ public class FileIndexer {
 	 *            overwrite an existing index or append
 	 * @throws java.io.IOException
 	 */
-	public FileIndexer(String indexDir, boolean overwriteIndex, int ramBufferSizeInMb) throws IOException {
+	public FileIndexer(String indexDir, boolean overwriteIndex, int ramBufferSizeInMb) throws Exception {
 
 		// index the files
-		this.indexFileOrDirectory(indexDir, ramBufferSizeInMb);
+//		this.indexFileOrDirectory(indexDir, ramBufferSizeInMb);
+		this.createDocumentFormatDirectory(indexDir, ramBufferSizeInMb);
+	}
+
+	private void createDocumentFormatDirectory(String indexDir, int ramBufferSizeInMb) throws Exception {
+
+		Directory indexDirectory = FSDirectory.open(new File(indexDir));
+		Analyzer analyzer = new WhitespaceAnalyzer();
+
+		this.writer = new IndexWriter(indexDirectory, analyzer, true, IndexWriter.MaxFieldLength.LIMITED);
+		this.writer.setRAMBufferSizeMB(ramBufferSizeInMb);
+		
+		for (File file : FileUtils.listFiles(new File(NLPediaSettings.getInstance().getSetting("sentenceFileDirectory")), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE)) {
+			
+			this.logger.info("Indexing file " + file + " with index ");
+			System.out.println("\nIndexing file: " + file);
+			System.out.println("File size: " + (double) file.length() / (1024 * 1024) + "MB and ");
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+			List<IndexDocument> documents = new ArrayList<IndexDocument>();
+
+			IndexDocument document = new IndexDocument();
+			
+			int indexDocumentCount = 0;
+			
+			String line;
+			while ((line = br.readLine()) != null) {
+
+				if (line.startsWith("<doc")) {
+
+					document.uri = line.substring(line.lastIndexOf("url=\"") + 5, line.lastIndexOf("\">"));
+				}
+				else 
+					if (line.startsWith("</doc>")) {
+						// output.append(line); dont append </doc> to document
+						documents.add(document);
+						document = new IndexDocument();
+					}
+					else {
+						document.text.append(line);
+					}
+
+				if (documents.size() == 1000) {
+					
+					indexDocumentCount += 1000;
+					System.out.println("Indexed " + indexDocumentCount);
+					indexDocuments(documents);
+					documents = new ArrayList<IndexDocument>();
+				}
+			}
+		}
+		// close the index
+		this.writer.optimize();
+		this.writer.close();
+	}
+	
+	private void indexDocuments(List<IndexDocument> documents) throws CorruptIndexException, IOException {
+
+		for (IndexDocument doc : documents) {
+			
+			for (String sentence : doc.getSentences() ) {
+				
+				writer.addDocument(this.createLuceneDocument(doc.uri, sentence));
+			}
+		}
+	}
+
+	private Document createLuceneDocument(String uri, String sentence) {
+
+		Document luceneDocument = new Document();
+		luceneDocument.add(new Field("uri", uri, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
+		luceneDocument.add(new Field("sentence", sentence, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO));
+		luceneDocument.add(new Field("sentence-lc", sentence.toString().toLowerCase(), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
+		return luceneDocument;
+	}
+
+	class IndexDocument {
+
+		public String uri = "";
+		public StringBuffer text = new StringBuffer();
+		
+		public List<String> getSentences() {
+
+			return sentenceDetection.getSentences(text.toString(), NLPediaSettings.getInstance().getSetting("sentenceBoundaryDisambiguation"));
+		}
 	}
 
 	/**
@@ -158,7 +248,7 @@ public class FileIndexer {
 	 */
 	private static boolean sentenceContainsMoreThanTwoEntities(String line) {
 
-		String nerTaggedLine = nerTagger.recognizeEntitiesInString(line);
+		String nerTaggedLine = null;//nerTagger.recognizeEntitiesInString(line);
 		
 		if ( (nerTaggedLine.contains(NER_PERSON) && nerTaggedLine.contains(NER_ORGANISATION)) || 
 			 (nerTaggedLine.contains(NER_ORGANISATION) && nerTaggedLine.contains(NER_LOCATION))	|| 
