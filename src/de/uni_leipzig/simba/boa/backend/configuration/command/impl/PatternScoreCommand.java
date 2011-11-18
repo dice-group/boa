@@ -51,7 +51,7 @@ public class PatternScoreCommand implements Command {
 			// score each pattern
 			for ( Pattern pattern : mapping.getPatterns() ) {
 				
-				Double score = this.learner.getConfidence(pattern.getFeatures());
+				Double score = this.learner.getConfidence(mapping, pattern);
 				pattern.setConfidence(
 						score == Double.NaN || 
 						score == Double.NEGATIVE_INFINITY || 

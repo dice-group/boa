@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.Map;
 
 import org.encog.engine.network.activation.ActivationSigmoid;
@@ -23,7 +24,11 @@ import org.encog.util.obj.SerializeObject;
 import org.encog.util.simple.EncogUtility;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 
 /**
  * 
@@ -38,6 +43,7 @@ public class ConfidenceLearner {
 	public double maxHiddenToInputRatio = 3;
 	public int maxEpochs = 10000;
 
+	private static NLPediaSetup s = new NLPediaSetup(true);
 	private static final String NETWORK_FILE = NLPediaSettings.getInstance().getSetting("neuronal.network.network.file");
 	private static final String LEARN_FILE = NLPediaSettings.getInstance().getSetting("neuronal.network.learn.file");
 	private static final String EVAL_OUTPUT_FILE = NLPediaSettings.getInstance().getSetting("neuronal.network.eval.output.file");
@@ -120,12 +126,12 @@ public class ConfidenceLearner {
 	public void runEval(String inputFile, String outputFile, String networkFile, int n, int repetitions) {
 
 		MLDataSet[] allData = getData(inputFile, n);
-
+		
 		double bestAccuracy, accuracy;
 		StringBuffer output = new StringBuffer();
 		StringBuffer summary = new StringBuffer();
-		int inputSize = allData[0].getInputSize() - 2;
-
+		int inputSize = allData[0].getInputSize();
+		
 		// create header for eval table
 		output.append("Data Set\tHidden Size\tError Threshold");
 		for (int i = 0; i < repetitions; i++) {
@@ -143,6 +149,8 @@ public class ConfidenceLearner {
 		bestAccuracy = 0;
 		double avgAcc;
 
+		DecimalFormat format = new DecimalFormat("#.##");
+		
 		for (double error = maxError; error >= minError; error = error - errorDecrement) {
 			summary.append(error + "\t");
 			for (int hidden = inputSize; hidden < maxHiddenToInputRatio * inputSize + 1; hidden++) {
@@ -151,7 +159,7 @@ public class ConfidenceLearner {
 				for (int i = 0; i < n; i++) {
 					MLDataSet trainingData = merge(allData, i, n);
 					MLDataSet testData = allData[i];
-					output.append(i + "\t" + hidden + "\t" + error);
+					output.append(i + "\t" + hidden + "\t" + format.format(error));
 
 					for (int rep = 0; rep < repetitions; rep++) {
 						accuracy = trainAndEvaluate(trainingData, testData, inputSize, hidden, 1, error);
@@ -164,7 +172,7 @@ public class ConfidenceLearner {
 							}
 							bestAccuracy = accuracy;
 						}
-						output.append("\t" + accuracy * 100 + "%");
+						output.append("\t" + format.format(accuracy * 100) + "%");
 						avgAcc = avgAcc + accuracy;
 					}
 					output.append("\n");
@@ -235,13 +243,13 @@ public class ConfidenceLearner {
 			int counter = 0;
 			while (s != null) {
 				String split[] = s.split("\t");
-				MLData entry = new BasicMLData(split.length - 1);
-				for (int i = 4; i < split.length; i++) {
+				MLData entry = new BasicMLData(split.length - 4);
+				for (int i = 0; i < split.length - 4; i++) {
 					entry.add(i, Double.parseDouble(split[i]));
 				}
 				// maps each entry to the expected value
 				BasicMLData ideal = new BasicMLData(1);
-				ideal.add(0, new Double(split[3]));
+				ideal.add(0, new Double(split[10]));
 				data[counter % n].add(entry, ideal);
 				s = reader.readLine();
 				counter++;
@@ -383,9 +391,10 @@ public class ConfidenceLearner {
 
 		String split[] = s.split("\t");
 		MLData data = new BasicMLData(split.length);
-		for (int i = 2; i < split.length; i++) {
+		
+		for (int i = 0; i < split.length; i++)
 			data.add(i, Double.parseDouble(split[i]));
-		}
+		
 		return data;
 	}
 
@@ -446,6 +455,7 @@ public class ConfidenceLearner {
 		MLData data = getSingleEntry(entry);
 		return net.compute(data).getData(0);
 	}
+	
 
 	/**
 	 * Computes the score of an entry by using the network in the confidence
@@ -455,18 +465,15 @@ public class ConfidenceLearner {
 	 *            Entry
 	 * @return Confidence
 	 */
-	public double getConfidence(Map<Feature,Double> entry) {
+	public double getConfidence(PatternMapping mapping, Pattern pattern) {
 
-		MLData data = getSingleEntry(entry.toString());
+		MLData data = getSingleEntry(FeatureHelper.createNetworkTrainingFileLine(mapping, pattern));
 		return network.compute(data).getData(0);
 	}
 
 	public static void main(String args[]) {
-
+		
 		ConfidenceLearner dr = new ConfidenceLearner();
-
-		String input = "0.0\t0.0\t0.0\t0.0\t0.01866977829638273\t0.0\t0.0\t0.0016778523489932886\t0.039603960396039604";
-
-//		System.out.println(dr.getConfidence(input));
+//		System.out.println(dr.getConfidence("0.00000	1.00000	0.66164	0.67894	0.23239	0.06768	0.41889	0.50616	0.99823	0.00000"));
 	}
 }
