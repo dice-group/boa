@@ -64,8 +64,8 @@ public class FileIndexer {
 	public FileIndexer(String indexDir, boolean overwriteIndex, int ramBufferSizeInMb) throws Exception {
 
 		// index the files
-//		this.indexFileOrDirectory(indexDir, ramBufferSizeInMb);
-		this.createDocumentFormatDirectory(indexDir, ramBufferSizeInMb);
+		this.indexFileOrDirectory(indexDir, ramBufferSizeInMb);
+//		this.createDocumentFormatDirectory(indexDir, ramBufferSizeInMb);
 	}
 
 	private void createDocumentFormatDirectory(String indexDir, int ramBufferSizeInMb) throws Exception {
