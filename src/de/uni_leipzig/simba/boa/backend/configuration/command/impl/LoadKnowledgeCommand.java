@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.encog.util.file.FileUtil;
 
+import de.uni_leipzig.simba.boa.backend.NLPedia;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.crawl.RelationFinder;
@@ -210,6 +211,8 @@ public class LoadKnowledgeCommand implements Command {
 		
 		this.triples = new ArrayList<Triple>(tripleHashToTriple.values());
 		tripleDao.batchSaveOrUpdate(this.triples);
+		
+		NLPedia.getCache().put(NLPedia.CACHE_KEY_PATTERN_MAPPING_LIST, triples);
 		
 		System.out.println("Loading background knowledge took " + (new Date().getTime() - start) + "ms.");
 	}

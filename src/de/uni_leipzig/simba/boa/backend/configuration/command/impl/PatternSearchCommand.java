@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
+import de.uni_leipzig.simba.boa.backend.NLPedia;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
@@ -230,6 +231,8 @@ public class PatternSearchCommand implements Command {
 					pmd.createAndSavePatternMapping(mapping);
 				}
 			}
+			NLPedia.getCache().put(NLPedia.CACHE_KEY_PATTERN_MAPPING_LIST, this.mappings);
+			
 			System.out.println("All pattern mappings ("+this.mappings.size()+") saved to database! " + (System.currentTimeMillis() - startSaveDB) + "ms!");
 			this.logger.info("All pattern mappings saved to database! " + (System.currentTimeMillis() - startSaveDB) + "ms!");
 		}

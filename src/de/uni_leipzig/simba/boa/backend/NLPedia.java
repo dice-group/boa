@@ -1,5 +1,8 @@
 package de.uni_leipzig.simba.boa.backend;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
@@ -19,7 +22,9 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOption
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.WriteRelationToFileCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.WriteUrlsToFileCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.StartScriptsCommand;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 /**
  * 
@@ -27,6 +32,11 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
  */
 public class NLPedia {
 
+	public static final String CACHE_KEY_PATTERN_MAPPING_LIST = "CACHE_KEY_PATTERN_MAPPING_LIST";
+	public static final String CACHE_KEY_TRIPLE_LIST = "CACHE_KEY_TRIPLE_LIST";
+	
+	private static Map<String,Object> cache = new HashMap<String,Object>();
+	
 	/**
 	 * @param args
 	 */
@@ -79,7 +89,7 @@ public class NLPedia {
 						
 					case 4: // evaluate pattern
 						// calculate confidence, hand over the filtered patterns
-						Command patternConfidenceMeasureCommand = new PatternScoreFeatureCommand(null);
+						Command patternConfidenceMeasureCommand = new PatternScoreFeatureCommand((Map<Integer, PatternMapping>) cache.get(NLPedia.CACHE_KEY_PATTERN_MAPPING_LIST));
 						patternConfidenceMeasureCommand.execute();
 						break;
 						
@@ -89,7 +99,7 @@ public class NLPedia {
 						break;
 						
 					case 6: // start looking for patterns in index and write them to the db
-						Command patternSearchCommand = new PatternSearchCommand(null);
+						Command patternSearchCommand = new PatternSearchCommand((List<Triple>) cache.get(NLPedia.CACHE_KEY_TRIPLE_LIST));
 						patternSearchCommand.execute();
 						break;
 						
@@ -152,5 +162,21 @@ public class NLPedia {
 			}
 	    } 
 	    while ( option != 0 ); 
+	}
+
+	/**
+	 * @return the cache
+	 */
+	public static Map<String,Object> getCache() {
+
+		return cache;
+	}
+
+	/**
+	 * @param cache the cache to set
+	 */
+	public static void setCache(Map<String,Object> cache) {
+
+		NLPedia.cache = cache;
 	}
 }
