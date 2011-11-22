@@ -29,6 +29,7 @@ import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.jsoup.Jsoup;
 
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
@@ -64,8 +65,8 @@ public class FileIndexer {
 	public FileIndexer(String indexDir, boolean overwriteIndex, int ramBufferSizeInMb) throws Exception {
 
 		// index the files
-		this.indexFileOrDirectory(indexDir, ramBufferSizeInMb);
-//		this.createDocumentFormatDirectory(indexDir, ramBufferSizeInMb);
+//		this.indexFileOrDirectory(indexDir, ramBufferSizeInMb);
+		this.createDocumentFormatDirectory(indexDir, ramBufferSizeInMb);
 	}
 
 	private void createDocumentFormatDirectory(String indexDir, int ramBufferSizeInMb) throws Exception {
@@ -146,8 +147,9 @@ public class FileIndexer {
 		public StringBuffer text = new StringBuffer();
 		
 		public List<String> getSentences() {
-
-			return sentenceDetection.getSentences(text.toString(), NLPediaSettings.getInstance().getSetting("sentenceBoundaryDisambiguation"));
+			
+			String text = Jsoup.parse(this.text.toString()).text();
+			return sentenceDetection.getSentences(text, NLPediaSettings.getInstance().getSetting("sentenceBoundaryDisambiguation"));
 		}
 	}
 
