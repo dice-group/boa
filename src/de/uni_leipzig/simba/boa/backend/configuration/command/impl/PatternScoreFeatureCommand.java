@@ -31,11 +31,19 @@ public class PatternScoreFeatureCommand implements Command {
 		
 		if ( patternMappingList != null ){
 		
-			this.patternMappingList = new ArrayList<PatternMapping>(patternMappingList.values());
+			PatternScoreFeatureCommand.patternMappingList = new ArrayList<PatternMapping>(patternMappingList.values());
 		}
 		else {
 			
-			this.patternMappingList = this.patternMappingDao.findAllPatternMappings();
+			PatternScoreFeatureCommand.patternMappingList = this.patternMappingDao.findAllPatternMappings();
+			
+			for (PatternMapping mapping : PatternScoreFeatureCommand.patternMappingList) {
+				
+				for (Pattern pattern : mapping.getPatterns() ) {
+					
+					System.out.println(pattern.getNaturalLanguageRepresentation());
+				}
+			}
 		}
 		PatternScoreFeatureCommand.NUMBER_OF_PATTERN_MAPPINGS = (double) this.patternMappingList.size();
 	}
