@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.encog.util.file.FileUtil;
 
+import cern.colt.Arrays;
+
 import de.uni_leipzig.simba.boa.backend.NLPedia;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
@@ -150,7 +152,17 @@ public class LoadKnowledgeCommand implements Command {
 			}
 			
 			// create the property if not found
-			Property p = (Property) resourceMap.get(predicate); 
+			Property p = null;
+			try {
+				p = (Property) resourceMap.get(predicate);
+			}
+			catch (ClassCastException n) {
+				
+				// there are some errors in the relation file
+				System.out.println(Arrays.toString(line));
+				continue;
+			}
+			 
 			if ( p == null ) {
 				
 				p = new Property();
