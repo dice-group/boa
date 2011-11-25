@@ -36,16 +36,8 @@ public class PatternScoreFeatureCommand implements Command {
 		else {
 			
 			PatternScoreFeatureCommand.patternMappingList = this.patternMappingDao.findAllPatternMappings();
-			
-			for (PatternMapping mapping : PatternScoreFeatureCommand.patternMappingList) {
-				
-				for (Pattern pattern : mapping.getPatterns() ) {
-					
-					System.out.println(pattern.getNaturalLanguageRepresentation());
-				}
-			}
 		}
-		PatternScoreFeatureCommand.NUMBER_OF_PATTERN_MAPPINGS = (double) this.patternMappingList.size();
+		PatternScoreFeatureCommand.NUMBER_OF_PATTERN_MAPPINGS = (double) PatternScoreFeatureCommand.patternMappingList.size();
 	}
 	
 	public static void main(String[] args) {
@@ -61,7 +53,6 @@ public class PatternScoreFeatureCommand implements Command {
 		int numberOfConfidenceMeasureThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfConfidenceMeasureThreads")).intValue();
 		
 		// split the mappings into several lists
-//		List<List<PatternMapping>> patternMappingSubLists	= this.createPatternMappingSubLists(patternMappingList, numberOfConfidenceMeasureThreads);
 		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads) + 1 );
 		
 		int count= 0;

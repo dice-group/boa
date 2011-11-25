@@ -40,7 +40,9 @@ public class RelationFinder {
 				String line;
 				while ((line = br.readLine()) != null) {
 
-					resultsSet.add(line.split(" \\|\\|\\| "));
+					String[] lineParts = line.split(" \\|\\|\\| ");
+					if ( lineParts.length != 9 ) throw new Exception("Wrong file format, file does not have 9 but " + lineParts.length + " columns.");
+					resultsSet.add(lineParts);
 				}
 			}
 			catch (Exception e) {

@@ -23,7 +23,9 @@ import javax.persistence.Transient;
 import org.hibernate.engine.Cascade;
 
 import de.danielgerber.format.OutputFormatter;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Language;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 
 /**
@@ -512,31 +514,32 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 
 		for ( Feature feature : Feature.values() ) {
 			
-			// exclude everything which is not activated
-			if ( feature.useForPatternFeatureLearning() ) {
+			if ( feature.getSupportedLanguages().contains(NLPediaSettings.getInstance().getSystemLanguage()) ) {
 				
-				System.out.println(feature);
-				
-				// non zero to one values have to be normalized
-				if ( !feature.isZeroToOneValue() ) {
+				// exclude everything which is not activated
+				if ( feature.useForPatternFeatureLearning() ) {
 					
-					Double maximum = 0D;
-					// take every mapping into account to find the maximum value
-					if ( feature.needsGlobalNormalization() ) {
+					// non zero to one values have to be normalized
+					if ( !feature.isZeroToOneValue() ) {
 						
-						maximum = FeatureHelper.calculateGlobalMaximum(feature);
+						Double maximum = 0D;
+						// take every mapping into account to find the maximum value
+						if ( feature.needsGlobalNormalization() ) {
+							
+							maximum = FeatureHelper.calculateGlobalMaximum(feature);
+						}
+						// only use the current mapping to find the maximum
+						else {
+							
+							maximum = FeatureHelper.calculateLocalMaximum(mapping, feature);
+						}
+						output.append(OutputFormatter.format((this.features.get(feature) / maximum), "0.00000") + FEATURE_FILE_COLUMN_SEPARATOR);
 					}
-					// only use the current mapping to find the maximum
+					// we dont need to normalize a 0-1 value
 					else {
 						
-						maximum = FeatureHelper.calculateLocalMaximum(mapping, feature);
+						output.append(OutputFormatter.format(this.features.get(feature), "0.00000") + FEATURE_FILE_COLUMN_SEPARATOR);
 					}
-					output.append(OutputFormatter.format((this.features.get(feature) / maximum), "0.00000") + FEATURE_FILE_COLUMN_SEPARATOR);
-				}
-				// we dont need to normalize a 0-1 value
-				else {
-					
-					output.append(OutputFormatter.format(this.features.get(feature), "0.00000") + FEATURE_FILE_COLUMN_SEPARATOR);
 				}
 			}
 		}

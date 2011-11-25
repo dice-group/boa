@@ -203,7 +203,7 @@ public class LoadKnowledgeCommand implements Command {
 			
 			// create and save the triple
 			Triple triple = new Triple();
-			triple.setCorrect(true);
+			triple.setCorrect(true); // indicates knowledge has been fed in as background knowledge
 			triple.setSubject(sub);
 			triple.setProperty(p);
 			triple.setObject(obj);

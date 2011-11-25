@@ -21,3 +21,5 @@ syntax: regexp
 nlpedia.log*
 syntax: regexp
 nlpedia.debug*
+syntax: regexp
+^WebContent/WEB-INF/data/training/ml/network$

@@ -25,13 +25,13 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.HiddenFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.apache.commons.lang3.StringUtils;
 
 import weka.core.tokenizers.NGramTokenizer;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import edu.stanford.nlp.util.StringUtils;
 
 /**
  * This thing needs at least 4GB of RAM.
@@ -61,9 +61,9 @@ public class CreateSurfaceFormCommand implements Command {
 				new File(directory.getAbsolutePath().substring(0, directory.getAbsolutePath().lastIndexOf("/")) + "/surface/"+ lastPart + "/").mkdir();
 				
 				Set<String> linesToWrite = new HashSet<String>();
-				Writer writer =  new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)));
+				Writer writer =  new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName, true),"UTF8"));
 				
-				BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(f))));
+				BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
 				
 				String line;
 				while ((line = br.readLine()) != null) {
@@ -74,7 +74,7 @@ public class CreateSurfaceFormCommand implements Command {
 					// some labels contain new line characters
 					if ( lineParts.length != 7 ) {
 						
-//						System.out.println(line);
+						System.out.println(line);
 						continue;
 					}
 					
@@ -82,7 +82,7 @@ public class CreateSurfaceFormCommand implements Command {
 					String secondUri	= lineParts[3];
 					
 					// we found labels for the resource in the surface form file
-					if ( urisToLabels.get(firstUri) != null ) {
+					if ( urisToLabels.containsKey(firstUri) ) {
 						
 						lineParts[1] = lineParts[1] + " ||| " + StringUtils.join(urisToLabels.get(firstUri), "_&_").toLowerCase();
 					}
@@ -97,7 +97,7 @@ public class CreateSurfaceFormCommand implements Command {
 						if ( lineParts[3].startsWith("http://") ) {
 							
 							// we found labels for the resource in the surface form file
-							if ( urisToLabels.get(secondUri) != null ) {
+							if ( urisToLabels.containsKey(secondUri)) {
 								
 								Set<String> labels = urisToLabels.get(secondUri);
 								String firstLabel = labels.iterator().next();
@@ -135,7 +135,7 @@ public class CreateSurfaceFormCommand implements Command {
 						if ( lineParts[3].startsWith("http://") ) {
 							
 							// we found labels for the resource in the surface form file
-							if ( urisToLabels.get(secondUri) != null ) {
+							if ( urisToLabels.containsKey(secondUri) ) {
 								
 								lineParts[4] = lineParts[4] + " ||| " + StringUtils.join(urisToLabels.get(secondUri), "_&_").toLowerCase();
 							}
@@ -164,8 +164,25 @@ public class CreateSurfaceFormCommand implements Command {
 						}
 					}
 					
+					String  temp1 = StringUtils.join(lineParts, " ||| ");
+					String[] temp = temp1.split(" \\|\\|\\| ");
+//					System.out.println(temp1);
+					if ( temp.length != 9 ) {
+						System.out.println(temp.length +": "+Arrays.toString(temp));
+						continue;
+					}
+					if ( !temp[0].startsWith("http://") ) System.out.println(1 +" "+Arrays.toString(temp));
+					if ( temp[1].startsWith("http://") ) System.out.println(2 +" "+Arrays.toString(temp));
+					if ( temp[2].startsWith("http://") ) System.out.println(3 +" "+Arrays.toString(temp));
+					if ( !temp[3].startsWith("http://") ) System.out.println(4 +" "+Arrays.toString(temp));
+					if ( !temp[4].startsWith("http://") ) System.out.println(5 +" "+Arrays.toString(temp));
+					if ( temp[5].startsWith("http://") ) System.out.println(6 +" "+Arrays.toString(temp));
+					if ( temp[6].startsWith("http://") ) System.out.println(7 +" "+Arrays.toString(temp));
+					if ( !temp[7].startsWith("http://") ) System.out.println(8 +" "+Arrays.toString(temp));
+					if ( !temp[8].startsWith("http://") ) System.out.println(9 +" "+Arrays.toString(temp));
+					
 					// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN				
-					linesToWrite.add(StringUtils.join(lineParts, " ||| "));
+//					linesToWrite.add(StringUtils.join(lineParts, " ||| "));
 				}
 				
 				// only write unique lines to file

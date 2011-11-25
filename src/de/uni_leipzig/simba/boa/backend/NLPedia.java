@@ -89,7 +89,8 @@ public class NLPedia {
 						
 					case 4: // evaluate pattern
 						// calculate confidence, hand over the filtered patterns
-						Command patternConfidenceMeasureCommand = new PatternScoreFeatureCommand((Map<Integer, PatternMapping>) cache.get(NLPedia.CACHE_KEY_PATTERN_MAPPING_LIST));
+//						Command patternConfidenceMeasureCommand = new PatternScoreFeatureCommand((Map<Integer, PatternMapping>) cache.get(NLPedia.CACHE_KEY_PATTERN_MAPPING_LIST));
+						Command patternConfidenceMeasureCommand = new PatternScoreFeatureCommand(null);
 						patternConfidenceMeasureCommand.execute();
 						break;
 						
