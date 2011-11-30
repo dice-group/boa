@@ -63,7 +63,7 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity 
 	@Override
 	public String toString() {
 
-		return "Triple [" + subject.uri + ", " + property.uri + ", " + object.uri + ", " + OutputFormatter.format(confidence, "#.##") + " ]";
+		return "[" + subject.uri + "\t" + property.uri + "\t" + object.uri + "]";//, " + OutputFormatter.format(confidence, "#.##") + " ]";
 	}
 
 	/**

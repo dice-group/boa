@@ -40,6 +40,11 @@ public class Property extends Resource {
 	private String rdfsDomain;
 	private String synsets;
 	private PatternMapping patternMapping;
+
+	public Property(String uri) {
+
+		super(uri);
+	}
 	
 	public Property(String uri, String label, String rdfsRange, String rdfsDomain) {
 

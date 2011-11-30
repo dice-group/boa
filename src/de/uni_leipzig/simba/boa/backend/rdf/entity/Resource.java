@@ -21,6 +21,15 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entit
 	/**
 	 * 
 	 * @param uri
+	 */
+	public Resource(String uri){
+		
+		this.uri = uri;
+	}
+	
+	/**
+	 * 
+	 * @param uri
 	 * @param label
 	 */
 	public Resource(String uri, String label){
