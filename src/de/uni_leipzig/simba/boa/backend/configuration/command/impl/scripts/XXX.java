@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.test.scripts;
+package de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
