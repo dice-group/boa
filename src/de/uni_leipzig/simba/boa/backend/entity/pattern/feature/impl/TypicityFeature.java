@@ -116,7 +116,17 @@ public class TypicityFeature implements Feature {
 				for (String foundString : sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0, this.maxNumberOfEvaluationSentences) : sentences) {
 					
 					nerTagged = this.ner.recognizeEntitiesInString(this.replaceBrackets(foundString));
-					segmentedFoundString = this.segmentString(foundString);
+					
+					// this is a quick hack for ISSUE 4 (http://code.google.com/p/boa/issues/detail?id=4) TODO FIX
+					if ( NLPediaSettings.getInstance().getSetting("hibernateConnectionUrl").contains("wiki") ) {
+						
+						segmentedFoundString = foundString;
+					}
+					else {
+					
+						segmentedFoundString = this.segmentString(foundString);
+					}
+					
 					segmentedPattern = this.segmentString(patternWithOutVariables);
 					
 					if ( nerTagged != null && segmentedFoundString != null && segmentedPattern != null &&
@@ -167,6 +177,9 @@ public class TypicityFeature implements Feature {
 				rangeCorrectness = (double) correctRange / (double) sentences.size();
 				
 				double typicity = ((domainCorrectness + rangeCorrectness) / 2) * Math.log(sentences.size() + 1);
+				
+				System.out.println(mapping.getProperty().getUri()+": " + pattern.getNaturalLanguageRepresentation() + ": " + typicity);
+				System.out.println("Domain: " + mapping.getProperty().getRdfsDomain() + " Range:" + mapping.getProperty().getRdfsRange());
 				
 				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_CORRECT_DOMAIN_NUMBER, domainCorrectness >= 0 ? domainCorrectness : 0);
 				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_CORRECT_RANGE_NUMBER, rangeCorrectness >= 0 ? rangeCorrectness : 0);
