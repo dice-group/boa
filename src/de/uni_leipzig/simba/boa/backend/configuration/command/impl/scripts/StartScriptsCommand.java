@@ -9,7 +9,6 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.LoadKnowledge
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.ResetPatternCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOptionCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.test.scripts.XXX;
 
 
 public class StartScriptsCommand implements Command {
