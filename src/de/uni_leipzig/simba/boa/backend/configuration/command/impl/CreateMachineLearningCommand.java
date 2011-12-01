@@ -42,7 +42,7 @@ public class CreateMachineLearningCommand implements Command {
 			List<Pattern> patterns = new ArrayList<Pattern>(mapping.getPatterns()); 
 			Collections.shuffle(patterns);//PatternUtil.getTopNPattern(mapping, PatternSelectionStrategy.ALL, 5, null);
 			
-			for ( int i = 0; i < 5 && i < patterns.size() ; i++) {
+			for ( int i = 0; i < 7 && i < patterns.size() ; i++) {
 				
 				pairs.add(new Pair(mapping, patterns.get(i)));
 			}
