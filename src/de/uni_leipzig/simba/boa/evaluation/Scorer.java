@@ -102,7 +102,7 @@ public class Scorer {
 		System.out.println(" * *Number of distinct properties by annotator 2:* " + propertiesToOccurrenceByAnnotatorTwo.size());
 		System.out.println("----");
 		System.out.println(" * *Number of triples per sentence (non empty) for annotator 1:* " + new DecimalFormat("#0.00").format((double)tripleCountOne / (double)(annotatorOneFile.size() - annotatorOneNotAnnotatedCount)));
-		System.out.println(" * *Number of triples per sentence (non empty) for annotator 1:* " + new DecimalFormat("#0.00").format((double)tripleCountTwo / (double)(annotatorTwoFile.size() - annotatorTwoNotAnnotatedCount)));
+		System.out.println(" * *Number of triples per sentence (non empty) for annotator 2:* " + new DecimalFormat("#0.00").format((double)tripleCountTwo / (double)(annotatorTwoFile.size() - annotatorTwoNotAnnotatedCount)));
 		System.out.println("----");
 		System.out.println(" * *Number of same annotations:* " + sameAnnotationCount);
 		System.out.println("----");

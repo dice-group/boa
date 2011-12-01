@@ -85,6 +85,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	@Override
 	public void init() {
 		
+		System.out.println("Total memory available in MB: " + Runtime.getRuntime().totalMemory() / NLPediaSettings.MEGABYTE);;
 		buildMainLayout();
 	}
 	
@@ -175,7 +176,13 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				HibernateFactory.changeConnection(BoaFrontendApplication.CURRENT_DATABASE);
 				
 				PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+				
+				long start = System.currentTimeMillis();
+				NLPediaSettings.getInstance().printMemoryUsage();
 				this.currentPatternMapping = pmDao.findPatternMappingByUri(uri);
+				System.out.println("pmDao.findPatternMappingByUri() took: " + (System.currentTimeMillis() - start) + "ms.");
+				NLPediaSettings.getInstance().printMemoryUsage();
+				
 //				this.currentPatternMapping = new PatternMapping("http://dbpedia.org/ontology/capital", "capital", "http://dbpedia.org/ontology/PopulatedPlace", "http://dbpedia.org/ontology/City");
 
 				GridLayout gridLayout = new GridLayout(4,4);
@@ -210,8 +217,13 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				vPanel.setSplitPosition(25);
 				
 				try {
-					
+
+					start = System.currentTimeMillis();
+					NLPediaSettings.getInstance().printMemoryUsage();
 					this.patternTable = new PatternTable(this, new PatternContainer(this.currentPatternMapping));
+					System.out.println("Loading PatternContainer took: " + (System.currentTimeMillis() - start) + "ms.");
+					NLPediaSettings.getInstance().printMemoryUsage();
+					
 //					this.patternTable = new PatternTable(this, PatternContainer.createTestPatternContainer());
 					vPanel.setSecondComponent(this.patternTable);
 				}
@@ -271,7 +283,11 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		else if (event.getSource() == this.patternTable ) {
 			
 			Pattern pattern = (Pattern) event.getItemId();
+			long start = System.currentTimeMillis();
+			NLPediaSettings.getInstance().printMemoryUsage();
 	        this.getMainWindow().addWindow(new PatternWindow(this, pattern, this.currentPatternMapping));
+	        System.out.println("Loading Pattern Window took: " + (System.currentTimeMillis() - start) + "ms.");
+	        NLPediaSettings.getInstance().printMemoryUsage();
 		}
 	}
 	
@@ -286,7 +302,12 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		this.setMainWindow(new Window("Boa Frontend"));
 		this.setTheme("boa");
 		
+		long start = System.currentTimeMillis();
+		NLPediaSettings.getInstance().printMemoryUsage();
 		this.tree = new DatabaseNavigationTree(this);
+		System.out.println("building database nav tree took: " + (System.currentTimeMillis() - start) + "ms.");
+		NLPediaSettings.getInstance().printMemoryUsage();
+		
 		this.tripleTree = new DatabaseNavigationTree(this);
 		this.rdfSparqlTree = new RdfModelTree(this);
 		

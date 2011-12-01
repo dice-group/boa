@@ -109,11 +109,12 @@ public class TypicityFeature implements Feature {
 				String patternWithOutVariables = this.segmentString(pattern.getNaturalLanguageRepresentationWithoutVariables());
 				
 				final List<String> sentences = new ArrayList<String>(patternSearcher.getExactMatchSentences(patternWithOutVariables, maxNumberOfEvaluationSentences));
+				List<String> sentencesToEvaluate = sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0, this.maxNumberOfEvaluationSentences) : sentences;
 				
 				double correctDomain	= 0;
 				double correctRange		= 0;
 				
-				for (String foundString : sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0, this.maxNumberOfEvaluationSentences) : sentences) {
+				for (String foundString : sentencesToEvaluate) {
 					
 					nerTagged = this.ner.recognizeEntitiesInString(this.replaceBrackets(foundString));
 					
@@ -173,13 +174,10 @@ public class TypicityFeature implements Feature {
 					}
 				}
 			
-				domainCorrectness = (double) correctDomain / (double) sentences.size();
-				rangeCorrectness = (double) correctRange / (double) sentences.size();
+				domainCorrectness = (double) correctDomain / (double) sentencesToEvaluate.size();
+				rangeCorrectness = (double) correctRange / (double) sentencesToEvaluate.size();
 				
 				double typicity = ((domainCorrectness + rangeCorrectness) / 2) * Math.log(sentences.size() + 1);
-				
-				System.out.println(mapping.getProperty().getUri()+": " + pattern.getNaturalLanguageRepresentation() + ": " + typicity);
-				System.out.println("Domain: " + mapping.getProperty().getRdfsDomain() + " Range:" + mapping.getProperty().getRdfsRange());
 				
 				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_CORRECT_DOMAIN_NUMBER, domainCorrectness >= 0 ? domainCorrectness : 0);
 				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_CORRECT_RANGE_NUMBER, rangeCorrectness >= 0 ? rangeCorrectness : 0);

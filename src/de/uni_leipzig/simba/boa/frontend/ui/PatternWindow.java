@@ -96,8 +96,6 @@ public class PatternWindow extends Window {
 		hLayout2.setSpacing(true);
 		hLayout2.setWidth("350px");
 
-		System.out.println(this.pattern.getFeatures().get(Feature.WORDNET_DISTANCE));
-		
 		// similarity
 		HorizontalLayout hLayout3 = new HorizontalLayout();
 		Label simLabel = new Label("<b>Similarity: </b>", Label.CONTENT_XHTML);
@@ -109,8 +107,6 @@ public class PatternWindow extends Window {
 		hLayout3.setSpacing(true);
 		hLayout3.setWidth("350px");
 		
-		System.out.println("asdasdsd"+this.pattern.getFeatures().get(Feature.SUPPORT_NUMBER_OF_MAX_PAIRS_LEARNED_FROM));
-
 		// support
 		HorizontalLayout hLayout4 = new HorizontalLayout();
 		Label supportLabel = new Label("<b>Support_Max: </b>", Label.CONTENT_XHTML);
@@ -398,8 +394,6 @@ public class PatternWindow extends Window {
 			//TODO
 			
 		}
-		
-		
 		
 		String pattern = this.pattern.getNaturalLanguageRepresentationWithoutVariables();
 		Iterator<String> iter = PatternUtil.getLuceneDocuments(BoaFrontendApplication.CURRENT_INDEX_DIR, this.pattern.retrieveLuceneDocIdsAsList()).iterator();

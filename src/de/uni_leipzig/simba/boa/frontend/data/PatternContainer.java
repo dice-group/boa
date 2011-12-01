@@ -18,12 +18,12 @@ public class PatternContainer extends BeanItemContainer<Pattern> implements Seri
 			
 			for ( Pattern p : pm.getPatterns()) {
 				
-				if ( p.isUseForPatternEvaluation() ) {
+//				if ( p.isUseForPatternEvaluation() ) {
 					//here we can switch between different confidence functions and therewith overwrite the value from the database
 //					double confidence = p.getSimilarity() + p.getTypicity() + p.getSupport() + p.getSpecificity(); 
 //					p.setConfidence(confidence);
 					this.addItem(p);
-				}
+//				}
 			}
 		}
 	}

@@ -53,12 +53,13 @@ public class XXX implements Command {
 	
 	public static void main(String[] args) throws UnsupportedEncodingException, FileNotFoundException, IOException {
 
+		createEvalFiles();
 	}
 	
 	private static void createEvalFiles() throws IOException {
 		
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("/Users/gerb/en_eval_sentences_2k.txt"))));
-		Writer writer = new PrintWriter(new BufferedWriter(new FileWriter("/Users/gerb/Eval_Haack_Additional.txt")));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("/Users/gerb/Evaluation_2_Upmeier_1000.txt"))));
+		Writer writer = new PrintWriter(new BufferedWriter(new FileWriter("/Users/gerb/Evaluation_2_Upmeier_1000.txt.1")));
 		
 		String line;
 		int i = 1;

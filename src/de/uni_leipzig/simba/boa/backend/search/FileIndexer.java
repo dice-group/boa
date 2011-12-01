@@ -34,6 +34,7 @@ import org.jsoup.Jsoup;
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
 import de.uni_leipzig.simba.boa.backend.nlp.SentenceDetection;
@@ -47,8 +48,9 @@ import edu.stanford.nlp.process.DocumentPreprocessor;
  */
 public class FileIndexer {
 	
+	private static NLPediaSetup settings = new NLPediaSetup(true);
 	private NLPediaLogger logger = new NLPediaLogger(FileIndexer.class);
-//	private static NamedEntityRecognizer nerTagger = new NamedEntityRecognizer();
+	private static NamedEntityRecognizer nerTagger = new NamedEntityRecognizer();
 
 	private IndexWriter writer;
 	private SentenceDetection sentenceDetection = new SentenceDetection();
@@ -250,7 +252,7 @@ public class FileIndexer {
 	 */
 	private static boolean sentenceContainsMoreThanTwoEntities(String line) {
 
-		String nerTaggedLine = null;//nerTagger.recognizeEntitiesInString(line);
+		String nerTaggedLine = nerTagger.recognizeEntitiesInString(line);
 		
 		if ( (nerTaggedLine.contains(NER_PERSON) && nerTaggedLine.contains(NER_ORGANISATION)) || 
 			 (nerTaggedLine.contains(NER_ORGANISATION) && nerTaggedLine.contains(NER_LOCATION))	|| 
@@ -317,7 +319,7 @@ public class FileIndexer {
 		
 //		createFile();
 		
-		File file = new File("/Users/gerb/en_abstracts_sentences.txt");
+		File file = new File("/Users/gerb/Development/workspaces/experimental/en_abstracts_sentences.txt");
 		Random randomGenerator = new Random();
 		
 		// calculate the lines to get randomly from the file
@@ -332,10 +334,12 @@ public class FileIndexer {
 	    	lines.add(y);
 	    }
 	    Collections.sort(lines);
-	    System.out.println("Random lines calculated!");
+	    System.out.println(lines.size() + " random lines calculated!");
 	    
 	    String line;
 	    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+	    
+	    List<String> evalSentences = FileUtil.readFileInList("/Users/gerb/Development/workspaces/experimental/en_eval_sentences_2k.txt", "UTF-8");
 	    
 	    List<String> sentencesToWrite = new ArrayList<String>();
 	    for ( int i = 0, j = 0 ; i < linesOfFile ; i++ ) {
@@ -346,8 +350,14 @@ public class FileIndexer {
 	    		
 	    		if ( line.length() < 128 && line.length() > 80 && sentenceContainsMoreThanTwoEntities(line) ) {
 	    			
-//	    			System.out.println(line);
-	    			sentencesToWrite.add(line);
+	    			if (!evalSentences.contains(line) ) {
+
+	    				sentencesToWrite.add(line);
+	    			}
+	    			else {
+	    				
+	    				System.out.println("Line already in the eval file: > " + line);
+	    			}
 	    		}
 	    		j++;
 	    	}

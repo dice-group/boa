@@ -13,6 +13,9 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
  */
 public class NLPediaSettings {
 
+	// needed for logging memory consumption
+	public static final long MEGABYTE = 1024L * 1024L;
+	
 	private NLPediaLogger logger = new NLPediaLogger(NLPediaSettings.class);
 	private Map<String, String> nlpediaSettings	= null;
 	private Map<String, Object> complexSettings = null;
@@ -112,5 +115,12 @@ public class NLPediaSettings {
 			
 			this.logger.info("\t" + entry.getKey() + ": " + entry.getValue());
 		}
+	}
+	
+	public void printMemoryUsage() {
+		
+		long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+		System.out.println("Used memory is megabytes: " + (memory / NLPediaSettings.MEGABYTE));
+		this.logger.info("Used memory is megabytes: " + (memory / NLPediaSettings.MEGABYTE));
 	}
 }

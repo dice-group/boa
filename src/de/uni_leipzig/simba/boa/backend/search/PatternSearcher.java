@@ -65,8 +65,6 @@ public class PatternSearcher {
 
 		this.results = new ArrayList<SearchResult>();
 		this.hits = null;
-
-		this.posTagger = new PosTagger();
 	}
 	
 	public static PatternSearcher getInstance(String indexDir) {
@@ -248,6 +246,7 @@ public class PatternSearcher {
 					result.setSecondLabel(triple.getSubject().getLabel());
 				}
 				result.setIndexId(hit.doc);
+				if ( this.posTagger == null ) this.posTagger = new PosTagger();
 				result.setPosTags(this.posTagger.getPosTagsForSentence(match.substring(0, match.length() - 3).substring(3), triple.getSubject().getLabel(), triple.getObject().getLabel()));
 				this.results.add(result);
 			}

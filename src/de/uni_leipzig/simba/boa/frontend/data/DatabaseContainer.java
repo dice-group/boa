@@ -16,7 +16,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 	public static final Object DISPLAY_NAME			= "name";
 	public static final Object PATTERN_MAPPING_ID	= "pm_id";
 	
-	public static final String[] DATABASE_IDS = new String[]{"en_wiki_exp","en_news_exp","en_wiki_qa"};//NLPediaSettings.getInstance().getSetting("frontend.databases").split(",");
+	public static final String[] DATABASE_IDS = new String[]{"en_wiki_exp","de_wiki_exp","en_news_exp","de_news_exp"};//NLPediaSettings.getInstance().getSetting("frontend.databases").split(",");
 	
 	private PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 	
@@ -38,7 +38,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 			item.getItemProperty(DISPLAY_NAME).setValue(database);
 			this.setChildrenAllowed(database, true);
 			
-			System.out.println(pmDao.findPatternMappingsWithPatterns()); 
+//			System.out.println(pmDao.findPatternMappingsWithPatterns()); 
 			
 			for (String uri : pmDao.findPatternMappingsWithPatterns() ) {
 				

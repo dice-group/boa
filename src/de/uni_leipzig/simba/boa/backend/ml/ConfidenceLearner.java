@@ -44,10 +44,11 @@ public class ConfidenceLearner {
 	public int maxEpochs = 10000;
 
 	private static NLPediaSetup s = new NLPediaSetup(true);
-	private static final String NETWORK_FILE = NLPediaSettings.getInstance().getSetting("neuronal.network.network.file");
-	private static final String LEARN_FILE = NLPediaSettings.getInstance().getSetting("neuronal.network.learn.file");
-	private static final String EVAL_OUTPUT_FILE = NLPediaSettings.getInstance().getSetting("neuronal.network.eval.output.file");
-	private static final Integer N_FOLD_CROSS_VALIDATION = Integer.valueOf(NLPediaSettings.getInstance().getSetting("neuronal.network.n.fold.cross.validation"));
+	private static final Integer N_FOLD_CROSS_VALIDATION	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("neuronal.network.n.fold.cross.validation"));
+	private static final String NETWORK_DIRECTORY			= NLPediaSettings.getInstance().getSetting("neural.network.network.directory");
+	private static final String LEARN_FILE					= NETWORK_DIRECTORY + "network_learn.txt";
+	private static final String EVAL_OUTPUT_FILE			= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
+	private static final String NETWORK_FILE				= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
 
 	/**
 	 * Default constructor
