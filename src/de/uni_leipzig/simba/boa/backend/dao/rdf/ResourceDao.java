@@ -20,7 +20,7 @@ public class ResourceDao extends AbstractDao {
 	 * @param resource
 	 * @return 
 	 */
-    public Resource createAndSaveResource(Resource resource) {
+    public synchronized Resource createAndSaveResource(Resource resource) {
     	
         return (Resource) super.saveOrUpdateEntity(resource);
     }
@@ -76,7 +76,7 @@ public class ResourceDao extends AbstractDao {
 		return (Resource) super.saveOrUpdateEntity(new Resource());
 	}
 
-	public Resource findResourceByUri(String subject) {
+	public synchronized Resource findResourceByUri(String subject) {
 
 		session = HibernateFactory.getSessionFactory().openSession();
 		Criteria criteria = session.createCriteria(Resource.class);
