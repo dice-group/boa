@@ -55,7 +55,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 			if ( patterns != null && patterns.size() > 0 ) {
 				
 				// take the top n scored patterns
-				List<Pattern> patternList	= PatternUtil.getTopNPattern(patterns, PatternSelectionStrategy.ALL, 2, 0.7D);
+				List<Pattern> patternList	= PatternUtil.getTopNPattern(patterns, PatternSelectionStrategy.ALL, Integer.valueOf(NLPediaSettings.getInstance().getSetting("top.n.pattern")), 0.7D);
 				
 				this.logger.info(String.format("Creating knowledge for mapping: %s and top-%s patterns", mapping.getProperty().getUri(), patternList.size()));
 
@@ -73,7 +73,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 							// there will never be a left argument if the sentence begins with the pattern
 							if ( sentence.toLowerCase().startsWith(pattern.getNaturalLanguageRepresentationWithoutVariables().toLowerCase())) continue;
 							
-							this.logger.info("\t\t" + sentence);
+							this.logger.debug("\t\t" + sentence);
 
 							String nerTaggedSentence = ner.recognizeEntitiesInString(sentence);
 
