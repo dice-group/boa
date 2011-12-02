@@ -50,14 +50,14 @@ public class PatternUtil {
 	 * @param scoreThreshold - score threshold for patterns, inclusive
 	 * @return
 	 */
-	public static List<Pattern> getTopNPattern(PatternMapping mapping, PatternSelectionStrategy strategy, Integer topN, Double scoreThreshold) {
+	public static List<Pattern> getTopNPattern(Set<Pattern> patterns, PatternSelectionStrategy strategy, Integer topN, Double scoreThreshold) {
 
 		List<Pattern> patternList = new ArrayList<Pattern>();
 		
 		// if there is a threshold given, only use those patterns which abide it
 		if ( scoreThreshold != null ) {
 
-			for (Pattern p : mapping.getPatterns()) {
+			for (Pattern p : patterns) {
 
 				if ( p.getConfidence() >= scoreThreshold ) {
 
@@ -66,7 +66,7 @@ public class PatternUtil {
 			}
 		}
 		// if not just take all patterns
-		else patternList = new ArrayList<Pattern>(mapping.getPatterns());
+		else patternList = new ArrayList<Pattern>(patterns);
 				
 		if ( strategy == PatternUtil.PatternSelectionStrategy.ALL ) {
 			

@@ -37,9 +37,7 @@ public class IterationCommand implements Command {
 			patternScoreCommand.execute();
 			
 			// generate rdf
-			List<PatternMapping> patternMappings = ((PatternScoreCommand) patternScoreCommand).getPatternMappingList();
-			Map<Integer,Triple> triples = ((PatternSearchCommand) patternSearchCommand).getTriples();
-			Command createKnowledgeCommand = new CreateKnowledgeCommand(patternMappings, triples);
+			Command createKnowledgeCommand = new CreateKnowledgeCommand(((PatternScoreCommand) patternScoreCommand).getPatternMappingList());
 			createKnowledgeCommand.execute();
 			
 			System.out.println("Iteration " + CURRENT_ITERATION_NUMBER + " took " + ((new Date().getTime() - startIteration) / 1000) + "s." );

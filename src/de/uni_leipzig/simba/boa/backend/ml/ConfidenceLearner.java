@@ -36,14 +36,14 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHel
  */
 public class ConfidenceLearner {
 
-	BasicNetwork network;
+	static BasicNetwork network;
 	public double maxError = 0.2;
 	public double errorDecrement = 0.05;
 	public double minError = 0.05;
 	public double maxHiddenToInputRatio = 3;
 	public int maxEpochs = 10000;
 
-	private static NLPediaSetup s = new NLPediaSetup(true);
+//	private static NLPediaSetup s = new NLPediaSetup(true);
 	private static final Integer N_FOLD_CROSS_VALIDATION	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("neuronal.network.n.fold.cross.validation"));
 	private static final String NETWORK_DIRECTORY			= NLPediaSettings.getInstance().getSetting("neural.network.network.directory");
 	private static final String LEARN_FILE					= NETWORK_DIRECTORY + "network_learn.txt";
@@ -250,7 +250,9 @@ public class ConfidenceLearner {
 				}
 				// maps each entry to the expected value
 				BasicMLData ideal = new BasicMLData(1);
-				ideal.add(0, new Double(split[10]));
+				ideal.add(0, new Double(split[split.length - 4]));
+//				if ( counter < 200 ) data[0].add(entry, ideal);
+//				else data[1].add(entry, ideal);
 				data[counter % n].add(entry, ideal);
 				s = reader.readLine();
 				counter++;
@@ -259,6 +261,7 @@ public class ConfidenceLearner {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return data;
 	}
 
@@ -475,6 +478,6 @@ public class ConfidenceLearner {
 	public static void main(String args[]) {
 		
 		ConfidenceLearner dr = new ConfidenceLearner();
-//		System.out.println(dr.getConfidence("0.00000	1.00000	0.66164	0.67894	0.23239	0.06768	0.41889	0.50616	0.99823	0.00000"));
+		network.compute(getSingleEntry("1.00000	0.63915	0.66667	0.63384	0.26208	0.99048	0.87619	0.82100")).getData(0);
 	}
 }

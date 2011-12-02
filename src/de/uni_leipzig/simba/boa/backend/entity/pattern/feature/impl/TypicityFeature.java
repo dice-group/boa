@@ -116,6 +116,8 @@ public class TypicityFeature implements Feature {
 				
 				for (String foundString : sentencesToEvaluate) {
 					
+					if ( foundString.toLowerCase().startsWith(patternWithOutVariables.toLowerCase())) continue;
+					
 					nerTagged = this.ner.recognizeEntitiesInString(this.replaceBrackets(foundString));
 					
 					// this is a quick hack for ISSUE 4 (http://code.google.com/p/boa/issues/detail?id=4) TODO FIX

@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
@@ -38,18 +39,23 @@ public class NamedEntityRecognizerTest {
 	@Test
 	public void testParseDatePattern() {
 		
-		String test1 = "?X? assistant manager with Terry Butcher until September 2009.Craig Sinclair Gordon (born 31 December 1982 in ?Y?";
-		String test2 = "?X? from September 10, 1842 to June 26, 1844. Elizabeth Priscilla Cooper was born in ?Y?";
-		String test3 = "?X? (July 12, 1730 - January 3, 1795, born in Burslem, ?Y?";
-		String test4 = "?X? (born December 13, 1951 in ?Y?";
-		String test5 = "?X? eat pasty buns today at 2pm ?Y?";
+		String dir = "/Users/gerb/Development/workspaces/java-ws/boa/WebContent/WEB-INF/data/training/classifier/";
+		String[] models = new String[]{
+			"dewac_175m_600.crf.ser.gz", "muc.7class.distsim.crf.ser.gz", "conll.closed.iob2.crf.ser.gz", "hgc_175m_600.crf.ser.gz", "ner-de-hgc_175M_600.ser.gz"	
+		};
 		
-		NamedEntityRecognizer ner = new NamedEntityRecognizer();
-		
-		System.out.println(ner.recognizeEntitiesInPattern(test1));
-		System.out.println(ner.recognizeEntitiesInPattern(test2));
-		System.out.println(ner.recognizeEntitiesInPattern(test3));
-		System.out.println(ner.recognizeEntitiesInPattern(test4));
-		System.out.println(ner.recognizeEntitiesInPattern(test5));
+		for (String s : models) {
+			
+			NLPediaSettings.getInstance().setSetting("namendEntityRecognizerClassifier", dir + s);
+			NamedEntityRecognizer ner = new NamedEntityRecognizer();
+			
+			String test1 = "Die Glühbirne wurde von Thomas Alva Edison in Milan entwickelt, der für die Firma Glühlampen Enterprises gearbeitet hat. " +
+					" Er hat für die Teile 15 Euro ausgegeben. Er hat sie ungefähr am 15. Dezember 1871 erfunden. Nur 15% der Firma gehören zu seiner Tochter. Eines morgens ist er gegen 9 Uhr aufgewacht.";
+			String test2 = "The light bulb was invented by Thomas Alva Edison in Milan, who worked for the company Lightbulb Enterprises. He" +
+					" spent 15$ for the parts. He invented it about 15th December 1871. Only 15% percent of the company belonged to his daughter. One morning he woke up at 9 am.";
+			
+			System.out.println(ner.recognizeEntitiesInString(test1));
+			System.out.println(ner.recognizeEntitiesInString(test2));
+		}
 	}
 }

@@ -130,7 +130,7 @@ public class NLPedia {
 						break;
 						
 					case 12: // start scripts here
-						Command createKnowledgeCommand = new CreateKnowledgeCommand(null, null);
+						Command createKnowledgeCommand = new CreateKnowledgeCommand(null);
 						createKnowledgeCommand.execute();
 						break;
 						
