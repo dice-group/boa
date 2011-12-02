@@ -13,7 +13,7 @@ import org.junit.Test;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
-import de.uni_leipzig.simba.boa.backend.limes.PatternSimilarityCalculator;
+//import de.uni_leipzig.simba.boa.backend.limes.PatternSimilarityCalculator;
 import de.uni_leipzig.simba.boa.backend.limes.SimilarityStatement;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
@@ -47,19 +47,19 @@ public class PatternSimilarityCalculatorTest {
 	public void testPatternSaving() {
 		
 		Map<Integer,String> sourceAndTargetPatterns = fillTestMap();
-		PatternSimilarityCalculator psc = new PatternSimilarityCalculator(sourceAndTargetPatterns);
-		psc.runLinking();
-		
-		List<SimilarityStatement> acc = psc.getStatementsAccepted();
-		List<SimilarityStatement> rev = psc.getStatementsToReview();
-		
-		for ( SimilarityStatement s : acc ) {
-			System.out.println(sourceAndTargetPatterns.get(new Integer(s.getSubject())).replaceAll(",", " KOMMA") + "," + s.getSimilarity() + "," + sourceAndTargetPatterns.get(new Integer(s.getObject())).replaceAll(",", " KOMMA"));
-		}
-		for ( SimilarityStatement s : rev ) {
-			
-			System.out.println(sourceAndTargetPatterns.get(new Integer(s.getSubject())).replaceAll(",", " KOMMA") + "," + s.getSimilarity() + "," + sourceAndTargetPatterns.get(new Integer(s.getObject())).replaceAll(",", " KOMMA"));
-		}
+//		PatternSimilarityCalculator psc = new PatternSimilarityCalculator(sourceAndTargetPatterns);
+//		psc.runLinking();
+//		
+//		List<SimilarityStatement> acc = psc.getStatementsAccepted();
+//		List<SimilarityStatement> rev = psc.getStatementsToReview();
+//		
+//		for ( SimilarityStatement s : acc ) {
+//			System.out.println(sourceAndTargetPatterns.get(new Integer(s.getSubject())).replaceAll(",", " KOMMA") + "," + s.getSimilarity() + "," + sourceAndTargetPatterns.get(new Integer(s.getObject())).replaceAll(",", " KOMMA"));
+//		}
+//		for ( SimilarityStatement s : rev ) {
+//			
+//			System.out.println(sourceAndTargetPatterns.get(new Integer(s.getSubject())).replaceAll(",", " KOMMA") + "," + s.getSimilarity() + "," + sourceAndTargetPatterns.get(new Integer(s.getObject())).replaceAll(",", " KOMMA"));
+//		}
 	}
 	
 	private Map<Integer,String> fillTestMap() {

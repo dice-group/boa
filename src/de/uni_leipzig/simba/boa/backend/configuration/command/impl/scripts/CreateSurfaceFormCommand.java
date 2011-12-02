@@ -45,7 +45,7 @@ public class CreateSurfaceFormCommand implements Command {
 	private static Map<String,Set<String>> urisToLabels;
 	
 	public void execute() {
-		
+			
 		File directory = new File(NLPediaSettings.getInstance().getSetting("plainRelationFiles"));
 		
 		try {

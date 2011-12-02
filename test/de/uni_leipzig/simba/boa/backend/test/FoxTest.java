@@ -5,8 +5,8 @@ import java.util.List;
 
 import junit.framework.JUnit4TestAdapter;
 
-import nlpbox.nlpbox.NLPBox;
-import nlpbox.util.Entity;
+//import nlpbox.nlpbox.NLPBox;
+//import nlpbox.util.Entity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -48,17 +48,17 @@ public class FoxTest {
 				"Walter Guinness was born in Dublin, Ireland, the third son of the 1st Earl of Iveagh ."
 				);
 
-		NLPBox fox =  new NLPBox();
-		
-		for (String sentence :  testSentences) {
-			
-			for ( Entity entity : fox.getNER(sentence) ) {
-				
-				String entityLabel	= entity.text;
-				String entityType	= entity.type;
-				
-				
-			}
-		}
+//		NLPBox fox =  new NLPBox();
+//		
+//		for (String sentence :  testSentences) {
+//			
+//			for ( Entity entity : fox.getNER(sentence) ) {
+//				
+//				String entityLabel	= entity.text;
+//				String entityType	= entity.type;
+//				
+//				
+//			}
+//		}
 	}
 }

@@ -34,10 +34,8 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 
 	private final NLPediaLogger logger 		= new NLPediaLogger(CreateKnowledgeCallable.class);
 	private final ResourceDao resourceDao	= (ResourceDao) DaoFactory.getInstance().createDAO(ResourceDao.class);
-	private final TripleDao tripleDao		= (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
 	private final PatternMapping mapping;
 
-	private NamedEntityRecognizer ner;
 	private Map<Integer,Triple> tripleMap = new HashMap<Integer,Triple>();
 	
 	public CreateKnowledgeCallable(PatternMapping mapping) {
@@ -48,9 +46,6 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 	@Override
 	public Collection<Triple> call() throws Exception {
 		
-		// load this as lazy as possible, otherwise all n threads would load the model at startup
-		if ( this.ner == null ) this.ner = new NamedEntityRecognizer();
-
 		try {
 
 			PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
@@ -66,6 +61,8 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 
 				if ( !patternList.isEmpty() ) {
 					
+					NamedEntityRecognizer ner = new NamedEntityRecognizer();
+					
 					for (Pattern pattern : patternList) {
 						
 						Set<String> sentences = patternSearcher.getExactMatchSentences(pattern.getNaturalLanguageRepresentationWithoutVariables(), Integer.valueOf(NLPediaSettings.getInstance().getSetting("max.number.of.documents.generation")));
@@ -78,7 +75,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 							
 							this.logger.info("\t\t" + sentence);
 
-							String nerTaggedSentence = this.ner.recognizeEntitiesInString(sentence);
+							String nerTaggedSentence = ner.recognizeEntitiesInString(sentence);
 
 							createKnowledge(mapping, 
 											pattern, 
@@ -116,7 +113,6 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 							triple.setConfidence(triple.getConfidence());// / maxConfidenceForTriple);
 							// sigmoid function shifted to the right to boost pattern which are learned from more than one pattern
 							triple.setConfidence(1 / (1 + Math.pow(Math.E, - triple.getConfidence() + 1))); 
-							tripleDao.updateTriple(triple);
 						}
 					}
 				}
@@ -128,9 +124,6 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		// remove it from memory
-		this.ner = null;
-		
 		return this.tripleMap.values();
 	}
 	

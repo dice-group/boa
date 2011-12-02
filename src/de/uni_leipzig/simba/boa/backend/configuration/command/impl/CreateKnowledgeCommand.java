@@ -55,6 +55,7 @@ public class CreateKnowledgeCommand implements Command {
 	private final NLPediaLogger logger = new NLPediaLogger(CreateKnowledgeCommand.class);
 	
 	private final PatternMappingDao patternMappingDao			= (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+	private final TripleDao tripleDao							= (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
 	
 	private final Integer NUMBER_OF_CREATE_KNOWLEDGE_THREADS	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("number.of.create.knowledge.threads"));
 	private final String N_TRIPLES_FILE							= NLPediaSettings.getInstance().getSetting("ntriples.file.path");
@@ -116,6 +117,7 @@ public class CreateKnowledgeCommand implements Command {
 							
 							writer.write("<" + t.getSubject().getUri() + "> <"+ t.getProperty().getUri() + "> \"" + t.getObject().getLabel() +"\" . " + Constants.NEW_LINE_SEPARATOR);
 						}
+						tripleDao.updateTriple(t);
 					}
 				} 
 				catch (InterruptedException e) {

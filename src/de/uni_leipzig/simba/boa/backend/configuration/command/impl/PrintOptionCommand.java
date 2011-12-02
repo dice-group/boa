@@ -34,10 +34,9 @@ public class PrintOptionCommand implements Command {
 			"||     8. Write urls for crawling to file             ||\n" +
 			"||     9. Print Statistics                            ||\n" +
 			"||    10. Start Scripts                               ||\n" + 
-			"||    11. Start Limes and BorderFlow                  ||\n" + 
-			"||    12. Query text with patterns                    ||\n" + 
-			"||    13. Query keyphrase                             ||\n" +
-			"||    14. Search - Evaluation - Generate              ||\n" +
+			"||    11. Query text with patterns                    ||\n" + 
+			"||    12. Query keyphrase                             ||\n" +
+			"||    13. Search - Evaluation - Generate              ||\n" +
 			"========================================================\n";
 		
 		this.out.println(options);

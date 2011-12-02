@@ -11,7 +11,6 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CrawlingComma
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateIndexCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateKnowledgeCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.LimesCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternScoreFeatureCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternScoreCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternSearchCommand;
@@ -22,7 +21,6 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOption
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.WriteRelationToFileCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.WriteUrlsToFileCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.StartScriptsCommand;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
@@ -125,21 +123,16 @@ public class NLPedia {
 						break;
 						
 					case 11: // start scripts here
-						Command limesCommand = new LimesCommand();
-						limesCommand.execute();
-						break;
-						
-					case 12: // start scripts here
 						Command createKnowledgeCommand = new CreateKnowledgeCommand(null);
 						createKnowledgeCommand.execute();
 						break;
 						
-					case 13: 
+					case 12: 
 						Command startQueryCommand = new StartQueryCommand();
 						startQueryCommand.execute();
 						break;
 						
-					case 14:
+					case 13:
 						
 						Command iterationCommand = new IterationCommand();
 						iterationCommand.execute();
