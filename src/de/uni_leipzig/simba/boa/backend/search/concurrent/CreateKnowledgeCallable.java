@@ -37,6 +37,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 	private final PatternMapping mapping;
 
 	private Map<Integer,Triple> tripleMap = new HashMap<Integer,Triple>();
+	private Map<Integer,Resource> resourceMap = new HashMap<Integer,Resource>();
 	
 	public CreateKnowledgeCallable(PatternMapping mapping) {
 		
@@ -149,24 +150,8 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						String subjectUri = uriRetrieval.getUri(subjectLabel);
 						String objectUri = uriRetrieval.getUri(objectLabel);
 						
-						Resource subject = resourceDao.findResourceByUri(subjectUri);
-						if ( subject == null ) {
-							
-							subject = new Resource();
-							subject.setUri(subjectUri);
-							subject.setLabel(subjectLabel);
-							subject.setType(domainUri);
-							resourceDao.createAndSaveResource(subject);
-						}
-						Resource object = resourceDao.findResourceByUri(objectUri);
-						if ( object == null ) {
-							
-							object = new Resource();
-							object.setUri(objectUri);
-							object.setLabel(objectLabel);
-							object.setType(rangeUri);
-							resourceDao.createAndSaveResource(object);
-						}
+						Resource subject = ResourceManager.getInstance().getResource(subjectUri, subjectLabel, domainUri);
+						Resource object = ResourceManager.getInstance().getResource(objectUri, objectLabel, rangeUri);
 						
 						Triple triple = new Triple();
 						triple.setSubject(subject);
@@ -198,24 +183,8 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						String objectUri = uriRetrieval.getUri(objectLabel);
 						String subjectUri = uriRetrieval.getUri(subjectLabel);
 						
-						Resource subject = resourceDao.findResourceByUri(subjectUri);
-						if ( subject == null ) {
-							
-							subject = new Resource();
-							subject.setUri(subjectUri);
-							subject.setLabel(subjectLabel);
-							subject.setType(domainUri);
-							resourceDao.createAndSaveResource(subject);
-						}
-						Resource object = resourceDao.findResourceByUri(objectUri);
-						if ( object == null ) {
-							
-							object = new Resource();
-							object.setUri(objectUri);
-							object.setLabel(objectLabel);
-							object.setType(rangeUri);
-							resourceDao.createAndSaveResource(object);
-						}
+						Resource subject = ResourceManager.getInstance().getResource(subjectUri, subjectLabel, domainUri);
+						Resource object = ResourceManager.getInstance().getResource(objectUri, objectLabel, rangeUri);
 						
 						Triple triple = new Triple();
 						triple.setSubject(subject);
