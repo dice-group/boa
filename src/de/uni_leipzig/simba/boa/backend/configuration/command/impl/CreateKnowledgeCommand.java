@@ -75,6 +75,8 @@ public class CreateKnowledgeCommand implements Command {
 
 		// create a thread pool and service for n threads/callable
 		ExecutorService executor = Executors.newFixedThreadPool(NUMBER_OF_CREATE_KNOWLEDGE_THREADS);
+		this.logger.info("Created executorservice for knowledge creation of " + NUMBER_OF_CREATE_KNOWLEDGE_THREADS + " threads.");
+		
 		// collect the results of the threads
 		List<Future<Collection<Triple>>> resultList = new ArrayList<Future<Collection<Triple>>>();
 		
@@ -82,8 +84,9 @@ public class CreateKnowledgeCommand implements Command {
 		for (PatternMapping mapping : this.patternMappingList ) {
 			
 			Callable<Collection<Triple>> worker = new CreateKnowledgeCallable(mapping);
+			this.logger.info("Created worker for mapping: " + mapping.getProperty().getUri());
 			Future<Collection<Triple>> submit = executor.submit(worker);
-			this.logger.info("Worker " + worker + " startet with mapping: " + mapping.getProperty().getUri());
+			this.logger.info("Submitted worker for mapping: " + mapping.getProperty().getUri());
 			resultList.add(submit);
 		}
 		// shut down the service and all threads
