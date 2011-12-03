@@ -75,57 +75,63 @@ public class CreateKnowledgeCommand implements Command {
 	public void execute() {
 
 		// create a thread pool and service for n threads/callable
-		ExecutorService executor = Executors.newFixedThreadPool(NUMBER_OF_CREATE_KNOWLEDGE_THREADS);
+		ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_CREATE_KNOWLEDGE_THREADS);
 		this.logger.info("Created executorservice for knowledge creation of " + NUMBER_OF_CREATE_KNOWLEDGE_THREADS + " threads.");
 		
 		// collect the results of the threads
-		List<Future<Collection<Triple>>> resultList = new ArrayList<Future<Collection<Triple>>>();
+//		List<Future<Collection<Triple>>> resultList = new ArrayList<Future<Collection<Triple>>>();
+		
+		List<Callable<Collection<Triple>>> todo = new ArrayList<Callable<Collection<Triple>>>(this.patternMappingList.size());
 		
 		// one thread per pattern mapping but only n threads get executed at the same time
 		for (PatternMapping mapping : this.patternMappingList ) {
 			
-			Callable<Collection<Triple>> worker = new CreateKnowledgeCallable(mapping);
-			this.logger.info("Created worker for mapping: " + mapping.getProperty().getUri());
-			Future<Collection<Triple>> submit = executor.submit(worker);
-			this.logger.info("Submitted worker for mapping: " + mapping.getProperty().getUri());
-			resultList.add(submit);
+			todo.add(new CreateKnowledgeCallable(mapping));
+			
+//			Callable<Collection<Triple>> worker = new CreateKnowledgeCallable(mapping);
+//			this.logger.info("Created worker for mapping: " + mapping.getProperty().getUri());
+//			Future<Collection<Triple>> submit = executor.submit(worker);
+//			this.logger.info("Submitted worker for mapping: " + mapping.getProperty().getUri());
+//			resultList.add(submit);
 		}
-		this.writeNTriplesFile(resultList);
+		try {
+			
+			List<Future<Collection<Triple>>> answers = executorService.invokeAll(todo);
+			for (Future<Collection<Triple>> future : answers) {
+				
+				this.writeNTriplesFile(future.get());
+			}
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// shut down the service and all threads
-		executor.shutdown();
+//		executorService.shutdown();
 	}
 	
-	private void writeNTriplesFile(List<Future<Collection<Triple>>> resultList) {
+	private void writeNTriplesFile(Collection<Triple> resultList) {
 
 		try {
 			
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(N_TRIPLES_FILE), "UTF-8"));
-			
-			for (Future<Collection<Triple>> future : resultList) {
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(N_TRIPLES_FILE, true), "UTF-8"));
+
+			for (Triple t : resultList) {
 				
-				try {
+				if ( t.getObject().getUri().startsWith("http://")) {
 					
-					Collection<Triple> triples = future.get();
-					for ( Triple t : triples ) {
-						
-						if ( t.getObject().getUri().startsWith("http://")) {
-							
-							writer.write("<" + t.getSubject().getUri() + "> <"+ t.getProperty().getUri() + "> <" + t.getObject().getUri() +"> . " + Constants.NEW_LINE_SEPARATOR);
-						}
-						else {
-							
-							writer.write("<" + t.getSubject().getUri() + "> <"+ t.getProperty().getUri() + "> \"" + t.getObject().getLabel() +"\" . " + Constants.NEW_LINE_SEPARATOR);
-						}
-						tripleDao.updateTriple(t);
-					}
-				} 
-				catch (InterruptedException e) {
-					e.printStackTrace();
-				} 
-				catch (ExecutionException e) {
-					e.printStackTrace();
+					writer.write("<" + t.getSubject().getUri() + "> <"+ t.getProperty().getUri() + "> <" + t.getObject().getUri() +"> . " + Constants.NEW_LINE_SEPARATOR);
 				}
+				else {
+					
+					writer.write("<" + t.getSubject().getUri() + "> <"+ t.getProperty().getUri() + "> \"" + t.getObject().getLabel() +"\" . " + Constants.NEW_LINE_SEPARATOR);
+				}
+				tripleDao.updateTriple(t);
 			}
 			writer.close();
 		}
