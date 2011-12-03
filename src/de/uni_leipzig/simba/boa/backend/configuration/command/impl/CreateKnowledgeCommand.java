@@ -90,10 +90,10 @@ public class CreateKnowledgeCommand implements Command {
 			this.logger.info("Submitted worker for mapping: " + mapping.getProperty().getUri());
 			resultList.add(submit);
 		}
+		this.writeNTriplesFile(resultList);
+		
 		// shut down the service and all threads
 		executor.shutdown();
-		
-		this.writeNTriplesFile(resultList);
 	}
 	
 	private void writeNTriplesFile(List<Future<Collection<Triple>>> resultList) {
