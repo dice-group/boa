@@ -51,6 +51,7 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity 
 		this.confidence = -1d;
 		this.learnedInIteration = -1;
 		this.learnedFromPatterns = new HashSet<Pattern>();
+		this.learnedFromSentences = new HashSet<String>();
 	}
 
 	/**
