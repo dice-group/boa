@@ -36,10 +36,12 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 	private final PatternMapping mapping;
 
 	private Map<Integer,Triple> tripleMap = new HashMap<Integer,Triple>();
+	private int i;
 	
-	public CreateKnowledgeCallable(PatternMapping mapping) {
+	public CreateKnowledgeCallable(PatternMapping mapping, int i) {
 		
 		this.mapping = mapping;
+		this.i = i;
 	}
 
 	@Override
@@ -123,6 +125,9 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		this.logger.info("Finished creating knowledge for [" +i+ "]: "  + this.mapping.getProperty().getUri() + " with " + this.tripleMap.values().size() + " triples.");
+		
 		return this.tripleMap.values();
 	}
 	

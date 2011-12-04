@@ -83,10 +83,11 @@ public class CreateKnowledgeCommand implements Command {
 		
 		List<Callable<Collection<Triple>>> todo = new ArrayList<Callable<Collection<Triple>>>(this.patternMappingList.size());
 		
+		int i = 1;
 		// one thread per pattern mapping but only n threads get executed at the same time
 		for (PatternMapping mapping : this.patternMappingList ) {
 			
-			todo.add(new CreateKnowledgeCallable(mapping));
+			todo.add(new CreateKnowledgeCallable(mapping, i++));
 			
 //			Callable<Collection<Triple>> worker = new CreateKnowledgeCallable(mapping);
 //			this.logger.info("Created worker for mapping: " + mapping.getProperty().getUri());
