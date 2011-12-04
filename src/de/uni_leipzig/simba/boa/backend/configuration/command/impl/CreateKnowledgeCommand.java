@@ -100,21 +100,23 @@ public class CreateKnowledgeCommand implements Command {
 			List<Future<Collection<Triple>>> answers = executorService.invokeAll(todo);
 			for (Future<Collection<Triple>> future : answers) {
 				
-				this.logger.info("Calling write to file method with " + future.get().size() + " triples.");
-				this.writeNTriplesFile(future.get());
+				Collection<Triple> triples = future.get();
+				this.logger.info("Calling write to file method with " + triples.size() + " triples.");
+				this.writeNTriplesFile(triples);
 			}
 		}
 		catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			this.logger.error("InterruptedException", e);
 		}
 		catch (ExecutionException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.logger.error("ExecutionException", e);
 		}
 		
 		// shut down the service and all threads
 		executorService.shutdown();
+		executorService.shutdownNow();
 	}
 	
 	private void writeNTriplesFile(Collection<Triple> resultList) {
@@ -156,16 +158,16 @@ public class CreateKnowledgeCommand implements Command {
 			writer.close();
 		}
 		catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			
+			this.logger.error("UnsupportedEncodingException", e1);
 		}
 		catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			
+			this.logger.error("UnsupportedEncodingException", e1);
 		}
 		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			this.logger.error("UnsupportedEncodingException", e);
 		}
 	}
 

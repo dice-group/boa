@@ -120,10 +120,12 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 			}
 		}
 		catch (ParseException e) {
-			e.printStackTrace();
+			
+			this.logger.error("ParseExcpetion while index search!", e);
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			
+			this.logger.error("IOException while index search!", e);
 		}
 		
 		this.logger.info("Finished creating knowledge for [" +i+ "]: "  + this.mapping.getProperty().getUri() + " with " + this.tripleMap.values().size() + " triples.");

@@ -28,7 +28,7 @@ public class DbpediaUriRetrieval implements UriRetrieval {
 
 	private final NLPediaLogger logger = new NLPediaLogger(DbpediaUriRetrieval.class);
 	
-    private CommonsHttpSolrServer server = null;
+    private CommonsHttpSolrServer server;
 
     public DbpediaUriRetrieval() {
 
@@ -38,8 +38,8 @@ public class DbpediaUriRetrieval implements UriRetrieval {
 			server.setRequestWriter(new BinaryRequestWriter());
 		}
 		catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			this.logger.error("CommonsHttpSolrServer could not be created", e);
 		}
     }
 
@@ -51,12 +51,11 @@ public class DbpediaUriRetrieval implements UriRetrieval {
 
     public String queryIndexForUri(String label) {
         
-    	QueryResponse response;
 		try {
 			
 			SolrQuery query = new SolrQuery("label:\""+label+"\"");
 			query.addField("uri");
-			response = server.query(query);
+			QueryResponse response = server.query(query);
 			SolrDocumentList docList = response.getResults();
 			
 			// return the first list of types
@@ -67,7 +66,7 @@ public class DbpediaUriRetrieval implements UriRetrieval {
 			}
 		}
 		catch (SolrServerException e) {
-			e.printStackTrace();
+			this.logger.error("Query could not be executed for label: \"" + label + "\"", e);
 		}
 		return "";
     	
