@@ -123,15 +123,33 @@ public class CreateKnowledgeCommand implements Command {
 
 			for (Triple t : resultList) {
 				
-				if ( t.getObject().getUri().startsWith("http://")) {
+				if ( t != null ) {
 					
-					writer.write("<" + t.getSubject().getUri() + "> <"+ t.getProperty().getUri() + "> <" + t.getObject().getUri() +"> . " + Constants.NEW_LINE_SEPARATOR);
+					if ( t.getObject() != null) {
+						
+						if ( t.getObject().getUri().startsWith("http://")) {
+							
+							writer.write("<" + t.getSubject().getUri() + "> " +
+										 "<"+ t.getProperty().getUri() + "> " +
+										 "<" + t.getObject().getUri() +"> . " + Constants.NEW_LINE_SEPARATOR);
+						}
+						else {
+							
+							writer.write("<" + t.getSubject().getUri() + "> " +
+										 "<"+ t.getProperty().getUri() + "> " +
+										 "\"" + t.getObject().getLabel() +"\" . " + Constants.NEW_LINE_SEPARATOR);
+						}
+						tripleDao.updateTriple(t);
+					}
+					else {
+						
+						this.logger.error("Object null for triple: " + t);
+					}
 				}
 				else {
 					
-					writer.write("<" + t.getSubject().getUri() + "> <"+ t.getProperty().getUri() + "> \"" + t.getObject().getLabel() +"\" . " + Constants.NEW_LINE_SEPARATOR);
+					this.logger.error("Triple was null!");
 				}
-				tripleDao.updateTriple(t);
 			}
 			writer.close();
 		}
