@@ -151,7 +151,10 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						String objectUri = uriRetrieval.getUri(objectLabel);
 						
 						Resource subject = ResourceManager.getInstance().getResource(subjectUri, subjectLabel, domainUri);
+						if ( subject == null) throw new RuntimeException("Subject null for uri:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
+						
 						Resource object = ResourceManager.getInstance().getResource(objectUri, objectLabel, rangeUri);
+						if ( object == null) throw new RuntimeException("Subject null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
 						
 						Triple triple = new Triple();
 						triple.setSubject(subject);
@@ -162,7 +165,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 							
 							triple = this.tripleMap.get(triple.hashCode());
 						}
-						triple.setLearnedInIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
+						triple.addLearnedFromSentences(sentence);
 						triple.addLearnedFromPattern(pattern);
 						// put the new one in
 						this.tripleMap.put(triple.hashCode(), triple);
@@ -184,7 +187,10 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						String subjectUri = uriRetrieval.getUri(subjectLabel);
 						
 						Resource subject = ResourceManager.getInstance().getResource(subjectUri, subjectLabel, domainUri);
+						if ( subject == null) throw new RuntimeException("Subject null for uri:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
+
 						Resource object = ResourceManager.getInstance().getResource(objectUri, objectLabel, rangeUri);
+						if ( object == null) throw new RuntimeException("Subject null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
 						
 						Triple triple = new Triple();
 						triple.setSubject(subject);
@@ -195,7 +201,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 							
 							triple = this.tripleMap.get(triple.hashCode());
 						}
-						triple.setLearnedInIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
+						triple.addLearnedFromSentences(sentence);
 						triple.addLearnedFromPattern(pattern);
 						// put the new one in
 						this.tripleMap.put(triple.hashCode(), triple);

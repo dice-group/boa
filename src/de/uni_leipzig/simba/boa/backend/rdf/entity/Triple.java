@@ -5,12 +5,15 @@ import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import de.danielgerber.format.OutputFormatter;
@@ -29,6 +32,7 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity 
 	private boolean isCorrect;
 	private double confidence;
 	private Set<Pattern> learnedFromPatterns;
+	private Set<String> learnedFromSentences;
 	
 	public Triple(Resource subject, Property property, Resource object) {
 		super();
@@ -39,6 +43,7 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity 
 		this.confidence = 0d;
 		this.learnedInIteration = -1;
 		this.learnedFromPatterns = new HashSet<Pattern>();
+		this.learnedFromSentences = new HashSet<String>();
 	}
 
 	public Triple() {
@@ -157,6 +162,24 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity 
 	}
 	
 	/**
+	 * @param LearnedFromSentences the LearnedFromSentences to set
+	 */
+	public void setLearnedFromSentences(Set<String> learnedFromSentences) {
+	
+		this.learnedFromSentences = learnedFromSentences;
+	}
+	
+	/**
+	 * @return the LearnedFromSentences
+	 */
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name="triple_sentences")
+	public Set<String> getLearnedFromSentences() {
+	
+		return this.learnedFromSentences;
+	}
+	
+	/**
 	 * @param learnedFromPatterns the learnedFromPatterns to set
 	 */
 	public void setLearnedFromPatterns(Set<Pattern> learnedFromPatterns) {
@@ -239,5 +262,10 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity 
 			if (!subject.equals(other.subject))
 				return false;
 		return true;
+	}
+
+	public void addLearnedFromSentences(String sentence) {
+
+		this.learnedFromSentences.add(sentence);
 	}
 }

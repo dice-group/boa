@@ -36,7 +36,7 @@ public class ResourceManager {
 	 * @param uri
 	 * @return
 	 */
-	public Resource getResource(String uri, String subjectLabel, String domainUri) {
+	public Resource getResource(String uri, String subjectLabel, String type) {
 		
 		// the resource is already in the map
 		if ( this.resourceMap.containsKey(uri.hashCode()) ) {
@@ -48,7 +48,7 @@ public class ResourceManager {
 			Resource resource = new Resource();
 			resource.setUri(uri);
 			resource.setLabel(subjectLabel);
-			resource.setType(domainUri);
+			resource.setType(type);
 			
 			return this.resourceMap.put(uri.hashCode(), resource);
 		}
