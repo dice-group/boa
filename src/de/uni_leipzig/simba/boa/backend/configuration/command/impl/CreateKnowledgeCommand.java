@@ -99,6 +99,7 @@ public class CreateKnowledgeCommand implements Command {
 			List<Future<Collection<Triple>>> answers = executorService.invokeAll(todo);
 			for (Future<Collection<Triple>> future : answers) {
 				
+				this.logger.info("Calling write to file method with " + future.get().size() + " triples.");
 				this.writeNTriplesFile(future.get());
 			}
 		}

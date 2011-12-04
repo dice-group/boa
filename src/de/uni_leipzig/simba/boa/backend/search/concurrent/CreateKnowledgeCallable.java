@@ -33,11 +33,9 @@ import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrateg
 public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 
 	private final NLPediaLogger logger 		= new NLPediaLogger(CreateKnowledgeCallable.class);
-	private final ResourceDao resourceDao	= (ResourceDao) DaoFactory.getInstance().createDAO(ResourceDao.class);
 	private final PatternMapping mapping;
 
 	private Map<Integer,Triple> tripleMap = new HashMap<Integer,Triple>();
-	private Map<Integer,Resource> resourceMap = new HashMap<Integer,Resource>();
 	
 	public CreateKnowledgeCallable(PatternMapping mapping) {
 		
@@ -67,7 +65,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 					for (Pattern pattern : patternList) {
 						
 						Set<String> sentences = patternSearcher.getExactMatchSentences(pattern.getNaturalLanguageRepresentationWithoutVariables(), Integer.valueOf(NLPediaSettings.getInstance().getSetting("max.number.of.documents.generation")));
-						this.logger.info("\tQuering pattern \"" + pattern.getNaturalLanguageRepresentation() + "\" with " + sentences.size() + " sentences");
+						this.logger.debug("\tQuering pattern \"" + pattern.getNaturalLanguageRepresentation() + "\" with " + sentences.size() + " sentences");
 						
 						for (String sentence : sentences) {
 							
@@ -151,10 +149,10 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						String objectUri = uriRetrieval.getUri(objectLabel);
 						
 						Resource subject = ResourceManager.getInstance().getResource(subjectUri, subjectLabel, domainUri);
-						if ( subject == null) throw new RuntimeException("Subject null for uri:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
+						if ( subject == null) throw new RuntimeException("1. Subject null for uri:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
 						
 						Resource object = ResourceManager.getInstance().getResource(objectUri, objectLabel, rangeUri);
-						if ( object == null) throw new RuntimeException("Object null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
+						if ( object == null) throw new RuntimeException("1. Object null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
 						
 						Triple triple = new Triple();
 						triple.setSubject(subject);
@@ -187,10 +185,10 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						String subjectUri = uriRetrieval.getUri(subjectLabel);
 						
 						Resource subject = ResourceManager.getInstance().getResource(subjectUri, subjectLabel, domainUri);
-						if ( subject == null) throw new RuntimeException("Subject null for uri:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
+						if ( subject == null) throw new RuntimeException("2. subject null for uri:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
 
 						Resource object = ResourceManager.getInstance().getResource(objectUri, objectLabel, rangeUri);
-						if ( object == null) throw new RuntimeException("object null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
+						if ( object == null) throw new RuntimeException("2. object null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
 						
 						Triple triple = new Triple();
 						triple.setSubject(subject);

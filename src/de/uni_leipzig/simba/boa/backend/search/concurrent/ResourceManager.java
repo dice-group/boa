@@ -9,7 +9,7 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 public class ResourceManager {
 
 	private static ResourceManager INSTANCE;
-	private Map<Integer,Resource> resourceMap;
+	private static Map<Integer,Resource> resourceMap;
 	
 	private ResourceManager(){
 		
@@ -39,9 +39,9 @@ public class ResourceManager {
 	public Resource getResource(String uri, String subjectLabel, String type) {
 		
 		// the resource is already in the map
-		if ( this.resourceMap.containsKey(uri.hashCode()) ) {
+		if ( ResourceManager.resourceMap.containsKey(uri.hashCode()) ) {
 			
-			return this.resourceMap.get(uri.hashCode());
+			return ResourceManager.resourceMap.get(uri.hashCode());
 		}
 		else {
 			
@@ -50,7 +50,9 @@ public class ResourceManager {
 			resource.setLabel(subjectLabel);
 			resource.setType(type);
 			
-			return this.resourceMap.put(uri.hashCode(), resource);
+			ResourceManager.resourceMap.put(uri.hashCode(), resource);
+			
+			return resource;
 		}
 	}
 }
