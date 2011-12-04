@@ -82,7 +82,7 @@ public class CreateKnowledgeCommand implements Command {
 //		List<Future<Collection<Triple>>> resultList = new ArrayList<Future<Collection<Triple>>>();
 		
 		List<Callable<Collection<Triple>>> todo = new ArrayList<Callable<Collection<Triple>>>(this.patternMappingList.size());
-		
+
 		int i = 1;
 		// one thread per pattern mapping but only n threads get executed at the same time
 		for (PatternMapping mapping : this.patternMappingList ) {

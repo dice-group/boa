@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -175,6 +176,7 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity 
 	 */
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name="triple_sentences")
+	@Column(length=1000)
 	public Set<String> getLearnedFromSentences() {
 	
 		return this.learnedFromSentences;
