@@ -154,7 +154,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						if ( subject == null) throw new RuntimeException("Subject null for uri:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
 						
 						Resource object = ResourceManager.getInstance().getResource(objectUri, objectLabel, rangeUri);
-						if ( object == null) throw new RuntimeException("Subject null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
+						if ( object == null) throw new RuntimeException("Object null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
 						
 						Triple triple = new Triple();
 						triple.setSubject(subject);
@@ -190,7 +190,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						if ( subject == null) throw new RuntimeException("Subject null for uri:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
 
 						Resource object = ResourceManager.getInstance().getResource(objectUri, objectLabel, rangeUri);
-						if ( object == null) throw new RuntimeException("Subject null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
+						if ( object == null) throw new RuntimeException("object null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
 						
 						Triple triple = new Triple();
 						triple.setSubject(subject);
