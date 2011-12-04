@@ -113,7 +113,7 @@ public class CreateKnowledgeCommand implements Command {
 		}
 		
 		// shut down the service and all threads
-//		executorService.shutdown();
+		executorService.shutdown();
 	}
 	
 	private void writeNTriplesFile(Collection<Triple> resultList) {
