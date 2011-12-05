@@ -79,40 +79,55 @@ public class CreateKnowledgeCommand implements Command {
 		this.logger.info("Created executorservice for knowledge creation of " + NUMBER_OF_CREATE_KNOWLEDGE_THREADS + " threads.");
 		
 		// collect the results of the threads
-//		List<Future<Collection<Triple>>> resultList = new ArrayList<Future<Collection<Triple>>>();
+		List<Future<Collection<Triple>>> futures = new ArrayList<Future<Collection<Triple>>>();
 		
-		List<Callable<Collection<Triple>>> todo = new ArrayList<Callable<Collection<Triple>>>(this.patternMappingList.size());
+//		List<Callable<Collection<Triple>>> todo = new ArrayList<Callable<Collection<Triple>>>(this.patternMappingList.size());
 
 		int i = 1;
 		// one thread per pattern mapping but only n threads get executed at the same time
 		for (PatternMapping mapping : this.patternMappingList ) {
 			
-			todo.add(new CreateKnowledgeCallable(mapping, i++));
+//			todo.add(new CreateKnowledgeCallable(mapping, i++));
 			
-//			Callable<Collection<Triple>> worker = new CreateKnowledgeCallable(mapping);
-//			this.logger.info("Created worker for mapping: " + mapping.getProperty().getUri());
-//			Future<Collection<Triple>> submit = executor.submit(worker);
-//			this.logger.info("Submitted worker for mapping: " + mapping.getProperty().getUri());
-//			resultList.add(submit);
+			this.logger.info("Submitted worker for mapping: " + mapping.getProperty().getUri());
+			futures.add(executorService.submit(new CreateKnowledgeCallable(mapping, i)));
 		}
-		try {
+		for (Future<Collection<Triple>> future : futures){
 			
-			List<Future<Collection<Triple>>> answers = executorService.invokeAll(todo);
-			for (Future<Collection<Triple>> future : answers) {
+			try {
 				
 				Collection<Triple> triples = future.get();
 				this.logger.info("Calling write to file method with " + triples.size() + " triples.");
 				this.writeNTriplesFile(triples);
 			}
+			catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		catch (InterruptedException e) {
-			
-			this.logger.error("InterruptedException", e);
-		}
-		catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			this.logger.error("ExecutionException", e);
-		}
+		
+//		try {
+//			
+//			List<Future<Collection<Triple>>> answers = executorService.invokeAll(todo);
+//			for (Future<Collection<Triple>> future : answers) {
+//				
+//				Collection<Triple> triples = future.get();
+//				this.logger.info("Calling write to file method with " + triples.size() + " triples.");
+//				this.writeNTriplesFile(triples);
+//			}
+//		}
+//		catch (InterruptedException e) {
+//			
+//			this.logger.error("InterruptedException", e);
+//		}
+//		catch (ExecutionException e) {
+//			// TODO Auto-generated catch block
+//			this.logger.error("ExecutionException", e);
+//		}
 		
 		// shut down the service and all threads
 		executorService.shutdown();
