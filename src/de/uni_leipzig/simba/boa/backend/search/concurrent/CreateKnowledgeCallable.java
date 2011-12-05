@@ -44,12 +44,10 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 		this.i = i;
 	}
 
-	@Override
+//	@Override
 	public Collection<Triple> call() throws Exception {
 		
 		try {
-
-			PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
 
 			Set<Pattern> patterns = mapping.getPatterns();
 			
@@ -63,6 +61,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 				if ( !patternList.isEmpty() ) {
 					
 					NamedEntityRecognizer ner = new NamedEntityRecognizer();
+					PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
 					
 					for (Pattern pattern : patternList) {
 						
@@ -85,6 +84,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 											mapping.getProperty().getRdfsRange());
 						}
 					}
+					patternSearcher.close();
 					
 //					double maxConfidenceForTriple = 0D;
 					
