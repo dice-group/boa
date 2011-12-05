@@ -190,4 +190,16 @@ public class EvaluationFileLoader {
 		
 		return sentenceNumber;
 	}
+
+	public List<Triple> loadGoldStandard() {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Triple> loadTestStandard() {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

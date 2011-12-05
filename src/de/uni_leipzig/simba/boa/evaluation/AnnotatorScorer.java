@@ -17,9 +17,9 @@ import com.google.common.collect.Ordering;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 
-public class Scorer {
+public class AnnotatorScorer {
 
-	public double calculateScores(Map<Integer, List<Triple>> annotatorOneFile, Map<Integer, List<Triple>> annotatorTwoFile) {
+	public void calculateScores(Map<Integer, List<Triple>> annotatorOneFile, Map<Integer, List<Triple>> annotatorTwoFile) {
 
 		if ( annotatorOneFile.size() != annotatorTwoFile.size() ) throw new RuntimeException("Files contain different number of sentences");
 		
@@ -121,8 +121,6 @@ public class Scorer {
 		System.out.println("----");
 		System.out.println(" * *Different triples: ("+differentTripleList.size()+")* ");
 		for (String s : differentTripleList) System.out.println("      * " + s.replace("[", "").replace("]", "").replace("Triple", "").replace("_", "+"));
-		
-		return 0;
 	}
 	
 	private void printTopNProperties(Map<String, Integer> map, int topN) {

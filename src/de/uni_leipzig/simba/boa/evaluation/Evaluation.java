@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.evaluation;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,12 +9,6 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 public class Evaluation {
 
-	private double propertyKappa = 0D;
-	private double resourceKappa = 0D;
-	private double precision = 0D;
-	private double recall = 0D;
-	private double fMeasure = 0D;
-	
 	public static void main(String[] args) {
 
 		new Evaluation();
@@ -27,8 +22,17 @@ public class Evaluation {
 		Map<Integer, List<Triple>> annotatorTwoFile = evaluationFileLoader.loadAnnotatorTwoFile();
 		System.out.println("----");
 		
-		// calculate the cohens propertyKappa between two annotators
-		Scorer scorer = new Scorer();
-		this.propertyKappa = scorer.calculateScores(annotatorOneFile, annotatorTwoFile);
+		// calculate the scores between multiple annotators
+		AnnotatorScorer scorer = new AnnotatorScorer();
+		scorer.calculateScores(annotatorOneFile, annotatorTwoFile);
+		
+		List<Triple> goldStandard	= evaluationFileLoader.loadGoldStandard();
+		List<Triple> testData		= evaluationFileLoader.loadTestStandard();
+		
+		PrecisionRecallFMeasure precisionRecallFMeasure = new PrecisionRecallFMeasure(goldStandard, testData);
+		DecimalFormat decimalFormat = new DecimalFormat("#.##");
+		System.out.println("Precision:\t" + decimalFormat.format(precisionRecallFMeasure.getPrecision()) + "%");
+		System.out.println("Recall:\t" + decimalFormat.format(precisionRecallFMeasure.getRecall()) + "%");
+		System.out.println("F-Measure:\t" + decimalFormat.format(precisionRecallFMeasure.getFMeasure()) + "%");
 	}
 }
