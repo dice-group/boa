@@ -9,7 +9,8 @@ import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
 
 public abstract class Context {
 
-	protected List<String> words;
+	protected List<String> cleanWords;
+	protected List<String> taggedWords;
 	protected String pattern;
 	
 	protected NamedEntityRecognizer ner;
@@ -24,7 +25,7 @@ public abstract class Context {
 	 */
 	public boolean containsSuitableEntity(String entityType) {
 		
-		for ( String word : this.words ) {
+		for ( String word : this.cleanWords ) {
 			
 			if ( word.contains(NamedEntityRecognizer.DELIMITER + "B-" + Context.namedEntityRecognitionMappings.get(entityType)) 
 					|| word.contains(NamedEntityRecognizer.DELIMITER + "I-" + Context.namedEntityRecognitionMappings.get(entityType)) ) 
@@ -48,22 +49,40 @@ public abstract class Context {
 	public abstract String getSuitableEntity(String entityType);
 
 	/**
-	 * @param words the words to set
+	 * @param cleanWords the cleanWords to set
 	 */
-	public void setWords(List<String> words) {
+	public void setCleanWords(List<String> words) {
 
-		this.words = words;
+		this.cleanWords = words;
 	}
 
 	/**
-	 * @return the words
+	 * @return the cleanWords
 	 */
-	public List<String> getWords() {
+	public List<String> getCleanWords() {
 
-		return this.words;
+		return this.cleanWords;
 	}
 
 	
+	
+	/**
+	 * @return the taggedWords
+	 */
+	public List<String> getTaggedWords() {
+	
+		return taggedWords;
+	}
+
+	
+	/**
+	 * @param taggedWords the taggedWords to set
+	 */
+	public void setTaggedWords(List<String> taggedWords) {
+	
+		this.taggedWords = taggedWords;
+	}
+
 	/**
 	 * @return the ner
 	 */

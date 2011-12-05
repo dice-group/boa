@@ -58,21 +58,21 @@
 //	
 //	private String buildLeftString(){
 //		
-//		// list for the copy of the words and reverse the order because its leftcontext and we want to iterate from 0 > size -1 not the other way around
-//		List<String> words = new ArrayList<String>(this.words);
-//		Collections.copy(words, this.words);
-//		Collections.reverse(words);
+//		// list for the copy of the cleanWords and reverse the order because its leftcontext and we want to iterate from 0 > size -1 not the other way around
+//		List<String> cleanWords = new ArrayList<String>(this.words);
+//		Collections.copy(cleanWords, this.words);
+//		Collections.reverse(cleanWords);
 //		
-//		// get the first five words (or less if size is smaller) and remove the these words from the list
-//		String firstNWords = StringUtils.join(words.subList(0, words.size() >= 5 ? 5 : words.size()), " ");
-//		words = words.subList(words.size() >= 5 ? 5 : words.size(), words.size());
+//		// get the first five cleanWords (or less if size is smaller) and remove the these cleanWords from the list
+//		String firstNWords = StringUtils.join(cleanWords.subList(0, cleanWords.size() >= 5 ? 5 : cleanWords.size()), " ");
+//		cleanWords = cleanWords.subList(cleanWords.size() >= 5 ? 5 : cleanWords.size(), cleanWords.size());
 //		
-//		for (int i = 0; i < words.size() ; i++) {
+//		for (int i = 0; i < cleanWords.size() ; i++) {
 //			
 //			// the next word contains an entity (part)
-//			if ( !words.get(i).contains("_O") ) {
+//			if ( !cleanWords.get(i).contains("_O") ) {
 //				
-//				firstNWords += " " + words.get(i);
+//				firstNWords += " " + cleanWords.get(i);
 //			}
 //			else break;
 //		}

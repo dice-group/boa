@@ -135,7 +135,7 @@ public class SentenceFilter {
 				reason += " 10 ";
 			}
 			
-			// sentences with strange symbols | [Ê]Ê<< >>
+			// sentences with strange symbols | [ï¿½]ï¿½<< >>
 			if ( sentence.contains("|") 
 					|| sentence.contains("[") 
 					|| sentence.contains("]") 

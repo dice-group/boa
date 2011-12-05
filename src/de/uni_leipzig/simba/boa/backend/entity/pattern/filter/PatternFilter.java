@@ -11,7 +11,7 @@ public interface PatternFilter {
 
 	/**
 	 * Found pattern mappings need to be filtered, e.g. pattern mappings 
-	 * with patterns which do not contain a certain amount of words or 
+	 * with patterns which do not contain a certain amount of cleanWords or 
 	 * only contain stop-words need to be filtered. Furthermore checked 
 	 * patterns need to be evaluated, if they deliver suitable results. 
 	 * This method should be used to check patterns for a given characteristic 

@@ -46,16 +46,16 @@ public class FastContextTest {
 		
 		FastLeftContext flc = new FastLeftContext(nerTagged, sentence, pattern);
 		
-		assertEquals(13, flc.getWords().size());
-		assertEquals("series", flc.getWords().get(flc.getWords().size() -1 ));
+		assertEquals(13, flc.getCleanWords().size());
+		assertEquals("series", flc.getCleanWords().get(flc.getCleanWords().size() -1 ));
 		assertEquals("series_O", flc.getTaggedWords().get(flc.getTaggedWords().size() -1 ));
 		assertEquals("Neil Gaiman", flc.getSuitableEntity("http://dbpedia.org/ontology/Person"));
 		assertEquals(0, flc.getSuitableEntityDistance("http://dbpedia.org/ontology/Person"));
 		
 		FastRightContext frc = new FastRightContext(nerTagged, sentence, pattern);
 		
-		assertEquals(8, frc.getWords().size());
-		assertEquals("comic", frc.getWords().get(0));
+		assertEquals(8, frc.getCleanWords().size());
+		assertEquals("comic", frc.getCleanWords().get(0));
 		assertEquals("comic_O", frc.getTaggedWords().get(0));
 		assertEquals("Sandman", frc.getSuitableEntity("http://dbpedia.org/ontology/Work"));
 		assertEquals(1, frc.getSuitableEntityDistance("http://dbpedia.org/ontology/Work"));
@@ -70,16 +70,16 @@ public class FastContextTest {
 		
 		FastLeftContext flc = new FastLeftContext(nerTagged, sentence, pattern);
 		
-		assertEquals(12, flc.getWords().size());
-		assertEquals("in", flc.getWords().get(flc.getWords().size() -1 ));
+		assertEquals(12, flc.getCleanWords().size());
+		assertEquals("in", flc.getCleanWords().get(flc.getCleanWords().size() -1 ));
 		assertEquals("in_O", flc.getTaggedWords().get(flc.getTaggedWords().size() -1 ));
 		assertEquals("N.Y.", flc.getSuitableEntity("http://dbpedia.org/ontology/Place"));
 		assertEquals(3, flc.getSuitableEntityDistance("http://dbpedia.org/ontology/Place"));
 		
 		FastRightContext frc = new FastRightContext(nerTagged, sentence, pattern);
 		
-		assertEquals(4, frc.getWords().size());
-		assertEquals("in", frc.getWords().get(0) );
+		assertEquals(4, frc.getCleanWords().size());
+		assertEquals("in", frc.getCleanWords().get(0) );
 		assertEquals("in_O", frc.getTaggedWords().get(0));
 		assertEquals("the Bronx", frc.getSuitableEntity("http://dbpedia.org/ontology/Place"));
 		assertEquals(0, frc.getSuitableEntityDistance("http://dbpedia.org/ontology/Place"));
@@ -94,16 +94,16 @@ public class FastContextTest {
 		
 		FastLeftContext flc = new FastLeftContext(nerTagged, sentence, pattern);
 		
-		assertEquals(3, flc.getWords().size());
-		assertEquals("created", flc.getWords().get(flc.getWords().size() -1 ));
+		assertEquals(3, flc.getCleanWords().size());
+		assertEquals("created", flc.getCleanWords().get(flc.getCleanWords().size() -1 ));
 		assertEquals("created_O", flc.getTaggedWords().get(flc.getTaggedWords().size() -1 ));
 		assertEquals("Uprock", flc.getSuitableEntity("http://dbpedia.org/ontology/MusicalWork"));
 		assertEquals(0, flc.getSuitableEntityDistance("http://dbpedia.org/ontology/MusicalWork"));
 		
 		FastRightContext frc = new FastRightContext(nerTagged, sentence, pattern);
 		
-		assertEquals(4, frc.getWords().size());
-		assertEquals("created", frc.getWords().get(0) );
+		assertEquals(4, frc.getCleanWords().size());
+		assertEquals("created", frc.getCleanWords().get(0) );
 		assertEquals("created_O", frc.getTaggedWords().get(0));
 		assertEquals("Brooklyn", frc.getSuitableEntity("http://dbpedia.org/ontology/Place"));
 		assertEquals(0, frc.getSuitableEntityDistance("http://dbpedia.org/ontology/Place"));

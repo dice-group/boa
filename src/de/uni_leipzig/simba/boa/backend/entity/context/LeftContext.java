@@ -7,7 +7,7 @@ public class LeftContext extends Context {
 
 	public LeftContext(String nerTaggedString, String sentence, String patternWithOutVariables) {
 
-		this.words = new ArrayList<String>();
+		this.cleanWords = new ArrayList<String>();
 		this.setPattern(patternWithOutVariables);
 		this.createLeftContext(nerTaggedString, sentence);
 	}
@@ -19,31 +19,31 @@ public class LeftContext extends Context {
 		String entityMapping = Context.namedEntityRecognitionMappings.get(entityType);
 		
 		// handle list smaller 3 separatly
-		if ( this.words.size() < 3 ) {
+		if ( this.cleanWords.size() < 3 ) {
 			
-			if ( this.words.size() == 0 ) throw new AssertionError("The word list of this context can't be empty");
+			if ( this.cleanWords.size() == 0 ) throw new AssertionError("The word list of this context can't be empty");
 			
-			if ( this.words.size() == 1 ) {
+			if ( this.cleanWords.size() == 1 ) {
 				
-				if ( this.words.get(0).contains(entityMapping) ) entity += this.words.get(0).substring(0, this.words.get(0).indexOf("_"));
+				if ( this.cleanWords.get(0).contains(entityMapping) ) entity += this.cleanWords.get(0).substring(0, this.cleanWords.get(0).indexOf("_"));
 			}
 			
-			if ( this.words.size() == 2 ) {
+			if ( this.cleanWords.size() == 2 ) {
 				
-				if ( this.words.get(0).contains(entityMapping) ) entity += this.words.get(0).substring(0, this.words.get(0).indexOf("_"));
-				if ( this.words.get(1).contains(entityMapping) ) entity += " " + this.words.get(1).substring(0, this.words.get(1).indexOf("_"));
+				if ( this.cleanWords.get(0).contains(entityMapping) ) entity += this.cleanWords.get(0).substring(0, this.cleanWords.get(0).indexOf("_"));
+				if ( this.cleanWords.get(1).contains(entityMapping) ) entity += " " + this.cleanWords.get(1).substring(0, this.cleanWords.get(1).indexOf("_"));
 			}
 //			System.out.println("leftcontext:"+ entity.trim());
 			return entity.trim();
 		}
 		else {
 			
-			for (int j = this.words.size() - 1; j >= 0; ) {
+			for (int j = this.cleanWords.size() - 1; j >= 0; ) {
 				
-				String currentWord					= this.words.get(j);
+				String currentWord					= this.cleanWords.get(j);
 				// cover the end of the context with withspaces
-				String wordBeforeCurrentWord		= (j - 1) >= 0 ? this.words.get(j - 1) : ""; 
-				String wordBeforeBeforeCurrentWord 	= (j - 2) >= 0 ? this.words.get(j - 2) : "";
+				String wordBeforeCurrentWord		= (j - 1) >= 0 ? this.cleanWords.get(j - 1) : ""; 
+				String wordBeforeBeforeCurrentWord 	= (j - 2) >= 0 ? this.cleanWords.get(j - 2) : "";
 				
 //				System.out.println("j:" +j);
 //				System.out.println("ENTITY: " + entity);
@@ -138,7 +138,7 @@ public class LeftContext extends Context {
 	@Override
 	public String toString() {
 
-		return LeftContext.class.getSimpleName() + " " + this.words;
+		return LeftContext.class.getSimpleName() + " " + this.cleanWords;
 	}
 	
 	/**
@@ -154,7 +154,7 @@ public class LeftContext extends Context {
         // add one token from the pattern to the left context
         // this is for cases where one part of the entity left to the pattern occurs inside the pattern like: ?D? Dickens 's novel ?R?
         for(int i = 0; i < leftPatternString.split(" ").length + 1; i++){
-           this.words.add(words[i]);
+           this.cleanWords.add(words[i]);
         }
 	}
 
@@ -163,9 +163,9 @@ public class LeftContext extends Context {
 
 		String entityMapping = Context.namedEntityRecognitionMappings.get(entityType);
 		
-		for (int i = this.words.size() - 1, j = 1; i >= 0 ; i--, j++) {
+		for (int i = this.cleanWords.size() - 1, j = 1; i >= 0 ; i--, j++) {
 			
-			if ( this.words.get(i).contains(entityMapping) ) return j;
+			if ( this.cleanWords.get(i).contains(entityMapping) ) return j;
 		}
 		return 0;
 	}

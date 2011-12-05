@@ -20,9 +20,13 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -89,104 +93,84 @@ public class ResolveGermanUris {
 //		asd.writeNewFile();
 //		asd.transformEnglishFile();
 //	}
-
-	private void transformEnglishFile() throws IOException {
-
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/gerb/Downloads/02-09-2011/all_de.txt"), "UTF-8"));
-
-		List<String[]> relations = RelationFinder.getRelationFromFile("");
-		for (String[] line : relations) {
-
-			String subjectUri = line[0];
-			String objectUri = line[3];
-
-			if ( this.enUriToDeLabelMapping.get("<"+subjectUri+">") != null ) {
-				
-				line[1] = this.enUriToDeLabelMapping.get("<"+subjectUri+">");
-			}
-			if ( this.enUriToDeLabelMapping.get("<"+objectUri+">") != null ) {
-				
-				line[3] = this.enUriToDeLabelMapping.get("<"+objectUri+">");
-			}
+//
+//	private static void transformEnglishFile() throws IOException {
+//
+//		Map<String,String> urisToDeLabels = createUriToDeLabel();
+//		Map<String, String> enUriToDeUri = createUriMapping();
+//		
+//		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/gerb/de_relation_plain.txt"), "UTF-8"));
+//
+//		List<String[]> relations = RelationFinder.getRelationFromFile("/Users/gerb/asd");
+//		
+//		System.out.println("Done reading..");
+//		for (String[] line : relations) {
+//
+//			String subjectUri = line[0];
+//			String objectUri = line[3];
+//			
+//			if ( urisToDeLabels.get(subjectUri) != null ) {
+//				
+//				line[1] = urisToDeLabels.get(subjectUri);
+//			}
+//			if ( urisToDeLabels.get(objectUri) != null ) {
+//				
+//				line[3] = urisToDeLabels.get(objectUri);
+//			}
 //			if ( this.enUriToDeLabelMapping.get("<"+subjectUri+">") != null && this.enUriToDeLabelMapping.get("<"+objectUri+">") != null ) {
 //				
 //				line[1] = this.enUriToDeLabelMapping.get("<"+subjectUri+">");
 //				line[4] = this.enUriToDeLabelMapping.get("<"+objectUri+">");
 //				writer.write(StringUtils.join(line, " ||| ") + Constants.NEW_LINE_SEPARATOR);
 //			}
-			writer.write(StringUtils.join(line, " ||| ") + Constants.NEW_LINE_SEPARATOR);
-		}
-		writer.close();
-	}
-
-	private void writeNewFile() throws Exception {
-
-		try {
-			
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("/Users/gerb/Downloads/02-09-2011/labels_de.nt"), "UTF-8"));
-				
-			String line;
-			int i = 0;
-			while ((line = br.readLine()) != null) {
-
-				String[] lineParts = line.split(" ");
-				
-				String subject		= lineParts[0];
-				
-				String label;
-				if ( lineParts[2].contains("\"@de") ) label = lineParts[2];
-				else {
-					label = lineParts[2];
-					for (String s : Arrays.copyOfRange(lineParts, 3, lineParts.length) ) {
-						
-						if ( s.contains("\"@de") ) {
-							label += " "+ s;
-							break;
-						}
-						label += " "+ s;
-					}
-				}
-				
-				this.enUriToDeLabelMapping.put(subject, label.substring(1, label.length()-4));
-			}
-			br.close();
-		}
-		catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-
-	private static Map<String, String> createMapping() {
-
-		Map<String,String> enUriToDeUri =  new HashMap<String,String>();
-		try {
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("/Users/gerb/interlanguage_links_de.nt"))));
-			
-			String line;
-			while ((line = br.readLine()) != null) {
-
-				String[] lineParts = line.replace(">", "").replace("<", "").split(" ");
-
-				if (!lineParts[2].startsWith("<http://el.")) {
-					
-					enUriToDeUri.put(lineParts[2], lineParts[0]);
-				}
-			}
-			br.close();
-		}
-		catch (Exception e) {
-
-			e.printStackTrace();
-		}
-		return enUriToDeUri;
-	}
+//			writer.write(StringUtils.join(line, " ||| ") + Constants.NEW_LINE_SEPARATOR);
+//		}
+//		writer.close();
+//	}
+//	
+//	private static Map<String,String> createUriToDeLabel() throws IOException{
+//		
+//		BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(new File("/Users/gerb/new_de_uri_surface_form.tsv")))));
+//		
+//		Map<String,String> map = new HashMap<String,String>();
+//		
+//		String line = "";
+//		while ((line = br.readLine()) != null) {
+//
+//			String uri = line.substring(0, line.indexOf(" "));
+//			String[] rest =  line.substring(line.indexOf(" ")+1).split("\t");
+//			
+//			map.put(uri, rest[0]);
+//		}
+//		br.close();
+//		return map;
+//	}
+//
+//	private static Map<String, String> createUriMapping() {
+//
+//		Map<String,String> enUriToDeUri =  new HashMap<String,String>();
+//		try {
+//
+//			BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("/Users/gerb/interlanguage_links_de.nt"))));
+//			
+//			String line;
+//			while ((line = br.readLine()) != null) {
+//
+//				String[] lineParts = line.replace(">", "").replace("<", "").split(" ");
+//
+//				if (!lineParts[2].startsWith("<http://el.")) {
+//					
+//					enUriToDeUri.put(lineParts[2], lineParts[0]);
+//				}
+//			}
+//			br.close();
+//		}
+//		catch (Exception e) {
+//
+//			e.printStackTrace();
+//		}
+//		return enUriToDeUri;
+//	}
 	
 //		public static void main(String[] args) throws IOException {
 //
@@ -218,15 +202,62 @@ public class ResolveGermanUris {
 	
 	public static void main(String[] args) throws IOException {
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(new File("/Users/gerb/de_uri_surface_form.tsv")))));
-		Writer writer =  new PrintWriter(new BufferedWriter(new FileWriter("/Users/gerb/new_de_uri_surface_form.tsv")));
+		BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(new File("/Users/gerb/surface_forms-Wikipedia-TitRedDis.tsv")))));
+		Writer writer =  new PrintWriter(new BufferedWriter(new FileWriter("/Users/gerb/en_uri_to_label_mapping.tsv")));
 		
 		String line = "";
 		while ((line = br.readLine()) != null) {
 
-			String[] lineParts = line.split("\t");
-			writer.write("http://de.dbpedia.org/resource/"+lineParts[lineParts.length - 1] +" " + StringUtils.join(Arrays.copyOfRange(lineParts, 0, lineParts.length - 1),"\t") + Constants.NEW_LINE_SEPARATOR);
+			String[] parts = line.split("\t");
+			
+			writer.write("http://dbpedia.org/resource/" + parts[1] + " " + parts[0] + Constants.NEW_LINE_SEPARATOR);
 		}
+		writer.close();
+		
+		br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(new File("/Users/gerb/en_uri_to_label_mapping.tsv")))));
+		writer =  new PrintWriter(new BufferedWriter(new FileWriter("/Users/gerb/en_uri_surface_form.tsv")));
+		
+		Map<String,Set<String>> labels = new TreeMap<String,Set<String>>();
+		
+		line = "";
+		while ((line = br.readLine()) != null) {
+
+			String uri = line.substring(0, line.indexOf(" ")).trim();//.replace("http://dbpedia.org/resource/", "");
+			String label = line.substring(line.indexOf(" ") + 1).trim();
+			
+			if ( labels.containsKey(uri) ) labels.get(uri).add(label);
+			else {
+				
+				Set<String> newLabels = new TreeSet<String>();
+				newLabels.add(label);
+				labels.put(uri, newLabels);
+			}
+		}
+		System.out.println("Found uris: " + labels.size());
+		int max = 0, numberOfLabels = 0;
+		for ( Map.Entry<String,Set<String>> entry : labels.entrySet()) {
+			
+//			if ( entry.getKey().equals("http://dbpedia.org/resource/The")) continue; // over 100k surface forms...
+//			if ( entry.getKey().equals("http://dbpedia.org/resource/List")) continue; // over 100k surface forms...
+			
+			numberOfLabels += entry.getValue().size();
+			max = Math.max(max, entry.getValue().size());
+			
+			if ( entry.getValue().size() >= 100 ) {
+				
+				System.out.println(entry.getKey() + ": " + entry.getValue().size());
+				System.out.println(new ArrayList<String>(entry.getValue()).subList(0, 99));
+			}
+		}
+		System.out.println("Average of Surfaceforms: " + ((double)numberOfLabels / (double)labels.size()));
+		System.out.println("Maximum of Surfaceforms: " + max);
+		System.out.println("NUmber  of Surfaceforms: " + numberOfLabels);
+		
+		for (Map.Entry<String, Set<String>> entry : labels.entrySet()) {
+			
+			writer.write(entry.getKey() + "\t" + StringUtils.join(entry.getValue(), "\t") + Constants.NEW_LINE_SEPARATOR);
+		}
+		
 		writer.close();
 		br.close();
 	}

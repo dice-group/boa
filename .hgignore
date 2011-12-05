@@ -23,3 +23,7 @@ syntax: regexp
 nlpedia.debug*
 syntax: regexp
 ^WebContent/WEB-INF/data/training/ml/network$
+syntax: regexp
+.DS_Store$
+syntax: regexp
+^WebContent/WEB-INF/data/training/classifier/ner-de-hgc_175M_600.ser.gz$
