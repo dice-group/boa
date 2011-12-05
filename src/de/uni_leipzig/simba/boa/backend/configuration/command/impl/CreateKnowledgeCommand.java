@@ -75,63 +75,85 @@ public class CreateKnowledgeCommand implements Command {
 	public void execute() {
 
 		// create a thread pool and service for n threads/callable
-		ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_CREATE_KNOWLEDGE_THREADS);
-		this.logger.info("Created executorservice for knowledge creation of " + NUMBER_OF_CREATE_KNOWLEDGE_THREADS + " threads.");
+//		ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_CREATE_KNOWLEDGE_THREADS);
+//		this.logger.info("Created executorservice for knowledge creation of " + NUMBER_OF_CREATE_KNOWLEDGE_THREADS + " threads.");
 		
 		// collect the results of the threads
-		List<Future<Collection<Triple>>> futures = new ArrayList<Future<Collection<Triple>>>();
+//		List<Future<Collection<Triple>>> futures = new ArrayList<Future<Collection<Triple>>>();
 		
 //		List<Callable<Collection<Triple>>> todo = new ArrayList<Callable<Collection<Triple>>>(this.patternMappingList.size());
+		List<Collection<Triple>> todo = new ArrayList<Collection<Triple>>(this.patternMappingList.size());
 
 		int i = 1;
 		// one thread per pattern mapping but only n threads get executed at the same time
 		for (PatternMapping mapping : this.patternMappingList ) {
 			
-//			todo.add(new CreateKnowledgeCallable(mapping, i++));
-			
-			this.logger.info("Submitted worker for mapping: " + mapping.getProperty().getUri());
-			futures.add(executorService.submit(new CreateKnowledgeCallable(mapping, i)));
-		}
-		for (Future<Collection<Triple>> future : futures){
-			
 			try {
 				
-				Collection<Triple> triples = future.get();
-				this.logger.info("Calling write to file method with " + triples.size() + " triples.");
-				this.writeNTriplesFile(triples);
+				todo.add(new CreateKnowledgeCallable(mapping, i++).call());
 			}
-			catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+			catch (Exception e) {
+				
+				this.logger.error("SOME BUG", e);
 				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
-			catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+//			this.logger.info("Submitted worker for mapping: " + mapping.getProperty().getUri());
+//			futures.add(executorService.submit(new CreateKnowledgeCallable(mapping, i)));
 		}
-		
-//		try {
+//		for (Future<Collection<Triple>> future : futures){
 //			
-//			List<Future<Collection<Triple>>> answers = executorService.invokeAll(todo);
-//			for (Future<Collection<Triple>> future : answers) {
+//			try {
 //				
 //				Collection<Triple> triples = future.get();
 //				this.logger.info("Calling write to file method with " + triples.size() + " triples.");
 //				this.writeNTriplesFile(triples);
 //			}
-//		}
-//		catch (InterruptedException e) {
-//			
-//			this.logger.error("InterruptedException", e);
-//		}
-//		catch (ExecutionException e) {
-//			// TODO Auto-generated catch block
-//			this.logger.error("ExecutionException", e);
+//			catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			catch (ExecutionException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 //		}
 		
+//		List<Future<Collection<Triple>>> answers = null;
+//		try {
+//			
+//			answers = executorService.invokeAll(todo);
+//		}
+//		catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//			
+		for (Collection<Triple> triples : todo) {
+			
+//			try {
+				
+//				Collection<Triple> triples = future.get();
+				this.logger.info("Calling write to file method with " + triples.size() + " triples.");
+				this.writeNTriplesFile(triples);
+//			}
+//			catch (ExecutionException e) {
+//				
+//				this.logger.error("Execption", e);
+//				e.printStackTrace();
+//			}
+//			catch (InterruptedException e) {
+//				
+//				this.logger.error("Execption", e);
+//				e.printStackTrace();
+//			}
+		}
+		
+		
 		// shut down the service and all threads
-		executorService.shutdown();
-		executorService.shutdownNow();
+//		executorService.shutdown();
+//		executorService.shutdownNow();
 	}
 	
 	private void writeNTriplesFile(Collection<Triple> resultList) {

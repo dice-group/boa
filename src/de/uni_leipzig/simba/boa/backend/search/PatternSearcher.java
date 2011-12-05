@@ -26,8 +26,11 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+import sun.tools.tree.ThisExpression;
+
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.nlp.PosTagger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
@@ -53,6 +56,8 @@ public class PatternSearcher {
 	
 	private static String indexDir = "";
 	private static PatternSearcher INSTANCE;
+	
+	private final NLPediaLogger logger = new NLPediaLogger(PatternSearcher.class);
 
 	public PatternSearcher(String indexDir) throws IOException, ParseException {
 
@@ -76,7 +81,7 @@ public class PatternSearcher {
 				PatternSearcher.INSTANCE = new PatternSearcher(indexDir);
 			}
 			catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 			catch (ParseException e) {

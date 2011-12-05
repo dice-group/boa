@@ -73,8 +73,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 							
 							// there will never be a left argument if the sentence begins with the pattern
 							if ( sentence.toLowerCase().startsWith(pattern.getNaturalLanguageRepresentationWithoutVariables().toLowerCase())) continue;
-							
-							this.logger.debug("\t\t" + sentence);
+							this.logger.debug("\t" + sentence);
 
 							String nerTaggedSentence = ner.recognizeEntitiesInString(sentence);
 
@@ -122,10 +121,12 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 		catch (ParseException e) {
 			
 			this.logger.error("ParseExcpetion while index search!", e);
+			throw new RuntimeException(e);
 		}
 		catch (IOException e) {
 			
 			this.logger.error("IOException while index search!", e);
+			throw new RuntimeException(e);
 		}
 		
 		this.logger.info("Finished creating knowledge for [" +i+ "]: "  + this.mapping.getProperty().getUri() + " with " + this.tripleMap.values().size() + " triples.");

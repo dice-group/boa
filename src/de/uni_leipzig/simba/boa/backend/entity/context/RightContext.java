@@ -10,8 +10,6 @@ public final class RightContext extends Context {
 		this.words = new ArrayList<String>();
 		this.setPattern(patternWithOutVariables);
 		this.createRightContext(nerTaggedString, sentence);
-		
-		String[] patternChunks = patternWithOutVariables.split(" "); 
 	}
 	
 	@Override
