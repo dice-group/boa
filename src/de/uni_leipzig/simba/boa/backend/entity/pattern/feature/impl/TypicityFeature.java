@@ -175,9 +175,13 @@ public class TypicityFeature implements Feature {
 							
 							this.logger.error("IOExcpetion", npe);
 						}
+						catch (IllegalArgumentException e) {
+							
+							this.logger.debug("Could not create context for string " + segmentedFoundString + ". NER tagged: " + nerTagged + " pattern: "  + patternWithOutVariables, e);
+						}
 						catch (Exception e) {
 							
-							this.logger.error("Could not create context for string " + segmentedFoundString + ". NER tagged: " + nerTagged + " pattern: "  + patternWithOutVariables, e);
+							throw new RuntimeException("Some bug", e);
 						}
 					}
 				}

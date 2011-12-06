@@ -200,11 +200,15 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 		}
 		catch (IndexOutOfBoundsException ioob) {
 
-			this.logger.error("Could not create context for string " + sentence + ". NER tagged: " + nerTaggedSentence + " pattern: " + pattern.getNaturalLanguageRepresentationWithoutVariables(), ioob);
+			this.logger.debug("Could not create context for string " + sentence + ". NER tagged: " + nerTaggedSentence + " pattern: " + pattern.getNaturalLanguageRepresentationWithoutVariables(), ioob);
+		}
+		catch (IllegalArgumentException e) {
+			
+			this.logger.debug("Could not create context for string " + sentence + ". NER tagged: " + nerTaggedSentence + " pattern: " + pattern.getNaturalLanguageRepresentationWithoutVariables(), e);
 		}
 		catch (Exception e) {
 			
-			this.logger.error("Could not create context for string " + sentence + ". NER tagged: " + nerTaggedSentence + " pattern: " + pattern.getNaturalLanguageRepresentationWithoutVariables(), e);
+			throw new RuntimeException("Some bug ", e);
 		}
 	}
 }

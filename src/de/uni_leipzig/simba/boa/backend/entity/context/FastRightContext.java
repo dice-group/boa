@@ -8,7 +8,7 @@ import edu.stanford.nlp.util.StringUtils;
 
 public class FastRightContext extends Context {
 
-	public FastRightContext(String nerTaggedString, String sentence,String patternWithOutVariables) throws Exception {
+	public FastRightContext(String nerTaggedString, String sentence,String patternWithOutVariables) throws IllegalArgumentException {
 
 		this.cleanWords = new ArrayList<String>();
 		this.taggedWords = new ArrayList<String>();
@@ -74,13 +74,13 @@ public class FastRightContext extends Context {
 		return StringUtils.join(entity, " ");
 	}
 
-	private void createRightContext(String nerTaggedString, String sentenceWithoutNerTags) throws Exception {
+	private void createRightContext(String nerTaggedString, String sentenceWithoutNerTags) throws IllegalArgumentException {
 
 		String leftContextString = sentenceWithoutNerTags.substring(0, sentenceWithoutNerTags.toLowerCase().indexOf(this.pattern.toLowerCase()) - 1).trim();
 		String[] taggedWords = nerTaggedString.split(" ");
         String[] cleanWords = sentenceWithoutNerTags.split(" ");
 		
-        if ( taggedWords.length != cleanWords.length ) throw new Exception("Could not create a context because the tagged string and the clean string have not the same size.");
+        if ( taggedWords.length != cleanWords.length ) throw new IllegalArgumentException("Could not create a context because the tagged string and the clean string have not the same size.");
         
         for(int i = leftContextString.split(" ").length + 1; i < cleanWords.length; i++){
         	
