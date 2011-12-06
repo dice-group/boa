@@ -18,6 +18,8 @@ import org.apache.lucene.queryParser.ParseException;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
+import de.uni_leipzig.simba.boa.backend.entity.context.FastLeftContext;
+import de.uni_leipzig.simba.boa.backend.entity.context.FastRightContext;
 import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
 import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
@@ -137,8 +139,8 @@ public class TypicityFeature implements Feature {
 						
 						try {
 							
-							leftContext = new LeftContext(nerTagged, segmentedFoundString, segmentedPattern);
-							rightContext = new RightContext(nerTagged, segmentedFoundString, segmentedPattern);
+							leftContext = new FastLeftContext(nerTagged, segmentedFoundString, segmentedPattern);
+							rightContext = new FastRightContext(nerTagged, segmentedFoundString, segmentedPattern);
 							
 							if ( beginsWithDomain ) {
 								

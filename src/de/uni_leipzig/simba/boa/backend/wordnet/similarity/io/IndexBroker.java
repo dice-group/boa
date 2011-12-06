@@ -43,7 +43,7 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 public class IndexBroker {
 
 	private final NLPediaLogger logger = new NLPediaLogger(IndexBroker.class);
-	
+
 	/**
 	 * A static constant that represents the field name that holds the offset
 	 * value of each document.
@@ -90,7 +90,7 @@ public class IndexBroker {
 	 * guarantees that only one instance of the broker will be allowed for each
 	 * Java Virtual Machine launched.
 	 */
-//	private static IndexBroker INSTANCE;
+	// private static IndexBroker INSTANCE;
 
 	/**
 	 * The Constructor. Has private access to allow the implementation of the
@@ -120,14 +120,14 @@ public class IndexBroker {
 	 * 
 	 * @return IndexBroker
 	 */
-//	public static IndexBroker getInstance() {
-//
-//		if (INSTANCE == null) {
-//			INSTANCE = new IndexBroker();
-//		}
-//
-//		return INSTANCE;
-//	}
+	// public static IndexBroker getInstance() {
+	//
+	// if (INSTANCE == null) {
+	// INSTANCE = new IndexBroker();
+	// }
+	//
+	// return INSTANCE;
+	// }
 
 	/**
 	 * Returns the list of documents that fulfill the given query.
@@ -143,44 +143,44 @@ public class IndexBroker {
 			q = parser.parse(query);
 			return searcher.search(q, 10);
 		}
-		catch (NullPointerException npe){
-			
+		catch (NullPointerException npe) {
+
 			this.logger.debug(npe.getMessage());
 		}
 		catch (ParseException ex) {
-			
+
 			this.logger.debug(ex.getMessage());
 		}
 		catch (IOException ex) {
-			
+
 			this.logger.debug(ex.getMessage());
 		}
 		catch (ArrayIndexOutOfBoundsException aiooe) {
-			
+
 			this.logger.debug(aiooe.getMessage());
 		}
 		catch (StringIndexOutOfBoundsException sioobe) {
-			
+
 			System.out.println(query);
 			this.logger.debug(sioobe.getMessage());
 		}
 		return null;
 	}
-	
+
 	/**
 	 * @return the searcher
 	 */
 	public Searcher getSearcher() {
-	
+
 		return searcher;
 	}
 
-	
 	/**
-	 * @param searcher the searcher to set
+	 * @param searcher
+	 *            the searcher to set
 	 */
 	public void setSearcher(Searcher searcher) {
-	
+
 		this.searcher = searcher;
 	}
 }

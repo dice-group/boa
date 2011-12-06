@@ -11,13 +11,9 @@ import java.util.concurrent.Callable;
 import org.apache.lucene.queryParser.ParseException;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.rdf.ResourceDao;
-import de.uni_leipzig.simba.boa.backend.dao.rdf.TripleDao;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
-import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
-import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
+import de.uni_leipzig.simba.boa.backend.entity.context.FastLeftContext;
+import de.uni_leipzig.simba.boa.backend.entity.context.FastRightContext;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -36,12 +32,10 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 	private final PatternMapping mapping;
 
 	private Map<Integer,Triple> tripleMap = new HashMap<Integer,Triple>();
-	private int i;
 	
-	public CreateKnowledgeCallable(PatternMapping mapping, int i) {
+	public CreateKnowledgeCallable(PatternMapping mapping) {
 		
 		this.mapping = mapping;
-		this.i = i;
 	}
 
 //	@Override
@@ -55,7 +49,6 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 				
 				// take the top n scored patterns
 				List<Pattern> patternList	= PatternUtil.getTopNPattern(patterns, PatternSelectionStrategy.ALL, Integer.valueOf(NLPediaSettings.getInstance().getSetting("top.n.pattern")), 0.7D);
-				
 				this.logger.info(String.format("Creating knowledge for mapping: %s and top-%s patterns", mapping.getProperty().getUri(), patternList.size()));
 
 				if ( !patternList.isEmpty() ) {
@@ -74,19 +67,11 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 							if ( sentence.toLowerCase().startsWith(pattern.getNaturalLanguageRepresentationWithoutVariables().toLowerCase())) continue;
 							this.logger.debug("\t" + sentence);
 
-							String nerTaggedSentence = ner.recognizeEntitiesInString(sentence);
-
-							createKnowledge(mapping, 
-											pattern, 
-											sentence, 
-											nerTaggedSentence, 
-											mapping.getProperty().getRdfsDomain(), 
-											mapping.getProperty().getRdfsRange());
+							createKnowledge(mapping, pattern, sentence, ner.recognizeEntitiesInString(sentence)); 
 						}
 					}
+					// close the searcher or you get a ioexception because too many files are open
 					patternSearcher.close();
-					
-//					double maxConfidenceForTriple = 0D;
 					
 					// confidence of triple is number of patterns the triple has been learned from times the sum of their confidences
 					for ( Triple triple : this.tripleMap.values() ) {
@@ -94,25 +79,13 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						// new knowledge (knowledge not put in as background knowledge) is always not correct
 						if ( !triple.isCorrect() ) {
 							
-							int numberOfPatternsLearnedFrom = triple.getLearnedFromPatterns().size();
-							
-							double sumOfConfidence = 0;
+							double confidence = 0;
 							for ( Pattern patternLearnedFrom : triple.getLearnedFromPatterns() ) {
 								
-								sumOfConfidence += patternLearnedFrom.getConfidence();
+								confidence += patternLearnedFrom.getConfidence();
 							}
-							triple.setConfidence(sumOfConfidence * numberOfPatternsLearnedFrom);
-//							maxConfidenceForTriple = Math.max(triple.getConfidence(), maxConfidenceForTriple);
-						}
-					}
-					// calculate global confidence scores
-					for ( Triple triple : this.tripleMap.values() ) {
-						
-						if ( !triple.isCorrect() ) {
-							
-							triple.setConfidence(triple.getConfidence());// / maxConfidenceForTriple);
 							// sigmoid function shifted to the right to boost pattern which are learned from more than one pattern
-							triple.setConfidence(1 / (1 + Math.pow(Math.E, - triple.getConfidence() + 1))); 
+							triple.setConfidence(1D / (1D + Math.pow(Math.E, - confidence * triple.getLearnedFromPatterns().size() + 1)));
 						}
 					}
 				}
@@ -129,17 +102,20 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 			throw new RuntimeException(e);
 		}
 		
-		this.logger.info("Finished creating knowledge for [" +i+ "]: "  + this.mapping.getProperty().getUri() + " with " + this.tripleMap.values().size() + " triples.");
+		this.logger.info("Finished creating knowledge for: "  + this.mapping.getProperty().getUri() + " with " + this.tripleMap.values().size() + " triples.");
 		
 		return this.tripleMap.values();
 	}
 	
-	private void createKnowledge(PatternMapping mapping, Pattern pattern, String sentence, String nerTaggedSentence, String domainUri, String rangeUri) {
+	private void createKnowledge(PatternMapping mapping, Pattern pattern, String sentence, String nerTaggedSentence) {
 		
 		try {
 
-			Context leftContext = new LeftContext(nerTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables());
-			Context rightContext = new RightContext(nerTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables());
+			String domainUri	= mapping.getProperty().getRdfsDomain();
+			String rangeUri		= mapping.getProperty().getRdfsRange();
+			
+			Context leftContext = new FastLeftContext(nerTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables());
+			Context rightContext = new FastRightContext(nerTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables());
 
 			boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
 

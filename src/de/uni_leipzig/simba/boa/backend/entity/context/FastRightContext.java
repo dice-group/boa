@@ -14,7 +14,6 @@ public class FastRightContext extends Context {
 		this.taggedWords = new ArrayList<String>();
 		this.setPattern(patternWithOutVariables);
 		this.createRightContext(nerTaggedString, sentence);
-System.out.println(nerTaggedString);
 	}
 	
 	@Override
@@ -22,15 +21,9 @@ System.out.println(nerTaggedString);
 
 		String entityMapping = Context.namedEntityRecognitionMappings.get(entityType);
 		
-//		System.out.println(this.taggedWords);
-//		System.out.println(this.taggedWords.size());
-//		System.out.println(this.pattern);
-//		System.out.println(this.pattern.split(" ").length);
-		
 		// from 0 to the size of the left context without the pattern
-		for (int i = this.taggedWords.size() - this.pattern.split(" ").length + 1, j = 0; i < this.taggedWords.size() ; i++, j++) {
+		for (int i = this.taggedWords.size() - (this.taggedWords.size() - (this.pattern.split(" ").length - 1)), j = 0; i < this.taggedWords.size() ; i++, j++) {
 			
-//			System.out.println(this.taggedWords.get(i));
 			if ( this.taggedWords.get(i).contains(entityMapping) ) return j;
 		}
 		return -1;

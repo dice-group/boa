@@ -1,6 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import junit.framework.JUnit4TestAdapter;
 
 import org.junit.After;
@@ -107,5 +108,139 @@ public class FastContextTest {
 		assertEquals("created_O", frc.getTaggedWords().get(0));
 		assertEquals("Brooklyn", frc.getSuitableEntity("http://dbpedia.org/ontology/Place"));
 		assertEquals(0, frc.getSuitableEntityDistance("http://dbpedia.org/ontology/Place"));
+	}
+	
+	@Test
+	public void testFastLeftContext4() {
+	
+		String sentence		= "Has a of Josephine of Daughter , who was born in Germany .";
+		String nerTagged	= "Has_O a_O of_O Josephine_B-PER of_O Daughter_I-PER ,_O who_O was_O born_O in_O Germany_LOC ._O";
+		String pattern		= ", who was born in";
+		
+		FastLeftContext flc = new FastLeftContext(nerTagged, sentence, pattern);
+		
+		assertEquals(10, flc.getCleanWords().size());
+		assertEquals("born", flc.getCleanWords().get(flc.getCleanWords().size() -1 ));
+		assertEquals("born_O", flc.getTaggedWords().get(flc.getTaggedWords().size() -1 ));
+		assertEquals("Daughter", flc.getSuitableEntity("http://dbpedia.org/ontology/Person"));
+		assertEquals(0, flc.getSuitableEntityDistance("http://dbpedia.org/ontology/Person"));
+		
+		FastRightContext frc = new FastRightContext(nerTagged, sentence, pattern);
+		
+		assertEquals(6, frc.getCleanWords().size());
+		assertEquals("who", frc.getCleanWords().get(0) );
+		assertEquals("who_O", frc.getTaggedWords().get(0));
+		assertEquals("Germany", frc.getSuitableEntity("http://dbpedia.org/ontology/Country"));
+		assertEquals(0, frc.getSuitableEntityDistance("http://dbpedia.org/ontology/Country"));
+	}
+	
+	@Test
+	public void testFastLeftContext5() {
+	
+		String sentence		= "The Chernaya River is on the outskirts of Sevastopol .";
+		String nerTagged	= "The_O Chernaya_B-LOC River_I-LOC is_O on_O the_O outskirts_O of_O Sevastopol_B-LOC ._O";
+		String pattern		= "is on the outskirts of";
+		
+		FastLeftContext flc = new FastLeftContext(nerTagged, sentence, pattern);
+		
+		assertEquals(7, flc.getCleanWords().size());
+		assertEquals("outskirts", flc.getCleanWords().get(flc.getCleanWords().size() -1 ));
+		assertEquals("outskirts_O", flc.getTaggedWords().get(flc.getTaggedWords().size() -1 ));
+		assertEquals("Chernaya River", flc.getSuitableEntity("http://dbpedia.org/ontology/Place"));
+		assertEquals(0, flc.getSuitableEntityDistance("http://dbpedia.org/ontology/Place"));
+		
+		FastRightContext frc = new FastRightContext(nerTagged, sentence, pattern);
+		
+		assertEquals(6, frc.getCleanWords().size());
+		assertEquals("on", frc.getCleanWords().get(0) );
+		assertEquals("on_O", frc.getTaggedWords().get(0));
+		assertEquals("Sevastopol", frc.getSuitableEntity("http://dbpedia.org/ontology/Place"));
+		assertEquals(0, frc.getSuitableEntityDistance("http://dbpedia.org/ontology/Place"));
+	}
+	
+	@Test
+	public void testFastLeftContext6() {
+	
+		String sentence		= "At stake were the 450 seats in the State Duma -LRB- Gosudarstvennaya Duma -RRB- , the lower house of the Federal Assembly of Russia -LRB- The legislature -RRB- .";
+		String nerTagged	= "At_O stake_O were_O the_O 450_O seats_O in_O the_O State_B-ORG Duma_I-ORG -LRB-_O Gosudarstvennaya_B-PER Duma_I-PER -RRB-_O ,_O the_O lower_O house_O of_O the_O Federal_B-ORG Assembly_I-ORG of_O Russia_B-LOC -LRB-_O The_O legislature_O -RRB-_O ._O";
+		String pattern		= "-LRB- Gosudarstvennaya Duma -RRB- , the lower house of the";
+		
+		FastLeftContext flc = new FastLeftContext(nerTagged, sentence, pattern);
+		
+		assertEquals(19, flc.getCleanWords().size());
+		assertEquals("of", flc.getCleanWords().get(flc.getCleanWords().size() -1 ));
+		assertEquals("of_O", flc.getTaggedWords().get(flc.getTaggedWords().size() -1 ));
+		assertEquals("State Duma", flc.getSuitableEntity("http://dbpedia.org/ontology/Organisation"));
+		assertEquals(0, flc.getSuitableEntityDistance("http://dbpedia.org/ontology/Organisation"));
+		
+		FastRightContext frc = new FastRightContext(nerTagged, sentence, pattern);
+		
+		assertEquals(18, frc.getCleanWords().size());
+		assertEquals("Gosudarstvennaya", frc.getCleanWords().get(0) );
+		assertEquals("Gosudarstvennaya_B-PER", frc.getTaggedWords().get(0));
+		assertEquals("Federal Assembly", frc.getSuitableEntity("http://dbpedia.org/ontology/Organisation"));
+		assertEquals(0, frc.getSuitableEntityDistance("http://dbpedia.org/ontology/Organisation"));
+	}
+	
+	@Test
+	public void testFastLeftContext7() { // TODO
+	
+		String sentence		= "Vygotsky was born in Orsha , in the Russian Empire -LRB- today in Belarus -RRB- into a nonreligious Jewish family .";
+		String nerTagged	= "Vygotsky_B-PER was_O born_O in_O Orsha_B-LOC ,_O in_O the_O Russian_B-MISC Empire_I-MISC -LRB-_O today_O in_O Belarus_B-LOC -RRB-_O into_O a_O nonreligious_O Jewish_B-MISC family_O ._O";
+		String pattern		= "in the Russian Empire -LRB- today in";
+		
+		FastLeftContext flc = new FastLeftContext(nerTagged, sentence, pattern);
+		
+		assertEquals(12, flc.getCleanWords().size());
+		assertEquals("today", flc.getCleanWords().get(flc.getCleanWords().size() -1 ));
+		assertEquals("today_O", flc.getTaggedWords().get(flc.getTaggedWords().size() -1 ));
+		assertEquals("Orsha", flc.getSuitableEntity("http://dbpedia.org/ontology/Place"));
+		assertEquals(1, flc.getSuitableEntityDistance("http://dbpedia.org/ontology/Place"));
+		
+		FastRightContext frc = new FastRightContext(nerTagged, sentence, pattern);
+		
+		assertEquals(14, frc.getCleanWords().size());
+		assertEquals("the", frc.getCleanWords().get(0) );
+		assertEquals("the_O", frc.getTaggedWords().get(0));
+		assertEquals("Belarus", frc.getSuitableEntity("http://dbpedia.org/ontology/Place"));
+		assertEquals(0, frc.getSuitableEntityDistance("http://dbpedia.org/ontology/Place"));
+	}
+	
+	@Test
+	public void testTimeForContextCreation() {
+		
+		long total = 0;
+		long iterations = 10000;
+		
+		for ( int i = 0 ; i < iterations ; i++ ) {
+
+			long start = System.currentTimeMillis();
+			
+			String sentence		= "Vygotsky was born in Orsha , in the Russian Empire -LRB- today in Belarus -RRB- into a nonreligious Jewish family .";
+			String nerTagged	= "Vygotsky_B-PER was_O born_O in_O Orsha_B-LOC ,_O in_O the_O Russian_B-MISC Empire_I-MISC -LRB-_O today_O in_O Belarus_B-LOC -RRB-_O into_O a_O nonreligious_O Jewish_B-MISC family_O ._O";
+			String pattern		= "in the Russian Empire -LRB- today in";
+			
+			FastLeftContext flc = new FastLeftContext(nerTagged, sentence, pattern);
+			
+			assertEquals(12, flc.getCleanWords().size());
+			assertEquals("today", flc.getCleanWords().get(flc.getCleanWords().size() -1 ));
+			assertEquals("today_O", flc.getTaggedWords().get(flc.getTaggedWords().size() -1 ));
+			assertEquals("Orsha", flc.getSuitableEntity("http://dbpedia.org/ontology/Place"));
+			assertEquals(1, flc.getSuitableEntityDistance("http://dbpedia.org/ontology/Place"));
+			
+			FastRightContext frc = new FastRightContext(nerTagged, sentence, pattern);
+			
+			assertEquals(14, frc.getCleanWords().size());
+			assertEquals("the", frc.getCleanWords().get(0) );
+			assertEquals("the_O", frc.getTaggedWords().get(0));
+			assertEquals("Belarus", frc.getSuitableEntity("http://dbpedia.org/ontology/Place"));
+			assertEquals(0, frc.getSuitableEntityDistance("http://dbpedia.org/ontology/Place"));
+			
+			long end = System.currentTimeMillis();
+			
+			total += (end - start);
+		}
+		assertTrue("One sentence in less then 0.5ms!", (double) 0.5 > (double) total / (double) iterations);
+		assertTrue(iterations + " sentence in less then " + iterations + "ms!", (double) iterations > (double) total);
 	}
 }
