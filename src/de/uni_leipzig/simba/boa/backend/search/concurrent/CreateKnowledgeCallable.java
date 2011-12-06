@@ -26,7 +26,7 @@ import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrategy;
 
-public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
+public class CreateKnowledgeCallable { //implements Callable<Collection<Triple>> {
 
 	private final NLPediaLogger logger 		= new NLPediaLogger(CreateKnowledgeCallable.class);
 	private final PatternMapping mapping;
@@ -38,8 +38,8 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 		this.mapping = mapping;
 	}
 
-	@Override
-	public Collection<Triple> call() throws Exception {
+//	@Override
+	public Collection<Triple> call() { // throws Exception {
 		
 		try {
 
@@ -104,7 +104,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 		catch (Exception e) {
 			
 			this.logger.error("Excpetion", e);
-//			throw new RuntimeException(e);
+			throw new RuntimeException(e);
 		}
 		
 		this.logger.info("Finished creating knowledge for: "  + this.mapping.getProperty().getUri() + " with " + this.tripleMap.values().size() + " triples.");
@@ -200,7 +200,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 		}
 		catch (IndexOutOfBoundsException ioob) {
 
-			this.logger.error("Could not create context for string " + sentence + ". NER tagged: " + nerTaggedSentence + " pattern: " + pattern.getNaturalLanguageRepresentationWithoutVariables());
+			this.logger.error("Could not create context for string " + sentence + ". NER tagged: " + nerTaggedSentence + " pattern: " + pattern.getNaturalLanguageRepresentationWithoutVariables(), ioob);
 		}
 		catch (Exception e) {
 			
