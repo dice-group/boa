@@ -169,11 +169,15 @@ public class TypicityFeature implements Feature {
 						}
 						catch ( IndexOutOfBoundsException ioob ) {
 							//ioob.printStackTrace();
-							this.logger.error("Could not create context for string " + segmentedFoundString + ". NER tagged: " + nerTagged + " pattern: "  + patternWithOutVariables);
+							this.logger.error("Could not create context for string " + segmentedFoundString + ". NER tagged: " + nerTagged + " pattern: "  + patternWithOutVariables, ioob);
 						}
 						catch (NullPointerException npe) {
 							
 							this.logger.error("IOExcpetion", npe);
+						}
+						catch (Exception e) {
+							
+							this.logger.error("Could not create context for string " + segmentedFoundString + ". NER tagged: " + nerTagged + " pattern: "  + patternWithOutVariables, e);
 						}
 					}
 				}

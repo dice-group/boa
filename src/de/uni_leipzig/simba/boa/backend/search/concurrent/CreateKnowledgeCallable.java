@@ -26,7 +26,7 @@ import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrategy;
 
-public class CreateKnowledgeCallable { //implements Callable<Collection<Triple>> {
+public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 
 	private final NLPediaLogger logger 		= new NLPediaLogger(CreateKnowledgeCallable.class);
 	private final PatternMapping mapping;
@@ -38,8 +38,8 @@ public class CreateKnowledgeCallable { //implements Callable<Collection<Triple>>
 		this.mapping = mapping;
 	}
 
-//	@Override
-	public Collection<Triple> call() { // throws Exception {
+	@Override
+	public Collection<Triple> call() {
 		
 		try {
 

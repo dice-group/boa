@@ -39,7 +39,7 @@ public class FastContextTest {
 	}
 	
 	@Test
-	public void testFastLeftContext1() {
+	public void testFastLeftContext1() throws Exception {
 	
 		String sentence		= "The Corinthian is a fictional character in Neil Gaiman 's comic book series `` The Sandman '' .";
 		String nerTagged	= "The_O Corinthian_B-MISC is_O a_O fictional_O character_O in_O Neil_B-PER Gaiman_I-PER 's_O comic_O book_O series_O ``_O The_O Sandman_B-MISC ''_O ._O";
@@ -63,7 +63,7 @@ public class FastContextTest {
 	}
 	
 	@Test
-	public void testFastLeftContext2() {
+	public void testFastLeftContext2() throws Exception {
 	
 		String sentence		= "Uprock was created in Brooklyn , N.Y. and breaking was created in the Bronx .";
 		String nerTagged	= "Uprock_O was_O created_O in_O Brooklyn_B-LOC ,_O N.Y._B-LOC and_O breaking_O was_O created_O in_O the_B-LOC Bronx_I-LOC ._O";
@@ -87,7 +87,7 @@ public class FastContextTest {
 	}
 	
 	@Test
-	public void testFastLeftContext3() {
+	public void testFastLeftContext3() throws Exception {
 	
 		String sentence		= "Uprock was created in Brooklyn .";
 		String nerTagged	= "Uprock_MISC was_O created_O in_O Brooklyn_B-LOC ._O";
@@ -111,7 +111,7 @@ public class FastContextTest {
 	}
 	
 	@Test
-	public void testFastLeftContext4() {
+	public void testFastLeftContext4() throws Exception {
 	
 		String sentence		= "Has a of Josephine of Daughter , who was born in Germany .";
 		String nerTagged	= "Has_O a_O of_O Josephine_B-PER of_O Daughter_I-PER ,_O who_O was_O born_O in_O Germany_LOC ._O";
@@ -135,7 +135,7 @@ public class FastContextTest {
 	}
 	
 	@Test
-	public void testFastLeftContext5() {
+	public void testFastLeftContext5() throws Exception {
 	
 		String sentence		= "The Chernaya River is on the outskirts of Sevastopol .";
 		String nerTagged	= "The_O Chernaya_B-LOC River_I-LOC is_O on_O the_O outskirts_O of_O Sevastopol_B-LOC ._O";
@@ -159,7 +159,7 @@ public class FastContextTest {
 	}
 	
 	@Test
-	public void testFastLeftContext6() {
+	public void testFastLeftContext6() throws Exception {
 	
 		String sentence		= "At stake were the 450 seats in the State Duma -LRB- Gosudarstvennaya Duma -RRB- , the lower house of the Federal Assembly of Russia -LRB- The legislature -RRB- .";
 		String nerTagged	= "At_O stake_O were_O the_O 450_O seats_O in_O the_O State_B-ORG Duma_I-ORG -LRB-_O Gosudarstvennaya_B-PER Duma_I-PER -RRB-_O ,_O the_O lower_O house_O of_O the_O Federal_B-ORG Assembly_I-ORG of_O Russia_B-LOC -LRB-_O The_O legislature_O -RRB-_O ._O";
@@ -183,7 +183,7 @@ public class FastContextTest {
 	}
 	
 	@Test
-	public void testFastLeftContext7() { // TODO
+	public void testFastLeftContext7() throws Exception { 
 	
 		String sentence		= "Vygotsky was born in Orsha , in the Russian Empire -LRB- today in Belarus -RRB- into a nonreligious Jewish family .";
 		String nerTagged	= "Vygotsky_B-PER was_O born_O in_O Orsha_B-LOC ,_O in_O the_O Russian_B-MISC Empire_I-MISC -LRB-_O today_O in_O Belarus_B-LOC -RRB-_O into_O a_O nonreligious_O Jewish_B-MISC family_O ._O";
@@ -207,14 +207,16 @@ public class FastContextTest {
 	}
 	
 	@Test
-	public void testTimeForContextCreation() {
+	public void testTimeForContextCreation() throws Exception {
 		
 		long total = 0;
-		long iterations = 10000;
+		long iterations = 100000;
+		long max = 0;
+		long min = 1000000;
 		
 		for ( int i = 0 ; i < iterations ; i++ ) {
 
-			long start = System.currentTimeMillis();
+			long start = System.nanoTime();
 			
 			String sentence		= "Vygotsky was born in Orsha , in the Russian Empire -LRB- today in Belarus -RRB- into a nonreligious Jewish family .";
 			String nerTagged	= "Vygotsky_B-PER was_O born_O in_O Orsha_B-LOC ,_O in_O the_O Russian_B-MISC Empire_I-MISC -LRB-_O today_O in_O Belarus_B-LOC -RRB-_O into_O a_O nonreligious_O Jewish_B-MISC family_O ._O";
@@ -236,12 +238,16 @@ public class FastContextTest {
 			assertEquals("Belarus", frc.getSuitableEntity("http://dbpedia.org/ontology/Place"));
 			assertEquals(0, frc.getSuitableEntityDistance("http://dbpedia.org/ontology/Place"));
 			
-			long end = System.currentTimeMillis();
-			
-			total += (end - start);
+			long end = System.nanoTime() - start;
+			max = Math.max(max, end);
+			min = Math.min(min, end);
+			total += end;
 		}
-		assertTrue("One sentence in less then 0.5ms!", (double) 0.5 > (double) total / (double) iterations);
-		assertTrue(iterations + " sentence in less then " + iterations + "ms!", (double) iterations > (double) total);
+		
+		System.out.println((double) total / (double) 1000000000);
+		System.out.println((double) max / (double) 1000000000);
+		System.out.println((double) min / (double) 1000000000);
+		System.out.println(((double) total / (double) iterations) / 1000000000);
 	}
 	
 	// Folly_B-ORG Brook_I-ORG is_O a_O 2 1\/4_O mile_O -LRB-_O 3.6_O km_O -RRB-_O long_O brook_O in_O the_O London_B-LOC Borough_I-LOC of_I-LOC Barnet_I-LOC ._O
