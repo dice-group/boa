@@ -48,7 +48,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 			if ( patterns != null && patterns.size() > 0 ) {
 				
 				// take the top n scored patterns
-				List<Pattern> patternList	= PatternUtil.getTopNPattern(patterns, PatternSelectionStrategy.ALL, Integer.valueOf(NLPediaSettings.getInstance().getSetting("top.n.pattern")), 0.7D);
+				List<Pattern> patternList	= PatternUtil.getTopNPattern(patterns, PatternSelectionStrategy.ALL, Integer.valueOf(NLPediaSettings.getInstance().getSetting("top.n.pattern")), Double.valueOf(NLPediaSettings.getInstance().getSetting("score.threshold.create.knowledge")));
 				this.logger.info(String.format("Creating knowledge for mapping: %s and top-%s patterns", mapping.getProperty().getUri(), patternList.size()));
 
 				if ( !patternList.isEmpty() ) {

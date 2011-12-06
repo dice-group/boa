@@ -58,7 +58,13 @@ public class CreateKnowledgeCommand implements Command {
 	private final TripleDao tripleDao							= (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
 	
 	private final Integer NUMBER_OF_CREATE_KNOWLEDGE_THREADS	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("number.of.create.knowledge.threads"));
-	private final String N_TRIPLES_FILE							= NLPediaSettings.getInstance().getSetting("ntriples.file.path");
+	private final String N_TRIPLES_FILE							=	NLPediaSettings.getInstance().getSetting("ntriples.file.path") +  
+																	"triples_score" + 
+																	NLPediaSettings.getInstance().getSetting("score.threshold.create.knowledge") +
+																	"_topn" + 
+																	NLPediaSettings.getInstance().getSetting("top.n.pattern") +
+																	".nt";
+																	// something like: /path/to/file/triples_score0.7_topn20.nt
 	
 	private final List<PatternMapping> patternMappingList;
 
