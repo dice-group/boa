@@ -80,49 +80,56 @@ public class CreateKnowledgeCommand implements Command {
 	@Override
 	public void execute() {
 
-		try {
+		// one thread per pattern mapping but only n threads get executed at the same time
+		for (PatternMapping mapping : this.patternMappingList ) {
 			
-			// create a thread pool and service for n threads/callable
-			ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_CREATE_KNOWLEDGE_THREADS);
-			this.logger.info("Created executorservice for knowledge creation of " + NUMBER_OF_CREATE_KNOWLEDGE_THREADS + " threads.");
-			
-			List<Callable<Collection<Triple>>> todo = new ArrayList<Callable<Collection<Triple>>>(this.patternMappingList.size());
-
-			// one thread per pattern mapping but only n threads get executed at the same time
-			for (PatternMapping mapping : this.patternMappingList ) {
-				
-				todo.add(new CreateKnowledgeCallable(mapping));
-				this.logger.info("Added worker for mapping: " + mapping.getProperty().getUri());
-			}
-			
-			// invoke all waits until all threads are finished
-			List<Future<Collection<Triple>>> answers = executorService.invokeAll(todo);
-			
-			for (Future<Collection<Triple>> future : answers) {
-			
-				Collection<Triple> triples = future.get();
-				this.logger.info("Calling write to file method with " + triples.size() + " triples.");
-				this.writeNTriplesFile(triples);
-			}
-			
-			// shut down the service and all threads
-			executorService.shutdown();
+			this.writeNTriplesFile(new CreateKnowledgeCallable(mapping).call());
+			this.logger.info("Added worker for mapping: " + mapping.getProperty().getUri());
 		}
-		catch (ExecutionException e) {
-			
-			this.logger.error("Execption", e);
-			e.printStackTrace();
-		}
-		catch (InterruptedException e) {
-			
-			this.logger.error("Execption", e);
-			e.printStackTrace();
-		}
-		catch (Exception e) {
-			
-			this.logger.error("Execption", e);
-			e.printStackTrace();
-		}
+		
+//		try {
+//			
+//			// create a thread pool and service for n threads/callable
+//			ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_CREATE_KNOWLEDGE_THREADS);
+//			this.logger.info("Created executorservice for knowledge creation of " + NUMBER_OF_CREATE_KNOWLEDGE_THREADS + " threads.");
+//			
+//			List<Callable<Collection<Triple>>> todo = new ArrayList<Callable<Collection<Triple>>>(this.patternMappingList.size());
+//
+//			// one thread per pattern mapping but only n threads get executed at the same time
+//			for (PatternMapping mapping : this.patternMappingList ) {
+//				
+//				todo.add(new CreateKnowledgeCallable(mapping));
+//				this.logger.info("Added worker for mapping: " + mapping.getProperty().getUri());
+//			}
+//			
+//			// invoke all waits until all threads are finished
+//			List<Future<Collection<Triple>>> answers = executorService.invokeAll(todo);
+//			
+//			for (Future<Collection<Triple>> future : answers) {
+//			
+//				Collection<Triple> triples = future.get();
+//				this.logger.info("Calling write to file method with " + triples.size() + " triples.");
+//				this.writeNTriplesFile(triples);
+//			}
+//			
+//			// shut down the service and all threads
+//			executorService.shutdown();
+//		}
+//		catch (ExecutionException e) {
+//			
+//			this.logger.error("Execption", e);
+//			e.printStackTrace();
+//		}
+//		catch (InterruptedException e) {
+//			
+//			this.logger.error("Execption", e);
+//			e.printStackTrace();
+//		}
+//		catch (Exception e) {
+//			
+//			this.logger.error("Execption", e);
+//			e.printStackTrace();
+//		}
 	}
 	
 	private void writeNTriplesFile(Collection<Triple> resultList) {
