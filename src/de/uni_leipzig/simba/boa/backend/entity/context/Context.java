@@ -25,7 +25,7 @@ public abstract class Context {
 	 */
 	public boolean containsSuitableEntity(String entityType) {
 		
-		for ( String word : this.cleanWords ) {
+		for ( String word : this.taggedWords ) {
 			
 			if ( word.contains(NamedEntityRecognizer.DELIMITER + "B-" + Context.namedEntityRecognitionMappings.get(entityType)) 
 					|| word.contains(NamedEntityRecognizer.DELIMITER + "I-" + Context.namedEntityRecognitionMappings.get(entityType)) ) 

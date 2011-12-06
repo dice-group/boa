@@ -147,6 +147,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						triple.setSubject(subject);
 						triple.setProperty(mapping.getProperty());
 						triple.setObject(object);
+						
 						// replace it if it already exists
 						if ( this.tripleMap.containsKey(triple.hashCode()) ) {
 							
@@ -183,6 +184,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						triple.setSubject(subject);
 						triple.setProperty(mapping.getProperty());
 						triple.setObject(object);
+						
 						// replace it if it already exists
 						if ( this.tripleMap.containsKey(triple.hashCode()) ) {
 							
