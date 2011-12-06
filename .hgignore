@@ -27,3 +27,6 @@ syntax: regexp
 .DS_Store$
 syntax: regexp
 ^WebContent/WEB-INF/data/training/classifier/ner-de-hgc_175M_600.ser.gz$
+
+syntax: regexp
+^WebContent/WEB-INF/lib/reverb\.jar$
