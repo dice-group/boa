@@ -38,7 +38,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 		this.mapping = mapping;
 	}
 
-//	@Override
+	@Override
 	public Collection<Triple> call() throws Exception {
 		
 		try {
@@ -100,6 +100,11 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 			
 			this.logger.error("IOException while index search!", e);
 			throw new RuntimeException(e);
+		}
+		catch (Exception e) {
+			
+			this.logger.error("Excpetion", e);
+//			throw new RuntimeException(e);
 		}
 		
 		this.logger.info("Finished creating knowledge for: "  + this.mapping.getProperty().getUri() + " with " + this.tripleMap.values().size() + " triples.");
@@ -194,6 +199,10 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 		catch (IndexOutOfBoundsException ioob) {
 
 			this.logger.error("Could not create context for string " + sentence + ". NER tagged: " + nerTaggedSentence + " pattern: " + pattern.getNaturalLanguageRepresentationWithoutVariables());
+		}
+		catch (Exception e) {
+			
+			this.logger.error("Could not create context for string " + sentence + ". NER tagged: " + nerTaggedSentence + " pattern: " + pattern.getNaturalLanguageRepresentationWithoutVariables(), e);
 		}
 	}
 }

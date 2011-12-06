@@ -243,4 +243,13 @@ public class FastContextTest {
 		assertTrue("One sentence in less then 0.5ms!", (double) 0.5 > (double) total / (double) iterations);
 		assertTrue(iterations + " sentence in less then " + iterations + "ms!", (double) iterations > (double) total);
 	}
+	
+	// Folly_B-ORG Brook_I-ORG is_O a_O 2 1\/4_O mile_O -LRB-_O 3.6_O km_O -RRB-_O long_O brook_O in_O the_O London_B-LOC Borough_I-LOC of_I-LOC Barnet_I-LOC ._O
+	// Folly Brook is a 2 1\/4 mile -LRB- 3.6 km -RRB- long brook in the London Borough of Barnet .
+	// in the London Borough of
+	
+	
+	// His next project , `` Man in a Film '' -LRB- 1966 -RRB- , was a pastiche of Federico Fellini 's `` 8 1\/2 '' and was also influenced by his recent viewing of The Beatles ' `` A Hard Day 's Night '' .
+	// His_O next_O project_O ,_O ``_O Man_O in_O a_O Film_O ''_O -LRB-_O 1966_O -RRB-_O ,_O was_O a_O pastiche_O of_O Federico_B-PER Fellini_I-PER 's_O ``_O 8 1\/2_O ''_O and_O was_O also_O influenced_O by_O his_O recent_O viewing_O of_O The_O Beatles_B-ORG '_O ``_O A_O Hard_B-MISC Day_I-MISC 's_O Night_O ''_O ._O  
+	// ' `` A
 }
