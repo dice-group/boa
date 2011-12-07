@@ -23,6 +23,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.WriteUrlsToFi
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.StartScriptsCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
+import de.uni_leipzig.simba.boa.evaluation.Evaluation;
 
 /**
  * 
@@ -136,6 +137,12 @@ public class NLPedia {
 						
 						Command iterationCommand = new IterationCommand();
 						iterationCommand.execute();
+						break;
+						
+					case 14:
+						
+						Command evaluationCommand = new Evaluation();
+						evaluationCommand.execute();
 						break;
 						
 					default: // option not supported

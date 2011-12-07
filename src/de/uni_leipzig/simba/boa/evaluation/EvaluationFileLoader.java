@@ -9,40 +9,59 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+
+import org.apache.lucene.store.Directory;
 
 import javatools.parsers.Char;
 
+import de.uni_leipzig.simba.boa.backend.Constants;
+import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
+import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
+import de.uni_leipzig.simba.boa.backend.search.concurrent.CreateKnowledgeCallable;
 
 
 public class EvaluationFileLoader {
 	
-	private int numberOfSentencesToCompare = 200;
+	public static final String FIRST_BATCH_ANNOTATOR_ONE_FILE = "/Users/gerb/Desktop/EVAL/EVAL_Haack_595.txt";
+	public static final String FIRST_BATCH_ANNOTATOR_TWO_FILE = "/Users/gerb/Desktop/EVAL/EVAL_Upmeier_595.txt";
 	
-	private static final String ANNOTATOR_ONE_FILE = "/Users/gerb/Desktop/EVAL/EVAL_Haack_500.txt";
-	private static final String ANNOTATOR_TWO_FILE = "/Users/gerb/Desktop/EVAL/EVAL_Upmeier_500.txt";
+	public static final String FIRST_BATCH_MERGED_FILE = "/Users/gerb/Desktop/EVAL/EVAL_Upmeier_595.txt";
 	
+	public static final String SECOND_BATCH_ANNOTATOR_ONE_FILE = "/Users/gerb/Desktop/EVAL/Evaluation_2_Haack_303.txt";
+	public static final String SECOND_BATCH_ANNOTATOR_TWO_FILE = "/Users/gerb/Desktop/EVAL/Evaluation_2_Upmeier_241.txt";
+	
+	public enum ExcludeRdfTypeStatements { YES, NO }
+	
+	private final PatternMappingDao patternMappingDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+	
+	private Set<String> sentences = new HashSet<String>();
+	int i = 1;
+	int number;
 	public static void main(String[] args) {
 
 		EvaluationFileLoader evaluationFileLoader = new EvaluationFileLoader();
-		evaluationFileLoader.loadAnnotatorOneFile();
-		evaluationFileLoader.loadAnnotatorTwoFile();
+		evaluationFileLoader.loadAnnotatorFile(FIRST_BATCH_ANNOTATOR_ONE_FILE);
+		evaluationFileLoader.loadAnnotatorFile(FIRST_BATCH_ANNOTATOR_TWO_FILE);
 	}
 	
 	/**
 	 * The files do contain different commenting symbols % and # 
 	 * Sometimes there is the [] missing, so replace the x with [] 
 	 */
-	public Map<Integer, List<Triple>> loadAnnotatorOneFile() {
+	public Map<Integer, List<Triple>> loadAnnotatorFile(String fileName) {
 
 		try {
 			
-			return parseEvaluationFile(EvaluationFileLoader.ANNOTATOR_ONE_FILE);
+			return parseEvaluationFile(fileName);
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -51,25 +70,13 @@ public class EvaluationFileLoader {
 		return null;
 	}
 
-	public Map<Integer, List<Triple>> loadAnnotatorTwoFile() {
-
-		try {
-			
-			return parseEvaluationFile(EvaluationFileLoader.ANNOTATOR_TWO_FILE);
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
 	private Map<Integer, List<Triple>> parseEvaluationFile(String filename) throws IOException {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filename)), "UTF-8"));
 		
 		Map<Integer, List<Triple>> sentenceNumberToTriples = new TreeMap<Integer, List<Triple>>();
 		Integer sentenceNumber = null;
+		this.number = 0;
 		
 		int openingBracketCounter = 0;
 		int openingAndClosingBracketCounter = 0;
@@ -78,8 +85,12 @@ public class EvaluationFileLoader {
 		while ((line = br.readLine()) != null) {
 			
 			if ( line.startsWith("% ") ) continue;
-			if ( line.startsWith("[") ) openingBracketCounter++;
-			if ( line.startsWith("[]") ) openingAndClosingBracketCounter++;
+			
+			if ( !line.startsWith("[one]") && !line.startsWith("[coref]")) {
+
+				if ( line.startsWith("[") ) openingBracketCounter++;
+				if ( line.startsWith("[]") ) openingAndClosingBracketCounter++;
+			}
 			
 			// this is not between the sentences
 			if ( !line.trim().isEmpty() ) {
@@ -112,14 +123,14 @@ public class EvaluationFileLoader {
 							triple.setProperty(new Property(tripleParts[1].toLowerCase()));
 							triple.setObject(new Resource(tripleParts[2].toLowerCase()));
 							
-							this.addTripleToCollection(sentenceNumberToTriples, sentenceNumber, triple);
+							this.addTripleToCollection(sentenceNumberToTriples, number, triple);
 						}
 						// nothing inside of []
 						else {
 							
-							if ( line.trim().startsWith("[]")) {
+							if ( line.trim().startsWith("[]") || line.trim().startsWith("[coref]") || line.trim().startsWith("[one]")) {
 								
-								sentenceNumberToTriples.put(sentenceNumber, new ArrayList<Triple>());
+								sentenceNumberToTriples.put(number, new ArrayList<Triple>());
 							}
 							else {
 								
@@ -138,21 +149,22 @@ public class EvaluationFileLoader {
 			}
 		}
 		
-		int tripleCount = 0;
-		Integer i = 1;
-		for ( Map.Entry<Integer, List<Triple>> entry : sentenceNumberToTriples.entrySet() ) {
-			
-			tripleCount += entry.getValue().size();
+//		int tripleCount = 0;
+//		Integer i = 1;
+//		for ( Map.Entry<Integer, List<Triple>> entry : sentenceNumberToTriples.entrySet() ) {
+//			
+//			tripleCount += entry.getValue().size();
 //			System.out.println(new Boolean(entry.getKey() == i) + " " + entry.getKey() + " "+ i++);
-		}
-
-		System.out.println("*Annotator: \t" + filename + "*");
-		System.out.println(" * Number of Sentences: \t" + sentenceNumberToTriples.size());
-		System.out.println(" * Empty Sentences: \t" + openingAndClosingBracketCounter);
-		System.out.println(" * Parsed Triples: \t" + tripleCount);
-		System.out.println(" * Annotated Triples: \t" + (openingBracketCounter - openingAndClosingBracketCounter)); 
-		System.out.println(" * Parsed Triples == Annotated Triples? -> " + new Boolean((openingBracketCounter - openingAndClosingBracketCounter) == tripleCount));
-		System.out.println();
+//			System.out.println(entry.getKey() + " " + entry.getValue() + " " + i++);
+//		}
+//
+//		Evaluation.OUTPUT.append("*Annotator: \t" + filename + "*").append(Constants.NEW_LINE_SEPARATOR);
+//		Evaluation.OUTPUT.append(" * Number of Sentences: \t" + sentenceNumberToTriples.size()).append(Constants.NEW_LINE_SEPARATOR);
+//		Evaluation.OUTPUT.append(" * Empty Sentences: \t" + openingAndClosingBracketCounter).append(Constants.NEW_LINE_SEPARATOR);
+//		Evaluation.OUTPUT.append(" * Parsed Triples: \t" + tripleCount).append(Constants.NEW_LINE_SEPARATOR);
+//		Evaluation.OUTPUT.append(" * Annotated Triples: \t" + (openingBracketCounter - openingAndClosingBracketCounter)).append(Constants.NEW_LINE_SEPARATOR); 
+//		Evaluation.OUTPUT.append(" * Parsed Triples == Annotated Triples? -> " + new Boolean((openingBracketCounter - openingAndClosingBracketCounter) == tripleCount)).append(Constants.NEW_LINE_SEPARATOR);
+//		Evaluation.OUTPUT.append(Constants.NEW_LINE_SEPARATOR);
 		
 		return sentenceNumberToTriples;
 	}
@@ -176,9 +188,11 @@ public class EvaluationFileLoader {
 		
 		try {
 			
-			if ( line.contains(".") ) {
+			if ( line.contains(". ") ) {
 				
 				sentenceNumber = Integer.valueOf(line.substring(0, line.indexOf(".")));
+				this.sentences.add(line.substring(line.indexOf(".") + 1).trim());
+				this.number++; // we need to override the regular line number because there are lines missing in the files
 			}
 		}
 		catch (NumberFormatException  nfe) {
@@ -190,16 +204,52 @@ public class EvaluationFileLoader {
 		
 		return sentenceNumber;
 	}
-
-	public List<Triple> loadGoldStandard() {
-
-		// TODO Auto-generated method stub
-		return null;
+	
+	public Set<String> getSentences() {
+		
+		return this.sentences;
 	}
 
-	public List<Triple> loadTestStandard() {
+	public Set<Triple> loadGoldStandard(ExcludeRdfTypeStatements withRdfTypeRelations) {
 
-		// TODO Auto-generated method stub
-		return null;
+		Set<Triple> allAnnotatedTriples = new HashSet<Triple>();
+		for (List<Triple> triples : this.loadAnnotatorFile(EvaluationFileLoader.FIRST_BATCH_ANNOTATOR_ONE_FILE).values()) {
+			
+			allAnnotatedTriples.addAll(triples);
+		}
+		for (List<Triple> triples : this.loadAnnotatorFile(EvaluationFileLoader.FIRST_BATCH_ANNOTATOR_TWO_FILE).values()) {
+			
+			allAnnotatedTriples.addAll(triples);
+		}
+		for (List<Triple> triples : this.loadAnnotatorFile(EvaluationFileLoader.SECOND_BATCH_ANNOTATOR_ONE_FILE).values()) {
+			
+			allAnnotatedTriples.addAll(triples);
+		}
+		for (List<Triple> triples : this.loadAnnotatorFile(EvaluationFileLoader.SECOND_BATCH_ANNOTATOR_TWO_FILE).values()) {
+			
+			allAnnotatedTriples.addAll(triples);
+		}
+		// we most likely want to exlude all rdf:type statements because we cant find them at the moment 
+		if ( withRdfTypeRelations.equals(EvaluationFileLoader.ExcludeRdfTypeStatements.YES) ) {
+		
+			Set<Triple> triplesWithoutRdfType = new HashSet<Triple>();
+			for (Triple t : allAnnotatedTriples) {
+				
+				if ( !t.getProperty().getUri().equals("rdf:type") ) triplesWithoutRdfType.add(t);
+			}
+			allAnnotatedTriples = triplesWithoutRdfType;
+		}
+		
+		return allAnnotatedTriples;
+	}
+
+	public Set<Triple> loadBoa(Directory idx, double tripleScoreThreshold) {
+
+		Set<Triple> boaTriples = new HashSet<Triple>(); 
+		for (PatternMapping mapping : patternMappingDao.findAllPatternMappings() ) {
+			
+			boaTriples.addAll(new CreateKnowledgeCallable(mapping, idx).call());
+		}
+		return boaTriples;
 	}
 }

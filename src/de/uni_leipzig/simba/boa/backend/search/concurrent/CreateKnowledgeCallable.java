@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.store.Directory;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
@@ -32,6 +33,19 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 	private final PatternMapping mapping;
 
 	private Map<Integer,Triple> tripleMap = new HashMap<Integer,Triple>();
+	private Directory idx = null;
+	
+	/**
+	 * DO ONLY USE THIS FOR EVALUATION
+	 * 
+	 * @param mapping
+	 * @param idx
+	 */
+	public CreateKnowledgeCallable(PatternMapping mapping, Directory idx) {
+		
+		this.mapping = mapping;
+		this.idx = idx;
+	}
 	
 	public CreateKnowledgeCallable(PatternMapping mapping) {
 		
@@ -54,7 +68,11 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 				if ( !patternList.isEmpty() ) {
 					
 					NamedEntityRecognizer ner = new NamedEntityRecognizer();
-					PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+					
+					// this is solely for the evaluation
+					PatternSearcher patternSearcher;
+					if ( this.idx == null ) patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+					else patternSearcher = new PatternSearcher(this.idx);
 					
 					for (Pattern pattern : patternList) {
 						

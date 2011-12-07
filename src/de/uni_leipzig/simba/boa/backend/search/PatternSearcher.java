@@ -72,6 +72,19 @@ public class PatternSearcher {
 		this.hits = null;
 	}
 	
+	public PatternSearcher(Directory indexDir) throws IOException, ParseException {
+
+		this.directory = indexDir;
+		this.analyzer = new WhitespaceAnalyzer();
+
+		// create index searcher in read only mode
+		this.indexSearcher = new IndexSearcher(directory, true);
+		this.parser = new QueryParser(Version.LUCENE_30, "sentence-lc", this.analyzer);
+
+		this.results = new ArrayList<SearchResult>();
+		this.hits = null;
+	}
+	
 	public static PatternSearcher getInstance(String indexDir) {
 		
 		if ( PatternSearcher.INSTANCE == null || !PatternSearcher.indexDir.equals(indexDir) ) {

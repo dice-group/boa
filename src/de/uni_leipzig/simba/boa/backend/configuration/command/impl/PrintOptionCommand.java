@@ -37,6 +37,7 @@ public class PrintOptionCommand implements Command {
 			"||    11. Query text with patterns                    ||\n" + 
 			"||    12. Query keyphrase                             ||\n" +
 			"||    13. Search - Evaluation - Generate              ||\n" +
+			"||    14. Evaluation                                  ||\n" +
 			"========================================================\n";
 		
 		this.out.println(options);
