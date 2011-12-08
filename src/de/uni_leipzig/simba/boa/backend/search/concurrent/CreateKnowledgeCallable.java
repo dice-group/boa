@@ -180,6 +180,11 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 							// put the new one in
 							this.tripleMap.put(triple.hashCode(), triple);
 						}
+						else {
+							
+							System.out.println("Triple already exists: " + triple);
+							this.logger.info("Triple already exists: " + triple);
+						}
 					}
 				}
 			}
@@ -219,6 +224,11 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 							triple.addLearnedFromPattern(pattern);
 							// put the new one in
 							this.tripleMap.put(triple.hashCode(), triple);
+						}
+						else {
+							
+							System.out.println("Triple already exists: " + triple);
+							this.logger.info("Triple already exists: " + triple);
 						}
 					}
 				}
