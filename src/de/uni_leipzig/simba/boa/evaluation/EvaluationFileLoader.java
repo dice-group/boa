@@ -40,7 +40,8 @@ public class EvaluationFileLoader {
 	
 	public enum ExcludeRdfTypeStatements { YES, NO }
 	
-	private final PatternMappingDao patternMappingDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+	private static final PatternMappingDao patternMappingDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+	private static final List<PatternMapping> mappings = patternMappingDao.findAllPatternMappings();
 	
 	private Set<String> sentences = new HashSet<String>();
 	int i = 1;
@@ -245,9 +246,12 @@ public class EvaluationFileLoader {
 	public Set<Triple> loadBoa(Directory idx, double tripleScoreThreshold) {
 
 		Set<Triple> boaTriples = new HashSet<Triple>(); 
-		for (PatternMapping mapping : patternMappingDao.findAllPatternMappings() ) {
+		for (PatternMapping mapping : mappings ) {
 			
-			boaTriples.addAll(new CreateKnowledgeCallable(mapping, idx).call());
+			for (Triple t : new CreateKnowledgeCallable(mapping, idx).call()) {
+				
+				if ( t.getConfidence() >= tripleScoreThreshold ) boaTriples.add(t);
+			}
 		}
 		return boaTriples;
 	}

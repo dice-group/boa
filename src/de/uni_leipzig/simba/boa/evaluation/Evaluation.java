@@ -67,7 +67,7 @@ public class Evaluation implements Command {
 			// we want to see if the knowledge creation threshold, i.e. the pattern score produced by the NN matters
 			for ( double scoreThreshold : Arrays.asList(0.1D, 0.2D, 0.3D, 0.4D, 0.5D, 0.6D, 0.7D, 0.8D, 0.9D, 1.0D) ) {
 				// take only the first n best scored pattern
-				for ( int topNPattern : Arrays.asList(1, 3, 5, 10, 20, 50, 100) ) {
+				for ( int topNPattern : Arrays.asList(1, 3, 5, 10, 20, 50, 100, 1000) ) {
 					
 					NLPediaSettings.getInstance().setSetting("score.threshold.create.knowledge", String.valueOf(scoreThreshold));
 					NLPediaSettings.getInstance().setSetting("top.n.pattern", String.valueOf(topNPattern));
