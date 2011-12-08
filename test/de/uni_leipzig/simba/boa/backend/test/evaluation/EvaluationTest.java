@@ -3,7 +3,9 @@ package de.uni_leipzig.simba.boa.backend.test.evaluation;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.JUnit4TestAdapter;
 
@@ -82,9 +84,9 @@ public class EvaluationTest {
 		System.out.println();
 	}
 	
-	private List<Triple> buildTestData1() {
+	private Set<Triple> buildTestData1() {
 
-		List<Triple> testData = new ArrayList<Triple>();
+		Set<Triple> testData = new HashSet<Triple>();
 		testData.add(new Triple(new Resource("r1"), new Property("p1"), new Resource("r21")));
 		testData.add(new Triple(new Resource("r2"), new Property("p1"), new Resource("r22")));
 		testData.add(new Triple(new Resource("r3"), new Property("p2"), new Resource("r23")));
@@ -111,9 +113,9 @@ public class EvaluationTest {
 		return testData;
 	}
 	
-	private List<Triple> buildTestData2() {
+	private Set<Triple> buildTestData2() {
 
-		List<Triple> testData = new ArrayList<Triple>();
+		Set<Triple> testData = new HashSet<Triple>();
 		testData.add(new Triple(new Resource("r1"), new Property("p1"), new Resource("r21")));
 		testData.add(new Triple(new Resource("r2"), new Property("p1"), new Resource("r22")));
 		testData.add(new Triple(new Resource("r3"), new Property("p2"), new Resource("r23")));
@@ -129,9 +131,9 @@ public class EvaluationTest {
 		return testData;
 	}
 	
-	private List<Triple> buildTestData3() {
+	private Set<Triple> buildTestData3() {
 
-		List<Triple> testData = new ArrayList<Triple>();
+		Set<Triple> testData = new HashSet<Triple>();
 		testData.add(new Triple(new Resource("r1"), new Property("p1"), new Resource("r21")));
 		testData.add(new Triple(new Resource("r2"), new Property("p1"), new Resource("r22")));
 		testData.add(new Triple(new Resource("r3"), new Property("p2"), new Resource("r23")));
@@ -165,9 +167,9 @@ public class EvaluationTest {
 		return testData;
 	}
 	
-	private List<Triple> buildTestData4() {
+	private Set<Triple> buildTestData4() {
 
-		List<Triple> testData = new ArrayList<Triple>();
+		Set<Triple> testData = new HashSet<Triple>();
 		testData.add(new Triple(new Resource("r1"), new Property("p1"), new Resource("r21")));
 		testData.add(new Triple(new Resource("r2"), new Property("p1"), new Resource("r22")));
 		testData.add(new Triple(new Resource("r3"), new Property("p2"), new Resource("r23")));
@@ -189,9 +191,9 @@ public class EvaluationTest {
 		return testData;
 	}
 
-	private List<Triple> buildGoldStandard() {
+	private Set<Triple> buildGoldStandard() {
 
-		List<Triple> goldStandard = new ArrayList<Triple>();
+		Set<Triple> goldStandard = new HashSet<Triple>();
 		goldStandard.add(new Triple(new Resource("r1"), new Property("p1"), new Resource("r21")));
 		goldStandard.add(new Triple(new Resource("r2"), new Property("p1"), new Resource("r22")));
 		goldStandard.add(new Triple(new Resource("r3"), new Property("p2"), new Resource("r23")));

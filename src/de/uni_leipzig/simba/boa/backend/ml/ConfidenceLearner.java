@@ -43,7 +43,7 @@ public class ConfidenceLearner {
 	public double maxHiddenToInputRatio = 3;
 	public int maxEpochs = 10000;
 
-	private static NLPediaSetup s = new NLPediaSetup(true);
+//	private static NLPediaSetup s = new NLPediaSetup(true);
 	private static final Integer N_FOLD_CROSS_VALIDATION	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("neuronal.network.n.fold.cross.validation"));
 	private static final String NETWORK_DIRECTORY			= NLPediaSettings.getInstance().getSetting("neural.network.network.directory");
 	private static final String LEARN_FILE					= NETWORK_DIRECTORY + "network_learn.txt";
