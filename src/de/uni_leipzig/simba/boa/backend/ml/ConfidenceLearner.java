@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.encog.engine.network.activation.ActivationSigmoid;
@@ -43,12 +44,12 @@ public class ConfidenceLearner {
 	public double maxHiddenToInputRatio = 3;
 	public int maxEpochs = 10000;
 
-//	private static NLPediaSetup s = new NLPediaSetup(true);
-	private static final Integer N_FOLD_CROSS_VALIDATION	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("neuronal.network.n.fold.cross.validation"));
+	private static NLPediaSetup s = new NLPediaSetup(true);
+	private static Integer N_FOLD_CROSS_VALIDATION	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("neuronal.network.n.fold.cross.validation"));
 	private static final String NETWORK_DIRECTORY			= NLPediaSettings.getInstance().getSetting("neural.network.network.directory");
 	private static final String LEARN_FILE					= NETWORK_DIRECTORY + "network_learn.txt";
-	private static final String EVAL_OUTPUT_FILE			= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
-	private static final String NETWORK_FILE				= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
+	private static String EVAL_OUTPUT_FILE					= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
+	private static String NETWORK_FILE						= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
 
 	/**
 	 * Default constructor
@@ -107,7 +108,7 @@ public class ConfidenceLearner {
 	 */
 	public void runEval(String inputFile, String outputFile, String networkFile, int n) {
 
-		runEval(inputFile, outputFile, networkFile, n, 1);
+		runEval(inputFile, outputFile, networkFile, 2, 1);
 	}
 
 	/**
@@ -251,7 +252,7 @@ public class ConfidenceLearner {
 				// maps each entry to the expected value
 				BasicMLData ideal = new BasicMLData(1);
 				ideal.add(0, new Double(split[split.length - 4]));
-//				if ( counter < 200 ) data[0].add(entry, ideal);
+//				if ( counter < 182 ) data[0].add(entry, ideal);
 //				else data[1].add(entry, ideal);
 				data[counter % n].add(entry, ideal);
 				s = reader.readLine();
@@ -261,6 +262,8 @@ public class ConfidenceLearner {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+//		System.out.println(data[1].getRecordCount());
+//		System.out.println(data[0].getRecordCount());
 		
 		return data;
 	}
@@ -396,7 +399,7 @@ public class ConfidenceLearner {
 		String split[] = s.split("\t");
 		MLData data = new BasicMLData(split.length);
 		
-		for (int i = 0; i < split.length; i++)
+		for (int i = 0; i < split.length - 4; i++)
 			data.add(i, Double.parseDouble(split[i]));
 		
 		return data;
@@ -477,8 +480,17 @@ public class ConfidenceLearner {
 
 	public static void main(String args[]) {
 		
-		
-		ConfidenceLearner dr = new ConfidenceLearner();
-		network.compute(getSingleEntry("1.00000	0.63915	0.66667	0.63384	0.26208	0.99048	0.87619	0.82100")).getData(0);
+		for ( int i : Arrays.asList(2,3,4,5,6,7,8,9)) {
+			
+			ConfidenceLearner.N_FOLD_CROSS_VALIDATION	= i;
+			ConfidenceLearner.NETWORK_FILE 				= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
+			ConfidenceLearner.EVAL_OUTPUT_FILE 			= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
+			
+			ConfidenceLearner dr = new ConfidenceLearner();
+			System.out.println("N-Fold-CV: " + i);
+			System.out.println(ConfidenceLearner.NETWORK_FILE);
+			System.out.println(ConfidenceLearner.EVAL_OUTPUT_FILE);
+			System.out.println(network.compute(getSingleEntry("1.00000	0.56458	0.43083	0.34154	0.04289	0.83516	0.87912	0.75404	1	330	http://dbpedia.org/ontology/birthPlace	?D? , geboren in ?R?")).getData(0));
+		}
 	}
 }

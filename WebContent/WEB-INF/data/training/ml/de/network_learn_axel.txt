@@ -179,4 +179,4 @@
 1.00000	0.56458	0.43083	0.34154	0.04289	0.83516	0.87912	0.75404	1	330	http://dbpedia.org/ontology/birthPlace	?D? , geboren in ?R?	
 1.00000	0.42389	0.21002	0.94316	0.50772	0.01389	0.00000	0.62102	1	289	http://dbpedia.org/ontology/isPartOf	?D? im Nordosten der chinesischen Provinz ?R?	
 0.73933	1.00000	0.52680	0.83913	0.62732	0.02556	0.12168	0.99678	0	347	http://dbpedia.org/ontology/musicalBand	?D? '' und `` ?R?	
-1.00000	0.63915	0.66667	0.63384	0.26208	0.99048	0.87619	0.82100	0	209	http://dbpedia.org/ontology/influencedBy	?R? , Johann Wolfgang ?D?	
+1.00000	0.63915	0.66667	0.63384	0.26208	0.99048	0.87619	0.82100	0	209	http://dbpedia.org/ontology/influencedBy	?R? , Johann Wolfgang ?D?

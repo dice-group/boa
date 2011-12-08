@@ -20,6 +20,7 @@ import org.apache.lucene.store.Directory;
 import javatools.parsers.Char;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
@@ -31,13 +32,11 @@ import de.uni_leipzig.simba.boa.backend.search.concurrent.CreateKnowledgeCallabl
 
 public class EvaluationFileLoader {
 	
-	public static final String FIRST_BATCH_ANNOTATOR_ONE_FILE = "/Users/gerb/Desktop/EVAL/EVAL_Haack_595.txt";
-	public static final String FIRST_BATCH_ANNOTATOR_TWO_FILE = "/Users/gerb/Desktop/EVAL/EVAL_Upmeier_595.txt";
+	public static final String FIRST_BATCH_ANNOTATOR_ONE_FILE	= NLPediaSettings.getInstance().getSetting("first.batch.annotator.one.file"); //"/Users/gerb/Desktop/EVAL/EVAL_Haack_595.txt";
+	public static final String FIRST_BATCH_ANNOTATOR_TWO_FILE	= NLPediaSettings.getInstance().getSetting("first.batch.annotator.two.file");//"/Users/gerb/Desktop/EVAL/EVAL_Upmeier_595.txt";
 	
-	public static final String FIRST_BATCH_MERGED_FILE = "/Users/gerb/Desktop/EVAL/EVAL_Upmeier_595.txt";
-	
-	public static final String SECOND_BATCH_ANNOTATOR_ONE_FILE = "/Users/gerb/Desktop/EVAL/Evaluation_2_Haack_303.txt";
-	public static final String SECOND_BATCH_ANNOTATOR_TWO_FILE = "/Users/gerb/Desktop/EVAL/Evaluation_2_Upmeier_241.txt";
+	public static final String SECOND_BATCH_ANNOTATOR_ONE_FILE	= NLPediaSettings.getInstance().getSetting("second.batch.annotator.one.file");//"/Users/gerb/Desktop/EVAL/Evaluation_2_Haack_303.txt";
+	public static final String SECOND_BATCH_ANNOTATOR_TWO_FILE	= NLPediaSettings.getInstance().getSetting("second.batch.annotator.two.file");//"/Users/gerb/Desktop/EVAL/Evaluation_2_Upmeier_241.txt";
 	
 	public enum ExcludeRdfTypeStatements { YES, NO }
 	

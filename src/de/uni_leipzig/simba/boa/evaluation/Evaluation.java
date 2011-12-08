@@ -35,7 +35,7 @@ public class Evaluation implements Command {
 	public static void main(String[] args) throws CorruptIndexException, LockObtainFailedException, IOException {
 
 		NLPediaSetup SETUP = new NLPediaSetup(false);
-		new Evaluation();
+		new Evaluation().execute();
 	}
 	
 	@Override
