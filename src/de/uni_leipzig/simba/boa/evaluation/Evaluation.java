@@ -89,9 +89,9 @@ public class Evaluation implements Command {
 										decimalFormat.format(precisionRecallFMeasure.getRecall()) + " " +
 										decimalFormat.format(precisionRecallFMeasure.getFMeasure());
 						
-						System.out.println(	"GSS: " + goldStandard.size() + " BS: " + testData.size() + " " +
-											"ST: " + scoreThreshold + " TNP: " + topNPattern + " TST: " + tripleScoreThreshold + 
-											"P: " + precisionRecallFMeasure.getPrecision() + " R: " + precisionRecallFMeasure.getRecall() + " F: " + precisionRecallFMeasure.getFMeasure());
+						System.out.println(	"GSS: " + goldStandard.size() + " BS: " + testData.size() +
+											" ST: " + scoreThreshold + " TNP: " + topNPattern + " TST: " + tripleScoreThreshold + 
+											" P: " + precisionRecallFMeasure.getPrecision() + " R: " + precisionRecallFMeasure.getRecall() + " F: " + precisionRecallFMeasure.getFMeasure());
 						
 						maxFMeasure = Math.max(maxFMeasure, precisionRecallFMeasure.getFMeasure());
 						this.writeResults(output);
