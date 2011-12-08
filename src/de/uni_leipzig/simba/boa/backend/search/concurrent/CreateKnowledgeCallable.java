@@ -36,7 +36,8 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 	private final PatternMapping mapping;
 	
 	private TripleDao tripleDao = (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
-	private Map<Integer,Triple> tripleMap = new HashMap<Integer,Triple>();
+	private static Map<Integer,Triple> tripleMap = null;
+	private Map<Integer,Triple> newTripleMap = new HashMap<Integer,Triple>();
 	private Directory idx = null;
 	
 	/**
@@ -49,11 +50,24 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 		
 		this.mapping = mapping;
 		this.idx = idx;
+		this.buildTripleMap();
 	}
 	
+	private void buildTripleMap() {
+
+		if ( tripleMap == null ) {
+			
+			for (Triple t : this.tripleDao.findAllTriples()) {
+				
+				tripleMap.put(t.hashCode(), t);
+			}
+		}
+	}
+
 	public CreateKnowledgeCallable(PatternMapping mapping) {
 		
 		this.mapping = mapping;
+		this.buildTripleMap();
 	}
 
 	@Override
@@ -94,7 +108,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 					patternSearcher.close();
 					
 					// confidence of triple is number of patterns the triple has been learned from times the sum of their confidences
-					for ( Triple triple : this.tripleMap.values() ) {
+					for ( Triple triple : newTripleMap.values() ) {
 						
 						// new knowledge (knowledge not put in as background knowledge) is always not correct
 						if ( !triple.isCorrect() ) {
@@ -129,7 +143,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 		
 		this.logger.info("Finished creating knowledge for: "  + this.mapping.getProperty().getUri() + " with " + this.tripleMap.values().size() + " triples.");
 		
-		return this.tripleMap.values();
+		return tripleMap.values();
 	}
 	
 	private void createKnowledge(PatternMapping mapping, Pattern pattern, String sentence, String nerTaggedSentence) {
@@ -168,17 +182,17 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						triple.setProperty(mapping.getProperty());
 						triple.setObject(object);
 						
-						if ( this.tripleDao.exists(triple) ) {
+						if ( !tripleMap.containsKey(triple.hashCode()) ) {
 							
 							// replace it if it already exists
-							if ( this.tripleMap.containsKey(triple.hashCode()) ) {
+							if ( this.newTripleMap.containsKey(triple.hashCode()) ) {
 								
-								triple = this.tripleMap.get(triple.hashCode());
+								triple = newTripleMap.get(triple.hashCode());
 							}
 							triple.addLearnedFromSentences(sentence);
 							triple.addLearnedFromPattern(pattern);
 							// put the new one in
-							this.tripleMap.put(triple.hashCode(), triple);
+							this.newTripleMap.put(triple.hashCode(), triple);
 						}
 						else {
 							
@@ -193,7 +207,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 				if (leftContext.containsSuitableEntity(rangeUri) && rightContext.containsSuitableEntity(domainUri)) {
 					
 					// left context contains object, right context contains subject
-					if (leftContext.getSuitableEntityDistance(rangeUri) <= 3 && rightContext.getSuitableEntityDistance(domainUri) <= 3 ) {
+					if (leftContext.getSuitableEntityDistance(rangeUri) <= 4 && rightContext.getSuitableEntityDistance(domainUri) <= 4 ) {
 						
 						String objectLabel = leftContext.getSuitableEntity(rangeUri);
 						String subjectLabel = rightContext.getSuitableEntity(domainUri);
@@ -213,17 +227,17 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						triple.setProperty(mapping.getProperty());
 						triple.setObject(object);
 						
-						if ( this.tripleDao.exists(triple) ) {
+						if ( !tripleMap.containsKey(triple.hashCode()) ) {
 							
 							// replace it if it already exists
-							if ( this.tripleMap.containsKey(triple.hashCode()) ) {
+							if ( this.newTripleMap.containsKey(triple.hashCode()) ) {
 								
-								triple = this.tripleMap.get(triple.hashCode());
+								triple = this.newTripleMap.get(triple.hashCode());
 							}
 							triple.addLearnedFromSentences(sentence);
 							triple.addLearnedFromPattern(pattern);
 							// put the new one in
-							this.tripleMap.put(triple.hashCode(), triple);
+							this.newTripleMap.put(triple.hashCode(), triple);
 						}
 						else {
 							

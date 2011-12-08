@@ -13,7 +13,7 @@ public class ResourceManager {
 	
 	private ResourceManager(){
 		
-		this.resourceMap = new HashMap<Integer,Resource>();
+		resourceMap = new HashMap<Integer,Resource>();
 	}
 	
 	/**
