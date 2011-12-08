@@ -91,6 +91,8 @@ public class Evaluation implements Command {
 						Evaluation.OUTPUT.append("Recall:\t\t" + decimalFormat.format(precisionRecallFMeasure.getRecall()) + "%").append(Constants.NEW_LINE_SEPARATOR);
 						Evaluation.OUTPUT.append("F-Measure:\t" + decimalFormat.format(precisionRecallFMeasure.getFMeasure()) + "%").append(Constants.NEW_LINE_SEPARATOR);
 						
+						System.out.println("ST: " + scoreThreshold + " TNP: " + topNPattern + " TST: " + tripleScoreThreshold);
+						
 						maxFMeasure = Math.max(maxFMeasure, precisionRecallFMeasure.getFMeasure());
 						this.writeResults(null);
 					}
