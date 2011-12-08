@@ -258,7 +258,7 @@ public class EvaluationFileLoader {
 					String objectUri	= t.getObject().getUri().toLowerCase();
 					
 					subjectUri	= subjectUri.replace("http://dbpedia.org/resource/", "wiki:");
-					propertyUri	= propertyUri.replace("http://dbpeida.org/ontology/", "dbpedia-owl:");
+					propertyUri	= propertyUri.replace("http://dbpedia.org/ontology/", "dbpedia-owl:");
 					objectUri	= objectUri.replace( "http://dbpedia.org/resource/", "wiki:"); 
 					
 					// we need to lowercase all letters because the annotators made mistakes

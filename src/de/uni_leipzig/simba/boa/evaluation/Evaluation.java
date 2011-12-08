@@ -93,7 +93,11 @@ public class Evaluation implements Command {
 											" P: " + precisionRecallFMeasure.getPrecision() + " R: " + precisionRecallFMeasure.getRecall() + " F: " + precisionRecallFMeasure.getFMeasure());
 						
 						maxFMeasure = Math.max(maxFMeasure, precisionRecallFMeasure.getFMeasure());
-						this.writeResults(output);
+						this.writeResults(output + Constants.NEW_LINE_SEPARATOR);
+						for ( Triple t : testData ) {
+							this.writeResults(t.toString());
+						}
+						this.writeResults(Constants.NEW_LINE_SEPARATOR);
 					}
 				}
 			}
@@ -107,7 +111,7 @@ public class Evaluation implements Command {
 			
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(NLPediaSettings.getInstance().getSetting("eval.output.file"), true), "UTF-8"));
 			if ( result == null ) writer.write(Evaluation.OUTPUT.append(Constants.NEW_LINE_SEPARATOR).append(Constants.NEW_LINE_SEPARATOR).toString());				
-			else writer.write(result + Constants.NEW_LINE_SEPARATOR); 
+			else writer.write(result); 
 			writer.close();
 			Evaluation.OUTPUT.delete(0, Evaluation.OUTPUT.length());
 		}
