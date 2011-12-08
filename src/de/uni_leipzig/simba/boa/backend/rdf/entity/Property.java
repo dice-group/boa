@@ -13,6 +13,11 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 @Entity
 public class Property extends Resource {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1821596778644210513L;
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

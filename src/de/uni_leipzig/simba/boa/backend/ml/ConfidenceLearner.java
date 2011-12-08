@@ -108,7 +108,7 @@ public class ConfidenceLearner {
 	 */
 	public void runEval(String inputFile, String outputFile, String networkFile, int n) {
 
-		runEval(inputFile, outputFile, networkFile, 2, 1);
+		runEval(inputFile, outputFile, networkFile, n, 1);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.rdf.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,9 +23,13 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 
 @Entity
 @Table(name="triple")
-//@BatchSize(size=100000)
-public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity {
+public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3148247276053130633L;
+	
 	private Resource subject;
 	private Property property;
 	private Resource object;
