@@ -29,6 +29,7 @@ import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrateg
 
 public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 
+	public static final NamedEntityRecognizer ner = new NamedEntityRecognizer();
 	private final NLPediaLogger logger 		= new NLPediaLogger(CreateKnowledgeCallable.class);
 	private final PatternMapping mapping;
 
@@ -66,8 +67,6 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 				this.logger.info(String.format("Creating knowledge for mapping: %s and top-%s patterns", mapping.getProperty().getUri(), patternList.size()));
 
 				if ( !patternList.isEmpty() ) {
-					
-					NamedEntityRecognizer ner = new NamedEntityRecognizer();
 					
 					// this is solely for the evaluation
 					PatternSearcher patternSearcher;
