@@ -23,12 +23,16 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
+import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
+import de.uni_leipzig.simba.boa.backend.dao.rdf.TripleDao;
 import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 public class Evaluation implements Command {
 
 	private static final List<String> TEST_DATABASES = Arrays.asList("en_wiki_exp");//, "en_news_exp");
+	
+	private TripleDao tripleDao = (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
 	
 	public static StringBuffer OUTPUT =  new StringBuffer();
 	
@@ -41,6 +45,12 @@ public class Evaluation implements Command {
 	@Override
 	public void execute() {
 
+//		this.startAutomaticEvaluation();
+		this.startManualEvaluation();
+	}
+	
+	private void startAutomaticEvaluation() {
+		
 		// get the annotated triples out of the files
 		EvaluationFileLoader evaluationFileLoader = new EvaluationFileLoader();
 		Map<Integer, List<Triple>> annotatorOneFile = evaluationFileLoader.loadAnnotatorFile(EvaluationFileLoader.FIRST_BATCH_ANNOTATOR_ONE_FILE);
@@ -95,13 +105,35 @@ public class Evaluation implements Command {
 						maxFMeasure = Math.max(maxFMeasure, precisionRecallFMeasure.getFMeasure());
 						this.writeResults(output + Constants.NEW_LINE_SEPARATOR);
 						for ( Triple t : testData ) {
-							this.writeResults(t.toString());
+							this.writeResults(t.toString()+Constants.NEW_LINE_SEPARATOR);
 						}
 						this.writeResults(Constants.NEW_LINE_SEPARATOR);
 					}
 				}
 			}
 			this.writeResults("Maximum F-Measure: " + String.valueOf(maxFMeasure));
+		}
+	}
+	
+	private void startManualEvaluation() {
+		
+		// we want to test different databases
+		for (String testDatabase : TEST_DATABASES) {
+			
+			// switch to db
+			HibernateFactory.changeConnection(testDatabase);
+			
+			// now we serialize the top 100 facts from the different databases
+			List<Triple> topNTriples = this.tripleDao.queryTopNTriples(Integer.valueOf(NLPediaSettings.getInstance().getSetting("top.n.eval.triples")));
+			for ( Triple triple : topNTriples ) {
+				
+				this.writeResults(triple.toString() + Constants.NEW_LINE_SEPARATOR);
+				for (String sentence : triple.getLearnedFromSentences() ) {
+					
+					this.writeResults("  " + sentence.toString() + Constants.NEW_LINE_SEPARATOR);
+				}
+				this.writeResults(Constants.NEW_LINE_SEPARATOR);
+			}
 		}
 	}
 	

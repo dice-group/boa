@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -122,15 +123,23 @@ public class TripleDao extends AbstractDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Triple findTripleBySubjectPredicateObject(Resource subject, Property property, Resource object) {
+	public boolean exists(Triple triple) {
 
 		Session session = HibernateFactory.getSessionFactory().openSession();
-    	List<Triple> triples = session.createCriteria(Triple.class)
-    							.createCriteria("subject").add(Restrictions.eq("uri", subject.getUri()))
-    							.createCriteria("property").add(Restrictions.eq("uri", property.getUri()))
-    							.createCriteria("object").add(Restrictions.eq("uri", object.getUri()))
-    							.list();
-    	session.close();
-		return triples.size() > 0 ? triples.get(0) : null;
+    	
+		String query = "select r1.uri, r2.uri, r3.uri from triple as t, resource as r1, resource as r2, resource as r3 where t.subject_id = r1.id and t.property_id = r2.id and t.object_id = r3.id and t.correct = 0 and r1.uri = '"+triple.getSubject().getUri()+"' and r2.uri = '" + triple.getProperty().getUri() + "' and r3.uri = '"+triple.getObject().getUri()+"' order by confidence desc limit 1;";
+		List<Object[]> result = session.createSQLQuery(query).list();
+		return result != null && result.size() > 0 ? true : false ;
+	}
+
+	public List<Triple> queryTopNTriples(Integer maxValues) {
+
+		Session session = HibernateFactory.getSessionFactory().openSession();
+		List<Triple> triples = session.createCriteria(Triple.class).
+								add(Restrictions.eq("correct", false)).
+								addOrder(Order.desc("confidence")).setMaxResults(maxValues).list();
+		
+		session.close();
+		return triples;
 	}
 }

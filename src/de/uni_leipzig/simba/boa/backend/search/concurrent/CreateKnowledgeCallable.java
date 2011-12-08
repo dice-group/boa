@@ -12,6 +12,8 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.store.Directory;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
+import de.uni_leipzig.simba.boa.backend.dao.rdf.TripleDao;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
 import de.uni_leipzig.simba.boa.backend.entity.context.FastLeftContext;
 import de.uni_leipzig.simba.boa.backend.entity.context.FastRightContext;
@@ -32,7 +34,8 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 	public static final NamedEntityRecognizer ner = new NamedEntityRecognizer();
 	private final NLPediaLogger logger 		= new NLPediaLogger(CreateKnowledgeCallable.class);
 	private final PatternMapping mapping;
-
+	
+	private TripleDao tripleDao = (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
 	private Map<Integer,Triple> tripleMap = new HashMap<Integer,Triple>();
 	private Directory idx = null;
 	
@@ -165,15 +168,18 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						triple.setProperty(mapping.getProperty());
 						triple.setObject(object);
 						
-						// replace it if it already exists
-						if ( this.tripleMap.containsKey(triple.hashCode()) ) {
+						if ( this.tripleDao.exists(triple) ) {
 							
-							triple = this.tripleMap.get(triple.hashCode());
+							// replace it if it already exists
+							if ( this.tripleMap.containsKey(triple.hashCode()) ) {
+								
+								triple = this.tripleMap.get(triple.hashCode());
+							}
+							triple.addLearnedFromSentences(sentence);
+							triple.addLearnedFromPattern(pattern);
+							// put the new one in
+							this.tripleMap.put(triple.hashCode(), triple);
 						}
-						triple.addLearnedFromSentences(sentence);
-						triple.addLearnedFromPattern(pattern);
-						// put the new one in
-						this.tripleMap.put(triple.hashCode(), triple);
 					}
 				}
 			}
@@ -202,15 +208,18 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						triple.setProperty(mapping.getProperty());
 						triple.setObject(object);
 						
-						// replace it if it already exists
-						if ( this.tripleMap.containsKey(triple.hashCode()) ) {
+						if ( this.tripleDao.exists(triple) ) {
 							
-							triple = this.tripleMap.get(triple.hashCode());
+							// replace it if it already exists
+							if ( this.tripleMap.containsKey(triple.hashCode()) ) {
+								
+								triple = this.tripleMap.get(triple.hashCode());
+							}
+							triple.addLearnedFromSentences(sentence);
+							triple.addLearnedFromPattern(pattern);
+							// put the new one in
+							this.tripleMap.put(triple.hashCode(), triple);
 						}
-						triple.addLearnedFromSentences(sentence);
-						triple.addLearnedFromPattern(pattern);
-						// put the new one in
-						this.tripleMap.put(triple.hashCode(), triple);
 					}
 				}
 			}
