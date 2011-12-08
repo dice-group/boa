@@ -82,6 +82,14 @@ public class EvaluationTest {
 		assertEquals(0.5D, prm.getRecall(), 0.001);
 		assertEquals(0.571D, prm.getFMeasure(), 0.001);
 		System.out.println();
+		
+		// the test data does not contain anything so precision, recall and fmeasure should be zero
+		prm = new PrecisionRecallFMeasure(buildGoldStandard(), buildTestData5());
+		System.out.println("Test 5");
+		assertEquals(0D, prm.getPrecision(), 0.0001);
+		assertEquals(0D, prm.getRecall(), 0.001);
+		assertEquals(0D, prm.getFMeasure(), 0.001);
+		System.out.println();
 	}
 	
 	private Set<Triple> buildTestData1() {
@@ -189,6 +197,11 @@ public class EvaluationTest {
 		testData.add(new Triple(new Resource("r25"), new Property("p13"), new Resource("r45")));
 		
 		return testData;
+	}
+	
+	private Set<Triple> buildTestData5() {
+
+		return new HashSet<Triple>();
 	}
 
 	private Set<Triple> buildGoldStandard() {

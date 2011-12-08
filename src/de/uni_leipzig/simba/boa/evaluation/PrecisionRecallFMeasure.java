@@ -29,7 +29,6 @@ public class PrecisionRecallFMeasure {
 		tempTestData.removeAll(tempGoldStandard);
 		
 		this.precision = (double) (this.testData.size() - tempTestData.size()) / (double) this.testData.size();
-		System.out.println(this.precision);
 		return !Double.isNaN(this.precision) && !Double.isInfinite(this.precision) ? this.precision : 0D;
 	}
 
@@ -41,8 +40,6 @@ public class PrecisionRecallFMeasure {
 		tempTestData.removeAll(tempGoldStandard);
 		
 		this.recall = (double) (this.testData.size() - tempTestData.size()) / (double) this.goldStandard.size();
-		
-		System.out.println(this.recall);
 		return !Double.isNaN(this.recall) && !Double.isInfinite(this.recall) ? this.recall : 0D;
 	}
 
