@@ -6,16 +6,20 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -30,6 +34,9 @@ import cern.colt.Arrays;
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
+import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
+import de.uni_leipzig.simba.boa.backend.dao.rdf.TripleDao;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import edu.stanford.nlp.util.StringUtils;
 
 
@@ -38,10 +45,19 @@ public class XXX implements Command {
 	@Override
 	public void execute() {
 
-		try {
-			getIndexedSentencesCount();
+		TripleDao tripleDao = (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
+		Map<Integer,Triple> tripleMap = new HashMap<Integer,Triple>();
+		for (Triple t : tripleDao.findAllTriples()) {
+			
+			tripleMap.put(t.hashCode(), t);
 		}
-		catch (CorruptIndexException e) {
+		try {
+			
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/home/gerber/nlpedia-data/files/relation/bk.out")));
+			oos.writeObject(tripleMap);
+			oos.close();
+		}
+		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

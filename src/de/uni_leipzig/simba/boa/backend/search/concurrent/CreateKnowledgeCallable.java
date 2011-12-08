@@ -1,8 +1,13 @@
 package de.uni_leipzig.simba.boa.backend.search.concurrent;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,9 +62,23 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 
 		if ( tripleMap == null ) {
 			
-			for (Triple t : this.tripleDao.findAllTriples()) {
+			try {
 				
-				tripleMap.put(t.hashCode(), t);
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("/home/gerber/nlpedia-data/files/relation/bk.out")));
+				tripleMap = (HashMap<Integer,Triple>) ois.readObject();
+				ois.close();
+			}
+			catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
