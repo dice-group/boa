@@ -253,10 +253,18 @@ public class EvaluationFileLoader {
 				
 				if ( t.getConfidence() >= tripleScoreThreshold ) {
 					
+					String subjectUri	= t.getSubject().getUri().toLowerCase();
+					String propertyUri	= t.getProperty().getUri().toLowerCase();
+					String objectUri	= t.getObject().getUri().toLowerCase();
+					
+					subjectUri	= subjectUri.replace("http://dbpedia.org/resource/", "wiki:");
+					propertyUri	= propertyUri.replace("http://dbpeida.org/ontology/", "dbpedia-owl:");
+					objectUri	= objectUri.replace( "http://dbpedia.org/resource/", "wiki:"); 
+					
 					// we need to lowercase all letters because the annotators made mistakes
-					t.getSubject().setUri(t.getSubject().getUri().toLowerCase());
-					t.getProperty().setUri(t.getProperty().getUri().toLowerCase());
-					t.getObject().setUri(t.getObject().getUri().toLowerCase());
+					t.getSubject().setUri(subjectUri);
+					t.getProperty().setUri(propertyUri);
+					t.getObject().setUri(objectUri);
 					boaTriples.add(t);
 				}
 			}
