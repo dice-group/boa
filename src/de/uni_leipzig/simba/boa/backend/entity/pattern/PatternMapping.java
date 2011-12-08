@@ -27,6 +27,11 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 6036673326860046237L;
+
+	/**
+	 * 
+	 */
 	private Map<Integer,Pattern> patternMap;
 	
 	/**

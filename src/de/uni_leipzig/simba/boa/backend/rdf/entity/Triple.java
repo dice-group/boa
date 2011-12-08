@@ -23,7 +23,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 
 @Entity
 @Table(name="triple")
-public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity implements Serializable {
+public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity {
 
 	/**
 	 * 

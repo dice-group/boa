@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.persistance;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -13,8 +14,13 @@ import javax.persistence.MappedSuperclass;
  * @author Daniel Gerber
  */
 @MappedSuperclass
-public class Entity {
+public class Entity implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5834466316151285805L;
+	
 	protected int id;
 //	protected final Date creationDate = new Date();
 //	protected Date lastModified = new Date();

@@ -39,6 +39,11 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = -2696752169065166358L;
+
+	/**
+	 * 
+	 */
 	private String naturalLanguageRepresentation;
 	
 	/**

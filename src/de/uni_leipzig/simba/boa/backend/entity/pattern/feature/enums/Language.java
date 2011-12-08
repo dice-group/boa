@@ -1,7 +1,9 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums;
 
+import java.io.Serializable;
 
-public enum Language {
+
+public enum Language implements Serializable {
 
 	UNSUPPORTED("n/a"),
 	ENGLISH("en"),
