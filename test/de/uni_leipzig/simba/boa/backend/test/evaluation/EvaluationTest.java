@@ -2,6 +2,7 @@ package de.uni_leipzig.simba.boa.backend.test.evaluation;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -9,9 +10,21 @@ import java.util.Set;
 
 import junit.framework.JUnit4TestAdapter;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.WhitespaceAnalyzer;
+import org.apache.lucene.index.CorruptIndexException;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.Searcher;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.util.Version;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import cern.colt.Arrays;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -19,6 +32,9 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.test.ClusterTest;
+import de.uni_leipzig.simba.boa.evaluation.EvaluationFileLoader;
+import de.uni_leipzig.simba.boa.evaluation.EvaluationFileLoader.ExcludeRdfTypeStatements;
+import de.uni_leipzig.simba.boa.evaluation.EvaluationIndexCreator;
 import de.uni_leipzig.simba.boa.evaluation.PrecisionRecallFMeasure;
 
 
@@ -46,14 +62,13 @@ public class EvaluationTest {
 		this.setup.destroy();
 	}
 	
-	@Test
+//	@Test
 	public void testEqualSets(){
 		
 		PrecisionRecallFMeasure prm;
 		
 		// we load both times the same model so this should be equal
 		prm = new PrecisionRecallFMeasure(buildGoldStandard(), buildTestData1());
-		System.out.println("Test 1");
 		assertEquals(1D, prm.getPrecision(), 0);
 		assertEquals(1D, prm.getRecall(), 0);
 		assertEquals(1D, prm.getFMeasure(), 0);
@@ -61,7 +76,6 @@ public class EvaluationTest {
 		
 		// testdata only has half of the triples from GS but all are correct
 		prm = new PrecisionRecallFMeasure(buildGoldStandard(), buildTestData2());
-		System.out.println("Test 2");
 		assertEquals(1D, prm.getPrecision(), 0);
 		assertEquals(0.5D, prm.getRecall(), 0);
 		assertEquals(0.66D, prm.getFMeasure(), 0.007);
@@ -69,7 +83,6 @@ public class EvaluationTest {
 		
 		// test-data contains more triples than GS but all the correct ones are test data
 		prm = new PrecisionRecallFMeasure(buildGoldStandard(), buildTestData3());
-		System.out.println("Test 3");
 		assertEquals(0.8D, prm.getPrecision(), 0);
 		assertEquals(1D, prm.getRecall(), 0);
 		assertEquals(0.88888D, prm.getFMeasure(), 0.0001);
@@ -77,7 +90,6 @@ public class EvaluationTest {
 		
 		// test-data contains not all triples from GS (66% / 10Triples) but does contain more (33% / 5triples)
 		prm = new PrecisionRecallFMeasure(buildGoldStandard(), buildTestData4());
-		System.out.println("Test 4");
 		assertEquals(0.66666D, prm.getPrecision(), 0.0001);
 		assertEquals(0.5D, prm.getRecall(), 0.001);
 		assertEquals(0.571D, prm.getFMeasure(), 0.001);
@@ -85,11 +97,31 @@ public class EvaluationTest {
 		
 		// the test data does not contain anything so precision, recall and fmeasure should be zero
 		prm = new PrecisionRecallFMeasure(buildGoldStandard(), buildTestData5());
-		System.out.println("Test 5");
 		assertEquals(0D, prm.getPrecision(), 0.0001);
 		assertEquals(0D, prm.getRecall(), 0.001);
 		assertEquals(0D, prm.getFMeasure(), 0.001);
 		System.out.println();
+	}
+	
+	@Test
+	public void testQueryEvaluationIndex() throws CorruptIndexException, IOException, ParseException{
+
+		new EvaluationFileLoader().loadGoldStandard(ExcludeRdfTypeStatements.YES);
+		Directory idx = EvaluationIndexCreator.createGoldStandardIndex();
+		IndexSearcher indexSearcher = new IndexSearcher(idx, true);
+		Analyzer analyzer = new WhitespaceAnalyzer();
+		QueryParser parser = new QueryParser(Version.LUCENE_30, "sentence-lc", analyzer);
+		
+		
+		System.out.println(indexSearcher.maxDoc());
+		
+		ScoreDoc[] hits = indexSearcher.search(parser.parse("+sentence-lc:\"capital\""), null, 100).scoreDocs;
+		
+		for (int i = hits.length - 1; i >= 0; i--) {
+
+			// get the indexed string and put it in the result
+			System.out.println(indexSearcher.doc(hits[i].doc).get("sentence"));
+		}
 	}
 	
 	private Set<Triple> buildTestData1() {

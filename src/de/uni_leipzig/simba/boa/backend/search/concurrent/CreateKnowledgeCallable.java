@@ -78,8 +78,6 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						Set<String> sentences = patternSearcher.getExactMatchSentences(pattern.getNaturalLanguageRepresentationWithoutVariables(), Integer.valueOf(NLPediaSettings.getInstance().getSetting("max.number.of.documents.generation")));
 						this.logger.debug("\tQuering pattern \"" + pattern.getNaturalLanguageRepresentation() + "\" with " + sentences.size() + " sentences");
 						
-						if ( sentences.size() > 0 ) System.out.println("Cache-Hit: " + sentences);
-						
 						for (String sentence : sentences) {
 							
 							// there will never be a left argument if the sentence begins with the pattern

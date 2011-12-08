@@ -191,6 +191,7 @@ public class EvaluationFileLoader {
 			if ( line.contains(". ") ) {
 				
 				sentenceNumber = Integer.valueOf(line.substring(0, line.indexOf(".")));
+				EvaluationIndexCreator.sentences.add(line.substring(line.indexOf(".") + 1).trim());
 				this.sentences.add(line.substring(line.indexOf(".") + 1).trim());
 				this.number++; // we need to override the regular line number because there are lines missing in the files
 			}

@@ -45,7 +45,6 @@ public class Evaluation implements Command {
 		EvaluationFileLoader evaluationFileLoader = new EvaluationFileLoader();
 		Map<Integer, List<Triple>> annotatorOneFile = evaluationFileLoader.loadAnnotatorFile(EvaluationFileLoader.FIRST_BATCH_ANNOTATOR_ONE_FILE);
 		Map<Integer, List<Triple>> annotatorTwoFile = evaluationFileLoader.loadAnnotatorFile(EvaluationFileLoader.FIRST_BATCH_ANNOTATOR_TWO_FILE);
-//				Evaluation.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
 		
 		// calculate the scores between multiple annotators
 		AnnotatorScorer scorer = new AnnotatorScorer();
@@ -87,7 +86,7 @@ public class Evaluation implements Command {
 										tripleScoreThreshold + " " +
 										decimalFormat.format(precisionRecallFMeasure.getPrecision()) + " " +
 										decimalFormat.format(precisionRecallFMeasure.getRecall()) + " " +
-										decimalFormat.format(precisionRecallFMeasure.getFMeasure());
+										decimalFormat.format(precisionRecallFMeasure.getFMeasure());	
 						
 						System.out.println( NLPediaSettings.getInstance().getSetting("top.n.pattern") + " " +
 											"GSS: " + goldStandard.size() + " BS: " + testData.size() +

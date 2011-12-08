@@ -48,7 +48,7 @@ public class PatternSearcher {
 
 	private Directory directory = null;
 	private Analyzer analyzer = null;
-	private Searcher indexSearcher = null;
+	private IndexSearcher indexSearcher = null;
 
 	private QueryParser parser;
 	private List<SearchResult> results;

@@ -20,7 +20,7 @@ import org.apache.lucene.util.Version;
 
 public class EvaluationIndexCreator {
 
-	private static EvaluationFileLoader evaluationFileLoader	= new EvaluationFileLoader();
+	public static Set<String> sentences = new HashSet<String>();
 	
 	public static void main(String[] args) throws CorruptIndexException, LockObtainFailedException, IOException {
 
@@ -38,7 +38,9 @@ public class EvaluationIndexCreator {
 			Analyzer analyzer = new WhitespaceAnalyzer(Version.LUCENE_30);
 			IndexWriter writer = new IndexWriter(idx, analyzer, true, IndexWriter.MaxFieldLength.LIMITED);
 			
-			for (String sentence : evaluationFileLoader.getSentences()) {
+			System.out.println("Adding " + sentences.size() + " sentences to evaluation index!");
+			
+			for (String sentence : sentences) {
 				
 				Document doc = new Document();
 				doc.add(new Field("sentence", sentence, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO));
