@@ -88,8 +88,7 @@ public class Evaluation implements Command {
 										decimalFormat.format(precisionRecallFMeasure.getRecall()) + " " +
 										decimalFormat.format(precisionRecallFMeasure.getFMeasure());	
 						
-						System.out.println( NLPediaSettings.getInstance().getSetting("top.n.pattern") + " " +
-											"GSS: " + goldStandard.size() + " BS: " + testData.size() +
+						System.out.println( "GSS: " + goldStandard.size() + " BS: " + testData.size() +
 											" ST: " + NLPediaSettings.getInstance().getSetting("score.threshold.create.knowledge") + " TNP: " + NLPediaSettings.getInstance().getSetting("top.n.pattern") + " TST: " + tripleScoreThreshold + 
 											" P: " + precisionRecallFMeasure.getPrecision() + " R: " + precisionRecallFMeasure.getRecall() + " F: " + precisionRecallFMeasure.getFMeasure());
 						

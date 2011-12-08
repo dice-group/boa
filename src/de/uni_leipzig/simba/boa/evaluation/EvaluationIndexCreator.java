@@ -21,6 +21,7 @@ import org.apache.lucene.util.Version;
 public class EvaluationIndexCreator {
 
 	public static Set<String> sentences = new HashSet<String>();
+	private static Directory idx = null;
 	
 	public static void main(String[] args) throws CorruptIndexException, LockObtainFailedException, IOException {
 
@@ -30,39 +31,39 @@ public class EvaluationIndexCreator {
 	
 	public static Directory createGoldStandardIndex() {
 		
-		Directory idx = null;
-		
-		try {
+		if ( idx == null ) {
 			
-			idx = new RAMDirectory();
-			Analyzer analyzer = new WhitespaceAnalyzer(Version.LUCENE_30);
-			IndexWriter writer = new IndexWriter(idx, analyzer, true, IndexWriter.MaxFieldLength.LIMITED);
-			
-			System.out.println("Adding " + sentences.size() + " sentences to evaluation index!");
-			
-			for (String sentence : sentences) {
+			try {
 				
-				Document doc = new Document();
-				doc.add(new Field("sentence", sentence, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO));
-				doc.add(new Field("sentence-lc", sentence.toLowerCase(), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
-				writer.addDocument(doc);
+				idx = new RAMDirectory();
+				Analyzer analyzer = new WhitespaceAnalyzer(Version.LUCENE_30);
+				IndexWriter writer = new IndexWriter(idx, analyzer, true, IndexWriter.MaxFieldLength.LIMITED);
+				
+				System.out.println("Adding " + sentences.size() + " sentences to evaluation index!");
+				
+				for (String sentence : sentences) {
+					
+					Document doc = new Document();
+					doc.add(new Field("sentence", sentence, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO));
+					doc.add(new Field("sentence-lc", sentence.toLowerCase(), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
+					writer.addDocument(doc);
+				}
+				writer.optimize();
+				writer.close();
 			}
-			writer.optimize();
-			writer.close();
+			catch (CorruptIndexException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (LockObtainFailedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		catch (CorruptIndexException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (LockObtainFailedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		return idx;
 	}
 }

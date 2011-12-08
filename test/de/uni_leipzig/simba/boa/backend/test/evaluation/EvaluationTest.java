@@ -1,6 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.test.evaluation;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class EvaluationTest {
 		this.setup.destroy();
 	}
 	
-//	@Test
+	@Test
 	public void testEqualSets(){
 		
 		PrecisionRecallFMeasure prm;
@@ -112,16 +113,20 @@ public class EvaluationTest {
 		Analyzer analyzer = new WhitespaceAnalyzer();
 		QueryParser parser = new QueryParser(Version.LUCENE_30, "sentence-lc", analyzer);
 		
+		assertTrue("There should be more than thousend sentences in index!", indexSearcher.maxDoc() > 1000 );
 		
-		System.out.println(indexSearcher.maxDoc());
-		
+		boolean containsSentences = false;
 		ScoreDoc[] hits = indexSearcher.search(parser.parse("+sentence-lc:\"capital\""), null, 100).scoreDocs;
-		
 		for (int i = hits.length - 1; i >= 0; i--) {
 
 			// get the indexed string and put it in the result
-			System.out.println(indexSearcher.doc(hits[i].doc).get("sentence"));
+			if ( indexSearcher.doc(hits[i].doc).get("sentence").
+					equals("Sujiatun District is a district of Shenyang , the capital of Liaoning province , People 's Republic of China .")) {
+				containsSentences = true;
+			}
 		}
+		assertTrue("The index should contain a sentence with capital!", hits.length > 1 );
+		assertTrue("The index should contain: ”Sujiatun District is a district of Shenyang , the capital of Liaoning province , People 's Republic of China .”", containsSentences );
 	}
 	
 	private Set<Triple> buildTestData1() {

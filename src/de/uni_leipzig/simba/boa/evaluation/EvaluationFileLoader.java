@@ -251,7 +251,14 @@ public class EvaluationFileLoader {
 			
 			for (Triple t : new CreateKnowledgeCallable(mapping, idx).call()) {
 				
-				if ( t.getConfidence() >= tripleScoreThreshold ) boaTriples.add(t);
+				if ( t.getConfidence() >= tripleScoreThreshold ) {
+					
+					// we need to lowercase all letters because the annotators made mistakes
+					t.getSubject().setUri(t.getSubject().getUri().toLowerCase());
+					t.getProperty().setUri(t.getProperty().getUri().toLowerCase());
+					t.getObject().setUri(t.getObject().getUri().toLowerCase());
+					boaTriples.add(t);
+				}
 			}
 		}
 		return boaTriples;
