@@ -77,24 +77,24 @@ public class Evaluation implements Command {
 						
 						Set<Triple> testData		= evaluationFileLoader.loadBoa(EvaluationIndexCreator.createGoldStandardIndex(), tripleScoreThreshold);
 						
-						Evaluation.OUTPUT.append("Number of sentences in evaluation index:\t" + evaluationFileLoader.getSentences().size()).append(Constants.NEW_LINE_SEPARATOR);
-						Evaluation.OUTPUT.append("Number of triples in gold standard:\t" + goldStandard.size()).append(Constants.NEW_LINE_SEPARATOR);
-						Evaluation.OUTPUT.append("Number of triples found by BOA:\t" + testData.size()).append(Constants.NEW_LINE_SEPARATOR);
-						
-						Evaluation.OUTPUT.append("PatternThreshold:\t" + scoreThreshold).append(Constants.NEW_LINE_SEPARATOR);
-						Evaluation.OUTPUT.append("TopNPattern:\t" + topNPattern).append(Constants.NEW_LINE_SEPARATOR);
-						Evaluation.OUTPUT.append("TripleScoreThreshold\t: " + tripleScoreThreshold).append(Constants.NEW_LINE_SEPARATOR);
-						
 						PrecisionRecallFMeasure precisionRecallFMeasure = new PrecisionRecallFMeasure(goldStandard, testData);
 						DecimalFormat decimalFormat = new DecimalFormat("#.###");
-						Evaluation.OUTPUT.append("Precision:\t" + decimalFormat.format(precisionRecallFMeasure.getPrecision()) + "%").append(Constants.NEW_LINE_SEPARATOR);
-						Evaluation.OUTPUT.append("Recall:\t\t" + decimalFormat.format(precisionRecallFMeasure.getRecall()) + "%").append(Constants.NEW_LINE_SEPARATOR);
-						Evaluation.OUTPUT.append("F-Measure:\t" + decimalFormat.format(precisionRecallFMeasure.getFMeasure()) + "%").append(Constants.NEW_LINE_SEPARATOR);
 						
-						System.out.println("ST: " + scoreThreshold + " TNP: " + topNPattern + " TST: " + tripleScoreThreshold);
+						String output = goldStandard.size() + " " +
+										testData.size() + " " +
+										scoreThreshold + " " + 
+										topNPattern + " " +
+										tripleScoreThreshold + " " +
+										decimalFormat.format(precisionRecallFMeasure.getPrecision()) + " " +
+										decimalFormat.format(precisionRecallFMeasure.getRecall()) + " " +
+										decimalFormat.format(precisionRecallFMeasure.getFMeasure());
+						
+						System.out.println(	"GSS: " + goldStandard.size() + " BS: " + testData.size() + " " +
+											"ST: " + scoreThreshold + " TNP: " + topNPattern + " TST: " + tripleScoreThreshold + 
+											"P: " + precisionRecallFMeasure.getPrecision() + " R: " + precisionRecallFMeasure.getRecall() + " F: " + precisionRecallFMeasure.getFMeasure());
 						
 						maxFMeasure = Math.max(maxFMeasure, precisionRecallFMeasure.getFMeasure());
-						this.writeResults(null);
+						this.writeResults(output);
 					}
 				}
 			}
