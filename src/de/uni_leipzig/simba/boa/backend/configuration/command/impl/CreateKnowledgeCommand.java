@@ -156,7 +156,6 @@ public class CreateKnowledgeCommand implements Command {
 										 "<"+ t.getProperty().getUri() + "> " +
 										 "\"" + t.getObject().getLabel() +"\" . " + Constants.NEW_LINE_SEPARATOR);
 						}
-						tripleDao.updateTriple(t);
 					}
 					else {
 						
@@ -168,6 +167,7 @@ public class CreateKnowledgeCommand implements Command {
 					this.logger.error("Triple was null!");
 				}
 			}
+			tripleDao.batchSaveOrUpdate(new ArrayList<Triple>(resultList));
 			writer.close();
 		}
 		catch (UnsupportedEncodingException e1) {

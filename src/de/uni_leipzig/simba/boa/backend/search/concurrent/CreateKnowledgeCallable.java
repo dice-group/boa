@@ -3,8 +3,10 @@ package de.uni_leipzig.simba.boa.backend.search.concurrent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -62,23 +64,48 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 
 		if ( tripleMap == null ) {
 			
-			try {
+			if ( !new File("/home/gerber/nlpedia-data/files/relation/bk.out").exists() ) {
 				
-				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("/home/gerber/nlpedia-data/files/relation/bk.out")));
-				tripleMap = (HashMap<Integer,Triple>) ois.readObject();
-				ois.close();
+				Map<Integer,Triple> tripleMap = new HashMap<Integer,Triple>();
+				for (Triple t : tripleDao.findAllTriples()) {
+					
+					tripleMap.put(t.hashCode(), t);
+				}
+				try {
+					
+					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/home/gerber/nlpedia-data/files/relation/bk.out")));
+					oos.writeObject(tripleMap);
+					oos.close();
+				}
+				catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			else {
+				
+				try {
+					
+					ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("/home/gerber/nlpedia-data/files/relation/bk.out")));
+					tripleMap = (HashMap<Integer,Triple>) ois.readObject();
+					ois.close();
+				}
+				catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -160,9 +187,9 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 			throw new RuntimeException(e);
 		}
 		
-		this.logger.info("Finished creating knowledge for: "  + this.mapping.getProperty().getUri() + " with " + this.tripleMap.values().size() + " triples.");
+		this.logger.info("Finished creating knowledge for: "  + this.mapping.getProperty().getUri() + " with " + newTripleMap.values().size() + " triples.");
 		
-		return tripleMap.values();
+		return this.newTripleMap.values();
 	}
 	
 	private void createKnowledge(PatternMapping mapping, Pattern pattern, String sentence, String nerTaggedSentence) {
