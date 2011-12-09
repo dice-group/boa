@@ -20,7 +20,7 @@ public class ResourceManager {
 	 * 
 	 * @return
 	 */
-	public static ResourceManager getInstance(){
+	public synchronized static ResourceManager getInstance(){
 		
 		if ( ResourceManager.INSTANCE == null ) {
 			
@@ -36,7 +36,7 @@ public class ResourceManager {
 	 * @param uri
 	 * @return
 	 */
-	public Resource getResource(String uri, String subjectLabel, String type) {
+	public synchronized Resource getResource(String uri, String subjectLabel, String type) {
 		
 		// the resource is already in the map
 		if ( ResourceManager.resourceMap.containsKey(uri.hashCode()) ) {
