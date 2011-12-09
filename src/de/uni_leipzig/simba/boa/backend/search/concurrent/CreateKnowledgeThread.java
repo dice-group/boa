@@ -47,15 +47,15 @@ public class CreateKnowledgeThread extends Thread {
 	 */
 	public CreateKnowledgeThread(List<PatternMapping> mappings, Directory idx) {
 		
-		this.calculateNumberOfSearchOperations();
 		this.mappings = mappings;
+		this.calculateNumberOfSearchOperations();
 		this.idx = idx;
 	}
 	
 	public CreateKnowledgeThread(List<PatternMapping> mappings) {
 		
-		this.calculateNumberOfSearchOperations();
 		this.mappings = mappings;
+		this.calculateNumberOfSearchOperations();
 	}
 	
 	public void run() {
