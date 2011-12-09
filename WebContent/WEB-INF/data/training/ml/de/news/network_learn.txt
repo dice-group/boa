@@ -1,0 +1,109 @@
+1.00000	0.54994	0.70623	0.46267	0.11740	0.24373	0.05015	0.99985	0	62	http://dbpedia.org/ontology/birthPlace	?D? in der Hauptstadt ?R?	
+1.00000	0.89824	1.00000	0.50000	0.11740	0.04839	0.11089	1.00000	0	2	http://dbpedia.org/ontology/largestCity	?R? auf der Insel ?D?	
+1.00000	0.59805	0.62642	1.00000	0.38898	0.11605	0.20390	0.98840	1	30	http://dbpedia.org/ontology/isPartOf	?D? in der chinesischen Provinz ?R?	
+1.00000	0.81137	0.39151	0.25000	0.08302	0.22965	0.53653	0.89362	0	67	http://dbpedia.org/ontology/administrativeDistrict	?R? und dem Kreis ?D?	
+1.00000	0.81137	0.64602	0.26908	0.29932	0.63905	0.32249	0.84340	1	53	http://dbpedia.org/ontology/managerClub	?R? und sein Trainer ?D?	
+1.00000	0.94716	0.64602	0.51807	0.48495	0.51220	0.59756	0.73916	1	55	http://dbpedia.org/ontology/managerClub	?R? und seinen Trainer ?D?	
+0.86472	0.67439	1.00000	0.46267	0.11740	0.28056	0.86573	1.00000	0	59	http://dbpedia.org/ontology/birthPlace	?D? am Dienstag in ?R?	
+1.00000	0.54048	0.81804	1.00000	0.40527	0.00000	0.00000	0.00000	0	88	http://dbpedia.org/ontology/federalState	?D? (dpa) - In ?R?	
+1.00000	1.00000	0.86719	1.00000	0.23481	1.00000	0.00000	0.10045	0	1	http://dbpedia.org/ontology/largestCity	?R? im US- Bundesstaat ?D?	
+1.00000	0.59432	0.67699	0.80724	0.62874	0.71111	0.57778	0.75256	1	40	http://dbpedia.org/ontology/managerClub	?R? mit seinem neuen Trainer ?D?	
+1.00000	0.50541	0.42141	0.46267	0.11740	0.11681	0.14815	0.84885	0	24	http://dbpedia.org/ontology/isPartOf	?R? mit der Hauptstadt ?D?	
+1.00000	0.43762	0.61754	0.50000	0.14379	0.66064	0.59337	0.99971	0	17	http://dbpedia.org/ontology/spouse	?D? und ihr Freund ?R?	
+1.00000	1.00000	0.53449	0.42909	0.45428	0.17533	0.30785	0.99723	0	77	http://dbpedia.org/ontology/administrativeDistrict	?D? hat das Landgericht ?R?	
+1.00000	0.51192	0.71626	0.25000	0.08302	0.29447	0.26202	0.97341	0	68	http://dbpedia.org/ontology/administrativeDistrict	?D? und der Landkreis ?R?	
+1.00000	0.33859	0.68381	1.00000	0.22681	0.76949	0.57966	0.82388	1	18	http://dbpedia.org/ontology/spouse	?D? und ihrem Ehemann ?R?	
+1.00000	0.74359	0.87442	0.50000	0.11740	0.54463	0.50552	0.99985	1	9	http://dbpedia.org/ontology/spouse	?R? und ihr Mann ?D?	
+0.86472	0.75413	0.67273	0.50827	0.14379	0.11078	0.88520	0.99898	0	102	http://dbpedia.org/ontology/capital	?D? am Montag in ?R?	
+1.00000	1.00000	0.94494	1.00000	0.45428	0.07483	0.60544	0.95900	1	80	http://dbpedia.org/ontology/publisher	?D? hat der Publisher ?R?	
+1.00000	1.00000	1.00000	0.95650	0.48866	0.91071	0.84524	1.00000	1	100	http://dbpedia.org/ontology/leaderName	?R? hat die Präsidentenwahl in ?D?	
+1.00000	0.47320	0.67273	1.00000	0.45428	0.39400	0.93800	1.00000	0	106	http://dbpedia.org/ontology/capital	?D? hat die Regierung in ?R?	
+0.78559	1.00000	1.00000	1.00000	0.16603	0.28357	0.85571	1.00000	0	37	http://dbpedia.org/ontology/deathPlace	?D? am Donnerstag in ?R?	
+1.00000	0.71857	0.77592	0.53816	0.44311	0.73874	0.33133	1.00000	1	48	http://dbpedia.org/ontology/managerClub	?R? unter dem neuen Trainer ?D?	
+1.00000	0.71857	0.88079	0.71083	0.85621	0.85000	0.58667	0.82619	1	38	http://dbpedia.org/ontology/managerClub	?R? hat seinen Trainer ?D?	
+1.00000	0.71857	0.47336	0.71809	0.46907	0.00000	0.00000	0.00000	0	74	http://dbpedia.org/ontology/administrativeDistrict	?R? (ots) - Die Polizei-Zentralstation ?D?	
+0.86472	0.40759	0.80391	0.53913	0.11740	0.04509	0.86673	0.99971	0	108	http://dbpedia.org/ontology/capital	?D? am Dienstag in ?R?	
+1.00000	0.81137	0.75413	0.26908	0.29932	0.69408	0.75125	0.99971	1	42	http://dbpedia.org/ontology/managerClub	?D? als Trainer von ?R?	
+1.00000	1.00000	0.70623	1.00000	0.16603	0.00000	0.00000	0.00000	0	63	http://dbpedia.org/ontology/birthPlace	?D? vom 1. FC ?R?	
+1.00000	0.90373	0.66088	0.82085	0.48866	0.84524	0.91071	0.74274	0	61	http://dbpedia.org/ontology/birthPlace	?D? hat die Präsidentenwahl in ?R?	
+0.86472	0.59805	0.46663	0.46267	0.11740	0.09710	0.11512	1.00000	1	32	http://dbpedia.org/ontology/isPartOf	?D? in der Grafschaft ?R?	
+1.00000	0.39309	0.61754	0.50000	0.21964	0.81837	0.66398	0.99898	1	11	http://dbpedia.org/ontology/spouse	?D? und dessen Frau ?R?	
+1.00000	0.36006	0.46663	0.46267	0.11740	0.04133	0.03730	0.99898	0	33	http://dbpedia.org/ontology/isPartOf	?D? auf der Insel ?R?	
+1.00000	0.53665	0.85837	0.50000	0.11740	0.41165	0.62450	0.99971	1	7	http://dbpedia.org/ontology/spouse	?R? und seine Ehefrau ?D?	
+1.00000	0.39309	0.82339	0.50000	0.11740	0.63253	0.56426	0.99971	1	19	http://dbpedia.org/ontology/spouse	?D? und seine Ehefrau ?R?	
+1.00000	0.50541	0.32616	1.00000	0.28636	0.13115	0.16393	0.59746	1	22	http://dbpedia.org/ontology/isPartOf	?D? in der nordostchinesischen Provinz ?R?	
+1.00000	0.88547	0.39151	0.71809	0.49545	0.00000	0.00000	0.00000	0	79	http://dbpedia.org/ontology/administrativeDistrict	?R? (ots) - Die Polizei in ?D?	
+0.78559	0.50541	0.32616	0.41398	0.20335	0.04427	0.07545	0.99927	0	34	http://dbpedia.org/ontology/isPartOf	?R? und der Stadt ?D?	
+0.78559	0.52680	0.74492	0.48240	0.16603	0.05311	0.85772	0.99971	0	107	http://dbpedia.org/ontology/capital	?D? am Donnerstag in ?R?	
+1.00000	0.85398	0.65252	0.50000	0.11740	0.65323	0.64919	0.99913	0	13	http://dbpedia.org/ontology/spouse	?D? und seine Freundin ?R?	
+0.86472	0.59432	0.75192	0.20699	0.20335	0.08735	0.16767	0.99942	0	65	http://dbpedia.org/ontology/administrativeDistrict	?R? und die Stadt ?D?	
+1.00000	0.66620	0.32616	0.50000	0.08302	0.27273	0.14286	0.63070	0	23	http://dbpedia.org/ontology/isPartOf	?R? und Mülheim an der ?D?	
+0.86472	1.00000	0.96025	0.27906	0.37126	0.47691	0.61044	1.00000	0	97	http://dbpedia.org/ontology/formerTeam	?D? hat mit den ?R?	
+1.00000	0.83604	1.00000	0.50000	0.20335	0.06131	0.06131	0.99942	1	29	http://dbpedia.org/ontology/isPartOf	?D? in der Provinz ?R?	
+1.00000	0.88547	0.39151	0.25000	0.11740	0.25251	0.22545	0.99971	0	71	http://dbpedia.org/ontology/administrativeDistrict	?D? und die Staatsanwaltschaft ?R?	
+0.86472	1.00000	1.00000	1.00000	0.16603	0.55567	0.16951	1.00000	1	83	http://dbpedia.org/ontology/neighboringMunicipality	?R? in der Nähe von ?D?	
+1.00000	0.85027	0.96902	0.46184	0.67058	0.78983	0.60678	0.82376	1	46	http://dbpedia.org/ontology/managerClub	?R? hat sich von Trainer ?D?	
+1.00000	0.85027	0.96902	0.71083	0.83661	0.92925	0.62264	0.77613	1	43	http://dbpedia.org/ontology/managerClub	?R? hat den Vertrag mit Trainer ?D?	
+1.00000	0.47320	0.57966	0.48240	0.20335	0.17771	0.08635	0.99942	0	103	http://dbpedia.org/ontology/capital	?D? und die Stadt ?R?	
+0.78559	0.51192	0.76273	0.20699	0.20335	0.08551	0.30885	0.99913	0	72	http://dbpedia.org/ontology/administrativeDistrict	?R? und der Stadt ?D?	
+0.86472	0.69856	1.00000	0.50931	0.20335	0.08635	0.17470	0.99971	0	89	http://dbpedia.org/ontology/federalState	?R? und die Stadt ?D?	
+1.00000	0.71857	0.57213	0.19276	0.37126	0.30722	0.38454	0.99767	0	49	http://dbpedia.org/ontology/managerClub	?D? hat mit dem ?R?	
+1.00000	0.85398	0.57789	0.50000	0.11740	0.64919	0.65222	0.99913	0	21	http://dbpedia.org/ontology/spouse	?R? und seine Freundin ?D?	
+0.78559	0.49398	0.81438	0.41398	0.16603	0.28758	0.85671	1.00000	0	57	http://dbpedia.org/ontology/birthPlace	?D? am Donnerstag in ?R?	
+1.00000	0.41802	0.44528	1.00000	0.28636	0.13270	0.11374	0.77545	1	27	http://dbpedia.org/ontology/isPartOf	?D? in der zentralchinesischen Provinz ?R?	
+1.00000	0.74359	0.84139	0.50000	0.11740	0.50251	0.54162	0.99985	1	10	http://dbpedia.org/ontology/spouse	?D? und ihr Mann ?R?	
+1.00000	0.66164	0.57213	0.71083	0.62031	0.85714	0.57143	0.48747	1	52	http://dbpedia.org/ontology/managerClub	?R? hat den Vertrag mit Cheftrainer ?D?	
+1.00000	0.48572	1.00000	1.00000	0.72292	0.73575	0.59585	0.76293	1	94	http://dbpedia.org/ontology/formerTeam	?D? hat seinen Vertrag bei den ?R?	
+1.00000	1.00000	0.95592	0.50000	0.21964	0.56012	0.51202	1.00000	1	5	http://dbpedia.org/ontology/spouse	?R? und seine Frau ?D?	
+0.86472	0.76269	0.89629	0.43618	0.14379	0.34844	0.88520	0.99927	0	56	http://dbpedia.org/ontology/birthPlace	?D? am Montag in ?R?	
+1.00000	1.00000	0.60447	0.42909	0.48866	0.17641	0.15827	0.99884	0	69	http://dbpedia.org/ontology/administrativeDistrict	?D? hat die Staatsanwaltschaft ?R?	
+0.86472	1.00000	1.00000	1.00000	0.11740	0.49249	0.28128	1.00000	1	82	http://dbpedia.org/ontology/ceremonialCounty	?D? in der Grafschaft ?R?	
+1.00000	1.00000	1.00000	1.00000	0.08302	0.18693	0.44523	1.00000	1	109	http://dbpedia.org/ontology/subsidiary	?D? die Übernahme von ?R?	
+1.00000	0.76787	0.60447	1.00000	0.33207	0.00700	0.00000	1.00000	0	78	http://dbpedia.org/ontology/administrativeDistrict	?R? Alle Inhalte der Pressemappe anzeigen ?D?	
+1.00000	0.59432	0.65875	0.48133	0.20042	0.10667	0.26667	0.72622	0	70	http://dbpedia.org/ontology/administrativeDistrict	?D? - SC 04 ?R?	
+1.00000	0.67718	0.84139	0.50000	0.14379	0.64682	0.63875	0.99898	1	12	http://dbpedia.org/ontology/spouse	?R? und ihr Ehemann ?D?	
+0.86472	0.71857	1.00000	0.21809	0.16603	0.16550	0.55466	0.99957	0	66	http://dbpedia.org/ontology/administrativeDistrict	?D? in der Nähe von ?R?	
+1.00000	0.66164	0.73060	0.73092	0.85621	0.80226	0.61582	0.75014	1	54	http://dbpedia.org/ontology/managerClub	?R? hat sich von seinem Trainer ?D?	
+0.86472	0.41802	0.42141	0.43618	0.16603	0.12939	0.03410	0.99971	0	31	http://dbpedia.org/ontology/isPartOf	?R? in der Nähe von ?D?	
+1.00000	0.51192	0.77308	0.25000	0.08302	0.22523	0.28128	0.99986	0	76	http://dbpedia.org/ontology/administrativeDistrict	?R? und die Gemeinde ?D?	
+1.00000	0.47527	0.61754	1.00000	0.36343	0.34909	0.48893	0.99942	1	14	http://dbpedia.org/ontology/spouse	?D? mit seiner Frau ?R?	
+1.00000	0.80497	0.80422	1.00000	0.36343	0.61847	0.65462	0.99971	1	20	http://dbpedia.org/ontology/spouse	?R? und seiner Frau ?D?	
+1.00000	0.66164	1.00000	0.26908	0.29932	0.69910	0.73320	0.99971	1	39	http://dbpedia.org/ontology/managerClub	?D? als Trainer des ?R?	
+1.00000	0.67718	0.84139	0.50000	0.14379	0.63875	0.56710	0.99898	1	8	http://dbpedia.org/ontology/spouse	?D? und ihr Ehemann ?R?	
+1.00000	0.73598	0.54660	1.00000	0.16603	0.53018	0.18712	0.99942	0	58	http://dbpedia.org/ontology/birthPlace	?D? von Hertha BSC ?R?	
+1.00000	1.00000	0.47320	1.00000	1.00000	0.88000	0.60000	0.47166	1	51	http://dbpedia.org/ontology/managerClub	?R? hat seinem neuen Trainer ?D?	
+1.00000	0.52751	0.74722	0.63953	0.55689	0.53421	0.52616	0.99971	0	95	http://dbpedia.org/ontology/formerTeam	?D? hat mit seinen ?R?	
+1.00000	0.46537	0.46663	1.00000	0.28636	0.09852	0.17734	0.76988	1	26	http://dbpedia.org/ontology/isPartOf	?D? in der südchinesischen Provinz ?R?	
+1.00000	0.75161	0.74722	0.77911	0.16603	0.89610	0.52922	0.83035	0	96	http://dbpedia.org/ontology/formerTeam	?R? mit dem deutschen Nationalspieler ?D?	
+0.78559	0.54048	0.88426	0.50931	0.20335	0.08753	0.31992	0.99942	0	91	http://dbpedia.org/ontology/federalState	?R? und der Stadt ?D?	
+0.86472	1.00000	0.96025	1.00000	0.16603	0.16951	0.55567	1.00000	1	84	http://dbpedia.org/ontology/neighboringMunicipality	?D? in der Nähe von ?R?	
+1.00000	0.62747	0.84167	0.50931	0.16603	0.85772	0.05311	1.00000	0	90	http://dbpedia.org/ontology/federalState	?R? am Donnerstag in ?D?	
+1.00000	1.00000	1.00000	1.00000	0.16603	0.48880	0.32383	1.00000	1	92	http://dbpedia.org/ontology/canton	?D? im Schweizer Kanton ?R?	
+1.00000	0.64456	0.80422	1.00000	0.36343	0.64960	0.61847	0.99971	1	15	http://dbpedia.org/ontology/spouse	?D? und seiner Frau ?R?	
+1.00000	0.57069	0.39435	1.00000	0.28636	0.08800	0.28000	0.70012	1	28	http://dbpedia.org/ontology/isPartOf	?D? in der nordchinesischen Provinz ?R?	
+1.00000	1.00000	0.70076	0.53662	0.14379	0.88520	0.11078	0.99927	0	86	http://dbpedia.org/ontology/federalState	?R? am Montag in ?D?	
+1.00000	0.54660	1.00000	1.00000	0.45428	0.90361	0.81928	0.86372	1	101	http://dbpedia.org/ontology/leaderName	?R? hat die Präsidentschaftswahl in ?D?	
+1.00000	1.00000	1.00000	1.00000	0.26865	0.00000	0.00000	0.00000	0	98	http://dbpedia.org/ontology/ground	?R? (dpa) - Der ?D?	
+1.00000	0.80497	1.00000	0.50000	0.21964	0.51202	0.56012	1.00000	1	6	http://dbpedia.org/ontology/spouse	?D? und seine Frau ?R?	
+0.86472	1.00000	1.00000	0.94717	0.40527	0.00000	0.00000	0.00000	0	104	http://dbpedia.org/ontology/capital	?R? (dpa) - In ?D?	
+1.00000	0.76787	0.39151	0.71809	0.43468	0.00000	0.00000	0.00000	0	64	http://dbpedia.org/ontology/administrativeDistrict	?R? (ots) - Die Kripo ?D?	
+1.00000	0.85027	0.52680	0.73092	0.85621	0.80645	0.58065	0.59978	1	44	http://dbpedia.org/ontology/managerClub	?R? hat seinem Trainer ?D?	
+1.00000	0.39309	0.53211	0.50000	0.21964	0.66498	0.81837	0.99898	1	16	http://dbpedia.org/ontology/spouse	?R? und dessen Frau ?D?	
+1.00000	0.36006	0.46663	0.50000	0.08302	0.01813	0.04028	0.99913	1	35	http://dbpedia.org/ontology/isPartOf	?D? in der Region ?R?	
+1.00000	1.00000	1.00000	1.00000	0.08302	0.76068	0.54701	1.00000	1	4	http://dbpedia.org/ontology/party	?D? von der rechtspopulistischen ?R?	
+1.00000	1.00000	0.32616	1.00000	0.16603	0.13867	0.10667	0.85840	0	25	http://dbpedia.org/ontology/isPartOf	?R? Institute of Technology in ?D?	
+0.86472	1.00000	1.00000	1.00000	0.37126	0.48996	0.61145	1.00000	0	85	http://dbpedia.org/ontology/draftTeam	?D? hat mit den ?R?	
+0.86472	0.76269	0.81438	0.46267	0.11740	0.34002	0.87362	0.99985	0	60	http://dbpedia.org/ontology/birthPlace	?D? am Mittwoch in ?R?	
+1.00000	0.52751	0.74722	0.38956	0.08302	0.83951	0.45679	0.63822	0	93	http://dbpedia.org/ontology/formerTeam	?D? von den Iserlohn ?R?	
+1.00000	0.59432	0.61139	0.69074	0.72292	0.84983	0.70132	0.92773	0	47	http://dbpedia.org/ontology/managerClub	?D? hat seinen Vertrag bei ?R?	
+1.00000	0.54048	0.93907	0.56921	0.14379	0.21084	0.19779	0.99971	0	87	http://dbpedia.org/ontology/federalState	?D? und das Land ?R?	
+1.00000	0.54009	0.54880	0.92534	0.23481	0.00000	1.00000	0.10034	1	36	http://dbpedia.org/ontology/isPartOf	?D? im US- Bundesstaat ?R?	
+1.00000	0.81137	0.61139	0.51807	0.20042	0.00000	0.00000	0.00000	0	41	http://dbpedia.org/ontology/managerClub	?D? vom Fußball- Bundesligisten ?R?	
+0.86472	0.89824	0.74722	0.87842	0.40527	0.00000	0.00000	0.00000	0	3	http://dbpedia.org/ontology/largestCity	?R? (dpa) - In ?D?	
+1.00000	0.71857	0.75413	0.26908	0.08302	0.70812	0.22869	0.99971	0	45	http://dbpedia.org/ontology/managerClub	?R? als Nachfolger von ?D?	
+1.00000	0.66164	0.65875	0.50000	0.16603	0.24324	0.05743	0.98283	0	75	http://dbpedia.org/ontology/administrativeDistrict	?R? II - SV ?D?	
+1.00000	0.59432	0.61139	0.53816	0.48495	0.70833	0.47727	0.96642	1	50	http://dbpedia.org/ontology/managerClub	?R? von seinem Trainer ?D?	
+0.86472	0.61139	0.71084	0.53913	0.11740	0.06921	0.87462	0.99957	0	105	http://dbpedia.org/ontology/capital	?D? am Mittwoch in ?R?	
+1.00000	1.00000	1.00000	0.58263	0.08302	0.05436	0.37128	1.00000	1	81	http://dbpedia.org/ontology/publisher	?D? aus dem Hause ?R?	
+1.00000	1.00000	0.47336	0.75000	0.36645	0.00000	0.00000	0.00000	0	73	http://dbpedia.org/ontology/administrativeDistrict	?R? (ots) - Beamte der Polizei-Zentralstation ?D?	
+1.00000	0.83399	1.00000	1.00000	0.26865	0.00000	0.00000	0.00000	0	99	http://dbpedia.org/ontology/ground	?R? (dpa) - Fußball-Bundesligist ?D?	

@@ -480,7 +480,7 @@ public class ConfidenceLearner {
 
 	public static void main(String args[]) {
 		
-		for ( int i : Arrays.asList(2,3,4,5,6,7,8,9)) {
+		for ( int i : Arrays.asList(2,3,4,5,6,7,8,9,10)) {
 			
 			ConfidenceLearner.N_FOLD_CROSS_VALIDATION	= i;
 			ConfidenceLearner.NETWORK_FILE 				= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
@@ -490,7 +490,7 @@ public class ConfidenceLearner {
 			System.out.println("N-Fold-CV: " + i);
 			System.out.println(ConfidenceLearner.NETWORK_FILE);
 			System.out.println(ConfidenceLearner.EVAL_OUTPUT_FILE);
-			System.out.println(network.compute(getSingleEntry("1.00000	0.56458	0.43083	0.34154	0.04289	0.83516	0.87912	0.75404	1	330	http://dbpedia.org/ontology/birthPlace	?D? , geboren in ?R?")).getData(0));
+//			System.out.println(network.compute(getSingleEntry("1.00000	0.56458	0.43083	0.34154	0.04289	0.83516	0.87912	0.75404	1	330	http://dbpedia.org/ontology/birthPlace	?D? , geboren in ?R?")).getData(0));
 		}
 	}
 }
