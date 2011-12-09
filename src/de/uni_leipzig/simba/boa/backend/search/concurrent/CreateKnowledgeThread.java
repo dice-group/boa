@@ -1,6 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.search.concurrent;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -268,7 +269,7 @@ public class CreateKnowledgeThread extends Thread {
 	
 	public String getProgress() {
 
-		return String.valueOf((int)((double) numberOfDoneSearchOperations / (double)numberOfAllSearchOperations));
+		return NumberFormat.getPercentInstance().format(((double) numberOfDoneSearchOperations / (double)numberOfAllSearchOperations));
 	}
 
 	private void calculateNumberOfSearchOperations() {

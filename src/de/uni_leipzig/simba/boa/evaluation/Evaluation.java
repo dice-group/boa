@@ -127,8 +127,11 @@ public class Evaluation implements Command {
 			List<Triple> topNTriples = this.tripleDao.queryTopNTriples(Integer.valueOf(NLPediaSettings.getInstance().getSetting("top.n.eval.triples")));
 			for ( Triple triple : topNTriples ) {
 				
-				this.writeResults(triple.toString() + Constants.NEW_LINE_SEPARATOR);
-				for (String sentence : triple.getLearnedFromSentences() ) {
+				this.writeResults(triple.toString() + "\t" + triple.getConfidence() +  Constants.NEW_LINE_SEPARATOR);
+				
+				List<String> sentences = new ArrayList<String>(triple.getLearnedFromSentences());
+				sentences = sentences.size() > 2 ? sentences.subList(0, 2) : sentences;
+				for (String sentence : sentences ) {
 					
 					this.writeResults("  " + sentence.toString() + Constants.NEW_LINE_SEPARATOR);
 				}
