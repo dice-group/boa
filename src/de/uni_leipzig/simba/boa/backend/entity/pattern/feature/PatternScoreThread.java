@@ -66,8 +66,6 @@ public class PatternScoreThread extends Thread {
 
 	public String getProgress() {
 
-//		System.out.println("i " + i + " patterns: "+ patternToMeasure) ;
-		
 		return patternToMeasure != 0 ? NumberFormat.getPercentInstance().format((double) i / (double) patternToMeasure) : "100%";
 	}
 }
