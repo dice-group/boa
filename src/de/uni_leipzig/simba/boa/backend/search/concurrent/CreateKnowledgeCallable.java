@@ -48,7 +48,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 	private Map<Integer,Triple> newTripleMap = new HashMap<Integer,Triple>();
 	private Directory idx = null;
 	
-	private static final String BACKGROUND_KNOWLEDGE = "/Users/gerb/bk.out";//""/home/gerber/nlpedia-data/files/relation/bk.out";
+	private static final String BACKGROUND_KNOWLEDGE = "/home/gerber/nlpedia-data/files/relation/bk.out";
 	
 	/**
 	 * DO ONLY USE THIS FOR EVALUATION
