@@ -193,7 +193,7 @@ public class CreateKnowledgeCommand implements Command {
 //		}
 //	}
 
-	private void writeFile(String filename, Collection<Triple> resultList) {
+	private void writeFile(String filename, Collection<Triple> resultList, boolean newTriples) {
 
 		try {
 			
@@ -214,7 +214,7 @@ public class CreateKnowledgeCommand implements Command {
 								 "\"" + t.getObject().getLabel() +"\" . " + Constants.NEW_LINE_SEPARATOR);
 				}
 			}
-			tripleDao.batchSaveOrUpdate(new ArrayList<Triple>(resultList));
+			if ( newTriples ) tripleDao.batchSaveOrUpdate(new ArrayList<Triple>(resultList));
 			writer.close();
 		}
 		catch (UnsupportedEncodingException e1) {
@@ -233,12 +233,12 @@ public class CreateKnowledgeCommand implements Command {
 	
 	private void writeKnownTriplesFile(Collection<Triple> resultList) {
 
-		this.writeFile(KNOWN_TRIPLES_FILE, resultList);
+		this.writeFile(KNOWN_TRIPLES_FILE, resultList, false);
 	}
 	
 	private void writeNewTriplesFile(Collection<Triple> resultList) {
 
-		this.writeFile(NEW_TRIPLES_FILE, resultList);
+		this.writeFile(NEW_TRIPLES_FILE, resultList, true);
 	}
 
 	private void buildTripleMap() {
