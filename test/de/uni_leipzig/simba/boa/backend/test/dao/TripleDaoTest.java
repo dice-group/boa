@@ -62,7 +62,7 @@ public class TripleDaoTest {
 
 		TripleDao tripleDao = (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
 		
-		for (int i = 1 ; i <= 100; i++ ){
+		for (int i = 1 ; i <= 1000; i++ ){
 
 			Triple tripleOne = new Triple();
 			tripleOne.setSubject(new Resource("http://subject"+i+".de"));
@@ -71,6 +71,8 @@ public class TripleDaoTest {
 			tripleOne.setCorrect(false);
 			tripleOne.setConfidence(1D/(double)i);
 
+			System.out.println(i);
+			
 			if ( i > 50 ) {
 				tripleOne.setCorrect(true);
 			}

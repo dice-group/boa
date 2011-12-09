@@ -1,7 +1,11 @@
 package de.uni_leipzig.simba.boa.backend.dao.rdf;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -137,14 +141,22 @@ public class TripleDao extends AbstractDao {
 
 		Session session = HibernateFactory.getSessionFactory().openSession();
 		String query = "select id from triple where correct = 0 order by confidence desc limit "+maxValues+";";
-		List results = session.createSQLQuery(query).list();
-		List<Triple> res = new ArrayList<Triple>();
-		for ( int i = 0; i  < results.size() ; i++) {
+		
+		Set<Triple> triples = new HashSet<Triple>(session.createCriteria(Triple.class).add(Restrictions.eq("correct", false)).list());
+		List<Triple> orderedTriples =  new ArrayList<Triple>(triples);
+		Collections.sort(orderedTriples, new Comparator<Triple>(){
+
+			@Override
+			public int compare(Triple o1, Triple o2) {
+
+				double x = (o2.getConfidence() - o1.getConfidence());
+				if ( x < 0 ) return -1;
+				if ( x == 0 ) return 0;
+				return 1;
+			}
 			
-			Triple t = (Triple) session.load(Triple.class, (Integer)results.get(i));
-			res.add(t);
-		}
-		session.close();
-		return res;
+		});
+		
+		return orderedTriples;
 	}
 }
