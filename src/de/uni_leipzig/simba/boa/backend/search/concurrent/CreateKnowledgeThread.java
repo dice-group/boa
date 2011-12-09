@@ -1,34 +1,21 @@
 package de.uni_leipzig.simba.boa.backend.search.concurrent;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Timer;
-import java.util.concurrent.Callable;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.store.Directory;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.rdf.TripleDao;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateKnowledgeCommand;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
 import de.uni_leipzig.simba.boa.backend.entity.context.FastLeftContext;
 import de.uni_leipzig.simba.boa.backend.entity.context.FastRightContext;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.PatternScoreThread;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
@@ -37,23 +24,20 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.DbpediaUriRetrieval;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
-import de.uni_leipzig.simba.boa.backend.search.SearchResult;
-import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrategy;
 
-public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
+public class CreateKnowledgeThread extends Thread {
 
 	public static final NamedEntityRecognizer ner = new NamedEntityRecognizer();
-	private final NLPediaLogger logger 		= new NLPediaLogger(CreateKnowledgeCallable.class);
-	private final PatternMapping mapping;
+	private final NLPediaLogger logger 		= new NLPediaLogger(CreateKnowledgeThread.class);
+	private final List<PatternMapping> mappings;
 	
-	private TripleDao tripleDao = (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
-	private static Map<Integer,Triple> tripleMap = null;
 	private Map<Integer,Triple> newTripleMap = new HashMap<Integer,Triple>();
+	private Map<Integer,Triple> knownTripleMap = new HashMap<Integer,Triple>();
 	private Directory idx = null;
-	
-	private static final String BACKGROUND_KNOWLEDGE = "/home/gerber/nlpedia-data/files/relation/bk.out";
+	private int numberOfDoneSearchOperations = 0;
+	private int numberOfAllSearchOperations = 0;
 	
 	/**
 	 * DO ONLY USE THIS FOR EVALUATION
@@ -61,122 +45,77 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 	 * @param mapping
 	 * @param idx
 	 */
-	public CreateKnowledgeCallable(PatternMapping mapping, Directory idx) {
+	public CreateKnowledgeThread(List<PatternMapping> mappings, Directory idx) {
 		
-		this.mapping = mapping;
+		this.calculateNumberOfSearchOperations();
+		this.mappings = mappings;
 		this.idx = idx;
-		this.buildTripleMap();
 	}
 	
-	private void buildTripleMap() {
-
-		if ( tripleMap == null ) {
-			
-			if ( !(new File(BACKGROUND_KNOWLEDGE)).exists() ) {
-				
-				tripleMap = new HashMap<Integer,Triple>();
-				for (Triple t : tripleDao.findAllTriples()) {
-					
-					tripleMap.put(t.hashCode(), t);
-				}
-				try {
-					
-					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(BACKGROUND_KNOWLEDGE)));
-					oos.writeObject(tripleMap);
-					oos.close();
-				}
-				catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			else {
-				
-				try {
-					
-					ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(BACKGROUND_KNOWLEDGE)));
-					tripleMap = (HashMap<Integer,Triple>) ois.readObject();
-					ois.close();
-				}
-				catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	public CreateKnowledgeCallable(PatternMapping mapping) {
+	public CreateKnowledgeThread(List<PatternMapping> mappings) {
 		
-		this.mapping = mapping;
-		this.buildTripleMap();
+		this.calculateNumberOfSearchOperations();
+		this.mappings = mappings;
 	}
 	
-	@Override
-	public Collection<Triple> call() {
+	public void run() {
 		
 		try {
-
-			Set<Pattern> patterns = mapping.getPatterns();
 			
-			if ( patterns != null && patterns.size() > 0 ) {
+			for (PatternMapping mapping : this.mappings) { 
 				
-				// take the top n scored patterns
-				List<Pattern> patternList	= PatternUtil.getTopNPattern(patterns, PatternSelectionStrategy.ALL, Integer.valueOf(NLPediaSettings.getInstance().getSetting("top.n.pattern")), Double.valueOf(NLPediaSettings.getInstance().getSetting("score.threshold.create.knowledge")));
-				this.logger.info(String.format("Creating knowledge for mapping: %s and top-%s patterns", mapping.getProperty().getUri(), patternList.size()));
+				Set<Pattern> patterns = mapping.getPatterns();
+				
+				if ( patterns != null && patterns.size() > 0 ) {
+					
+					// take the top n scored patterns
+					List<Pattern> patternList	= PatternUtil.getTopNPattern(patterns, PatternSelectionStrategy.ALL, Integer.valueOf(NLPediaSettings.getInstance().getSetting("top.n.pattern")), Double.valueOf(NLPediaSettings.getInstance().getSetting("score.threshold.create.knowledge")));
+					this.logger.info(String.format("Creating knowledge for mapping: %s and top-%s patterns", mapping.getProperty().getUri(), patternList.size()));
 
-				if ( !patternList.isEmpty() ) {
-					
-					// this is solely for the evaluation
-					PatternSearcher patternSearcher;
-					if ( this.idx == null ) patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
-					else patternSearcher = new PatternSearcher(this.idx);
-					
-					for (Pattern pattern : patternList) {
+					if ( !patternList.isEmpty() ) {
 						
-						Set<String> sentences = patternSearcher.getExactMatchSentences(pattern.getNaturalLanguageRepresentationWithoutVariables(), Integer.valueOf(NLPediaSettings.getInstance().getSetting("max.number.of.documents.generation")));
-						this.logger.debug("\tQuering pattern \"" + pattern.getNaturalLanguageRepresentation() + "\" with " + sentences.size() + " sentences");
+						// this is solely for the evaluation
+						PatternSearcher patternSearcher;
+						if ( this.idx == null ) patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+						else patternSearcher = new PatternSearcher(this.idx);
 						
-						for (String sentence : sentences) {
+						for (Pattern pattern : patternList) {
 							
-							// there will never be a left argument if the sentence begins with the pattern
-							if ( sentence.toLowerCase().startsWith(pattern.getNaturalLanguageRepresentationWithoutVariables().toLowerCase())) continue;
-							this.logger.debug("\t" + sentence);
-
-							createKnowledge(mapping, pattern, sentence, ner.recognizeEntitiesInString(sentence)); 
-						}
-					}
-					// close the searcher or you get a ioexception because too many files are open
-					patternSearcher.close();
-					
-					// confidence of triple is number of patterns the triple has been learned from times the sum of their confidences
-					for ( Triple triple : newTripleMap.values() ) {
-						
-						// new knowledge (knowledge not put in as background knowledge) is always not correct
-						if ( !triple.isCorrect() ) {
+							Set<String> sentences = patternSearcher.getExactMatchSentences(pattern.getNaturalLanguageRepresentationWithoutVariables(), Integer.valueOf(NLPediaSettings.getInstance().getSetting("max.number.of.documents.generation")));
+							this.logger.debug("\tQuering pattern \"" + pattern.getNaturalLanguageRepresentation() + "\" with " + sentences.size() + " sentences");
 							
-							double confidence = 0;
-							for ( Pattern patternLearnedFrom : triple.getLearnedFromPatterns() ) {
+							this.numberOfDoneSearchOperations++;
+							
+							for (String sentence : sentences) {
 								
-								confidence += patternLearnedFrom.getConfidence();
+								// there will never be a left argument if the sentence begins with the pattern
+								if ( sentence.toLowerCase().startsWith(pattern.getNaturalLanguageRepresentationWithoutVariables().toLowerCase())) continue;
+								this.logger.debug("\t" + sentence);
+
+								createKnowledge(mapping, pattern, sentence, ner.recognizeEntitiesInString(sentence)); 
 							}
-							// sigmoid function shifted to the right to boost pattern which are learned from more than one pattern
-							triple.setConfidence(1D / (1D + Math.pow(Math.E, - confidence * triple.getLearnedFromPatterns().size() + 1)));
+						}
+						// close the searcher or you get a ioexception because too many files are open
+						patternSearcher.close();
+						
+						// confidence of triple is number of patterns the triple has been learned from times the sum of their confidences
+						for ( Triple triple : newTripleMap.values() ) {
+							
+							// new knowledge (knowledge not put in as background knowledge) is always not correct
+							if ( !triple.isCorrect() ) {
+								
+								double confidence = 0;
+								for ( Pattern patternLearnedFrom : triple.getLearnedFromPatterns() ) {
+									
+									confidence += patternLearnedFrom.getConfidence();
+								}
+								// sigmoid function shifted to the right to boost pattern which are learned from more than one pattern
+								triple.setConfidence(1D / (1D + Math.pow(Math.E, - confidence * triple.getLearnedFromPatterns().size() + 1)));
+							}
 						}
 					}
 				}
+				this.logger.info("Finished creating knowledge for: "  + mapping.getProperty().getUri() + " with " + newTripleMap.values().size() + " triples.");
 			}
 		}
 		catch (ParseException e) {
@@ -194,10 +133,6 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 			this.logger.error("Excpetion", e);
 			throw new RuntimeException(e);
 		}
-		
-		this.logger.info("Finished creating knowledge for: "  + this.mapping.getProperty().getUri() + " with " + newTripleMap.values().size() + " triples.");
-		
-		return this.newTripleMap.values();
 	}
 	
 	private void createKnowledge(PatternMapping mapping, Pattern pattern, String sentence, String nerTaggedSentence) {
@@ -282,8 +217,9 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 		triple.setObject(object);
 		
 		// triple is already present background knowledge, so disregard it
-		if ( tripleMap.containsKey(triple.hashCode()) ) {
+		if ( CreateKnowledgeCommand.tripleMap.containsKey(triple.hashCode()) ) {
 			
+			this.knownTripleMap.put(triple.hashCode(), triple);
 			System.out.println("Triple already exists: " + triple);
 			this.logger.info("Triple already exists: " + triple);
 		}
@@ -301,6 +237,41 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 			// put the new one in
 			this.newTripleMap.put(triple.hashCode(), triple);
 		}
-		
+	}
+	
+	public String getProgress() {
+
+		return String.valueOf(numberOfDoneSearchOperations / numberOfAllSearchOperations);
+	}
+
+	private void calculateNumberOfSearchOperations() {
+
+		for (PatternMapping mapping : this.mappings ) {
+			
+			this.numberOfAllSearchOperations += PatternUtil.getTopNPattern(mapping.getPatterns(), PatternSelectionStrategy.ALL, Integer.valueOf(NLPediaSettings.getInstance().getSetting("top.n.pattern")), Double.valueOf(NLPediaSettings.getInstance().getSetting("score.threshold.create.knowledge"))).size(); 
+		}
+	}
+	
+	/**
+	 * @return the newTripleMap
+	 */
+	public Map<Integer, Triple> getNewTripleMap() {
+	
+		return newTripleMap;
+	}
+
+	
+	/**
+	 * @param newTripleMap the newTripleMap to set
+	 */
+	public void setNewTripleMap(Map<Integer, Triple> newTripleMap) {
+	
+		this.newTripleMap = newTripleMap;
+	}
+
+
+	public Map<Integer, Triple> getKnownTripleMap() {
+
+		return this.knownTripleMap;
 	}
 }
