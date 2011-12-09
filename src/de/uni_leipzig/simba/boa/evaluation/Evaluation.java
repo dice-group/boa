@@ -9,6 +9,8 @@ import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -124,18 +126,34 @@ public class Evaluation implements Command {
 			HibernateFactory.changeConnection(testDatabase);
 			
 			// now we serialize the top 100 facts from the different databases
-			List<Triple> topNTriples = this.tripleDao.queryTopNTriples(Integer.valueOf(NLPediaSettings.getInstance().getSetting("top.n.eval.triples")));
+			List<Triple> topNTriples = this.tripleDao.findAllTriples();
+			Collections.sort(topNTriples, new Comparator<Triple>(){
+
+				@Override
+				public int compare(Triple o1, Triple o2) {
+
+					double x = (o2.getConfidence() - o1.getConfidence());
+					if ( x < 0 ) return -1;
+					if ( x == 0 ) return 0;
+					return 1;
+				}
+				
+			});
+			int i = 0;
 			for ( Triple triple : topNTriples ) {
 				
-				this.writeResults(triple.toString() + "\t" + triple.getConfidence() +  Constants.NEW_LINE_SEPARATOR);
-				
-				List<String> sentences = new ArrayList<String>(triple.getLearnedFromSentences());
-				sentences = sentences.size() > 2 ? sentences.subList(0, 2) : sentences;
-				for (String sentence : sentences ) {
+				if ( i++ < 501 ) {
 					
-					this.writeResults("  " + sentence.toString() + Constants.NEW_LINE_SEPARATOR);
+					this.writeResults(triple.toString() + "\t" + triple.getConfidence() +  Constants.NEW_LINE_SEPARATOR);
+					
+					List<String> sentences = new ArrayList<String>(triple.getLearnedFromSentences());
+					sentences = sentences.size() > 2 ? sentences.subList(0, 2) : sentences;
+					for (String sentence : sentences ) {
+						
+						this.writeResults("  " + sentence.toString() + Constants.NEW_LINE_SEPARATOR);
+					}
+					this.writeResults(Constants.NEW_LINE_SEPARATOR);
 				}
-				this.writeResults(Constants.NEW_LINE_SEPARATOR);
 			}
 		}
 	}

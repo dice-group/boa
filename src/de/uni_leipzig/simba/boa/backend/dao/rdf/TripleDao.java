@@ -140,8 +140,6 @@ public class TripleDao extends AbstractDao {
 	public List<Triple> queryTopNTriples(Integer maxValues) {
 
 		Session session = HibernateFactory.getSessionFactory().openSession();
-		String query = "select id from triple where correct = 0 order by confidence desc limit "+maxValues+";";
-		
 		Set<Triple> triples = new HashSet<Triple>(session.createCriteria(Triple.class).add(Restrictions.eq("correct", false)).list());
 		List<Triple> orderedTriples =  new ArrayList<Triple>(triples);
 		Collections.sort(orderedTriples, new Comparator<Triple>(){
@@ -156,6 +154,7 @@ public class TripleDao extends AbstractDao {
 			}
 			
 		});
+		session.close();
 		
 		return orderedTriples;
 	}
