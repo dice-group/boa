@@ -91,8 +91,15 @@ public class CreateKnowledgeThread extends Thread {
 								// there will never be a left argument if the sentence begins with the pattern
 								if ( sentence.toLowerCase().startsWith(pattern.getNaturalLanguageRepresentationWithoutVariables().toLowerCase())) continue;
 								this.logger.debug("\t" + sentence);
-
-								createKnowledge(mapping, pattern, sentence, ner.recognizeEntitiesInString(sentence)); 
+								
+								try {
+									
+									createKnowledge(mapping, pattern, sentence, ner.recognizeEntitiesInString(sentence));
+								}
+								catch (java.lang.ArrayIndexOutOfBoundsException e ) {
+									
+									this.logger.error("named entity recognizer failed for sentence: " + sentence, e);
+								}
 							}
 						}
 						// close the searcher or you get a ioexception because too many files are open
@@ -250,6 +257,16 @@ public class CreateKnowledgeThread extends Thread {
 			
 			this.numberOfAllSearchOperations += PatternUtil.getTopNPattern(mapping.getPatterns(), PatternSelectionStrategy.ALL, Integer.valueOf(NLPediaSettings.getInstance().getSetting("top.n.pattern")), Double.valueOf(NLPediaSettings.getInstance().getSetting("score.threshold.create.knowledge"))).size(); 
 		}
+	}
+	
+	public int getNumberOfAllSearchOperations() {
+		
+		return this.numberOfAllSearchOperations;
+	}
+	
+	public int getNumberOfDoneSearchOperations() {
+		
+		return this.numberOfDoneSearchOperations;
 	}
 	
 	/**
