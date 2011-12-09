@@ -45,26 +45,7 @@ public class XXX implements Command {
 	@Override
 	public void execute() {
 
-		TripleDao tripleDao = (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
-		Map<Integer,Triple> tripleMap = new HashMap<Integer,Triple>();
-		for (Triple t : tripleDao.findAllTriples()) {
-			
-			tripleMap.put(t.hashCode(), t);
-		}
-		try {
-			
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/home/gerber/nlpedia-data/files/relation/bk.out")));
-			oos.writeObject(tripleMap);
-			oos.close();
-		}
-		catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 	
 	public static void main(String[] args) throws UnsupportedEncodingException, FileNotFoundException, IOException {

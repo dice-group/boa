@@ -46,10 +46,10 @@ public class ConfidenceLearner {
 
 	private static NLPediaSetup s = new NLPediaSetup(true);
 	private static Integer N_FOLD_CROSS_VALIDATION	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("neuronal.network.n.fold.cross.validation"));
-	private static final String NETWORK_DIRECTORY			= NLPediaSettings.getInstance().getSetting("neural.network.network.directory");
-	private static final String LEARN_FILE					= NETWORK_DIRECTORY + "network_learn.txt";
-	private static String EVAL_OUTPUT_FILE					= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
-	private static String NETWORK_FILE						= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
+	private static final String NETWORK_DIRECTORY	= NLPediaSettings.getInstance().getSetting("neural.network.network.directory");
+	private static final String LEARN_FILE			= NETWORK_DIRECTORY + "network_learn.txt";
+	private static String EVAL_OUTPUT_FILE			= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
+	private static String NETWORK_FILE				= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
 
 	/**
 	 * Default constructor
@@ -252,9 +252,9 @@ public class ConfidenceLearner {
 				// maps each entry to the expected value
 				BasicMLData ideal = new BasicMLData(1);
 				ideal.add(0, new Double(split[split.length - 4]));
-//				if ( counter < 182 ) data[0].add(entry, ideal);
-//				else data[1].add(entry, ideal);
-				data[counter % n].add(entry, ideal);
+				if ( counter < 109 ) data[0].add(entry, ideal);
+				else data[1].add(entry, ideal);
+//				data[counter % n].add(entry, ideal);
 				s = reader.readLine();
 				counter++;
 			}
@@ -485,11 +485,10 @@ public class ConfidenceLearner {
 			ConfidenceLearner.N_FOLD_CROSS_VALIDATION	= i;
 			ConfidenceLearner.NETWORK_FILE 				= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
 			ConfidenceLearner.EVAL_OUTPUT_FILE 			= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
-			
-			ConfidenceLearner dr = new ConfidenceLearner();
 			System.out.println("N-Fold-CV: " + i);
 			System.out.println(ConfidenceLearner.NETWORK_FILE);
 			System.out.println(ConfidenceLearner.EVAL_OUTPUT_FILE);
+			ConfidenceLearner dr = new ConfidenceLearner();
 //			System.out.println(network.compute(getSingleEntry("1.00000	0.56458	0.43083	0.34154	0.04289	0.83516	0.87912	0.75404	1	330	http://dbpedia.org/ontology/birthPlace	?D? , geboren in ?R?")).getData(0));
 		}
 	}

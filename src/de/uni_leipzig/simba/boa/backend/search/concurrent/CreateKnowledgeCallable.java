@@ -28,6 +28,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
@@ -47,6 +48,8 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 	private Map<Integer,Triple> newTripleMap = new HashMap<Integer,Triple>();
 	private Directory idx = null;
 	
+	private static final String BACKGROUND_KNOWLEDGE = "/Users/gerb/bk.out";//""/home/gerber/nlpedia-data/files/relation/bk.out";
+	
 	/**
 	 * DO ONLY USE THIS FOR EVALUATION
 	 * 
@@ -64,16 +67,16 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 
 		if ( tripleMap == null ) {
 			
-			if ( !new File("/home/gerber/nlpedia-data/files/relation/bk.out").exists() ) {
+			if ( !(new File(BACKGROUND_KNOWLEDGE)).exists() ) {
 				
-				Map<Integer,Triple> tripleMap = new HashMap<Integer,Triple>();
+				tripleMap = new HashMap<Integer,Triple>();
 				for (Triple t : tripleDao.findAllTriples()) {
 					
 					tripleMap.put(t.hashCode(), t);
 				}
 				try {
 					
-					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/home/gerber/nlpedia-data/files/relation/bk.out")));
+					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(BACKGROUND_KNOWLEDGE)));
 					oos.writeObject(tripleMap);
 					oos.close();
 				}
@@ -90,7 +93,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 				
 				try {
 					
-					ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("/home/gerber/nlpedia-data/files/relation/bk.out")));
+					ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(BACKGROUND_KNOWLEDGE)));
 					tripleMap = (HashMap<Integer,Triple>) ois.readObject();
 					ois.close();
 				}
@@ -223,28 +226,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						Resource object = ResourceManager.getInstance().getResource(objectUri, objectLabel, rangeUri);
 						if ( object == null) throw new RuntimeException("1. Object null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
 						
-						Triple triple = new Triple();
-						triple.setSubject(subject);
-						triple.setProperty(mapping.getProperty());
-						triple.setObject(object);
-						
-						if ( !tripleMap.containsKey(triple.hashCode()) ) {
-							
-							// replace it if it already exists
-							if ( this.newTripleMap.containsKey(triple.hashCode()) ) {
-								
-								triple = newTripleMap.get(triple.hashCode());
-							}
-							triple.addLearnedFromSentences(sentence);
-							triple.addLearnedFromPattern(pattern);
-							// put the new one in
-							this.newTripleMap.put(triple.hashCode(), triple);
-						}
-						else {
-							
-							System.out.println("Triple already exists: " + triple);
-							this.logger.info("Triple already exists: " + triple);
-						}
+						this.addTriple(subject, mapping.getProperty(), object, sentence, pattern);
 					}
 				}
 			}
@@ -268,28 +250,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 						Resource object = ResourceManager.getInstance().getResource(objectUri, objectLabel, rangeUri);
 						if ( object == null) throw new RuntimeException("2. object null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
 						
-						Triple triple = new Triple();
-						triple.setSubject(subject);
-						triple.setProperty(mapping.getProperty());
-						triple.setObject(object);
-						
-						if ( !tripleMap.containsKey(triple.hashCode()) ) {
-							
-							// replace it if it already exists
-							if ( this.newTripleMap.containsKey(triple.hashCode()) ) {
-								
-								triple = this.newTripleMap.get(triple.hashCode());
-							}
-							triple.addLearnedFromSentences(sentence);
-							triple.addLearnedFromPattern(pattern);
-							// put the new one in
-							this.newTripleMap.put(triple.hashCode(), triple);
-						}
-						else {
-							
-							System.out.println("Triple already exists: " + triple);
-							this.logger.info("Triple already exists: " + triple);
-						}
+						this.addTriple(subject, mapping.getProperty(), object, sentence, pattern);
 					}
 				}
 			}
@@ -306,5 +267,35 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 			
 			throw new RuntimeException("Some bug ", e);
 		}
+	}
+
+	private void addTriple(Resource subject, Property property, Resource object, String sentence, Pattern pattern) {
+
+		Triple triple = new Triple();
+		triple.setSubject(subject);
+		triple.setProperty(property);
+		triple.setObject(object);
+		
+		// triple is already present background knowledge, so disregard it
+		if ( tripleMap.containsKey(triple.hashCode()) ) {
+			
+			System.out.println("Triple already exists: " + triple);
+			this.logger.info("Triple already exists: " + triple);
+		}
+		// the triple is new with respect to the background knowledge
+		else {
+			
+			// do we have found it with a different pattern already
+			// if so then get this pattern
+			if ( this.newTripleMap.containsKey(triple.hashCode()) ) {
+				
+				triple = newTripleMap.get(triple.hashCode());
+			}
+			triple.addLearnedFromSentences(sentence);
+			triple.addLearnedFromPattern(pattern);
+			// put the new one in
+			this.newTripleMap.put(triple.hashCode(), triple);
+		}
+		
 	}
 }

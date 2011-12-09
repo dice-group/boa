@@ -167,7 +167,7 @@ public class CreateKnowledgeCommand implements Command {
 					this.logger.error("Triple was null!");
 				}
 			}
-			tripleDao.batchSaveOrUpdate(new ArrayList<Triple>(resultList));
+//			tripleDao.batchSaveOrUpdate(new ArrayList<Triple>(resultList));
 			writer.close();
 		}
 		catch (UnsupportedEncodingException e1) {
