@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.dao.rdf;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -135,11 +136,14 @@ public class TripleDao extends AbstractDao {
 	public List<Triple> queryTopNTriples(Integer maxValues) {
 
 		Session session = HibernateFactory.getSessionFactory().openSession();
-		List<Triple> triples = session.createCriteria(Triple.class).
-								add(Restrictions.eq("correct", false)).
-								addOrder(Order.desc("confidence")).setMaxResults(maxValues).list();
-		
+		String query = "select id from triple where correct = 0 order by confidence desc limit "+maxValues+";";
+		List results = session.createSQLQuery(query).list();
+		List<Triple> res = new ArrayList<Triple>();
+		for ( int i = 0; i  < results.size() ; i++) {
+			
+			res.add(this.findTriple((Integer)results.get(i)));
+		}
 		session.close();
-		return triples;
+		return res;
 	}
 }
