@@ -241,7 +241,7 @@ public class CreateKnowledgeThread extends Thread {
 	
 	public String getProgress() {
 
-		return String.valueOf((double)numberOfDoneSearchOperations / (double)numberOfAllSearchOperations);
+		return String.valueOf((int)((double) numberOfDoneSearchOperations / (double)numberOfAllSearchOperations));
 	}
 
 	private void calculateNumberOfSearchOperations() {
