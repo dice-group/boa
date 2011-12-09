@@ -29,7 +29,7 @@ import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrateg
 
 public class CreateKnowledgeThread extends Thread {
 
-	public static final NamedEntityRecognizer ner = new NamedEntityRecognizer();
+	private final NamedEntityRecognizer ner = new NamedEntityRecognizer();
 	private final NLPediaLogger logger 		= new NLPediaLogger(CreateKnowledgeThread.class);
 	private final List<PatternMapping> mappings;
 	
@@ -167,11 +167,17 @@ public class CreateKnowledgeThread extends Thread {
 						String subjectUri = uriRetrieval.getUri(subjectLabel);
 						String objectUri = uriRetrieval.getUri(objectLabel);
 						
+						if ( !subjectUri.startsWith("http://dbpedia.org/resource/") ) throw new RuntimeException("Wired URI:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
+						if ( !objectUri.startsWith("http://dbpedia.org/resource/") ) throw new RuntimeException("Wired URI:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
+						
 						Resource subject = ResourceManager.getInstance().getResource(subjectUri, subjectLabel, domainUri);
 						if ( subject == null) throw new RuntimeException("1. Subject null for uri:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
 						
 						Resource object = ResourceManager.getInstance().getResource(objectUri, objectLabel, rangeUri);
 						if ( object == null) throw new RuntimeException("1. Object null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
+						
+						if ( !subject.getUri().startsWith("http://dbpedia.org/resource/") ) throw new RuntimeException("Wired URI after ResourceManager:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
+						if ( !object.getUri().startsWith("http://dbpedia.org/resource/") ) throw new RuntimeException("Wired URI after ResourceManager:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
 						
 						this.addTriple(subject, mapping.getProperty(), object, sentence, pattern);
 					}
@@ -191,11 +197,17 @@ public class CreateKnowledgeThread extends Thread {
 						String objectUri = uriRetrieval.getUri(objectLabel);
 						String subjectUri = uriRetrieval.getUri(subjectLabel);
 						
+						if ( !subjectUri.startsWith("http://dbpedia.org/resource/") ) throw new RuntimeException("Wired URI:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
+						if ( !objectUri.startsWith("http://dbpedia.org/resource/") ) throw new RuntimeException("Wired URI:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
+						
 						Resource subject = ResourceManager.getInstance().getResource(subjectUri, subjectLabel, domainUri);
 						if ( subject == null) throw new RuntimeException("2. subject null for uri:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
 
 						Resource object = ResourceManager.getInstance().getResource(objectUri, objectLabel, rangeUri);
 						if ( object == null) throw new RuntimeException("2. object null for uri:" + objectUri+ " label: " + objectLabel + " type:" + rangeUri);
+						
+						if ( !subject.getUri().startsWith("http://dbpedia.org/resource/") ) throw new RuntimeException("Wired URI after ResourceManager:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
+						if ( !object.getUri().startsWith("http://dbpedia.org/resource/") ) throw new RuntimeException("Wired URI after ResourceManager:" + subjectUri+ " label: " + subjectLabel + " type:" + domainUri);
 						
 						this.addTriple(subject, mapping.getProperty(), object, sentence, pattern);
 					}
