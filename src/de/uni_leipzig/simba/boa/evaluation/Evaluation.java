@@ -32,7 +32,7 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 public class Evaluation implements Command {
 
-	private static final List<String> TEST_DATABASES = Arrays.asList("en_wiki_exp");//, "en_news_exp");
+	private static final List<String> TEST_DATABASES = Arrays.asList("de_wiki_exp");//, "en_news_exp");
 	
 	private TripleDao tripleDao = (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
 	
