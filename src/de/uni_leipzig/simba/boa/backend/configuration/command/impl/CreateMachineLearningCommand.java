@@ -22,13 +22,6 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHel
 
 public class CreateMachineLearningCommand implements Command {
 
-	public static void main(String[] args) {
-
-		NLPediaSetup s = new NLPediaSetup(false);
-		CreateMachineLearningCommand l = new CreateMachineLearningCommand();
-		l.execute();
-	}
-	
 	static List<Integer> doNotUseThose = new ArrayList<Integer>();
 	
 	@Override
@@ -129,6 +122,26 @@ public class CreateMachineLearningCommand implements Command {
 	
 	static {
 		
-		doNotUseThose.addAll(Arrays.asList(7063,6957,5777,5953,4876,405,5829,6963,7146,6162,6018,4940,1487,4890,6098,152,6839,4939,5925,7187,7027,4840,6196,6183,7345,430,6027,6797,1495,1475,5755,7306,5846,6299,5762,6020,7230,45,6234,5757,6131,5803,7007,6017,6998,5804,7309,1479,6249,5950,5819,7065,4823,41,7219,6254,5902,2119,417,7022,56,5956,5960,6138,11,1501,5922,7327,7183,7097,5805,423,6190,6006,4889,5910,1466,7147,4924,7179,6318,6931,5875,6057,5985,12,4999,6034,5906,5897,5975,407,5980,7048,138,6014,7137,6982,5503,7246,4925,1500,6901,6145,7075,6060,7353,7134,6276,4,6217,6265,4832,5812,5877,1040,7046,5009,5912,72,4844,7185,6149,7332,5788,4856,4850,6045,6812,28,6221,5978,5942,5761,7019,6843,6121,5823,6176,7267,7077,7360,7047,6155,7153,7205,5987,6307,6944,1476,7006,6223,5800,6010,7255,6046,6248,6275,6295,6062,7003,4969,51,7223,5928,5759,7174,4977,4907,5065,5979,5739,5913,7336,6031,4841,6022,6147,6883,6179,5918,7303,5826,7136,5884,409,7238,6999,6810,6820,5890,4912,4958,6077,5836,5947,4980,15,7092,5900));
+		doNotUseThose.addAll(Arrays.asList(648, 649, 650, 651, 652, 653, 654, 655, 656, 657, 658, 659, 660, 661, 662, 663, 664, 665, 666, 667, 668, 669, 670, 671, 672, 673, 674, 675, 676, 677, 678, 679, 680, 681, 682, 683, 684, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695, 696, 697, 698, 699, 700, 701, 702, 703, 704, 705, 706, 707, 708, 709, 710, 711, 712, 713, 714, 715, 716, 717, 718, 719, 720, 721, 722, 723, 724, 725, 726, 727, 728, 729, 730, 731, 732, 733, 734, 735, 736, 737, 738, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807, 808, 809, 810, 811));
+	}
+	
+	public static void main(String[] args) {
+
+		NLPediaSetup s = new NLPediaSetup(false);
+		PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+		for ( PatternMapping mapping : pmDao.findAllPatternMappings() ) {
+			
+			for ( Pattern p : mapping.getPatterns() ) {
+				
+				if ( !doNotUseThose.contains( new Integer(p.getId())) ) {
+					
+					System.out.println(p.getId() + " is new and should be re-evaluated!");
+				}
+				else {
+					
+					System.out.println(p.getId() + " has already been evaluated!");
+				}
+			}
+		}
 	}
 }
