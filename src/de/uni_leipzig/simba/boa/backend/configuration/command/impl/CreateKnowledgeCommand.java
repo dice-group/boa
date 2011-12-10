@@ -206,7 +206,7 @@ public class CreateKnowledgeCommand implements Command {
 				
 				Triple t = triples.get(i);
 				tripleWriter.write(i + "\t" + t.getSubject().getUri() + "\t" + t.getProperty().getUri() + "\t" + t.getObject().getUri() + Constants.NEW_LINE_SEPARATOR);
-				metaWriter.write(i + "\t" + t.getSubject().getLabel() + "\t" + t.getObject().getLabel() + "\t" + t.getConfidence() + "\t" + t.getLearnedFromPatterns() + Constants.NEW_LINE_SEPARATOR);
+				metaWriter.write(i + "\t" + t.getSubject().getLabel() + "\t" + t.getObject().getLabel() + "\t" + t.getConfidence() + "\t" + Constants.NEW_LINE_SEPARATOR);
 				for ( String sentence : t.getLearnedFromSentences() ) {
 					
 					metaWriter.write("\t" + sentence + Constants.NEW_LINE_SEPARATOR);
