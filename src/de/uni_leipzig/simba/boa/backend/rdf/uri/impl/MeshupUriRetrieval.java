@@ -1,5 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.rdf.uri.impl;
 
+import com.hp.hpl.jena.query.QueryParseException;
+
 import nlpbox.lookup.SparqlLookup;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
 
@@ -17,8 +19,13 @@ public class MeshupUriRetrieval implements UriRetrieval {
 		}
 		catch ( NullPointerException npe) {
 			
-			uri = "http://nlpedia.de/"+label.replaceAll(" ", "_");
+			uri = "http://boa.akws.org/resource/"+label.replaceAll(" ", "_");
 		}
+		catch ( QueryParseException qpe ) {
+			
+			uri = "http://boa.akws.org/resource/"+label.replaceAll(" ", "_");
+		}
+		if ( uri.startsWith("http://scms.eu/") ) uri = uri.replace("http://scms.eu/", "http://boa.akws.org/resource/");
 		return uri;
 	}
 	

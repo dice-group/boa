@@ -197,25 +197,24 @@ public class CreateKnowledgeCommand implements Command {
 
 		try {
 			
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename, true), "UTF-8"));
+			BufferedWriter tripleWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename, false), "UTF-8"));
+			BufferedWriter metaWriter	= new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename + ".meta", false), "UTF-8"));
 
-			for (Triple t : resultList) {
+			List<Triple> triples = new ArrayList<Triple>(resultList);
+			
+			for (int i = 0; i < triples.size(); i++) {
 				
-				if ( t.getObject().getUri().startsWith("http://")) {
+				Triple t = triples.get(i);
+				tripleWriter.write(i + "\t" + t.getSubject().getUri() + "\t" + t.getProperty().getUri() + "\t" + t.getObject().getUri() + Constants.NEW_LINE_SEPARATOR);
+				metaWriter.write(i + "\t" + t.getSubject().getLabel() + "\t" + t.getObject().getLabel() + "\t" + t.getConfidence() + "\t" + t.getLearnedFromPatterns() + Constants.NEW_LINE_SEPARATOR);
+				for ( String sentence : t.getLearnedFromSentences() ) {
 					
-					writer.write("<" + t.getSubject().getUri() + "> " +
-								 "<"+ t.getProperty().getUri() + "> " +
-								 "<" + t.getObject().getUri() +"> . " + Constants.NEW_LINE_SEPARATOR);
-				}
-				else {
-					
-					writer.write("<" + t.getSubject().getUri() + "> " +
-								 "<"+ t.getProperty().getUri() + "> " +
-								 "\"" + t.getObject().getLabel() +"\" . " + Constants.NEW_LINE_SEPARATOR);
+					metaWriter.write("\t" + sentence + Constants.NEW_LINE_SEPARATOR);
 				}
 			}
-			if ( newTriples ) tripleDao.batchSaveOrUpdate(new ArrayList<Triple>(resultList));
-			writer.close();
+			if ( newTriples ) tripleDao.batchSaveOrUpdate(triples);
+			tripleWriter.close();
+			metaWriter.close();
 		}
 		catch (UnsupportedEncodingException e1) {
 			
