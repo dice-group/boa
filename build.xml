@@ -110,7 +110,6 @@
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/weka-3-6-4.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/xercesImpl-2.7.1.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/xom.jar"/>
-		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/fox.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/apache-solr-solrj-3.3.0.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/jsoup-1.6.1.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/guava-10.0.1.jar"/>
