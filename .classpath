@@ -62,5 +62,13 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-lang-2.5.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jaws-bin.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/LookupService.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/postgresql-9.1-901.jdbc4.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/java-getopt-1.0.9.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/LBJ2.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/LBJ2Library.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/LbjNerTagger.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/wstx-asl-3.2.9.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

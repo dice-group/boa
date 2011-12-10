@@ -17,7 +17,7 @@
 0.00000	0.87473	0.71294	0.61614	0.42452	0.10584	0.90769	0.84821	0.99634	0.00000	0	6839	http://dbpedia.org/ontology/affiliation	?D? School of Business at ?R?	
 0.32681	0.87473	0.39437	0.46615	0.65250	0.20578	0.84783	0.60870	0.65607	0.13078	0	4939	http://dbpedia.org/ontology/debutTeam	?R? placed wide receiver ?D?	
 0.00000	1.00000	0.42062	0.81137	1.00000	0.05527	0.00000	0.00000	0.00000	0.82669	1	5925	http://dbpedia.org/ontology/subsidiary	?R? Sons, the holding company of the ?D?	
-0.00000	1.00000	0.54830	0.62394	0.25684	0.02708	0.21063	0.13741	0.99957	0.00000	0	7187	http://dbpedia.org/ontology/tenant	?R? fans at the ?D?	
+0.00000	1.00000	0.54830	0.62394	0.25684	0.02708	0.21063	0.13741	0.99957	0.00000	1	7187	http://dbpedia.org/ontology/tenant	?R? fans at the ?D?	
 0.00000	1.00000	0.43339	0.49257	0.43579	0.09460	0.31388	0.29678	0.99913	0.00000	0	7027	http://dbpedia.org/ontology/draftTeam	?R? with 23 points and ?D?	
 0.00000	0.87473	0.62360	0.52636	0.61050	0.13487	0.63355	0.80293	0.92949	0.28760	0	4840	http://dbpedia.org/ontology/debutTeam	?R? Pro Bowl safety ?D?	
 0.00000	0.87473	0.46030	0.70517	0.43072	0.08732	0.28887	0.01605	0.99957	0.22812	1	6196	http://dbpedia.org/ontology/occupation	?R? Chairman and CEO ?D?	
@@ -63,7 +63,7 @@
 0.00000	0.80146	0.87806	0.43060	0.61348	0.11424	0.00000	0.00000	0.00000	0.35071	0	5960	http://dbpedia.org/ontology/hometown	?R? Department of Agriculture's ?D?	
 0.00000	1.00000	0.35261	0.51432	0.49650	0.17033	0.00000	0.00000	0.00000	0.25997	0	6138	http://dbpedia.org/ontology/headquarters	?R? Bankruptcy Court in Delaware, ?D?	
 0.00000	0.80146	0.47021	0.47075	0.53906	0.23799	0.00000	0.00000	0.00000	0.00000	0	11	http://dbpedia.org/ontology/largestCity	?D? (AP) - Former ?R?	
-0.49639	1.00000	0.48930	0.84248	0.94041	0.19736	0.98077	0.78846	0.67363	0.24087	0	1501	http://dbpedia.org/ontology/managerClub	?R? have sacked manager ?D?	
+0.49639	1.00000	0.48930	0.84248	0.94041	0.19736	0.98077	0.78846	0.67363	0.24087	1	1501	http://dbpedia.org/ontology/managerClub	?R? have sacked manager ?D?	
 0.00000	1.00000	0.42062	0.81137	0.68659	0.02669	0.34870	0.45491	0.99986	0.24625	0	5922	http://dbpedia.org/ontology/subsidiary	?R? Natural Resources and ?D?	
 0.00000	1.00000	0.50000	0.88562	0.33826	0.07887	0.38571	0.09524	0.77499	0.28115	0	7327	http://dbpedia.org/ontology/parent	?D? suburb of St. ?R?	
 0.00000	0.87473	0.48559	0.94170	0.24772	0.02708	0.01377	0.07839	0.99167	0.00000	0	7183	http://dbpedia.org/ontology/tenant	?D? to watch the ?R?	
@@ -197,4 +197,4 @@
 0.00000	0.56665	0.39359	0.61139	0.25006	0.04690	0.17321	0.07754	0.99898	0.00000	0	4980	http://dbpedia.org/ontology/stateOfOrigin	?D? chapter of the ?R?	
 0.00000	0.87473	0.29667	0.71413	0.62435	0.13388	0.00000	0.00000	0.10033	0.00000	0	15	http://dbpedia.org/ontology/largestCity	?D? Sheriff's Office and the ?R?	
 0.00000	1.00000	0.69188	0.39151	0.75014	0.12812	0.82051	0.84615	0.53394	0.00000	1	7092	http://dbpedia.org/ontology/tenant	?R? during a baseball game at ?D?	
-0.00000	0.80146	0.66407	0.53724	0.40306	0.05302	0.01807	0.26707	0.99942	0.10281	0	5900	http://dbpedia.org/ontology/regionServed	?D? here in the ?R?	
+0.00000	0.80146	0.66407	0.53724	0.40306	0.05302	0.01807	0.26707	0.99942	0.10281	0	5900	http://dbpedia.org/ontology/regionServed	?D? here in the ?R?
