@@ -198,3 +198,35 @@
 0.00000	0.87473	0.29667	0.71413	0.62435	0.13388	0.00000	0.00000	0.10033	0.00000	0	15	http://dbpedia.org/ontology/largestCity	?D? Sheriff's Office and the ?R?	
 0.00000	1.00000	0.69188	0.39151	0.75014	0.12812	0.82051	0.84615	0.53394	0.00000	1	7092	http://dbpedia.org/ontology/tenant	?R? during a baseball game at ?D?	
 0.00000	0.80146	0.66407	0.53724	0.40306	0.05302	0.01807	0.26707	0.99942	0.10281	0	5900	http://dbpedia.org/ontology/regionServed	?D? here in the ?R?
+0.45925	1.00000	0.48930	0.78761	0.90511	0.23494	1.00000	0.69318	0.64970	0.31831	1	1473	http://dbpedia.org/ontology/managerClub	?R? have sacked coach ?D?	
+0.00000	1.00000	0.48930	0.81619	0.63437	0.08272	0.50347	0.36806	0.82018	0.24087	1	1479	http://dbpedia.org/ontology/managerClub	?R? player and manager ?D?	
+0.60188	1.00000	0.63241	0.63915	0.87386	0.24101	0.89855	0.73913	0.61494	0.24087	1	1502	http://dbpedia.org/ontology/managerClub	?D? has resigned as manager of ?R?	
+0.63088	1.00000	0.24406	0.50922	0.33737	0.15881	0.37865	0.09164	0.99898	0.00000	1	267	http://dbpedia.org/ontology/party	?D? dropped out of the ?R?	
+0.00000	1.00000	0.68011	0.31596	0.64133	0.08930	0.76210	0.86694	0.89866	0.40211	1	54	http://dbpedia.org/ontology/largestCity	?D? largest city of ?R?	
+0.00000	1.00000	0.35856	0.63985	0.51217	0.15009	0.21722	0.97598	0.99986	0.00000	1	5841	http://dbpedia.org/ontology/leaderName	?D? with Prime Minister ?R?	
+0.00000	1.00000	0.46327	0.84170	0.21065	0.09700	0.17535	0.37174	0.99971	0.17945	1	5842	http://dbpedia.org/ontology/leaderName	?R? as president of ?D?	
+0.77660	1.00000	0.59041	0.76787	0.22989	0.11055	0.10825	0.03711	0.99574	0.16037	1	5926	http://dbpedia.org/ontology/subsidiary	?R? is part of ?D?	
+0.83755	1.00000	0.42062	0.71857	0.35565	0.01105	0.82273	0.43274	0.99409	1.00000	1	5929	http://dbpedia.org/ontology/subsidiary	?R? is a subsidiary of ?D?	
+0.70784	1.00000	0.69863	1.00000	0.31341	0.02708	0.50927	0.23555	0.98761	0.00000	1	5937	http://dbpedia.org/ontology/subsidiary	?R? is owned by ?D?	
+0.00000	1.00000	0.54364	0.71857	0.57864	0.08070	0.00000	0.00000	0.00000	0.46744	1	5942	http://dbpedia.org/ontology/subsidiary	?R? Inc., a unit of ?D?	
+0.00000	0.87473	0.46030	0.70517	0.43072	0.08732	0.28887	0.01605	0.99957	0.22812	1	6196	http://dbpedia.org/ontology/occupation	?R? Chairman and CEO ?D?	
+0.00000	0.80146	0.55653	0.58563	0.39745	0.14766	0.19153	0.01915	0.99884	0.22812	1	6201	http://dbpedia.org/ontology/occupation	?R? president and CEO ?D?	
+0.00000	1.00000	0.71068	0.40934	0.60639	0.11204	0.00000	0.00000	0.00000	0.24087	1	6213	http://dbpedia.org/ontology/occupation	?R? Corp. Chief Executive ?D?	
+0.00000	0.87473	0.59472	0.52887	0.43072	0.09202	0.28887	0.01705	0.99957	0.22812	1	6222	http://dbpedia.org/ontology/occupation	?R? chairman and CEO ?D?	
+0.00000	1.00000	0.58048	0.47796	0.65876	0.02669	0.00000	1.00000	0.15906	0.34673	1	6825	http://dbpedia.org/ontology/starring	?R? as the sexy heroine in ?D?	
+0.00000	1.00000	0.58048	0.91796	0.27700	0.04422	0.12024	0.48397	1.00000	0.28954	1	6826	http://dbpedia.org/ontology/starring	?R? on the set of ?D?	
+0.40069	1.00000	0.52068	0.71084	0.33333	0.01915	0.20210	0.34252	0.96126	0.00000	1	6894	http://dbpedia.org/ontology/crosses	?D? that spans the ?R?	
+0.00000	0.80146	0.59167	0.49257	0.60076	0.17541	0.45291	0.38978	0.99971	0.22927	1	6976	http://dbpedia.org/ontology/draftTeam	?R? top draft pick ?D?	
+0.00000	1.00000	0.55287	0.63399	0.92354	0.15991	0.49297	0.18675	1.00000	0.31831	1	7036	http://dbpedia.org/ontology/coachedTeam	?R? associate head coach ?D?	
+0.00000	1.00000	0.42791	0.56147	1.00000	0.10915	0.00000	0.00000	0.00000	0.31831	1	7039	http://dbpedia.org/ontology/coachedTeam	?R? men&rsquo;s basketball coach ?D?	
+0.00000	0.87473	0.42791	0.51699	0.78492	0.31057	0.85513	0.37123	0.99971	0.31831	1	7040	http://dbpedia.org/ontology/coachedTeam	?R? State head coach ?D?	
+0.00000	0.80146	0.67577	0.71626	0.26892	0.03496	0.13280	0.79074	0.99913	0.10281	1	7070	http://dbpedia.org/ontology/tenant	?D? on the campus of ?R?	
+0.00000	1.00000	0.40162	0.47336	0.25684	0.02708	0.11960	0.13970	0.99928	0.00000	1	7082	http://dbpedia.org/ontology/tenant	?R? fans in the ?D?	
+0.00000	1.00000	0.67577	0.89735	0.23966	0.05416	0.11423	0.22745	0.99971	0.00000	1	7103	http://dbpedia.org/ontology/tenant	?R? game at the ?D?	
+0.57953	1.00000	0.51891	0.43586	0.28396	0.02708	0.24048	0.26052	0.99971	0.00000	1	7137	http://dbpedia.org/ontology/tenant	?R? are playing at ?D?	
+0.50159	0.80146	0.48559	0.68920	0.20624	0.09049	0.53213	0.24498	0.99942	0.00000	1	7179	http://dbpedia.org/ontology/tenant	?R? will play at ?D?	
+0.00000	1.00000	0.34512	0.66915	0.65585	0.04422	0.34469	0.83567	0.99986	0.00000	1	7291	http://dbpedia.org/ontology/capital	?D? foreign ministry in ?R?	
+0.00000	1.00000	0.70536	0.68261	0.70430	0.13683	0.65197	0.54112	0.97504	0.00000	1	7358	http://dbpedia.org/ontology/almaMater	?R? Law School professor ?D?
+0.00000	1.00000	1.00000	0.71084	0.54637	0.08123	0.31700	0.49923	0.93893	1.00000	1	6886	http://dbpedia.org/ontology/crosses	?D? Bridge into the ?R?	
+0.36188	1.00000	0.82980	0.52068	0.86879	0.08168	0.00000	0.00000	0.00000	0.00000	1	6895	http://dbpedia.org/ontology/crosses	?D? Bridge, which spans the ?R?
+0.00000	1.00000	1.00000	0.51893	0.88608	0.04880	0.50000	0.95288	0.96108	0.00000	1	5868	http://dbpedia.org/ontology/spokenIn	?D? region of northern ?R?

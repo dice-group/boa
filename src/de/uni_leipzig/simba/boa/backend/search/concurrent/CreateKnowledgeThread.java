@@ -24,6 +24,7 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.DbpediaUriRetrieval;
+import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.MeshupUriRetrieval;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrategy;
@@ -164,7 +165,7 @@ public class CreateKnowledgeThread extends Thread {
 						String subjectLabel = leftContext.getSuitableEntity(domainUri);
 						String objectLabel = rightContext.getSuitableEntity(rangeUri);
 						
-						UriRetrieval uriRetrieval = new DbpediaUriRetrieval();
+						UriRetrieval uriRetrieval = new MeshupUriRetrieval();
 						String subjectUri = uriRetrieval.getUri(subjectLabel);
 						String objectUri = uriRetrieval.getUri(objectLabel);
 						
@@ -198,7 +199,7 @@ public class CreateKnowledgeThread extends Thread {
 						String objectLabel = leftContext.getSuitableEntity(rangeUri);
 						String subjectLabel = rightContext.getSuitableEntity(domainUri);
 						
-						UriRetrieval uriRetrieval = new DbpediaUriRetrieval();
+						UriRetrieval uriRetrieval = new MeshupUriRetrieval();
 						String objectUri = uriRetrieval.getUri(objectLabel);
 						String subjectUri = uriRetrieval.getUri(subjectLabel);
 						
