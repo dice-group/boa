@@ -15,7 +15,7 @@ public class MeshupUriRetrieval implements UriRetrieval {
 		
 		try {
 			SparqlLookup sl = new SparqlLookup("", "", "");
-			uri = sl.lookup(label, "", "");
+			uri = sl.lookup(label.replace("``", ""), "", "");
 		}
 		catch ( NullPointerException npe) {
 			
