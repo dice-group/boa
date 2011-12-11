@@ -197,8 +197,8 @@ public class CreateKnowledgeCommand implements Command {
 
 		try {
 			
-			BufferedWriter tripleWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename, false), "UTF-8"));
-			BufferedWriter metaWriter	= new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename + ".meta", false), "UTF-8"));
+			BufferedWriter tripleWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename, true), "UTF-8"));
+			BufferedWriter metaWriter	= new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename + ".meta", true), "UTF-8"));
 
 			List<Triple> triples = new ArrayList<Triple>(resultList);
 			
@@ -211,6 +211,7 @@ public class CreateKnowledgeCommand implements Command {
 					
 					metaWriter.write("\t" + sentence + Constants.NEW_LINE_SEPARATOR);
 				}
+				metaWriter.write(Constants.NEW_LINE_SEPARATOR);
 			}
 			if ( newTriples ) tripleDao.batchSaveOrUpdate(triples);
 			tripleWriter.close();
