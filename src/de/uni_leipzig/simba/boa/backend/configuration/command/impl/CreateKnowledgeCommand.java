@@ -13,7 +13,10 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -127,11 +130,32 @@ public class CreateKnowledgeCommand implements Command {
 		}
 		timer.cancel();
 		
+		List<Triple> newTriples = new ArrayList<Triple>();
+		List<Triple> knownTriples = new ArrayList<Triple>();
+		
 		for ( Thread t: threadList ) {
 			
-			writeNewTriplesFile(((CreateKnowledgeThread)t).getNewTripleMap().values());
-			writeKnownTriplesFile(((CreateKnowledgeThread)t).getKnownTripleMap().values());
+			newTriples.addAll(((CreateKnowledgeThread)t).getNewTripleMap().values());
+			knownTriples.addAll(((CreateKnowledgeThread)t).getKnownTripleMap().values());
 		}
+		
+		Comparator<Triple> comparator = new Comparator<Triple>(){
+
+			@Override
+			public int compare(Triple triple1, Triple triple2) {
+
+				double x = (triple2.getConfidence() - triple1.getConfidence());
+				if ( x < 0 ) return -1;
+				if ( x == 0 ) return 0;
+				return 1;
+			}
+		};
+		
+		Collections.sort(newTriples, comparator);
+		Collections.sort(knownTriples, comparator);
+		
+		writeNewTriplesFile(newTriples);
+		writeKnownTriplesFile(knownTriples);
 	}
 
 	/**
@@ -197,8 +221,8 @@ public class CreateKnowledgeCommand implements Command {
 
 		try {
 			
-			BufferedWriter tripleWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename, true), "UTF-8"));
-			BufferedWriter metaWriter	= new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename + ".meta", true), "UTF-8"));
+			BufferedWriter tripleWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename, false), "UTF-8"));
+			BufferedWriter metaWriter	= new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename + ".meta", false), "UTF-8"));
 
 			List<Triple> triples = new ArrayList<Triple>(resultList);
 			
