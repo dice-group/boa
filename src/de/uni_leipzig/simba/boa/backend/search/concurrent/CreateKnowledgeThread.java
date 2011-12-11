@@ -270,7 +270,17 @@ public class CreateKnowledgeThread extends Thread {
 	
 	public String getProgress() {
 
-		return NumberFormat.getPercentInstance().format(((double) numberOfDoneSearchOperations / (double)numberOfAllSearchOperations));
+		String percent = ""; 
+		try {
+
+			percent = NumberFormat.getPercentInstance().format(((double) numberOfDoneSearchOperations / (double)numberOfAllSearchOperations));
+		}
+		catch (java.lang.NumberFormatException nfe) {
+			
+			percent = "0%";
+			logger.error("Could not determine progress for thread this: " + this.getName(), nfe);
+		}
+		return percent;
 	}
 
 	private void calculateNumberOfSearchOperations() {
