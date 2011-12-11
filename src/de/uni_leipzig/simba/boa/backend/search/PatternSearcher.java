@@ -158,8 +158,10 @@ public class PatternSearcher {
 
 		boolean inverse = false;
 		
-		Set<String> firstLabels = triple.getSubject().retrieveLabels();
-		Set<String> secondLabels = triple.getObject().retrieveLabels();
+//		Set<String> firstLabels = triple.getSubject().retrieveLabels();
+//		Set<String> secondLabels = triple.getObject().retrieveLabels();
+		Set<String> firstLabels = new HashSet<String>(Arrays.asList(triple.getSubject().getLabel()));//retrieveLabels();
+		Set<String> secondLabels = new HashSet<String>(Arrays.asList(triple.getObject().getLabel()));//.retrieveLabels();
 
 		// switch the labels in case we have more subject labels than object labels
 		if ( firstLabels.size() > secondLabels.size() ) {
