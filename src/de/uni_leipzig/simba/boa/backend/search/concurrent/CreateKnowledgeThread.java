@@ -1,8 +1,11 @@
 package de.uni_leipzig.simba.boa.backend.search.concurrent;
 
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +31,8 @@ import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.MeshupUriRetrieval;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrategy;
+import edu.stanford.nlp.ling.HasWord;
+import edu.stanford.nlp.process.DocumentPreprocessor;
 
 public class CreateKnowledgeThread { //extends Thread {
 
@@ -40,6 +45,11 @@ public class CreateKnowledgeThread { //extends Thread {
 	private Directory idx = null;
 	private int numberOfDoneSearchOperations = 0;
 	private int numberOfAllSearchOperations = 0;
+	
+	// used for sentence segmentation
+	private Reader stringReader;
+	private DocumentPreprocessor preprocessor;
+	private StringBuilder stringBuilder;
 	
 	/**
 	 * DO ONLY USE THIS FOR EVALUATION
@@ -89,6 +99,12 @@ public class CreateKnowledgeThread { //extends Thread {
 							this.numberOfDoneSearchOperations++;
 							
 							for (String sentence : sentences) {
+								
+								// this is a quick hack for ISSUE 4 (http://code.google.com/p/boa/issues/detail?id=4) TODO FIX
+								if ( !NLPediaSettings.getInstance().getSetting("hibernateConnectionUrl").contains("wiki") ) {
+									
+									sentence = this.segmentString(sentence);
+								} 
 								
 								// there will never be a left argument if the sentence begins with the pattern
 								if ( sentence.toLowerCase().startsWith(pattern.getNaturalLanguageRepresentationWithoutVariables().toLowerCase())) continue;
@@ -322,5 +338,30 @@ public class CreateKnowledgeThread { //extends Thread {
 	public Map<Integer, Triple> getKnownTripleMap() {
 
 		return this.knownTripleMap;
+	}
+	
+	private String segmentString(String sentence) {
+		
+		try {
+			
+			this.stringReader = new StringReader(sentence);
+			this.preprocessor = new DocumentPreprocessor(stringReader,  DocumentPreprocessor.DocType.Plain);
+			
+			Iterator<List<HasWord>> iter = this.preprocessor.iterator();
+			while ( iter.hasNext() ) {
+				
+				stringBuilder = new StringBuilder();
+				
+				for ( HasWord word : iter.next() ) {
+					stringBuilder.append(word.toString() + " ");
+				}
+				return stringBuilder.toString().trim();
+			}
+		}
+		catch (ArrayIndexOutOfBoundsException aioobe) {
+			
+			logger.debug("Could not segment string...", aioobe);
+		}
+		return "";
 	}
 }
