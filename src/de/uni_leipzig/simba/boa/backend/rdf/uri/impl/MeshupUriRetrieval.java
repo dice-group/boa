@@ -22,17 +22,17 @@ public class MeshupUriRetrieval implements UriRetrieval {
 		}
 		catch ( NullPointerException npe) {
 			
-			logger.error("some nullpointer!", npe);
+			logger.error("A nullpointer for label: \"" + label + "\" has occured.", npe);
 			uri = "http://boa.akws.org/resource/"+label.replaceAll(" ", "_");
 		}
 		catch ( QueryParseException qpe ) {
 			
-			logger.error("remote lucene index throws parse excpetion because of illegal charactes!", qpe);
+			logger.error("Remote lucene index throws parse excpetion because of illegal charactes while precessing label: \"" + label + "\" has occured.", qpe);
 			uri = "http://boa.akws.org/resource/"+label.replaceAll(" ", "_");
 		}
 		catch (Exception e) {
 			
-			logger.error("sometimes we get an httpexception!", e);
+			logger.error("Sometimes we get an httpexception for label: \"" + label + "\" has occured.", e);
 			uri = "http://boa.akws.org/resource/"+label.replaceAll(" ", "_");
 		}
 		if ( uri.startsWith("http://scms.eu/") ) uri = uri.replace("http://scms.eu/", "http://boa.akws.org/resource/");
