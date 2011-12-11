@@ -99,7 +99,7 @@ public class NLPedia {
 						break;
 						
 					case 6: // start looking for patterns in index and write them to the db
-						Command patternSearchCommand = new PatternSearchCommand((List<Triple>) cache.get(NLPedia.CACHE_KEY_TRIPLE_LIST));
+						Command patternSearchCommand = new PatternSearchCommand(null);
 						patternSearchCommand.execute();
 						break;
 						
