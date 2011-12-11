@@ -53,19 +53,19 @@ public class PrintProgressTask extends TimerTask {
 					this.logger.debug(t.getName() + ": " + progress + "%.");
 				}
 			}
-			if ( t instanceof CreateKnowledgeThread ) {
-
-//				System.out.println(((PatternScoreThread)t).getProgress());
-				int progress = Integer.valueOf( ((CreateKnowledgeThread)t).getProgress().replaceAll("%", "") );
-				
-				overallProgress += progress;
-				
-				if ( progress != 100 ) {
-					
-					System.out.println(t.getName() + ": " + progress + "%. " + ((CreateKnowledgeThread)t).getNumberOfDoneSearchOperations() + "/" + ((CreateKnowledgeThread)t).getNumberOfAllSearchOperations());
-					this.logger.debug(t.getName() + ": " + progress + "%. " + ((CreateKnowledgeThread)t).getNumberOfDoneSearchOperations() + "/" + ((CreateKnowledgeThread)t).getNumberOfAllSearchOperations());
-				}
-			}
+//			if ( t instanceof CreateKnowledgeThread ) {
+//
+////				System.out.println(((PatternScoreThread)t).getProgress());
+//				int progress = Integer.valueOf( ((CreateKnowledgeThread)t).getProgress().replaceAll("%", "") );
+//				
+//				overallProgress += progress;
+//				
+//				if ( progress != 100 ) {
+//					
+//					System.out.println(t.getName() + ": " + progress + "%. " + ((CreateKnowledgeThread)t).getNumberOfDoneSearchOperations() + "/" + ((CreateKnowledgeThread)t).getNumberOfAllSearchOperations());
+//					this.logger.debug(t.getName() + ": " + progress + "%. " + ((CreateKnowledgeThread)t).getNumberOfDoneSearchOperations() + "/" + ((CreateKnowledgeThread)t).getNumberOfAllSearchOperations());
+//				}
+//			}
 		}
 		System.out.println("Overall progress " + NumberFormat.getPercentInstance().format((double)overallProgress / (double)(this.threadList.size()*100)) + " at " + DateFormat.getTimeInstance().format(new Date()));
 		this.logger.debug("Overall progress " + NumberFormat.getPercentInstance().format((double)overallProgress / (double)(this.threadList.size()*100)) + " at " + DateFormat.getTimeInstance().format(new Date()));

@@ -29,7 +29,7 @@ import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrategy;
 
-public class CreateKnowledgeThread extends Thread {
+public class CreateKnowledgeThread { //extends Thread {
 
 	private final NamedEntityRecognizer ner = new NamedEntityRecognizer();
 	private final NLPediaLogger logger 		= new NLPediaLogger(CreateKnowledgeThread.class);
@@ -278,7 +278,7 @@ public class CreateKnowledgeThread extends Thread {
 		catch (java.lang.NumberFormatException nfe) {
 			
 			percent = "0%";
-			logger.error("Could not determine progress for thread this: " + this.getName(), nfe);
+			logger.error("Could not determine progress for thread this: "/* + this.getName()*/, nfe);
 		}
 		return percent;
 	}

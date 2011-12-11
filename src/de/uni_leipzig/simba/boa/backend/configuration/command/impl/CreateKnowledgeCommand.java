@@ -103,41 +103,42 @@ public class CreateKnowledgeCommand implements Command {
 		List<Thread> threadList = new ArrayList<Thread>();
 		
 		// start all threads
-		for (int i = 0 ; i < NUMBER_OF_CREATE_KNOWLEDGE_THREADS ; i++ ) {
-			
-			Thread t = new CreateKnowledgeThread(patternMappingSubLists.get(i));
-			t.setName("PatternScoreThread-" + (i + 1) + "-" + patternMappingSubLists.get(i).size());
-			threadList.add(i, t);
-			t.start();
-			System.out.println(t.getName() + " started!");
-			this.logger.info(t.getName() + " started!");
-		}
-		
-		// print the progress
-		Timer timer = new Timer();
-		timer.schedule(new PrintProgressTask(threadList), 0, 30000);
-		
-		// wait for all to finish
-		for ( Thread t : threadList ) {
-			
-			try {
-				t.join();	
-			}
-			catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		timer.cancel();
+//		for (int i = 0 ; i < NUMBER_OF_CREATE_KNOWLEDGE_THREADS ; i++ ) {
+//			
+		CreateKnowledgeThread t = new CreateKnowledgeThread(patternMappingList);//patternMappingSubLists.get(i));
+//			t.setName("PatternScoreThread-" + (i + 1) + "-" + patternMappingSubLists.get(i).size());
+//			threadList.add(i, t);
+//			t.start();
+//			System.out.println(t.getName() + " started!");
+//			this.logger.info(t.getName() + " started!");
+//		}
+//		
+//		// print the progress
+//		Timer timer = new Timer();
+//		timer.schedule(new PrintProgressTask(threadList), 0, 30000);
+//		
+//		// wait for all to finish
+//		for ( Thread t : threadList ) {
+//			
+//			try {
+//				t.join();	
+//			}
+//			catch (InterruptedException e) {
+//				
+//				this.logger.error("Interrupted exception for thread: " + t.getName() + " " +t);
+//				e.printStackTrace();
+//			}
+//		}
+//		timer.cancel();
 		
 		List<Triple> newTriples = new ArrayList<Triple>();
 		List<Triple> knownTriples = new ArrayList<Triple>();
 		
-		for ( Thread t: threadList ) {
+//		for ( Thread t: threadList ) {
 			
 			newTriples.addAll(((CreateKnowledgeThread)t).getNewTripleMap().values());
 			knownTriples.addAll(((CreateKnowledgeThread)t).getKnownTripleMap().values());
-		}
+//		}
 		
 		Comparator<Triple> comparator = new Comparator<Triple>(){
 
