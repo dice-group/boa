@@ -1,5 +1,12 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -34,6 +41,7 @@ public class PatternSearchCommand implements Command {
 
 	private final NLPediaLogger logger					= new NLPediaLogger(PatternSearchCommand.class);
 	
+	private static final String BACKGROUND_KNOWLEDGE = NLPediaSettings.getInstance().getSetting("bk.out.file");
 	private Map<Integer,PatternMapping> mappings		= new HashMap<Integer,PatternMapping>();
 	private Map<Integer,Triple> triples 				= new HashMap<Integer,Triple>();
 	private Map<Integer,Property> properties			= new HashMap<Integer,Property>();
@@ -44,8 +52,9 @@ public class PatternSearchCommand implements Command {
 	
 	public PatternSearchCommand(List<Triple> triples) {
 
-		if ( triples != null ) this.triples = this.createTripleMap(triples);
-		else this.triples	= this.createTripleMap(tripleDao.findAllTriples());
+		this.buildTripleMap();
+//		if ( triples != null ) this.triples = this.createTripleMap(triples);
+//		else this.triples	= this.createTripleMap(tripleDao.findAllTriples());
 	}
 
 	@Override
@@ -282,5 +291,55 @@ public class PatternSearchCommand implements Command {
 	public Map<Integer, Triple> getTriples() {
 	
 		return triples;
+	}
+	
+	private void buildTripleMap() {
+
+		if ( triples == null ) {
+			
+			if ( !(new File(BACKGROUND_KNOWLEDGE)).exists() ) {
+				
+				triples = new HashMap<Integer,Triple>();
+				for (Triple t : tripleDao.findAllTriples()) {
+					
+					triples.put(t.hashCode(), t);
+				}
+				try {
+					
+					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(BACKGROUND_KNOWLEDGE)));
+					oos.writeObject(triples);
+					oos.close();
+				}
+				catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else {
+				
+				try {
+					
+					ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(BACKGROUND_KNOWLEDGE)));
+					triples = (HashMap<Integer,Triple>) ois.readObject();
+					ois.close();
+				}
+				catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }
