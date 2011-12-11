@@ -106,6 +106,7 @@ public class CreateKnowledgeCommand implements Command {
 //		for (int i = 0 ; i < NUMBER_OF_CREATE_KNOWLEDGE_THREADS ; i++ ) {
 //			
 		CreateKnowledgeThread t = new CreateKnowledgeThread(patternMappingList);//patternMappingSubLists.get(i));
+		t.run();
 //			t.setName("PatternScoreThread-" + (i + 1) + "-" + patternMappingSubLists.get(i).size());
 //			threadList.add(i, t);
 //			t.start();
