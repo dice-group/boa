@@ -43,7 +43,7 @@ public class PatternSearchCommand implements Command {
 	
 	private static final String BACKGROUND_KNOWLEDGE = NLPediaSettings.getInstance().getSetting("bk.out.file");
 	private Map<Integer,PatternMapping> mappings		= new HashMap<Integer,PatternMapping>();
-	private Map<Integer,Triple> triples 				= null;
+	private Map<Integer,Triple> triples 				= new HashMap<Integer,Triple>();
 	private Map<Integer,Property> properties			= new HashMap<Integer,Property>();
 	private Map<Integer,Map<Integer,Pattern>> patterns	= new HashMap<Integer,Map<Integer,Pattern>>();
 	
