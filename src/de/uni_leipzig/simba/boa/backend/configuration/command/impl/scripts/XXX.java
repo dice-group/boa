@@ -12,12 +12,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,28 +33,103 @@ import org.apache.lucene.store.FSDirectory;
 
 import com.sun.tools.internal.jxc.apt.Const;
 
-import cern.colt.Arrays;
-
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.rdf.TripleDao;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
+import edu.stanford.nlp.ling.HasWord;
+import edu.stanford.nlp.process.DocumentPreprocessor;
 import edu.stanford.nlp.util.StringUtils;
 
 
 public class XXX implements Command {
 
+	// used for sentence segmentation
+	private static Reader stringReader;
+	private static DocumentPreprocessor preprocessor;
+	private static StringBuilder stringBuilder;
+	
 	@Override
 	public void execute() {
 
+//		String[] indexDirs = new String[]{"/Users/gerb/Development/workspaces/experimental/en_wiki_exp/index/stanfordnlp"};
 		
+		String[] indexDirs = new String[]{	"/home/gerber/nlpedia-data/en_wiki_exp/index/stanfordnlp",
+				"/home/gerber/nlpedia-data/en_news_exp/index/stanfordnlp",
+				"/home/gerber/nlpedia-data/de_wiki_exp/index/stanfordnlp",
+				"/home/gerber/nlpedia-data/de_news_exp/index/stanfordnlp"};
+		
+		try {
+			
+			String indexDir = null;
+			IndexSearcher indexSearcher = null;
+			
+			indexDir = indexDirs[0];
+
+			for (String dir : indexDirs) {
+
+				long words = 0L;
+				Set<String> uniqueWords = new HashSet<String>();
+				
+				indexSearcher = new IndexSearcher(FSDirectory.open(new File(indexDir)), true);
+				for ( int i = 0 ; i < indexSearcher.maxDoc() - 2 ; i++) {
+					
+					if ( i % 50000 == 0 ) System.out.println("Sentence " + i);
+					
+					String[] sentence = null;
+					if ( indexDir.contains("news") ) sentence = segmentString(indexSearcher.doc(i).get("sentence")).split(" ");
+					else sentence = indexSearcher.doc(i).get("sentence").split(" ");
+					
+					uniqueWords.addAll(new HashSet<String>(Arrays.asList(sentence)));
+					words += sentence.length;
+				}
+				System.out.println(dir + ": " + indexSearcher.maxDoc() + " sentences");
+				System.out.println(dir + ": " + uniqueWords.size() + " unique words");
+				System.out.println(dir + ": " + words + " words");
+				indexSearcher.close();
+			}
+		}
+		catch (CorruptIndexException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private String segmentString(String sentence) {
+		
+		try {
+			
+			stringReader = new StringReader(sentence);
+			preprocessor = new DocumentPreprocessor(stringReader,  DocumentPreprocessor.DocType.Plain);
+			
+			Iterator<List<HasWord>> iter = preprocessor.iterator();
+			while ( iter.hasNext() ) {
+				
+				stringBuilder = new StringBuilder();
+				
+				for ( HasWord word : iter.next() ) {
+					stringBuilder.append(word.toString() + " ");
+				}
+				return stringBuilder.toString().trim();
+			}
+		}
+		catch (ArrayIndexOutOfBoundsException aioobe) {
+			
+			throw new RuntimeException(aioobe);
+		}
+		return "";
 	}
 	
 	public static void main(String[] args) throws UnsupportedEncodingException, FileNotFoundException, IOException {
 
-		createEvalFiles();
+		XXX x = new XXX();
+		x.execute();
 	}
 	
 	private static void createEvalFiles() throws IOException {
