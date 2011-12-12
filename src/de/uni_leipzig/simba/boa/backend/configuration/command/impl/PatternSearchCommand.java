@@ -52,9 +52,9 @@ public class PatternSearchCommand implements Command {
 	
 	public PatternSearchCommand(List<Triple> triples) {
 
-		this.buildTripleMap();
-//		if ( triples != null ) this.triples = this.createTripleMap(triples);
-//		else this.triples	= this.createTripleMap(tripleDao.findAllTriples());
+//		this.buildTripleMap();
+		if ( triples != null ) this.triples = this.createTripleMap(triples);
+		else this.triples	= this.createTripleMap(tripleDao.findAllTriples());
 	}
 
 	@Override
