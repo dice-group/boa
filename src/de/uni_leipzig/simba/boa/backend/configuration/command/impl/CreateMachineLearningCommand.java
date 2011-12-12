@@ -44,7 +44,7 @@ public class CreateMachineLearningCommand implements Command {
 			}
 			else {
 
-				for ( int i = 0; i < 7 && i < patterns.size() ; i++) {
+				for ( int i = 0; i < 100 && i < patterns.size() ; i++) {
 					
 					if ( !doNotUseThose.contains( new Integer(patterns.get(i).getId())) ) {
 						
