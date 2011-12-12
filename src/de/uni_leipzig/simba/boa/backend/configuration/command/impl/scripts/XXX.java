@@ -2,6 +2,7 @@ package de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
@@ -62,6 +64,9 @@ public class XXX implements Command {
 				"/home/gerber/nlpedia-data/de_news_exp/index/stanfordnlp"};
 		
 		try {
+			
+			PrintStream newErr = new PrintStream(new ByteArrayOutputStream());
+			System.setErr(newErr);
 			
 			String indexDir = null;
 			IndexSearcher indexSearcher = null;
