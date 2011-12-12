@@ -65,7 +65,7 @@ public class CreateMachineLearningCommand implements Command {
 			int i = 0;
 			for ( Pair pair : pairs ) {
 				
-				if ( i++ == 400 ) break;
+				if ( i++ == 1000 ) break;
 				writer.write(FeatureHelper.createNetworkTrainingFileLine(pair.getMapping(), pair.getPattern()));
 			}
 			writer.close();
