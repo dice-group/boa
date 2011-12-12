@@ -76,7 +76,7 @@ public class XXX implements Command {
 				indexSearcher = new IndexSearcher(FSDirectory.open(new File(indexDir)), true);
 				for ( int i = 0 ; i < indexSearcher.maxDoc() - 2 ; i++) {
 					
-					if ( i % 50000 == 0 ) System.out.println("Sentence " + i);
+					if ( i % 10000000 == 0 ) System.out.println("Sentence " + i);
 					
 					String[] sentence = null;
 					if ( indexDir.contains("news") ) sentence = segmentString(indexSearcher.doc(i).get("sentence")).split(" ");
