@@ -1,3 +1,24 @@
+0.86966	0.47320	0.28261	0.27972	0.10507	0.04776	0.17683	0.99767	0	664	http://dbpedia.org/ontology/administrativeDistrict	?D? auf der Insel ?R?	
+1.00000	0.40759	0.44793	0.32255	0.23883	0.21523	0.50805	0.94488	0	589	http://dbpedia.org/ontology/administrativeDistrict	?D? aus dem Kreis ?R?	
+1.00000	0.61139	0.71889	0.69522	0.10356	0.55828	0.69325	0.73817	0	643	http://dbpedia.org/ontology/administrativeDistrict	?D? des Berliner Bezirks ?R?	
+1.00000	0.40759	0.63015	0.67017	0.16573	0.34004	0.77852	0.88363	0	630	http://dbpedia.org/ontology/administrativeDistrict	?D? im Berliner Bezirk ?R?	
+0.86966	0.32301	0.52290	0.26989	0.14859	0.75717	0.41598	0.99649	0	645	http://dbpedia.org/ontology/administrativeDistrict	?R? und der Stadt ?D?	
+0.86966	0.32301	0.55207	0.26989	0.14859	0.46429	0.26939	0.99708	0	629	http://dbpedia.org/ontology/administrativeDistrict	?R? und die Stadt ?D?	
+1.00000	0.52680	0.28261	0.30478	0.11349	0.43381	0.46029	0.89719	0	670	http://dbpedia.org/ontology/administrativeDistrict	?R? und nördlich von ?D?	
+0.86966	1.00000	1.00000	1.00000	0.51258	0.52151	0.71505	0.96877	0	315	http://dbpedia.org/ontology/administrativeCollectivity	?D? im oberbayerischen Landkreis ?R?	
+0.69737	0.89824	1.00000	0.43022	0.12132	0.86102	0.18350	1.00000	0	316	http://dbpedia.org/ontology/administrativeCollectivity	?R? mit Sitz in ?D?	
+0.86966	0.47320	0.28261	0.27972	0.10507	0.04776	0.17683	0.99767	0	664	http://dbpedia.org/ontology/administrativeDistrict	?D? auf der Insel ?R?	
+1.00000	0.40759	0.44793	0.32255	0.23883	0.21523	0.50805	0.94488	0	589	http://dbpedia.org/ontology/administrativeDistrict	?D? aus dem Kreis ?R?	
+1.00000	0.61139	0.71889	0.69522	0.10356	0.55828	0.69325	0.73817	0	643	http://dbpedia.org/ontology/administrativeDistrict	?D? des Berliner Bezirks ?R?	
+0.86966	0.47320	0.28261	0.27972	0.10507	0.04776	0.17683	0.99767	0	664	http://dbpedia.org/ontology/administrativeDistrict	?D? auf der Insel ?R?	
+1.00000	0.40759	0.44793	0.32255	0.23883	0.21523	0.50805	0.94488	0	589	http://dbpedia.org/ontology/administrativeDistrict	?D? aus dem Kreis ?R?	
+1.00000	0.61139	0.71889	0.69522	0.10356	0.55828	0.69325	0.73817	0	643	http://dbpedia.org/ontology/administrativeDistrict	?D? des Berliner Bezirks ?R?	
+1.00000	0.40759	0.63015	0.67017	0.16573	0.34004	0.77852	0.88363	0	630	http://dbpedia.org/ontology/administrativeDistrict	?D? im Berliner Bezirk ?R?	
+1.00000	0.40759	0.63015	0.67017	0.16573	0.34004	0.77852	0.88363	0	630	http://dbpedia.org/ontology/administrativeDistrict	?D? im Berliner Bezirk ?R?	
+1.00000	0.47320	0.32810	0.78822	0.67021	0.24000	0.72000	0.47159	0	603	http://dbpedia.org/ontology/administrativeDistrict	?D? '' im `` Dekanat ?R?	
+0.73933	0.32301	0.36527	0.44061	0.62732	0.05726	0.10020	0.99678	0	650	http://dbpedia.org/ontology/administrativeDistrict	?D? '' und `` ?R?	
+1.00000	0.32301	0.36527	0.64511	0.32461	0.65000	1.00000	0.44068	0	654	http://dbpedia.org/ontology/administrativeDistrict	?D? im neuen Kreis ?R?	
+1.00000	0.47320	0.28261	0.34761	0.04289	0.84091	0.70455	0.64970	0	634	http://dbpedia.org/ontology/administrativeDistrict	?D? , Duisburg und ?R?	
 1.00000	0.52068	0.35342	0.96778	0.29539	0.76923	0.84615	0.38215	1	524	http://dbpedia.org/ontology/canton	?D? im Domleschg im schweizerischen Kanton ?R?
 0.79342	0.63093	0.68682	0.48583	0.09591	0.64767	0.79447	0.92316	0	181	http://dbpedia.org/ontology/largestCity	?D? , einem Vorort von ?R?
 1.00000	0.64956	0.48908	0.29224	0.12868	0.25806	0.26815	0.99884	0	576	http://dbpedia.org/ontology/deathPlace	?D? an der University of ?R?
