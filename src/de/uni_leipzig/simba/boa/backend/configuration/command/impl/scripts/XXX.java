@@ -59,7 +59,7 @@ public class XXX implements Command {
 //		String[] indexDirs = new String[]{"/Users/gerb/Development/workspaces/experimental/en_wiki_exp/index/stanfordnlp"};
 		
 		String[] indexDirs = new String[]{	/*"/home/gerber/nlpedia-data/en_wiki_exp/index/stanfordnlp",*/
-				"/home/gerber/nlpedia-data/en_news_exp/index/stanfordnlp",
+//				"/home/gerber/nlpedia-data/en_news_exp/index/stanfordnlp",
 				"/home/gerber/nlpedia-data/de_wiki_exp/index/stanfordnlp",
 				"/home/gerber/nlpedia-data/de_news_exp/index/stanfordnlp"};
 		
@@ -78,7 +78,7 @@ public class XXX implements Command {
 				long words = 0L;
 				Set<String> uniqueWords = new HashSet<String>();
 				
-				indexSearcher = new IndexSearcher(FSDirectory.open(new File(indexDir)), true);
+				indexSearcher = new IndexSearcher(FSDirectory.open(new File(dir)), true);
 				for ( int i = 0 ; i < indexSearcher.maxDoc() - 2 ; i++) {
 					
 					if ( i % 10000000 == 0 ) System.out.println("Sentence " + i);
