@@ -33,17 +33,14 @@ import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.FSDirectory;
 
-import com.sun.tools.internal.jxc.apt.Const;
+import org.apache.commons.lang3.StringUtils;
 
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.rdf.TripleDao;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
-import edu.stanford.nlp.util.StringUtils;
 
 
 public class XXX implements Command {
@@ -53,15 +50,19 @@ public class XXX implements Command {
 	private static DocumentPreprocessor preprocessor;
 	private static StringBuilder stringBuilder;
 	
+	private NLPediaLogger logger = new NLPediaLogger(XXX.class);
+	
 	@Override
 	public void execute() {
 
 //		String[] indexDirs = new String[]{"/Users/gerb/Development/workspaces/experimental/en_wiki_exp/index/stanfordnlp"};
 		
-		String[] indexDirs = new String[]{	/*"/home/gerber/nlpedia-data/en_wiki_exp/index/stanfordnlp",*/
-//				"/home/gerber/nlpedia-data/en_news_exp/index/stanfordnlp",
-				"/home/gerber/nlpedia-data/de_wiki_exp/index/stanfordnlp",
-				"/home/gerber/nlpedia-data/de_news_exp/index/stanfordnlp"};
+		String[] indexDirs = new String[]{	
+//				"/home/gerber/nlpedia-data/en_wiki_exp/index/stanfordnlp",
+				"/home/gerber/nlpedia-data/de_news_exp/index/stanfordnlp",
+				"/home/gerber/nlpedia-data/en_news_exp/index/stanfordnlp"
+//				"/home/gerber/nlpedia-data/de_wiki_exp/index/stanfordnlp",
+				};
 		
 		try {
 			
@@ -79,17 +80,37 @@ public class XXX implements Command {
 				Set<String> uniqueWords = new HashSet<String>();
 				
 				indexSearcher = new IndexSearcher(FSDirectory.open(new File(dir)), true);
-				for ( int i = 0 ; i < indexSearcher.maxDoc() - 2 ; i++) {
+				for ( int i = 0 ; i < 5 /*indexSearcher.maxDoc() - 2*/ ; i++) {
 					
 					if ( i % 10000000 == 0 ) System.out.println("Sentence " + i);
+					if ( i % 1000000 == 0 ) this.logger.info("Sentence " + i);
 					
-					String[] sentence = null;
-					if ( indexDir.contains("news") ) sentence = segmentString(indexSearcher.doc(i).get("sentence")).split(" ");
-					else sentence = indexSearcher.doc(i).get("sentence").split(" ");
+					String sentence = indexSearcher.doc(i).get("sentence");
 					
-					uniqueWords.addAll(new HashSet<String>(Arrays.asList(sentence)));
-					words += sentence.length;
+					if ( indexDir.contains("news") ) {
+						
+						// count those words because we want to remove them
+						words += StringUtils.countMatches(sentence, ",");
+						words += StringUtils.countMatches(sentence, "''");
+						words += StringUtils.countMatches(sentence, ".");
+						words += StringUtils.countMatches(sentence, "\"");
+						// remove the words
+						sentence = sentence.replaceAll(",", "").replace("''", "").replace(".", "").replace("\"", "");
+						// split the remaining and add them to the word list number
+						String[] sentenceParts = sentence.split(" ");
+						words += sentenceParts.length;						
+						uniqueWords.addAll(new HashSet<String>(Arrays.asList(sentenceParts)));
+					}
+					else {
+						
+						String[] sentenceParts = sentence.split(" ");
+						uniqueWords.addAll(new HashSet<String>(Arrays.asList(sentenceParts)));
+						words += sentenceParts.length;
+					}
 				}
+				this.logger.info(dir + ": " + indexSearcher.maxDoc() + " sentences");
+				this.logger.info(dir + ": " + uniqueWords.size() + " unique words");
+				this.logger.info(dir + ": " + words + " words");
 				System.out.println(dir + ": " + indexSearcher.maxDoc() + " sentences");
 				System.out.println(dir + ": " + uniqueWords.size() + " unique words");
 				System.out.println(dir + ": " + words + " words");
