@@ -80,7 +80,7 @@ public class XXX implements Command {
 				Set<String> uniqueWords = new HashSet<String>();
 				
 				indexSearcher = new IndexSearcher(FSDirectory.open(new File(dir)), true);
-				for ( int i = 0 ; i < 5 /*indexSearcher.maxDoc() - 2*/ ; i++) {
+				for ( int i = 0 ; i < indexSearcher.maxDoc() - 2 ; i++) {
 					
 					if ( i % 10000000 == 0 ) System.out.println("Sentence " + i);
 					if ( i % 1000000 == 0 ) this.logger.info("Sentence " + i);
