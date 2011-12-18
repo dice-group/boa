@@ -58,10 +58,10 @@ public class XXX implements Command {
 //		String[] indexDirs = new String[]{"/Users/gerb/Development/workspaces/experimental/en_wiki_exp/index/stanfordnlp"};
 		
 		String[] indexDirs = new String[]{	
-				"/home/gerber/nlpedia-data/en_wiki_exp/index/stanfordnlp"
+				"/home/gerber/nlpedia-data/en_wiki_exp/index/stanfordnlp",
 //				"/home/gerber/nlpedia-data/de_news_exp/index/stanfordnlp",
 //				"/home/gerber/nlpedia-data/en_news_exp/index/stanfordnlp"
-//				"/home/gerber/nlpedia-data/de_wiki_exp/index/stanfordnlp",
+				"/home/gerber/nlpedia-data/de_wiki_exp/index/stanfordnlp"
 				};
 		
 		try {
