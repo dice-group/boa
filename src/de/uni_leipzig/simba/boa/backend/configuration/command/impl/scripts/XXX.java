@@ -18,6 +18,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.lucene.index.CorruptIndexException;
@@ -35,10 +37,18 @@ import org.apache.lucene.store.FSDirectory;
 
 import org.apache.commons.lang3.StringUtils;
 
-import de.danielgerber.file.FileUtil;
+import de.danielgerber.math.MathUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
+import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
+import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 
@@ -52,8 +62,86 @@ public class XXX implements Command {
 	
 	private NLPediaLogger logger = new NLPediaLogger(XXX.class);
 	
-	@Override
-	public void execute() {
+	public void execute(){
+		
+		PatternMappingDao patternDao = (PatternMappingDao)DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+		List<Pair> xyz = new ArrayList<Pair>();		
+		List<PatternMapping> patternMappings = patternDao.findAllPatternMappings();
+		for ( PatternMapping pm : patternMappings ){
+			for ( Pattern p :pm.getPatterns()) {
+				
+				xyz.add(new Pair(p, pm));
+			}
+		}
+		Collections.sort(xyz, new Comparator<Pair>(){
+
+			@Override
+			public int compare(Pair arg0, Pair arg1) {
+
+				double x = (arg1.pattern.getConfidence() - arg0.pattern.getConfidence());
+				if ( x < 0 ) return -1;
+				if ( x == 0 ) return 0;
+				return 1;
+			}
+		
+		});
+		System.out.println("Loading and sorting done");
+		System.out.println("Confidence of pattern(0): " + xyz.get(0).pattern.getConfidence());
+		System.out.println("Confidence of pattern(10): " + xyz.get(10).pattern.getConfidence());
+		System.out.println("Confidence of pattern(n): " + xyz.get(xyz.size()-1).pattern.getConfidence());
+		
+		List<List<Pair>> subLists = ListUtil.split(xyz, xyz.size() / 10);
+		List<Map<Feature,List<Double>>> features = new ArrayList<Map<Feature,List<Double>>>();
+		List<Map<Feature,Double>> meanFeatures = new ArrayList<Map<Feature,Double>>();
+		
+		for (int i = 0; i < subLists.size() ; i++ ) {
+			features.add(new HashMap<Feature,List<Double>>());
+			
+			for (Pair pair : subLists.get(i)) {
+				for (Feature f : Feature.values()) {
+					
+						if ( features.get(i).containsKey(f) ) {
+
+							if ( pair.pattern.getFeatures().get(f) != null ) {
+								
+								double ff = this.normalizeFeature(f, pair.mapping, pair.pattern.getFeatures().get(f));
+								features.get(i).get(f).add(ff);
+							}
+						}
+						else {
+							
+							if ( pair.pattern.getFeatures().get(f) != null ) {
+								
+								List<Double> d = new ArrayList<Double>();
+								double ff = this.normalizeFeature(f, pair.mapping, pair.pattern.getFeatures().get(f));
+								d.add(ff);
+								features.get(i).put(f, d);
+							}
+						}
+				}
+			}
+//			System.out.println(features.get(i));
+		}
+		System.out.println("Pairs normalized!");		
+		for ( int i = 0; i < subLists.size() ; i++) {
+
+			meanFeatures.add(new TreeMap<Feature,Double>());
+			
+			Map<Feature,List<Double>> featureList = features.get(i);
+				
+			for ( Map.Entry<Feature, List<Double>> f : featureList.entrySet() ) {
+				
+				meanFeatures.get(i).put(f.getKey(), MathUtil.getAverage(f.getValue()));
+			}
+		}
+		System.out.println("Pairs averaged!");
+		for (Map<Feature,Double> means : meanFeatures) {
+			
+			System.out.println(StringUtils.join(means.values(), "\t").replace(".", ","));
+		}
+	}
+	
+	public void generateIndexStatistics() {
 
 //		String[] indexDirs = new String[]{"/Users/gerb/Development/workspaces/experimental/en_wiki_exp/index/stanfordnlp"};
 		
@@ -251,5 +339,51 @@ public class XXX implements Command {
 		}
 		writer.close();
 		br.close();
+	}
+	
+	// this belongs to method for viewing features
+	
+	private class Pair {
+		
+		public Pair(Pattern p, PatternMapping pm) {
+
+			this.pattern = p;
+			this.mapping = pm;
+		}
+		Pattern pattern;
+		PatternMapping mapping;
+	}
+	
+	private double normalizeFeature(Feature feature, PatternMapping mapping, Double value) {
+
+		if ( feature.getSupportedLanguages().contains(NLPediaSettings.getInstance().getSystemLanguage()) ) {
+			
+			// exclude everything which is not activated
+			if ( feature.useForPatternFeatureLearning() ) {
+				
+				// non zero to one values have to be normalized
+				if ( !feature.isZeroToOneValue() ) {
+					
+					Double maximum = 0D;
+					// take every mapping into account to find the maximum value
+					if ( feature.needsGlobalNormalization() ) {
+						
+						maximum = FeatureHelper.calculateGlobalMaximum(feature);
+					}
+					// only use the current mapping to find the maximum
+					else {
+						
+						maximum = FeatureHelper.calculateLocalMaximum(mapping, feature);
+					}
+					return value / maximum;
+				}
+				// we dont need to normalize a 0-1 value
+				else {
+					
+					return value;
+				}
+			}
+		}
+		return 0;
 	}
 }

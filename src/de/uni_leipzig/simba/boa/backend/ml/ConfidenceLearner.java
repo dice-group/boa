@@ -35,7 +35,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 public class ConfidenceLearner {
 
     static BasicNetwork network;
-    public double maxError = 0.05;
+    public double maxError = 0.10;
     public double errorDecrement = 0.05;
     public double minError = 0.05;
     public double maxHiddenToInputRatio = 3;
@@ -523,7 +523,7 @@ public class ConfidenceLearner {
     public static void main(String args[]) {
 
 //        for (int i : Arrays.asList(2, 4, 5, 6, 7, 8, 9, 10)) {
-        for (int i : Arrays.asList(11)) {
+        for (int i : Arrays.asList(10)) {
 
             ConfidenceLearner.N_FOLD_CROSS_VALIDATION = i;
             ConfidenceLearner.NETWORK_FILE = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";

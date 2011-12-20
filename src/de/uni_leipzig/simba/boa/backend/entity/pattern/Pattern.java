@@ -315,7 +315,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity
 	 * @return the patternMappings
 	 */
 	//@ManyToMany(/*fetch = FetchType.EAGER,*/ cascade=CascadeType.ALL)
-	@ManyToMany(mappedBy="patterns")
+	@ManyToMany(mappedBy="patterns", fetch = FetchType.EAGER)
 	public List<PatternMapping> getPatternMappings() {
 
 		return patternMappings;
