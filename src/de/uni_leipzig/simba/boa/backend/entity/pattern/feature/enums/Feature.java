@@ -19,7 +19,10 @@ public enum Feature implements Serializable {
 		/* 8*/TYPICITY_CORRECT_DOMAIN_NUMBER(			IsZeroToOneValue.YES,	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
 		/* 9*/TYPICITY_CORRECT_RANGE_NUMBER(			IsZeroToOneValue.YES,	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
 		/*10*/TYPICITY_SENTENCES(						IsZeroToOneValue.NO,	NormalizeGlobaly.NO, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
-		/*11*/WORDNET_DISTANCE(							IsZeroToOneValue.YES, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH);
+		/*11*/WORDNET_DISTANCE(							IsZeroToOneValue.YES, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH),
+		/*12*/UPPERCASE_LETTERS(						IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
+		/*13*/NUMBER_OF_TOKENS(							IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
+		/*14*/TOTAL_OCCURRENCE(							IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN);
 		
 		private List<Language> supportedLanguages;
 		private IsZeroToOneValue isZeroToOneValue;
