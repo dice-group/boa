@@ -26,6 +26,8 @@ import org.springframework.util.StringUtils;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.nlp.sbd.SentenceBoundaryDisambiguation;
+import de.uni_leipzig.simba.boa.backend.nlp.sbd.impl.KoreanSentenceBoundaryDisambiguation;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 
@@ -146,38 +148,18 @@ public class SentenceDetection {
 				sentences.add(sentence.toString().trim());
 			}
 		}
+		if ( method.equals(Constants.SENTENCE_BOUNDARY_DISAMBIGUATION_KOREAN) ) {
+			
+			SentenceBoundaryDisambiguation sbd = new KoreanSentenceBoundaryDisambiguation();
+			sentences.addAll(sbd.splitTextIntoSentences(text));
+		}
 		
 		List<String> tokenizedSentences = new ArrayList<String>();
 		
-		for (String sentence : this.sentenceFilter.filterSentences(sentences) ) {
-			
-//			StringBuffer tokenizedSentence = new StringBuffer();
-//			
-//			String[] tokens = this.tokenizer.tokenize(sentence);
-//			String[] tags	= this.posTagger.tag(tokens);
-//			
-//			if ( tokens.length == tags.length ) {
-//				
-//				for ( int i = 0; i < tokens.length; i++) {
-//					
-//					tokenizedSentence.append(tokens[i] + "_" + tags[i] + " ");
-//				}
-//				
-//				String posTaggedSentence = tokenizedSentence.toString();
-//				
-//				if ( this.isValidSentence(posTaggedSentence) ) {
-
-					// tokenizedSentences.add(sentence.trim() + " ||| " + posTaggedSentence.trim());
-					tokenizedSentences.add(sentence.trim());
-//				}
-//			}
-//			else {
-//				
-//				this.logger.debug("Tokenized and pos tagged sentence not of equal lenght");
-//			}
-		}
-		
-		return tokenizedSentences;
+		// return only those sentences which go through the filters
+//		for (String sentence : this.sentenceFilter.filterSentences(sentences) ) tokenizedSentences.add(sentence.trim());
+//		return tokenizedSentences;
+		return sentences;
 	}
 
 	/**

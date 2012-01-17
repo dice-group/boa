@@ -7,7 +7,8 @@ public enum Language implements Serializable {
 
 	UNSUPPORTED("n/a"),
 	ENGLISH("en"),
-	GERMAN("de");
+	GERMAN("de"),
+	KOREAN("kr");
 	
 	private String languageTag;
 	

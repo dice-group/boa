@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
+ package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -29,11 +29,11 @@ public class WriteRelationToFileCommand implements Command {
 	private static final NLPediaSetup setup 			= new NLPediaSetup(true);
 	private static final String SPARQL_ENDPOINT_URI		= NLPediaSettings.getInstance().getSetting("dbpediaSparqlEndpoint");
 	private static final String DBPEDIA_DEFAULT_GRAPH	= NLPediaSettings.getInstance().getSetting("dbpediaDefaultGraph");
-	private static final int LIMIT						= 100000;
+	private static final int LIMIT						= 1000;
 	
 	private static final NLPediaLogger logger = new NLPediaLogger(WriteRelationToFileCommand.class);
 	
-	private static final String language = "en";
+	private static final String language = NLPediaSettings.BOA_LANGUAGE;
 	
 	public static void main(String[] args) {
 
@@ -67,7 +67,7 @@ public class WriteRelationToFileCommand implements Command {
 
 	private void queryDatatypeProperties() throws UnsupportedEncodingException, FileNotFoundException, IOException {
 
-		List<String> datatypePropertyUris = FileUtil.readFileInList(NLPediaSettings.getInstance().getSetting("crawlDirectory") + "datatype_properties_to_query.txt", "UTF-8");
+		List<String> datatypePropertyUris = FileUtil.readFileInList(NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/backgroundknowledge/datatype_properties_to_query.txt", "UTF-8");
 		for ( String datatypePropertyUri : datatypePropertyUris ) {
 			
 			String personQuery = createDatatypePropertyQueryObject("http://dbpedia.org/ontology/Person", datatypePropertyUri);
@@ -82,24 +82,27 @@ public class WriteRelationToFileCommand implements Command {
 
 	private void queryObjectProperties() throws UnsupportedEncodingException, FileNotFoundException, IOException {
 		
-		List<String> objectPropertyUris = FileUtil.readFileInList(NLPediaSettings.getInstance().getSetting("crawlDirectory") + "object_properties_to_query.txt", "UTF-8");
+		String backgroundKnowledgeFilename = NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/backgroundknowledge/object_properties_" + language +".txt";
+		List<String> objectPropertyUris = FileUtil.readFileInList(backgroundKnowledgeFilename, "UTF-8");
+		
 		for ( String objectPropertyUri : objectPropertyUris ) {
 			
-			String personObjectQuery = 			createObjectPropertyQueryObject("http://dbpedia.org/ontology/Person", objectPropertyUri);
+//			String personObjectQuery = 			createObjectPropertyQueryObject("http://dbpedia.org/ontology/Person", objectPropertyUri);
 //			String personSubjectQuery = 		createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Person", objectPropertyUri);
-			
-			String organisationObjectQuery = 	createObjectPropertyQueryObject("http://dbpedia.org/ontology/Organisation", objectPropertyUri);
+//			String organisationObjectQuery = 	createObjectPropertyQueryObject("http://dbpedia.org/ontology/Organisation", objectPropertyUri);
 //			String organisationSubjectQuery = 	createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Organisation", objectPropertyUri);
-			
-			String placeObjectQuery =			createObjectPropertyQueryObject("http://dbpedia.org/ontology/Place", objectPropertyUri);
+//			String placeObjectQuery =			createObjectPropertyQueryObject("http://dbpedia.org/ontology/Place", objectPropertyUri);
 //			String placeSubjectQuery =			createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Place", objectPropertyUri);
 			
-			getKnowledge(personObjectQuery, 0,			"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-//			getKnowledge(personSubjectQuery, 0,			"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-			getKnowledge(organisationObjectQuery, 0,	"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-//			getKnowledge(organisationSubjectQuery, 0,	"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-			getKnowledge(placeObjectQuery, 0,			"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-//			getKnowledge(placeSubjectQuery, 0,			"/Users/gerb/TTTTT/object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+			String query = createObjectPropertyQuery(objectPropertyUri);
+			getKnowledge(query, 0, "/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+			
+//			getKnowledge(personObjectQuery, 0,			"/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+//			getKnowledge(personSubjectQuery, 0,			"/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+//			getKnowledge(organisationObjectQuery, 0,	"/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+//			getKnowledge(organisationSubjectQuery, 0,	"/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+//			getKnowledge(placeObjectQuery, 0,			"/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+//			getKnowledge(placeSubjectQuery, 0,			"/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
 		}
 	}
 	
@@ -123,7 +126,26 @@ public class WriteRelationToFileCommand implements Command {
 			 "OFFSET &OFFSET";
 	}
 	
+	private static String createObjectPropertyQuery(String property) {
 
+		return 
+			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>  " +
+			"SELECT ?s ?sl <"+property+"> ?o ?ol ?range ?domain " +
+			"WHERE {" +
+			 "	?s rdfs:label ?sl . " + 
+			 "  ?s <"+property+"> ?o . " +
+			 "  ?o rdfs:label ?ol . " +
+			 "	FILTER (   lang(?sl)= \""+language+"\"  &&  lang(?ol)= \""+language+"\"  ) " +
+			 "	OPTIONAL { " +
+			 "		<"+property+">  rdfs:range  ?range . " +
+			 "		<"+property+">  rdfs:domain ?domain . " +
+			 "	} " +
+			 "} " +
+			 "LIMIT " + LIMIT + " " +
+			 "OFFSET &OFFSET";
+	}
+	
 	private static String createObjectPropertyQueryObject(String typeUri, String property) {
 
 		return 

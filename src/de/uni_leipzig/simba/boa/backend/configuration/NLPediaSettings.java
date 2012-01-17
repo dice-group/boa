@@ -16,6 +16,10 @@ public class NLPediaSettings {
 	// needed for logging memory consumption
 	public static final long MEGABYTE = 1024L * 1024L;
 	
+	public static String BOA_BASE_DIRECTORY;
+	public static String BOA_DATA_DIRECTORY;
+	public static String BOA_LANGUAGE;
+	
 	private NLPediaLogger logger = new NLPediaLogger(NLPediaSettings.class);
 	private Map<String, String> nlpediaSettings	= null;
 	private Map<String, Object> complexSettings = null;
@@ -104,7 +108,61 @@ public class NLPediaSettings {
 
 		this.nlpediaSettings.put(key, value);
 	}
+
 	
+	/**
+	 * @return the BOA_BASE_DIRECTORY
+	 */
+	public String getBoaBaseDirectory() {
+	
+		return BOA_BASE_DIRECTORY;
+	}
+
+	
+	/**
+	 * @return the boaDataDirectory
+	 */
+	public String getBoaDataDirectory() {
+	
+		return BOA_DATA_DIRECTORY;
+	}
+
+	
+	/**
+	 * @param BOA_BASE_DIRECTORY the BOA_BASE_DIRECTORY to set
+	 */
+	public void setBoaBaseDirectory(String baseDirectory) {
+	
+		BOA_BASE_DIRECTORY = baseDirectory;
+	}
+
+	
+	/**
+	 * @param boaDataDirectory the boaDataDirectory to set
+	 */
+	public void setBoaDataDirectory(String boaDataDirectory) {
+	
+		BOA_DATA_DIRECTORY = boaDataDirectory;
+	}
+
+	
+	/**
+	 * @return the language
+	 */
+	public String getBoaLanguage() {
+	
+		return BOA_LANGUAGE;
+	}
+
+	
+	/**
+	 * @param language the language to set
+	 */
+	public void setBoaLanguage(String boaLanguage) {
+	
+		BOA_LANGUAGE = boaLanguage;
+	}
+
 	/**
 	 * logs this settings to the log file, similar to toString
 	 */

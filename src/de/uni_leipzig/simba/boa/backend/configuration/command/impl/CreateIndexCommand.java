@@ -20,7 +20,7 @@ public class CreateIndexCommand implements Command {
 	@Override
 	public void execute() {
 
-		String indexDirectory		= NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory");
+		String indexDirectory		= NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory");
 		boolean	overwriteIndex		= new Boolean(NLPediaSettings.getInstance().getSetting("overwriteIndex")).booleanValue();
 		int ramBufferMaxSizeInMb	= new Integer(NLPediaSettings.getInstance().getSetting("ramBufferMaxSizeInMb")).intValue();
 

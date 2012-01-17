@@ -1,0 +1,258 @@
+################################ http://dbpedia.org/ontology/starring #################################
+
+
+1.[If I Had Known I Was a Genius] [Sharon Stone]		[http://dbpedia.org/resource/If_I_Had_Known_I_Was_a_Genius,http://dbpedia.org/resource/Sharon_Stone]
+[o] Since leaving Days , Björlin has appeared in the independent feature film , If I Had Known I Was a Genius , starring Markus Redmond , Whoopi Goldberg , Sharon Stone , and Tara Reid .
+
+
+2.[The Shining Hour] [Joan Crawford]		[http://dbpedia.org/resource/The_Shining_Hour,http://dbpedia.org/resource/Joan_Crawford]
+[o] Her ninth film was the rather soapy The Shining Hour -LRB- 1938 -RRB- , playing the suicidal sister to Joan Crawford .
+
+
+3.[Flesh & Blood] [Rutger Hauer]		[http://dbpedia.org/resource/Flesh_&_Blood_%28film%29,http://dbpedia.org/resource/Rutger_Hauer]
+[o] Gerard Soeteman also wrote the script for Verhoeven 's first American film , Flesh & Blood -LRB- 1985 -RRB- , which starred Rutger Hauer and Jennifer Jason Leigh .
+
+
+4.[Cocksucker Blues] [The Rolling Stones]		[http://dbpedia.org/resource/Cocksucker_Blues,http://dbpedia.org/resource/The_Rolling_Stones]
+[o] A generic performance film , Ladies and Gentlemen : The Rolling Stones , was released instead , and Cocksucker Blues was forever shelved .
+
+
+5.[Now and Then] [Thora Birch]		[http://dbpedia.org/resource/Now_and_Then_%28film%29,http://dbpedia.org/resource/Thora_Birch]
+[o] Now and Then is a 1995 film directed by Lesli Linka Glatter and starring Christina Ricci , Rosie O'Donnell , Thora Birch , Melanie Griffith , Gaby Hoffmann , Demi Moore , Ashleigh Aston Moore and Rita Wilson .
+
+
+6.[Crime on a Summer Morning] [Jean-Paul Belmondo]		[http://dbpedia.org/resource/Crime_on_a_Summer_Morning,http://dbpedia.org/resource/Jean-Paul_Belmondo]
+[o] Crime on a Summer Morning -LRB- Par un beau matin d'été -RRB- is a 1965 crime film directed by Jacques Deray and starring Jean-Paul Belmondo .
+
+
+7.[Happy Go Lovely] [David Niven]		[http://dbpedia.org/resource/Happy_Go_Lovely,http://dbpedia.org/resource/David_Niven]
+[o] Happy Go Lovely is a 1951 British musical comedy film with Technicolor , directed by H. Bruce Humberstone and starring Vera Ellen , David Niven , and Cesar Romero .
+
+
+8.[This Woman Is Dangerous] [Joan Crawford]		[http://dbpedia.org/resource/This_Woman_Is_Dangerous,http://dbpedia.org/resource/Joan_Crawford]
+[o] Joan Crawford told the audience that she considered , `` This Woman Is Dangerous , '' her worst film .
+
+
+9.[Shorts] [James Spader]		[http://dbpedia.org/resource/Shorts_%28film%29,http://dbpedia.org/resource/James_Spader]
+[o] In 2008 , Cryer appeared with Laurence Fishburne and James Cromwell in the film Tortured , and in 2009 co-starred with James Spader in the film Shorts .
+
+
+10.[All Together Now] [The Beatles]		[http://dbpedia.org/resource/All_Together_Now_%28film%29,http://dbpedia.org/resource/The_Beatles]
+[o] Mey or Mei may refer to : All Together Now is a feature-length documentary that chronicles the making of The Beatles and Cirque du Soleil collaboration project Love .
+
+
+11.[Cold Creek Manor] [Sharon Stone]		[http://dbpedia.org/resource/Cold_Creek_Manor,http://dbpedia.org/resource/Sharon_Stone]
+[o] He played Dale Massey in the 2003 thriller Cold Creek Manor , alongside Dennis Quaid and Sharon Stone .
+
+
+12.[God Grew Tired of Us] [Nicole Kidman]		[http://dbpedia.org/resource/God_Grew_Tired_of_Us,http://dbpedia.org/resource/Nicole_Kidman]
+[o] God Grew Tired Of Us was produced , written and directed by Christopher Dillon Quinn , executive produced by Brad Pitt and narrated by Nicole Kidman .
+
+
+13.[De kalte ham Skarven] [Liv Ullmann]		[http://dbpedia.org/resource/De_kalte_ham_Skarven,http://dbpedia.org/resource/Liv_Ullmann]
+[o] De kalte ham Skarven -LRB- They called him Skarven -RRB- is a 1965 Norwegian drama film directed by Wilfred Breistrand and Erik Folke Gustavson , starring Per Christensen and Liv Ullmann .
+
+
+14.[These Wilder Years] [James Cagney]		[http://dbpedia.org/resource/These_Wilder_Years,http://dbpedia.org/resource/James_Cagney]
+[o] Screen giant James Cagney took a liking to Dubbins and procured roles for him in two 1956 films , These Wilder Years and Tribute to a Bad Man .
+
+
+15.[The Left Handed Gun] [Paul Newman]		[http://dbpedia.org/resource/The_Left_Handed_Gun,http://dbpedia.org/resource/Paul_Newman]
+[o] Dehner also played Pat Garrett in Gore Vidal 's The Left Handed Gun , opposite Paul Newman as Billy the Kid .
+
+
+16.[Ten Tall Men] [Burt Lancaster]		[http://dbpedia.org/resource/Ten_Tall_Men,http://dbpedia.org/resource/Burt_Lancaster]
+[o] Although he directed several more films after that -- including one of Burt Lancaster 's more enjoyable early swashbucklers , Ten Tall Men -LRB- 1951 -RRB- -- he mainly concentrated on screenwriting , and in the mid - '50s turned to producing .
+
+
+17.[Devdas] [Madhuri Dixit]		[http://dbpedia.org/resource/Devdas_%282002_film%29,http://dbpedia.org/resource/Madhuri_Dixit]
+[o] At the brothel , Devdas meets a good-hearted tawaif -LRB- courtesan -RRB- named Chandramukhi -LRB- Madhuri Dixit -RRB- , who falls in love with him .
+
+
+18.[Dawg] [Denis Leary]		[http://dbpedia.org/resource/Dawg_%28film%29,http://dbpedia.org/resource/Denis_Leary]
+[o] In 2002 , She directed the film Dawg starring Denis Leary and Elizabeth Hurley .
+
+
+19.[Swordfish] [Halle Berry]		[http://dbpedia.org/resource/Swordfish_%28film%29,http://dbpedia.org/resource/Halle_Berry]
+[o] After arriving in Los Angeles in 1999 , he appeared in the Warner Brothers thriller Swordfish -LRB- film -RRB- starring John Travolta , Hugh Jackman , Halle Berry and Don Cheadle .
+
+
+20.[The Carpetbaggers] [George Peppard]		[http://dbpedia.org/resource/The_Carpetbaggers_%28film%29,http://dbpedia.org/resource/George_Peppard]
+[o] Ashley has been married to actors George Peppard -LRB- the leading man in her first movie , The Carpetbaggers , 1964 -RRB- and James Farentino .
+
+
+
+
+
+################################ http://dbpedia.org/ontology/occupation #################################
+
+
+1.[Plutarch] [Essay]		[http://dbpedia.org/resource/Plutarch,http://dbpedia.org/resource/Essay]
+[o] A lost epic , Titanomachia , attributed to the blind Thracian bard Thamyris , himself a legendary figure , was mentioned in passing in an essay On Music that was once attributed to Plutarch .
+
+
+2.[Vishnuvardhan] [Actor]		[http://dbpedia.org/resource/Vishnuvardhan_%28director%29,http://dbpedia.org/resource/Actor]
+[o] Another superstar Dr. Vishnuvardhan , one of his best friends in the Kannada film industry , is another actor to act in 200 films as lead actor .
+
+
+3.[Paul Cavanagh] [Actor]		[http://dbpedia.org/resource/Paul_Cavanagh,http://dbpedia.org/resource/Actor]
+[o] In Metra 's zone-based fare system , 153rd Street is in zone E. Paul Cavanagh -LRB- 8 December 1888 -- 15 March 1964 -RRB- was an English film actor .
+
+
+4.[John Hannah] [Actor]		[http://dbpedia.org/resource/John_Hannah_%28actor%29,http://dbpedia.org/resource/Actor]
+[o] It was co-founded by the actor John Hannah and the producer Murray Ferguson .
+
+
+5.[Tom Fridley] [Actor]		[http://dbpedia.org/resource/Tom_Fridley,http://dbpedia.org/resource/Actor]
+[o] Robert T @ C 21:37 , 27 November 2005 -LRB- UTC -RRB- Promotional JoJan 19:28 , 21 November 2005 -LRB- UTC -RRB- Tom Fridley -LRB- born February 15 , 1965 -RRB- is an American film and television actor .
+
+
+6.[Anson Williams] [Actor]		[http://dbpedia.org/resource/Anson_Williams,http://dbpedia.org/resource/Actor]
+[o] Anson Williams -LRB- born September 25 , 1949 -RRB- is an actor and director .
+
+
+7.[Leonid Kuravlyov] [Actor]		[http://dbpedia.org/resource/Leonid_Kuravlyov,http://dbpedia.org/resource/Actor]
+[o] Actor and film director Vasily Shukshin is considered to have been the one to widely introduce Leonid Kuravlyov to the general public .
+
+
+8.[James Culliford] [Actor]		[http://dbpedia.org/resource/James_Culliford,http://dbpedia.org/resource/Actor]
+[o] `` James Culliford -LRB- 8 September 1927 -- March 2002 -RRB- was a British actor on stage , film and television .
+
+
+9.[Kenneth Tobey] [Actor]		[http://dbpedia.org/resource/Kenneth_Tobey,http://dbpedia.org/resource/Actor]
+[o] Kenneth Tobey -LRB- March 23 , 1917 -- December 22 , 2002 -RRB- was an American stage , television , and film actor .
+
+
+10.[Erik Charell] [Actor]		[http://dbpedia.org/resource/Erik_Charell,http://dbpedia.org/resource/Actor]
+[o] During a visit to the Salzkammergut , the actor Emil Jannings told Berlin theater manager Erik Charell about the comedy .
+
+
+11.[Nancy Reagan] [Actor]		[http://dbpedia.org/resource/Nancy_Reagan,http://dbpedia.org/resource/Actor]
+[o] As Ronald and Nancy Reagan were both former actors and he had served as president of the Screen Actor 's Guild , via a 1982 Executive Order , President Reagan established the President 's Committee on the Arts and Humanities .
+
+
+12.[Bengt Ekerot] [Actor]		[http://dbpedia.org/resource/Bengt_Ekerot,http://dbpedia.org/resource/Actor]
+[o] Bengt Ekerot -LRB- sometimes credited as Bengt Ekeroth -RRB- -LRB- 8 February 1920 -- 26 November 1971 -RRB- was a Swedish actor .
+
+
+13.[Charles Dale] [Actor]		[http://dbpedia.org/resource/Charles_Dale,http://dbpedia.org/resource/Actor]
+[o] Charles Dale -LRB- born 1963 -RRB- is a Welsh actor who is well known for playing Dennis Stringer in Coronation Street , Gary `` Chef '' Alcock in The Lakes and Clive Eustace in The Eustace Bros. .
+
+
+14.[Raviv Ullman] [Actor]		[http://dbpedia.org/resource/Raviv_Ullman,http://dbpedia.org/resource/Actor]
+[o] Raviv Ullman -LRB- רביב אולמן ; born January 24 , 1986 -RRB- , also known by his stage name Ricky Ullman , is an Israeli-American actor and musician .
+
+
+15.[Tony Bignell] [Actor]		[http://dbpedia.org/resource/Tony_Bignell,http://dbpedia.org/resource/Actor]
+[o] Tony Bignell -LRB- born 16 November 1989 , Luton , Bedfordshire -RRB- is an English actor and singer .
+
+
+16.[Jonathan Wexler] [Actor]		[http://dbpedia.org/resource/Jonathan_Wexler,http://dbpedia.org/resource/Actor]
+[o] Jonathan Wexler -LRB- born February 7 , 1985 -RRB- is a Canadian actor from Ashsechs , Ontario , who was a member of the Original Kids Theater Company and the Amabile Boys Choir .
+
+
+17.[Arshad Warsi] [Actor]		[http://dbpedia.org/resource/Arshad_Warsi,http://dbpedia.org/resource/Actor]
+[o] An example of the language is used by actor Jagdeep in the film Sholay and Arshad Warsi in the film Ishqiya .
+
+
+18.[Rosemary Forsyth] [Actor]		[http://dbpedia.org/resource/Rosemary_Forsyth,http://dbpedia.org/resource/Actor]
+[o] Actor Stuart Whitman would play the lead as the city 's administrator Admiral Michael Matthews with Rosemary Forsyth , Robert Colbert , Burr DeBenning and Robert Wagner as supporting cast .
+
+
+19.[Ardal O'Hanlon] [Actor]		[http://dbpedia.org/resource/Ardal_O%27Hanlon,http://dbpedia.org/resource/Actor]
+[o] Ardal O'Hanlon -LRB- born 8 October 1965 -RRB- is an Irish comedian and actor , best known for his roles in television sitcoms as Father Dougal McGuire in Father Ted and George Sunday in My Hero .
+
+
+20.[Tasos Giannopoulos] [Actor]		[http://dbpedia.org/resource/Tasos_Giannopoulos,http://dbpedia.org/resource/Actor]
+[o] Tasos Giannopoulos -LRB- Τάσος Γιαννόπουλος , 1931 - November 8 , 1977 -RRB- was a Greek actor .
+
+
+
+
+
+################################ http://dbpedia.org/ontology/writer #################################
+
+
+1.[New Divide] [Linkin Park]		[http://dbpedia.org/resource/New_Divide,http://dbpedia.org/resource/Linkin_Park]
+[o] AOL rated this song as the number 1 rock song of 2009 , beating out such songs as `` New Divide '' by Linkin Park , `` Break '' by Three Days Grace and `` Again '' by Flyleaf .
+
+
+2.[The Vampire Lovers] [Sheridan Le Fanu]		[http://dbpedia.org/resource/The_Vampire_Lovers,http://dbpedia.org/resource/Sheridan_Le_Fanu]
+[o] She starred in The Vampire Lovers -LRB- 1970 -RRB- , a film based on Joseph Sheridan Le Fanu 's novella Carmilla , and Countess Dracula -LRB- 1971 -RRB- , a film based on the legends around Countess Elizabeth Báthory .
+
+
+3.[Fame] [David Bowie]		[http://dbpedia.org/resource/Fame_%28David_Bowie_song%29,http://dbpedia.org/resource/David_Bowie]
+[o] After working as an actress in Andy Warhol 's Pork , she worked as a publicist for David Bowie , before finding fame as a rock singer .
+
+
+4.[From This Moment On] [Shania Twain]		[http://dbpedia.org/resource/From_This_Moment_On_%28Shania_Twain_song%29,http://dbpedia.org/resource/Shania_Twain]
+[o] Mulcahy recorded a cover version of Shania Twain 's `` From This Moment On '' for Engine Room Recordings ' compilation album Guilt by Association , which was released in September 2007 .
+
+
+5.[La jetée] [Chris Marker]		[http://dbpedia.org/resource/La_jet%C3%A9e,http://dbpedia.org/resource/Chris_Marker]
+[o] As a student , Mamoru Oshii was fascinated by the film La jetée by Chris Marker .
+
+
+6.[Oleanna] [David Mamet]		[http://dbpedia.org/resource/Oleanna_%28film%29,http://dbpedia.org/resource/David_Mamet]
+[o] Also in 2004 , Eckhart starred on the London stage , opposite Julia Stiles , in David Mamet 's Oleanna at the Garrick Theatre .
+
+
+7.[The Girl and the Robot] [Robyn]		[http://dbpedia.org/resource/The_Girl_and_the_Robot,http://dbpedia.org/resource/Robyn]
+[o] Like in Sweden , this is one of Robyn 's highest charting releases , under `` Do You Really Want Me -LRB- Show Respect -RRB- '' and her collaboration with Röyksopp , `` The Girl and the Robot '' .
+
+
+8.[Monkey] [George Michael]		[http://dbpedia.org/resource/Monkey_%28song%29,http://dbpedia.org/resource/George_Michael]
+[o] It fared better in the United States , peaking at # 2 on the Billboard Hot 100 chart in August of 1988 , kept out of the top spot by fellow British singer -LRB- and vocal collaborator -RRB- George Michael 's hit single , `` Monkey '' .
+
+
+9.[Yellow Submarine] [George Harrison]		[http://dbpedia.org/resource/Yellow_Submarine_%28film%29,http://dbpedia.org/resource/George_Harrison]
+[o] In January 2010 it was announced that Elwes had been chosen to portray George Harrison in Robert Zemeckis ' 3-D performance capture re-telling of Yellow Submarine .
+
+
+10.[Things to Come] [H. G. Wells]		[http://dbpedia.org/resource/Things_to_Come,http://dbpedia.org/resource/H._G._Wells]
+[o] H. G. Wells ' `` The Shape of Things to Come '' , which purports to be a history textbook published in 2106 , includes - just like actual history books - numerous footnotes , some of them referring to actual historical sources but most to fictional ones .
+
+
+11.[Do You Really Want Me] [Robyn]		[http://dbpedia.org/resource/Do_You_Really_Want_Me_%28Show_Respect%29,http://dbpedia.org/resource/Robyn]
+[o] In her home country , `` Do You Really Want Me '' became Robyn 's second hit , peaking at number two there , her highest charting single there until her 2010 single `` Dancing On My Own '' hit the Swedish Charts for 2 weeks .
+
+
+12.[Wilbury Twist] [Traveling Wilburys]		[http://dbpedia.org/resource/Wilbury_Twist,http://dbpedia.org/resource/Traveling_Wilburys]
+[o] Lagarto may refer to : `` Wilbury Twist '' is a song by supergroup Traveling Wilburys and is the final track on their 1990 studio album Traveling Wilburys Vol .
+
+
+13.[Cop Killer] [Ice-T]		[http://dbpedia.org/resource/Cop_Killer_%28song%29,http://dbpedia.org/resource/Ice-T]
+[o] Consequently , Time Warner Music refused to release Ice-T 's upcoming album Home Invasion because of the controversy surrounding `` Cop Killer '' .
+
+
+14.[What Is Life] [George Harrison]		[http://dbpedia.org/resource/What_Is_Life,http://dbpedia.org/resource/George_Harrison]
+[o] Aqsa '' , '' Aksa , al-Aksa or al-Aqsa Aqsa Sukhera -LRB- اأقصى -RRB- may refer to : `` What Is Life '' is a song by George Harrison and is the first track on side two of his 1970 solo album All Things Must Pass .
+
+
+15.[Chimmie Fadden] [Cecil B. DeMille]		[http://dbpedia.org/resource/Chimmie_Fadden,http://dbpedia.org/resource/Cecil_B._DeMille]
+[o] Chimmie Fadden is a 1915 comedy film directed by Cecil B. DeMille .
+
+
+16.[Micmacs] [Jean-Pierre Jeunet]		[http://dbpedia.org/resource/Micmacs_%28film%29,http://dbpedia.org/resource/Jean-Pierre_Jeunet]
+[o] European premieres in 2009 included Jean-Pierre Jeunet 's Micmacs , Scott Hicks ' The Boys Are Back and Robert Connolly 's Balibo , as well as Umesh Vinayak Kulkarni 's The Well and Lucy Bailey and Andrew Thompson 's Mugabe And The White African .
+
+
+17.[Piss Factory] [Patti Smith]		[http://dbpedia.org/resource/Piss_Factory,http://dbpedia.org/resource/Patti_Smith]
+[o] `` Piss Factory '' is a protopunk song written by Patti Smith and Richard Sohl , and released as a B-side on Smith 's debut single `` Hey Joe '' in 1974 .
+
+
+18.[The Wild Blue Yonder] [Werner Herzog]		[http://dbpedia.org/resource/The_Wild_Blue_Yonder,http://dbpedia.org/resource/Werner_Herzog]
+[o] He has also written several film scores , including that for the 2005 Werner Herzog film The Wild Blue Yonder .
+
+
+19.[Any Road] [George Harrison]		[http://dbpedia.org/resource/Any_Road,http://dbpedia.org/resource/George_Harrison]
+[o] Although the song lost the award to Justin Timberlake 's `` Cry Me a River , '' George Harrison 's `` Marwa Blues , '' the instrumental B-side to `` Any Road , '' won in its category for Best Pop Instrumental Performance .
+
+
+20.[The Honorary Consul] [Graham Greene]		[http://dbpedia.org/resource/The_Honorary_Consul_%28film%29,http://dbpedia.org/resource/Graham_Greene]
+[o] Graham Greene used the phrase `` small beer '' in a metaphorical sense in The Honorary Consul .
+
+
+
+
+

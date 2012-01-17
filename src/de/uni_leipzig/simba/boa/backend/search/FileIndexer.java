@@ -48,9 +48,9 @@ import edu.stanford.nlp.process.DocumentPreprocessor;
  */
 public class FileIndexer {
 	
-	private static NLPediaSetup settings = new NLPediaSetup(true);
+//	private static NLPediaSetup settings = new NLPediaSetup(true);
 	private NLPediaLogger logger = new NLPediaLogger(FileIndexer.class);
-	private static NamedEntityRecognizer nerTagger = new NamedEntityRecognizer();
+	private static NamedEntityRecognizer nerTagger;
 
 	private IndexWriter writer;
 	private SentenceDetection sentenceDetection = new SentenceDetection();
@@ -79,7 +79,9 @@ public class FileIndexer {
 		this.writer = new IndexWriter(indexDirectory, analyzer, true, IndexWriter.MaxFieldLength.LIMITED);
 		this.writer.setRAMBufferSizeMB(ramBufferSizeInMb);
 		
-		for (File file : FileUtils.listFiles(new File(NLPediaSettings.getInstance().getSetting("sentenceFileDirectory")), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE)) {
+		String sentenceDirectory = NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("sentenceFileDirectory");
+		System.out.println(sentenceDirectory);
+		for (File file : FileUtils.listFiles(new File(sentenceDirectory), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE)) {
 			
 			this.logger.info("Indexing file " + file + " with index ");
 			System.out.println("\nIndexing file: " + file);
@@ -109,9 +111,9 @@ public class FileIndexer {
 						document.text.append(line);
 					}
 
-				if (documents.size() == 1000) {
+				if (documents.size() == 10000) {
 					
-					indexDocumentCount += 1000;
+					indexDocumentCount += 10000;
 					System.out.println("Indexed " + indexDocumentCount);
 					indexDocuments(documents);
 					documents = new ArrayList<IndexDocument>();
@@ -126,6 +128,10 @@ public class FileIndexer {
 	private void indexDocuments(List<IndexDocument> documents) throws CorruptIndexException, IOException {
 
 		for (IndexDocument doc : documents) {
+			
+//			FileUtil.writeListToFile(
+//					FileUtil.openBufferedWriter("/Users/gerb/Desktop/ko-wiki-without-filter.txt", "UTF-8", FileUtil.WRITER_WRITE_MODE.APPEND),
+//					doc.getSentences(), FileUtil.WRITER_MODE.CLOSE);
 			
 			for (String sentence : doc.getSentences() ) {
 				
@@ -252,6 +258,8 @@ public class FileIndexer {
 	 */
 	private static boolean sentenceContainsMoreThanTwoEntities(String line) {
 
+		if ( nerTagger == null ) nerTagger = new NamedEntityRecognizer();
+		
 		String nerTaggedLine = nerTagger.recognizeEntitiesInString(line);
 		
 		if ( (nerTaggedLine.contains(NER_PERSON) && nerTaggedLine.contains(NER_ORGANISATION)) || 

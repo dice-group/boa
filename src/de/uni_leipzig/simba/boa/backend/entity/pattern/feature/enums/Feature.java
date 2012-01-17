@@ -20,9 +20,12 @@ public enum Feature implements Serializable {
 		/* 9*/TYPICITY_CORRECT_RANGE_NUMBER(			IsZeroToOneValue.YES,	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
 		/*10*/TYPICITY_SENTENCES(						IsZeroToOneValue.NO,	NormalizeGlobaly.NO, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
 		/*11*/WORDNET_DISTANCE(							IsZeroToOneValue.YES, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH),
-		/*12*/UPPERCASE_LETTERS(						IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
-		/*13*/NUMBER_OF_TOKENS(							IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
-		/*14*/TOTAL_OCCURRENCE(							IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN);
+		/*12*/UPPERCASE_LETTER_COUNT(					IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
+		/*13*/TOKEN_COUNT(								IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
+		/*14*/CHARACTER_COUNT(							IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
+		/*15*/TOTAL_OCCURRENCE(							IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
+		/*16*/VERB_COUNT(								IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
+		/*17*/AVERAGE_TOKEN_LENGHT(						IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN);
 		
 		private List<Language> supportedLanguages;
 		private IsZeroToOneValue isZeroToOneValue;

@@ -59,6 +59,19 @@ public class PatternSearcher {
 	
 	private final NLPediaLogger logger = new NLPediaLogger(PatternSearcher.class);
 
+	public PatternSearcher() throws IOException, ParseException {
+
+		this.directory = FSDirectory.open(new File(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory")));
+		this.analyzer = new WhitespaceAnalyzer();
+
+		// create index searcher in read only mode
+		this.indexSearcher = new IndexSearcher(directory, true);
+		this.parser = new QueryParser(Version.LUCENE_30, "sentence-lc", this.analyzer);
+
+		this.results = new ArrayList<SearchResult>();
+		this.hits = null;
+	}
+	
 	public PatternSearcher(String indexDir) throws IOException, ParseException {
 
 		this.directory = FSDirectory.open(new File(indexDir));
@@ -376,6 +389,22 @@ public class PatternSearcher {
 		ScoreDoc[] hits = indexSearcher.search(this.parser.parse("+sentence-lc:\"" + QueryParser.escape(keyphrase.toLowerCase()) + "\""), null, maxNumberOfDocuments).scoreDocs;
 		TreeSet<String> list = new TreeSet<String>();
 
+		// reverse order because longer sentences come last, longer sentences
+		// most likely contain less it,he,she
+		for (int i = hits.length - 1; i >= 0; i--) {
+
+			// get the indexed string and put it in the result
+			list.add(indexSearcher.doc(hits[i].doc).get("sentence"));
+		}
+		return list;
+	}
+	
+	public Set<String> getExactMatchSentencesForLabels(String label1, String label2, int numberOfDocuments) throws ParseException, IOException {
+		
+		Query query = parser.parse("+sentence-lc:\"" + QueryParser.escape(label1) + "\" && +sentence-lc:\"" + QueryParser.escape(label2) + "\"");
+		hits = indexSearcher.search(query, null, MAX_NUMBER_OF_DOCUMENTS).scoreDocs;
+		TreeSet<String> list = new TreeSet<String>();
+		
 		// reverse order because longer sentences come last, longer sentences
 		// most likely contain less it,he,she
 		for (int i = hits.length - 1; i >= 0; i--) {
