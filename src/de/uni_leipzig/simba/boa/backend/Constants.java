@@ -83,6 +83,11 @@ public class Constants {
 	 */
 	public static final String SENTENCE_BOUNDARY_DISAMBIGUATION_STANFORD_NLP = "stanfordnlp";
 	
+	/**
+	 * Use this option to detect sentences within korean text
+	 */
+	public static final Object SENTENCE_BOUNDARY_DISAMBIGUATION_KOREAN = "korean";
+	
 	// ##############################################################################
 	
 	/**

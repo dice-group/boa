@@ -1,0 +1,258 @@
+################################ http://dbpedia.org/ontology/birthPlace #################################
+
+
+1.[Charly García] [Buenos Aires]		[http://dbpedia.org/resource/Charly_Garc%C3%ADa,http://dbpedia.org/resource/Buenos_Aires]
+[o] Charly García -LRB- Behind -RRB- , David Lebon -LRB- Middle -RRB- , Pedro Aznar -LRB- Right -RRB- , Oscar Moro -LRB- Left -RRB- Img_alt = Background = group_or_band Origin = Buenos Aires Genre = Progressive rockSeru Giran was an Argentina rock supergroup .
+
+
+2.[Juan José Viamonte] [Buenos Aires]		[http://dbpedia.org/resource/Juan_Jos%C3%A9_Viamonte,http://dbpedia.org/resource/Buenos_Aires]
+[o] Buenos Aires 's occupation forces under Juan José Viamonte were defeated , and Mariano Vera was elected governor of Santa Fe .
+
+
+3.[Esteban Valencia] [Chile]		[http://dbpedia.org/resource/Esteban_Valencia,http://dbpedia.org/resource/Chile]
+[o] Vargas , with other players such as Luis Musrri , Rogelio Delgado , Esteban Valencia , Marcelo Salas and Rodrigo Goldberg , helped Universidad de Chile to win the Primera División de Chile in 1994 and again in 1995 .
+
+
+4.[Christian Cellay] [Buenos Aires]		[http://dbpedia.org/resource/Christian_Cellay,http://dbpedia.org/resource/Buenos_Aires]
+[o] Christian Cellay -LRB- born May 9 , 1981 in Buenos Aires -RRB- is an Argentine football defender who currently plays for Boca Juniors .
+
+
+5.[Diego Sosa] [Buenos Aires]		[http://dbpedia.org/resource/Diego_Sosa,http://dbpedia.org/resource/Buenos_Aires]
+[o] Chiel is a Dutch given name , and may refer to : Diego Sosa full name Diego Roberto Sosa -LRB- born 17 April 1980 in Buenos Aires -RRB- , is an Argentine footballer .
+
+
+6.[Sebastián Rozental] [Chile]		[http://dbpedia.org/resource/Sebasti%C3%A1n_Rozental,http://dbpedia.org/resource/Chile]
+[o] Sebastián Rozental Igualt -LRB- סבסטיאן רוזנטל , born September 1 , 1976 in Santiago , Chile -RRB- is a retired Chilean-Israeli professional football -LRB- soccer -RRB- player .
+
+
+7.[Javiera Carrera] [Chile]		[http://dbpedia.org/resource/Javiera_Carrera,http://dbpedia.org/resource/Chile]
+[o] Liceo Nº1 `` Javiera Carrera '' is a high school for girls in Santiago , Chile .
+
+
+8.[Diego Portales] [Chile]		[http://dbpedia.org/resource/Diego_Portales,http://dbpedia.org/resource/Chile]
+[o] An important number of Peruvian politicians opposed to the idea of the Confederation fled to Chile , where they received support from the powerful Minister Diego Portales .
+
+
+9.[Gabriel Rivano] [Buenos Aires]		[http://dbpedia.org/resource/Gabriel_Rivano,http://dbpedia.org/resource/Buenos_Aires]
+[o] Gabriel Rivano is an Argentine bandoneonist , guitarist , flutist and composer , born in Buenos Aires in 1958 .
+
+
+10.[Patricio González] [Buenos Aires]		[http://dbpedia.org/resource/Patricio_Gonz%C3%A1lez,http://dbpedia.org/resource/Buenos_Aires]
+[o] Patricio González -LRB- born December 20 , 1979 , in Buenos Aires -RRB- is an Argentine football midfielder who plays for Ferro Carril Oeste .
+
+
+11.[Adolfo Alsina] [Buenos Aires]		[http://dbpedia.org/resource/Adolfo_Alsina,http://dbpedia.org/resource/Buenos_Aires]
+[o] A supporter of Buenos Aires Province advocate Adolfo Alsina 's Autonomist Party , he was elected to the provincial legislature in 1874 , and was named vice president of the chamber before his election to the Lower House of Congress in 1876 .
+
+
+12.[Luciana Salazar] [Buenos Aires]		[http://dbpedia.org/resource/Luciana_Salazar,http://dbpedia.org/resource/Buenos_Aires]
+[o] Luciana Salazar Ortega -LRB- born November 07 , 1980 , in Buenos Aires , Argentina -RRB- is a glamour model , singer and actress .
+
+
+13.[Carola Reyna] [Buenos Aires]		[http://dbpedia.org/resource/Carola_Reyna,http://dbpedia.org/resource/Buenos_Aires]
+[o] Carola Reyna -LRB- born in Buenos Aires , Argentina -RRB- is an Argentine actress and director .
+
+
+14.[Manuel Alberti] [Buenos Aires]		[http://dbpedia.org/resource/Manuel_Alberti,http://dbpedia.org/resource/Buenos_Aires]
+[o] Manuel Alberti was born in Buenos Aires on 28 May 1763 to Antonio Alberti and Juana Agustina Marín .
+
+
+15.[Patricio Borghetti] [Buenos Aires]		[http://dbpedia.org/resource/Patricio_Borghetti,http://dbpedia.org/resource/Buenos_Aires]
+[o] Juan Patricio Borghetti Imérito -LRB- ˈxwan paˈtɾiθjo βorˈɣeti iˈmeɾito ; born December 5 , 1973 in Buenos Aires -RRB- is an Argentine-Mexican actor and singer .
+
+
+16.[Walter García] [Buenos Aires]		[http://dbpedia.org/resource/Walter_Garc%C3%ADa,http://dbpedia.org/resource/Buenos_Aires]
+[o] Walter García -LRB- born March 14 , 1984 in Buenos Aires -RRB- is an Argentine footballer .
+
+
+17.[Daniel Filmus] [Buenos Aires]		[http://dbpedia.org/resource/Daniel_Filmus,http://dbpedia.org/resource/Buenos_Aires]
+[o] Buenos Aires is represented in the Argentine Senate by three senators -LRB- as of December 2007 : María Eugenia Estenssoro , Samuel Cabanchik and Daniel Filmus -RRB- .
+
+
+18.[Michel Brown] [Buenos Aires]		[http://dbpedia.org/resource/Michel_Brown,http://dbpedia.org/resource/Buenos_Aires]
+[o] Michel Brown -LRB- born Misael Browarnik Beiguel on June 10 , 1976 in Buenos Aires , Argentina -RRB- is an Argentine actor .
+
+
+19.[Camila Merino] [Chile]		[http://dbpedia.org/resource/Camila_Merino,http://dbpedia.org/resource/Chile]
+[o] Camila Merino Catalán is a civil engineer and Minister of Labor and Social Welfare for Chile .
+
+
+20.[Robin Hughes] [Buenos Aires]		[http://dbpedia.org/resource/Robin_Hughes,http://dbpedia.org/resource/Buenos_Aires]
+[o] Robin Hughes was born June 7 , 1920 in Buenos Aires , Argentina .
+
+
+
+
+
+################################ http://dbpedia.org/ontology/isPartOf #################################
+
+
+1.[Pševo] [Kranj]		[http://dbpedia.org/resource/P%C5%A1evo,http://dbpedia.org/resource/Kranj]
+[o] Pševo is a small village in the hills east of Kranj in the Upper Carniola region of Slovenia .
+
+
+2.[Lampugnano] [Milan]		[http://dbpedia.org/resource/Lampugnano,http://dbpedia.org/resource/Milan]
+[o] Lampugnano is a district -LRB- quartier -RRB- of Milan , Italy .
+
+
+3.[Zwijnaarde] [Ghent]		[http://dbpedia.org/resource/Zwijnaarde,http://dbpedia.org/resource/Ghent]
+[o] Ex-Queen Isabella died at the castle of Zwijnaarde near Ghent at twenty-four years of age .
+
+
+4.[Levič] [Slovenska Bistrica]		[http://dbpedia.org/resource/Levi%C4%8D,http://dbpedia.org/resource/Slovenska_Bistrica]
+[o] T. platensis may refer to : Levič is a small village in the hills to the southwest of Slovenska Bistrica in northeastern Slovenia .
+
+
+5.[Vasco da Gama] [Rio de Janeiro]		[http://dbpedia.org/resource/Vasco_da_Gama_%28neighborhood%29,http://dbpedia.org/resource/Rio_de_Janeiro]
+[o] Born in São Gonçalo , Rio de Janeiro , Helton emerged through Club de Regatas Vasco da Gama 's youth system .
+
+
+6.[An Nakhil] [Ras al-Khaimah]		[http://dbpedia.org/resource/An_Nakhil,http://dbpedia.org/resource/Ras_al-Khaimah]
+[o] An Nakhil is the name of a settlement in Ras al-Khaimah .
+
+
+7.[Cabauw] [Lopik]		[http://dbpedia.org/resource/Cabauw,http://dbpedia.org/resource/Lopik]
+[o] Nearby , there are two other remarkable masts , the mast of mediumwave transmitter Lopik and KNMI-mast Cabauw , a mast used for meteorological measurements .
+
+
+8.[Košarovci] [Gornji Petrovci]		[http://dbpedia.org/resource/Ko%C5%A1arovci,http://dbpedia.org/resource/Gornji_Petrovci]
+[o] Košarovci -LRB- Kosárháza -RRB- is a small village in the Gornji Petrovci Municipality in the Prekmurje region of Slovenia .
+
+
+9.[Krk] [Krk]		[http://dbpedia.org/resource/Krk_%28town%29,http://dbpedia.org/resource/Krk]
+[o] Baška is a municipality on Krk Island in Croatia .
+
+
+10.[Canas] [Puerto Rico]		[http://dbpedia.org/resource/Canas_%28Ponce%29,http://dbpedia.org/resource/Puerto_Rico]
+[o] In 2008 , a study was made to determine fish life in Rio Canas , Ponce , Puerto Rico .
+
+
+11.[Ponte Lambro] [Milan]		[http://dbpedia.org/resource/Ponte_Lambro_%28district_of_Milan%29,http://dbpedia.org/resource/Milan]
+[o] Ponte Lambro -LRB- Western Lombard : Puunt -RRB- is a comune -LRB- municipality -RRB- in the Province of Como in the Italian region Lombardy , located about 40 km north of Milan and about 12 km east of Como .
+
+
+12.[Preloge pri Konjicah] [Slovenske Konjice]		[http://dbpedia.org/resource/Preloge_pri_Konjicah,http://dbpedia.org/resource/Slovenske_Konjice]
+[o] Preloge pri Konjicah is a small settlement in the Slovenske Konjice municipality in eastern Slovenia .
+
+
+13.[Colégio] [Rio de Janeiro]		[http://dbpedia.org/resource/Col%C3%A9gio_%28Rio_de_Janeiro%29,http://dbpedia.org/resource/Rio_de_Janeiro]
+[o] Colégio de São Bento is a Benedictine school for boys in Rio de Janeiro - Brazil with a history that dates back 150 years .
+
+
+14.[Thun District] [Thun]		[http://dbpedia.org/resource/Thun_District,http://dbpedia.org/resource/Thun]
+[o] LinkWatcher records : Thun District in the Canton of Bern was created on 1 January 2010 .
+
+
+15.[Daljan] [Donji Vakuf]		[http://dbpedia.org/resource/Daljan,http://dbpedia.org/resource/Donji_Vakuf]
+[o] Daljan is a village in the municipality of Donji Vakuf , Bosnia and Herzegovina .
+
+
+16.[Plače] [Ajdovščina]		[http://dbpedia.org/resource/Pla%C4%8De,http://dbpedia.org/resource/Ajdov%C5%A1%C4%8Dina]
+[o] Kwongsai may refer to : Plače is a small settlement in the Vipava Valley in the Ajdovščina Municipality in the Littoral region of Slovenia .
+
+
+17.[Zgornje Bitnje] [Kranj]		[http://dbpedia.org/resource/Zgornje_Bitnje,http://dbpedia.org/resource/Kranj]
+[o] Zgornje Bitnje is a settlement just south of Kranj in the Upper Carniola region of Slovenia .
+
+
+18.[Ardeşen] [Rize]		[http://dbpedia.org/resource/Arde%C5%9Fen,http://dbpedia.org/resource/Rize]
+[o] It is a prominent instrument in the music of Pazar , Hemşin , Çamlıhemşin , Ardeşen , Fındıklı , Arhavi , Hopa , partly in other districts of Artvin and in the villages of the Tatos range -LRB- the watershed between the provinces of Rize and Trabzon -RRB- of İspir .
+
+
+19.[Meme] [Kumba]		[http://dbpedia.org/resource/Meme_%28department%29,http://dbpedia.org/resource/Kumba]
+[o] Finance Minister Johnson Kum Ofon of Meme division estimated the damages to Kumba alone at 695 million francs CFA -LRB- US$ 1.7 million or 1.1 million euros -RRB- , more than the total amount allotted for infrastructural improvements for 2008 .
+
+
+20.[Malija] [Izola]		[http://dbpedia.org/resource/Malija,http://dbpedia.org/resource/Izola]
+[o] Malija -LRB- Malio -RRB- is a village in the Izola Municipality in the Littoral region of Slovenia .
+
+
+
+
+
+################################ http://dbpedia.org/ontology/deathPlace #################################
+
+
+1.[Vang Sue] [Laos]		[http://dbpedia.org/resource/Vang_Sue,http://dbpedia.org/resource/Laos]
+[o] Vang Sue was born on January 30 , 1945 , in Xieng Khouang , Laos to KiaPao Vang -LRB- father -RRB- and Ying Xiong -LRB- mother -RRB- .
+
+
+2.[Fernando Belaúnde Terry] [Lima]		[http://dbpedia.org/resource/Fernando_Bela%C3%BAnde_Terry,http://dbpedia.org/resource/Lima]
+[o] In 1981 , the government of Fernando Belaúnde Terry merged the three Sanitation Companies of Lima , Arequipa , and Trujillo and the DGOS in a single state holding company , the National Service of Water and Sewage Supply -LRB- SENAPA -RRB- .
+
+
+3.[Domingo Matheu] [Buenos Aires]		[http://dbpedia.org/resource/Domingo_Matheu,http://dbpedia.org/resource/Buenos_Aires]
+[o] Domingo Matheu -LRB- Barcelona , Spain , 4 August 1765 - Buenos Aires , Argentina , 28 March 1831 -RRB- was a Spanish businessman and politician .
+
+
+4.[C. N. Annadurai] [India]		[http://dbpedia.org/resource/C._N._Annadurai,http://dbpedia.org/resource/India]
+[o] C. N. Annadurai remarked at a speech in 1967 that C. P. was the first person in India to suggest a plan for interlinking the nation 's rivers .
+
+
+5.[Henry Havelock] [India]		[http://dbpedia.org/resource/Henry_Havelock,http://dbpedia.org/resource/India]
+[o] At this time , it was literally `` in the fields '' in an isolated position between the cities of Westminster and London.Major-General Sir Henry Havelock , KCB -LRB- 5 April 1795 -- 29 November 1857 -RRB- was a British general who is particularly associated with India .
+
+
+6.[Paul Gondjout] [Gabon]		[http://dbpedia.org/resource/Paul_Gondjout,http://dbpedia.org/resource/Gabon]
+[o] He is the son of Paul Gondjout , who was a prominent figure in Gabon in the 1960s .
+
+
+7.[Ary Barroso] [Rio de Janeiro]		[http://dbpedia.org/resource/Ary_Barroso,http://dbpedia.org/resource/Rio_de_Janeiro]
+[o] Ary Barroso -LRB- November 7 , 1903 in Ubá , Minas Gerais -- February 9 , 1964 in Rio de Janeiro -RRB- was a Brazilian composer , pianist , soccer commentator , and talent-show host on radio and TV .
+
+
+8.[Joseph Serge Miot] [Haiti]		[http://dbpedia.org/resource/Joseph_Serge_Miot,http://dbpedia.org/resource/Haiti]
+[o] It was the birthplace of the late Archbishop of Port-au-Prince , His Excellency , the Most Reverend Archbishop Joseph Serge Miot , who was killed in the 2010 Haiti earthquake .
+
+
+9.[Roberto Grau] [Buenos Aires]		[http://dbpedia.org/resource/Roberto_Grau,http://dbpedia.org/resource/Buenos_Aires]
+[o] He won at Buenos Aires 1928 -LRB- ARG-ch 7 Mayor -RRB- and lost a match for the title to Roberto Grau -LRB- 0 : 4 -RRB- .
+
+
+10.[Vijay Tendulkar] [India]		[http://dbpedia.org/resource/Vijay_Tendulkar,http://dbpedia.org/resource/India]
+[o] Sardar is a 1993 Indian biopic on Sardar Vallabhbhai Patel , one of India 's greatest freedom fighters , directed by Ketan Mehta and written by noted playwright Vijay Tendulkar .
+
+
+11.[Zail Singh] [India]		[http://dbpedia.org/resource/Zail_Singh,http://dbpedia.org/resource/India]
+[o] Former President of India Giani Zail Singh also belonged to th Malwa area of Punajab .
+
+
+12.[Sukumar Ray] [India]		[http://dbpedia.org/resource/Sukumar_Ray,http://dbpedia.org/resource/India]
+[o] A number of delightful poems were penned by Sukumar Ray in relation to the matters concerning Monday Club , primarily soliciting attendance , announcing important meetings etc. Ray was born in a Brahmo family in Calcutta , India on 30 October 1887 .
+
+
+13.[Manuel Camilo Vial] [Chile]		[http://dbpedia.org/resource/Manuel_Camilo_Vial,http://dbpedia.org/resource/Chile]
+[o] He left Bolivia due to political problems and was preparing his depature to France in Valparaíso when Chilean minister Manuel Camilo Vial contacted him to do a geologic and mineralogic description of the Republic of Chile .
+
+
+14.[Ashutosh Mukherjee] [India]		[http://dbpedia.org/resource/Ashutosh_Mukherjee,http://dbpedia.org/resource/India]
+[o] `` In India , it was acclaimed by Ashutosh Mukherjee , Rabindranath Tagore , and others .
+
+
+15.[Bharat Bhushan] [India]		[http://dbpedia.org/resource/Bharat_Bhushan,http://dbpedia.org/resource/India]
+[o] Born at Saharanpur U.P. , Yogiraj Bharat Bhushan is the first recipient of the coveted `` Padmashri Award '' given by the President of India for his contribution to yoga in 1991 .
+
+
+16.[Joaquín del Pino] [Buenos Aires]		[http://dbpedia.org/resource/Joaqu%C3%ADn_del_Pino,http://dbpedia.org/resource/Buenos_Aires]
+[o] Opening its doors in a Montserrat ward residence formerly belonging to Viceroy Joaquín del Pino -LRB- 1801 -- 04 -RRB- , the bank grew quickly ; in 1888 , it was nationalized and transferred to the City of Buenos Aires .
+
+
+17.[Luis Carniglia] [Buenos Aires]		[http://dbpedia.org/resource/Luis_Carniglia,http://dbpedia.org/resource/Buenos_Aires]
+[o] Luis Carniglia was buried in La Recoleta Cemetery in Buenos Aires .
+
+
+18.[Mariam Thressia] [India]		[http://dbpedia.org/resource/Mariam_Thressia,http://dbpedia.org/resource/India]
+[o] Blessed Mariam Thressia -LRB- 26 April , 1876 - 8 June 1926 -RRB- from Puthenchira , a locale in the city of Thrissur , Kerala , India .
+
+
+19.[Grigore Cugler] [Lima]		[http://dbpedia.org/resource/Grigore_Cugler,http://dbpedia.org/resource/Lima]
+[o] Grigore Cugler and Ulla Dyrssen had three daughters together : Christina , born in Stockholm ; Margaret , born in Oslo ; and Alexandra , born in Lima .
+
+
+20.[Blasco Núñez Vela] [Quito]		[http://dbpedia.org/resource/Blasco_N%C3%BA%C3%B1ez_Vela,http://dbpedia.org/resource/Quito]
+[o] The New Laws were enforced by Blasco Núñez Vela , the first Viceroy of Peru , who quickly became unpopular among the encomenderos and fled to Quito in the Viceroyalty of Peru to escape a large revolt .
+
+
+
+
+
