@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,6 +28,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -37,7 +39,11 @@ import org.apache.lucene.store.FSDirectory;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.ctc.wstx.util.StringUtil;
+
+import de.danielgerber.file.FileUtil;
 import de.danielgerber.math.MathUtil;
+import de.danielgerber.rdf.NtripleUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
@@ -62,7 +68,43 @@ public class XXX implements Command {
 	
 	private NLPediaLogger logger = new NLPediaLogger(XXX.class);
 	
-	public void execute(){
+	public void execute() {
+		
+		Map<String,String> uriToLabelMapping = NtripleUtil.parseNTripleFile("/Users/gerb/labels_ko.nt");
+		
+		BufferedReader reader = FileUtil.openReader("/Users/gerb/en_relation_surface.txt");
+		Writer writer = FileUtil.openWriter("/Users/gerb/ko_relation_surface.txt", "UTF-8", FileUtil.WRITER_WRITE_MODE.OVERRIDE);
+		String line = "";
+
+		try {
+			
+			while ((line = reader.readLine()) != null ) {
+				
+				String[] lineParts = line.split(" \\|\\|\\| ");
+				
+				String subjectUri = lineParts[0];
+				String objectUri = lineParts[4];
+				
+				if ( uriToLabelMapping.containsKey(subjectUri) && uriToLabelMapping.containsKey(objectUri) ) {
+					
+					lineParts[1] = uriToLabelMapping.get(subjectUri);
+					lineParts[2] = uriToLabelMapping.get(subjectUri);
+					lineParts[5] = uriToLabelMapping.get(objectUri);
+					lineParts[6] = uriToLabelMapping.get(objectUri);
+					
+					writer.write(StringUtils.join(lineParts, " ||| ") + "\n");
+				}
+			}
+			reader.close();
+			writer.close();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void createPatternFeatureDistribution(){
 		
 		PatternMappingDao patternDao = (PatternMappingDao)DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 		List<Pair> xyz = new ArrayList<Pair>();		
