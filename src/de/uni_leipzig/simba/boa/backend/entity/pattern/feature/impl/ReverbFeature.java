@@ -93,25 +93,25 @@ public class ReverbFeature implements Feature {
 					
 					try {
 					
-							// let ReVerb create the chunked sentences
-							for (ChunkedSentence sent : this.createDefaultSentenceReader(sentence).getSentences()) {
-								
-								// and extract all binary relations
-								for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
-		
-									double score = scoreFunc.getConf(extr); 
-									if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
+						// let ReVerb create the chunked sentences
+						for (ChunkedSentence sent : this.createDefaultSentenceReader(sentence).getSentences()) {
+							
+							// and extract all binary relations
+							for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
+	
+								double score = scoreFunc.getConf(extr); 
+								if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
+									
+									// we only want to add scores of relations, which are substring of our relations
+									// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
+									if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pattern.getNaturalLanguageRepresentation()) ) {
 										
-										// we only want to add scores of relations, which are substring of our relations
-										// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
-										if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pattern.getNaturalLanguageRepresentation()) ) {
-											
-											scores.add(score);
-											relations.add(extr.getRelation().toString());
-										}
+										scores.add(score);
+										relations.add(extr.getRelation().toString());
 									}
 								}
 							}
+						}
 					}
 					catch (ArrayIndexOutOfBoundsException aioobe) {
 						
