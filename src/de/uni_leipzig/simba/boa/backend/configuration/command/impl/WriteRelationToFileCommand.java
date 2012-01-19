@@ -35,7 +35,7 @@ public class WriteRelationToFileCommand implements Command {
 //	private static final NLPediaSetup setup 			= new NLPediaSetup(true);
 	private static final String SPARQL_ENDPOINT_URI		= NLPediaSettings.getInstance().getSetting("dbpediaSparqlEndpoint");
 	private static final String DBPEDIA_DEFAULT_GRAPH	= NLPediaSettings.getInstance().getSetting("dbpediaDefaultGraph");
-	private static final int LIMIT						= 10000;
+	private static final int LIMIT						= new Integer(NLPediaSettings.getInstance().getSetting("relationCrawlLimit"));
 	
 	private static final NLPediaLogger logger = new NLPediaLogger(WriteRelationToFileCommand.class);
 	
