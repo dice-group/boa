@@ -10,6 +10,8 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.httpclient.HttpException;
+
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
@@ -32,7 +34,7 @@ import de.uni_leipzig.simba.boa.backend.relation.ObjectPropertyBackgroundKnowled
  */
 public class WriteRelationToFileCommand implements Command {
 
-//	private static final NLPediaSetup setup 			= new NLPediaSetup(true);
+	private static final NLPediaSetup setup 			= new NLPediaSetup(true);
 	private static final String SPARQL_ENDPOINT_URI		= NLPediaSettings.getInstance().getSetting("dbpediaSparqlEndpoint");
 	private static final String DBPEDIA_DEFAULT_GRAPH	= NLPediaSettings.getInstance().getSetting("dbpediaDefaultGraph");
 	private static final int LIMIT						= new Integer(NLPediaSettings.getInstance().getSetting("relationCrawlLimit"));
@@ -280,7 +282,7 @@ public class WriteRelationToFileCommand implements Command {
 		}
 	}
 	
-	private static void getKnowledge(String query, int offset1, String fileName) {
+	private void getKnowledge(String query, int offset1, String fileName) {
 		
 		logger.info("Querying started for query: " + query);
 		long start = System.currentTimeMillis();
@@ -295,7 +297,8 @@ public class WriteRelationToFileCommand implements Command {
 
 			List<QuerySolution> resultSetList = new ArrayList<QuerySolution>();
 			
-			ResultSet rs  = qexec.execSelect();
+			ResultSet rs  = getResults(qexec, query);
+			
 			while (rs.hasNext()) resultSetList.add(rs.next());
 			offset = offset + LIMIT;
 			
@@ -318,5 +321,23 @@ public class WriteRelationToFileCommand implements Command {
 			}
 		}
 		logger.info("Querying ended for query in " + (System.currentTimeMillis() - start) + "ms: " + query);
+	}
+	
+	private ResultSet getResults(QueryEngineHTTP qexec, String query) {
+		
+		ResultSet results = null;
+		
+		try {
+
+			results  = qexec.execSelect();
+		}
+		catch (Exception e){
+			
+			results = getResults(qexec, query);
+			System.out.println("Retrying query: " + query);
+			this.logger.warn("Need to retry query: " + query, e);
+		}
+		
+		return results;
 	}
 }
