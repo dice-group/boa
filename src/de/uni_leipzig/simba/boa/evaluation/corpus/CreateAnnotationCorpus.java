@@ -42,7 +42,7 @@ public class CreateAnnotationCorpus {
 	
 	private void execute() throws UnsupportedEncodingException, FileNotFoundException, IOException, ParseException {
 
-		String propertiesFilename 		= NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/backgroundknowledge/object_properties_to_query.txt";
+		String propertiesFilename 		= NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/backgroundknowledge/object_properties_evaluation.txt";
 		
 		String annotatorOneFile	= NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/evaluation/eval_a1_v0.2.txt";
 		String annotatorTwoFile	= NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/evaluation/eval_a2_v0.2.txt";
@@ -80,12 +80,15 @@ public class CreateAnnotationCorpus {
 
 	private static void writeQueryResultsToFile(String annotationFilename, String property, Map<QueryResult, String> sentences, Integer lineCounter) throws IOException {
 
-		Writer writer = FileUtil.openBufferedWriter(annotationFilename, "UTF-8", WRITER_WRITE_MODE.APPEND);
+		Writer writer = FileUtil.openWriter(annotationFilename, "UTF-8", WRITER_WRITE_MODE.APPEND);
 		writer.write("################################ "+property+" #################################"+ Constants.NEW_LINE_SEPARATOR + Constants.NEW_LINE_SEPARATOR  + Constants.NEW_LINE_SEPARATOR );
 		int j = 0;
+		
+		if ( sentences.size() < 30 ) System.out.println("Less then 30 sentences for property " + property);
+		
 		for (Map.Entry<QueryResult, String> entry : sentences.entrySet()) {
 			
-			if (j++ >= 20) break;
+			if (j++ >= 30) break;
 			writer.write((lineCounter++) + "." + entry.getKey().toString() + Constants.NEW_LINE_SEPARATOR);
 			writer.write("[o] "+ entry.getValue().toString() + Constants.NEW_LINE_SEPARATOR);
 			writer.write(Constants.NEW_LINE_SEPARATOR + Constants.NEW_LINE_SEPARATOR);
@@ -104,9 +107,9 @@ public class CreateAnnotationCorpus {
 				" ?s rdfs:label ?sLabel . " + 
 				" ?o rdfs:label ?oLabel . " +
 				" FILTER (lang(?oLabel) = 'en' && lang(?sLabel) = 'en') ." +
-				"} LIMIT 2000 ";
+				"} LIMIT 1000";
 			
-		QueryEngineHTTP	qexec = new QueryEngineHTTP("http://dbpedia.org/sparql", query);
+		QueryEngineHTTP	qexec = new QueryEngineHTTP("http://live.dbpedia.org/sparql", query);
 		qexec.addDefaultGraph("http://dbpedia.org");
 		
 		List<QueryResult> queryResults = new ArrayList<QueryResult>(2000);
@@ -114,8 +117,9 @@ public class CreateAnnotationCorpus {
 		System.out.println(query);
 		ResultSet results = qexec.execSelect();
 		System.out.println("Querying ended");
+		int i = 0;
 		while (results.hasNext()) {
-			
+			System.out.println(i++);
 			QuerySolution solution = results.next();
 			QueryResult res = new QueryResult();
 			res.subjectUri		= solution.get("s").toString().replace(">", "").replace("<", "");
@@ -124,6 +128,7 @@ public class CreateAnnotationCorpus {
 			res.objectLabel		= solution.get("oLabel").toString().replace("@en", "").replaceAll("\\(.+?\\)", "").trim();
 			queryResults.add(res);
 		}
+		qexec.close();
 		System.out.println("Found " + queryResults.size() + " pairs!");
 		
 		return queryResults;
