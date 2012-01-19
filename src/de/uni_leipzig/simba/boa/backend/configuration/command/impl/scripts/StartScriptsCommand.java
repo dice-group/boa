@@ -36,8 +36,7 @@ public class StartScriptsCommand implements Command {
 		    		System.out.println("\t\t8. Load knowledge");
 		    		System.out.println("\t\t9. Create pattern index");
 		    		System.out.println("\t\t10. Create machine learning input");
-		    		System.out.println("\t\t11. Create surface forms");
-		    		System.out.println("\t\t12. XXX");
+		    		System.out.println("\t\t11. XXX");
 		    		System.out.println("\t\t");
 		    		System.out.println("");
 		    		
@@ -116,14 +115,8 @@ public class StartScriptsCommand implements Command {
 							Command createMLCommand = new CreateMachineLearningCommand();
 							createMLCommand.execute();
 							break;
-							
-						case 11:
-							
-							Command createSurfaceFormCommand = new CreateSurfaceFormCommand();
-							createSurfaceFormCommand.execute();
-							break;
 						
-						case 12:
+						case 11:
 							
 							Command xxx = new XXX();
 							xxx.execute();
