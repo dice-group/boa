@@ -14,11 +14,17 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
+import de.danielgerber.Constants;
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.SurfaceFormGenerator;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
+import de.uni_leipzig.simba.boa.backend.relation.BackgroundKnowledge;
+import de.uni_leipzig.simba.boa.backend.relation.ObjectPropertyBackgroundKnowledge;
 
 /**
  * 
@@ -26,10 +32,10 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
  */
 public class WriteRelationToFileCommand implements Command {
 
-	private static final NLPediaSetup setup 			= new NLPediaSetup(true);
+//	private static final NLPediaSetup setup 			= new NLPediaSetup(true);
 	private static final String SPARQL_ENDPOINT_URI		= NLPediaSettings.getInstance().getSetting("dbpediaSparqlEndpoint");
 	private static final String DBPEDIA_DEFAULT_GRAPH	= NLPediaSettings.getInstance().getSetting("dbpediaDefaultGraph");
-	private static final int LIMIT						= 1000;
+	private static final int LIMIT						= 10000;
 	
 	private static final NLPediaLogger logger = new NLPediaLogger(WriteRelationToFileCommand.class);
 	
@@ -82,27 +88,15 @@ public class WriteRelationToFileCommand implements Command {
 
 	private void queryObjectProperties() throws UnsupportedEncodingException, FileNotFoundException, IOException {
 		
-		String backgroundKnowledgeFilename = NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/backgroundknowledge/object_properties_" + language +".txt";
+		String backgroundKnowledgeFilename = NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/backgroundknowledge/object_properties_to_query.txt";
 		List<String> objectPropertyUris = FileUtil.readFileInList(backgroundKnowledgeFilename, "UTF-8");
 		
 		for ( String objectPropertyUri : objectPropertyUris ) {
 			
-//			String personObjectQuery = 			createObjectPropertyQueryObject("http://dbpedia.org/ontology/Person", objectPropertyUri);
-//			String personSubjectQuery = 		createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Person", objectPropertyUri);
-//			String organisationObjectQuery = 	createObjectPropertyQueryObject("http://dbpedia.org/ontology/Organisation", objectPropertyUri);
-//			String organisationSubjectQuery = 	createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Organisation", objectPropertyUri);
-//			String placeObjectQuery =			createObjectPropertyQueryObject("http://dbpedia.org/ontology/Place", objectPropertyUri);
-//			String placeSubjectQuery =			createObjectPropertyQuerySubject("http://dbpedia.org/ontology/Place", objectPropertyUri);
+			String query	= createObjectPropertyQuery(objectPropertyUri);
+			String filePath	= NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("backgroundKnowledgeOutputFilePath") + "/object/";
 			
-			String query = createObjectPropertyQuery(objectPropertyUri);
-			getKnowledge(query, 0, "/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-			
-//			getKnowledge(personObjectQuery, 0,			"/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-//			getKnowledge(personSubjectQuery, 0,			"/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-//			getKnowledge(organisationObjectQuery, 0,	"/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-//			getKnowledge(organisationSubjectQuery, 0,	"/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-//			getKnowledge(placeObjectQuery, 0,			"/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
-//			getKnowledge(placeSubjectQuery, 0,			"/Users/gerb/Desktop/ko_object/"+objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+			getKnowledge(query, 0, filePath + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
 		}
 	}
 	
@@ -247,23 +241,22 @@ public class WriteRelationToFileCommand implements Command {
 	
 					if (solution.get("ol") != null) {
 	
-						String sl = solution.get("sl").toString();
-						String ol = solution.get("ol").toString();
+						String subjectLabel = solution.get("sl").toString();
+						String objectLabel = solution.get("ol").toString();
 	
-						if (ol.contains("@")) {
-	
-							ol = ol.substring(0, ol.lastIndexOf("@"));
-						}
-						if (sl.contains("@")) {
-	
-							sl = sl.substring(0, sl.lastIndexOf("@"));
-						}
+						if (objectLabel.contains("@")) objectLabel = objectLabel.substring(0, objectLabel.lastIndexOf("@"));
+						if (subjectLabel.contains("@")) subjectLabel = subjectLabel.substring(0, subjectLabel.lastIndexOf("@"));
 						
 						String range = solution.get("range") == null ? "null" : solution.get("range").toString();
 						String domain = solution.get("domain") == null ? "null" : solution.get("domain").toString();
 						
-						writer.write(solution.get("s").toString() + " ||| " + sl + " ||| " + solution.get("callret-2").toString() + " ||| " + solution.get("o").toString() + " ||| " + ol + " ||| " + range + " ||| " + domain);
-						writer.write(System.getProperty("line.separator"));
+						Resource subject	= new Resource(solution.get("s").toString(), subjectLabel);
+						Property property	= new Property(solution.get("callret-2").toString(), "", range, domain);
+						Resource object		= new Resource(solution.get("o").toString(), objectLabel);
+						BackgroundKnowledge backgroundKnowledge = SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(
+																		new ObjectPropertyBackgroundKnowledge(subject, property, object));
+
+						writer.write(backgroundKnowledge + Constants.NEW_LINE_SEPARATOR);
 					}
 				}
 			}
@@ -318,7 +311,11 @@ public class WriteRelationToFileCommand implements Command {
 					handleDatatypePropertyQuery(fileName, resultSetList);
 				}
 			}
-			else break;
+			else {
+				
+				qexec.close();
+				break;
+			}
 		}
 		logger.info("Querying ended for query in " + (System.currentTimeMillis() - start) + "ms: " + query);
 	}

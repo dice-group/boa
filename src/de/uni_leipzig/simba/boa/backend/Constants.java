@@ -114,6 +114,18 @@ public class Constants {
 	public static final String NEW_LINE_SEPARATOR = System.getProperty("line.separator");
 	
 	/**
+	 * used to seperate the values in the background knowledge file
+	 */
+	public static final String BACKGROUND_KNOWLEDGE_VALUE_SEPARATOR = " ||| ";
+	
+	/**
+	 * used to seperate the values in the background knowledge file
+	 */
+	public static final String BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR = "_&_";
+	
+	// ##############################################################################
+	
+	/**
 	 * 
 	 */
 	public static final String RDF_TYPE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";

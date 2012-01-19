@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +28,10 @@ public class StartQueryCommand implements Command {
 			
 			System.out.print("Please enter a keyphrase:\t");
 			
-			Scanner scanner = new Scanner(System.in);
+			Scanner scanner = new Scanner(new BufferedInputStream(System.in), "UTF-8");
 			String keyphrase = scanner.nextLine();
 			
-			PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+			PatternSearcher patternSearcher = new PatternSearcher(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
 			List<String> sentences = new ArrayList<String>(patternSearcher.getExactMatchSentences(keyphrase, 1000));
 			for (String sentence : sentences) {
 				

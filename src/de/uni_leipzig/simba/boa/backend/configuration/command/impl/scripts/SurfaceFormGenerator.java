@@ -28,10 +28,15 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.StringUtils;
 
 import weka.core.tokenizers.NGramTokenizer;
+import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.relation.AbstractBackgroundKnowledge;
+import de.uni_leipzig.simba.boa.backend.relation.BackgroundKnowledge;
+import de.uni_leipzig.simba.boa.backend.relation.DatatypePropertyBackgroundKnowledge;
+import de.uni_leipzig.simba.boa.backend.relation.ObjectPropertyBackgroundKnowledge;
 
 /**
  * This thing needs at least 4GB of RAM.
@@ -39,18 +44,36 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
  * 
  * @author gerb
  */
-public class CreateSurfaceFormCommand implements Command {
+public class SurfaceFormGenerator implements Command {
 
-	private static NLPediaLogger logger = new NLPediaLogger(CreateSurfaceFormCommand.class);
-	private static Map<String,Set<String>> urisToLabels;
+	private static NLPediaLogger logger = new NLPediaLogger(SurfaceFormGenerator.class);
+	private Map<String,Set<String>> urisToLabels;
+	
+	private static SurfaceFormGenerator INSTANCE = null;
+	
+	private SurfaceFormGenerator() { 
+		
+		initializeSurfaceForms();
+	}
+	
+	/**
+	 * @return
+	 */
+	public static SurfaceFormGenerator getInstance() {
+		
+		if ( SurfaceFormGenerator.INSTANCE == null ) {
+			
+			SurfaceFormGenerator.INSTANCE = new SurfaceFormGenerator();
+		}
+		
+		return SurfaceFormGenerator.INSTANCE;
+	}
 	
 	public void execute() {
 			
 		File directory = new File(NLPediaSettings.getInstance().getSetting("plainRelationFiles"));
 		
 		try {
-			
-			urisToLabels = readSurfaceForms();
 			
 			for ( File f : FileUtils.listFiles(directory, HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE) ) {
 				
@@ -391,24 +414,86 @@ public class CreateSurfaceFormCommand implements Command {
 		writer.close();
 	}
 	
-	
-	private Map<String,Set<String>> readSurfaceForms() throws IOException {
+	/**
+	 * 
+	 */
+	private void initializeSurfaceForms() {
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(NLPediaSettings.getInstance().getSetting("surfaceFormsTSV")))));
+		System.out.println("Intializing surface forms");
 		
-		Map<String,Set<String>> uriToLabels = new HashMap<String,Set<String>>();
+		BufferedReader br = FileUtil.openReader(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("surfaceFormsTSV")); 
+		this.urisToLabels = new HashMap<String,Set<String>>(); 
 		
 		String line = "";
-		while ( (line = br.readLine()) != null ) {
+		try {
 			
-			String[] lineParts = line.split("\t");
-			
-			uriToLabels.put(lineParts[0], new HashSet<String>(Arrays.asList(Arrays.copyOfRange(lineParts, 1, lineParts.length))));
+			while ( (line = br.readLine()) != null ) {
+				
+				String[] lineParts = line.split("\t");
+				this.urisToLabels.put(lineParts[0], new HashSet<String>(Arrays.asList(Arrays.copyOfRange(lineParts, 1, lineParts.length))));
+			}
+			br.close();
 		}
-		br.close();
-		return uriToLabels;
+		catch (IOException e) {
+			
+			e.printStackTrace();
+			throw new RuntimeException("Could not read surface form file!", e);
+		}
+		System.out.println("Finished intializing surface forms");
 	}
 	
+	/**
+	 * 
+	 * @param backgroundKnowledge
+	 * @return
+	 */
+	public BackgroundKnowledge createSurfaceFormsForBackgroundKnowledge(BackgroundKnowledge backgroundKnowledge) {
+		
+		if ( backgroundKnowledge instanceof ObjectPropertyBackgroundKnowledge ) {
+			
+			return this.createSurfaceFormsForObjectProperty((ObjectPropertyBackgroundKnowledge) backgroundKnowledge);
+		} 
+		if ( backgroundKnowledge instanceof DatatypePropertyBackgroundKnowledge ) {
+			
+			return this.createSurfaceFormsForDatatypeProperty((DatatypePropertyBackgroundKnowledge) backgroundKnowledge);
+		}
+		throw new RuntimeException("background knowledge of wrong type found: "  + backgroundKnowledge.getClass()); 
+	}
+	
+	/**
+	 * 
+	 * @param backgroundKnowledge
+	 * @return
+	 */
+	private BackgroundKnowledge createSurfaceFormsForObjectProperty(ObjectPropertyBackgroundKnowledge objectPropertyBackgroundKnowledge) {
+
+		String subjectUri	= objectPropertyBackgroundKnowledge.getSubject().getUri();
+		String objectUri	= objectPropertyBackgroundKnowledge.getObject().getUri();
+		
+		// we found labels for the subject in the surface form file
+		if ( this.urisToLabels.containsKey(subjectUri) ) {
+			
+			objectPropertyBackgroundKnowledge.setSubjectSurfaceForms(urisToLabels.get(subjectUri));
+		}
+		// we found labels for the object in the surface form file
+		if ( this.urisToLabels.containsKey(objectUri) ) {
+			
+			objectPropertyBackgroundKnowledge.setObjectSurfaceForms(urisToLabels.get(objectUri));
+		}
+		return objectPropertyBackgroundKnowledge;
+	}
+	
+	/**
+	 * 
+	 * @param backgroundKnowledge
+	 * @return
+	 */
+	private BackgroundKnowledge createSurfaceFormsForDatatypeProperty(DatatypePropertyBackgroundKnowledge backgroundKnowledge) {
+
+		// TODO implement this code
+		return backgroundKnowledge;
+	}
+
 	private Map<String,Set<String>> getSurfaceForms() throws IOException {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("/Users/gerb/Development/workspaces/experimental/surface_forms-Wikipedia-TitRedDis.tsv"))));
