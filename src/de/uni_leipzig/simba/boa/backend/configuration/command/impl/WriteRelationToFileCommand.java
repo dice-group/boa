@@ -82,9 +82,9 @@ public class WriteRelationToFileCommand implements Command {
 			String organisationQuery = createDatatypePropertyQueryObject("http://dbpedia.org/ontology/Organisation", datatypePropertyUri);
 			String placeQuery = createDatatypePropertyQueryObject("http://dbpedia.org/ontology/Place", datatypePropertyUri);
 			
-			getKnowledge(personQuery, 0,		"/Users/gerb/TTTTT/datatype/"+datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length())+".txt");
-			getKnowledge(organisationQuery, 0,	"/Users/gerb/TTTTT/datatype/"+datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length())+".txt");
-			getKnowledge(placeQuery, 0,			"/Users/gerb/TTTTT/datatype/"+datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length())+".txt");
+//			getKnowledge(personQuery, 0,		"/Users/gerb/TTTTT/datatype/"+datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length())+".txt");
+//			getKnowledge(organisationQuery, 0,	"/Users/gerb/TTTTT/datatype/"+datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length())+".txt");
+//			getKnowledge(placeQuery, 0,			"/Users/gerb/TTTTT/datatype/"+datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length())+".txt");
 		}
 	}
 
@@ -98,7 +98,7 @@ public class WriteRelationToFileCommand implements Command {
 			String query	= createObjectPropertyQuery(objectPropertyUri);
 			String filePath	= NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("backgroundKnowledgeOutputFilePath") + "/object/";
 			
-			getKnowledge(query, 0, filePath + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+			getKnowledge(query, 0, objectPropertyUri, filePath + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
 		}
 	}
 	
@@ -127,16 +127,12 @@ public class WriteRelationToFileCommand implements Command {
 		return 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>  " +
-			"SELECT ?s ?sl <"+property+"> ?o ?ol ?range ?domain " +
+			"SELECT ?s ?sl <"+property+"> ?o ?ol " +
 			"WHERE {" +
 			 "	?s rdfs:label ?sl . " + 
 			 "  ?s <"+property+"> ?o . " +
 			 "  ?o rdfs:label ?ol . " +
 			 "	FILTER (   lang(?sl)= \""+language+"\"  &&  lang(?ol)= \""+language+"\"  ) " +
-			 "	OPTIONAL { " +
-			 "		<"+property+">  rdfs:range  ?range . " +
-			 "		<"+property+">  rdfs:domain ?domain . " +
-			 "	} " +
 			 "} " +
 			 "LIMIT " + LIMIT + " " +
 			 "OFFSET &OFFSET";
@@ -229,7 +225,7 @@ public class WriteRelationToFileCommand implements Command {
 		}
 	}
 
-	private static void handleObjectPropertyQuery(String fileName, List<QuerySolution> resultSets) {
+	private static void handleObjectPropertyQuery(Property property, String fileName, List<QuerySolution> resultSets) {
 
 		Writer writer = null;
 		
@@ -249,11 +245,7 @@ public class WriteRelationToFileCommand implements Command {
 						if (objectLabel.contains("@")) objectLabel = objectLabel.substring(0, objectLabel.lastIndexOf("@"));
 						if (subjectLabel.contains("@")) subjectLabel = subjectLabel.substring(0, subjectLabel.lastIndexOf("@"));
 						
-						String range = solution.get("range") == null ? "null" : solution.get("range").toString();
-						String domain = solution.get("domain") == null ? "null" : solution.get("domain").toString();
-						
 						Resource subject	= new Resource(solution.get("s").toString(), subjectLabel);
-						Property property	= new Property(solution.get("callret-2").toString(), "", range, domain);
 						Resource object		= new Resource(solution.get("o").toString(), objectLabel);
 						BackgroundKnowledge backgroundKnowledge = SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(
 																		new ObjectPropertyBackgroundKnowledge(subject, property, object));
@@ -282,10 +274,12 @@ public class WriteRelationToFileCommand implements Command {
 		}
 	}
 	
-	private void getKnowledge(String query, int offset1, String fileName) {
+	private void getKnowledge(String query, int offset1, String propertyUri, String fileName) {
 		
 		logger.info("Querying started for query: " + query);
 		long start = System.currentTimeMillis();
+	
+		Property property = this.queryPropertyData(propertyUri);
 		
 		int offset = offset1;
 		while (true) {
@@ -307,12 +301,14 @@ public class WriteRelationToFileCommand implements Command {
 				// this is an object property 
 				if ( query.contains("?o rdfs:label ?ol") ) {
 
-					handleObjectPropertyQuery(fileName, resultSetList);
+					handleObjectPropertyQuery(property, fileName, resultSetList);
 				}
 				else {
 					
 					handleDatatypePropertyQuery(fileName, resultSetList);
 				}
+				// we don't need to make a new query the current resultset was not full
+				if ( resultSetList.size() < LIMIT ) break;
 			}
 			else {
 				
@@ -323,6 +319,25 @@ public class WriteRelationToFileCommand implements Command {
 		logger.info("Querying ended for query in " + (System.currentTimeMillis() - start) + "ms: " + query);
 	}
 	
+	private Property queryPropertyData(String propertyUri) {
+
+		String propertyQuery = 
+				"SELECT distinct ?domain ?range " + 
+				"WHERE { " +	
+				"  <"+propertyUri+">  rdfs:domain ?domain . " +
+				"  <"+propertyUri+">  rdfs:range ?range . " +
+				"}";
+		
+		System.out.println(propertyQuery);
+		
+		QueryEngineHTTP qexecProperty = new QueryEngineHTTP(SPARQL_ENDPOINT_URI, propertyQuery);
+		qexecProperty.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
+		
+		ResultSet results  = qexecProperty.execSelect();
+		QuerySolution qs = results.next();
+		return new Property(propertyUri, "", qs.get("range").toString(), qs.get("domain").toString());
+	}
+
 	private ResultSet getResults(QueryEngineHTTP qexec, String query) {
 		
 		ResultSet results = null;
@@ -335,7 +350,7 @@ public class WriteRelationToFileCommand implements Command {
 			
 			results = getResults(qexec, query);
 			System.out.println("Retrying query: " + query);
-			this.logger.warn("Need to retry query: " + query, e);
+			logger.warn("Need to retry query: " + query, e);
 		}
 		
 		return results;
