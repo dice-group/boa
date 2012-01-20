@@ -308,7 +308,7 @@ public class WriteRelationToFileCommand implements Command {
 					handleDatatypePropertyQuery(fileName, resultSetList);
 				}
 				// we don't need to make a new query the current resultset was not full
-				if ( resultSetList.size() < LIMIT ) break;
+				// if ( resultSetList.size() < LIMIT ) break;
 			}
 			else {
 				
