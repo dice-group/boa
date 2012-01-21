@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.relation;
+package de.uni_leipzig.simba.boa.backend.backgroundknowledge;
 
 /**
  * 

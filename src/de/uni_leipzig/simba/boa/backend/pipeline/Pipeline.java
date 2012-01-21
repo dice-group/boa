@@ -1,15 +1,33 @@
 package de.uni_leipzig.simba.boa.backend.pipeline;
 
-import java.util.Set;
-import java.util.TreeSet;
+import de.uni_leipzig.simba.boa.backend.BoaHelper;
+import de.uni_leipzig.simba.boa.backend.pipeline.configuration.PipelineConfiguration;
+import de.uni_leipzig.simba.boa.backend.pipeline.module.PipelineModule;
 
-
+/**
+ * 
+ * @author gerb
+ */
 public class Pipeline {
 
-	private Set<PipelineModule> modules;
-	
-	private Pipeline() {
+	private PipelineConfiguration pipelineConfiguration;
+
+	/**
+	 * Standard constructor reads the pipelineConfiguration from the 
+	 * nlpedia_setup.xml file.
+	 */
+	public Pipeline() {
 		
-		this.modules = new TreeSet<PipelineModule>();
+		this.pipelineConfiguration = BoaHelper.loadConfiguration();
+	}
+	
+	public void run() {
+	
+		for ( PipelineModule module : this.pipelineConfiguration.getPipelineModules() ) {
+			
+			module.setModuleInterchangeObject(this.pipelineConfiguration.getModuleInterchangeObject());
+			module.run();
+			module.updateModuleInterchangeObject();
+		}
 	}
 }
