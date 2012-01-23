@@ -1,7 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.pipeline.module;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.pipeline.interchangeobject.ModuleInterchangeObject;
 
@@ -11,6 +10,12 @@ import de.uni_leipzig.simba.boa.backend.pipeline.interchangeobject.ModuleInterch
  */
 public interface PipelineModule {
 
+	/**
+	 * 
+	 * @return
+	 */
+	public String getName();
+	
 	/**
 	 * 
 	 * @param moduleInterchangeObject
@@ -26,25 +31,25 @@ public interface PipelineModule {
 	 * 
 	 * @return
 	 */
-	public List<Class<PipelineModule>> getModuleDependencies();
+	public Set<Class<PipelineModule>> getModuleDependencies();
 	
 	/**
 	 * 
 	 * @param moduleDependencies
 	 */
-	public void setModuleDependencies(List<Class<PipelineModule>> moduleDependencies);	
+	public void setModuleDependencies(Set<Class<PipelineModule>> moduleDependencies);	
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public Map<String,String> getModuleSettings();
+	public Set<String> getModuleSettings();
 	
 	/**
 	 * 
 	 * @param moduleSettings
 	 */
-	public void setModuleSettings(Map<String,String> moduleSettings);
+	public void setModuleSettings(Set<String> moduleSettings);
 	
 	/**
 	 * 

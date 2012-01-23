@@ -9,7 +9,6 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.PatternScoreThread;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -52,12 +51,12 @@ public class PatternScoreFeatureCommand implements Command {
 		
 		int numberOfConfidenceMeasureThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfConfidenceMeasureThreads")).intValue();
 		
-		// split the mappings into several lists
+		// split the NAMED_ENTITY_TAG_MAPPINGS into several lists
 		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / numberOfConfidenceMeasureThreads) + 1 );
 		
 		int count= 0;
 		for (List<PatternMapping> list : patternMappingSubLists) count += list.size();
-		System.out.println(String.format("Found %s pattern mappings in database, %s mappings got distributed to confidence measure threads", patternMappingList.size(), count));
+		System.out.println(String.format("Found %s pattern NAMED_ENTITY_TAG_MAPPINGS in database, %s NAMED_ENTITY_TAG_MAPPINGS got distributed to confidence measure threads", patternMappingList.size(), count));
 		
 		List<Thread> threadList = new ArrayList<Thread>();
 		
@@ -89,7 +88,7 @@ public class PatternScoreFeatureCommand implements Command {
 		}
 		timer.cancel();
 	
-		System.out.println("All confidence measurement threads are finished.\n Starting to update pattern mappings..");
+		System.out.println("All confidence measurement threads are finished.\n Starting to update pattern NAMED_ENTITY_TAG_MAPPINGS..");
 		for ( Thread t: threadList ) {
 			
 			for ( PatternMapping mapping : ((PatternScoreThread)t).getScoredPatternMappings() ) {

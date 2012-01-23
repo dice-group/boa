@@ -6,70 +6,30 @@ import java.util.Set;
 
 /**
  * This class contains common constants used in the NLPedia project.
- * These constants include:
- * 
- * 	- the 10 most common languages spoken on the Internet
- * 
  * 
  * @author Daniel Gerber
  */
 public class Constants {
 
 	/**
-	 * Use this for patterns in English. 
+	 * 
 	 */
-	public static final String ENGLISH_LANGUAGE = "ENGLISH_LANGUAGE";
+	public static final String NAMED_ENTITY_TAG_OTHER = "OTHER";
 	
 	/**
-	 * Use this for patterns in Chinese.
+	 * 
 	 */
-	public static final String MANDARIN_CHINESE_LANGUAGE = "MANDARIN_CHINESE_LANGUAGE";
+	public static final String NAMED_ENTITY_TAG_PLACE = "PLACE";
 	
 	/**
-	 * Use this for patterns in Spanish.
+	 * 
 	 */
-	public static final String SPANISH_LANGUAGE = "SPANISH_LANGUAGE";
+	public static final String NAMED_ENTITY_TAG_ORGANIZATION = "ORGANIZATION"; 
 	
 	/**
-	 * Use this for patterns in Japanese.
+	 * 
 	 */
-	public static final String JAPANESE_LANGUAGE = "JAPANESE_LANGUAGE";
-	
-	/**
-	 * Use this for patterns in Portuguese.
-	 */
-	public static final String PORTUGESE_LANGUAGE = "PORTUGESE_LANGUAGE";
-	
-	/**
-	 * Use this for patterns in German.
-	 */
-	public static final String GERMAN_LANGUAGE = "GERMAN_LANGUAGE";
-	
-	/**
-	 * Use this for patterns in Arabic.
-	 */
-	public static final String ARABIC_LANGUAGE = "ARABIC_LANGUAGE";	
-	
-	/**
-	 * Use this for patterns in French.
-	 */
-	public static final String FRENCH_LANGUAGE = "FRENCH_LANGUAGE";
-	
-	/**
-	 * Use this for patterns in Russian.
-	 */
-	public static final String RUSSIAN_LANGUAGE = "RUSSIAN_LANGUAGE";
-	
-	/**
-	 * Use this for patterns in Korean.
-	 */
-	public static final String KOREAN_LANGUAGE = "KOREAN_LANGUAGE";
-	
-	/**
-	 * Used by language detection if language could not be determined.
-	 */
-	public static final String NOT_SUPPORTED_LANGUAGE = "NOT_SUPPORTED_LANGUAGE";
-	
+	public static final String NAMED_ENTITY_TAG_PERSON = "PERSON";
 	
 	// ##############################################################################
 
@@ -114,9 +74,24 @@ public class Constants {
 	public static final String NEW_LINE_SEPARATOR = System.getProperty("line.separator");
 	
 	/**
+	 * Delimiter used to separate a token from its named entity tag
+	 */
+	public static final String PART_OF_SPEECH_TAG_DELIMITER = "_";
+	
+	/**
+	 * Delimiter used to separate a token from its named entity tag
+	 */
+	public static final String NAMED_ENTITY_TAG_DELIMITER = "_";
+	
+	/**
 	 * used to seperate the values in the background knowledge file
 	 */
 	public static final String BACKGROUND_KNOWLEDGE_VALUE_SEPARATOR = " ||| ";
+	
+	/**
+	 * used to seperate the values in the background knowledge file
+	 */
+	public static final String BACKGROUND_KNOWLEDGE_VALUE_SEPARATOR_REGEX = " \\|\\|\\| ";
 	
 	/**
 	 * used to seperate the values in the background knowledge file

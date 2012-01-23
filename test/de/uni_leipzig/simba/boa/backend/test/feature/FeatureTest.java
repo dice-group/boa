@@ -8,8 +8,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
+
+import junit.framework.JUnit4TestAdapter;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
@@ -34,7 +35,6 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TotalOccurre
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
-import junit.framework.JUnit4TestAdapter;
 
 public class FeatureTest {
 
@@ -89,7 +89,7 @@ public class FeatureTest {
 		
 		List<PatternMapping> mappings = this.createTestData(numberOfMappings, numberOfMaxPatterns);
 		
-		assertEquals(numberOfMappings + " mappings", numberOfMappings, mappings.size());
+		assertEquals(numberOfMappings + " NAMED_ENTITY_TAG_MAPPINGS", numberOfMappings, mappings.size());
 		for (int i = 0; i < numberOfMappings ; i++) {
 			
 			assertEquals(numberOfMaxPatterns[i] + " patterns for mapping " + i, numberOfMaxPatterns[i], mappings.get(i).getPatterns().size());

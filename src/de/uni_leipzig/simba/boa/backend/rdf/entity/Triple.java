@@ -1,6 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.rdf.entity;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,15 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import de.danielgerber.format.OutputFormatter;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 
 @Entity
 @Table(name="triple")
-public class Triple extends de.uni_leipzig.simba.boa.backend.persistance.Entity {
+public class Triple extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 
 	/**
 	 * 

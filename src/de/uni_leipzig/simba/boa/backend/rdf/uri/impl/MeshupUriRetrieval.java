@@ -1,8 +1,9 @@
 package de.uni_leipzig.simba.boa.backend.rdf.uri.impl;
 
+import nlpbox.lookup.SparqlLookup;
+
 import com.hp.hpl.jena.query.QueryParseException;
 
-import nlpbox.lookup.SparqlLookup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
 

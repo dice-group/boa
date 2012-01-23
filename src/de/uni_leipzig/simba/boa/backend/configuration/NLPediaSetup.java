@@ -10,6 +10,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFac
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilterFactory;
 import de.uni_leipzig.simba.boa.backend.logging.LoggingConfigurator;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.util.BeanUtility;
 
 /**
@@ -78,7 +79,7 @@ public class NLPediaSetup {
 				this.settings.setSetting("hibernateHbm2ddlAuto", "create");
 			}
 			
-			// load factories
+			// fill factory singleton with data
 			BeanUtility.getBeansOfType(setupFile, DaoFactory.class);
 			logger.info("Initialized DaoFactory...");
 			
@@ -86,6 +87,9 @@ public class NLPediaSetup {
 			logger.info("Initialized PatternFilterFactory...");
 			
 			BeanUtility.getBeansOfType(setupFile, FeatureFactory.class);
+			logger.info("Initialized FeatureFactory...");
+			
+			BeanUtility.getBeansOfType(setupFile, NaturalLanguageProcessingToolFactory.class);
 			logger.info("Initialized FeatureFactory...");
 		}
 		catch (BeansException be) {

@@ -1,8 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.backgroundknowledge;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 

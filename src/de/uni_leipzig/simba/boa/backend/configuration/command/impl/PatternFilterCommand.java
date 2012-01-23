@@ -22,9 +22,9 @@ public class PatternFilterCommand implements Command {
 	private Map<Integer,PatternMapping> patternMappings = null;
 
 	/**
-	 * Creates a new filter command for pattern mappings
+	 * Creates a new filter command for pattern NAMED_ENTITY_TAG_MAPPINGS
 	 * 
-	 * @param patternMappings a list of pattern mappings, if patternMappings == null
+	 * @param patternMappings a list of pattern NAMED_ENTITY_TAG_MAPPINGS, if patternMappings == null
 	 * a database call will retrieve them
 	 */
 	public PatternFilterCommand(Map<Integer,PatternMapping> patternMappings) {

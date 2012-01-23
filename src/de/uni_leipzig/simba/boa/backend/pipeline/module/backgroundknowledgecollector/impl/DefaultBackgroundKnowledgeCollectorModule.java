@@ -3,7 +3,6 @@
  */
 package de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl;
 
-import de.uni_leipzig.simba.boa.backend.pipeline.interchangeobject.ModuleInterchangeObject;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.AbstractBackgroundKnowledgeCollectorModule;
 
 
@@ -13,6 +12,12 @@ import de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecolle
  */
 public class DefaultBackgroundKnowledgeCollectorModule extends AbstractBackgroundKnowledgeCollectorModule {
 
+	@Override
+	public String getName() {
+
+		return "Default Background Knowledge Collector Module (de/en)";
+	}
+	
 	@Override
 	public void run() {
 

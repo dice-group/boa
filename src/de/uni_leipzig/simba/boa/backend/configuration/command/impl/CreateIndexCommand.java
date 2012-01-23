@@ -1,6 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
-import java.io.IOException;
 import java.util.Date;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;

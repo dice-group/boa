@@ -7,25 +7,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.engine.Cascade;
 
 import de.danielgerber.format.OutputFormatter;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Language;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 
 /**
@@ -34,7 +27,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHel
  */
 @Entity
 @Table(name="pattern")
-public class Pattern extends de.uni_leipzig.simba.boa.backend.persistance.Entity {
+public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 
 	/**
 	 * 

@@ -20,17 +20,15 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TotalHitCountCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
-import sun.tools.tree.ThisExpression;
-
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
 import de.uni_leipzig.simba.boa.backend.nlp.PosTagger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
@@ -44,7 +42,7 @@ public class PatternSearcher {
 	private final static int MIN_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getInstance().getSetting("minPatternLenght")).intValue();
 	private final static int MAX_NUMBER_OF_DOCUMENTS = Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
 
-	private PosTagger posTagger;
+	private PartOfSpeechTagger posTagger;
 
 	private Directory directory = null;
 	private Analyzer analyzer = null;
@@ -61,7 +59,7 @@ public class PatternSearcher {
 
 	public PatternSearcher() throws IOException, ParseException {
 
-		this.directory = FSDirectory.open(new File(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory")));
+		this.directory = FSDirectory.open(new File(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory")));
 		this.analyzer = new WhitespaceAnalyzer();
 
 		// create index searcher in read only mode
@@ -387,6 +385,7 @@ public class PatternSearcher {
 	public Set<String> getExactMatchSentences(String keyphrase, int maxNumberOfDocuments) throws ParseException, IOException {
 
 		ScoreDoc[] hits = indexSearcher.search(this.parser.parse("+sentence-lc:\"" + QueryParser.escape(keyphrase.toLowerCase()) + "\""), null, maxNumberOfDocuments).scoreDocs;
+		System.out.println(this.parser.parse("+sentence-lc:\"" + QueryParser.escape(keyphrase.toLowerCase()) + "\""));
 		TreeSet<String> list = new TreeSet<String>();
 
 		// reverse order because longer sentences come last, longer sentences
@@ -402,7 +401,7 @@ public class PatternSearcher {
 	public Set<String> getExactMatchSentencesForLabels(String label1, String label2, int numberOfDocuments) throws ParseException, IOException {
 		
 		Query query = parser.parse("+sentence-lc:\"" + QueryParser.escape(label1) + "\" && +sentence-lc:\"" + QueryParser.escape(label2) + "\"");
-		hits = indexSearcher.search(query, null, MAX_NUMBER_OF_DOCUMENTS).scoreDocs;
+		hits = indexSearcher.search(query, null, numberOfDocuments).scoreDocs;
 		TreeSet<String> list = new TreeSet<String>();
 		
 		// reverse order because longer sentences come last, longer sentences

@@ -5,9 +5,6 @@ import java.util.List;
 
 import junit.framework.JUnit4TestAdapter;
 
-//import nlpbox.nlpbox.NLPBox;
-//import nlpbox.util.Entity;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

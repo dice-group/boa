@@ -7,12 +7,9 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Reader;
@@ -28,19 +25,18 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.FSDirectory;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.ctc.wstx.util.StringUtil;
-
+import de.danielgerber.file.BufferedFileReader;
+import de.danielgerber.file.BufferedFileWriter;
+import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
 import de.danielgerber.file.FileUtil;
 import de.danielgerber.math.MathUtil;
 import de.danielgerber.rdf.NtripleUtil;
@@ -72,8 +68,8 @@ public class XXX implements Command {
 		
 		Map<String,String> uriToLabelMapping = NtripleUtil.parseNTripleFile("/Users/gerb/labels_ko.nt");
 		
-		BufferedReader reader = FileUtil.openReader("/Users/gerb/en_relation_surface.txt");
-		Writer writer = FileUtil.openWriter("/Users/gerb/ko_relation_surface.txt", "UTF-8", FileUtil.WRITER_WRITE_MODE.OVERRIDE);
+		BufferedFileReader reader = FileUtil.openReader("/Users/gerb/en_relation_surface.txt");
+		BufferedFileWriter writer = FileUtil.openWriter("/Users/gerb/ko_relation_surface.txt", "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
 		String line = "";
 
 		try {

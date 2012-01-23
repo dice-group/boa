@@ -1,29 +1,25 @@
 package de.uni_leipzig.simba.boa.backend;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CrawlingCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateIndexCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateKnowledgeCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternScoreFeatureCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternScoreCommand;
+import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternScoreFeatureCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternSearchCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PrintOptionCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.StartQueryCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.StartStatisticsCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOptionCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.WriteRelationToFileCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.WriteUrlsToFileCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.StartScriptsCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
+import de.uni_leipzig.simba.boa.backend.pipeline.Pipeline;
 import de.uni_leipzig.simba.boa.evaluation.Evaluation;
 
 /**
@@ -77,74 +73,63 @@ public class NLPedia {
 						printOptionCommand.execute();
 						break;
 					
-					case 2: // start crawling
-						Command crawlingOptionCommand = new CrawlingCommand();
-						crawlingOptionCommand.execute();
-						break;
-						
-					case 3: // start indexing
+					case 2: // start indexing
 						Command indexOptionCommand = new CreateIndexCommand();
 						indexOptionCommand.execute();
 						break;
 						
-					case 4: // evaluate pattern
-						// calculate confidence, hand over the filtered patterns
-//						Command patternConfidenceMeasureCommand = new PatternScoreFeatureCommand((Map<Integer, PatternMapping>) cache.get(NLPedia.CACHE_KEY_PATTERN_MAPPING_LIST));
+					case 3: // evaluate pattern
 						Command patternConfidenceMeasureCommand = new PatternScoreFeatureCommand(null);
 						patternConfidenceMeasureCommand.execute();
 						break;
 						
-					case 5: // query a single phrase
+					case 4: // query a single phrase
 						Command patternScoreCommand = new PatternScoreCommand(null);
 						patternScoreCommand.execute();
 						break;
 						
-					case 6: // start looking for patterns in index and write them to the db
+					case 5: // start looking for patterns in index and write them to the db
 						Command patternSearchCommand = new PatternSearchCommand(null);
 						patternSearchCommand.execute();
 						break;
 						
-					case 7: // query dbpedia and serialize background knowledge
+					case 6: // query dbpedia and serialize background knowledge
 						Command writeRealtionToFileCommand = new WriteRelationToFileCommand();
 						writeRealtionToFileCommand.execute();
 						break;
 						
-					case 8: // query google for suitable urls
-						Command wirteUrlsToFileCommand = new WriteUrlsToFileCommand();
-						wirteUrlsToFileCommand.execute();
-						break;
-						
-					case 9: // start statistics here
-						Command startStatisticsCommand = new StartStatisticsCommand();
-						startStatisticsCommand.execute();
-						break;
-						
-					case 10: // start scripts here
+					case 7: // start scripts here
 						Command startScriptCommand = new StartScriptsCommand();
 						startScriptCommand.execute();
 						break;
 						
-					case 11: // start scripts here
+					case 8: // 
 						Command createKnowledgeCommand = new CreateKnowledgeCommand(null);
 						createKnowledgeCommand.execute();
 						break;
 						
-					case 12: 
+					case 9: 
 						Command startQueryCommand = new StartQueryCommand();
 						startQueryCommand.execute();
 						break;
 						
-					case 13:
+					case 10:
 						
 						Command iterationCommand = new IterationCommand();
 						iterationCommand.execute();
 						break;
 						
-					case 14:
+					case 11:
 						
 						Command evaluationCommand = new Evaluation();
 						evaluationCommand.execute();
 						break;
+						
+					case 12:
+						
+						Pipeline pipeline = new Pipeline();
+						pipeline.run();
+						break;	
 						
 					default: // option not supported
 						Command unkownOptionCommand = new UnknownOptionCommand(System.out);

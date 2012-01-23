@@ -3,7 +3,6 @@
  */
 package de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.indexing;
 
-import de.uni_leipzig.simba.boa.backend.pipeline.interchangeobject.ModuleInterchangeObject;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.AbstractPipelineModule;
 
 
@@ -14,6 +13,12 @@ import de.uni_leipzig.simba.boa.backend.pipeline.module.AbstractPipelineModule;
 public class DefaultIndexingModule extends AbstractPipelineModule {
 
 	@Override
+	public String getName() {
+
+		return "Default Indexing Module (de/en)";
+	}
+	
+	@Override
 	public void run() {
 
 	}
@@ -21,7 +26,5 @@ public class DefaultIndexingModule extends AbstractPipelineModule {
 	@Override
 	public void updateModuleInterchangeObject() {
 
-		// TODO Auto-generated method stub
-		
 	}
 }

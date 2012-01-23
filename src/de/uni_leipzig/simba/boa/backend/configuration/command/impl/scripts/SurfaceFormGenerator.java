@@ -6,11 +6,9 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -28,15 +26,15 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.StringUtils;
 
 import weka.core.tokenizers.NGramTokenizer;
+import de.danielgerber.file.BufferedFileReader;
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
+import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
+import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.DatatypePropertyBackgroundKnowledge;
+import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.ObjectPropertyBackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.relation.AbstractBackgroundKnowledge;
-import de.uni_leipzig.simba.boa.backend.relation.BackgroundKnowledge;
-import de.uni_leipzig.simba.boa.backend.relation.DatatypePropertyBackgroundKnowledge;
-import de.uni_leipzig.simba.boa.backend.relation.ObjectPropertyBackgroundKnowledge;
 
 /**
  * This thing needs at least 4GB of RAM.
@@ -421,24 +419,16 @@ public class SurfaceFormGenerator implements Command {
 		
 		System.out.println("Intializing surface forms");
 		
-		BufferedReader br = FileUtil.openReader(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("surfaceFormsTSV")); 
+		BufferedFileReader br = FileUtil.openReader(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("surfaceFormsTSV")); 
 		this.urisToLabels = new HashMap<String,Set<String>>(); 
 		
 		String line = "";
-		try {
+		while ( (line = br.readLine()) != null ) {
 			
-			while ( (line = br.readLine()) != null ) {
-				
-				String[] lineParts = line.split("\t");
-				this.urisToLabels.put(lineParts[0], new HashSet<String>(Arrays.asList(Arrays.copyOfRange(lineParts, 1, lineParts.length))));
-			}
-			br.close();
+			String[] lineParts = line.split("\t");
+			this.urisToLabels.put(lineParts[0], new HashSet<String>(Arrays.asList(Arrays.copyOfRange(lineParts, 1, lineParts.length))));
 		}
-		catch (IOException e) {
-			
-			e.printStackTrace();
-			throw new RuntimeException("Could not read surface form file!", e);
-		}
+		br.close();
 		System.out.println("Finished intializing surface forms");
 	}
 	

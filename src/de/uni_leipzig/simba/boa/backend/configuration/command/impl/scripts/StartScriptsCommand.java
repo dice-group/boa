@@ -5,7 +5,6 @@ import java.util.Scanner;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateMachineLearningCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.LoadKnowledgeCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.ResetPatternCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOptionCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -30,13 +29,11 @@ public class StartScriptsCommand implements Command {
 		    		System.out.println("\t\t2. Ask DBpedia for triples");
 		    		System.out.println("\t\t3. Reset pattern confidence measures");
 		    		System.out.println("\t\t4. Create learned from distribution");
-		    		System.out.println("\t\t5. Create knowledge statistics");
-		    		System.out.println("\t\t6. Train NER model");
-		    		System.out.println("\t\t7. Create pos distirbution");
-		    		System.out.println("\t\t8. Load knowledge");
-		    		System.out.println("\t\t9. Create pattern index");
-		    		System.out.println("\t\t10. Create machine learning input");
-		    		System.out.println("\t\t11. XXX");
+		    		System.out.println("\t\t5. Train NER model");
+		    		System.out.println("\t\t6. Create pos distirbution");
+		    		System.out.println("\t\t7. Create pattern index");
+		    		System.out.println("\t\t8. Create machine learning input");
+		    		System.out.println("\t\t9. XXX");
 		    		System.out.println("\t\t");
 		    		System.out.println("");
 		    		
@@ -82,41 +79,29 @@ public class StartScriptsCommand implements Command {
 							
 						case 5:
 							
-							Command createKnowledgeStatisticsCommand = new KnowledgeStatisticsCommand();
-							createKnowledgeStatisticsCommand.execute();
-							break;
-							
-						case 6:
-							
 							Command trainNerModelCommand = new TrainNerModelCommand();
 							trainNerModelCommand.execute();
 							break;
 							
-						case 7:
+						case 6:
 							
 							Command posDistributionCommand = new PosDistributionCommand();
 							posDistributionCommand.execute();
 							break;	
 					
-						case 8:
-							
-							Command loadKnowledgeCommand = new LoadKnowledgeCommand();
-							loadKnowledgeCommand.execute();
-							break;
-							
-						case 9:
+						case 7:
 							
 							Command createQaIndexCommand = new CreateQuestionAnsweringIndexCommand();
 							createQaIndexCommand.execute();
 							break;
 							
-						case 10:
+						case 8:
 							
 							Command createMLCommand = new CreateMachineLearningCommand();
 							createMLCommand.execute();
 							break;
 						
-						case 11:
+						case 9:
 							
 							Command xxx = new XXX();
 							xxx.execute();
