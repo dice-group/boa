@@ -1,7 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -75,7 +73,7 @@ public class PatternDaoTest {
 	    
 	    List<PatternMapping> mappings = patternMappingDao.findAllPatternMappings();
 	    
-//	    for (PatternMapping map : mappings) {
+//	    for (PatternMapping map : NAMED_ENTITY_TAG_MAPPINGS) {
 //	    	
 //	    	System.out.println(map.getUri());
 //	    	System.out.println(map.getId());
@@ -95,7 +93,7 @@ public class PatternDaoTest {
 //	    PatternMapping mapping2 = (PatternMapping) patternMappingDao.findPatternMapping(mapping.getId());
 //	    System.out.println(mapping2);
 //	    assertEquals(mapping2.getUri(), "http://rdf/ns/.xml.as");
-//	    assertEquals(2, mappings.get(0).getPatterns().size());
+//	    assertEquals(2, NAMED_ENTITY_TAG_MAPPINGS.get(0).getPatterns().size());
 	}
 	
 //	@Test

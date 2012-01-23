@@ -1,6 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -8,8 +7,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import de.uni_leipzig.simba.boa.backend.entity.Entity;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.persistance.Entity;
 import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
 
 /**

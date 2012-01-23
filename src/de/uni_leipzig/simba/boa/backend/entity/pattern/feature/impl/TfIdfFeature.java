@@ -12,8 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternScoreFeatureCommand;
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;

@@ -22,7 +22,7 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
  */
 @Entity
 @Table(name="pattern_mapping") // uniqueConstraints = {@UniqueConstraint(columnNames={"uri"})} 
-public class PatternMapping extends de.uni_leipzig.simba.boa.backend.persistance.Entity {
+public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	
 	/**
 	 * 

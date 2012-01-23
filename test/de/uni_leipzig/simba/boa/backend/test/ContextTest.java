@@ -1,7 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import junit.framework.JUnit4TestAdapter;
 
 import org.junit.After;

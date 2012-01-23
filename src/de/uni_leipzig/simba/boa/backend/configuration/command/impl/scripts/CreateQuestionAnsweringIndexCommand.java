@@ -45,7 +45,7 @@ public class CreateQuestionAnsweringIndexCommand implements Command {
 			Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_30);
 			IndexWriter writer = new IndexWriter(indexDirectory, analyzer, true, IndexWriter.MaxFieldLength.LIMITED);
 			
-			// get the pattern mappings
+			// get the pattern NAMED_ENTITY_TAG_MAPPINGS
 			PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 			List<PatternMapping> patternMappings = pmDao.findAllPatternMappings();
 			

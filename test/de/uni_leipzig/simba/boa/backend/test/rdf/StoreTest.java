@@ -8,7 +8,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.Model;

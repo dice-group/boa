@@ -10,14 +10,14 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.httpclient.HttpException;
-
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import de.danielgerber.Constants;
 import de.danielgerber.file.FileUtil;
+import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
+import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.ObjectPropertyBackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
@@ -25,8 +25,6 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.Surfa
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
-import de.uni_leipzig.simba.boa.backend.relation.BackgroundKnowledge;
-import de.uni_leipzig.simba.boa.backend.relation.ObjectPropertyBackgroundKnowledge;
 
 /**
  * 
@@ -301,10 +299,12 @@ public class WriteRelationToFileCommand implements Command {
 				// this is an object property 
 				if ( query.contains("?o rdfs:label ?ol") ) {
 
+					property.setType("http://www.w3.org/2002/07/owl#ObjectProperty");
 					handleObjectPropertyQuery(property, fileName, resultSetList);
 				}
 				else {
 					
+					property.setType("http://www.w3.org/2002/07/owl#DatatypeProperty");
 					handleDatatypePropertyQuery(fileName, resultSetList);
 				}
 				// we don't need to make a new query the current resultset was not full

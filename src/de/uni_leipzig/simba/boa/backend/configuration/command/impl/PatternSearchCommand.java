@@ -221,8 +221,8 @@ public class PatternSearchCommand implements Command {
 				}
 				currentProperty = propertyUri;
 			}
-			System.out.println("All pattern mappings read in " + (System.currentTimeMillis() - startPatternReading) + "ms!");
-			this.logger.info("All pattern mappings read in " + (System.currentTimeMillis() - startPatternReading) + "ms!");
+			System.out.println("All pattern NAMED_ENTITY_TAG_MAPPINGS read in " + (System.currentTimeMillis() - startPatternReading) + "ms!");
+			this.logger.info("All pattern NAMED_ENTITY_TAG_MAPPINGS read in " + (System.currentTimeMillis() - startPatternReading) + "ms!");
 			
 			long startSaveDB = System.currentTimeMillis();
 			
@@ -242,8 +242,8 @@ public class PatternSearchCommand implements Command {
 			}
 			NLPedia.getCache().put(NLPedia.CACHE_KEY_PATTERN_MAPPING_LIST, this.mappings);
 			
-			System.out.println("All pattern mappings ("+this.mappings.size()+") saved to database! " + (System.currentTimeMillis() - startSaveDB) + "ms!");
-			this.logger.info("All pattern mappings saved to database! " + (System.currentTimeMillis() - startSaveDB) + "ms!");
+			System.out.println("All pattern NAMED_ENTITY_TAG_MAPPINGS ("+this.mappings.size()+") saved to database! " + (System.currentTimeMillis() - startSaveDB) + "ms!");
+			this.logger.info("All pattern NAMED_ENTITY_TAG_MAPPINGS saved to database! " + (System.currentTimeMillis() - startSaveDB) + "ms!");
 		}
 		catch (Exception e) {
 

@@ -7,14 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Timer;
 import java.util.concurrent.Callable;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -24,11 +21,10 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.rdf.TripleDao;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
-import de.uni_leipzig.simba.boa.backend.entity.context.FastLeftContext;
-import de.uni_leipzig.simba.boa.backend.entity.context.FastRightContext;
+import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
+import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.PatternScoreThread;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
@@ -37,8 +33,6 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.DbpediaUriRetrieval;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
-import de.uni_leipzig.simba.boa.backend.search.SearchResult;
-import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrategy;
 
@@ -207,8 +201,8 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 			String domainUri	= mapping.getProperty().getRdfsDomain();
 			String rangeUri		= mapping.getProperty().getRdfsRange();
 			
-			Context leftContext = new FastLeftContext(nerTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables());
-			Context rightContext = new FastRightContext(nerTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables());
+			Context leftContext = new LeftContext(nerTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables());
+			Context rightContext = new RightContext(nerTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables());
 
 			boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
 

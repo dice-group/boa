@@ -1,144 +1,80 @@
 package de.uni_leipzig.simba.boa.backend.entity.context;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import edu.stanford.nlp.util.StringUtils;
 
 
 public class LeftContext extends Context {
 
-	public LeftContext(String nerTaggedString, String sentence, String patternWithOutVariables) {
+	public LeftContext(String nerTaggedString, String sentence, String patternWithOutVariables) throws IllegalArgumentException {
 
 		this.cleanWords = new ArrayList<String>();
+		this.taggedWords = new ArrayList<String>();
 		this.setPattern(patternWithOutVariables);
 		this.createLeftContext(nerTaggedString, sentence);
 	}
+	
+	@Override
+	public int getSuitableEntityDistance(String entityType) {
 
+		String entityMapping = Context.namedEntityRecognitionMappings.get(entityType);
+		
+		// from 0 to the size of the left context without the pattern
+		for (int i = this.taggedWords.size() - this.pattern.split(" ").length, j = 0; i >=  0 ; i--, j++) {
+			
+			if ( this.taggedWords.get(i).contains(entityMapping) ) return j;
+		}
+		return -1;
+	}
+	
 	@Override
 	public String getSuitableEntity(String entityType) {
 
-		String entity = "";
 		String entityMapping = Context.namedEntityRecognitionMappings.get(entityType);
 		
-		// handle list smaller 3 separatly
-		if ( this.cleanWords.size() < 3 ) {
+		List<String> entity = new ArrayList<String>();
+		
+		boolean found = false;
+		
+		// the words are in reversed order
+		for ( int i = taggedWords.size() - 1 ; i >= 0 ; i-- ) {
 			
-			if ( this.cleanWords.size() == 0 ) throw new AssertionError("The word list of this context can't be empty");
-			
-			if ( this.cleanWords.size() == 1 ) {
+			// we found a word which contains a suitable tag
+			if ( taggedWords.get(i).contains(entityMapping) ) {
 				
-				if ( this.cleanWords.get(0).contains(entityMapping) ) entity += this.cleanWords.get(0).substring(0, this.cleanWords.get(0).indexOf("_"));
-			}
-			
-			if ( this.cleanWords.size() == 2 ) {
-				
-				if ( this.cleanWords.get(0).contains(entityMapping) ) entity += this.cleanWords.get(0).substring(0, this.cleanWords.get(0).indexOf("_"));
-				if ( this.cleanWords.get(1).contains(entityMapping) ) entity += " " + this.cleanWords.get(1).substring(0, this.cleanWords.get(1).indexOf("_"));
-			}
-//			System.out.println("leftcontext:"+ entity.trim());
-			return entity.trim();
-		}
-		else {
-			
-			for (int j = this.cleanWords.size() - 1; j >= 0; ) {
-				
-				String currentWord					= this.cleanWords.get(j);
-				// cover the end of the context with withspaces
-				String wordBeforeCurrentWord		= (j - 1) >= 0 ? this.cleanWords.get(j - 1) : ""; 
-				String wordBeforeBeforeCurrentWord 	= (j - 2) >= 0 ? this.cleanWords.get(j - 2) : "";
-				
-//				System.out.println("j:" +j);
-//				System.out.println("ENTITY: " + entity);
-//				System.out.println(currentWord);
-//				System.out.println(wordBeforeCurrentWord);
-//				System.out.println(wordBeforeBeforeCurrentWord);
-//				System.out.println();
-				
-				if ( currentWord.contains(entityMapping) &&		!wordBeforeCurrentWord.contains(entityMapping) && 	wordBeforeBeforeCurrentWord.contains(entityMapping) ) {
-					
-					entity = entity + " " + currentWord + " " + wordBeforeCurrentWord + " " + wordBeforeBeforeCurrentWord;
-					j = j - 3;
-				}
-				if ( currentWord.contains(entityMapping) &&		!wordBeforeCurrentWord.contains(entityMapping) && 	!wordBeforeBeforeCurrentWord.contains(entityMapping) ) {
-					
-					entity = entity + " " + currentWord;
-					break;
-				}
-				if ( currentWord.contains(entityMapping) && 	wordBeforeCurrentWord.contains(entityMapping) && 	wordBeforeBeforeCurrentWord.contains(entityMapping) ) {
-					
-					entity = entity + " " + currentWord + " " + wordBeforeCurrentWord + " " + wordBeforeBeforeCurrentWord;
-					j = j - 3;
-				}
-				if ( currentWord.contains(entityMapping) && 	wordBeforeCurrentWord.contains(entityMapping) && 	!wordBeforeBeforeCurrentWord.contains(entityMapping) ) {
-					
-					entity = entity + " " + currentWord + " " + wordBeforeCurrentWord;
-					j = j - 2;
-				}
-				if ( !currentWord.contains(entityMapping) && 	!wordBeforeCurrentWord.contains(entityMapping) && 	wordBeforeBeforeCurrentWord.contains(entityMapping) ) {
-					
-					if ( entity.contains(entityMapping) ) break;
-					else {
-						
-						entity = entity + " " + wordBeforeBeforeCurrentWord;
-						j = j - 3;
-					}
-				}
-				if ( !currentWord.contains(entityMapping) && 	!wordBeforeCurrentWord.contains(entityMapping) && 	!wordBeforeBeforeCurrentWord.contains(entityMapping) ) {
-					
-					if ( entity.contains(entityMapping) ) break;
-					j = j - 3;
-				}
-				if ( !currentWord.contains(entityMapping) && 	wordBeforeCurrentWord.contains(entityMapping) && 	wordBeforeBeforeCurrentWord.contains(entityMapping) ) {
-					
-					String[] temp = entity.split(" ");
-					if ( temp[temp.length-1].contains(entityMapping) ) {
-						
-						entity = entity + " " + currentWord + " " + wordBeforeCurrentWord + " " + wordBeforeBeforeCurrentWord;
-						j = j - 3;
-					}
-					else {
-						
-						entity = entity + " " + wordBeforeCurrentWord + " " + wordBeforeBeforeCurrentWord;
-						j = j - 3;
-					}
-				}
-				if ( !currentWord.contains(entityMapping) &&	 wordBeforeCurrentWord.contains(entityMapping) && 	!wordBeforeBeforeCurrentWord.contains(entityMapping) ) {
-					
-					if ( entity.isEmpty() ) {
-						
-						entity = wordBeforeCurrentWord;
-						j = j - 3;
-					}
-					else {
-						
-						String[] temp = entity.split(" ");
-						if ( temp[temp.length-1].contains(entityMapping) ) {
-							
-							entity = entity + " " + currentWord + " " + wordBeforeCurrentWord;
-							j = j - 2;
-						}
-						else break;
-					}
-				}
-			}
-//			System.out.println("leftentity: " + entity);
-			// reverse the order because we moved from right to left
-			String[] foundEntity = entity.trim().split(" ");
-			String result = "";
-			for (int i = foundEntity.length - 1; i >= 0 ; i--) {
-				
-//				System.out.println(foundEntity[i]);
-				result += " " + foundEntity[i].substring(0, foundEntity[i].indexOf("_"));
-			}//System.out.println("leftentity: " + result.trim());
-			return result.trim();
-		}
-	}
+				// we found one before
+				if ( found ) {
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
+					entity.add(this.cleanWords.get(this.taggedWords.indexOf(taggedWords.get(i))));
+				}
+				// we found it for the first time so change the flag
+				else {
 
-		return LeftContext.class.getSimpleName() + " " + this.cleanWords;
+					found = true;
+					entity.add(this.cleanWords.get(this.taggedWords.indexOf(taggedWords.get(i))));
+				}
+			}
+			// current word does not contain a suitable tag
+			else {
+				
+				// we did find a suitable one before
+				if ( found ) {
+					
+					break; // complete entity 
+				}
+				else {
+					
+					continue; // go to next word
+				}
+			}
+		}
+		
+		Collections.reverse(entity);
+		
+		return StringUtils.join(entity, " ");
 	}
 	
 	/**
@@ -146,27 +82,18 @@ public class LeftContext extends Context {
 	 * 
 	 * @param nerTaggedString
 	 */
-	private void createLeftContext(String nerTaggedString, String sentenceWithoutNerTags) throws StringIndexOutOfBoundsException {
+	private void createLeftContext(String nerTaggedString, String sentenceWithoutNerTags) throws IllegalArgumentException {
 
-		String leftPatternString = sentenceWithoutNerTags.substring(0, sentenceWithoutNerTags.toLowerCase().indexOf(this.pattern.toLowerCase()) - 1).trim();
-        String[] words = nerTaggedString.split(" ");
+		String leftContextString = sentenceWithoutNerTags.substring(0, sentenceWithoutNerTags.toLowerCase().lastIndexOf(this.pattern.toLowerCase()) - 1).trim();
+        String[] taggedWords = nerTaggedString.split(" ");
+        String[] cleanWords = sentenceWithoutNerTags.split(" ");
         
-        // add one token from the pattern to the left context
-        // this is for cases where one part of the entity left to the pattern occurs inside the pattern like: ?D? Dickens 's novel ?R?
-        for(int i = 0; i < leftPatternString.split(" ").length + 1; i++){
-           this.cleanWords.add(words[i]);
+        if ( taggedWords.length != cleanWords.length ) throw new IllegalArgumentException("Could not create a context because the tagged string and the clean string have not the same size.");
+        
+        for( int i = 0; i < leftContextString.split(" ").length + this.pattern.split(" ").length - 1 ; i++){
+           
+        	this.taggedWords.add(taggedWords[i]);
+        	this.cleanWords.add(cleanWords[i]);
         }
-	}
-
-	@Override
-	public int getSuitableEntityDistance(String entityType) {
-
-		String entityMapping = Context.namedEntityRecognitionMappings.get(entityType);
-		
-		for (int i = this.cleanWords.size() - 1, j = 1; i >= 0 ; i--, j++) {
-			
-			if ( this.cleanWords.get(i).contains(entityMapping) ) return j;
-		}
-		return 0;
 	}
 }

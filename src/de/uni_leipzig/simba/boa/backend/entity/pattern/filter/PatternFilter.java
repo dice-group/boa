@@ -10,7 +10,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 public interface PatternFilter {
 
 	/**
-	 * Found pattern mappings need to be filtered, e.g. pattern mappings 
+	 * Found pattern NAMED_ENTITY_TAG_MAPPINGS need to be filtered, e.g. pattern NAMED_ENTITY_TAG_MAPPINGS 
 	 * with patterns which do not contain a certain amount of cleanWords or 
 	 * only contain stop-words need to be filtered. Furthermore checked 
 	 * patterns need to be evaluated, if they deliver suitable results. 

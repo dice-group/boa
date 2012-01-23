@@ -9,54 +9,26 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Timer;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-import org.apache.lucene.queryParser.ParseException;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
-import de.uni_leipzig.simba.boa.backend.dao.rdf.ResourceDao;
 import de.uni_leipzig.simba.boa.backend.dao.rdf.TripleDao;
-import de.uni_leipzig.simba.boa.backend.entity.context.Context;
-import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
-import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.PatternScoreThread;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
-import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
-import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.DbpediaUriRetrieval;
-import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
-import de.uni_leipzig.simba.boa.backend.search.concurrent.CreateKnowledgeCallable;
 import de.uni_leipzig.simba.boa.backend.search.concurrent.CreateKnowledgeThread;
-import de.uni_leipzig.simba.boa.backend.search.concurrent.PrintProgressTask;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;
-import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
-import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrategy;
 
 /**
  * 
@@ -98,7 +70,7 @@ public class CreateKnowledgeCommand implements Command {
 	
 	public void execute(){
 		
-		// split the mappings into numberOfThreads lists for numberOfThreads threads
+		// split the NAMED_ENTITY_TAG_MAPPINGS into numberOfThreads lists for numberOfThreads threads
 		List<List<PatternMapping>> patternMappingSubLists	= ListUtil.split(patternMappingList, (patternMappingList.size() / NUMBER_OF_CREATE_KNOWLEDGE_THREADS) + 1 );
 		List<Thread> threadList = new ArrayList<Thread>();
 		

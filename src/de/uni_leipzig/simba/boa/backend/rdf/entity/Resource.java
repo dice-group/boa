@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="resource")
-public class Resource extends de.uni_leipzig.simba.boa.backend.persistance.Entity {
+public class Resource extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 
 	/**
 	 * 

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
@@ -17,7 +16,6 @@ import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 
 public class CreateMachineLearningCommand implements Command {

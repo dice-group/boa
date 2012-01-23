@@ -1,18 +1,15 @@
 package de.uni_leipzig.simba.boa.evaluation.charts;
 
+import static com.googlecode.charts4j.Color.BLACK;
+import static com.googlecode.charts4j.Color.BLUEVIOLET;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -26,31 +23,13 @@ import com.googlecode.charts4j.AxisStyle;
 import com.googlecode.charts4j.AxisTextAlignment;
 import com.googlecode.charts4j.BarChart;
 import com.googlecode.charts4j.BarChartPlot;
-import com.googlecode.charts4j.Color;
 import com.googlecode.charts4j.Data;
 import com.googlecode.charts4j.DataUtil;
-import com.googlecode.charts4j.Fills;
 import com.googlecode.charts4j.GCharts;
-import com.googlecode.charts4j.LinearGradientFill;
 import com.googlecode.charts4j.Plots;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
-import de.danielgerber.format.OutputFormatter;
-import de.danielgerber.math.MathUtil;
-import de.uni_leipzig.simba.boa.backend.comparator.PatternComparator;
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
-import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
-import de.uni_leipzig.simba.boa.backend.util.ListUtil;
-import edu.stanford.nlp.util.StringUtils;
-
-import static com.googlecode.charts4j.Color.*;
 
 public class PatternMappingConfidenceDistribution  {
 

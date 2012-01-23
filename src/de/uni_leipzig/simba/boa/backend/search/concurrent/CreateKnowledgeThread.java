@@ -16,8 +16,8 @@ import org.apache.lucene.store.Directory;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateKnowledgeCommand;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
-import de.uni_leipzig.simba.boa.backend.entity.context.FastLeftContext;
-import de.uni_leipzig.simba.boa.backend.entity.context.FastRightContext;
+import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
+import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -26,7 +26,6 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
-import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.DbpediaUriRetrieval;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.MeshupUriRetrieval;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
@@ -167,8 +166,8 @@ public class CreateKnowledgeThread { //extends Thread {
 			String domainUri	= mapping.getProperty().getRdfsDomain();
 			String rangeUri		= mapping.getProperty().getRdfsRange();
 			
-			Context leftContext = new FastLeftContext(nerTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables());
-			Context rightContext = new FastRightContext(nerTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables());
+			Context leftContext = new LeftContext(nerTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables());
+			Context rightContext = new RightContext(nerTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables());
 
 			boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
 

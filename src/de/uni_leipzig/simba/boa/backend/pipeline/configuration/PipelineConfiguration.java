@@ -5,7 +5,6 @@ package de.uni_leipzig.simba.boa.backend.pipeline.configuration;
 
 import java.util.List;
 
-import de.uni_leipzig.simba.boa.backend.pipeline.interchangeobject.DefaultModuleInterchangeObject;
 import de.uni_leipzig.simba.boa.backend.pipeline.interchangeobject.ModuleInterchangeObject;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.PipelineModule;
 

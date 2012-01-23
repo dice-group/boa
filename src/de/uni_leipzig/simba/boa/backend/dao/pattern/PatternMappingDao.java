@@ -12,8 +12,8 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import de.uni_leipzig.simba.boa.backend.dao.AbstractDao;
+import de.uni_leipzig.simba.boa.backend.entity.Entity;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.persistance.Entity;
 import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 

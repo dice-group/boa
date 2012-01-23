@@ -1,7 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.test;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import junit.framework.JUnit4TestAdapter;
@@ -13,8 +12,6 @@ import org.junit.Test;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
-//import de.uni_leipzig.simba.boa.backend.limes.PatternSimilarityCalculator;
-import de.uni_leipzig.simba.boa.backend.limes.SimilarityStatement;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 

@@ -1,4 +1,5 @@
 http://dbpedia.org/ontology/birthPlace
+http://dbpedia.org/ontology/formerCoach
 http://dbpedia.org/ontology/isPartOf
 http://dbpedia.org/ontology/starring
 http://dbpedia.org/ontology/occupation
@@ -101,7 +102,6 @@ http://dbpedia.org/ontology/usedInWar
 http://dbpedia.org/ontology/stylisticOrigin
 http://dbpedia.org/ontology/leaderFunction
 http://dbpedia.org/ontology/significantBuilding
-http://dbpedia.org/ontology/formerCoach
 http://dbpedia.org/ontology/foundationPerson
 http://dbpedia.org/ontology/billed
 http://dbpedia.org/ontology/mission

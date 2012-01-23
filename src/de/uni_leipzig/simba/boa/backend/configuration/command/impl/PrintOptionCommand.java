@@ -31,13 +31,12 @@ public class PrintOptionCommand implements Command {
 			"||     5. Score patterns                              ||\n" +
 			"||     6. Search for patterns                         ||\n" +
 			"||     7. Get relations from dbpedia                  ||\n" +
-			"||     8. Write urls for crawling to file             ||\n" +
-			"||     9. Print Statistics                            ||\n" +
-			"||    10. Start Scripts                               ||\n" + 
-			"||    11. Query text with patterns                    ||\n" + 
-			"||    12. Query keyphrase                             ||\n" +
-			"||    13. Search - Evaluation - Generate              ||\n" +
-			"||    14. Evaluation                                  ||\n" +
+			"||     8. Print Statistics                            ||\n" +
+			"||     9. Start Scripts                               ||\n" + 
+			"||    10. Query text with patterns                    ||\n" + 
+			"||    11. Query keyphrase                             ||\n" +
+			"||    12. Search - Evaluation - Generate              ||\n" +
+			"||    13. Evaluation                                  ||\n" +
 			"========================================================\n";
 		
 		this.out.println(options);

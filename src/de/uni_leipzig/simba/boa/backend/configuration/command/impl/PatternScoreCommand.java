@@ -10,7 +10,7 @@ import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.ml.ConfidenceLearner;
+import de.uni_leipzig.simba.boa.backend.machinelearning.ConfidenceLearner;
 
 
 public class PatternScoreCommand implements Command {
@@ -18,10 +18,10 @@ public class PatternScoreCommand implements Command {
 	// the logger
 	private final NLPediaLogger logger = new NLPediaLogger(PatternScoreCommand.class);
 	
-	// the dao to retrieve all mappings
+	// the dao to retrieve all NAMED_ENTITY_TAG_MAPPINGS
 	private PatternMappingDao patternMappingDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 	
-	// the list of mappings should be past in be constructor
+	// the list of NAMED_ENTITY_TAG_MAPPINGS should be past in be constructor
 	private List<PatternMapping> mappings;
 	
 	// the learner which uses a neuronal network
@@ -42,10 +42,10 @@ public class PatternScoreCommand implements Command {
 	@Override
 	public void execute() {
 
-		// begin updating the pattern mappings
+		// begin updating the pattern NAMED_ENTITY_TAG_MAPPINGS
 		long start = new Date().getTime();
 		
-		// set global maxima and update pattern mappings and cascade
+		// set global maxima and update pattern NAMED_ENTITY_TAG_MAPPINGS and cascade
 		for ( PatternMapping mapping : mappings ) {
 			
 			// score each pattern

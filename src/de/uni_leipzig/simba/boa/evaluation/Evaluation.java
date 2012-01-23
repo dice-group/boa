@@ -16,10 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.lucene.index.CorruptIndexException;
-import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.LockObtainFailedException;
-
-import com.sleepycat.je.log.FileManager.FileMode;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;

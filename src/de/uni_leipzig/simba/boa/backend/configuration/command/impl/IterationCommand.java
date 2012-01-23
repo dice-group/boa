@@ -1,12 +1,8 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 public class IterationCommand implements Command {
 
