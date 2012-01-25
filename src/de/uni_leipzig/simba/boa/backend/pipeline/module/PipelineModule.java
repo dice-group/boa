@@ -21,6 +21,12 @@ public interface PipelineModule {
 	 * @param moduleInterchangeObject
 	 */
 	public void run();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getReport();
 
 	/**
 	 * 

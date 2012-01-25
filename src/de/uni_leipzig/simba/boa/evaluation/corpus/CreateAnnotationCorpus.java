@@ -40,8 +40,8 @@ public class CreateAnnotationCorpus {
 
 		String propertiesFilename 		= NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/backgroundknowledge/object_properties_evaluation.txt";
 		
-		String annotatorOneFile	= NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/evaluation/eval_a1_v0.2.txt";
-		String annotatorTwoFile	= NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/evaluation/eval_a2_v0.2.txt";
+		String annotatorOneFile	= NLPediaSettings.BOA_BASE_DIRECTORY + "evaluation/eval_a1_v0.2.txt";
+		String annotatorTwoFile	= NLPediaSettings.BOA_BASE_DIRECTORY + "evaluation/eval_a2_v0.2.txt";
 		
 		List<String> propertiesToQuery = FileUtil.readFileInList(propertiesFilename, "UTF-8");
 		
@@ -133,7 +133,7 @@ public class CreateAnnotationCorpus {
 	private static void createKappaAnnotationFile(List<String> propertyList) throws IOException, ParseException {
 
 		PatternSearcher patternSearcher = new PatternSearcher();
-		String kappaFilename			= NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/evaluation/eval_kappa_v0.2.txt";
+		String kappaFilename			= NLPediaSettings.BOA_BASE_DIRECTORY + "evaluation/eval_kappa_v0.2.txt";
 		Integer i 						= 1;
 		
 		for ( String property : propertyList ) {

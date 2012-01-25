@@ -61,6 +61,12 @@ public class DefaultBackgroundKnowledgeCollectorModule extends AbstractBackgroun
 		if (QUERY_DATATYPE_PROPERTIES)	queryDatatypeProperties();
 		if (QUERY_OBJECT_PROPERTIES)	queryObjectProperties();
 	}
+	
+	@Override
+	public String getReport() {
+
+		return "A total of " + backgroundKnowledge.size() + " triples has been added to the background knowledge repository!";
+	}
 
 	@Override
 	public void updateModuleInterchangeObject() {
@@ -76,7 +82,7 @@ public class DefaultBackgroundKnowledgeCollectorModule extends AbstractBackgroun
 	 */
 	private void queryObjectProperties() {
 		
-		String backgroundKnowledgeFilename = NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/backgroundknowledge/object_properties_to_query.txt";
+		String backgroundKnowledgeFilename = NLPediaSettings.BOA_BASE_DIRECTORY + "backgroundknowledge/object_properties_to_query.txt";
 		List<String> objectPropertyUris = FileUtil.readFileInList(backgroundKnowledgeFilename, "UTF-8");
 		
 		for ( String objectPropertyUri : objectPropertyUris ) {
@@ -96,7 +102,7 @@ public class DefaultBackgroundKnowledgeCollectorModule extends AbstractBackgroun
 	 */
 	private void queryDatatypeProperties() {
 
-		List<String> datatypePropertyUris = FileUtil.readFileInList(NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/backgroundknowledge/datatype_properties_to_query.txt", "UTF-8");
+		List<String> datatypePropertyUris = FileUtil.readFileInList(NLPediaSettings.BOA_BASE_DIRECTORY + "backgroundknowledge/datatype_properties_to_query.txt", "UTF-8");
 		for ( String datatypePropertyUri : datatypePropertyUris ) {
 			
 			String query = createDatatypePropertyQuery(datatypePropertyUri);

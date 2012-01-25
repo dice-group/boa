@@ -46,6 +46,9 @@ public final class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	private final int RAM_BUFFER_MAX_SIZE	= new Integer(NLPediaSettings.getInstance().getSetting("ramBufferMaxSizeInMb")).intValue();
 	private final boolean OVERWRITE_INDEX	= new Boolean(NLPediaSettings.getInstance().getSetting("overwriteIndex")).booleanValue();
 	
+	// remember how many files get indexed
+	private int indexDocumentCount = 0;
+	
 	@Override
 	public String getName() {
 
@@ -56,6 +59,12 @@ public final class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	public void updateModuleInterchangeObject() {
 		
 		// nothing to do here
+	}
+	
+	@Override
+	public String getReport() {
+
+		return "A total of " + indexDocumentCount + " documents has been indexed!";
 	}
 	
 	@Override
@@ -81,9 +90,6 @@ public final class DefaultWikiIndexingModule extends AbstractPipelineModule {
 		indexWriterConfig.setOpenMode(OVERWRITE_INDEX ? OpenMode.CREATE : OpenMode.APPEND);
 		IndexWriter writer = this.createIndex(new File(INDEX_DIRECTORY), indexWriterConfig);
 
-		// remember how many files get indexed
-		int indexDocumentCount = 0;
-		
 		// go through all files which are not hidden in the raw sentence directory
 		for (File file : FileUtils.listFiles(new File(RAW_DATA_DIRECTORY), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE)) {
 			
@@ -118,11 +124,11 @@ public final class DefaultWikiIndexingModule extends AbstractPipelineModule {
 				}
 			}
 			// index the remaining x documents
-			if ( documents.size() > 0 ) indexDocuments(writer, documents);
-			
-			String report = "A total of " + indexDocumentCount + " documents has been indexed!";
-			System.out.println(report);
-			this.logger.info(report);
+			if ( documents.size() > 0 ) { 
+				
+				indexDocuments(writer, documents);
+				indexDocumentCount += documents.size();
+			}
 		}
 		this.closeIndexWriter(writer);
 	}
