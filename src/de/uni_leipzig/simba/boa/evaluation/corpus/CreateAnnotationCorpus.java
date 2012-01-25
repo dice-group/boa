@@ -21,7 +21,7 @@ import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
-import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
 
 public class CreateAnnotationCorpus {
 
@@ -45,7 +45,7 @@ public class CreateAnnotationCorpus {
 		
 		List<String> propertiesToQuery = FileUtil.readFileInList(propertiesFilename, "UTF-8");
 		
-		PatternSearcher patternSearcher = new PatternSearcher();
+		DefaultPatternSearcher patternSearcher = new DefaultPatternSearcher();
 		
 //		createKappaAnnotationFile(propertiesToQuery.subList(0, 10));
 		
@@ -132,7 +132,7 @@ public class CreateAnnotationCorpus {
 
 	private static void createKappaAnnotationFile(List<String> propertyList) throws IOException, ParseException {
 
-		PatternSearcher patternSearcher = new PatternSearcher();
+		DefaultPatternSearcher patternSearcher = new DefaultPatternSearcher();
 		String kappaFilename			= NLPediaSettings.BOA_BASE_DIRECTORY + "evaluation/eval_kappa_v0.2.txt";
 		Integer i 						= 1;
 		

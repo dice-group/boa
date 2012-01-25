@@ -14,21 +14,26 @@ import java.util.TreeSet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
+import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.TotalHitCountCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
+import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.lucene.LowerCaseWhitespaceAnalyzer;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
 //import de.uni_leipzig.simba.boa.backend.nlp.PosTagger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
@@ -37,7 +42,7 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
  * 
  * @author Daniel Gerber
  */
-public class PatternSearcher {
+public class DefaultPatternSearcher implements PatternSearcher {
 
 	private final static int MAX_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getInstance().getSetting("maxPatternLenght")).intValue();
 	private final static int MIN_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getInstance().getSetting("minPatternLenght")).intValue();
@@ -53,26 +58,22 @@ public class PatternSearcher {
 	private List<SearchResult> results;
 	private ScoreDoc[] hits;
 	
-	private static String indexDir = "";
-	private static PatternSearcher INSTANCE;
-	
-	private final NLPediaLogger logger = new NLPediaLogger(PatternSearcher.class);
+	private final NLPediaLogger logger = new NLPediaLogger(DefaultPatternSearcher.class);
 
-	public PatternSearcher() throws IOException, ParseException {
-
-		System.out.println(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory"));
-		this.directory = FSDirectory.open(new File(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory")));
-		this.analyzer = new LowerCaseWhitespaceAnalyzer();
+	public DefaultPatternSearcher() throws IOException, ParseException {
 
 		// create index searcher in read only mode
+		this.directory = FSDirectory.open(new File(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory")));
+		this.analyzer = new LowerCaseWhitespaceAnalyzer();
 		this.indexSearcher = new IndexSearcher(directory, true);
 		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 
+		this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
 		this.results = new ArrayList<SearchResult>();
 		this.hits = null;
 	}
 	
-	public PatternSearcher(String indexDir) throws IOException, ParseException {
+	public DefaultPatternSearcher(String indexDir) throws IOException, ParseException {
 
 		this.directory = FSDirectory.open(new File(indexDir));
 		this.analyzer = new LowerCaseWhitespaceAnalyzer();
@@ -85,7 +86,7 @@ public class PatternSearcher {
 		this.hits = null;
 	}
 	
-	public PatternSearcher(Directory indexDir) throws IOException, ParseException {
+	public DefaultPatternSearcher(Directory indexDir) throws IOException, ParseException {
 
 		this.directory = indexDir;
 		this.analyzer = new LowerCaseWhitespaceAnalyzer();
@@ -98,27 +99,6 @@ public class PatternSearcher {
 		this.hits = null;
 	}
 	
-	public static PatternSearcher getInstance(String indexDir) {
-		
-		if ( PatternSearcher.INSTANCE == null || !PatternSearcher.indexDir.equals(indexDir) ) {
-			
-			try {
-				
-				PatternSearcher.INSTANCE = new PatternSearcher(indexDir);
-			}
-			catch (IOException e) {
-				
-				e.printStackTrace();
-			}
-			catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-			
-		return PatternSearcher.INSTANCE;
-	}
-
 	/**
 	 * Returns the sentence index by the given id.
 	 * 
@@ -132,24 +112,29 @@ public class PatternSearcher {
 			return this.indexSearcher.doc(id).get("sentence");
 		}
 		catch (CorruptIndexException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
+			String error = "Could not get document with id: " + id + " from index.";
+			this.logger.error(error, e);
+			throw new RuntimeException(error, e);
 		}
 		catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
+			String error = "Could not get document with id: " + id + " from index.";
+			this.logger.error(error, e);
+			throw new RuntimeException(error, e);
 		}
-		return "";
 	}
 
 	/**
 	 * Returns the sentences from the index with the given ids. Uses the method
-	 * PatternSearcher.getSentencesByID() to query the index
+	 * DefaultPatternSearcher.getSentencesByID() to query the index
 	 * 
 	 * @param listOfIds
 	 * @return
 	 */
-	public List<String> getSentences(List<Integer> ids) {
+	public List<String> getSentencesByIds(List<Integer> ids) {
 
 		List<String> sentences = new ArrayList<String>();
 		for (Integer id : ids) {
@@ -167,22 +152,20 @@ public class PatternSearcher {
 	 * @throws ParseException
 	 *             , IOException
 	 */
-	public void queryPattern(Triple triple) throws ParseException, IOException {
+	public void queryBackgroundKnowledge(BackgroundKnowledge backgroundKnowledge) {
 
 		boolean inverse = false;
 		
-//		Set<String> firstLabels = triple.getSubject().retrieveLabels();
-//		Set<String> secondLabels = triple.getObject().retrieveLabels();
-		Set<String> firstLabels = new HashSet<String>(Arrays.asList(triple.getSubject().getLabel().toLowerCase()));//retrieveLabels();
-		Set<String> secondLabels = new HashSet<String>(Arrays.asList(triple.getObject().getLabel().toLowerCase()));//.retrieveLabels();
+		Set<String> firstLabels = backgroundKnowledge.getSubject().retrieveLabels();
+		Set<String> secondLabels = backgroundKnowledge.getObject().retrieveLabels();
 
 		// switch the labels in case we have more subject labels than object labels
 		if ( firstLabels.size() > secondLabels.size() ) {
 			
 			inverse = true;
 			
-			firstLabels = triple.getObject().retrieveLabels();
-			secondLabels = triple.getSubject().retrieveLabels();
+			firstLabels = backgroundKnowledge.getObject().retrieveLabels();
+			secondLabels = backgroundKnowledge.getSubject().retrieveLabels();
 		}
 		
 		// go through all surface form combinations
@@ -190,28 +173,31 @@ public class PatternSearcher {
 
 			// check if we find at least sentences with the first token, if not we can skip this search word combination
 			TotalHitCountCollector collector = new TotalHitCountCollector();
-			indexSearcher.search(parser.parse("+sentence:\"" + QueryParser.escape(firstLabel) + "\""), collector);
+			this.searchIndex(this.parseQuery("+sentence:\"" + QueryParser.escape(firstLabel) + "\""), collector);
 			if (collector.getTotalHits() == 0 ) continue; 
 			
 			for (String secondLabel : secondLabels) {
 
-				Query query = parser.parse("+sentence:\"" + QueryParser.escape(firstLabel) + "\" && +sentence:\"" + QueryParser.escape(secondLabel) + "\"");
-				hits = indexSearcher.search(query, null, MAX_NUMBER_OF_DOCUMENTS).scoreDocs;
+				Query query = this.parseQuery("+sentence:\"" + QueryParser.escape(firstLabel) + "\" && +sentence:\"" + QueryParser.escape(secondLabel) + "\"");
+				hits = this.searchIndex(query, null, MAX_NUMBER_OF_DOCUMENTS);
 				
 				for (int i = 0; i < hits.length; i++) {
 
-					String sentenceLowerCase = indexSearcher.doc(hits[i].doc).get("sentence");
+					String sentence				= this.getIndexDocument(hits[i], "sentence");
+					String sentenceLowerCase	= sentence.toLowerCase();
+					String firstLabelLowerCase	= firstLabel;
+					String secondLabelLowerCase	= secondLabel;
 
 					Map<Integer, String> currentMatches = new HashMap<Integer, String>();
 					
 					// the switching is neccessary because it could be possible that we change the label sets, see above 					
 					String[] match1; 
 					if ( !inverse ) {
-						match1 = StringUtils.substringsBetween(sentenceLowerCase, firstLabel, secondLabel);
+						match1 = StringUtils.substringsBetween(sentenceLowerCase, firstLabelLowerCase, secondLabelLowerCase);
 					}
 					else {
 						
-						match1 = StringUtils.substringsBetween(sentenceLowerCase, secondLabel, firstLabel);
+						match1 = StringUtils.substringsBetween(sentenceLowerCase, secondLabelLowerCase, firstLabelLowerCase);
 					}
 					
 					if (match1 != null) {
@@ -226,11 +212,11 @@ public class PatternSearcher {
 					// the switching is neccessary because it could be possible that we change the label sets, see above 
 					String[] match2; 
 					if ( !inverse ) {
-						match2 = StringUtils.substringsBetween(sentenceLowerCase, secondLabel, firstLabel);
+						match2 = StringUtils.substringsBetween(sentenceLowerCase, secondLabelLowerCase, firstLabelLowerCase);
 					}
 					else {
 						
-						match2 = StringUtils.substringsBetween(sentenceLowerCase, firstLabel, secondLabel);
+						match2 = StringUtils.substringsBetween(sentenceLowerCase, firstLabelLowerCase, secondLabelLowerCase);
 					}
 					if (match2 != null) {
 
@@ -240,7 +226,7 @@ public class PatternSearcher {
 							currentMatches.put(hits[i].doc, match2[j]);
 						}
 					}
-					this.addSearchResults(currentMatches, triple, hits[i], sentenceLowerCase, indexSearcher.doc(hits[i].doc).get("sentence"));
+					this.addSearchResults(currentMatches, backgroundKnowledge, hits[i], sentenceLowerCase, sentence);
 				}
 			}
 		}
@@ -254,7 +240,7 @@ public class PatternSearcher {
 	 * @param hit
 	 * @param isSubject
 	 */
-	private void addSearchResults(Map<Integer, String> currentMatches, Triple triple, ScoreDoc hit, String sentenceLowerCase, String sentenceNormalCase) {
+	private void addSearchResults(Map<Integer, String> currentMatches, BackgroundKnowledge backgroundKnowledge, ScoreDoc hit, String sentenceLowerCase, String sentenceNormalCase) {
 
 		for (String match : currentMatches.values()) {
 
@@ -264,19 +250,19 @@ public class PatternSearcher {
 			if (!match.isEmpty() && this.isPatternSuitable(match)) {
 
 				SearchResult result = new SearchResult();
-				result.setProperty(triple.getProperty().getUri());
+				result.setProperty(backgroundKnowledge.getProperty().getUri());
 				result.setNaturalLanguageRepresentation(nlr);
-				result.setRdfsRange(triple.getProperty().getRdfsRange());
-				result.setRdfsDomain(triple.getProperty().getRdfsDomain());
+				result.setRdfsRange(backgroundKnowledge.getProperty().getRdfsRange());
+				result.setRdfsDomain(backgroundKnowledge.getProperty().getRdfsDomain());
 				// the subject of the triple is the domain of the property so,
 				// replace every occurrence with ?D?
 				if (nlr.startsWith("?D?")) {
-					result.setFirstLabel(triple.getSubject().getLabel());
-					result.setSecondLabel(triple.getObject().getLabel());
+					result.setFirstLabel(backgroundKnowledge.getSubject().getLabel());
+					result.setSecondLabel(backgroundKnowledge.getObject().getLabel());
 				}
 				else {
-					result.setFirstLabel(triple.getObject().getLabel());
-					result.setSecondLabel(triple.getSubject().getLabel());
+					result.setFirstLabel(backgroundKnowledge.getObject().getLabel());
+					result.setSecondLabel(backgroundKnowledge.getSubject().getLabel());
 				}
 				result.setIndexId(hit.doc);
 //				if ( this.posTagger == null ) this.posTagger = new PosTagger();
@@ -330,7 +316,7 @@ public class PatternSearcher {
 
 	}
 
-	private boolean isPatternSuitable(String naturalLanguageRepresentation) {
+	public boolean isPatternSuitable(String naturalLanguageRepresentation) {
 
 		String patternWithoutVariables = naturalLanguageRepresentation.substring(0, naturalLanguageRepresentation.length() - 3).substring(3).trim();
 
@@ -384,10 +370,9 @@ public class PatternSearcher {
 		this.indexSearcher.close();
 	}
 
-	public Set<String> getExactMatchSentences(String keyphrase, int maxNumberOfDocuments) throws ParseException, IOException {
+	public Set<String> getExactMatchSentences(String keyphrase, int maxNumberOfDocuments) {
 
-		ScoreDoc[] hits = indexSearcher.search(this.parser.parse("+sentence:\"" + QueryParser.escape(keyphrase) + "\""), null, maxNumberOfDocuments).scoreDocs;
-		System.out.println(this.parser.parse("+sentence:\"" + QueryParser.escape(keyphrase) + "\""));
+		ScoreDoc[] hits = this.searchIndex(this.parseQuery("+sentence:\"" + QueryParser.escape(keyphrase) + "\""), null, maxNumberOfDocuments);
 		TreeSet<String> list = new TreeSet<String>();
 
 		// reverse order because longer sentences come last, longer sentences
@@ -395,15 +380,15 @@ public class PatternSearcher {
 		for (int i = hits.length - 1; i >= 0; i--) {
 
 			// get the indexed string and put it in the result
-			list.add(indexSearcher.doc(hits[i].doc).get("sentence"));
+			list.add(this.getIndexDocument(hits[i], "sentence"));
 		}
 		return list;
 	}
 	
-	public Set<String> getExactMatchSentencesForLabels(String label1, String label2, int numberOfDocuments) throws ParseException, IOException {
+	public Set<String> getExactMatchSentencesForLabels(String label1, String label2, int maxNumberOfDocuments) {
 		
-		Query query = parser.parse("+sentence:\"" + QueryParser.escape(label1) + "\" && +sentence:\"" + QueryParser.escape(label2) + "\"");
-		hits = indexSearcher.search(query, null, numberOfDocuments).scoreDocs;
+		Query query = this.parseQuery("+sentence:\"" + QueryParser.escape(label1) + "\" && +sentence:\"" + QueryParser.escape(label2) + "\"");
+		hits = this.searchIndex(query, null, maxNumberOfDocuments);
 		TreeSet<String> list = new TreeSet<String>();
 		
 		// reverse order because longer sentences come last, longer sentences
@@ -411,8 +396,103 @@ public class PatternSearcher {
 		for (int i = hits.length - 1; i >= 0; i--) {
 
 			// get the indexed string and put it in the result
-			list.add(indexSearcher.doc(hits[i].doc).get("sentence"));
+			list.add(this.getIndexDocument(hits[i], "sentence"));
 		}
 		return list;
+	}
+	
+	/**
+	 * Get's the documents value for field "fieldname" from the index.
+	 * 
+	 * @param document - the found document
+	 * @param fieldname - the fieldname which should be used to get the document value
+	 * @return the documents value for the fieldname
+	 */
+	private String getIndexDocument(ScoreDoc document, String fieldname) {
+
+		try {
+			
+			return indexSearcher.doc(document.doc).get(fieldname);
+		}
+		catch (CorruptIndexException e) {
+			
+			e.printStackTrace();
+			String error = "Could not get document " + document.doc + "(field:"+fieldname+") from index.";
+			this.logger.error(error, e);
+			throw new RuntimeException(error, e);
+		}
+		catch (IOException e) {
+			
+			e.printStackTrace();
+			String error = "Could not get document " + document.doc + "(field:"+fieldname+") from index.";
+			this.logger.error(error, e);
+			throw new RuntimeException(error, e);
+		}
+	}
+	
+	/**
+	 * Method to query a Lucene Index.
+	 * 
+	 * @param query - the query to query
+	 * @param filter - a Lucene filter
+	 * @param maxNumberOfDocuments - max number of returned documents
+	 * @return a list of all matching documents
+	 */
+	private ScoreDoc[] searchIndex(Query query, Filter filter, int maxNumberOfDocuments) {
+		
+		try {
+			
+			return indexSearcher.search(query, null, maxNumberOfDocuments).scoreDocs;
+		}
+		catch (IOException e) {
+			
+			e.printStackTrace();
+			String error = "Could not query index for query: \"" + query.toString() + "\"";
+			this.logger.error(error, e);
+			throw new RuntimeException(error, e);
+		}
+	}
+	
+	/**
+	 * Query an index to know how many hits we have 
+	 * 
+	 * @param query - the query to execute
+	 * @param collector - the document collector
+	 */
+	private void searchIndex(Query query, TotalHitCountCollector collector) {
+
+		try {
+			
+			indexSearcher.search(query, collector);
+		}
+		catch (IOException e) {
+			
+			e.printStackTrace();
+			String error = "Could not execute query: \"" + query.toString() + "\"";
+			this.logger.error(error, e);
+			throw new RuntimeException(error, e);
+		}
+	}
+	
+	/**
+	 * Method to parse a given string to a Lucene query
+	 * 
+	 * @param query - the query to parse
+	 * @return returns a parsed query for the given string
+	 * @throws RuntimeException if something goes wrong
+	 */
+	private Query parseQuery(String query){
+		
+		try {
+			
+			return this.parser.parse(query);
+		}
+		catch (ParseException e) {
+			
+			e.printStackTrace();
+			String error = "Could not parse query: \"" + query + "\"";
+			this.logger.error(error, e);
+			throw new RuntimeException(error, e);
+		}
 	}
 }

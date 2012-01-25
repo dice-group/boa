@@ -11,7 +11,7 @@ import java.util.Set;
 import org.apache.lucene.queryParser.ParseException;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
 
 
 public class PatternUtil {
@@ -110,7 +110,7 @@ public class PatternUtil {
 
 		try {
 			
-			return PatternSearcher.getInstance(indexDir).getExactMatchSentences(pattern.getNaturalLanguageRepresentationWithoutVariables(), maxHits);
+			return DefaultPatternSearcher.getInstance(indexDir).getExactMatchSentences(pattern.getNaturalLanguageRepresentationWithoutVariables(), maxHits);
 		}
 		catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -125,6 +125,6 @@ public class PatternUtil {
 	
 	public static List<String> getLuceneDocuments(String indexDir, List<Integer> luceneDocIds) {
 		
-		return PatternSearcher.getInstance(indexDir).getSentences(luceneDocIds);
+		return DefaultPatternSearcher.getInstance(indexDir).getSentencesByIds(luceneDocIds);
 	}
 }

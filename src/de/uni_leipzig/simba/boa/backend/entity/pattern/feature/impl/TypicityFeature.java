@@ -27,7 +27,7 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.impl.StanfordNLPNamedEntityRecognition;
-import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 
@@ -41,7 +41,7 @@ public class TypicityFeature implements Feature {
 	private NamedEntityRecognition ner;
 	private final int maxNumberOfEvaluationSentences 	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfTypicityConfidenceMeasureDocuments"));
 	
-	private PatternSearcher patternSearcher;
+	private DefaultPatternSearcher patternSearcher;
 	private static final Map<String,String> BRACKETS = new HashMap<String,String>();
 	static {
 		
@@ -76,7 +76,7 @@ public class TypicityFeature implements Feature {
 			
 			try {
 				
-				this.patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+				this.patternSearcher = new DefaultPatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
 			}
 			catch (IOException e) {
 				// TODO Auto-generated catch block

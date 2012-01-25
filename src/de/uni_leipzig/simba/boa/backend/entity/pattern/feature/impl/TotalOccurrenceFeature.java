@@ -9,7 +9,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
 
 
 public class TotalOccurrenceFeature implements Feature {
@@ -29,13 +29,13 @@ public class TotalOccurrenceFeature implements Feature {
 		this.scoreMapping(mapping, null);
 	}
 	
-	public void scoreMapping(PatternMapping mapping, PatternSearcher searcher) {
+	public void scoreMapping(PatternMapping mapping, DefaultPatternSearcher searcher) {
 
 		String patternToQuery = "";
 		
 		try {
 			
-			searcher = searcher != null ? searcher : new PatternSearcher();
+			searcher = searcher != null ? searcher : new DefaultPatternSearcher();
 			
 			for ( Pattern pattern : mapping.getPatterns() ) {
 				

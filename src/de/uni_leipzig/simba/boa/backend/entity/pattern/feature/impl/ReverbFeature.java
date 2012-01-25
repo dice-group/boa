@@ -15,7 +15,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
 import edu.washington.cs.knowitall.extractor.ReVerbExtractor;
 import edu.washington.cs.knowitall.extractor.SentenceExtractor;
 import edu.washington.cs.knowitall.extractor.conf.ConfidenceFunctionException;
@@ -41,7 +41,7 @@ public class ReverbFeature implements Feature {
 	
 	private ReVerbExtractor extractor;
 	private ReVerbConfFunction scoreFunc;
-	private PatternSearcher searcher;
+	private DefaultPatternSearcher searcher;
 	
 	private NLPediaLogger logger = new NLPediaLogger(ReverbFeature.class);
 
@@ -54,7 +54,7 @@ public class ReverbFeature implements Feature {
 		
 		try {
 			
-			searcher	= new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+			searcher	= new DefaultPatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
 			extractor	= new ReVerbExtractor();
 			scoreFunc	= new ReVerbConfFunction();
 		}
@@ -174,6 +174,6 @@ public class ReverbFeature implements Feature {
 	 */
 	private List<String> getReverbMeasureEvaluationSentences(Pattern p) throws IOException, ParseException {
 
-		return searcher.getSentences(p.retrieveLuceneDocIdsAsList());
+		return searcher.getSentencesByIds(p.retrieveLuceneDocIdsAsList());
 	}
 }
