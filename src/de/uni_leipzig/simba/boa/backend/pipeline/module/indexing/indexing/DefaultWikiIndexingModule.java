@@ -81,6 +81,9 @@ public final class DefaultWikiIndexingModule extends AbstractPipelineModule {
 		indexWriterConfig.setOpenMode(OVERWRITE_INDEX ? OpenMode.CREATE : OpenMode.APPEND);
 		IndexWriter writer = this.createIndex(new File(INDEX_DIRECTORY), indexWriterConfig);
 
+		// remember how many files get indexed
+		int indexDocumentCount = 0;
+		
 		// go through all files which are not hidden in the raw sentence directory
 		for (File file : FileUtils.listFiles(new File(RAW_DATA_DIRECTORY), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE)) {
 			
@@ -90,7 +93,6 @@ public final class DefaultWikiIndexingModule extends AbstractPipelineModule {
 			List<IndexDocument> documents = new ArrayList<IndexDocument>();
 
 			IndexDocument document = new IndexDocument(sbd);
-			int indexDocumentCount = 0;
 			
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -110,13 +112,17 @@ public final class DefaultWikiIndexingModule extends AbstractPipelineModule {
 				if (documents.size() == 10000) {
 					
 					indexDocumentCount += 10000;
-					System.out.println("Indexed " + indexDocumentCount);
+					this.logger.debug("\tIndexed " + indexDocumentCount);
 					indexDocuments(writer, documents);
 					documents = new ArrayList<IndexDocument>();
 				}
 			}
 			// index the remaining x documents
 			if ( documents.size() > 0 ) indexDocuments(writer, documents);
+			
+			String report = "A total of " + indexDocumentCount + " documents has been indexed!";
+			System.out.println(report);
+			this.logger.info(report);
 		}
 		this.closeIndexWriter(writer);
 	}

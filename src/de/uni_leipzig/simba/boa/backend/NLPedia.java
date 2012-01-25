@@ -40,8 +40,8 @@ public class NLPedia {
 	public static void main(String[] args) {
 
 		// this is used to surpress the "error" messages from stanford etc.
-		PrintStream newErr = new PrintStream(new ByteArrayOutputStream());
-		System.setErr(newErr);
+//		PrintStream newErr = new PrintStream(new ByteArrayOutputStream());
+//		System.setErr(newErr);
 		
 		// Initialize logging, settings, factories etc., needs to be FIRST call!!
 		NLPediaSetup setup = new NLPediaSetup(false);
