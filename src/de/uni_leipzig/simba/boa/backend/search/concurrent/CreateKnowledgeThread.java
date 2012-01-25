@@ -21,7 +21,7 @@ import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
@@ -35,7 +35,7 @@ import edu.stanford.nlp.process.DocumentPreprocessor;
 
 public class CreateKnowledgeThread { //extends Thread {
 
-	private final NamedEntityRecognizer ner = new NamedEntityRecognizer();
+	private final NamedEntityRecognition ner = null;
 	private final NLPediaLogger logger 		= new NLPediaLogger(CreateKnowledgeThread.class);
 	private final List<PatternMapping> mappings;
 	
@@ -111,7 +111,7 @@ public class CreateKnowledgeThread { //extends Thread {
 								
 								try {
 									
-									createKnowledge(mapping, pattern, sentence, ner.recognizeEntitiesInString(sentence));
+									createKnowledge(mapping, pattern, sentence, ner.getAnnotatedString(sentence));
 								}
 								catch (java.lang.ArrayIndexOutOfBoundsException e ) {
 									
