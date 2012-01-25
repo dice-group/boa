@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.indexing;
+package de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +37,7 @@ import de.uni_leipzig.simba.boa.backend.pipeline.module.AbstractPipelineModule;
  * @author gerb
  *
  */
-public final class DefaultWikiIndexingModule extends AbstractPipelineModule {
+public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 
 	private final NLPediaLogger logger		= new NLPediaLogger(DefaultWikiIndexingModule.class);
 	
@@ -176,7 +176,7 @@ public final class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	 * @param sentence - a single sentence from the wiki entry
 	 * @return a Lucene Document
 	 */
-	private Document createLuceneDocument(String uri, String sentence) {
+	protected Document createLuceneDocument(String uri, String sentence) {
 
 		Document luceneDocument = new Document();
 		luceneDocument.add(new Field("uri", uri, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
@@ -191,7 +191,7 @@ public final class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	 * 
 	 * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
 	 */
-	private class IndexDocument {
+	protected class IndexDocument {
 
 		protected String uri = "";
 		protected StringBuffer text = new StringBuffer();
