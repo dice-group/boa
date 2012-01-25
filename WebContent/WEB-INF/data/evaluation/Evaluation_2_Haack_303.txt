@@ -1,0 +1,936 @@
+98. The al-Baraqua II capsized on April 6 , 2006 , in the Gulf of Tadjoura off the coast of Djibouti 's capital of Djibouti City . 
+[wiki:Al-Baraqua_II rdf:type dbpedia-owl:Ship]
+
+99. He is the current Guinness World Record holder for most syllables rapped in one minute . 
+[coref]
+
+100. He was a lecturer for the University of Maryland School of Law from 1911 to 1931 . 
+[coref]
+
+101. He entered the Guildhall School of Music and Drama with the intention of becoming a professional trumpet player . 
+[coref]
+
+102. The Micronesian Myzomela -LRB- Myzomela rubratra -RRB- is a species of bird in the honeyeater family Meliphagidae . 
+[wiki:Micronesian_Myzomela rdf:type dbpedia-owl:Bird]
+
+103. It is one of three middle schools in the city , the others being : Cedar Ridge Middle School and Brookhaven Middle School . 
+[coref]
+
+104. This is a list of episodes of the RIN ~ Daughters of Mnemosyne ~ television series . 
+[] #keine brauchbare Entity
+
+105. As of Issue # 12 , he also has to live inside a containment suit similar to Fuji 's . 
+[coref]
+
+106. David Linnell left John Leggott College in December 2006 and moved to become a Deputy CEO at Cornwall College . 
+[wiki:David_Linnell dbpedia-owl:almaMater wiki:John_Leggott_College]
+[wiki:David_Linnell dbpedia-owl:leaderFunction wiki:Cornwall_College]
+
+107. Ohio's 14th congressional district sits in the farthest northeast corner of the state , bordering Lake Erie and Pennsylvania . 
+[wiki:Ohio's_14th_congressional_district dbpedia-owl:neighboringMunicipality wiki:Pennsylvania]
+
+108. In the 1948 presidential election , Wallace was the nominee of the Progressive Party . 
+[wiki:Henry_A._Wallace dbpedia-owl:party wiki:Progressive_Party_1948_(United_States)]
+
+109. He was first elected at the Swift Current -- Maple Creek -- Assiniboia electoral district in the 1993 federal election . 
+[coref]
+
+110. He won his first Israeli title in 1997 , winning the Israel State Cup with Hapoel Be'er Sheva . 
+[coref]
+
+111. Rev. Cornell Jerome Moss has been the Bishop of Guyana since 8th December , 2009 . 
+[wiki:Cornell_Moss rdf:type dbpedia-owl:ChristianBishop]
+
+112. Epistle to a Lady -LRB- 1735 , addressed to Martha Blount -RRB- , `` Of the Characters of Women '' . 
+[] #kein vollständiger Satz
+
+113. Goat Horns is the first album by Ukrainian symphonic black metal band Nokturnal Mortum . 
+[wiki:Goat_Horns dbpedia-owl:musicalBand wiki:Nokturnal_Mortum]
+
+114. He served as a Magistrate and as an officer in the 4th Volunteer Battalion Hampshire Regiment . 
+[coref]
+
+115. Senses of Cinema is a quarterly online film magazine founded in 1999 by filmmaker Bill Mousoulis . 
+[wiki:Senses_of_Cinema dbpedia-owl:creator wiki:Bill_Mousoulis]
+[wiki:Senses_of_Cinema rdf:type dbpedia-owl:Magazine]
+
+116. and a Scottish Arts Council award `` A Sweetly memorable collection '' - The Times 
+[] #unvollständiger Satz
+
+117. The original foundation of 1846 , devoted primarily to Natural History , was moved to new premises in High Street in 1881 . 
+[] 'keine brauchbare Entity
+
+118. Four Maryland teens have gone on to win the Miss Maryland USA title , and one competed at Miss America . 
+[] #"Four Maryland teens" ist keine brauchbare Entity
+
+119. Newton Burgoland contains a public house , `` The Belper Arms '' , which is identified as the oldest pub in Leicestershire . 
+[wiki:Newton_Burgoland dbpedia-owl:locatedInArea wiki:Leicestershire] 
+
+120. Möckern is a town in the Jerichower Land district , in Saxony-Anhalt , Germany . 
+[wiki:Möckern dbpedia-owl:administrativeDistrict wiki:Jerichower_Land]
+
+121. It publishes This Rock , a bimonthly magazine focusing on Catholic evangelism and apologetics . 
+[coref]
+
+122. It received support by the Israeli Committee Against House Demolitions -LRB- ICAHD -RRB- . 
+[coref]
+
+123. Fabio Caserta is an Italian footballer who currently plays for A.C. Cesena on loan from Atalanta . 
+[wiki:Fabio_Caserta dbpedia-owl:managerClub wiki:Atalanta_B.C.]
+
+124. Protoduar is a village in the municipality of Kutalli in Berat District , Berat County , Albania . 
+[wiki:Protoduar dbpedia-owl:administrativeDistrict wiki:Kutalli]
+
+125. Her performance pieces have toured the UK and been performed in London at The Young Vic and the Battersea Arts Center . 
+[coref]
+
+126. The 95th Russell 's Infantry were an infantry regiment of the British Indian Army . 
+[] #keine brauchbare Entity
+
+127. In the 1928 election there was a split in the Liberal Party resulting in two Liberal candidates for president . 
+[] #keine brauchbare Entity
+
+128. Also known as the Old Red Courthouse , it is now the Old Red Museum , a local history museum . 
+[wiki:Dallas_County_Courthouse_(Texas) rdf:type dbpedia-owl:Museum]
+
+129. Sydney FC had the home ground advantage after beating Adelaide United over 2 semifinal legs . 
+[] #keine brauchbare Property
+
+130. On November 25 , 1985 , it was added to the U.S. National Register of Historic Places . 
+[coref]
+
+131. Jadavpur University -LRB- JU -RRB- , is a premier educational and research institution in India . 
+[wiki:Jadavpur_University rdf:type dbpedia-owl:University]
+[wiki:Jadavpur_University dbpedia-owl:locatedInArea wiki:India]
+
+132. Fears In the Water is the debut album by The Vincent Black Shadow , released on July 11 , 2006 , by Bodog . 
+[wiki:Fears_in_the_water dbpedia-owl:musicalBand wiki:The_Vincent_Black_Shadow]
+[wiki:Fears_in_the_water dbpedia-owl:publisher wiki:Bodog]
+
+133. William L. `` Buffalo Bill '' Brooks -LRB- c. 1832 -- July 29 , 1874 -RRB- was a western lawman and later outlaw . 
+[wiki:William_L._Brooks rdf:type dbpedia-owl:Criminal]
+
+134. org\/standards\/tds , which is an open standard freely available for download from the website of EPCglobal , Inc. . 
+[] #keine brauchbare Entity
+
+135. Dniester Canyon -- the Dniester River canyon , located at the territory of Dniester River Valley in Ukraine . 
+[wiki:Dniester_Canyon dbpedia-owl:locatedInArea wiki:Ukraine]
+
+136. She founded a congregation of Third Order Religious Sisters , known today as the Franciscan Sisters of Blessed Angelina . 
+[coref]
+
+137. Alpha Bank is the second largest bank in Greece with 450 branches throughout the country . 
+[wiki:Alpha_Bank dbpedia-owl:regionServed wiki:Greece]
+
+138. In 1770 , Dahl entered Uppsala University as a freshman -LRB- Carolus Linnaeus died in 1778 -RRB- . 
+[wiki:Anders_Dahl dbpedia-owl:almaMater wiki:Uppsala_University]
+
+139. `` Contamination is the eleventh episode from the second season of Grey 's Anatomy spin-off show , Private Practice . 
+[wiki:Contamination_(Private_Practice) rdf:type dbpedia-owl:TelevisionEpisode]
+
+140. The Quebec general election of 2003 was held on April 14 , 2003 , to elect members of the National Assembly of Quebec . 
+[wiki:Quebec_general_election,_2003 rdf:type dbpedia-owl:Election] 
+
+141. It took place at the Khalifa International Tennis Complex in Doha , Qatar , from December 31 , 2007 through January 5 , 2008 . 
+[coref]
+
+142. Mills is an unincorporated community in northeastern Keya Paha County , Nebraska , United States . 
+[wiki:Mills,_Nebraska dbpedia-owl:administrativeDistrict wiki:Keya_Paha_County,_Nebraska]
+
+143. Okazaki Kunisuke was a politician and cabinet minister in the late Meiji and Taishō period Empire of Japan . 
+[wiki:Okazaki_Kunisuke rdf:type dbpedia-owl:Politician]
+
+144. Rodrigo Álvarez -LRB- died 1187 -RRB- was a Galician magnate in the Kingdom of León . 
+[wiki:Rodrigo_Álvarez dbpedia-owl:ethnicity wiki:Galician_people]
+
+145. It is a dormitory town and part of the Greater London Urban Area and London commuter belt served by Cheshunt railway station . 
+[coref]
+
+146. Full Member of the USSR\/Russian Academy of Sciences -LRB- 1968 ; Corresponding Member from 1953 -RRB- . 
+[] #Entity fehlt
+
+147. This is a list of released and upcoming video games on Stardock Impulse and are using Impulse : : Reactor or Impulse Goo . 
+[] #keine brauchbare Entity
+
+148. Empress Xiao Zhe Yi ; also known as the Jiashun Empress , was the Empress Consort of the Tongzhi Emperor of China . 
+[wiki:Empress_Xiao_Zhe_Yi dbpedia-owl:spouse wiki:Tongzhi_Emperor]
+
+149. She is a fine artist , illustrator and typographer who founded Janus Press in San Diego , California in 1955 . 
+[coref]
+
+150. There is some English content , mostly providing information about the Royal Projects . 
+[] #keine brauchbare Entity
+
+151. The Harold Pig Memorial is the second studio album by Ohio alternative rock band Circus Devils , released in 2002 . 
+[wiki:The_Harold_Pig_Memorial dbpedia-owl:musicalBand wiki:Circus_Devils]
+
+152. The Senate Judiciary Subcommittee on the Constitution is one of seven subcommittees within the Senate Judiciary Committee . 
+[wiki:United_States_Senate_Judiciary_Subcommittee_on_the_Constitution,_Civil_Rights_and_Human_Rights dbpedia-owl:isPartOf wiki:United_States_Senate_Committee_on_the_Judiciary]
+
+153. Tuzki is a popular illustrated rabbit character , created in 2006 by Wang Momo of the Beijing Broadcasting Institute . 
+[wiki:Tuzki rdf:type dbpedia-owl:ComicsCharacter]
+
+154. The Norwichtown Historic District is a historic district in the Norwichtown section of the town of Norwich , Connecticut . 
+[wiki:Norwichtown_Historic_District dbpedia-owl:locatedInArea wiki:Norwichtown]
+[wiki:Norwichtown_Historic_District rdf:type dbpedia-owl:HistoricPlace]
+
+155. Bibaringa is a northern suburb of Adelaide , South Australia in the City of Playford . 
+[wiki:Bibaringa,_South_Australia dbpedia-owl:neighboringMunicipality wiki:Adelaide]
+
+156. Grant Connell and Patrick Galbraith were the defending champions but only Connell competed that year with Byron Black . 
+[] #keine brauchbare Entity
+
+157. The View from the Hill is a solo album released in 1996 by Justin Hayward of The Moody Blues . 
+[wiki:The_View_from_the_Hill dbpedia-owl:musicalArtist wiki:Justin_Hayward]
+
+158. Broadbridge made a single first-class appearance , in 1838 , against Marylebone Cricket Club . 
+[] #keine passende property
+
+159. Live in Europe is an album released by Irish Blues guitarist Rory Gallagher in 1972 . 
+[wiki:Live_in_Europe_(Rory_Gallagher_album) dbpedia-owl:musicalArtist wiki:Rory_Gallagher]
+
+160. Born in Greenwood , Arkansas , McFarlane attended public schools and the University of Arkansas at Fayetteville 1909-1914 . 
+[wiki:William_D._McFarlane dbpedia-owl:birthPlace wiki:Greenwood,_Arkansas]
+[wiki:William_D._McFarlane dbpedia-owl:almaMater wiki:University_of_Arkansas_at_Fayetteville]
+
+161. Fellow was released shortly after the first usable release of the Unix Amiga Emulator . 
+[] #keine brauchbaren Entities
+
+162. Mildred King founded the `` Monroe School of Business '' in 1933 at 1940 Boston Post Road in the Bronx . 
+[wiki:Monroe_College dbpedia-owl:locatedInArea wiki:Bronx]
+
+163. The conflict with Mithridates VI would continue in two further Mithridatic Wars . 
+[] #keine brauchbaren Entities
+
+164. Shiga Bunkyo Junior College is a private junior college in Nagahama , Shiga , Japan , established in 1952 . 
+[wiki:Shiga_Bunkyo_Junior_College dbpedia-owl:locatedInArea wiki:Nagahama,_Shiga]
+[wiki:Shiga_Bunkyo_Junior_College rdf:type dbpedia-owl:EducationalInstitution]
+
+165. The following list documents Seung Sahn Soen Sa Nim 's lineage , starting with the First Patriarch . 
+[one]
+
+166. This glacier is aligned at northwest to southeast direction and lies above the Yankcharand Sankalp glaciers . 
+[coref]
+
+167. The club was established in 1901 as a charter member of the Southern Association -LRB- SA -RRB- . 
+[]
+
+168. The Soul Train Music Award winners for Best R&B \/ Soul or Rap Dance Cut , also called the Sprite Award . 
+[] #keine brauchbare property
+
+169. In 1979 , it merged with Leytonstone to create Leytonstone\/Ilford , a precursor to Dagenham & Redbridge . 
+[coref]
+
+170. Stern is a lecturer at Harvard University and a faculty affiliate of the Belfer Center for Science and International Affairs . 
+[wiki:Jessica_Stern dbpedia-owl:almaMater wiki:Harvard_University]
+
+171. The Cerro Colorado Mountains are a low mountain range in Pima County , Arizona , USA . 
+[wiki:Cerro_Colorado_Mountains dbpedia-owl:locatedInArea wiki:Pima_County,_Arizona]
+[wiki:Cerro_Colorado_Mountains rdf:type dbpedia-owl:MountainRange]
+
+172. Columbia Furnace is an unincorporated community in Shenandoah County , in the U.S. state of Virginia . 
+[wiki:Columbia_Furnace,_Virginia dbpedia-owl:administrativeDistrict wiki:Shenandoah_County,_Virginia]
+
+173. Previously known as the Yale Medical Library , it is one of the finest modern medical libraries . 
+[one]
+
+174. The Progressive Broadcasting System was a short-lived radio network of the early 1950s . 
+[wiki:Progressive_Broadcasting_System rdf:type dbpedia-owl:BroadcastNetwork]
+
+175. The route was formerly the main route to the Gold Coast from Brisbane , until the South East Freeway was built . 
+[coref]
+
+176. Published and released in 2000 , it is the fourth installment of the New Jedi Order series set in the Star Wars galaxy . 
+[coref]
+
+177. The Evergreen Symphony Orchestra is a Taiwanese orchestra founded by Chang Yung-Fa Foundation of Evergreen Group in 2001 . 
+[wiki:Evergreen_Symphony_Orchestra dbpedia-owl:regionServed wiki:Taiwan]
+
+178. Christian Fong is an Iowa Businessman and Iowa Flood of 2008 disaster recovery leader . 
+[wiki:Christian_Fong dbpedia-owl:occupation wiki:Businessperson]
+
+179. Mapped by United States Geological Survey -LRB- USGS -RRB- from surveys and U.S. Navy air photos , 1960-62 . 
+[coref]
+
+180. The headquarters was moved to Susehir -LRB- town near Sivas -RRB- after the Battle of Erzurum . 
+[coref]
+
+181. The rule was removed in its entirety in the United Kingdom by the Law Reform -LRB- Personal Injuries -RRB- Act 1948 . 
+[coref]
+
+182. In the Kangxi Dictionary there are 580 characters -LRB- out of 49,030 -RRB- to be found under this radical . 
+[wiki:Kangxi_Dictionary rdf:type dbpedia-owl:WrittenWork]
+
+183. Trabzonspor 's primary objective will be to regain the Süper Lig for the first time since 1984 . 
+[] #keine brauchbare Property
+
+184. Boone is currently employed by ESPN as a game analyst and contributor for Baseball Tonight . 
+[wiki:Aaron_Boone dbpedia-owl:starring wiki:Baseball_Tonight]
+
+185. There is a village style shopping precinct and a Surf Club , Bowls Club , and recently built Hotel . 
+[coref]
+
+186. He first attended Seminole High School and later went to St. Petersburg College , Florida . 
+[coref]
+
+187. Charles Donald `` Sam '' Gemar is a former American astronaut with NASA and a Lt. Col. in the U.S. Army . 
+[wiki:Charles_D._Gemar rdf:type dbpedia-owl:Astronaut]
+[wiki:Charles_D._Gemar dbpedia-owl:militaryUnit wiki:U.S._Army]
+
+188. HMS Exmouth was a 91-gun screw propelled Albion-class second-rate ship of the line of the Royal Navy . 
+[wiki:HMS_Exmouth_(1854) rdf:type dbpedia-owl:Ship]
+
+189. Gwenview is an image viewer for the KDE Software Compilation desktop environment . 
+[wiki:Gwenview rdf:type dbpedia-owl:Software]
+
+190. In 1884 he joined the British Museum 's Department of Prints and Drawings , at the suggestion of the Keeper Sidney Colvin . 
+[coref]
+
+191. She has become known as the Heroine of Matagorda , for her outstanding bravery . 
+[coref]
+
+192. Grade I was for military leadership , Grade II for personal courage , and Grade III for civilian service . 
+[] #keine brauchbaren Entities
+
+193. The museum is located on Museum Road , off Durrell Street -LRB- or Howlett 's Lane from shore -RRB- in Durrell . 
+[coref]
+
+194. He served as Geophysicist and Magnetologist on the MacGregor Arctic Expedition July 1 , 1937 through October 4 , 1938 . 
+[coref]
+
+195. The station was assigned the KCGM call letters by the Federal Communications Commission . 
+[coref]
+
+196. The Cork Advertiser , which was published from 1799 to 1824 , called itself the Cork Constitution in 1823 . 
+[one]
+
+197. On June 10 , 2008 , it was added to the U.S. National Register of Historic Places . 
+[coref]
+
+198. Previously Stachowski served in the Erie County Legislature -LRB- 3rd District -RRB- . 
+[one]
+
+199. Mari Watirwa , the 20th Emir of Biu , established his capital at Kogu about 1795 , after he drove the Fulani out of Biu . 
+[] #keine brauchbare Entity
+
+200. Educated at Columbia University , Maddow began his career working within the American documentary movement in the 30s . 
+[wiki:Ben_Maddow dbpedia-owl:almaMater wiki:Columbia_University]
+
+201. The Farthest-Away Mountain is a children 's novel , first published in 1976 , by Lynne Reid Banks , a British author . 
+[wiki:The_Farthest-Away_Mountain dbpedia-owl:author wiki:Lynne_Reid_Banks]
+
+202. Cahill was also Sheriff of Essex County , Massachusetts and served in the Massachusetts State legislature during the 1970s . 
+[wiki:Robert_Ellis_Cahill dbpedia-owl:occupation wiki:Sheriff]
+
+203. It opened to service May 26 , 1994 , and is two blocks northwest of the American Airlines Arena . 
+[coref]
+
+204. The recently renovated Market has merged with the Saphalyam Complex adjacent to it . 
+[coref]
+
+205. Lake Township is a civil township of Benzie County in the U.S. state of Michigan . 
+[wiki:Lake_Township,_Benzie_County,_Michigan dbpedia-owl:administrativeDistrict wiki:Benzie_County,_Michigan]
+
+206. Along with Martin Brandlmayr and Werner Dafeldecker Roberts is currently a member of experimental trio Autistic Daughters . 
+[] #keine passende Property
+
+207. Gabe Rotter is an American novelist , author of Simon & Schuster 's Duck Duck Wally and ` The Human Bobby ' . 
+[wiki:Gabe_Rotter rdf:type dbpedia-owl:Writer] #keine Wikipediaeinträge für die beiden Buchtitel
+
+208. The Scarecrow -LRB- Dr. Jonathan Crane -RRB- is a fictional character that appears in comic books published by DC Comics . 
+[wiki:Scarecrow_(comics) rdf:type dbpedia-owl:FictionalCharacter]
+
+209. He served as Undersecretary of Sacred Congregation for Divine Worship between 1969 and 1975 . 
+[coref]
+
+210. A native of Wheeling , West Virginia , Scott graduated from Jefferson College in 1827 and worked as a Presbyterian minister . 
+[wiki:John_Work_Scott dbpedia-owl:birthPlace wiki:Wheeling,_West_Virginia]
+[wiki:John_Work_Scott dbpedia-owl:almaMater wiki:Jefferson_College]
+
+211. Dorotheus of Chilandar was a Serbian Orthodox abbot of Hilandar Monastery and the Protos of Mount Athos from 1356 until 1366 . 
+[wiki:Dorotheus_of_Chilandar dbpedia-owl:occupation wiki:Abbot]
+[wiki:Dorotheus_of_Chilandar dbpedia-owl:occupation wiki:Protos_(monastic_office)]
+
+212. The park encompasses most of the upstream areas of the Capilano River below the Cleveland Dam . 
+[coref]
+
+213. USS Ozaukee -LRB- ID-3439 -RRB- was a United States Navy cargo ship in commission from 1918 to 1919 . 
+[wiki:USS_Ozaukee rdf:type dbpedia-owl:Ship]
+
+214. The Man-Pop Festival was originally scheduled to take place at the outdoor Winnipeg Stadium . 
+[wiki:Man-Pop_Festival rdf:type dbpedia-owl:MusicFestival]
+
+215. The Squadron provided training to the Australian Flying Corps in Britain during WWI . 
+[coref]
+
+216. Heavy Deavy Skull Lover is the fourth album by the Los Angeles based neo-psychedelic rock band , the Warlocks . 
+[wiki:Heavy_Deavy_Skull_Lover dbpedia-owl:musicalBand wiki:The_Warlocks]
+
+217. Nirmalidada is a village and Village Development Committee in Khotang District in the Sagarmatha Zone of eastern Nepal . 
+[wiki:Nirmalidada dbpedia-owl:administrativeDistrict wiki:Khotang_District]
+
+218. Jon Aurtenetxe Borde is a Spanish footballer who plays for Athletic Bilbao as a defender . 
+[wiki:Jon_Aurtenetxe dbpedia-owl:managerClub wiki:Athletic_Bilbao]
+
+219. `` Lovers Walk '' is episode 8 of season 3 of the television show Buffy the Vampire Slayer . 
+[wiki:Lovers_Walk rdf:type dbpedia-owl:TelevisionEpisode]
+
+220. The Mayor Edwin O. Childs House is a historic house at 340 California Street in Newton , Massachusetts . 
+[wiki:Mayor_Edwin_O._Childs_House rdf:type dbpedia-owl:HistoricBuilding]
+[wiki:Mayor_Edwin_O._Childs_House dbpedia-owl:locatedInArea wiki:Newton,_Massachusetts]
+
+221. Peter Parry Fogg -LRB- 1832 -- 22 March 1920 -RRB- was Archdeacon of George in the Cape of Good Hope from 1871 onwards . 
+[wiki:Peter_Fogg rdf:type dbpedia-owl:Cleric]
+
+222. The Boston Red Sox ' 2008 season began on March 25 , 2008 in Tokyo , Japan for the MLB Japan Opening Day 2008 . 
+[] #keine brauchbare Entity
+
+223. According to the Palestinian Central Bureau of Statistics , Bil ` in has a population of 1,800 , mostly Muslims . 
+[] #keine passende Property
+
+224. De-Loused in the Comatorium is the debut studio album of the progressive rock band The Mars Volta . 
+[wiki:De-Loused_in_the_Comatorium dbpedia-owl:musicalBand wiki:The_Mars_Volta]
+
+225. He has also made guest appearances on shows including BBC 's Food and Drink and The Generation Game . 
+[coref]
+
+226. Ballyfounder Rath is the remains of a ringfort situated on the Ards Peninsula , in County Down , Northern Ireland . 
+[wiki:Ballyfounder_Rath rdf:type dbpedia-owl:HistoricPlace]
+[wiki:Ballyfounder_Rath dbpedia-owl:locatedInArea wiki:Ards_Peninsula]
+
+227. Circulation is 12,250 on weekday afternoons and 14,250 on Saturday mornings , according to the Audit Bureau of Circulations . 
+[one]
+
+228. The episode was broadcast May 15 , 2009 in the United States on the Fox Network . 
+[coref]
+
+229. Born on 16 June 1870 and educated at St David 's College , Lampeter , he was ordained in 1895 . 
+[coref]
+
+230. The Hogg Baronetcy , of Upper Grosvenor Street in the County of London , is a title in the Baronetage of the United Kingdom . 
+[] #keine brauchbare Entity
+
+231. The group consists of Jake Stone , Stavros Yiannoukas , Jamie Cibej , Jerry Craib and James Hauptmann . 
+[coref]
+
+232. The Large Niltava -LRB- Niltava grandis -RRB- is a species of bird in the Muscicapidae family . 
+[wiki:Large_Niltava rdf:type dbpedia-owl:Bird]
+
+233. The Plano City Council is the governing body of the City of Plano , Texas , United States . 
+[wiki:Plano_City_Council dbpedia-owl:regionServed wiki:Plano,_Texas]
+
+234. This was the first of three Petty albums originally released by the Backstreet Records label , distributed by MCA Records . 
+[coref]
+
+235. Bloody Lunatic Asylum is the third studio album by the Italian gothic black metal band Theatres des Vampires . 
+[wiki:Bloody_Lunatic_Asylum dbpedia-owl:musicalBand wiki:Theatres_des_Vampires]
+
+236. It is home to the Université des Montagnes , a small private university focusing on health and technology programs . 
+[coref]
+
+237. The Panama Limited was a premier all-Pullman car service between Chicago , Illinois and New Orleans , Louisiana . 
+[wiki:Panama_Limited dbpedia-owl:regionServed wiki:Chicago,_Illinois]
+[wiki:Panama_Limited dbpedia-owl:regionServed wiki:New_Orleans,_Louisiana]
+
+238. It was originally a junior corps until 1953 , when Hodge announced the corps would become a Senior Corps . 
+[coref]
+
+239. She is also screenwriter , composer , film director and producer - she runs her own film company Iga Film . 
+[coref]
+
+240. Distilled four times , Three Olives is gluten free , nut free and lactose free . 
+[one]
+
+241. Gisela Striker holds a joint appointment in Philosophy and Classics at Harvard University . 
+[wiki:Gisela_Striker dbpedia-owl:almaMater wiki:Harvard_University]
+
+242. She was supplied to Canadian National Steamships who set up a one-ship company , Canadian Constructor Ltd , to own her . 
+[coref]
+
+243. The 1st XV finished 3rd in the second division of the BUCS Men 's Scottish Conference . 
+[] #keine brauchbare Entity
+
+244. The Columbia Aircraft Corp was a United States aircraft manufacturer , which was active between 1927 and 1947 . 
+[wiki:Columbia_Aircraft_Corp rdf:type dbpedia-owl:Company]
+
+245. It was unveiled on St George 's Day , 23 April 1922 , but was moved to its present location in 1962 . 
+[coref]
+
+246. It was discovered by the Spacewatch project at the Kitt Peak National Observatory in Arizona on November 4 , 1991 . 
+[coref]
+
+247. Faro Airport is located 2.6 km -LRB- 1.6 mi -RRB- to the west of Faro , Portugal . 
+[wiki:Faro_Airport dbpedia-owl:locatedInArea wiki:Faro,_Portugal]
+
+248. It is also widely regarded as one of the best universities worldwide in the fields of Architecture and Engineering . 
+[coref]
+
+249. MS Grand Holiday is a Holiday class cruise ship , formerly owned by Carnival Cruise Lines . 
+[wiki:Grand_Holiday rdf:type dbpedia-owl:Ship]
+
+250. He graduated from the law department of Washington and Lee University , Lexington , Virginia . 
+[coref]
+
+251. svg IndiaLanguage Tamil Netru Indru Naalai is a Kollywood film , starring Ravi Krishna and Tamanna Bhatia . 
+[wiki:Netru_Indru_Naalai dbpedia-owl:starring wiki:Ravi_Krishna]
+[wiki:Netru_Indru_Naalai dbpedia-owl:starring wiki:Tamanna_Bhatia]
+
+252. When Johnny Comes Marching Home is a 1942 musical film starring Allan Jones and Jane Frazee . 
+[wiki:When_Johnny_Comes_Marching_Home_(film) dbpedia-owl:starring wiki:Allan_Jones_(actor)]
+[wiki:When_Johnny_Comes_Marching_Home_(film) dbpedia-owl:starring wiki:Jane_Frazee]
+
+253. Blepharis maderaspatensis B. Heyne ex Roth Blepharis mitrata C.B. Clarke Blepharis sindica Blepharis spiculifolia Balf . 
+[] #kein englischsprachiger Satz
+
+254. Dollar General Corp. is a U.S. chain of variety stores headquartered in Goodlettsville , Tennessee . 
+[wiki:Dollar_General dbpedia-owl:regionServed wiki:Goodlettsville,_Tennessee]
+
+255. The crater lies less than 10 kilometers to the south of the Vallis Alpes canyon formation . 
+[coref]
+
+256. Banzo has premiered several operas at the annual Festival de Beaune in Burgundy . 
+[] #keine passende Property
+
+257. Ty the Tasmanian Tiger 3 : Night of the Quinkan is the third installment of the video game series , Ty the Tasmanian Tiger . 
+[wiki:Ty_the_Tasmanian_Tiger_3:_Night_of_the_Quinkan rdf:type dbpedia-owl:Software]
+
+258. Britt is a city in Hancock County , Iowa , United States , and is the home of the National Hobo Convention . 
+[wiki:Britt,_Iowa dbpedia-owl:administrativeDistrict wiki:Hancock_County,_Iowa]
+
+259. Rollerskates are a five piece indie pop band originating from Perth , Western Australia . 
+[wiki:Rollerskates_(band) rdf:type dbpedia-owl:Band]
+
+260. Swamp Thing was a steel roller coaster located at Cypress Gardens in Winter Haven , Florida , United States . 
+[] #kein Wikipediaeintrag
+
+261. `` What I 'm After '' was the second single released from the Lords of the Underground 's second album , Keepers of the Funk . 
+[wiki:Keepers_of_the_Funk dbpedia-owl:musicalBand wiki:Lords_of_the_Underground]
+
+262. This article refers to the first SS Talune , built in 1890 and scuttled in 1925 . 
+[coref]
+
+263. Hong Dan , is a district -LRB- huyện -RRB- of Bac Lieu Province in the Mekong Delta region of Vietnam . 
+[wiki:Hong_Dan_District dbpedia-owl:locatedInArea wiki:Bac_Lieu_province]
+
+264. `` Starvin ' Marvin '' is the ninth episode of the first season of the American animated television series South Park . 
+[wiki:Starvin'_Marvin_(South_Park) rdf:type dbpedia-owl:TelevisionEpisode]
+
+265. The only incorporated municipality within Pilot Township is the Town of Pilot Mountain . 
+[wiki:Pilot_Mountain,_North_Carolina dbpedia-owl:administrativeDistrict wiki:Pilot_Township,_Surry_County,_North_Carolina]
+
+266. He attended the University of Mississippi where he was in the Sigma Alpha Epsilon fraternity . 
+[coref]
+
+267. Maidenform Peak is at the head of Leigh Canyon and .64 miles SSW of Cleaver Peak . 
+[wiki:Maidenform_Peak dbpedia-owl:mountainRange wiki:Leigh_Canyon]
+
+268. The Sinaloa Crow -LRB- Corvus sinaloae -RRB- is a crow native to western Mexico . 
+[wiki:Sinaloa_Crow rdf:type dbpedia-owl:Bird]
+
+269. Coast Casinos is the number 2 locals casino brand in the Las Vegas market behind Station Casinos . 
+[wiki:Coast_Casinos dbpedia-owl:regionServed wiki:Las_Vegas,_Nevada]
+
+270. It holds a centrist liberal editorial position , supporting the Democratic Party . 
+[coref]
+
+271. Protosphargis is an extinct genus of sea turtle from the Upper Cretaceous of Italy . 
+[wiki:Protosphargis rdf:type dbpedia-owl:Animal]
+
+272. The Minsk Ghetto was created soon after the German invasion of the Soviet Union . 
+[wiki:The_Minsk_Ghetto rdf:type dbpedia-owl:HistoricPlace]
+
+273. Faure Passage is a marine channel or passage between the Faure Islands and Kirkwood Islands in Marguerite Bay . 
+[wiki:Faure_Passage dbpedia-owl:locatedInArea wiki:Marguerite_Bay]
+
+274. The label 's inaugural release under the agreement was Browne 's own Solo Acoustic , Vol . 
+[] #keine brauchbare Entity
+
+275. They are the reserves grade side of the club The Wandsworth Demons based at Clapham Common in south London . 
+[coref]
+
+276. Southeast Louisiana National Wildlife Refuge Complex is a National Wildlife Refuge complex in the state of Louisiana . 
+[wiki:Southeast_Louisiana_National_Wildlife_Refuge_Complex dbpedia-owl:locatedInArea wiki:Louisiana]
+
+277. Barca is a village and municipality in the Rimavská Sobota District of the Banská Bystrica Region of southern Slovakia . 
+[wiki:Barca,_Rimavská_Sobota_District dbpedia-owl:administrativeDistrict wiki:Rimavská_Sobota_District]
+
+278. Lists of Lights and Buoys is Norwegian group Susanna and the Magical Orchestra 's debut , released in 2004 . 
+[wiki:List_of_Lights_and_Buoys dbpedia-owl:musicalBand wiki:Susanna_and_the_Magical_Orchestra]
+
+279. Sugar Aloes aka Michael Anthony Osuana is a prominent Calypsonian hailing from Trinidad and Tobago . 
+[wiki:Sugar_Aloes rdf:type dbpedia-owl:MusicalArtist]
+
+280. USS Cecil -LRB- APA-96 -RRB- was a Bayfield class attack transport that served with the US Navy during World War II . 
+[wiki:USS_Cecil_(APA-96) dbpedia-owl:usedInWar wiki:World_War_II]
+[wiki:USS_Cecil_(APA-96) rdf:type dbpedia-owl:Ship]
+
+281. It is 462.1 rail kilometers from the southern terminus of the Ōu Main Line at Fukushima Station . 
+[coref]
+
+282. Mitchell is an electoral district of the House of Assembly in the state of South Australia . 
+[wiki:Electoral_district_of_Mitchell_(South_Australia) dbpedia-owl:locatedInArea wiki:South_Australia]
+
+283. Gabrovica pri Komnu is a village in the Komen Municipality in the Littoral region of Slovenia . 
+[wiki:Gabrovica_pri_Komnu dbpedia-owl:administrativeDistrict wiki:Komen]
+
+284. Head of the Harbor is a village in Suffolk County , New York on the North Shore of Long Island . 
+[wiki:Head_of_the_Harbor,_New_York dbpedia-owl:administrativeDistrict wiki:Suffolk_County,_New_York]
+
+285. She graduated from University College , Cardiff in 1975 with an Honors degree in English . 
+[coref]
+
+286. He was the author of George Eliot : A Biography ; editor of The George Eliot Letters . 
+[coref]
+
+287. Charles E. Johnston -LRB- October 30 , 1881 -- July 10 , 1951 -RRB- was the eighth president of Kansas City Southern Railway . 
+[] #kein passende Property
+
+288. Robert Reynolds Jones III -LRB- born August 8 , 1939 -RRB- , third president of Bob Jones University . 
+[wiki:Bob_Jones_III dbpedia-owl:almaMater wiki:Bob_Jones_University]
+
+289. After hearing Alan Sked , a lecturer at the London School of Economics , speaking on the issue , he made contact . 
+[wiki:Alan_Sked dbpedia-owl:almaMater wiki:London_School_of_Economics]
+
+290. ZON Multimédia produces several premium channels for the ZON TV platform , which include SportTV and TVCine . 
+[wiki:ZON_Multimédia dbpedia-owl:network wiki:Sport_TV]
+[wiki:ZON_Multimédia dbpedia-owl:network wiki:TVCine]
+
+291. The Stranger was an early American television program broadcast on the now defunct DuMont Television Network . 
+[wiki:The_Stranger_(TV_series) dbpedia-owl:channel wiki:The_Stranger_(TV_series)]
+
+292. Malaysia -- Singapore Second Link is a bridge connecting Singapore and Johor , Malaysia . 
+[] #kein Wikipediaeintrag
+
+293. National Quemoy University is a national university , located in Jinning Township , Kinmen , Republic of China . 
+[wiki:National_Quemoy_University dbpedia-owl:regionServed wiki:Kinmen]
+
+294. It was first released in 1992 for the PC-Engine Super CD-ROM ² by Hudson Soft and developed by Red Entertainment . 
+[coref]
+
+295. ParisTech the Paris Institute of Technology is one of the collegiate universities in France . 
+[wiki:Paris_Institute_of_Technology dbpedia-owl:regionServed wiki:France]
+[wiki:Paris_Institute_of_Technology rdf:type dbpedia-owl:University]
+
+296. Born in Chicago , Illinois , Irene Aguilar completed her undergraduate degree at Washington University in St. Louis . 
+[wiki:Irene_Aguilar dbpedia-owl:birthPlace wiki:Chicago,_Illinois]
+[wiki:Irene_Aguilar dbpedia-owl:almaMater wiki:Washington_University_in_St._Louis]
+
+297. Trevor Boys -LRB- born November 3 , 1957 in Calgary , Alberta -RRB- , is a Canadian race car driver . 
+[wiki:Trevor_Boys dbpedia-owl:birthPlace wiki:Calgary,_Alberta]
+
+298. The University of Science and Culture -LRB- in Persian : Daneshgah Elm va Farhang is located in Tehran , Iran . 
+[wiki:University_of_Science_and_Culture dbpedia-owl:regionServed wiki:Tehran]
+
+299. The Students ' union of Obafemi Awolowo University governs student affairs at the institution . 
+[one]
+
+300. It is situated in the Apennine Mountain Range , 582 m -LRB- 1,909 ft -RRB- above sea level . 
+[coref]
+
+301. The song Dark Night by The Blasters was first featured on the 1985 album Hard Line . 
+[wiki:Dark_Night_(song) dbpedia-owl:musicalBand wiki:The_Blasters] 
+
+302. His Corps took part in the landing operations of the Battle of Leyte in the Philippines . 
+[coref]
+
+303. His last race was the Copa America de Ciclismo , in which he rode for the Scott-Marcondes Cesar-São José dos Campos team . 
+[coref]
+
+304. In 1992 they released their only demo , which landed them at Displeased Records . 
+[coref]
+
+305. Like The 48 Laws of Power , this book also takes a neutral look at how to manipulate social situations . 
+[] #keine brauchbare Property
+
+306. The Best of Nek : L'anno zero is the first greatest hits album by Italian singer-songwriter Nek . 
+[wiki:The_Best_of_Nek:_L'anno_zero dbpedia-owl:musicalArtist wiki:Nek]
+
+307. The official name for the ESPN2 Monday night games was called ESPN Arena Football Monday presented by Russell Athletic . 
+[] #keine passende Property
+
+308. Until December 1 , 2005 , Perm Oblast was a federal subject of Russia in Privolzhsky -LRB- Volga -RRB- Federal District . 
+[wiki:Perm_Oblast dbpedia-owl:locatedInArea wiki:Privolzhsky_(Volga)_Federal_District]
+
+309. In 1738 he was made a Freeman of the City of London and a freeman of the Stationers ' Company . 
+[coref]
+
+310. The album is available in standard and deluxe editions , and debuted at # 76 on the UK Albums Chart . 
+[coref]
+
+311. He attended the University of North Carolina and University of Virginia but did not graduate . 
+[coref]
+
+312. BSix Sixth Form College : Brooke House is a sixth form college located in Upper Clapton , London in the United Kingdom . 
+[wiki:BSix_Sixth_Form_College rdf:type dbpedia-owl:College]
+
+313. Peter Grosz is a graduate of Northwestern University , where he worked with Seth Meyers of Saturday Night Live . 
+[wiki:Peter_Grosz dbpedia-owl:almaMater wiki:Northwestern_University]
+
+314. Roselle is one of the co-founders of the radical environmental organization Earth First ! 
+[] #keine passende Property
+
+315. The park borders Rothrock State Forest and Raystown Lake National Recreation Area . 
+[coref]
+
+316. The Honda Airwave is a subcompact car produced by the Japanese automaker Honda since 2005 . 
+[wiki:Honda_Airwave rdf:type dbpedia-owl:MeanOfTransportation]
+
+317. He is currently a professor at Beijing 's Institute of Vertebrate Paleontology and Paleoanthropology . 
+[coref]
+
+318. Alne hosts the annual Alne Street Fayre , usually during the first week in June . 
+[] #keine passende Property
+
+319. com , which he launched in April 2008 after closing down his Internet television channel 18 Doughty Street . 
+[coref]
+
+320. CenturyTel acquired Embarq in 2009 , at which point United Telephone of Kansas began doing business as CenturyLink . 
+[wiki:CenturyTel dbpedia-owl:subsidiary wiki:Embarq]
+
+321. Cerberus class monitors were a class of breastwork monitors constructed in the late 19th century for the Royal Navy . 
+[wiki:Cerberus_class_monitor rdf:type dbpedia-owl:Ship]
+
+322. The region has a population of some 150,000 and is a designated Area of Outstanding Natural Beauty . 
+[] #keine brauchbare Entity
+
+323. `` Les Consonnes '' and `` La Tailles Du Bambou '' were new songs at the time of release and made their début on the album . 
+[] #keine Wikieinträge für die Songs
+
+324. It is the setting of the classic H.G. Wells science fiction book , The Invisible Man . 
+[coref]
+
+325. Elcom Technology Pty Ltd is a privately held software company based in Sydney , Australia . 
+[wiki:Elcom_Technology dbpedia-owl:headquarters wiki:Sydney]
+
+326. In 1867 he was ordained as a minister of the Wesleyan Methodist Church in Canada . 
+[coref]
+
+327. Iglesia de Santa María -LRB- Oviedo -RRB- is a defunct church in Oviedo , Asturias , Spain . 
+[wiki:Iglesia_de_Santa_María_(Oviedo) dbpedia-owl:locatedInArea wiki:Oviedo]
+
+328. Fairfield shares the postcode of 2165 with the separate suburbs of Fairfield East , Fairfield Heights and Fairfield West . 
+[wiki:Fairfield,_New_South_Wales dbpedia-owl:neighboringMunicipality wiki:Fairfield_East,_New_South_Wales]
+[wiki:Fairfield,_New_South_Wales dbpedia-owl:neighboringMunicipality wiki:Fairfield_Heights,_New_South_Wales]
+
+329. The Chik have been granted Other Backward Class status in both Bihar and Uttar Pradesh . 
+[wiki:Chik_(social_group) dbpedia-owl:populationPlace wiki:Bihar]
+[wiki:Chik_(social_group) dbpedia-owl:populationPlace wiki:Uttar_Pradesh]
+
+330. Bracken was an Irish television soap opera broadcast from 1978 to 1982 on RTÉ One in Ireland . 
+[wiki:Bracken_(TV_series) dbpedia-owl:channel wiki:RTÉ_One]
+
+331. Surrey Hills is a railway station on the Lilydale and Belgrave railway lines in Surrey Hills , Melbourne , Australia . 
+[wiki:Surrey_Hills_railway_station dbpedia-owl:relatedMeanOfTransportation wiki:Lilydale_railway_line]
+[wiki:Surrey_Hills_railway_station dbpedia-owl:relatedMeanOfTransportation wiki:Belgrave_railway_line]
+
+332. The Honda Grand Prix of St. Petersburg is an IndyCar Series race held in St. Petersburg , Florida . 
+[wiki:Honda_Grand_Prix_of_St._Petersburg rdf:type dbpedia-owl:SportsEvent]
+
+333. The team played 6 youth One Day International 's during the ICC Under-19 Cricket World Cup . 
+[coref]
+
+334. The Portrait of Cardinal Alessandro Farnese is a portrait of cardinal Alessandro Farnese by Raphael , produced in 1509-11 . 
+[wiki:Portrait_of_Cardinal_Alessandro_Farnese dbpedia-owl:creator wiki:Raphael]
+
+335. Prince Bảo Vang of Vietnam , also known as Yves Claude Vinh-San , is the illegimateson of Emperor Duy Tân . 
+[wiki:Duy_Tan dbpedia-owl:child wiki:Bao_Vang]
+
+336. The group evolved during the Late Triassic and disappeared during the Late Cretaceous . 
+[coref]
+
+337. In Between Evolution is the ninth full-length album by Canadian rock band The Tragically Hip . 
+[wiki:In_Between_Evolution dbpedia-owl:musicalBand wiki:The_Tragically_Hip]
+
+338. The nickname for the men 's and women 's basketball , women 's volleyball , and wrestling teams is the Buffalo Bulls . 
+[one]
+
+339. It is formed in northern Tolland County , near Stafford Springs by the confluence of Middle River and Furnace Brook . 
+[coref]
+
+340. It was created in 2005 from part of Yaftali Sufla District , itself formed from the Fayzabad District . 
+[coref]
+
+341. Tōgō Station is a train station of the Kyushu Railway Company Kagoshima Main Line , located in Munakata , Fukuoka , Japan . 
+[wiki:Tōgō_Station dbpedia-owl:operator wiki:Kyushu_Railway_Company]
+
+342. Hanak is a district of Ardahan Province of Turkey on the road from Ardahan to Posof . 
+[wiki:Hanak dbpedia-owl:administrativeDistrict wiki:Ardahan_Province]
+
+343. Each song represented an element from Homer 's Odyssey -LRB- Ulysses is the Latin name for the protagonist , Odysseus -RRB- . 
+[one]
+
+344. One of her books , The Man Who Loved Clowns , won the Mark Twain Award and William Allen White Award in 1995 . 
+[coref]
+
+345. At the time , the country was a one-party state with the Mauritanian People 's Party -LRB- PPM -RRB- as the sole legal party . 
+[] #keine brauchbare Property
+
+346. He was drafted by the Green Bay Packers in the thirty-second round of the 1943 NFL Draft . 
+[coref]
+
+347. The Aryan Circle -LRB- AC -RRB- is a white prison gang spread throughout many U.S. correctional facilites . 
+[wiki:Aryan_Circle rdf:type dbpedia-owl:Organisation]
+
+348. The playing court is known as Blackburn Court , named after historic UD coach Tom Blackburn . 
+[] #keine passende Property
+
+349. Bohrau is an Ortsteil of Forst on the Neiße river bordering Poland with a population of 109 . 
+[wiki:Bohrau dbpedia-owl:locatedInArea wiki:Forst_(Lausitz)]
+
+350. In many campaign settings for the Dungeons & Dragons role-playing game , Urogalan is the halfling deity of earth and death . 
+[] #keine brauchbare Entity
+
+351. He played college football at the University of Utah and was drafted by the Eagles in the second round of the 1981 NFL Draft . 
+[coref]
+
+352. It is a former capital of the Danish West Indies and home to the Christiansted National Historic Site . 
+[coref]
+
+353. It can be assumed through watching Seasons 4 and 5 that she was the supervising CO of Unit B. 
+[coref]
+
+354. Paddy Smith appeared just in two games for the Red Sox and went hitless in two at-bats -LRB- .000 -RRB- . 
+[wiki:Paddy_Smith_(baseball) rdf:type dbpedia-owl:BaseballPlayer]
+
+355. Kevin O'Connor is the current General Manager and Senior Vice President of Basketball Operations of the Utah Jazz . 
+[wiki:Kevin_O'Connor_(basketball) dbpedia-owl:manager wiki:Utah_Jazz]
+
+356. Bad Meets Evil featuring Royce Da 5,9 & Bruno Mars - -LRB- song -RRB- featuring Eminem 2 . 
+[] #kein vollständiger Satz
+
+357. Claire Clancy is Chief Executive and Clerk to the National Assembly for Wales , since February 2007 . 
+[] #keine passende Property
+
+358. It airs live on CBC Newsworld from 6-10 AM ET and airs live on CBC Television from 6-7 AM ET , CT , MT and PT . 
+[coref]
+
+359. The Ontario Liberal Party , led by Edward Blake , won a slim majority of the seats , and formed the government . 
+[wiki:Edward_Blake dbpedia-owl:party wiki:Ontario_Liberal_Party]
+
+360. After the Band of Gypsys split up , Jimi 's manager , Michael Jeffery , wanted to reunite the original Experience . 
+[] #keine brauchbare Property
+
+361. The first AMBA buses were Advanced System Bus -LRB- ASB -RRB- and Advanced Peripheral Bus -LRB- APB -RRB- . 
+[] #keine brauchbare Property
+
+362. He was drafted by the St. Louis Rams in the seventh round of the 2006 NFL Draft . 
+[coref]
+
+363. SportsDesk is a former sports news television show that was shown every day on the New England Sports Network , USA . 
+[wiki:SportsDesk dbpedia-owl:channel wiki:New_England_Sports_Network]
+
+364. Newcastle School for Boys , or NSB , is an independent school for boys aged 3 -- 18 in Newcastle-upon-Tyne , England . 
+[wiki:Newcastle_School_for_Boys dbpedia-owl:regionServed wiki:Newcastle-upon-Tyne]
+[wiki:Newcastle_School_for_Boys rdf:type dbpedia-owl:School]
+
+365. Recently World Cattle Conference with main emphasis on cow was held in month of April 2007 here . 
+[] #keine brauchbare Entity
+
+366. McDuff , The Talking Dog was a Saturday morning live action television program that aired on NBC in 1976 . 
+[wiki:McDuff,_the_Talking_Dog dbpedia-owl:channel wiki:NBC]
+
+367. KSNW is also the flagship station of the Kansas State Network -LRB- KSN -RRB- , the state 's chain of NBC affiliates . 
+[wiki:KSNW dbpedia-owl:affiliation wiki:NBC]
+
+368. Both tracks from the single were reissued on the compilation album Alkaline Trio in 2000 . 
+[coref]
+
+369. São Pedro de Rubiães church is a 12th century Romanesque church , by the medieval way `` Caminho de Santiago '' . 
+[wiki:Church_of_São_Pedro_de_Rubiães rdf:type dbpedia-owl:HistoricBuilding]
+
+370. Teoc is best known as the birthplace of the blues legend Mississippi John Hurt . . 
+[wiki:Mississippi_John_Hurt dbpedia-owl:birthPlace wiki:Teoc,_Mississippi]
+
+371. TV Interactive Sport was created by Top Sports and it is sequence of the project Interactive Sport developed by the company . 
+[] #kein Wikieintrag für "Top Sports"
+
+372. Gary John Hart -LRB- born , 21 September 1976 in Harlow -RRB- is a professional footballer who plays for Eastbourne Borough . 
+[wiki:Gary_Hart_(footballer) dbpedia-owl:managerClub wiki:Eastbourne_Borough_F.C.]
+[wiki:Gary_Hart_(footballer) dbpedia-owl:birthPlace wiki:Harlow] 
+
+373. -LRB- AFP via News Limited -RRB- A `` significant explosive event '' occurs at the Mount Redoubt volcano in Alaska . 
+[] #keine brauchbaren Entities
+
+374. Construction cost 450 million Ft -LRB- mainly funded from European Union sources -RRB- . 
+[] #keine brauchbaren Entities
+
+375. He also coached Portmore United , Waterhouse F.C. and August Town F.C. in the Jamaican National Premier League . 
+[coref]
+
+376. The Phoenix Foundation are an progressive indie rock band formed in Wellington , New Zealand . 
+[wiki:The_Phoenix_Foundation rdf:type dbpedia-owl:Band]
+
+377. It grows to 12-15m tall with leaves that are longer and darker than the European Hornbeam -LRB- Carpinus betulus -RRB- . 
+[coref]
+
+378. Geoff Jago founded a company called Geoff Jago Custom Automotive in 1965 making Street Rod type vehicles . 
+[] #keine passende Property
+
+379. The game is a sequel to the G.I. Joe video game released for the NES by Taxan in 1991 . 
+[wiki:G.I._Joe_(NES_video_game) rdf:type dbpedia-owl:Game]
+[wiki:G.I._Joe_(NES_video_game) rdf:type dbpedia-owl:Software]
+
+380. The Seamen 's Union of Australia was the principal trade union for merchant seamen in Australia from the 1890s to the 1990s . 
+[wiki:Seamen's_Union_of_Australia dbpedia-owl:regionServed wiki:Australia]
+
+381. The Banks -- Vernonia State Trail is a rail trail and state park in northwest Oregon in the United States . 
+[] #kein Wikieintrag gefunden
+
+382. Ahn Ji-Man is a South Korean relief pitcher who plays for the Samsung Lions in the Korea Professional Baseball . 
+[wiki:Ahn_Ji-Man rdf:type dbpedia-owl:BaseballPlayer]
+
+383. Today the site is owned by the Wisconsin Historical Society and serves as a museum of Wisconsin 's early lead mining history . 
+[coref]
+
+384. She is known for her roles in soap operas and for having won the contest Nuestra Belleza Jalisco . 
+[coref]
+
+385. Estádio Presidente Vargas is a multi-use stadium located in Campina Grande , Brazil . 
+[wiki:Estádio_Presidente_Vargas_(Paraíba) rdf:type dbpedia-owl:Stadium]
+[wiki:Estádio_Presidente_Vargas_(Paraíba) dbpedia-owl:locatedInArea wiki:Campina_Grande]
+
+386. It is here that the four Grey Griffins , Max , Natalia , Ernie , and Harley , meet to play Round Table . 
+[coref]
+
+387. Dandakhali is a village development committee in Surkhet District in the Bheri Zone of mid-western Nepal . 
+[wiki:Dandakhali dbpedia-owl:locatedInArea wiki:Surkhet_District]
+
+388. Epping Boys High School is a government high school located at Marsfield , Sydney , New South Wales , Australia . 
+[wiki:Epping_Boys_High_School dbpedia-owl:regionServed wiki:Marsfield,_New_South_Wales]
+
+389. ... that Poundisford Park was set up as a medieval deer park by the Bishop of Winchester ? 
+[] #unvollständiger Satz
+
+390. The 1925 Green Bay Packers season was their fifth season in the National Football League . 
+[coref]
+
+391. Emperor Hui of Han -LRB- 210 BC -- 188 BC -RRB- was the second emperor of the Han Dynasty in China . 
+[wiki:Emperor_Hui_of_Han rdf:type dbpedia-owl:Monarch]
+[wiki:Emperor_Hui_of_Han dbpedia-owl:occupation wiki:Emperor_of_China]
+
+392. Ronald Frank Thiemann -LRB- 1946 - -RRB- is Benjamin Bussey Professorship of Theology at Harvard Divinity School . 
+[wiki:Ronald_Frank_Thiemann dbpedia-owl:almaMater wiki:Harvard_Divinity_School]
+
+393. In 1947-1958 Bohuslav Fuchs was a professor of architecture at Brno University of Technology . 
+[wiki:Bohuslav_Fuchs dbpedia-owl:almaMater wiki:Brno]
+
+394. However , the NEC PC-9801 version has sharper graphics and the ability to use a mouse . 
+[one]
+
+395. The Canadian paddlewheeler PS Accommodation was the first successful steamboat built entirely in North America in 1808 . 
+[] #kein Wikieintrag für das Boot
+ 
+396. In November 1974 , the James Mangum House was listed on the National Register of Historic Places . 
+[wiki:James_Mangum_House rdf:type dbpedia-owl:HistoricBuilding]
+
+397. He made his debut as a ruckman with the Geelong Football Club in 1977 , playing 19 games and kicking 1 goal until 1979 . 
+[coref]
+
+398. Our House : the Original Songs is a greatest hits album by a British pop band Madness , released in 2002 . 
+[wiki:Our_House:_the_Original_Songs dbpedia-owl:musicalBand wiki:Madness_(band)]
+
+399. Released as a single by Youssou N ` Dour and Neneh Cherry , the song was a huge international hit in 1994 . 
+[coref]
+
+400. The St. Paul Rangers were a minor professional ice hockey team based in Saint Paul , Minnesota . 
+[wiki:St._Paul_Rangers dbpedia-owl:ground wiki:Saint_Paul,_Minnesota]

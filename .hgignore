@@ -1,0 +1,32 @@
+
+syntax: regexp
+^WebContent/WEB-INF/config/log4j\.xml$
+syntax: regexp
+^build\.properties$
+syntax: regexp
+^WebContent/WEB-INF/config/nlpedia_setup\.xml$
+syntax: regexp
+^WebContent/WEB-INF/config/test_en_wiki\.xml$
+syntax: regexp
+^nlpedia\.jar$
+syntax: regexp
+^log/nlpedia\.log\.2011-05-10$
+syntax: regexp
+^log/nlpedia\.log\.2011-05-10$
+syntax: regexp
+^log/nlpedia\.log\.2011-05-11$
+syntax: regexp
+^build$
+syntax: regexp
+nlpedia.log*
+syntax: regexp
+nlpedia.debug*
+syntax: regexp
+^WebContent/WEB-INF/data/training/ml/network$
+syntax: regexp
+.DS_Store$
+syntax: regexp
+^WebContent/WEB-INF/data/training/classifier/ner-de-hgc_175M_600.ser.gz$
+
+syntax: regexp
+^WebContent/WEB-INF/lib/reverb\.jar$
