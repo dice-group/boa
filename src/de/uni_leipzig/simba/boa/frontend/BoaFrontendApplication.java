@@ -104,13 +104,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		}
 		else if ( source == this.databasesButton ) {
 			
-//			Panel p = new Panel();
-//			p.addComponent(new Label("Hier kann man sich die Patterns anschauen"));
-//			// setze linken teil auf die modelle
-//			horizontalSplitPanel.setFirstComponent(tree);			
-//			// in denrechten teil kommt die erkl�rung
-//			horizontalSplitPanel.setSecondComponent(p);
-//			horizontalSplitPanel.setSplitPosition(400, HorizontalSplitPanel.UNITS_PIXELS);
 			this.buildHomeLayout();
 		}
 		else if ( source == this.sparqlButton ) {
@@ -122,40 +115,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 			// in denrechten teil kommt die erkl�rung
 			horizontalSplitPanel.setSecondComponent(p);
 			horizontalSplitPanel.setSplitPosition(130, HorizontalSplitPanel.UNITS_PIXELS);
-		}
-		else if ( source == this.startQuery ) {
-			
-			String queryString = this.sparqlQueryString.getValue().toString();
-			
-			try {
-				
-				Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
-				Store store = new Store();
-				Model model = store.getModel(this.sparqlQueryModel);
-				QueryExecution qexec = QueryExecutionFactory.create(query, model.getModel());
-				String solution = ResultSetFormatter.asText(qexec.execSelect());
-				qexec.close() ;
-				
-//				solution = solution.replaceAll("http://dbpedia.org/resource/", "dbr:");
-//				solution = solution.replaceAll("http://nlpedia.de/", "boa:");
-//				solution = solution.replaceAll("http://dbpedia.org/ontology/", "dbo");
-//				solution = solution.replaceAll(">", "");
-//				solution = solution.replaceAll("<", "");
-				
-				Layout p = new HorizontalLayout();
-//				Panel p = new Panel();
-				Label output = new Label(solution);
-				output.setContentMode(Label.CONTENT_PREFORMATTED);
-				p.addComponent(output);
-				p.setMargin(true);
-				p.setSizeFull();
-				
-				((VerticalSplitPanel) this.horizontalSplitPanel.getSecondComponent()).setSecondComponent(output);
-			}
-			catch (QueryParseException qpe) {
-			
-				this.getMainWindow().showNotification(qpe.getLocalizedMessage());
-			}
 		}
 	}
 

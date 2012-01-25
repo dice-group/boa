@@ -26,6 +26,7 @@ import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
 import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
@@ -38,7 +39,7 @@ import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrateg
 
 public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 
-	public static final NamedEntityRecognizer ner = new NamedEntityRecognizer();
+	public static final NamedEntityRecognition ner = null;
 	private final NLPediaLogger logger 		= new NLPediaLogger(CreateKnowledgeCallable.class);
 	private final PatternMapping mapping;
 	
@@ -149,7 +150,7 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 							if ( sentence.toLowerCase().startsWith(pattern.getNaturalLanguageRepresentationWithoutVariables().toLowerCase())) continue;
 							this.logger.debug("\t" + sentence);
 
-							createKnowledge(mapping, pattern, sentence, ner.recognizeEntitiesInString(sentence)); 
+							createKnowledge(mapping, pattern, sentence, ner.getAnnotatedString(sentence)); 
 						}
 					}
 					// close the searcher or you get a ioexception because too many files are open
