@@ -24,7 +24,9 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.nlp.NamedEntityRecognizer;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.impl.StanfordNLPNamedEntityRecognition;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
@@ -36,7 +38,7 @@ import edu.stanford.nlp.process.DocumentPreprocessor;
 public class TypicityFeature implements Feature {
 
 	private final NLPediaLogger logger					= new NLPediaLogger(TypicityFeature.class);
-	private NamedEntityRecognizer ner;
+	private NamedEntityRecognition ner;
 	private final int maxNumberOfEvaluationSentences 	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfTypicityConfidenceMeasureDocuments"));
 	
 	private PatternSearcher patternSearcher;
@@ -99,7 +101,8 @@ public class TypicityFeature implements Feature {
 		Context leftContext;
 		Context rightContext;
 		
-		if ( this.ner == null ) this.ner = new NamedEntityRecognizer();
+		if ( this.ner == null ) this.ner = NaturalLanguageProcessingToolFactory.getInstance().
+			createNamedEntityRecognition(StanfordNLPNamedEntityRecognition.class);
 
 		for (Pattern pattern : mapping.getPatterns()) {
 			
@@ -118,7 +121,7 @@ public class TypicityFeature implements Feature {
 					
 					if ( foundString.toLowerCase().startsWith(patternWithOutVariables.toLowerCase())) continue;
 					
-					nerTagged = this.ner.recognizeEntitiesInString(this.replaceBrackets(foundString));
+					nerTagged = this.ner.getAnnotatedString(this.replaceBrackets(foundString));
 					
 					// this is a quick hack for ISSUE 4 (http://code.google.com/p/boa/issues/detail?id=4) TODO FIX
 					if ( NLPediaSettings.getInstance().getSetting("hibernateConnectionUrl").contains("wiki") ) {
@@ -255,15 +258,6 @@ public class TypicityFeature implements Feature {
 				"Basil Cave was born on 14 November 1865 .",
 				"Bassey Ewa-Henshaw was born on 4 May 1943 .",
 				"I love baseball."};
-		
-		NamedEntityRecognizer ner = new NamedEntityRecognizer();
-		
-		for (String s : sentences){
-			
-			System.out.println(s);
-			System.out.println(ner.recognizeEntitiesInString(s));
-			System.out.println();
-		}
 	}
 	private String segmentString(String sentence) {
 		

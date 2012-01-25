@@ -28,10 +28,14 @@ public class NaturalLanguageProcessingToolFactory {
 	
 	private final NLPediaLogger logger = new NLPediaLogger(NaturalLanguageProcessingToolFactory.class);
 	
+	private String defaultPartOfSpeechTagger;
+	private String defaultNamedEntityRecognition;
+	private String defaultSentenceBoundaryDisambiguation;
+	
 	private List<String> partOfSpeechTools;
 	private List<String> sentenceBoundaryDisambiguationTools;
 	private List<String> namedEntityRecognitionTools;
-	
+
 	/**
 	 * Singleton
 	 */
@@ -69,6 +73,25 @@ public class NaturalLanguageProcessingToolFactory {
 	}
 	
 	/**
+	 * @return the default part of speech tagger
+	 */
+	@SuppressWarnings("unchecked")
+	public PartOfSpeechTagger createDefaultPartOfSpeechTagger() {
+
+		try {
+			
+			return (PartOfSpeechTagger) createNewInstance(
+					(Class<? extends NaturalLanguageProcessingTool>) Class.forName(defaultPartOfSpeechTagger));
+		}
+		catch (ClassNotFoundException e) {
+
+			e.printStackTrace();
+			this.logger.error("Could not load default pos tagger " + defaultPartOfSpeechTagger);
+			throw new RuntimeException("Could not load default pos tagger " + defaultPartOfSpeechTagger);
+		}
+	}
+	
+	/**
 	 * Returns a new instance of the specified namedEntityDisambiguationClass.
 	 * The specific implementations of the taggers have to be declared
 	 * in the nlpedia_setup.xml file.
@@ -90,6 +113,25 @@ public class NaturalLanguageProcessingToolFactory {
 	}
 	
 	/**
+	 * @return the default named entity recognition
+	 */
+	@SuppressWarnings("unchecked")
+	public NamedEntityRecognition createDefaultNamedEntityRecognition() {
+
+		try {
+			
+			return (NamedEntityRecognition) createNewInstance(
+					(Class<? extends NaturalLanguageProcessingTool>) Class.forName(defaultNamedEntityRecognition));
+		}
+		catch (ClassNotFoundException e) {
+
+			e.printStackTrace();
+			this.logger.error("Could not load default named entity recognition " + defaultNamedEntityRecognition);
+			throw new RuntimeException("Could not load default named entity recognition " + defaultNamedEntityRecognition);
+		}
+	}
+	
+	/**
 	 * Returns a new instance of the specified sentenceBoundaryDisambiguationClass.
 	 * The specific implementations of the sentence boundary disambiguations have to be declared
 	 * in the nlpedia_setup.xml file.
@@ -108,6 +150,24 @@ public class NaturalLanguageProcessingToolFactory {
 		throw new RuntimeException("Could not load sentence boundary disambiguation " + sentenceBoundaryDisambiguationClass);
 	}
 
+	/**
+	 * @return the default sentence boundary disambiguation
+	 */
+	@SuppressWarnings("unchecked")
+	public SentenceBoundaryDisambiguation createDefaultSentenceBoundaryDisambiguation() {
+
+		try {
+			
+			return (SentenceBoundaryDisambiguation) createNewInstance(
+					(Class<? extends NaturalLanguageProcessingTool>) Class.forName(defaultSentenceBoundaryDisambiguation));
+		}
+		catch (ClassNotFoundException e) {
+
+			e.printStackTrace();
+			this.logger.error("Could not load default sentence boundary disambiguation " + defaultSentenceBoundaryDisambiguation);
+			throw new RuntimeException("Could not load default sentence boundary disambiguation " + defaultSentenceBoundaryDisambiguation);
+		}
+	}
 	
 	/**
 	 * @return the partOfSpeechTools
@@ -162,6 +222,60 @@ public class NaturalLanguageProcessingToolFactory {
 		this.namedEntityRecognitionTools = namedEntityRecognitionTools;
 	}
 
+	
+	/**
+	 * @return the defaultPartOfSpeechTagger
+	 */
+	public String getDefaultPartOfSpeechTagger() {
+	
+		return defaultPartOfSpeechTagger;
+	}
+
+	
+	/**
+	 * @param defaultPartOfSpeechTagger the defaultPartOfSpeechTagger to set
+	 */
+	public void setDefaultPartOfSpeechTagger(String defaultPartOfSpeechTagger) {
+	
+		this.defaultPartOfSpeechTagger = defaultPartOfSpeechTagger;
+	}
+
+	
+	/**
+	 * @return the defaultNamedEntityRecognition
+	 */
+	public String getDefaultNamedEntityRecognition() {
+	
+		return defaultNamedEntityRecognition;
+	}
+
+	
+	/**
+	 * @param defaultNamedEntityRecognition the defaultNamedEntityRecognition to set
+	 */
+	public void setDefaultNamedEntityRecognition(String defaultNamedEntityRecognition) {
+	
+		this.defaultNamedEntityRecognition = defaultNamedEntityRecognition;
+	}
+
+	
+	/**
+	 * @return the defaultSentenceBoundaryDisambiguation
+	 */
+	public String getDefaultSentenceBoundaryDisambiguation() {
+	
+		return defaultSentenceBoundaryDisambiguation;
+	}
+
+	
+	/**
+	 * @param defaultSentenceBoundaryDisambiguation the defaultSentenceBoundaryDisambiguation to set
+	 */
+	public void setDefaultSentenceBoundaryDisambiguation(String defaultSentenceBoundaryDisambiguation) {
+	
+		this.defaultSentenceBoundaryDisambiguation = defaultSentenceBoundaryDisambiguation;
+	}
+
 	/**
 	 * Instantiates a natural language processing tool.
 	 * 
@@ -192,7 +306,10 @@ public class NaturalLanguageProcessingToolFactory {
 	public static void main(String[] args) {
 
 		NLPediaSetup setup = new NLPediaSetup(true);
-		NamedEntityRecognition a = NaturalLanguageProcessingToolFactory.getInstance().createNamedEntityRecognition(StanfordNLPNamedEntityRecognition.class);
-		a.getAnnotatedString("This is a sentence which was written by Daniel Gerber.");
+//		NamedEntityRecognition a = NaturalLanguageProcessingToolFactory.getInstance().createNamedEntityRecognition(StanfordNLPNamedEntityRecognition.class);
+//		a.getAnnotatedString("This is a sentence which was written by Daniel Gerber.");
+		
+		PartOfSpeechTagger postagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
+		postagger.getAnnotations("This is a very simple sentence!");
 	}
 }

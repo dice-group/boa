@@ -35,8 +35,6 @@ public class HibernateFactory {
     											// Add classes 
 									            .addAnnotatedClass(Pattern.class)
 									            .addAnnotatedClass(PatternMapping.class)
-//									            .addAnnotatedClass(Cluster.class)
-//									            .addAnnotatedClass(EvaluationResult.class)
 									            .addAnnotatedClass(Property.class)
 									            .addAnnotatedClass(Resource.class)
 									            .addAnnotatedClass(Triple.class)
@@ -62,8 +60,6 @@ public class HibernateFactory {
 		// Add classes 
         .addAnnotatedClass(Pattern.class)
         .addAnnotatedClass(PatternMapping.class)
-//        .addAnnotatedClass(Cluster.class)
-//        .addAnnotatedClass(EvaluationResult.class)
         .addAnnotatedClass(Property.class)
         .addAnnotatedClass(Resource.class)
         .addAnnotatedClass(Triple.class)

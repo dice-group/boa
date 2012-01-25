@@ -1,12 +1,13 @@
 package de.uni_leipzig.simba.boa.backend;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CrawlingCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateIndexCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateKnowledgeCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
@@ -39,8 +40,8 @@ public class NLPedia {
 	public static void main(String[] args) {
 
 		// this is used to surpress the "error" messages from stanford etc.
-//		PrintStream newErr = new PrintStream(new ByteArrayOutputStream());
-//		System.setErr(newErr);
+		PrintStream newErr = new PrintStream(new ByteArrayOutputStream());
+		System.setErr(newErr);
 		
 		// Initialize logging, settings, factories etc., needs to be FIRST call!!
 		NLPediaSetup setup = new NLPediaSetup(false);

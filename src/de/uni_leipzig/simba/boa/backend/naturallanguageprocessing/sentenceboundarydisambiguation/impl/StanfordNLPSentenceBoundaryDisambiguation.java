@@ -19,7 +19,7 @@ import edu.stanford.nlp.process.DocumentPreprocessor;
 public final class StanfordNLPSentenceBoundaryDisambiguation implements SentenceBoundaryDisambiguation {
 
 	@Override
-	public List<String> splitTextIntoSentences(String text) {
+	public List<String> getSentences(String text) {
 
 		List<String> sentences = new ArrayList<String>();
 		

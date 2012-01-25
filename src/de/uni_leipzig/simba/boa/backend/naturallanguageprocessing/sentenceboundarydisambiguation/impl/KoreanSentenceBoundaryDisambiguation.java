@@ -13,7 +13,7 @@ import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentencebounda
 public class KoreanSentenceBoundaryDisambiguation implements SentenceBoundaryDisambiguation {
 
 	@Override
-	public List<String> splitTextIntoSentences(String text) {
+	public List<String> getSentences(String text) {
 
 		List<String> sentences = new ArrayList<String>();
 		

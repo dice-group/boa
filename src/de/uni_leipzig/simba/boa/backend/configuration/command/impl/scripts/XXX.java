@@ -72,32 +72,25 @@ public class XXX implements Command {
 		BufferedFileWriter writer = FileUtil.openWriter("/Users/gerb/ko_relation_surface.txt", "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
 		String line = "";
 
-		try {
+		while ((line = reader.readLine()) != null ) {
 			
-			while ((line = reader.readLine()) != null ) {
+			String[] lineParts = line.split(" \\|\\|\\| ");
+			
+			String subjectUri = lineParts[0];
+			String objectUri = lineParts[4];
+			
+			if ( uriToLabelMapping.containsKey(subjectUri) && uriToLabelMapping.containsKey(objectUri) ) {
 				
-				String[] lineParts = line.split(" \\|\\|\\| ");
+				lineParts[1] = uriToLabelMapping.get(subjectUri);
+				lineParts[2] = uriToLabelMapping.get(subjectUri);
+				lineParts[5] = uriToLabelMapping.get(objectUri);
+				lineParts[6] = uriToLabelMapping.get(objectUri);
 				
-				String subjectUri = lineParts[0];
-				String objectUri = lineParts[4];
-				
-				if ( uriToLabelMapping.containsKey(subjectUri) && uriToLabelMapping.containsKey(objectUri) ) {
-					
-					lineParts[1] = uriToLabelMapping.get(subjectUri);
-					lineParts[2] = uriToLabelMapping.get(subjectUri);
-					lineParts[5] = uriToLabelMapping.get(objectUri);
-					lineParts[6] = uriToLabelMapping.get(objectUri);
-					
-					writer.write(StringUtils.join(lineParts, " ||| ") + "\n");
-				}
+				writer.write(StringUtils.join(lineParts, " ||| ") + "\n");
 			}
-			reader.close();
-			writer.close();
 		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		reader.close();
+		writer.close();
 	}
 	
 	public void createPatternFeatureDistribution(){

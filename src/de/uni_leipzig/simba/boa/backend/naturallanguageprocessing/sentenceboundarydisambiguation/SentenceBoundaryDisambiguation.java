@@ -14,5 +14,5 @@ public interface SentenceBoundaryDisambiguation extends NaturalLanguageProcessin
 	 * @param text - the text which should be split
 	 * @return a list of sentences
 	 */
-	public List<String> splitTextIntoSentences(String text);
+	public List<String> getSentences(String text);
 }

@@ -10,7 +10,8 @@ import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.machinelearning.ConfidenceLearner;
+import de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.NeuralNetwork;
+import de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.impl.EncogNeuralNetwork;
 
 
 public class PatternScoreCommand implements Command {
@@ -25,7 +26,7 @@ public class PatternScoreCommand implements Command {
 	private List<PatternMapping> mappings;
 	
 	// the learner which uses a neuronal network
-	private ConfidenceLearner learner = new ConfidenceLearner();
+	private NeuralNetwork learner = new EncogNeuralNetwork();
 	
 	public PatternScoreCommand(List<PatternMapping> mappings) {
 		
@@ -51,7 +52,7 @@ public class PatternScoreCommand implements Command {
 			// score each pattern
 			for ( Pattern pattern : mapping.getPatterns() ) {
 				
-				Double score = this.learner.getConfidence(mapping, pattern);
+				Double score = this.learner.getScore(mapping, pattern);
 				pattern.setConfidence(
 						score == Double.NaN || 
 						score == Double.NEGATIVE_INFINITY || 

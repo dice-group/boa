@@ -27,7 +27,6 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.machinelearning.ConfidenceLearner;
 import de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.NeuralNetwork;
 
 
@@ -531,7 +530,7 @@ public class EncogNeuralNetwork implements NeuralNetwork {
             System.out.println("N-Fold-CV: " + i);
             System.out.println(EncogNeuralNetwork.NETWORK_FILE);
             System.out.println(EncogNeuralNetwork.EVAL_OUTPUT_FILE);
-            ConfidenceLearner dr = new ConfidenceLearner();
+            EncogNeuralNetwork enconNeuralNetwork = new EncogNeuralNetwork();
         }
         System.exit(1);
     }

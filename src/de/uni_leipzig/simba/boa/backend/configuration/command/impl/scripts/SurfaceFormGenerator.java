@@ -481,6 +481,7 @@ public class SurfaceFormGenerator implements Command {
 	private BackgroundKnowledge createSurfaceFormsForDatatypeProperty(DatatypePropertyBackgroundKnowledge backgroundKnowledge) {
 
 		// TODO implement this code
+		// dummy code
 		return backgroundKnowledge;
 	}
 
