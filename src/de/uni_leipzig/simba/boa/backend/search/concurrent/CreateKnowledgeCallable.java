@@ -32,7 +32,7 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.DbpediaUriRetrieval;
-import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil.PatternSelectionStrategy;
 
@@ -134,9 +134,9 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 				if ( !patternList.isEmpty() ) {
 					
 					// this is solely for the evaluation
-					PatternSearcher patternSearcher;
-					if ( this.idx == null ) patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
-					else patternSearcher = new PatternSearcher(this.idx);
+					DefaultPatternSearcher patternSearcher;
+					if ( this.idx == null ) patternSearcher = new DefaultPatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+					else patternSearcher = new DefaultPatternSearcher(this.idx);
 					
 					for (Pattern pattern : patternList) {
 						

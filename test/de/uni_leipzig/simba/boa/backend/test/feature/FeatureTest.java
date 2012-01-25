@@ -34,7 +34,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TotalOccurrenceFeature;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
-import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
 
 public class FeatureTest {
 
@@ -72,7 +72,7 @@ public class FeatureTest {
 		
 		for (PatternMapping mapping : mappings){
 			
-			totalOccurrenceFeature.scoreMapping(mapping, new PatternSearcher(idx));
+			totalOccurrenceFeature.scoreMapping(mapping, new DefaultPatternSearcher(idx));
 		}
 		
 		Pattern pm0p0 = new ArrayList<Pattern>(mappings.get(0).getPatterns()).get(0);

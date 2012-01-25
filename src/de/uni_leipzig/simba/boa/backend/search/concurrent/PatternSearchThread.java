@@ -6,10 +6,11 @@ import java.util.List;
 
 import org.apache.lucene.queryParser.ParseException;
 
+import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
-import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.SearchResult;
 
 /**
@@ -18,21 +19,21 @@ import de.uni_leipzig.simba.boa.backend.search.SearchResult;
  */
 public class PatternSearchThread extends Thread {
 
-	private List<Triple> triples;
-	private PatternSearcher patternSearcher;
-	private NLPediaLogger logger;
+	private final NLPediaLogger logger = new NLPediaLogger(PatternSearchThread.class);
+	
+	private List<BackgroundKnowledge> backgroundKnowledgeList;
+	private DefaultPatternSearcher patternSearcher;
 	
 	// the 
 	private int i = 0;
 	
-	public PatternSearchThread(List<Triple> triples) {
+	public PatternSearchThread(List<BackgroundKnowledge> backgroundKnowledge) {
 		
-		this.triples = triples;
-		this.logger = new NLPediaLogger(PatternSearchThread.class);
+		this.backgroundKnowledgeList = backgroundKnowledge;
 		
 		try {
 			
-			this.patternSearcher = new PatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+			this.patternSearcher = new DefaultPatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
 		}
 		catch (IOException e) {
 			
@@ -55,12 +56,11 @@ public class PatternSearchThread extends Thread {
 		
 		try {
 			
-			for (i = 0; i < triples.size() ; i++) {
+			for ( BackgroundKnowledge backgroundKnowledge : this.backgroundKnowledgeList ) {
 				
-				// filter subject and objects with the same label and resources which have ? in their surfaceForms
-				if ( !triples.get(i).getSubject().getLabel().equals(triples.get(i).getObject().getLabel()) && !triples.get(i).getSubject().getLabel().contains("?") && !triples.get(i).getObject().getLabel().contains("?")) {
+				if ( !backgroundKnowledge.getSubject().getLabel().equals(backgroundKnowledge.getObject().getLabel()) ) {
 					
-					patternSearcher.queryPattern(triples.get(i));
+					patternSearcher.queryBackgroundKnowledge(backgroundKnowledge);
 				}
 			}
 			System.out.println(this.getName() + ": 100%!");
@@ -90,6 +90,6 @@ public class PatternSearchThread extends Thread {
 	
 	public int getNumberOfSearches() {
 		
-		return this.triples.size();
+		return this.backgroundKnowledgeList.size();
 	}
 }

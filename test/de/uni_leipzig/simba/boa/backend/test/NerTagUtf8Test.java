@@ -31,7 +31,7 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
-import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.SearchResult;
 
 
@@ -72,7 +72,7 @@ public class NerTagUtf8Test {
 				System.out.println(indexSearcher.doc(i).get("sentence"));
 			}
 			
-			PatternSearcher searcher = new PatternSearcher("/Users/gerb/Development/workspaces/experimental/nlpedia/de_wiki/index/test");
+			DefaultPatternSearcher searcher = new DefaultPatternSearcher("/Users/gerb/Development/workspaces/experimental/nlpedia/de_wiki/index/test");
 			
 			Property prop = new Property();
 			prop.setUri("http://property/test.de");
@@ -89,7 +89,7 @@ public class NerTagUtf8Test {
 			triple.setProperty(prop);
 			triple.setObject(o);
 			
-			searcher.queryPattern(triple);
+			searcher.queryBackgroundKnowledge(triple);
 			
 			PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 			
