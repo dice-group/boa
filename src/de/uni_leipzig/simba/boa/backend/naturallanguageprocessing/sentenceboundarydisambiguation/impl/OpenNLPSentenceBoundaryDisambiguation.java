@@ -55,7 +55,7 @@ public final class OpenNLPSentenceBoundaryDisambiguation implements SentenceBoun
 	}
 	
 	@Override
-	public List<String> splitTextIntoSentences(String text) {
+	public List<String> getSentences(String text) {
 
 		return Arrays.asList(this.sentenceDetector.sentDetect(text));
 	}

@@ -63,8 +63,12 @@ public class Pipeline {
 		// configuration is correct so we can run each module
 		for ( PipelineModule module : this.pipelineConfiguration.getPipelineModules() ) {
 			
+			this.logger.info("Launching module: " + module.getName());
+			System.out.println("Launching module: " + module.getName());
 			module.run();
 			module.updateModuleInterchangeObject();
+			this.logger.info("Shutting down module: " + module.getName());
+			System.out.println("Shutting down module: " + module.getName());
 		}
 	}
 	
@@ -101,8 +105,8 @@ public class Pipeline {
 		Set<String> moduleSettings = module.getModuleSettings();
 		for (String setting : moduleSettings) {
 			
-			if ( NLPediaSettings.getInstance().getSetting(setting).isEmpty() || 
-					NLPediaSettings.getInstance().getSetting(setting) == null ) {
+			if ( NLPediaSettings.getInstance().getSetting(setting) == null || 
+					NLPediaSettings.getInstance().getSetting(setting).isEmpty() ) {
 				
 				return setting;
 			}

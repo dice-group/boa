@@ -10,7 +10,7 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import edu.stanford.nlp.util.StringUtils;
 
 
-public class ObjectPropertyBackgroundKnowledge extends AbstractBackgroundKnowledge {
+public final class ObjectPropertyBackgroundKnowledge extends AbstractBackgroundKnowledge {
 
 	private Set<String> subjectSurfaceForms;
 	private Set<String> objectSurfaceForms;

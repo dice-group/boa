@@ -19,6 +19,11 @@ public class Constants {
 	/**
 	 * 
 	 */
+	public static final String NAMED_ENTITY_TAG_MISCELLANEOUS = "MISC";
+	
+	/**
+	 * 
+	 */
 	public static final String NAMED_ENTITY_TAG_PLACE = "PLACE";
 	
 	/**

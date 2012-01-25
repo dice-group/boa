@@ -28,8 +28,9 @@ import org.apache.lucene.util.Version;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.lucene.LowerCaseWhitespaceAnalyzer;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
-import de.uni_leipzig.simba.boa.backend.nlp.PosTagger;
+//import de.uni_leipzig.simba.boa.backend.nlp.PosTagger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 /**
@@ -59,12 +60,13 @@ public class PatternSearcher {
 
 	public PatternSearcher() throws IOException, ParseException {
 
-		this.directory = FSDirectory.open(new File(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory")));
-		this.analyzer = new WhitespaceAnalyzer();
+		System.out.println(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory"));
+		this.directory = FSDirectory.open(new File(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory")));
+		this.analyzer = new LowerCaseWhitespaceAnalyzer();
 
 		// create index searcher in read only mode
 		this.indexSearcher = new IndexSearcher(directory, true);
-		this.parser = new QueryParser(Version.LUCENE_30, "sentence-lc", this.analyzer);
+		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 
 		this.results = new ArrayList<SearchResult>();
 		this.hits = null;
@@ -73,11 +75,11 @@ public class PatternSearcher {
 	public PatternSearcher(String indexDir) throws IOException, ParseException {
 
 		this.directory = FSDirectory.open(new File(indexDir));
-		this.analyzer = new WhitespaceAnalyzer();
+		this.analyzer = new LowerCaseWhitespaceAnalyzer();
 
 		// create index searcher in read only mode
 		this.indexSearcher = new IndexSearcher(directory, true);
-		this.parser = new QueryParser(Version.LUCENE_30, "sentence-lc", this.analyzer);
+		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 
 		this.results = new ArrayList<SearchResult>();
 		this.hits = null;
@@ -86,11 +88,11 @@ public class PatternSearcher {
 	public PatternSearcher(Directory indexDir) throws IOException, ParseException {
 
 		this.directory = indexDir;
-		this.analyzer = new WhitespaceAnalyzer();
+		this.analyzer = new LowerCaseWhitespaceAnalyzer();
 
 		// create index searcher in read only mode
 		this.indexSearcher = new IndexSearcher(directory, true);
-		this.parser = new QueryParser(Version.LUCENE_30, "sentence-lc", this.analyzer);
+		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 
 		this.results = new ArrayList<SearchResult>();
 		this.hits = null;
@@ -188,17 +190,17 @@ public class PatternSearcher {
 
 			// check if we find at least sentences with the first token, if not we can skip this search word combination
 			TotalHitCountCollector collector = new TotalHitCountCollector();
-			indexSearcher.search(parser.parse("+sentence-lc:\"" + QueryParser.escape(firstLabel) + "\""), collector);
+			indexSearcher.search(parser.parse("+sentence:\"" + QueryParser.escape(firstLabel) + "\""), collector);
 			if (collector.getTotalHits() == 0 ) continue; 
 			
 			for (String secondLabel : secondLabels) {
 
-				Query query = parser.parse("+sentence-lc:\"" + QueryParser.escape(firstLabel) + "\" && +sentence-lc:\"" + QueryParser.escape(secondLabel) + "\"");
+				Query query = parser.parse("+sentence:\"" + QueryParser.escape(firstLabel) + "\" && +sentence:\"" + QueryParser.escape(secondLabel) + "\"");
 				hits = indexSearcher.search(query, null, MAX_NUMBER_OF_DOCUMENTS).scoreDocs;
 				
 				for (int i = 0; i < hits.length; i++) {
 
-					String sentenceLowerCase = indexSearcher.doc(hits[i].doc).get("sentence-lc");
+					String sentenceLowerCase = indexSearcher.doc(hits[i].doc).get("sentence");
 
 					Map<Integer, String> currentMatches = new HashMap<Integer, String>();
 					
@@ -277,8 +279,8 @@ public class PatternSearcher {
 					result.setSecondLabel(triple.getSubject().getLabel());
 				}
 				result.setIndexId(hit.doc);
-				if ( this.posTagger == null ) this.posTagger = new PosTagger();
-				result.setPosTags(this.posTagger.getPosTagsForSentence(match.substring(0, match.length() - 3).substring(3), triple.getSubject().getLabel(), triple.getObject().getLabel()));
+//				if ( this.posTagger == null ) this.posTagger = new PosTagger();
+//				result.setPosTags(this.posTagger.getPosTagsForSentence(match.substring(0, match.length() - 3).substring(3), triple.getSubject().getLabel(), triple.getObject().getLabel()));
 				this.results.add(result);
 			}
 		}
@@ -384,8 +386,8 @@ public class PatternSearcher {
 
 	public Set<String> getExactMatchSentences(String keyphrase, int maxNumberOfDocuments) throws ParseException, IOException {
 
-		ScoreDoc[] hits = indexSearcher.search(this.parser.parse("+sentence-lc:\"" + QueryParser.escape(keyphrase.toLowerCase()) + "\""), null, maxNumberOfDocuments).scoreDocs;
-		System.out.println(this.parser.parse("+sentence-lc:\"" + QueryParser.escape(keyphrase.toLowerCase()) + "\""));
+		ScoreDoc[] hits = indexSearcher.search(this.parser.parse("+sentence:\"" + QueryParser.escape(keyphrase) + "\""), null, maxNumberOfDocuments).scoreDocs;
+		System.out.println(this.parser.parse("+sentence:\"" + QueryParser.escape(keyphrase) + "\""));
 		TreeSet<String> list = new TreeSet<String>();
 
 		// reverse order because longer sentences come last, longer sentences
@@ -400,7 +402,7 @@ public class PatternSearcher {
 	
 	public Set<String> getExactMatchSentencesForLabels(String label1, String label2, int numberOfDocuments) throws ParseException, IOException {
 		
-		Query query = parser.parse("+sentence-lc:\"" + QueryParser.escape(label1) + "\" && +sentence-lc:\"" + QueryParser.escape(label2) + "\"");
+		Query query = parser.parse("+sentence:\"" + QueryParser.escape(label1) + "\" && +sentence:\"" + QueryParser.escape(label2) + "\"");
 		hits = indexSearcher.search(query, null, numberOfDocuments).scoreDocs;
 		TreeSet<String> list = new TreeSet<String>();
 		

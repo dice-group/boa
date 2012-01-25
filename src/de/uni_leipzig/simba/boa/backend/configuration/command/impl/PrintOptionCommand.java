@@ -25,18 +25,17 @@ public class PrintOptionCommand implements Command {
 			"|| Options:                                           ||\n" + 
 			"||     0. Exit NLPedia CLI                            ||\n" + 
 			"||     1. Print options                               ||\n" + 
-			"||     2. Start crawling                              ||\n" + 
-			"||     3. Create Lucene index                         ||\n" + 
-			"||     4. Measure patterns                            ||\n" + 
-			"||     5. Score patterns                              ||\n" +
-			"||     6. Search for patterns                         ||\n" +
-			"||     7. Get relations from dbpedia                  ||\n" +
-			"||     8. Print Statistics                            ||\n" +
-			"||     9. Start Scripts                               ||\n" + 
-			"||    10. Query text with patterns                    ||\n" + 
-			"||    11. Query keyphrase                             ||\n" +
-			"||    12. Search - Evaluation - Generate              ||\n" +
-			"||    13. Evaluation                                  ||\n" +
+			"||     2. Create Lucene index                         ||\n" + 
+			"||     3. Measure patterns                            ||\n" + 
+			"||     4. Score patterns                              ||\n" +
+			"||     5. Search for patterns                         ||\n" +
+			"||     6. Get relations from dbpedia                  ||\n" +
+			"||     7. Start Scripts                               ||\n" + 
+			"||     8. Query text with patterns                    ||\n" + 
+			"||     9. Query keyphrase                             ||\n" +
+			"||    10. Search - Evaluation - Generate              ||\n" +
+			"||    11. Evaluation                                  ||\n" +
+			"||    12. Start Pipeline                              ||\n" +
 			"========================================================\n";
 		
 		this.out.println(options);
