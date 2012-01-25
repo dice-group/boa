@@ -66,6 +66,39 @@ public class KoreanSentenceBoundaryDisambiguation implements SentenceBoundaryDis
 					}
 				}
 			}
+			
+			else if (val == '?' || val == '!'){
+				if (i > 0 && (text.charAt(i - 1) >= 48 && text.charAt(i - 1) <= 57) && i < text.length() - 1 && (text.charAt(i + 1) >= 48 && text.charAt(i + 1) <= 57)) {}
+				else {
+					
+					if ((i > 0 && ((text.charAt(i - 1) >= 65 && text.charAt(i - 1) <= 90) || (text.charAt(i - 1) >= 97 && text.charAt(i - 1) <= 122)))) {}
+					else {
+						
+						if (i < text.length() - 1 && text.charAt(i + 1) == text.charAt(i)) {}
+						else {
+									
+							if (i > 3 && (text.charAt(i - 1) ==  text.charAt(i)) && (text.charAt(i - 2) ==  text.charAt(i)) && (text.charAt(i - 3) ==  text.charAt(i))) {}
+							else {
+										
+								if (i > 0 && (text.charAt(i - 1) == '-')) {}
+								else {
+											
+									if (i > 1 && ((text.charAt(i - 2) == '\r' || text.charAt(i - 2) == '\n'))) {}
+									else {
+												
+										// Split!
+										String sentence = text.substring(beginPoint, i + 1).trim();
+													
+										if (!sentence.trim().equals("")) sentences.add(sentence);
+										beginPoint = i + 1;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
 			else {
 				
 				if (val == '\n' || val == '\r') {

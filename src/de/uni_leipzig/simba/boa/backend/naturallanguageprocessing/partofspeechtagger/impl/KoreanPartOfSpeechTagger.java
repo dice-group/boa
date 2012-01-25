@@ -20,32 +20,19 @@ import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechta
 import de.uni_leipzig.simba.boa.backend.nlp.PosTagger;
 
 public class KoreanPartOfSpeechTagger  implements PartOfSpeechTagger{
-	private final NLPediaLogger logger = new NLPediaLogger(PosTagger.class);
-	private static KoreanPartOfSpeechTagger INSTANCE		= null;
-	
+	private final NLPediaLogger logger = new NLPediaLogger(KoreanPartOfSpeechTagger.class);
+
 	private Workflow wf;
 	
-	/**
-	 * @return
-	 */
-	public static KoreanPartOfSpeechTagger getInstance() {
-		
-		if ( KoreanPartOfSpeechTagger.INSTANCE == null ) {			
-			KoreanPartOfSpeechTagger.INSTANCE = new KoreanPartOfSpeechTagger();
-		}
-		
-		return KoreanPartOfSpeechTagger.INSTANCE;
-	}
-	
-	private KoreanPartOfSpeechTagger(){
+	public KoreanPartOfSpeechTagger(){
 		try {
-			String baseDir	= NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("korPosTaggerResource");
+			String baseDir	= NLPediaSettings.BOA_BASE_DIRECTORY + "training/pos/koreanpostagger/";
 			wf				= new Workflow();
 			wf.appendPlainTextProcessor(new SentenceSegmentor(), null);
 			wf.appendPlainTextProcessor(new InformalSentenceFilter(), null);
-			wf.setMorphAnalyzer(new ChartMorphAnalyzer(), baseDir + "/conf/plugin/MajorPlugin/MorphAnalyzer/ChartMorphAnalyzer.json", baseDir );
+			wf.setMorphAnalyzer(new ChartMorphAnalyzer(), baseDir + "conf/plugin/MajorPlugin/MorphAnalyzer/ChartMorphAnalyzer.json", baseDir );
 			wf.appendMorphemeProcessor(new UnknownProcessor(), null);
-			wf.setPosTagger(new HMMTagger(), baseDir + "/conf/plugin/MajorPlugin/PosTagger/HmmPosTagger.json", baseDir);
+			wf.setPosTagger(new HMMTagger(), baseDir + "conf/plugin/MajorPlugin/PosTagger/HmmPosTagger.json", baseDir);
 			
 			wf.activateWorkflow(false);
 		}

@@ -82,7 +82,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	public void run() {
 		
 		// load the sentence boundary dismabiguation
-		SentenceBoundaryDisambiguation sbd = NaturalLanguageProcessingToolFactory.getInstance().createSentenceBoundaryDisambiguation(StanfordNLPSentenceBoundaryDisambiguation.class);
+		SentenceBoundaryDisambiguation sbd = NaturalLanguageProcessingToolFactory.getInstance().createDefaultSentenceBoundaryDisambiguation();
 
 		// create the index writer configuration and create a new index writer
 		IndexWriterConfig indexWriterConfig = new IndexWriterConfig(Version.LUCENE_34, new LowerCaseWhitespaceAnalyzer());
@@ -139,8 +139,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	 * @param writer - the writer to write the sentences
 	 * @param documents - all documents to be processed
 	 */
-	private void indexDocuments(IndexWriter writer, List<IndexDocument> documents) {
-		
+	protected void indexDocuments(IndexWriter writer, List<IndexDocument> documents) {
 		try {
 			
 			// go through every document

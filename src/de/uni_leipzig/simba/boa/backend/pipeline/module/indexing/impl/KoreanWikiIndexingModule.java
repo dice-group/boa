@@ -12,8 +12,15 @@ import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.josatagger.imp
 
 public class KoreanWikiIndexingModule extends DefaultWikiIndexingModule {
 	private final NLPediaLogger logger		= new NLPediaLogger(KoreanWikiIndexingModule.class);
-	private final KoreanJosaTagger kjt		= NaturalLanguageProcessingToolFactory.getInstance().createJosaTagger();	// Somehow will be implemented.
+	private final KoreanJosaTagger kjt		= (KoreanJosaTagger)NaturalLanguageProcessingToolFactory.getInstance().createDefaultJosaTagger();	// Somehow will be implemented.
 
+	
+	@Override
+	public String getName() {
+
+		return "Korean Wiki Indexing Module (ko)";
+	}
+	
 	
 	/**
 	 * Writes all sentences of all sentences in the given list to the Lucene index.
@@ -21,7 +28,8 @@ public class KoreanWikiIndexingModule extends DefaultWikiIndexingModule {
 	 * @param writer - the writer to write the sentences
 	 * @param documents - all documents to be processed
 	 */
-	private void indexDocuments(IndexWriter writer, List<IndexDocument> documents) {
+	@Override
+	protected void indexDocuments(IndexWriter writer, List<IndexDocument> documents) {
 		
 		try {
 			
