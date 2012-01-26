@@ -102,7 +102,7 @@ public class IndexBroker {
 
 		try {
 
-			INDEX_DIR = FSDirectory.open(new File(NLPediaSettings.getInstance().getSetting("wordnet.index.directory")));
+			INDEX_DIR = FSDirectory.open(new File(NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("wordnet.index.directory")));
 			searcher = new IndexSearcher(INDEX_DIR);
 			parser = new QueryParser(Version.LUCENE_30, WORDS, new WhitespaceAnalyzer());
 			parser.setDefaultOperator(QueryParser.AND_OPERATOR);

@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.search;
+package de.uni_leipzig.simba.boa.backend.search.result;
 
 
 
