@@ -21,7 +21,7 @@ import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
-import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 
 public class CreateAnnotationCorpus {
 

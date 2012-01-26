@@ -10,6 +10,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFac
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilterFactory;
 import de.uni_leipzig.simba.boa.backend.logging.LoggingConfigurator;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.util.BeanUtility;
 
@@ -90,6 +91,9 @@ public class NLPediaSetup {
 			logger.info("Initialized FeatureFactory...");
 			
 			BeanUtility.getBeansOfType(setupFile, NaturalLanguageProcessingToolFactory.class);
+			logger.info("Initialized FeatureFactory...");
+			
+			BeanUtility.getBeansOfType(setupFile, MachineLearningToolFactory.class);
 			logger.info("Initialized FeatureFactory...");
 		}
 		catch (BeansException be) {

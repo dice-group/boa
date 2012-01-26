@@ -27,7 +27,7 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.impl.StanfordNLPNamedEntityRecognition;
-import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 
@@ -196,14 +196,6 @@ public class TypicityFeature implements Feature {
 				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_CORRECT_RANGE_NUMBER, rangeCorrectness >= 0 ? rangeCorrectness : 0);
 				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_SENTENCES, Math.log(sentences.size() + 1)  >= 0 ? Math.log(sentences.size() + 1) : 0);
 				pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY, typicity >= 0 ? typicity : 0 );
-			}
-			catch (IOException e) {
-				// TODO Auto-generated catch block
-				this.logger.error("IOExcpetion: ", e);
-			}
-			catch (ParseException e) {
-				// TODO Auto-generated catch block
-				this.logger.error("ParseException: ", e);
 			}
 			catch (NullPointerException npe) {
 				
