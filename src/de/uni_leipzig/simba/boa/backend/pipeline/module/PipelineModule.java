@@ -84,4 +84,9 @@ public interface PipelineModule {
 	 * @return
 	 */
 	public boolean isDataAlreadyAvailable();
+	
+	/**
+	 * 
+	 */
+	public void loadAlreadyAvailableData();
 }

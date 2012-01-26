@@ -88,7 +88,7 @@ public class CreateKnowledgeCommand implements Command {
 //		
 //		// print the progress
 //		Timer timer = new Timer();
-//		timer.schedule(new PrintProgressTask(threadList), 0, 30000);
+//		timer.schedule(new PatternSearchPringProgressTask(threadList), 0, 30000);
 //		
 //		// wait for all to finish
 //		for ( Thread t : threadList ) {

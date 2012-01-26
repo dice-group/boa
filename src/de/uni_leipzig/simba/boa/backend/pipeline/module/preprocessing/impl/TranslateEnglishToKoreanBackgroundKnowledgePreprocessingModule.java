@@ -71,6 +71,13 @@ public class TranslateEnglishToKoreanBackgroundKnowledgePreprocessingModule exte
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public void loadAlreadyAvailableData() {
+
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

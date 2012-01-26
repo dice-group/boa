@@ -73,6 +73,13 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	}
 	
 	@Override
+	public void loadAlreadyAvailableData() {
+
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public void updateModuleInterchangeObject() {
 		
 		// nothing to do here

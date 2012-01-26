@@ -13,6 +13,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
+import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledgeManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.AbstractDefaultBackgroundKnowledgeCollectorModule;
@@ -32,7 +33,6 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	private final NLPediaLogger logger 			= new NLPediaLogger(DefaultObjectPropertyBackgroundKnowledgeCollectorModule.class);
 	
 	private final int SPARQL_QUERY_LIMIT					= new Integer(NLPediaSettings.getInstance().getSetting("sparqlQueryLimit"));
-	private final String BACKGROUND_KNOWLEDGE_OUTPUT_PATH	= NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("backgroundKnowledgeOutputFilePath");
 	private final String BOA_LANGUAGE						= NLPediaSettings.BOA_LANGUAGE;
 	
 	@Override
@@ -43,7 +43,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	
 	@Override
 	public void run() {
-
+		
 		queryObjectProperties();
 	}
 	
@@ -52,9 +52,16 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 
 		// lists all files in the directory which end with .txt and does not go into subdirectories
 				return // true of more than one file is found
-						FileUtils.listFiles(new File(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "object/"), FileFilterUtils.suffixFileFilter(".txt"), null).size() > 0;
+						FileUtils.listFiles(new File(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/object/"), FileFilterUtils.suffixFileFilter(".txt"), null).size() > 0;
 	}
+	
+	@Override
+	public void loadAlreadyAvailableData() {
 
+		this.backgroundKnowledge.addAll(
+				BackgroundKnowledgeManager.getInstance().getBackgroundKnowledgeInDirectory(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/object/"));
+	}
+	
 	/**
 	 * Reads the properties stored in WebContent/WEB-INF/data/backgroundknowledge/object_properties_to_query.txt
 	 * and queries them at a given SPARQL endpoint. The knowledge is then written to the 
@@ -69,7 +76,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 		for ( String objectPropertyUri : objectPropertyUris ) {
 			
 			String query	= createObjectPropertyQuery(objectPropertyUri);
-			String filePath	= BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "object/";
+			String filePath	= BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/object/";
 			
 			super.getKnowledge(query, objectPropertyUri, filePath + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
 		}

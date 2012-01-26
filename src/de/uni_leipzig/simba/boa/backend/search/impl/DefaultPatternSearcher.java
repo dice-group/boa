@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TotalHitCountCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.util.Version;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
@@ -52,7 +54,6 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	private IndexSearcher indexSearcher = null;
 
 	private QueryParser parser;
-	private List<SearchResult> results;
 	private ScoreDoc[] hits;
 	
 	private final NLPediaLogger logger = new NLPediaLogger(DefaultPatternSearcher.class);
@@ -60,26 +61,24 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	public DefaultPatternSearcher() throws IOException, ParseException {
 
 		// create index searcher in read only mode
-		this.directory = FSDirectory.open(new File(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory")));
+		this.directory = NIOFSDirectory.open(new File(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory")));
 		this.analyzer = new LowerCaseWhitespaceAnalyzer();
 		this.indexSearcher = new IndexSearcher(directory, true);
 		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 
 		this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
-		this.results = new ArrayList<SearchResult>();
 		this.hits = null;
 	}
 	
 	public DefaultPatternSearcher(String indexDir) throws IOException, ParseException {
 
-		this.directory = FSDirectory.open(new File(indexDir));
+		this.directory = NIOFSDirectory.open(new File(indexDir));
 		this.analyzer = new LowerCaseWhitespaceAnalyzer();
 
 		// create index searcher in read only mode
 		this.indexSearcher = new IndexSearcher(directory, true);
 		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 
-		this.results = new ArrayList<SearchResult>();
 		this.hits = null;
 	}
 	
@@ -92,7 +91,6 @@ public class DefaultPatternSearcher implements PatternSearcher {
 		this.indexSearcher = new IndexSearcher(directory, true);
 		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 
-		this.results = new ArrayList<SearchResult>();
 		this.hits = null;
 	}
 	
@@ -146,12 +144,14 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	 * 
 	 * @param string
 	 * @param string2
+	 * @return 
 	 * @throws ParseException
 	 *             , IOException
 	 */
-	public void queryBackgroundKnowledge(BackgroundKnowledge backgroundKnowledge) {
+	public Collection<SearchResult> queryBackgroundKnowledge(BackgroundKnowledge backgroundKnowledge) {
 
 		boolean inverse = false;
+		List<SearchResult> results = new ArrayList<SearchResult>();
 		
 		Set<String> firstLabels = backgroundKnowledge.getSubject().retrieveLabels();
 		Set<String> secondLabels = backgroundKnowledge.getObject().retrieveLabels();
@@ -174,9 +174,11 @@ public class DefaultPatternSearcher implements PatternSearcher {
 			if (collector.getTotalHits() == 0 ) continue; 
 			
 			for (String secondLabel : secondLabels) {
-
+				
+				long start = System.currentTimeMillis();
 				Query query = this.parseQuery("+sentence:\"" + QueryParser.escape(firstLabel) + "\" && +sentence:\"" + QueryParser.escape(secondLabel) + "\"");
 				hits = this.searchIndex(query, null, MAX_NUMBER_OF_DOCUMENTS);
+				this.logger.debug("Querying took: " + (System.currentTimeMillis() - start) + "ms.");
 				
 				for (int i = 0; i < hits.length; i++) {
 
@@ -223,21 +225,24 @@ public class DefaultPatternSearcher implements PatternSearcher {
 							currentMatches.put(hits[i].doc, match2[j]);
 						}
 					}
-					this.addSearchResults(currentMatches, backgroundKnowledge, hits[i], sentenceLowerCase, sentence);
+					this.addSearchResults(results, currentMatches, backgroundKnowledge, hits[i], sentenceLowerCase, sentence);
 				}
 			}
 		}
+		
+		return results;
 	}
 
 	/**
 	 * Create the search results
-	 * 
+	
+	 * @param results 
 	 * @param currentMatches
 	 * @param triple
 	 * @param hit
 	 * @param isSubject
 	 */
-	private void addSearchResults(Map<Integer, String> currentMatches, BackgroundKnowledge backgroundKnowledge, ScoreDoc hit, String sentenceLowerCase, String sentenceNormalCase) {
+	private void addSearchResults(List<SearchResult> results, Map<Integer, String> currentMatches, BackgroundKnowledge backgroundKnowledge, ScoreDoc hit, String sentenceLowerCase, String sentenceNormalCase) {
 
 		for (String match : currentMatches.values()) {
 
@@ -264,7 +269,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 				result.setIndexId(hit.doc);
 //				if ( this.posTagger == null ) this.posTagger = new PosTagger();
 //				result.setPosTags(this.posTagger.getPosTagsForSentence(match.substring(0, match.length() - 3).substring(3), triple.getSubject().getLabel(), triple.getObject().getLabel()));
-				this.results.add(result);
+				results.add(result);
 			}
 		}
 	}
@@ -353,18 +358,22 @@ public class DefaultPatternSearcher implements PatternSearcher {
 		return true;
 	}
 
-	public List<SearchResult> getResults() {
-
-		return this.results;
-	}
-
 	/**
-	 * 
-	 * @throws IOException
+	 * Closes the current pattern searcher.
 	 */
-	public void close() throws IOException {
+	public void close() {
 
-		this.indexSearcher.close();
+		try {
+			
+			this.indexSearcher.close();
+		}
+		catch (IOException e) {
+			
+			e.printStackTrace();
+			String error = "Could not close index!";
+			this.logger.error(error, e);
+			throw new RuntimeException(error, e);
+		}
 	}
 
 	public Set<String> getExactMatchSentences(String keyphrase, int maxNumberOfDocuments) {
