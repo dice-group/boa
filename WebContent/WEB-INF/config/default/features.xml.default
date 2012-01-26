@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="FeatureFactory"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory"
+        factory-method="getInstance" singleton="true">
+
+        <property name="featureMap">
+            <map>
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.SupportFeature">
+                    <bean id="SupportFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.SupportFeature" />
+                </entry>
+                
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TypicityFeature">
+                    <bean id="TypicityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TypicityFeature" />
+                </entry>
+                
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.SpecificityFeature">
+                    <bean id="SpecificityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.SpecificityFeature" />
+                </entry>
+                
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.StringSimilarityFeature">
+                    <bean id="StringSimilarityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.StringSimilarityFeature" />
+                </entry>
+                
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TfIdfFeature">
+                    <bean id="TfIdfFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TfIdfFeature" />
+                </entry>
+                
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.VerbCountFeature">
+                    <bean id="VerbCountFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.VerbCountFeature" />
+                </entry>
+                
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TotalOccurrenceFeature">
+                    <bean id="TotalOccurrenceFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TotalOccurrenceFeature" />
+                </entry>
+                
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.LengthFeature">
+                    <bean id="LengthFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.LengthFeature" />
+                </entry>
+
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.ReverbFeature">
+                    <bean id="ReverbFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.ReverbFeature" />
+                </entry>
+            </map>
+        </property>
+    </bean>
+</beans>

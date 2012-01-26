@@ -30,11 +30,14 @@ syntax: regexp
 
 syntax: regexp
 ^WebContent/WEB-INF/lib/reverb\.jar$
-syntax: regexp
+^WebContent/WEB-INF/config/nlpedia_setup\.xml$
+^WebContent/WEB-INF/config/daos\.xml$
+^WebContent/WEB-INF/config/features\.xml$
+^WebContent/WEB-INF/config/filter\.xml$
+^WebContent/WEB-INF/config/interchangeobject\.xml$
+^WebContent/WEB-INF/config/log4j\.xml$
+^WebContent/WEB-INF/config/machinelearning\.xml$
+^WebContent/WEB-INF/config/modules\.xml$
+^WebContent/WEB-INF/config/naturallanguageprocessing\.xml$
+^WebContent/WEB-INF/config/pipeline\.xml$
 ^WebContent/WEB-INF/config/settings\.xml$
-syntax: regexp
-^WebContent/WEB-INF/config/log4j\.xml\.default$
-syntax: regexp
-^WebContent/WEB-INF/config/log4j\.xml\.default$
-syntax: regexp
-^WebContent/WEB-INF/config/settings\.xml\.default$
