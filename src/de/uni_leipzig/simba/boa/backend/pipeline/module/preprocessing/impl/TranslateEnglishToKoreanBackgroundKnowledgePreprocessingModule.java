@@ -11,7 +11,7 @@ import de.danielgerber.file.FileUtil;
 import de.danielgerber.rdf.NtripleUtil;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.AbstractPreprocessingModule;
 
-public class TranslateE2KPreprocessingModule extends AbstractPreprocessingModule{
+public class TranslateEnglishToKoreanBackgroundKnowledgePreprocessingModule extends AbstractPreprocessingModule{
 
 	@Override
 	public String getName() {

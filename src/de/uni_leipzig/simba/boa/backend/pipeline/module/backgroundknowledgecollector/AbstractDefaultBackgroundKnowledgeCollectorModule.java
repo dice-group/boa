@@ -62,7 +62,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 	@Override
 	public void updateModuleInterchangeObject() {
 
-		this.moduleInterchangeObject.setBackgroundKnowledge(this.backgroundKnowledge);
+		this.moduleInterchangeObject.getBackgroundKnowledge().addAll(this.backgroundKnowledge);
 	}
 	
 	/**

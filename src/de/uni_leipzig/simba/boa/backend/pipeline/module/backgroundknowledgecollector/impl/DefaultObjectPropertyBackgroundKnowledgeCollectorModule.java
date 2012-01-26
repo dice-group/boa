@@ -35,8 +35,6 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	private final String BACKGROUND_KNOWLEDGE_OUTPUT_PATH	= NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("backgroundKnowledgeOutputFilePath");
 	private final String BOA_LANGUAGE						= NLPediaSettings.BOA_LANGUAGE;
 	
-	private Set<BackgroundKnowledge> backgroundKnowledge = new HashSet<BackgroundKnowledge>(); 
-
 	@Override
 	public String getName() {
 
@@ -50,12 +48,6 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	}
 	
 	@Override
-	public String getReport() {
-
-		return "A total of " + backgroundKnowledge.size() + " triples has been added to the background knowledge repository!";
-	}
-	
-	@Override
 	public boolean isDataAlreadyAvailable() {
 
 		// lists all files in the directory which end with .txt and does not go into subdirectories
@@ -63,12 +55,6 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 						FileUtils.listFiles(new File(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "object/"), FileFilterUtils.suffixFileFilter(".txt"), null).size() > 0;
 	}
 
-	@Override
-	public void updateModuleInterchangeObject() {
-
-		this.moduleInterchangeObject.getBackgroundKnowledge().addAll(this.backgroundKnowledge);
-	}
-	
 	/**
 	 * Reads the properties stored in WebContent/WEB-INF/data/backgroundknowledge/object_properties_to_query.txt
 	 * and queries them at a given SPARQL endpoint. The knowledge is then written to the 
