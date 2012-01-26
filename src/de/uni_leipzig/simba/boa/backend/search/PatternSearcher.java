@@ -3,10 +3,12 @@
  */
 package de.uni_leipzig.simba.boa.backend.search;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
+import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 
 
 /**
@@ -18,7 +20,7 @@ public interface PatternSearcher {
 	
 	public List<String> getSentencesByIds(List<Integer> ids);
 	
-	public void queryBackgroundKnowledge(BackgroundKnowledge backgroundKnowledge);
+	public Collection<SearchResult> queryBackgroundKnowledge(BackgroundKnowledge backgroundKnowledge);
 	
 	public boolean isPatternSuitable(String naturalLanguageRepresentation);
 	

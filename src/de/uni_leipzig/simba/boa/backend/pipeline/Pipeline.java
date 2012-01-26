@@ -58,7 +58,7 @@ public class Pipeline {
 		
 		String successMessage = "All modules are configured correctly.";
 		this.logger.info(successMessage);
-		System.out.println(successMessage);
+		System.out.println(successMessage + "\n");
 		
 		// configuration is correct so we can run each module
 		for ( PipelineModule module : this.pipelineConfiguration.getPipelineModules() ) {
@@ -70,6 +70,8 @@ public class Pipeline {
 			// do only run the module if either we don't have data already or we have data and want to override it 
 			if ( (module.isDataAlreadyAvailable() && module.isOverrideData()) || !module.isDataAlreadyAvailable() ) 
 				module.run();
+			else 
+				module.loadAlreadyAvailableData();
 			
 			// we want to update the interchange module anyway
 			module.updateModuleInterchangeObject();
@@ -80,7 +82,7 @@ public class Pipeline {
 			
 			String shutdownMessage = "Shutting down module: " + module.getName();
 			this.logger.info(shutdownMessage);
-			System.out.println(shutdownMessage);
+			System.out.println(shutdownMessage + "\n");
 		}
 	}
 	

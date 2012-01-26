@@ -13,6 +13,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
+import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledgeManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.AbstractDefaultBackgroundKnowledgeCollectorModule;
@@ -32,7 +33,6 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 	private final NLPediaLogger logger 			= new NLPediaLogger(DefaultDatatypePropertyBackgroundKnowledgeCollectorModule.class);
 	
 	private final int SPARQL_QUERY_LIMIT					= new Integer(NLPediaSettings.getInstance().getSetting("sparqlQueryLimit"));
-	private final String BACKGROUND_KNOWLEDGE_OUTPUT_PATH	= NLPediaSettings.getInstance().getSetting("backgroundKnowledgeOutputFilePath");
 	private final String BOA_LANGUAGE						= NLPediaSettings.BOA_LANGUAGE;
 	
 	@Override
@@ -44,7 +44,20 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 	@Override
 	public void run() {
 
-		queryDatatypeProperties();
+		if ( (this.isDataAlreadyAvailable() && this.isOverrideData()) || !this.isDataAlreadyAvailable() ) {
+			
+			queryDatatypeProperties();
+		}
+		else this.loadAlreadyAvailableData();
+	}
+	
+	@Override
+	public void loadAlreadyAvailableData() {
+
+		this.backgroundKnowledge.addAll(
+				BackgroundKnowledgeManager.getInstance().getBackgroundKnowledgeInDirectory(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/datatype/"));
+		
+		
 	}
 	
 	@Override
@@ -52,7 +65,7 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 		
 		// lists all files in the directory which end with .txt and does not go into subdirectories
 		return // true of more than one file is found
-				FileUtils.listFiles(new File(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "datatype/"), FileFilterUtils.suffixFileFilter(".txt"), null).size() > 0;
+				FileUtils.listFiles(new File(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/datatype/"), FileFilterUtils.suffixFileFilter(".txt"), null).size() > 0;
 	}
 
 	/**
@@ -67,7 +80,7 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 		for ( String datatypePropertyUri : datatypePropertyUris ) {
 			
 			String query = createDatatypePropertyQuery(datatypePropertyUri);
-			String filePath	= BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "datatype/";
+			String filePath	= BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/datatype/";
 			
 			getKnowledge(query, datatypePropertyUri, filePath + datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length()) + ".txt");
 		}

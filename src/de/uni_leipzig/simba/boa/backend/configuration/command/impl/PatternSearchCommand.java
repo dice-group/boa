@@ -26,8 +26,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
-import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchThread;
-import de.uni_leipzig.simba.boa.backend.search.concurrent.PrintProgressTask;
+import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPringProgressTask;
 import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 import de.uni_leipzig.simba.boa.backend.search.result.comparator.SearchResultComparator;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;
@@ -81,42 +80,6 @@ public class PatternSearchCommand implements Command {
 		List<List<Triple>> triplesSubLists = ListUtil.split(new ArrayList<Triple>(triples.values()), (triples.size() / numberOfSearchThreads) + 1 );
 		
 		List<Thread> threadList = new ArrayList<Thread>();
-		
-		for (int i = 0 ; i < numberOfSearchThreads ; i++ ) {
-			
-				Thread t = new PatternSearchThread(triplesSubLists.get(i));
-				t.setName("PatternSearchThread-" + (i + 1) + "-" + triplesSubLists.get(i).size());
-				threadList.add(i, t);
-				t.start();
-				System.out.println(t.getName() + " started!");
-				this.logger.info(t.getName() + " started!");
-		}
-		
-		Timer timer = new Timer();
-		timer.schedule(new PrintProgressTask(threadList), 0, 30000);
-		
-		for ( Thread t : threadList ) {
-			
-			try {
-				t.join();	
-			}
-			catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		timer.cancel();
-		
-		for ( Thread t: threadList ) {
-			
-			results.addAll(((PatternSearchThread)t).getResults());
-		}
-		
-		for ( Thread t : threadList ) t = null;
-		threadList = null;
-		triplesSubLists = null;
-		triples = null;
-		Runtime.getRuntime().gc();
 		
 		System.out.println("All threads finished in " + (System.currentTimeMillis() - startSearchDate.getTime()) + "ms!");
 		this.logger.info("All threads finished in " + (System.currentTimeMillis() - startSearchDate.getTime()) + "ms!");

@@ -12,7 +12,7 @@ import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.PatternScoreThread;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.search.concurrent.PrintProgressTask;
+import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPringProgressTask;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 
 /**
@@ -73,7 +73,7 @@ public class PatternScoreFeatureCommand implements Command {
 		
 		// print the progress
 		Timer timer = new Timer();
-		timer.schedule(new PrintProgressTask(threadList), 0, 30000);
+//		timer.schedule(new PatternSearchPringProgressTask(threadList), 0, 30000);
 		
 		// wait for all to finish
 		for ( Thread t : threadList ) {

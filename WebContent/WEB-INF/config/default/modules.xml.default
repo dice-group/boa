@@ -3,6 +3,11 @@
     "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+
+    <!--  ############################################################################################ -->
+    <!--  #################################### Background Knowledge ################################## -->
+    <!--  ############################################################################################ -->
+
     <bean id="ObjectPropertyBackgroundKnowledgeCollectorModule"
         class="de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule">
 
@@ -51,6 +56,10 @@
         </property>
     </bean>
 
+    <!--  ############################################################################################ -->
+    <!--  ###################################### Indexing ############################################ -->
+    <!--  ############################################################################################ -->
+
     <bean id="DefaultWikiIndexingModule"
         class="de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule">
 
@@ -63,7 +72,6 @@
 
         <property name="moduleSettings">
             <set>
-                <value>overwriteIndex</value>
                 <value>ramBufferMaxSizeInMb</value>
                 <value>indexSentenceDirectory</value>
                 <value>rawSentenceDirectory</value>
@@ -91,5 +99,30 @@
         </property>
     </bean>
 
+    <!--  ############################################################################################ -->
+    <!--  ###################################### Search ############################################## -->
+    <!--  ############################################################################################ -->
 
+    <bean id="DeafultPatternSearchModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl">
+
+        <property name="overrideData" value="false" />
+
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule</value>
+            </set>
+        </property>
+
+        <property name="moduleSettings">
+            <set>
+                <value>indexSentenceDirectory</value>
+                <value>maxNumberOfDocuments</value>
+            </set>
+        </property>
+    </bean>
+    
 </beans>

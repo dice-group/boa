@@ -56,13 +56,12 @@ public class BackgroundKnowledgeManager {
 	 * 
 	 * @return list of triples
 	 */
-	public List<BackgroundKnowledge> getRelationFromFile(String filename) {
+	public List<BackgroundKnowledge> getBackgroundKnowledgeInDirectory(String directory) {
 		
 		List<BackgroundKnowledge> backgroundKnowledge = new ArrayList<BackgroundKnowledge>();
 
-		for ( File file : FileUtils.listFiles(new File(filename), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE) ) {
+		for ( File file : FileUtils.listFiles(new File(directory), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE) ) {
 			
-			System.out.println(String.format("Reading background knowledge from file %s", file.getName()));
 			this.logger.info(String.format("Reading background knowledge from file %s", file.getName()));
 			
 			BufferedFileReader br = FileUtil.openReader(file.getAbsolutePath(), "UTF-8");
@@ -77,6 +76,12 @@ public class BackgroundKnowledgeManager {
 		return backgroundKnowledge;
 	}
 	
+	/**
+	 * Reads a line of a background knowledge file to a java POJO
+	 * 
+	 * @param line
+	 * @return
+	 */
 	public BackgroundKnowledge createBackgroundKnowledge(String line) {
 		
 		String[] parts = line.split(Constants.BACKGROUND_KNOWLEDGE_VALUE_SEPARATOR_REGEX);
@@ -135,7 +140,7 @@ public class BackgroundKnowledgeManager {
 		Resource sub = new Resource();
 		sub.setUri(subjectUri);
 		sub.setLabel(subjectLabel);
-		sub.setSurfaceForms(subjectLabels.toLowerCase());
+		sub.setSurfaceForms(subjectLabels);
 		sub.setType(subjectType);
 		if ( subjectContext.length() > 0 ) {
 			sub.setContext(subjectContext.substring(1, subjectContext.length()-1));	
@@ -154,7 +159,7 @@ public class BackgroundKnowledgeManager {
 		Resource obj = new Resource();
 		obj.setType(objectType);
 		obj.setLabel(objectLabel);
-		obj.setSurfaceForms(objectLabels.toLowerCase());
+		obj.setSurfaceForms(objectLabels);
 			
 		// object properties have there own labels
 		if ( predicateType.equals(Constants.OWL_OBJECT_PROPERTY) ) {
@@ -164,19 +169,13 @@ public class BackgroundKnowledgeManager {
 			if ( objectContext.length() > 0 ) {
 				obj.setContext(objectContext.substring(1, objectContext.length()-1));
 			}
+			return new ObjectPropertyBackgroundKnowledge(sub, p, obj);
 		}
 		else {
 			
 			// they dont have uris so create random strings
 			obj.setUri(UUID.randomUUID().toString());
+			return new DatatypePropertyBackgroundKnowledge(sub, p, obj);
 		}
-		
-		if ( p.getType().equals(Constants.OWL_OBJECT_PROPERTY) ) 
-			return SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(
-					new ObjectPropertyBackgroundKnowledge(sub, p, obj));
-		
-		else 
-			return SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(
-					new DatatypePropertyBackgroundKnowledge(sub, p, obj));
 	}
 }

@@ -17,6 +17,7 @@ import de.danielgerber.file.BufferedFileWriter;
 import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
+import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledgeManager;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.DatatypePropertyBackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.ObjectPropertyBackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -42,10 +43,10 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 	private final String SPARQL_ENDPOINT_URI				= NLPediaSettings.getInstance().getSetting("dbpediaSparqlEndpoint");
 	private final String DBPEDIA_DEFAULT_GRAPH				= NLPediaSettings.getInstance().getSetting("dbpediaDefaultGraph");
 	private final int SPARQL_QUERY_LIMIT					= new Integer(NLPediaSettings.getInstance().getSetting("sparqlQueryLimit"));
-	protected final String BACKGROUND_KNOWLEDGE_OUTPUT_PATH	= NLPediaSettings.getInstance().getSetting("backgroundKnowledgeOutputFilePath");
+	protected final String BACKGROUND_KNOWLEDGE_OUTPUT_PATH	= NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("backgroundKnowledgeOutputFilePath");
 	protected final String BOA_LANGUAGE						= NLPediaSettings.BOA_LANGUAGE;
 	
-	private Set<BackgroundKnowledge> backgroundKnowledge = new HashSet<BackgroundKnowledge>(); 
+	protected Set<BackgroundKnowledge> backgroundKnowledge = new HashSet<BackgroundKnowledge>(); 
 
 	@Override
 	public String getName() {
