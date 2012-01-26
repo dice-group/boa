@@ -50,31 +50,31 @@
 			</set>
 		</property>
 	</bean>
-	
-	   <bean id="DefaultWikiIndexingModule"
-        class="de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule">
 
-        <property name="overrideData" value="false" />
+	<bean id="DefaultWikiIndexingModule"
+		class="de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule">
 
-        <property name="moduleDependencies">
-            <set>
-            </set>
-        </property>
+		<property name="overrideData" value="false" />
 
-        <property name="moduleSettings">
-            <set>
-                <value>overwriteIndex</value>
-                <value>ramBufferMaxSizeInMb</value>
-                <value>indexSentenceDirectory</value>
-                <value>rawSentenceDirectory</value>
-            </set>
-        </property>
-    </bean>
+		<property name="moduleDependencies">
+			<set>
+			</set>
+		</property>
+
+		<property name="moduleSettings">
+			<set>
+				<value>overwriteIndex</value>
+				<value>ramBufferMaxSizeInMb</value>
+				<value>indexSentenceDirectory</value>
+				<value>rawSentenceDirectory</value>
+			</set>
+		</property>
+	</bean>
 
 	<bean id="KoreanWikiIndexingModule"
 		class="de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.KoreanWikiIndexingModule">
 
-        <property name="overrideData" value="false" />
+		<property name="overrideData" value="false" />
 
 		<property name="moduleDependencies">
 			<set>

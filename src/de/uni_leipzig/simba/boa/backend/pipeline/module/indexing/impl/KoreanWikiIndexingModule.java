@@ -12,7 +12,7 @@ import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.josatagger.imp
 
 public class KoreanWikiIndexingModule extends DefaultWikiIndexingModule {
 	private final NLPediaLogger logger		= new NLPediaLogger(KoreanWikiIndexingModule.class);
-	private final KoreanJosaTagger kjt		= (KoreanJosaTagger)NaturalLanguageProcessingToolFactory.getInstance().createDefaultJosaTagger();	// Somehow will be implemented.
+	private final KoreanJosaTagger kjt		= (KoreanJosaTagger) NaturalLanguageProcessingToolFactory.getInstance().createDefaultJosaTagger();	// Somehow will be implemented.
 
 	
 	@Override

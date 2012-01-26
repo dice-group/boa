@@ -130,14 +130,23 @@
 		<echo message="Processing all .in files at ${config.dir}/..." />
 
 		<!-- log.xml.in -->
-		<copy overwrite="true" file="${config.dir}/log4j.xml.default" tofile="${config.dir}/log4j.xml" />
+		<copy overwrite="true" file="${config.dir}/default/log4j.xml.default" tofile="${config.dir}/log4j.xml" />
 		<replace file="${config.dir}/log4j.xml">
 			<replacefilter token="@log.dir@" value="${log.dir}"/>
 			<replacefilter token="@log.priority@" value="${log.priority}"/>
 		</replace>
 
 		<!-- nlpedia_setup.xml.in -->
-		<copy overwrite="true" file="${config.dir}/settings.xml.default" tofile="${config.dir}/settings.xml" />
+		<copy overwrite="true" file="${config.dir}/default/settings.xml.default"                  tofile="${config.dir}/settings.xml" />
+		<copy overwrite="true" file="${config.dir}/default/daos.xml.default"                      tofile="${config.dir}/daos.xml" />
+		<copy overwrite="true" file="${config.dir}/default/features.xml.default"                  tofile="${config.dir}/features.xml" />
+		<copy overwrite="true" file="${config.dir}/default/filter.xml.default"                    tofile="${config.dir}/filter.xml" />
+		<copy overwrite="true" file="${config.dir}/default/interchangeobject.xml.default"         tofile="${config.dir}/interchangeobject.xml" />
+		<copy overwrite="true" file="${config.dir}/default/machinelearning.xml.default"           tofile="${config.dir}/machinelearning.xml" />
+		<copy overwrite="true" file="${config.dir}/default/modules.xml.default"                   tofile="${config.dir}/modules.xml" />
+		<copy overwrite="true" file="${config.dir}/default/naturallanguageprocessing.xml.default" tofile="${config.dir}/naturallanguageprocessing.xml" />
+		<copy overwrite="true" file="${config.dir}/default/nlpedia_setup.xml.default"             tofile="${config.dir}/nlpedia_setup.xml" />
+		<copy overwrite="true" file="${config.dir}/default/pipeline.xml.default"                  tofile="${config.dir}/pipeline.xml" />
 		<replace file="${config.dir}/settings.xml">
 			<replacefilter token="@BOA_LANGUAGE@"        value="${boa.language}"/>
 			<replacefilter token="@BOA_DATA_DIRECTORY@"  value="${data.dir}"/>
