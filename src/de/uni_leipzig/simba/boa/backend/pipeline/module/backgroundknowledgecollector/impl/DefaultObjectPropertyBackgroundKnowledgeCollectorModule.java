@@ -32,7 +32,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	private final NLPediaLogger logger 			= new NLPediaLogger(DefaultObjectPropertyBackgroundKnowledgeCollectorModule.class);
 	
 	private final int SPARQL_QUERY_LIMIT					= new Integer(NLPediaSettings.getInstance().getSetting("sparqlQueryLimit"));
-	private final String BACKGROUND_KNOWLEDGE_OUTPUT_PATH	= NLPediaSettings.getInstance().getSetting("backgroundKnowledgeOutputFilePath");
+	private final String BACKGROUND_KNOWLEDGE_OUTPUT_PATH	= NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("backgroundKnowledgeOutputFilePath");
 	private final String BOA_LANGUAGE						= NLPediaSettings.BOA_LANGUAGE;
 	
 	private Set<BackgroundKnowledge> backgroundKnowledge = new HashSet<BackgroundKnowledge>(); 
@@ -83,7 +83,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 		for ( String objectPropertyUri : objectPropertyUris ) {
 			
 			String query	= createObjectPropertyQuery(objectPropertyUri);
-			String filePath	= NLPediaSettings.BOA_DATA_DIRECTORY + BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "object/";
+			String filePath	= BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "object/";
 			
 			super.getKnowledge(query, objectPropertyUri, filePath + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
 		}

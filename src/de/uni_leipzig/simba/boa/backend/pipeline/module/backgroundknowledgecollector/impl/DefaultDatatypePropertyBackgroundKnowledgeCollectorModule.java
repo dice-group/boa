@@ -81,7 +81,7 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 		for ( String datatypePropertyUri : datatypePropertyUris ) {
 			
 			String query = createDatatypePropertyQuery(datatypePropertyUri);
-			String filePath	= NLPediaSettings.BOA_DATA_DIRECTORY + BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "datatype/";
+			String filePath	= BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "datatype/";
 			
 			getKnowledge(query, datatypePropertyUri, filePath + datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length()) + ".txt");
 		}
