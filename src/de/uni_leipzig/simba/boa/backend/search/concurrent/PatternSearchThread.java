@@ -9,7 +9,6 @@ import org.apache.lucene.queryParser.ParseException;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 

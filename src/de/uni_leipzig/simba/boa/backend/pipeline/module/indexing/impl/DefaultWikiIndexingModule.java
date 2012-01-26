@@ -14,9 +14,11 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.CorruptIndexException;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.Version;
@@ -30,7 +32,6 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.lucene.LowerCaseWhitespaceAnalyzer;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.SentenceBoundaryDisambiguation;
-import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.impl.StanfordNLPSentenceBoundaryDisambiguation;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.AbstractPipelineModule;
 
 /**
@@ -44,7 +45,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	private final String RAW_DATA_DIRECTORY	= NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("rawSentenceDirectory");
 	private final String INDEX_DIRECTORY	= NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory");
 	private final int RAM_BUFFER_MAX_SIZE	= new Integer(NLPediaSettings.getInstance().getSetting("ramBufferMaxSizeInMb")).intValue();
-	private final boolean OVERWRITE_INDEX	= new Boolean(NLPediaSettings.getInstance().getSetting("overwriteIndex")).booleanValue();
+	private final boolean OVERWRITE_INDEX	= this.overrideData;
 	
 	// remember how many files get indexed
 	private int indexDocumentCount = 0;
@@ -53,6 +54,22 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	public String getName() {
 
 		return "Default Wiki Indexing Module (de/en)";
+	}
+	
+	@Override
+	public boolean isDataAlreadyAvailable() {
+
+		try {
+			
+			return IndexReader.indexExists(FSDirectory.open(new File(INDEX_DIRECTORY)));
+		}
+		catch (IOException e) {
+			
+			e.printStackTrace();
+			String error = "Check if index exists failed!";
+			this.logger.fatal(error, e);
+			throw new RuntimeException(error, e);
+		}
 	}
 	
 	@Override

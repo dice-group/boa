@@ -1,7 +1,5 @@
 package de.uni_leipzig.simba.boa.backend;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;

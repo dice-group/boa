@@ -67,7 +67,11 @@ public class Pipeline {
 			this.logger.info(launchMessage);
 			System.out.println(launchMessage);
 			
-			module.run();
+			// do only run the module if either we don't have data already or we have data and want to override it 
+			if ( (module.isDataAlreadyAvailable() && module.isOverrideData()) || !module.isDataAlreadyAvailable() ) 
+				module.run();
+			
+			// we want to update the interchange module anyway
 			module.updateModuleInterchangeObject();
 			
 			String report = module.getReport();

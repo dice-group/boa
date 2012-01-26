@@ -21,7 +21,6 @@ public class KoreanWikiIndexingModule extends DefaultWikiIndexingModule {
 		return "Korean Wiki Indexing Module (ko)";
 	}
 	
-	
 	/**
 	 * Writes all sentences of all sentences in the given list to the Lucene index.
 	 * 

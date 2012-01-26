@@ -1,30 +1,9 @@
  package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
-
-import de.danielgerber.Constants;
-import de.danielgerber.file.FileUtil;
-import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
-import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.ObjectPropertyBackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.SurfaceFormGenerator;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 
 /**
  * 

@@ -32,7 +32,6 @@
                 <!-- ############### index stuff ############### -->
                 <entry key="rawSentenceDirectory"           value="raw" />
                 <entry key="indexSentenceDirectory"         value="index"/>
-                <entry key="overwriteIndex"                 value="false"/>
                 <entry key="ramBufferMaxSizeInMb"           value="1000"/>
                 
                 <!-- ############### pattern search ############### -->
