@@ -1,65 +1,15 @@
-### nlpedia settings
-
-### crawling
-crawl.directory = /home/gerber/data/en_wiki/data/crawl
-filter.files.regex = .*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz|pdf))$
-url.seed.file.directory = /home/gerber/data/en_wiki/data/url/
-sentence.file.directory = /home/gerber/data/en_wiki/data/sentences/
-sentence.error.file = /home/gerber/data/en_wiki/data/error/error.txt
-number.of.threads = 10
-
-### indexing
-ram.buffer.max.size.in.mb = 512
-overwrite.index = true
-sentence.index.directory = /home/gerber/data/en_wiki/data/index/
-
-### sparql
-dbpedia.sparql.endpoint = http://hanne.aksw.org:8910/sparql
-dbpedia.default.graph = http://dbpedia.org
-label.output.file = /home/gerber/data/en_wiki/data/label/combinations.txt
-resource.type.url = http:/dbpedia.org/ontology/City
-
-### search
-number.of.search.threads = 4
-numberOfEvaluationThreads = 3
-pattern.store.file = /home/gerber/data/en_wiki/data/pattern/pattern.txt
-
-### hibernate
-hibernate.connection.driver_class = com.mysql.jdbc.Driver
-hibernate.connection.url = jdbc:mysql://127.0.0.1:3306/nlpedia
-hibernate.connection.username = root
-hibernate.connection.password = root
-hibernate.dialect = org.hibernate.dialect.MySQLDialect
-hibernate.hbm2ddl.auto = create
-
-### language detection
-language.models.for.language.detection = /home/gerber/data/en_wiki/data/training/languageDetection/
-
-### limes config
-limesAcceptanceThreshold	= 0.7
-limesVerificationThreshold = 0.9
-limesMetricExpression			= "cosine(x.naturalLanguageRepresentation,y.naturalLanguageRepresentation)" 
-
-### other
-max.pattern.lenght = 10
-sentence.per.line.output.file = /home/gerber/data/en_wiki/data/sentences/sentences.txt 
-raw.data.input.directory =  /home/gerber/data/en_wiki/data/raw/
-sentence.boundary.disambiguation = stanfordnlp
-namendEntityRecognizerClassifier = /home/gerber/nlpedia/data/training/classifier/conll.closed.iob2.crf.ser.gz
-sentenceRepairedFile = /home/gerber/data/en_wiki/data/error/repaired.txt
-limesVerificationFile = /home/gerber/data/en_wiki/data/limes/toVerfiy.txt
-limesAcceptanceFile = /home/gerber/data/en_wiki/data/limes/accepted.txt
-maxNumberOfDocuments = 100000;
-rdfModel = en_wiki_rdf
-createKnowledgeThreshold = 0.5
-
 ### log properties
 # INFO for production use, DEBUG only for developing
-log.priority = INFO
+log.priority = DEBUG
+
+### language settings, de - ko - en - ...
+boa.language    = en
 
 ### set directories
-base.dir	= /home/gerber/nlpedia
-src.dir		= ${base.dir}/src
-config.dir	= ${base.dir}/config
-log.dir		= ${base.dir}/log
-build.dir	= ${base.dir}/bin
+base.dir        = /Users/gerb/Development/workspaces/java-ws/boa
+data.dir        = /Users/gerb/Development/workspaces/experimental/en_wiki_exp/
+app.data.dir    = ${base.dir}/WebContent/WEB-INF/data/
+src.dir         = ${base.dir}/src
+config.dir      = ${base.dir}/WebContent/WEB-INF/config
+log.dir         = ${base.dir}/WebContent/WEB-INF/log
+build.dir       = ${base.dir}/build

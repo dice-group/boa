@@ -1,9 +1,11 @@
-package de.uni_leipzig.simba.boa.backend.search;
+package de.uni_leipzig.simba.boa.backend.search.result.comparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 
 /**
  * 

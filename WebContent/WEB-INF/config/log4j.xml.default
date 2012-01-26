@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
@@ -41,15 +41,6 @@
 
 	</appender>
 	
-
-	<root> 
-
-		<priority value="@log.priority@" />
-		<appender-ref ref="sysLog" />
-		<appender-ref ref="debugLog" /> 
-
-	</root>
-
 	<!-- set hibernate log level to warn -->
 	<logger name="org.hibernate">
 		<level value="warn" /> 
@@ -64,5 +55,11 @@
 	<logger name="org.springframework">
 		<level value="warn" />
 	</logger>
+	
+    <root> 
+        <priority value="@log.priority@" />
+        <appender-ref ref="sysLog" />
+        <appender-ref ref="debugLog" /> 
+    </root>
 
 </log4j:configuration>

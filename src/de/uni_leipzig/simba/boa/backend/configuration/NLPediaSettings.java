@@ -169,6 +169,9 @@ public class NLPediaSettings {
 	public void logSettings() {
 
 		this.logger.info("NLPediaSettings are as follows: ");
+		this.logger.info("\tBOA-Base-Directory: " + BOA_BASE_DIRECTORY);
+		this.logger.info("\tBOA-Data-Directory: " + BOA_DATA_DIRECTORY);
+		
 		for (Entry<String,String> entry : this.nlpediaSettings.entrySet()) {
 			
 			this.logger.info("\t" + entry.getKey() + ": " + entry.getValue());

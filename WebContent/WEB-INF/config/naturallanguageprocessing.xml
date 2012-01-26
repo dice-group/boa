@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="NaturalLanguageProcessingToolFactory" class="de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory"
+        factory-method="getInstance" singleton="true">
+
+        <property name="defaultPartOfSpeechTagger" 
+                value="de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.impl.StanfordNLPPartOfSpeechTagger"/>
+        
+        <property name="defaultNamedEntityRecognition" 
+                value="de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.impl.StanfordNLPNamedEntityRecognition"/>
+        
+        <property name="defaultSentenceBoundaryDisambiguation" 
+                value="de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.impl.StanfordNLPSentenceBoundaryDisambiguation"/>
+
+        <property name="partOfSpeechTools">
+            <list>
+                <value>de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.impl.StanfordNLPPartOfSpeechTagger</value>
+            </list>
+        </property>
+
+        <property name="sentenceBoundaryDisambiguationTools">
+            <list>
+                <value>de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.impl.StanfordNLPSentenceBoundaryDisambiguation</value>
+                <value>de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.impl.KoreanSentenceBoundaryDisambiguation</value>
+                <value>de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.impl.OpenNLPSentenceBoundaryDisambiguation</value>
+            </list>
+        </property>
+        
+        <property name="namedEntityRecognitionTools">
+            <list>
+                <value>de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.impl.StanfordNLPNamedEntityRecognition</value>
+            </list>
+        </property>
+    </bean>
+</beans>

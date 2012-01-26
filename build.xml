@@ -130,57 +130,18 @@
 		<echo message="Processing all .in files at ${config.dir}/..." />
 
 		<!-- log.xml.in -->
-		<copy overwrite="true" file="${config.dir}/log4j.xml.in" tofile="${config.dir}/log4j.xml" />
+		<copy overwrite="true" file="${config.dir}/log4j.xml.default" tofile="${config.dir}/log4j.xml" />
 		<replace file="${config.dir}/log4j.xml">
 			<replacefilter token="@log.dir@" value="${log.dir}"/>
 			<replacefilter token="@log.priority@" value="${log.priority}"/>
 		</replace>
 
 		<!-- nlpedia_setup.xml.in -->
-		<copy overwrite="true" file="${config.dir}/nlpedia_setup.xml.in" tofile="${config.dir}/nlpedia_setup.xml" />
-		<replace file="${config.dir}/nlpedia_setup.xml">
-			<replacefilter token="@crawl.directory@" 						value="${crawl.directory}"/>
-			<replacefilter token="@filter.files.regex@"						value="${filter.files.regex}"/>
-			<replacefilter token="@url.seed.file.directory@"				value="${url.seed.file.directory}"/>
-			<replacefilter token="@sentence.file.directory@"				value="${sentence.file.directory}"/>
-			<replacefilter token="@sentence.index.directory@"				value="${sentence.index.directory}"/>
-			<replacefilter token="@number.of.threads@"						value="${number.of.threads}"/>
-			<replacefilter token="@overwrite.index@"						value="${overwrite.index}"/>
-			<replacefilter token="@dbpedia.sparql.endpoint@"				value="${dbpedia.sparql.endpoint}"/>
-			<replacefilter token="@dbpedia.default.graph@"					value="${dbpedia.default.graph}"/>
-			<replacefilter token="@label.output.file@"						value="${label.output.file}"/>
-			<replacefilter token="@resource.type.url@"						value="${resource.type.url}"/>
-			<replacefilter token="@pattern.store.file@"						value="${pattern.store.file}"/>
-			<replacefilter token="@hibernate.config.file@"					value="${config.dir}/hibernate.cfg.xml"/>
-			<replacefilter token="@ram.buffer.max.size.in.mb@"				value="${ram.buffer.max.size.in.mb}"/>
-			<replacefilter token="@hibernate.connection.driver_class@"		value="${hibernate.connection.driver_class}"/>
-			<replacefilter token="@hibernate.connection.url@"				value="${hibernate.connection.url}"/>
-			<replacefilter token="@hibernate.connection.username@"			value="${hibernate.connection.username}"/>
-			<replacefilter token="@hibernate.connection.password@"			value="${hibernate.connection.password}"/>
-			<replacefilter token="@hibernate.dialect@"						value="${hibernate.dialect}"/>
-			<replacefilter token="@hibernate.hbm2ddl.auto@"					value="${hibernate.hbm2ddl.auto}"/>
-			<replacefilter token="@language.models.for.language.detection@"	value="${language.models.for.language.detection}"/>
-			<replacefilter token="@max.pattern.lenght@"						value="${max.pattern.lenght}"/>
-			<replacefilter token="@sentence.per.line.output.file@"			value="${sentence.per.line.output.file}"/>
-			<replacefilter token="@raw.data.input.directory@"				value="${raw.data.input.directory}"/>
-			<replacefilter token="@sentence.boundary.disambiguation@"		value="${sentence.boundary.disambiguation}"/>
-			<replacefilter token="@sentence.error.file@"					value="${sentence.error.file}"/>
-			<replacefilter token="@number.of.search.threads@"				value="${number.of.search.threads}"/>
-			<replacefilter token="@limes.acceptanceThreshold@"				value="${limes.acceptanceThreshold}"/>
-			<replacefilter token="@limes.verificationThreshold@"			value="${limes.verificationThreshold}"/>
-			<replacefilter token="@limes.metricExpression@"					value="${limes.metricExpression}"/>
-			<replacefilter token="@maxNumberOfDocuments@"					value="${maxNumberOfDocuments}"/>
-			<replacefilter token="@namendEntityRecognizerClassifier@"		value="${namendEntityRecognizerClassifier}"/>
-			<replacefilter token="@sentenceRepairedFile@"					value="${sentenceRepairedFile}"/>
-			<replacefilter token="@limesMetricExpression@"					value="${limesMetricExpression}"/>
-			<replacefilter token="@limesVerificationThreshold@"				value="${limesVerificationThreshold}"/>
-			<replacefilter token="@limesAcceptanceThreshold@"				value="${limesAcceptanceThreshold}"/>
-			<replacefilter token="@limesAcceptanceFile@"					value="${limesAcceptanceFile}"/>
-			<replacefilter token="@limesVerificationFile@"					value="${limesVerificationFile}"/>
-			<replacefilter token="@limesVerificationThreshold@"				value="${limesVerificationThreshold}"/>
-			<replacefilter token="@rdfModel@"								value="${rdfModel}"/>
-			<replacefilter token="@createKnowledgeThreshold@"				value="${createKnowledgeThreshold}"/>
-			<replacefilter token="@numberOfEvaluationThreads@"				value="${numberOfEvaluationThreads}"/>
+		<copy overwrite="true" file="${config.dir}/settings.xml.default" tofile="${config.dir}/settings.xml" />
+		<replace file="${config.dir}/settings.xml">
+			<replacefilter token="@BOA_LANGUAGE@"        value="${boa.language}"/>
+			<replacefilter token="@BOA_DATA_DIRECTORY@"  value="${data.dir}"/>
+			<replacefilter token="@BOA_BASE_DIRECTORY@"  value="${app.data.dir}"/>
 		</replace>
 		<echo message="Generated config files are available at ${config.dir}." />
 	</target>

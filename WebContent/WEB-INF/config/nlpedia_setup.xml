@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<import resource="settings.xml"/>
+	<import resource="filter.xml"/>
+    <import resource="features.xml"/>
+	<import resource="daos.xml"/>
+	<import resource="naturallanguageprocessing.xml"/>
+	<import resource="machinelearning.xml"/>
+	<import resource="pipeline.xml"/>
+	<import resource="interchangeobject.xml"/>
+	<import resource="modules.xml"/>
+</beans>

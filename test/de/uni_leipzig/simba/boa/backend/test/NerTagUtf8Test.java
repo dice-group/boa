@@ -31,8 +31,8 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
-import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
-import de.uni_leipzig.simba.boa.backend.search.SearchResult;
+import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 
 
 public class NerTagUtf8Test {

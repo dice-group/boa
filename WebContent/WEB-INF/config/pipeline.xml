@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="PipelineConfiguration" class="de.uni_leipzig.simba.boa.backend.pipeline.configuration.PipelineConfiguration">
+        
+        <property name="moduleInterchangeObject">
+            <ref bean="ModuleInterchangeObject"/>
+        </property>
+        
+        <property name="pipelineModules">
+            <list>
+<!--                <ref bean="BackgroundKnowledgeCollectorModule"/> -->
+                <ref bean="IndexingModule"/>
+            </list>
+        </property>
+    </bean>
+</beans>
