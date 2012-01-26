@@ -11,10 +11,13 @@ import java.util.Set;
 import org.apache.lucene.queryParser.ParseException;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 
 
 public class PatternUtil {
+	
+	private static PatternSearcher patternSearcher;
 	
 	/**
 	 * This is the strategy for collecting the patterns in the getTopNPattern method 

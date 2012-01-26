@@ -34,7 +34,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TotalOccurrenceFeature;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
-import de.uni_leipzig.simba.boa.backend.search.DefaultPatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 
 public class FeatureTest {
 

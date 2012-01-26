@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.search;
+package de.uni_leipzig.simba.boa.backend.search.impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +37,8 @@ import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguag
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
 //import de.uni_leipzig.simba.boa.backend.nlp.PosTagger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
+import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 
 /**
  * 
