@@ -27,17 +27,27 @@ syntax: regexp
 .DS_Store$
 syntax: regexp
 ^WebContent/WEB-INF/data/training/classifier/ner-de-hgc_175M_600.ser.gz$
-
 syntax: regexp
 ^WebContent/WEB-INF/lib/reverb\.jar$
+syntax: regexp
 ^WebContent/WEB-INF/config/nlpedia_setup\.xml$
+syntax: regexp
 ^WebContent/WEB-INF/config/daos\.xml$
+syntax: regexp
 ^WebContent/WEB-INF/config/features\.xml$
+syntax: regexp
 ^WebContent/WEB-INF/config/filter\.xml$
+syntax: regexp
 ^WebContent/WEB-INF/config/interchangeobject\.xml$
+syntax: regexp
 ^WebContent/WEB-INF/config/log4j\.xml$
+syntax: regexp
 ^WebContent/WEB-INF/config/machinelearning\.xml$
+syntax: regexp
 ^WebContent/WEB-INF/config/modules\.xml$
+syntax: regexp
 ^WebContent/WEB-INF/config/naturallanguageprocessing\.xml$
+syntax: regexp
 ^WebContent/WEB-INF/config/pipeline\.xml$
+syntax: regexp
 ^WebContent/WEB-INF/config/settings\.xml$
