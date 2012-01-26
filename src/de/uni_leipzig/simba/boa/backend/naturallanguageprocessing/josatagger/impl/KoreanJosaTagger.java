@@ -1,8 +1,8 @@
 package de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.josatagger.impl;
 
-import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.josatagger.JosaTagger;

@@ -2,7 +2,6 @@ package de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts;
 
 import java.util.Scanner;
 
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateMachineLearningCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.ResetPatternCommand;

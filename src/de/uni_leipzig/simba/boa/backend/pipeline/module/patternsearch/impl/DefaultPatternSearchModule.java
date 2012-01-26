@@ -4,6 +4,7 @@
 package de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl;
 
 import de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.AbstractPatternSearchModule;
+import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 
 
 /**
@@ -12,6 +13,8 @@ import de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.AbstractPa
  */
 public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 
+	private PatternSearcher patternSearcher;
+	
 	/* (non-Javadoc)
 	 * @see de.uni_leipzig.simba.boa.backend.pipeline.module.PipelineModule#getName()
 	 */

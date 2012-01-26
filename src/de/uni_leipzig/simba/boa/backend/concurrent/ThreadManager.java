@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
+import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchThread;
 import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 

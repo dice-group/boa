@@ -27,7 +27,17 @@ public interface PipelineModule {
 	 * @return
 	 */
 	public String getReport();
+	
+	/**
+	 * @return the overrideData
+	 */
+	public boolean isOverrideData();
 
+	/**
+	 * @param overrideData the overrideData to set
+	 */
+	public void setOverrideData(boolean overrideData);
+	
 	/**
 	 * 
 	 */
@@ -68,4 +78,10 @@ public interface PipelineModule {
 	 * @param moduleInterchangeObject
 	 */
 	public void setModuleInterchangeObject(ModuleInterchangeObject moduleInterchangeObject);
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isDataAlreadyAvailable();
 }

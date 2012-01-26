@@ -17,6 +17,7 @@ public abstract class AbstractPipelineModule implements PipelineModule {
 	protected ModuleInterchangeObject moduleInterchangeObject;
 	protected Set<Class<PipelineModule>> moduleDependencies;
 	protected Set<String> moduleSettings;
+	protected boolean overrideData;
 	
 	/**
 	 * @return the moduleInterchangeObject
@@ -56,5 +57,21 @@ public abstract class AbstractPipelineModule implements PipelineModule {
 	public void setModuleSettings(Set<String> moduleSettings) {
 
 		this.moduleSettings = moduleSettings;
+	}
+	
+	/**
+	 * @return the overrideData
+	 */
+	public boolean isOverrideData() {
+	
+		return overrideData;
+	}
+	
+	/**
+	 * @param overrideData the overrideData to set
+	 */
+	public void setOverrideData(boolean overrideData) {
+	
+		this.overrideData = overrideData;
 	}
 }

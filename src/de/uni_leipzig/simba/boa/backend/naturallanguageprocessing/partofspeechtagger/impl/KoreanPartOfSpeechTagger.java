@@ -1,10 +1,8 @@
 package de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.impl;
 
 import java.io.IOException;
-
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import kr.ac.kaist.swrc.jhannanum.hannanum.Workflow;
@@ -13,11 +11,9 @@ import kr.ac.kaist.swrc.jhannanum.plugin.MajorPlugin.PosTagger.HmmPosTagger.HMMT
 import kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.MorphemeProcessor.UnknownMorphProcessor.UnknownProcessor;
 import kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.PlainTextProcessor.InformalSentenceFilter.InformalSentenceFilter;
 import kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.PlainTextProcessor.SentenceSegmentor.SentenceSegmentor;
-
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
-import de.uni_leipzig.simba.boa.backend.nlp.PosTagger;
 
 public class KoreanPartOfSpeechTagger  implements PartOfSpeechTagger{
 	private final NLPediaLogger logger = new NLPediaLogger(KoreanPartOfSpeechTagger.class);
