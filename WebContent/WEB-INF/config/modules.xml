@@ -3,64 +3,64 @@
     "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-    <bean id="ObjectPropertyBackgroundKnowledgeCollectorModule" 
-            class="de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule">
-        
-        <property name="overrideData" value="false"/>
-        
+	<bean id="ObjectPropertyBackgroundKnowledgeCollectorModule"
+		class="de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule">
+
+		<property name="overrideData" value="false" />
+
+		<property name="moduleDependencies">
+			<set>
+				<!-- none -->
+			</set>
+		</property>
+
+		<property name="moduleSettings">
+			<set>
+				<value>sparqlQueryLimit</value>
+				<value>dbpediaDefaultGraph</value>
+				<value>dbpediaSparqlEndpoint</value>
+				<value>backgroundKnowledgeOutputFilePath</value>
+				<value>queryObjectProperties</value>
+				<value>queryDatatypeProperties</value>
+				<value>surfaceFormsTSV</value>
+			</set>
+		</property>
+	</bean>
+
+	<bean id="DatatypePropertyBackgroundKnowledgeCollectorModule"
+		class="de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule">
+
+		<property name="overrideData" value="false" />
+
+		<property name="moduleDependencies">
+			<set>
+				<!-- none -->
+			</set>
+		</property>
+
+		<property name="moduleSettings">
+			<set>
+				<value>sparqlQueryLimit</value>
+				<value>dbpediaDefaultGraph</value>
+				<value>dbpediaSparqlEndpoint</value>
+				<value>backgroundKnowledgeOutputFilePath</value>
+				<value>queryObjectProperties</value>
+				<value>queryDatatypeProperties</value>
+				<value>surfaceFormsTSV</value>
+			</set>
+		</property>
+	</bean>
+	
+	   <bean id="DefaultWikiIndexingModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule">
+
+        <property name="overrideData" value="false" />
+
         <property name="moduleDependencies">
             <set>
-                <!-- none -->
             </set>
         </property>
-        
-        <property name="moduleSettings">
-            <set>
-                <value>sparqlQueryLimit</value>
-                <value>dbpediaDefaultGraph</value>
-                <value>dbpediaSparqlEndpoint</value>
-                <value>backgroundKnowledgeOutputFilePath</value>
-                <value>queryObjectProperties</value>
-                <value>queryDatatypeProperties</value>
-                <value>surfaceFormsTSV</value>
-            </set>
-        </property>
-    </bean>
-    
-    <bean id="DatatypePropertyBackgroundKnowledgeCollectorModule" 
-            class="de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule">
-        
-        <property name="overrideData" value="false"/>
-        
-        <property name="moduleDependencies">
-            <set>
-                <!-- none -->
-            </set>
-        </property>
-        
-        <property name="moduleSettings">
-            <set>
-                <value>sparqlQueryLimit</value>
-                <value>dbpediaDefaultGraph</value>
-                <value>dbpediaSparqlEndpoint</value>
-                <value>backgroundKnowledgeOutputFilePath</value>
-                <value>queryObjectProperties</value>
-                <value>queryDatatypeProperties</value>
-                <value>surfaceFormsTSV</value>
-            </set>
-        </property>
-    </bean>
-    
-    <bean id="IndexingModule" 
-            class="de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.indexing.DefaultWikiIndexingModule">
-        
-        <property name="overrideData" value="false"/>
-        
-        <property name="moduleDependencies">
-            <set>
-            </set>
-        </property>
-        
+
         <property name="moduleSettings">
             <set>
                 <value>overwriteIndex</value>
@@ -70,4 +70,26 @@
             </set>
         </property>
     </bean>
+
+	<bean id="KoreanWikiIndexingModule"
+		class="de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.KoreanWikiIndexingModule">
+
+        <property name="overrideData" value="false" />
+
+		<property name="moduleDependencies">
+			<set>
+			</set>
+		</property>
+
+		<property name="moduleSettings">
+			<set>
+				<value>overwriteIndex</value>
+				<value>ramBufferMaxSizeInMb</value>
+				<value>indexSentenceDirectory</value>
+				<value>rawSentenceDirectory</value>
+			</set>
+		</property>
+	</bean>
+
+
 </beans>

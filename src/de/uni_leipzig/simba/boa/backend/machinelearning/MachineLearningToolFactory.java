@@ -20,6 +20,20 @@ public class MachineLearningToolFactory {
 	private List<String> neuralNetworks;
 	
 	/**
+	 * @return the neuralNetworks
+	 */
+	public List<String> getNeuralNetworks() {
+		return neuralNetworks;
+	}
+
+	/**
+	 * @param neuralNetworks the neuralNetworks to set
+	 */
+	public void setNeuralNetworks(List<String> neuralNetworks) {
+		this.neuralNetworks = neuralNetworks;
+	}
+
+	/**
 	 * Singleton
 	 */
 	private MachineLearningToolFactory() {}

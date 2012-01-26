@@ -12,8 +12,8 @@
         <property name="pipelineModules">
             <list>
                 <ref bean="ObjectPropertyBackgroundKnowledgeCollectorModule"/>
-                <ref bean="DatatypePropertyBackgroundKnowledgeCollectorModule"/>
-                <ref bean="IndexingModule"/>
+<!--                 <ref bean="DatatypePropertyBackgroundKnowledgeCollectorModule"/> -->
+<!--                 <ref bean="KoreanWikiIndexingModule"/> -->
             </list>
         </property>
     </bean>
