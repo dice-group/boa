@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <!-- ********** SETUP ********** -->
+    <bean id="NLPediaSettings"
+        class="de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings"
+        singleton="true" factory-method="getInstance">
+        
+        <!-- base and data directory need to have a "/" (or "\" for windows) at the end -->
+        <property name="boaBaseDirectory" value="@BOA_BASE_DIRECTORY@"/>
+        <property name="boaDataDirectory" value="@BOA_DATA_DIRECTORY@"/>
+        <property name="boaLanguage" value="@BOA_LANGUAGE@"/>
+        
+        <property name="nlpediaSettings">
+            <map>
+        
+                <!-- ############### eval stuff ############### -->
+                <entry key="eval.output.file"               value="evaluation/Evaluation.txt"/>
+                <entry key="top.n.eval.triples"             value="100"/>
+            
+                <!-- ############### database stuff ############### -->
+                <entry key="hibernateConnectionDriverClass" value="com.mysql.jdbc.Driver"/>
+                <entry key="hibernateConnectionUrl"         value="jdbc:mysql://127.0.0.1:3306/en_wiki_exp"/>
+                <entry key="hibernateConnectionUsername"    value="root"/>
+                <entry key="hibernateConnectionPassword"    value="root"/>
+                <entry key="hibernateDialect"               value="org.hibernate.dialect.MySQLDialect"/>
+                <entry key="hibernate.jdbc.batch_size"      value="1000000"/>
+                <entry key="hibernateHbm2ddlAuto"           value="update"/>
+                
+                <!-- ############### index stuff ############### -->
+                <entry key="rawSentenceDirectory"           value="raw" />
+                <entry key="indexSentenceDirectory"         value="index"/>
+                <entry key="overwriteIndex"                 value="false"/>
+                <entry key="ramBufferMaxSizeInMb"           value="1000"/>
+                
+                <!-- ############### pattern search ############### -->
+                <entry key="maxNumberOfDocuments"           value="10"/>
+                <entry key="numberOfSearchThreads"          value="3"/>
+                <entry key="maxPatternLenght"               value="6"/>
+                <entry key="minPatternLenght"               value="2"/>
+                <entry key="pos.tagger.model"               value="training/pos/left3words-wsj-0-18.tagger"/>
+                
+                <!-- ############### confidence measure ############### -->
+                <entry key="number.of.occurrence.threshold">
+                    <value>1</value>
+                </entry>
+                <entry key="number.of.unique.occurrence.threshold">
+                    <value>1</value>
+                </entry>
+                <entry key="number.of.learned.pairs">
+                    <value>1</value>
+                </entry>
+                <entry key="maxNumberOfTypicityConfidenceMeasureDocuments">
+                    <value>10</value>
+                </entry>
+                <entry key="numberOfConfidenceMeasureThreads">
+                    <value>1</value>
+                </entry>
+                <entry key="wordnet.index.directory" value="training/wordnet/similarity"/>
+                <entry key="wordnet.database.directory">
+                    <value>/Users/gerb/Development/workspaces/java-ws/boa/WebContent/WEB-INF/data/training/wordnet/database</value>
+                </entry>
+                <entry key="reverbTrainingDirectory">
+                    <value>/Users/gerb/Development/workspaces/java-ws/boa/WebContent/WEB-INF/data/training/reverb/</value>
+                </entry>
+                
+                <!-- ############### neuronal network ############### -->
+                <entry key="neural.network.network.directory"           value="training/ml/de/wiki/"/>
+                <entry key="neuronal.network.n.fold.cross.validation"   value="10"/>
+                
+                <!-- ############### create knowledge ############### -->
+                <entry key="top.n.pattern">
+                    <value>100</value>
+                </entry>
+                <entry key="number.of.create.knowledge.threads">
+                    <value>1</value>
+                </entry>
+                <entry key="max.number.of.documents.generation">
+                    <value>10</value>
+                </entry>
+                <entry key="ntriples.file.path">
+                    <value>/Users/gerb/Development/workspaces/experimental/en_wiki_exp/rdf/</value>
+                </entry>
+                <entry key="score.threshold.create.knowledge">
+                    <value>0</value>
+                </entry>
+                <entry key="bk.out.file">
+                    <value>/Users/gerb/bk.out</value>
+                </entry>
+                
+                <!-- ############### get background knowledge ############### -->
+                <entry key="dbpediaSparqlEndpoint"              value="http://live.dbpedia.org/sparql"/>
+                <entry key="dbpediaDefaultGraph"                value="http://dbpedia.org"/>
+                <entry key="sparqlQueryLimit"                   value="1000"/>
+                <entry key="queryObjectProperties"              value="true"/>
+                <entry key="queryDatatypeProperties"            value="true"/>
+                <entry key="backgroundKnowledgeOutputFilePath"  value="backgroundknowledge"/>
+                <entry key="surfaceFormsTSV"                    value="backgroundknowledge/en_uri_surface_form.tsv"/>
+                
+                <!-- ############### other ############### -->
+                <entry key="question.answering.index" value="qa"/>
+            </map>
+        </property> 
+    </bean>
+</beans>
