@@ -99,6 +99,15 @@ public class NLPediaSettings {
 		
 		return this.nlpediaSettings.get(setting);
 	}
+	
+	/**
+	 * @param setting which has an integer value
+	 * @return the integer value of the setting
+	 */
+	public int getIntegerSetting(String setting){
+		
+		return Integer.valueOf(this.getSetting(setting));
+	}
 
 	/**
 	 * @param key the key of the setting

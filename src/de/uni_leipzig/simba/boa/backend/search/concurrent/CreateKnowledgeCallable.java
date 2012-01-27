@@ -173,16 +173,6 @@ public class CreateKnowledgeCallable implements Callable<Collection<Triple>> {
 				}
 			}
 		}
-		catch (ParseException e) {
-			
-			this.logger.error("ParseExcpetion while index search!", e);
-			throw new RuntimeException(e);
-		}
-		catch (IOException e) {
-			
-			this.logger.error("IOException while index search!", e);
-			throw new RuntimeException(e);
-		}
 		catch (Exception e) {
 			
 			this.logger.error("Excpetion", e);

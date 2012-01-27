@@ -38,21 +38,7 @@ public class PatternSearchCallable implements Callable<Collection<SearchResult>>
 	public PatternSearchCallable(List<BackgroundKnowledge> backgroundKnowledge) {
 		
 		this.backgroundKnowledgeList = backgroundKnowledge;
-		
-		try {
-			
-			this.patternSearcher = new DefaultPatternSearcher(INDEX_DIRECTORY);
-		}
-		catch (IOException e) {
-			
-			this.logger.fatal("Index directory not found.", e);
-			e.printStackTrace();
-		}
-		catch (ParseException e) {
-			
-			this.logger.error("Could not parse query.", e);
-			e.printStackTrace();
-		}
+		this.patternSearcher = new DefaultPatternSearcher(INDEX_DIRECTORY);
 	}
 	
 	public String getName(){

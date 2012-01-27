@@ -72,21 +72,7 @@ public class TypicityFeature implements Feature {
 		
 		long start = new Date().getTime();
 		
-		if ( this.patternSearcher == null ) {
-			
-			try {
-				
-				this.patternSearcher = new DefaultPatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
-			}
-			catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		if ( this.patternSearcher == null ) this.patternSearcher = new DefaultPatternSearcher();
 		
 		String domainUri	= mapping.getProperty().getRdfsDomain();
 		String rangeUri		= mapping.getProperty().getRdfsRange();

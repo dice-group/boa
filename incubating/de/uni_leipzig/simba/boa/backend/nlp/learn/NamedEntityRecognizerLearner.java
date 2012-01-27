@@ -35,8 +35,8 @@ import com.hp.hpl.jena.util.FileManager;
 import de.danielgerber.string.StringUtil;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.rdf.ontology.ClassIndexer;
 import de.uni_leipzig.simba.boa.backend.util.SerializationUtil;
-import de.uni_leipzig.simba.boa.backend.util.rdf.ClassIndexer;
 
 /**
  * 

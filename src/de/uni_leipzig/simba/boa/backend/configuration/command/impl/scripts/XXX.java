@@ -34,6 +34,7 @@ import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.FSDirectory;
 
+import de.danielgerber.evaluation.KappaScorer;
 import de.danielgerber.file.BufferedFileReader;
 import de.danielgerber.file.BufferedFileWriter;
 import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
@@ -42,6 +43,7 @@ import de.danielgerber.math.MathUtil;
 import de.danielgerber.rdf.NtripleUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
@@ -55,7 +57,7 @@ import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 
 
-public class XXX implements Command {
+public class XXX {
 
 	// used for sentence segmentation
 	private static Reader stringReader;
@@ -64,7 +66,45 @@ public class XXX implements Command {
 	
 	private NLPediaLogger logger = new NLPediaLogger(XXX.class);
 	
-	public void execute() {
+	public static void main(String[] args) {
+
+		NLPediaSetup setup = new NLPediaSetup(true);
+		List<String> file1 = FileUtil.readFileInList(NLPediaSettings.BOA_BASE_DIRECTORY + "evaluation/3/Evaluation_3_Kappa_Upmeier.txt", "UTF-8");
+		List<String> file2 = FileUtil.readFileInList(NLPediaSettings.BOA_BASE_DIRECTORY + "evaluation/3/Evaluation_3_Kappa_Haack.txt", "UTF-8");
+		
+		if ( file1.size() != file2.size() ) throw new RuntimeException("Files not of the same size");
+		
+		int oneYesTwoYes	= 0;
+		int oneYesTwoNo		= 0;
+		int oneNoTwoNo		= 0;
+		int oneNoTwoYes		= 0;
+		int lines			= 0;
+		
+		for (int i = 0; i < Math.min(file1.size(), file2.size()); i++) {
+
+			// skip the lines with comments and empty lines
+			if ( file1.get(i).startsWith("#") || file1.get(i).trim().isEmpty() || !file1.get(i).startsWith("[") ) continue;
+			lines++;
+			
+			if ( file1.get(i).startsWith("[x]") && file2.get(i).startsWith("[x]") ) {
+				oneYesTwoYes++;continue;
+			}
+			if ( file1.get(i).startsWith("[x]") && file2.get(i).startsWith("[o]") ) {
+				oneYesTwoNo++;continue;
+			}
+			if ( file1.get(i).startsWith("[o]") && file2.get(i).startsWith("[x]") ) {
+				oneNoTwoYes++;continue;
+			}
+			if ( file1.get(i).startsWith("[o]") && file2.get(i).startsWith("[o]") ) {
+				oneNoTwoNo++;continue;
+			}
+			System.out.println(file1.get(i));
+			System.out.println(file2.get(i));
+		}
+		System.out.println(KappaScorer.getCohenKappaScore(oneYesTwoYes, oneYesTwoNo, oneNoTwoYes, oneNoTwoNo, lines));
+	}
+	
+	public void translateEnglishToKoreanLabels() {
 		
 		Map<String,String> uriToLabelMapping = NtripleUtil.parseNTripleFile("/Users/gerb/labels_ko.nt");
 		
@@ -269,12 +309,6 @@ public class XXX implements Command {
 			throw new RuntimeException(aioobe);
 		}
 		return "";
-	}
-	
-	public static void main(String[] args) throws UnsupportedEncodingException, FileNotFoundException, IOException {
-
-		XXX x = new XXX();
-		x.execute();
 	}
 	
 	private static void createEvalFiles() throws IOException {

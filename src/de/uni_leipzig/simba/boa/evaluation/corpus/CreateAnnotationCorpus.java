@@ -16,6 +16,7 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
+import de.danielgerber.file.BufferedFileWriter;
 import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
@@ -38,7 +39,7 @@ public class CreateAnnotationCorpus {
 	
 	private void execute() throws UnsupportedEncodingException, FileNotFoundException, IOException, ParseException {
 
-		String propertiesFilename 		= NLPediaSettings.BOA_BASE_DIRECTORY + "WebContent/WEB-INF/data/backgroundknowledge/object_properties_evaluation.txt";
+		String propertiesFilename 		= NLPediaSettings.BOA_BASE_DIRECTORY + "evaluation/object_properties_evaluation.txt";
 		
 		String annotatorOneFile	= NLPediaSettings.BOA_BASE_DIRECTORY + "evaluation/eval_a1_v0.2.txt";
 		String annotatorTwoFile	= NLPediaSettings.BOA_BASE_DIRECTORY + "evaluation/eval_a2_v0.2.txt";
@@ -47,7 +48,7 @@ public class CreateAnnotationCorpus {
 		
 		DefaultPatternSearcher patternSearcher = new DefaultPatternSearcher();
 		
-//		createKappaAnnotationFile(propertiesToQuery.subList(0, 10));
+//		createKappaAnnotationFile(propertiesToQuery.subList(0, 1));
 		
 		for (String property : propertiesToQuery) {
 			
@@ -76,7 +77,7 @@ public class CreateAnnotationCorpus {
 
 	private static void writeQueryResultsToFile(String annotationFilename, String property, Map<QueryResult, String> sentences, Integer lineCounter) throws IOException {
 
-		Writer writer = FileUtil.openWriter(annotationFilename, "UTF-8", WRITER_WRITE_MODE.APPEND);
+		BufferedFileWriter writer = FileUtil.openWriter(annotationFilename, "UTF-8", WRITER_WRITE_MODE.APPEND);
 		writer.write("################################ "+property+" #################################"+ Constants.NEW_LINE_SEPARATOR + Constants.NEW_LINE_SEPARATOR  + Constants.NEW_LINE_SEPARATOR );
 		int j = 0;
 		
@@ -85,11 +86,11 @@ public class CreateAnnotationCorpus {
 		for (Map.Entry<QueryResult, String> entry : sentences.entrySet()) {
 			
 			if (j++ >= 30) break;
-			writer.write((lineCounter++) + "." + entry.getKey().toString() + Constants.NEW_LINE_SEPARATOR);
-			writer.write("[o] "+ entry.getValue().toString() + Constants.NEW_LINE_SEPARATOR);
-			writer.write(Constants.NEW_LINE_SEPARATOR + Constants.NEW_LINE_SEPARATOR);
+			writer.write((lineCounter++) + "." + entry.getKey().toString());
+			writer.write("[o] "+ entry.getValue().toString());
+			writer.write(Constants.NEW_LINE_SEPARATOR);
 		}
-		writer.write(Constants.NEW_LINE_SEPARATOR + Constants.NEW_LINE_SEPARATOR + Constants.NEW_LINE_SEPARATOR);
+		writer.write(Constants.NEW_LINE_SEPARATOR + Constants.NEW_LINE_SEPARATOR);
 		writer.close();
 	}
 
@@ -105,8 +106,9 @@ public class CreateAnnotationCorpus {
 				" FILTER (lang(?oLabel) = 'en' && lang(?sLabel) = 'en') ." +
 				"} LIMIT 1000";
 			
-		QueryEngineHTTP	qexec = new QueryEngineHTTP("http://live.dbpedia.org/sparql", query);
+		QueryEngineHTTP	qexec = new QueryEngineHTTP("http://dbpedia.org/sparql", query);
 		qexec.addDefaultGraph("http://dbpedia.org");
+		qexec.addParam("timeout","5000");
 		
 		List<QueryResult> queryResults = new ArrayList<QueryResult>(2000);
 		System.out.println("Querying started!");
@@ -133,7 +135,7 @@ public class CreateAnnotationCorpus {
 	private static void createKappaAnnotationFile(List<String> propertyList) throws IOException, ParseException {
 
 		DefaultPatternSearcher patternSearcher = new DefaultPatternSearcher();
-		String kappaFilename			= NLPediaSettings.BOA_BASE_DIRECTORY + "evaluation/eval_kappa_v0.2.txt";
+		String kappaFilename			= NLPediaSettings.BOA_BASE_DIRECTORY + "evaluation/eval_kappa_v0.2.1.txt";
 		Integer i 						= 1;
 		
 		for ( String property : propertyList ) {
