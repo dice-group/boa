@@ -30,7 +30,7 @@ public class PatternSearchPringProgressTask extends TimerTask {
 
 			int progress	= Integer.valueOf(format.format(patternSearchThread.getProgress() * 100));
 
-			if (progress != 100) {
+			if (progress != 100 && (patternSearchThread.getProgress() > 0 && patternSearchThread.getProgress() < 100) ) {
 
 				this.logger.info(patternSearchThread.getName() + ": " + progress + "%. " +
 						"(" + patternSearchThread.getNumberOfDoneSearches() + "/" + patternSearchThread.getNumberOfSearches() + ")");

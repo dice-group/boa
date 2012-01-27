@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchCallable;
 import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPringProgressTask;
@@ -23,13 +23,18 @@ import de.uni_leipzig.simba.boa.backend.util.ListUtil;
  * 
  * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
  */
-public class ThreadManager {
+public class PatternSearchThreadManager {
 
-	private NLPediaLogger logger = new NLPediaLogger(ThreadManager.class);
-	
-	private int PATTERN_SEARCH_THREAD_POOL_SIZE = 2;
+	private static final NLPediaLogger logger = new NLPediaLogger(PatternSearchThreadManager.class);
+	private static final int PATTERN_SEARCH_THREAD_POOL_SIZE = NLPediaSettings.getInstance().getIntegerSetting("patternSearchThreadPoolSize");
 
-	public List<SearchResult> startPatternSearchCallables(Set<BackgroundKnowledge> backgroundKnowledge, int numberOfTotalSearchThreads) {
+	/**
+	 * 
+	 * @param backgroundKnowledge
+	 * @param numberOfTotalSearchThreads
+	 * @return
+	 */
+	public static List<SearchResult> startPatternSearchCallables(Set<BackgroundKnowledge> backgroundKnowledge, int numberOfTotalSearchThreads) {
 
 		List<SearchResult> results = new ArrayList<SearchResult>();
 		
@@ -40,7 +45,7 @@ public class ThreadManager {
 
 			// create a thread pool and service for n threads/callable
 			ExecutorService executorService = Executors.newFixedThreadPool(PATTERN_SEARCH_THREAD_POOL_SIZE);
-			this.logger.info("Created executorservice for pattern search with " + numberOfTotalSearchThreads + 
+			logger.info("Created executorservice for pattern search with " + numberOfTotalSearchThreads + 
 					" threads and a thread pool of size " + PATTERN_SEARCH_THREAD_POOL_SIZE + ".");
 			
 			List<Callable<Collection<SearchResult>>> todo = new ArrayList<Callable<Collection<SearchResult>>>();
@@ -52,7 +57,7 @@ public class ThreadManager {
 				PatternSearchCallable psc = new PatternSearchCallable(backgroundKnowledgeSubList);
 				psc.setName("PatternSearchCallable-" + i++);
 				todo.add(psc);
-				this.logger.info("Create thread for " + backgroundKnowledge.size() + " triples of background knowledge.");
+				logger.info("Create thread for " + backgroundKnowledgeSubList.size() + " triples of background knowledge.");
 			}
 			
 			// start the timer which prints every 30s the progress of the callables
@@ -75,14 +80,14 @@ public class ThreadManager {
 			
 			e.printStackTrace();
 			String error = "Could not execute callables!";
-			this.logger.error(error, e);
+			logger.error(error, e);
 			throw new RuntimeException(error, e);
 		}
 		catch (InterruptedException e) {
 			
 			e.printStackTrace();
 			String error = "Threads got interrupted!";
-			this.logger.error(error, e);
+			logger.error(error, e);
 			throw new RuntimeException(error, e);
 		}
 		

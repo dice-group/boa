@@ -37,6 +37,7 @@
                 <!-- ############### pattern search ############### -->
                 <entry key="maxNumberOfDocuments"           value="10"/>
                 <entry key="numberOfSearchThreads"          value="3"/>
+                <entry key="patternSearchThreadPoolSize"    value="1"/>
                 <entry key="maxPatternLenght"               value="6"/>
                 <entry key="minPatternLenght"               value="2"/>
                 <entry key="pos.tagger.model"               value="training/pos/left3words-wsj-0-18.tagger"/>

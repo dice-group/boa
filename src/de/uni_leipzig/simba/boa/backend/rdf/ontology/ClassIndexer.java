@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.util.rdf;
+package de.uni_leipzig.simba.boa.backend.rdf.ontology;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +14,8 @@ import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
 /**
  * Indexes an Ontology
@@ -54,6 +56,29 @@ public class ClassIndexer {
      */
     public OntModel getHierarchyForClassURI(String classUri) {
         return classUriToClassHierarchy.get(classUri);
+    }
+    
+    /**
+     * 
+     * @param classUri
+     * @param language
+     * @return
+     */
+    public Set<String> getSuperClassUrisForClassUri(String classUri, String language){
+    	
+    	OntModel classHierarchie = classUriToClassHierarchy.get(classUri);
+    	Set<String> classLabels = new HashSet<String>();
+    	Set<OntClass> classes = classHierarchie.listClasses().toSet();
+    	
+    	// try to get labels for the given language
+    	for ( OntClass clazz : classes) {
+    		
+    		if ( !clazz.getURI().equals("http://www.w3.org/2002/07/owl#Thing") && !clazz.getURI().equals("http://www.w3.org/2000/01/rdf-schema#Resource") ) {
+    			
+    			classLabels.add(clazz.getURI());
+    		}
+    	}
+    	return classLabels;
     }
 
     /**

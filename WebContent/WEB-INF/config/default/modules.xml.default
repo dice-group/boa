@@ -121,6 +121,8 @@
             <set>
                 <value>indexSentenceDirectory</value>
                 <value>maxNumberOfDocuments</value>
+                <value>numberOfSearchThreads</value>
+                <value>patternSearchThreadPoolSize</value>
             </set>
         </property>
     </bean>

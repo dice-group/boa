@@ -30,10 +30,10 @@ import de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecolle
  */
 public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends AbstractDefaultBackgroundKnowledgeCollectorModule {
 	
-	private final NLPediaLogger logger 			= new NLPediaLogger(DefaultObjectPropertyBackgroundKnowledgeCollectorModule.class);
+	private final NLPediaLogger logger		= new NLPediaLogger(DefaultObjectPropertyBackgroundKnowledgeCollectorModule.class);
 	
-	private final int SPARQL_QUERY_LIMIT					= new Integer(NLPediaSettings.getInstance().getSetting("sparqlQueryLimit"));
-	private final String BOA_LANGUAGE						= NLPediaSettings.BOA_LANGUAGE;
+	private final int SPARQL_QUERY_LIMIT	= new Integer(NLPediaSettings.getInstance().getSetting("sparqlQueryLimit"));
+	private final String BOA_LANGUAGE		= NLPediaSettings.BOA_LANGUAGE;
 	
 	@Override
 	public String getName() {
@@ -51,8 +51,8 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	public boolean isDataAlreadyAvailable() {
 
 		// lists all files in the directory which end with .txt and does not go into subdirectories
-				return // true of more than one file is found
-						FileUtils.listFiles(new File(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/object/"), FileFilterUtils.suffixFileFilter(".txt"), null).size() > 0;
+		return // true of more than one file is found
+			FileUtils.listFiles(new File(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/object/"), FileFilterUtils.suffixFileFilter(".txt"), null).size() > 0;
 	}
 	
 	@Override
@@ -75,6 +75,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 		
 		for ( String objectPropertyUri : objectPropertyUris ) {
 			
+			this.logger.info("Processing property: " + objectPropertyUri);
 			String query	= createObjectPropertyQuery(objectPropertyUri);
 			String filePath	= BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/object/";
 			

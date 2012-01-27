@@ -19,10 +19,10 @@ import org.apache.log4j.Logger;
  */
 public class Logging {
 
-	protected static final String PREFIX = "NLPedia::";
+	protected static final String PREFIX = "BOA::";
 	
 	private static final String SEPARATOR = " || ";
-	private static final String STACK_OF = ">>>stack of ";
+	private static final String STACK_OF = ">>> stack of ";
 	private static final String CAUSE = ".cause::";
 	private static final String N_A = "n/a";
 
@@ -225,7 +225,7 @@ public class Logging {
 		sb.append(SEPARATOR);
 		if ( e == null ) {
 			if (msgCategory != DEBUG) {
-				sb.append("cause: " + N_A);
+//				sb.append("cause: " + N_A);
 			}
 		}
 		else {

@@ -26,7 +26,7 @@ public final class StanfordNLPPartOfSpeechTagger implements PartOfSpeechTagger {
 		
 		try {
 			
-			this.tagger = new MaxentTagger(NLPediaSettings.getInstance().getSetting("pos.tagger.model"));
+			this.tagger = new MaxentTagger(NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("pos.tagger.model"));
 		}
 		catch (ClassNotFoundException e) {
 			

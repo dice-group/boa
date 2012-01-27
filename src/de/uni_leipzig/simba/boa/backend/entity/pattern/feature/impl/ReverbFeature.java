@@ -54,17 +54,16 @@ public class ReverbFeature implements Feature {
 		
 		try {
 			
-			searcher	= new DefaultPatternSearcher(NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
+			searcher	= new DefaultPatternSearcher();
 			extractor	= new ReVerbExtractor();
 			scoreFunc	= new ReVerbConfFunction();
 		}
 		catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
-		}
-		catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String error = "Could not load ReVerb";
+			logger.fatal(error, e);
+			throw new RuntimeException(error, e);
 		}
 		
 		this.isInitialized = true;

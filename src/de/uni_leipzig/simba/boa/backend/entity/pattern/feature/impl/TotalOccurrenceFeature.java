@@ -32,29 +32,15 @@ public class TotalOccurrenceFeature implements Feature {
 	public void scoreMapping(PatternMapping mapping, DefaultPatternSearcher searcher) {
 
 		String patternToQuery = "";
+		searcher = searcher != null ? searcher : new DefaultPatternSearcher();
 		
-		try {
+		for ( Pattern pattern : mapping.getPatterns() ) {
 			
-			searcher = searcher != null ? searcher : new DefaultPatternSearcher();
-			
-			for ( Pattern pattern : mapping.getPatterns() ) {
+			patternToQuery = pattern.getNaturalLanguageRepresentationWithoutVariables().toLowerCase();
 				
-				patternToQuery = pattern.getNaturalLanguageRepresentationWithoutVariables().toLowerCase();
-					
-				int totalOccurrences = searcher.getExactMatchSentences(patternToQuery, 10000).size();
-				pattern.getFeatures().put(
-					de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TOTAL_OCCURRENCE, Double.valueOf(totalOccurrences));
-			}
-		}
-		catch (IOException e) {
-			
-			logger.error("Problem creating feature totalOccurrence for mapping " + mapping.getProperty().getUri() + " and pattern: " + patternToQuery, e);
-			throw new RuntimeException();
-		}
-		catch (ParseException e) {
-			
-			logger.error("Problem creating feature totalOccurrence for mapping " + mapping.getProperty().getUri() + " and pattern: " + patternToQuery, e);
-			throw new RuntimeException();
+			int totalOccurrences = searcher.getExactMatchSentences(patternToQuery, 10000).size();
+			pattern.getFeatures().put(
+				de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TOTAL_OCCURRENCE, Double.valueOf(totalOccurrences));
 		}
 	}
 }

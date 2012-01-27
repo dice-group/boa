@@ -23,7 +23,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.util.FileManager;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
-import de.uni_leipzig.simba.boa.backend.util.rdf.ClassIndexer;
+import de.uni_leipzig.simba.boa.backend.rdf.ontology.ClassIndexer;
 
 
 public class TypeDistribution {

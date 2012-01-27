@@ -142,16 +142,6 @@ public class CreateKnowledgeThread { //extends Thread {
 				this.logger.info("Finished creating knowledge for: "  + mapping.getProperty().getUri() + " with " + newTripleMap.values().size() + " triples.");
 			}
 		}
-		catch (ParseException e) {
-			
-			this.logger.error("ParseExcpetion while index search!", e);
-			throw new RuntimeException(e);
-		}
-		catch (IOException e) {
-			
-			this.logger.error("IOException while index search!", e);
-			throw new RuntimeException(e);
-		}
 		catch (Exception e) {
 			
 			this.logger.error("Excpetion", e);

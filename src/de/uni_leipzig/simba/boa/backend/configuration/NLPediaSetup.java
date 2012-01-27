@@ -91,10 +91,10 @@ public class NLPediaSetup {
 			logger.info("Initialized FeatureFactory...");
 			
 			BeanUtility.getBeansOfType(setupFile, NaturalLanguageProcessingToolFactory.class);
-			logger.info("Initialized FeatureFactory...");
+			logger.info("Initialized NaturalLanguageProcessingToolFactory...");
 			
 			BeanUtility.getBeansOfType(setupFile, MachineLearningToolFactory.class);
-			logger.info("Initialized FeatureFactory...");
+			logger.info("Initialized MachineLearningToolFactory...");
 		}
 		catch (BeansException be) {
 			

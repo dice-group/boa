@@ -4,20 +4,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.lucene.queryParser.ParseException;
-
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 
-
+/**
+ * 
+ * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
+ */
 public class PatternUtil {
 	
 	private static PatternSearcher patternSearcher;
+	private static NLPediaLogger logger = new NLPediaLogger(PatternUtil.class);
 	
 	/**
 	 * This is the strategy for collecting the patterns in the getTopNPattern method 
@@ -111,23 +113,19 @@ public class PatternUtil {
 	 */
 	public static Set<String> exactQueryIndex(String indexDir, Pattern pattern, int maxHits){
 
-		try {
-			
-			return DefaultPatternSearcher.getInstance(indexDir).getExactMatchSentences(pattern.getNaturalLanguageRepresentationWithoutVariables(), maxHits);
-		}
-		catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return new HashSet<String>();
+		if ( PatternUtil.patternSearcher == null ) PatternUtil.patternSearcher = new DefaultPatternSearcher(indexDir); 
+		return PatternUtil.patternSearcher.getExactMatchSentences(pattern.getNaturalLanguageRepresentationWithoutVariables(), maxHits);
 	}
 	
+	/**
+	 * 
+	 * @param indexDir
+	 * @param luceneDocIds
+	 * @return
+	 */
 	public static List<String> getLuceneDocuments(String indexDir, List<Integer> luceneDocIds) {
-		
-		return DefaultPatternSearcher.getInstance(indexDir).getSentencesByIds(luceneDocIds);
+
+		if (PatternUtil.patternSearcher == null) PatternUtil.patternSearcher = new DefaultPatternSearcher(indexDir);
+		return PatternUtil.patternSearcher.getSentencesByIds(luceneDocIds);
 	}
 }

@@ -32,6 +32,7 @@ import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.lucene.LowerCaseWhitespaceAnalyzer;
+import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
@@ -58,37 +59,36 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	
 	private final NLPediaLogger logger = new NLPediaLogger(DefaultPatternSearcher.class);
 
-	public DefaultPatternSearcher() throws IOException, ParseException {
+	public DefaultPatternSearcher() {
 
 		// create index searcher in read only mode
-		this.directory = NIOFSDirectory.open(new File(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory")));
+		this.directory = LuceneIndexHelper.openIndex(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory"));
 		this.analyzer = new LowerCaseWhitespaceAnalyzer();
-		this.indexSearcher = new IndexSearcher(directory, true);
-		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
-
-		this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
-		this.hits = null;
-	}
-	
-	public DefaultPatternSearcher(String indexDir) throws IOException, ParseException {
-
-		this.directory = NIOFSDirectory.open(new File(indexDir));
-		this.analyzer = new LowerCaseWhitespaceAnalyzer();
-
-		// create index searcher in read only mode
-		this.indexSearcher = new IndexSearcher(directory, true);
+		this.indexSearcher = LuceneIndexHelper.openIndexSearcher(directory, true);
 		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 
 		this.hits = null;
 	}
 	
-	public DefaultPatternSearcher(Directory indexDir) throws IOException, ParseException {
+	public DefaultPatternSearcher(String indexDir) {
+
+		this.directory = LuceneIndexHelper.openIndex(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory"));
+		this.analyzer = new LowerCaseWhitespaceAnalyzer();
+
+		// create index searcher in read only mode
+		this.indexSearcher = LuceneIndexHelper.openIndexSearcher(directory, true);
+		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
+
+		this.hits = null;
+	}
+	
+	public DefaultPatternSearcher(Directory indexDir) {
 
 		this.directory = indexDir;
 		this.analyzer = new LowerCaseWhitespaceAnalyzer();
 
 		// create index searcher in read only mode
-		this.indexSearcher = new IndexSearcher(directory, true);
+		this.indexSearcher = LuceneIndexHelper.openIndexSearcher(directory, true);
 		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 
 		this.hits = null;
@@ -267,7 +267,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 					result.setSecondLabel(backgroundKnowledge.getSubject().getLabel());
 				}
 				result.setIndexId(hit.doc);
-//				if ( this.posTagger == null ) this.posTagger = new PosTagger();
+				if ( this.posTagger == null ) this.posTagger = this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
 //				result.setPosTags(this.posTagger.getPosTagsForSentence(match.substring(0, match.length() - 3).substring(3), triple.getSubject().getLabel(), triple.getObject().getLabel()));
 				results.add(result);
 			}

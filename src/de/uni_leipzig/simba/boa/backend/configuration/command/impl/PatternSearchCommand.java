@@ -81,108 +81,13 @@ public class PatternSearchCommand implements Command {
 		
 		List<Thread> threadList = new ArrayList<Thread>();
 		
-		System.out.println("All threads finished in " + (System.currentTimeMillis() - startSearchDate.getTime()) + "ms!");
-		this.logger.info("All threads finished in " + (System.currentTimeMillis() - startSearchDate.getTime()) + "ms!");
+		
 		
 		long startPatternReading = System.currentTimeMillis();
 		
 		try {
 
-			Collections.sort(results, new SearchResultComparator());
-		
-			System.out.println("There are " + results.size() + " strings in the result list");
-			this.logger.info("There are " + results.size() + " strings in the result list");
 			
-			String currentProperty = "";
-			
-			PatternMapping currentMapping = null;
-			
-			for ( SearchResult searchResult : results) {
-				
-				String propertyUri		= searchResult.getProperty();
-				String patternString	= searchResult.getNaturalLanguageRepresentation();
-				String label1			= searchResult.getFirstLabel();
-				String label2			= searchResult.getSecondLabel();
-				String posTagged		= searchResult.getPosTags();
-				Integer documentId		= new Integer(searchResult.getIndexId());
-	
-				// next line is for the same property
-				if ( propertyUri.equals(currentProperty) ) {
-					
-					// add the patterns to the list with the hash-code of the natural language representation
-					Pattern pattern = this.patterns.get(propertyUri.hashCode()).get(patternString.hashCode()); //(patternString.hashCode());
-					
-					// pattern was not found, create a new pattern 
-					if ( pattern == null ) {
-						
-						pattern = new Pattern(patternString);
-						pattern.setFoundInIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
-						pattern.setPosTaggedString(posTagged);
-						pattern.addLearnedFrom(label1 + "-;-" + label2);
-						pattern.addPatternMapping(currentMapping);
-						pattern.addLuceneDocIds(Integer.valueOf(documentId));
-						
-						if ( this.patterns.get(propertyUri.hashCode()) != null ) {
-							
-							this.patterns.get(propertyUri.hashCode()).put(patternString.hashCode(), pattern);
-						}
-						else {
-							
-							Map<Integer,Pattern> patternMap = new HashMap<Integer,Pattern>();
-							patternMap.put(patternString.hashCode(), pattern);
-							this.patterns.put(propertyUri.hashCode(), patternMap);
-						}
-						// add the current pattern to the current mapping
-						currentMapping.addPattern(pattern);
-					}
-					// pattern already created, just add new values
-					else {
-						
-						pattern.increaseNumberOfOccurrences();
-						pattern.addLearnedFrom(label1 + "-;-" + label2);
-						pattern.addLuceneDocIds(Integer.valueOf(documentId));
-						pattern.addPatternMapping(currentMapping);
-					}
-				}
-				// next line contains pattern for other property
-				// so create a new pattern mapping and a new pattern
-				else {
-					
-					// create it to use the proper hash function, the properties map has a COMPLETE list of all properties
-					Property p = new Property();
-					p.setUri(propertyUri);
-					p = this.properties.get(p.hashCode());
-					
-					currentMapping = this.mappings.get(propertyUri.hashCode());
-					
-					if ( currentMapping == null ) {
-						
-						currentMapping = new PatternMapping(p);
-					}
-					
-					Pattern pattern = new Pattern(patternString);
-					pattern.setFoundInIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
-					pattern.setPosTaggedString(posTagged);
-					pattern.addLearnedFrom(label1 + "-;-" + label2);
-					pattern.addPatternMapping(currentMapping);
-					pattern.addLuceneDocIds(documentId);
-					
-					currentMapping.addPattern(pattern);
-					
-					if ( this.patterns.get(propertyUri.hashCode()) != null ) {
-						
-						this.patterns.get(propertyUri.hashCode()).put(patternString.hashCode(), pattern);
-					}
-					else {
-						
-						Map<Integer,Pattern> patternMap = new HashMap<Integer,Pattern>();
-						patternMap.put(patternString.hashCode(), pattern);
-						this.patterns.put(propertyUri.hashCode(), patternMap);
-					}
-					this.mappings.put(propertyUri.hashCode(), currentMapping);
-				}
-				currentProperty = propertyUri;
-			}
 			System.out.println("All pattern NAMED_ENTITY_TAG_MAPPINGS read in " + (System.currentTimeMillis() - startPatternReading) + "ms!");
 			this.logger.info("All pattern NAMED_ENTITY_TAG_MAPPINGS read in " + (System.currentTimeMillis() - startPatternReading) + "ms!");
 			
@@ -192,8 +97,6 @@ public class PatternSearchCommand implements Command {
 			// delete all because we generate them once again
 			pmd.deleteAllPatternMappings();
 			
-			// filter the patterns which do not abide certain thresholds
-			new PatternFilterCommand(this.mappings).execute();
 			
 			for (PatternMapping mapping : this.mappings.values()) {
 				

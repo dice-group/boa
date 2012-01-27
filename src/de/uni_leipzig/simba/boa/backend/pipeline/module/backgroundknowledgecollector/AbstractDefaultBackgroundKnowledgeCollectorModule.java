@@ -4,9 +4,13 @@
 package de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
@@ -46,7 +50,8 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 	protected final String BACKGROUND_KNOWLEDGE_OUTPUT_PATH	= NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("backgroundKnowledgeOutputFilePath");
 	protected final String BOA_LANGUAGE						= NLPediaSettings.BOA_LANGUAGE;
 	
-	protected Set<BackgroundKnowledge> backgroundKnowledge = new HashSet<BackgroundKnowledge>(); 
+	protected Set<BackgroundKnowledge> backgroundKnowledge = new HashSet<BackgroundKnowledge>();
+	protected Map<Integer,Property> properties = new HashMap<Integer,Property>();
 
 	@Override
 	public String getName() {
@@ -64,6 +69,8 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 	public void updateModuleInterchangeObject() {
 
 		this.moduleInterchangeObject.getBackgroundKnowledge().addAll(this.backgroundKnowledge);
+		for ( BackgroundKnowledge bk : this.backgroundKnowledge ) 
+			this.moduleInterchangeObject.getProperties().put(bk.getProperty().hashCode(), bk.getProperty());
 	}
 	
 	/**
@@ -212,21 +219,34 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 	 */
 	private Property queryPropertyData(String propertyUri) {
 
-		String propertyQuery = 
-				"SELECT distinct ?domain ?range " + 
-				"WHERE { " +	
-				"  <"+propertyUri+">  rdfs:domain ?domain . " +
-				"  <"+propertyUri+">  rdfs:range ?range . " +
-				"}";
-		
-		this.logger.info("Querying: " + propertyQuery);
-		
-		QueryEngineHTTP qexecProperty = new QueryEngineHTTP(SPARQL_ENDPOINT_URI, propertyQuery);
-		qexecProperty.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
-		
-		ResultSet results  = qexecProperty.execSelect();
-		QuerySolution qs = results.next();
-		return new Property(propertyUri, "", qs.get("range").toString(), qs.get("domain").toString());
+		Property property = new Property(propertyUri);
+		if ( this.properties.containsKey(property.hashCode()) ) {
+			
+			return property;
+		}
+		else {
+
+			String propertyQuery = 
+					"SELECT distinct ?domain ?range " + 
+					"WHERE { " +	
+					"  <"+propertyUri+">  rdfs:domain ?domain . " +
+					"  <"+propertyUri+">  rdfs:range ?range . " +
+					"}";
+			
+			this.logger.info("Querying: " + propertyQuery);
+			
+			QueryEngineHTTP qexecProperty = new QueryEngineHTTP(SPARQL_ENDPOINT_URI, propertyQuery);
+			qexecProperty.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
+			
+			ResultSet results  = qexecProperty.execSelect();
+			QuerySolution qs = results.next();
+			Property p = new Property(propertyUri, 
+					StringUtils.join(propertyUri.replace("http://dbpedia.org/ontology/", "").split("(?=\\p{Upper})"), " ").toLowerCase(), 
+					qs.get("range").toString(), qs.get("domain").toString());
+			this.properties.put(p.hashCode(), p);
+			
+			return p;
+		}
 	}
 	
 	/**
