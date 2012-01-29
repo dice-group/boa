@@ -3,9 +3,9 @@ package de.uni_leipzig.simba.boa.frontend.data;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.HierarchicalContainer;
 
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
-import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.dao.serialization.PatternMappingManager;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 
 
 @SuppressWarnings("serial")
@@ -16,9 +16,8 @@ public class DatabaseContainer extends HierarchicalContainer{
 	public static final Object DISPLAY_NAME			= "name";
 	public static final Object PATTERN_MAPPING_ID	= "pm_id";
 	
-	public static final String[] DATABASE_IDS = new String[]{"en_wiki_exp","de_wiki_exp","en_news_exp","de_news_exp"};//NLPediaSettings.getInstance().getSetting("frontend.databases").split(",");
-	
-	private PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+	public static final String[] DATABASE_IDS = new String[]{
+	        NLPediaSettings.getInstance().getSetting("patternMappingFolders")};
 	
 	public DatabaseContainer() {
 		
@@ -31,23 +30,21 @@ public class DatabaseContainer extends HierarchicalContainer{
 		
 		for (String database : DATABASE_IDS) {
 
-			HibernateFactory.changeConnection(database);
-			
 			// the database has the URIs as children
 			item = this.addItem(database);
-			item.getItemProperty(DISPLAY_NAME).setValue(database);
+			item.getItemProperty(DISPLAY_NAME).setValue(database.substring(database.lastIndexOf("/") + 1));
 			this.setChildrenAllowed(database, true);
 			
 //			System.out.println(pmDao.findPatternMappingsWithPatterns()); 
 			
-			for (String uri : pmDao.findPatternMappingsWithPatterns() ) {
+			for (PatternMapping mapping : PatternMappingManager.getInstance().getPatternMappings(database + "/patternmappings/") ) {
 				
-				String itemID = database + ":" + uri;
+				String itemID = database + ":" + mapping.getProperty().getUri();
 				
 				item = this.addItem(itemID);
-				item.getItemProperty(DISPLAY_NAME).setValue(uri.replace("http://dbpedia.org/ontology/", "dbpedia-owl:"));
-				item.getItemProperty(URI).setValue(uri);
-				item.getItemProperty(DATABASE_ID).setValue(database);
+				item.getItemProperty(DISPLAY_NAME).setValue(mapping.getProperty().getUri().replace("http://dbpedia.org/ontology/", "dbpedia-owl:"));
+				item.getItemProperty(URI).setValue(mapping.getProperty().getUri());
+				item.getItemProperty(DATABASE_ID).setValue(database + "/patternmappings/");
 //				item.getItemProperty(PATTERN_MAPPING_ID).setValue(mapping.getId());
 				
 				// add the parent of the newly added item (URI) and prohibit children
@@ -69,7 +66,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 		
 		for (String database : DATABASE_IDS) {
 
-			HibernateFactory.changeConnection(database);
+//			HibernateFactory.changeConnection(database);
 			
 			// the database has the URIs as children
 			item = container.addItem(database);

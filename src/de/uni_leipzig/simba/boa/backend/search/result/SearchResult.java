@@ -45,6 +45,11 @@ public class SearchResult {
 		this.naturalLanguageRepresentation = naturalLanguageRepresentation;
 	}
 	
+	public String getNaturalLanguageRepresentationWithoutVariables() {
+        
+        return this.naturalLanguageRepresentation.substring(0, this.naturalLanguageRepresentation.length() - 3).substring(3).trim();
+    }
+	
 	/**
 	 * @return the rdfsRange
 	 */

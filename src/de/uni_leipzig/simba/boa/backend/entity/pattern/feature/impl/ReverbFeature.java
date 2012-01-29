@@ -14,6 +14,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
+import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 import edu.washington.cs.knowitall.extractor.ReVerbExtractor;
@@ -34,10 +35,8 @@ public class ReverbFeature implements Feature {
 
 	static {
 		// this is a hack to load the training data for reverb
-		DefaultObjects.setPath(NLPediaSettings.getInstance().getSetting("reverbTrainingDirectory"));
+		DefaultObjects.setPath(NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("reverbTrainingDirectory"));
 	}
-	
-	private boolean isInitialized = false;
 	
 	private ReVerbExtractor extractor;
 	private ReVerbConfFunction scoreFunc;
@@ -48,39 +47,28 @@ public class ReverbFeature implements Feature {
 	/**
 	 * init the ReVerb-Toolkit
 	 */
-	public ReverbFeature() {}
+	public ReverbFeature() {
 
-	private void init() {
-		
-		try {
-			
-			searcher	= new DefaultPatternSearcher();
-			extractor	= new ReVerbExtractor();
-			scoreFunc	= new ReVerbConfFunction();
-		}
-		catch (IOException e) {
-			
-			e.printStackTrace();
-			String error = "Could not load ReVerb";
-			logger.fatal(error, e);
-			throw new RuntimeException(error, e);
-		}
-		
-		this.isInitialized = true;
 	}
 	
 	@Override
-	public void score(List<PatternMapping> mappings) {
+	public void score(FeatureExtractionPair pair) {
+	    
+	    try {
+            
+            searcher    = new DefaultPatternSearcher();
+            extractor   = new ReVerbExtractor();
+            scoreFunc   = new ReVerbConfFunction();
+        }
+        catch (IOException e) {
+            
+            e.printStackTrace();
+            String error = "Could not load ReVerb";
+            logger.fatal(error, e);
+            throw new RuntimeException(error, e);
+        }
 
-		// nothing to do here
-	}
-	
-	@Override
-	public void scoreMapping(PatternMapping mapping) {
-
-		if ( !this.isInitialized ) this.init();
-		
-		for ( Pattern pattern : mapping.getPatterns()) {
+		for ( Pattern pattern : pair.getMapping().getPatterns()) {
 			
 			Set<Double> scores		= new HashSet<Double>();
 			Set<String> relations	= new HashSet<String>();
@@ -98,9 +86,9 @@ public class ReverbFeature implements Feature {
 							// and extract all binary relations
 							for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
 	
-								double score = scoreFunc.getConf(extr); 
+								double score = scoreFunc.getConf(extr);
 								if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
-									
+								    
 									// we only want to add scores of relations, which are substring of our relations
 									// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
 									if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pattern.getNaturalLanguageRepresentation()) ) {
@@ -112,38 +100,32 @@ public class ReverbFeature implements Feature {
 							}
 						}
 					}
-					catch (ArrayIndexOutOfBoundsException aioobe) {
-						
-						this.logger.error(sentence, aioobe);
-					}
-					catch (IllegalArgumentException iae){
-						
-						this.logger.error(sentence, iae);
-					}
-					catch (NullPointerException npe) {
-						
-						this.logger.error(pattern.getNaturalLanguageRepresentation());
-						this.logger.error(sentence);
-						this.logger.error("There was a NullPointerException in reverbmeasure", npe);
-//						npe.printStackTrace();
-					}
 					catch (ConfidenceFunctionException e) {
 						
-						this.logger.error("There was a ConfidenceFunctionException in reverbmeasure", e);
-//						e.printStackTrace();
+					    String error = "Reverb-ConfidenceFuntionException: \"" + pattern.getNaturalLanguageRepresentation() + "\"";
+		                this.logger.error(error, e);
+		                throw new RuntimeException(error, e);
 					}
+                    catch (IOException e) {
+                        
+                        String error = "Reverb-IOException: \"" + pattern.getNaturalLanguageRepresentation() + "\"";
+                        this.logger.error(error, e);
+                        throw new RuntimeException(error, e);
+                    }
 				}
 			}
 			catch (ParseException e) {
 				
-				this.logger.error("There was a parse excpetion in reverbmeasure", e);
-//				e.printStackTrace();
+	            String error = "Could not parse query: \"" + pattern.getNaturalLanguageRepresentation() + "\"";
+	            this.logger.error(error, e);
+	            throw new RuntimeException(error, e);
 			}
-			catch (IOException e) {
-				 
-				this.logger.error("There was a io excpetion in reverbmeasure", e);
-//				e.printStackTrace();
-			}
+            catch (IOException e) {
+                
+                String error = "Reverb-IOException: \"" + pattern.getNaturalLanguageRepresentation() + "\"";
+                this.logger.error(error, e);
+                throw new RuntimeException(error, e);
+            }
 			
 			double score = MathUtil.getAverage(scores);
 			// update the pattern
@@ -176,3 +158,21 @@ public class ReverbFeature implements Feature {
 		return searcher.getSentencesByIds(p.retrieveLuceneDocIdsAsList());
 	}
 }
+
+
+
+//catch (ArrayIndexOutOfBoundsException aioobe) {
+//
+//this.logger.error(sentence, aioobe);
+//}
+//catch (IllegalArgumentException iae){
+//
+//this.logger.error(sentence, iae);
+//}
+//catch (NullPointerException npe) {
+//
+//this.logger.error(pattern.getNaturalLanguageRepresentation());
+//this.logger.error(sentence);
+//this.logger.error("There was a NullPointerException in reverbmeasure", npe);
+////npe.printStackTrace();
+//}

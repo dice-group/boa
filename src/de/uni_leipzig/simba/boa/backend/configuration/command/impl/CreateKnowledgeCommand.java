@@ -79,7 +79,7 @@ public class CreateKnowledgeCommand implements Command {
 //			
 		CreateKnowledgeThread t = new CreateKnowledgeThread(patternMappingList);//patternMappingSubLists.get(i));
 		t.run();
-//			t.setName("PatternScoreThread-" + (i + 1) + "-" + patternMappingSubLists.get(i).size());
+//			t.setName("PatternFeatureExtractionCallable-" + (i + 1) + "-" + patternMappingSubLists.get(i).size());
 //			threadList.add(i, t);
 //			t.start();
 //			System.out.println(t.getName() + " started!");
@@ -88,7 +88,7 @@ public class CreateKnowledgeCommand implements Command {
 //		
 //		// print the progress
 //		Timer timer = new Timer();
-//		timer.schedule(new PatternSearchPringProgressTask(threadList), 0, 30000);
+//		timer.schedule(new PatternSearchPrintProgressTask(threadList), 0, 30000);
 //		
 //		// wait for all to finish
 //		for ( Thread t : threadList ) {

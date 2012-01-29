@@ -88,7 +88,7 @@ public class PatternWindow extends Window {
 		// score
 		HorizontalLayout hLayout2 = new HorizontalLayout();
 		Label confLabel = new Label("<b>Score: </b>", Label.CONTENT_XHTML);
-		Label confidence = new Label(OutputFormatter.format(this.pattern.getConfidence(), "##.###"));
+		Label confidence = new Label(OutputFormatter.format(this.pattern.getScore(), "##.###"));
 		hLayout2.addComponent(confLabel);
 		hLayout2.addComponent(confidence);
 		hLayout2.setComponentAlignment(confLabel, Alignment.MIDDLE_LEFT);

@@ -10,7 +10,7 @@ public class PatternScoreComparator implements Comparator<Pattern> {
 	@Override
 	public int compare(Pattern triple1, Pattern triple2) {
 
-		double x = (triple2.getConfidence() - triple1.getConfidence());
+		double x = (triple2.getScore() - triple1.getScore());
 		if ( x < 0 ) return -1;
 		if ( x == 0 ) return 0;
 		return 1;

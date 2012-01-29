@@ -26,7 +26,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
-import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPringProgressTask;
+import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPrintProgressTask;
 import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 import de.uni_leipzig.simba.boa.backend.search.result.comparator.SearchResultComparator;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;

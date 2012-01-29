@@ -28,7 +28,7 @@ public class ResetPatternCommand implements Command {
 			for ( Pattern p : mapping.getPatterns() ) {
 				
 				p.setUseForPatternEvaluation(true);
-				p.setConfidence(0D);
+				p.setScore(0D);
 				p.setGeneralizedPattern("");
 				p.setFeatures(new HashMap<Feature,Double>());
 			}

@@ -1,8 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature;
 
-import java.util.List;
-
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 
 /**
  * 
@@ -12,13 +10,7 @@ public interface Feature {
 
 	/**
 	 * 
-	 * @param mapping
+	 * @param pair
 	 */
-	public void score(List<PatternMapping> mappings);
-	
-	/**
-	 * 
-	 * @param mapping
-	 */
-	public void scoreMapping(PatternMapping mapping);
+	public void score(FeatureExtractionPair pair);
 }

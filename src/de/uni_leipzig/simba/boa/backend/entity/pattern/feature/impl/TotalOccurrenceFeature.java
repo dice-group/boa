@@ -1,46 +1,42 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.lucene.queryParser.ParseException;
-
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
-import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
+import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 
 
 public class TotalOccurrenceFeature implements Feature {
 
-	private NLPediaLogger logger = new NLPediaLogger(TotalOccurrenceFeature.class);
+    private final int MAXIMUM_NUMBER_OF_TOTAL_OCCURRENCES = NLPediaSettings.getInstance().getIntegerSetting("maxmimumNumberOfTotalOccurrences");
+	private PatternSearcher searcher;
 	
-	@Override
-	public void score(List<PatternMapping> mappings) {
+	public TotalOccurrenceFeature() {
 
-		// dont do anything here
-	}
+        this.searcher = new DefaultPatternSearcher();
+    }
+	
+	public TotalOccurrenceFeature(PatternSearcher patternSearcher) {
 
-	@Override
-	public void scoreMapping(PatternMapping mapping) {
+	    this.searcher = patternSearcher;
+    }
+
+    @Override
+	public void score(FeatureExtractionPair pair) {
 		
 		// this is for junit testing
-		this.scoreMapping(mapping, null);
+		this.scoreMapping(pair.getPattern());
 	}
 	
-	public void scoreMapping(PatternMapping mapping, DefaultPatternSearcher searcher) {
+	public void scoreMapping(Pattern pattern) {
 
-		String patternToQuery = "";
-		searcher = searcher != null ? searcher : new DefaultPatternSearcher();
+		int totalOccurrences = searcher.getExactMatchSentences(
+		        pattern.getNaturalLanguageRepresentationWithoutVariables(), MAXIMUM_NUMBER_OF_TOTAL_OCCURRENCES).size();
 		
-		for ( Pattern pattern : mapping.getPatterns() ) {
-			
-			patternToQuery = pattern.getNaturalLanguageRepresentationWithoutVariables().toLowerCase();
-				
-			int totalOccurrences = searcher.getExactMatchSentences(patternToQuery, 10000).size();
-			pattern.getFeatures().put(
-				de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TOTAL_OCCURRENCE, Double.valueOf(totalOccurrences));
-		}
+		pattern.getFeatures().put(
+			de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TOTAL_OCCURRENCE, 
+			Double.valueOf(totalOccurrences));
 	}
 }

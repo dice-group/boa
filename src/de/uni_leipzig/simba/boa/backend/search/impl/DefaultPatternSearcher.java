@@ -175,10 +175,8 @@ public class DefaultPatternSearcher implements PatternSearcher {
 			
 			for (String secondLabel : secondLabels) {
 				
-				long start = System.currentTimeMillis();
 				Query query = this.parseQuery("+sentence:\"" + QueryParser.escape(firstLabel) + "\" && +sentence:\"" + QueryParser.escape(secondLabel) + "\"");
 				hits = this.searchIndex(query, null, MAX_NUMBER_OF_DOCUMENTS);
-				this.logger.debug("Querying took: " + (System.currentTimeMillis() - start) + "ms.");
 				
 				for (int i = 0; i < hits.length; i++) {
 
@@ -267,8 +265,8 @@ public class DefaultPatternSearcher implements PatternSearcher {
 					result.setSecondLabel(backgroundKnowledge.getSubject().getLabel());
 				}
 				result.setIndexId(hit.doc);
-				if ( this.posTagger == null ) this.posTagger = this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
-//				result.setPosTags(this.posTagger.getPosTagsForSentence(match.substring(0, match.length() - 3).substring(3), triple.getSubject().getLabel(), triple.getObject().getLabel()));
+				if ( this.posTagger == null ) this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
+				result.setPosTags(this.posTagger.getAnnotations(result.getNaturalLanguageRepresentationWithoutVariables()));
 				results.add(result);
 			}
 		}
@@ -448,7 +446,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 		
 		try {
 			
-			return indexSearcher.search(query, null, maxNumberOfDocuments).scoreDocs;
+			return indexSearcher.search(query, filter, maxNumberOfDocuments).scoreDocs;
 		}
 		catch (IOException e) {
 			

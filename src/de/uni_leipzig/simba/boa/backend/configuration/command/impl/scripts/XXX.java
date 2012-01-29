@@ -149,7 +149,7 @@ public class XXX {
 			@Override
 			public int compare(Pair arg0, Pair arg1) {
 
-				double x = (arg1.pattern.getConfidence() - arg0.pattern.getConfidence());
+				double x = (arg1.pattern.getScore() - arg0.pattern.getScore());
 				if ( x < 0 ) return -1;
 				if ( x == 0 ) return 0;
 				return 1;
@@ -157,9 +157,9 @@ public class XXX {
 		
 		});
 		System.out.println("Loading and sorting done");
-		System.out.println("Confidence of pattern(0): " + xyz.get(0).pattern.getConfidence());
-		System.out.println("Confidence of pattern(10): " + xyz.get(10).pattern.getConfidence());
-		System.out.println("Confidence of pattern(n): " + xyz.get(xyz.size()-1).pattern.getConfidence());
+		System.out.println("Confidence of pattern(0): " + xyz.get(0).pattern.getScore());
+		System.out.println("Confidence of pattern(10): " + xyz.get(10).pattern.getScore());
+		System.out.println("Confidence of pattern(n): " + xyz.get(xyz.size()-1).pattern.getScore());
 		
 		List<List<Pair>> subLists = ListUtil.split(xyz, xyz.size() / 10);
 		List<Map<Feature,List<Double>>> features = new ArrayList<Map<Feature,List<Double>>>();
