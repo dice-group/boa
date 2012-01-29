@@ -1,26 +1,22 @@
 /**
  * 
  */
-package de.uni_leipzig.simba.boa.backend.persistance.kryo;
+package de.uni_leipzig.simba.boa.backend.persistance.serialization;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.nio.ByteBuffer;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.lang.SerializationUtils;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.ObjectBuffer;
-import com.esotericsoftware.kryo.serialize.CollectionSerializer;
-import com.esotericsoftware.kryo.serialize.MapSerializer;
-import com.esotericsoftware.kryo.serialize.ReferenceFieldSerializer;
-
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 
 
 /**
@@ -85,4 +81,34 @@ public class SerializationManager {
 			throw new RuntimeException(error, e);
 		}
 	}
+	
+	/**
+	 * 
+	 * @param folder
+	 * @return
+	 */
+	public Set<PatternMapping> deserializePatternMappings(String folder) {
+		
+		Set<PatternMapping> mappings = new HashSet<PatternMapping>();
+		
+		for (File mapping : FileUtils.listFiles(new File(folder), FileFilterUtils.suffixFileFilter(".bin"), null) ) {
+		
+			mappings.add(deserializePatternMapping(mapping.getAbsolutePath()));
+		}
+		
+		return mappings;
+	}
+
+	/**
+	 * 
+	 * @param patternMappings
+	 * @param patternMappingFolder
+	 */
+    public void serializePatternMappings(Collection<PatternMapping> patternMappings, String patternMappingFolder) {
+
+        for (PatternMapping mapping : patternMappings) {
+ 
+            this.serializePatternMapping(mapping, patternMappingFolder + mapping.getProperty().getLabel() + ".bin");
+        }
+    }
 }

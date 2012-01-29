@@ -3,22 +3,16 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl;
 import java.util.List;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
+import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 
 
 public class LengthFeature implements Feature {
 
 	@Override
-	public void score(List<PatternMapping> mappings) {
+	public void score(FeatureExtractionPair pair) {
 
-		// don't do anything here
-	}
-
-	@Override
-	public void scoreMapping(PatternMapping mapping) {
-
-		for ( Pattern pattern : mapping.getPatterns() ) {
+		for ( Pattern pattern : pair.getMapping().getPatterns() ) {
 			
 			String patternWithoutVariables = pattern.getNaturalLanguageRepresentationWithoutVariables();
 			String[] patternParts = patternWithoutVariables.split(" ");

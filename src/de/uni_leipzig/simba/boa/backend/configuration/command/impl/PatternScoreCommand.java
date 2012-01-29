@@ -53,7 +53,7 @@ public class PatternScoreCommand implements Command {
 			for ( Pattern pattern : mapping.getPatterns() ) {
 				
 				Double score = this.learner.getScore(mapping, pattern);
-				pattern.setConfidence(
+				pattern.setScore(
 						score == Double.NaN || 
 						score == Double.NEGATIVE_INFINITY || 
 						score == Double.POSITIVE_INFINITY

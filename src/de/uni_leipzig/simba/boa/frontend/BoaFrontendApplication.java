@@ -21,20 +21,16 @@ import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
-import de.uni_leipzig.simba.boa.backend.dao.rdf.TripleDao;
+import de.uni_leipzig.simba.boa.backend.dao.serialization.PatternMappingManager;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.persistance.hibernate.HibernateFactory;
 import de.uni_leipzig.simba.boa.frontend.data.DatabaseContainer;
 import de.uni_leipzig.simba.boa.frontend.data.PatternContainer;
 import de.uni_leipzig.simba.boa.frontend.ui.DatabaseNavigationTree;
@@ -59,9 +55,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	private RdfModelTree rdfSparqlTree;
 	private PatternTable patternTable;
 	
-	private TextArea sparqlQueryString;
-	private String sparqlQueryModel = "";
-	
 	private HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
 	
 	public static String CURRENT_DATABASE;
@@ -69,8 +62,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	
 	private PatternMapping currentPatternMapping;
 	
-	private TripleDao tripleDao = (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
-
 	@Override
 	public void init() {
 		
@@ -121,18 +112,13 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				
 				BoaFrontendApplication.CURRENT_DATABASE		= database;
 				BoaFrontendApplication.CURRENT_INDEX_DIR	= NLPediaSettings.getInstance().getSetting(BoaFrontendApplication.CURRENT_DATABASE);
-				HibernateFactory.changeConnection(BoaFrontendApplication.CURRENT_DATABASE);
-				
-				PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 				
 				long start = System.currentTimeMillis();
 				NLPediaSettings.getInstance().printMemoryUsage();
-				this.currentPatternMapping = pmDao.findPatternMappingByUri(uri);
+				this.currentPatternMapping = PatternMappingManager.getInstance().getPatternMapping(uri, database);
 				System.out.println("pmDao.findPatternMappingByUri() took: " + (System.currentTimeMillis() - start) + "ms.");
 				NLPediaSettings.getInstance().printMemoryUsage();
 				
-//				this.currentPatternMapping = new PatternMapping("http://dbpedia.org/ontology/capital", "capital", "http://dbpedia.org/ontology/PopulatedPlace", "http://dbpedia.org/ontology/City");
-
 				GridLayout gridLayout = new GridLayout(4,4);
 				gridLayout.setSpacing(true);
 				gridLayout.setMargin(true);
@@ -185,34 +171,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				}
 				this.horizontalSplitPanel.setSecondComponent(vPanel);
 			}
-		}
-		else if (event.getSource() == rdfSparqlTree) {
-			
-			this.sparqlQueryModel = (String) event.getItemId();
-			
-			VerticalSplitPanel verticalSplitPanel = new VerticalSplitPanel();
-
-			VerticalLayout hLayout = new VerticalLayout();
-			
-			this.sparqlQueryString = new TextArea("SPARQL-Querie", "SELECT * \nWHERE {\n\t ?s ?p ?o .\n}");
-	        sparqlQueryString.setRows(10);
-	        sparqlQueryString.setColumns(50);
-	        sparqlQueryString.addListener((TextChangeListener) this);
-	        sparqlQueryString.setImmediate(true);
-	        
-	        startQuery.addListener(this); // react to clicks
-	        
-	        hLayout.addComponent(sparqlQueryString);
-	        hLayout.addComponent(startQuery);
-	        hLayout.setSpacing(true);
-	        hLayout.setMargin(true);
-	        
-	        verticalSplitPanel.addComponent(hLayout);
-	        verticalSplitPanel.setSplitPosition(230, VerticalSplitPanel.UNITS_PIXELS);
-	        verticalSplitPanel.setMargin(true);
-	        verticalSplitPanel.setSizeFull();
-	        
-	        this.horizontalSplitPanel.setSecondComponent(verticalSplitPanel);
 		}
 		else if (event.getSource() == tripleTree) {
 			

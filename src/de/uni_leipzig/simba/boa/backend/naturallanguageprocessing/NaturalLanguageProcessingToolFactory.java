@@ -123,8 +123,6 @@ public class NaturalLanguageProcessingToolFactory {
 	 */
 	public NamedEntityRecognition createNamedEntityRecognition(Class<? extends NamedEntityRecognition> namedEntityDisambiguationClass) {
 
-		System.out.println(namedEntityDisambiguationClass.getName());
-		
 		if ( this.namedEntityRecognitionTools.contains(namedEntityDisambiguationClass.getName()) ) {
 			
 			return (NamedEntityRecognition) createNewInstance(namedEntityDisambiguationClass);

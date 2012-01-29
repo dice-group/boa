@@ -109,7 +109,7 @@ public class PatternMappingConfidenceDistribution  {
 		for ( int i = 0; i < 100000 ; i++) {
 			
 			Pattern p = new Pattern();
-			p.setConfidence(r.nextDouble());
+			p.setScore(r.nextDouble());
 			patternList.add(p);
 		}
 		
@@ -130,7 +130,7 @@ public class PatternMappingConfidenceDistribution  {
 		
 		for (Pattern p : patternList ) {
 			
-			String index = String.valueOf(f.format(p.getConfidence()).substring(0,3));
+			String index = String.valueOf(f.format(p.getScore()).substring(0,3));
 			confidenceToOccurrence.put(index, confidenceToOccurrence.get(index) + 1);
 		}
 		return confidenceToOccurrence.values();

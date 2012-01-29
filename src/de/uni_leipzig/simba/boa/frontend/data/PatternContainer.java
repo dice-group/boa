@@ -14,18 +14,7 @@ public class PatternContainer extends BeanItemContainer<Pattern> implements Seri
 	public PatternContainer(PatternMapping pm) throws InstantiationException, IllegalAccessException {
 		super(Pattern.class);
 		
-		if ( pm != null ){
-			
-			for ( Pattern p : pm.getPatterns()) {
-				
-//				if ( p.isUseForPatternEvaluation() ) {
-					//here we can switch between different confidence functions and therewith overwrite the value from the database
-//					double confidence = p.getSimilarity() + p.getTypicity() + p.getSupport() + p.getSpecificity(); 
-//					p.setConfidence(confidence);
-					this.addItem(p);
-//				}
-			}
-		}
+		this.addAll(pm.getPatterns());
 	}
 	
 	
@@ -34,7 +23,7 @@ public class PatternContainer extends BeanItemContainer<Pattern> implements Seri
 		
 		Pattern capital1 = new Pattern( "?D? 's capital city ?R?");
 		capital1.setId(1);
-		capital1.setConfidence(0.96);
+		capital1.setScore(0.96);
 //		capital1.setSimilarity(0.77);
 //		capital1.setTypicity(22.76);
 //		capital1.setSupport(45.12);

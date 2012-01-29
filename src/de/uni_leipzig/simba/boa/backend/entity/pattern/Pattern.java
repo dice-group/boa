@@ -82,7 +82,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	/**
 	 * 
 	 */
-	private Double confidence = 0D;
+	private Double score = 0D;
 	
 	/**
 	 * 
@@ -214,16 +214,18 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Pattern [naturalLanguageRepresentation=");
 		builder.append(naturalLanguageRepresentation);
-		builder.append(", numberOfOccurrences=");
-		builder.append(numberOfOccurrences);
-		builder.append(", useForPatternEvaluation=");
-		builder.append(useForPatternEvaluation);
-		builder.append(", patternMappings=");
-		builder.append(patternMappings);
-		builder.append(", learnedFrom=");
-		builder.append(learnedFrom);
-		builder.append(", luceneDocIds=");
-		builder.append(luceneDocIds);
+//		builder.append(", numberOfOccurrences=");
+//		builder.append(numberOfOccurrences);
+//		builder.append(", useForPatternEvaluation=");
+//		builder.append(useForPatternEvaluation);
+//		builder.append(", patternMappings=");
+//		builder.append(patternMappings);
+//		builder.append(", learnedFrom=");
+//		builder.append(learnedFrom);
+//		builder.append(", luceneDocIds=");
+//		builder.append(luceneDocIds);
+		builder.append(", features=");
+        builder.append(features);
 		builder.append("]");
 		return builder.toString();
 	}
@@ -409,14 +411,14 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	}
 
 	@Basic
-	public Double getConfidence() {
+	public Double getScore() {
 
-		return this.confidence;
+		return this.score;
 	}
 
-	public void setConfidence(Double confidence) {
+	public void setScore(Double confidence) {
 
-		this.confidence = confidence;
+		this.score = confidence;
 	}
 
 	/**

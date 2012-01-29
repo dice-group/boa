@@ -23,6 +23,7 @@ import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
+import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
@@ -58,24 +59,18 @@ public class TypicityFeature implements Feature {
 	
 	public TypicityFeature() {}
 	
-	@Override
-	public void score(List<PatternMapping> mapping) {
-
-		// nothing to do here
-	}
-	
 	/* (non-Javadoc)
 	 * @see simba.nlpedia.entity.pattern.evaluation.PatternEvaluator#evaluatePattern(simba.nlpedia.entity.pattern.PatternMapping)
 	 */
 	@Override
-	public void scoreMapping(PatternMapping mapping) {
+	public void score(FeatureExtractionPair pair) {
 		
 		long start = new Date().getTime();
 		
 		if ( this.patternSearcher == null ) this.patternSearcher = new DefaultPatternSearcher();
 		
-		String domainUri	= mapping.getProperty().getRdfsDomain();
-		String rangeUri		= mapping.getProperty().getRdfsRange();
+		String domainUri	= pair.getMapping().getProperty().getRdfsDomain();
+		String rangeUri		= pair.getMapping().getProperty().getRdfsRange();
 		
 		double domainCorrectness;
 		double rangeCorrectness;
@@ -90,7 +85,7 @@ public class TypicityFeature implements Feature {
 		if ( this.ner == null ) this.ner = NaturalLanguageProcessingToolFactory.getInstance().
 			createNamedEntityRecognition(StanfordNLPNamedEntityRecognition.class);
 
-		for (Pattern pattern : mapping.getPatterns()) {
+		for (Pattern pattern : pair.getMapping().getPatterns()) {
 			
 			try {
 			
@@ -192,7 +187,7 @@ public class TypicityFeature implements Feature {
 				this.logger.error("ArrayIndexOutOfBoundsException: ", aioobe);
 			}
 		}
-		this.logger.info("Typicity measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
+		this.logger.info("Typicity measuring for pattern_mapping: " + pair.getMapping().getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}
 	
 	private String replaceBrackets(String foundString) {

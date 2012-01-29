@@ -43,28 +43,17 @@
                 <entry key="pos.tagger.model"               value="training/pos/left3words-wsj-0-18.tagger"/>
                 
                 <!-- ############### confidence measure ############### -->
-                <entry key="number.of.occurrence.threshold">
-                    <value>1</value>
-                </entry>
-                <entry key="number.of.unique.occurrence.threshold">
-                    <value>1</value>
-                </entry>
-                <entry key="number.of.learned.pairs">
-                    <value>1</value>
-                </entry>
-                <entry key="maxNumberOfTypicityConfidenceMeasureDocuments">
-                    <value>10</value>
-                </entry>
-                <entry key="numberOfConfidenceMeasureThreads">
-                    <value>1</value>
-                </entry>
-                <entry key="wordnet.index.directory" value="training/wordnet/similarity"/>
-                <entry key="wordnet.database.directory">
-                    <value>/Users/gerb/Development/workspaces/java-ws/boa/WebContent/WEB-INF/data/training/wordnet/database</value>
-                </entry>
-                <entry key="reverbTrainingDirectory">
-                    <value>/Users/gerb/Development/workspaces/java-ws/boa/WebContent/WEB-INF/data/training/reverb/</value>
-                </entry>
+                <entry key="number.of.occurrence.threshold"                 value="1"/>
+                <entry key="number.of.unique.occurrence.threshold"          value="1"/>
+                <entry key="number.of.learned.pairs"                        value="1"/>
+                <entry key="maxNumberOfTypicityConfidenceMeasureDocuments"  value="10"/>
+                <entry key="maxmimumNumberOfTotalOccurrences"               value="10"/>
+                <entry key="numberOfFeatureExtractionsThreads"              value="1"/>
+                <entry key="patternFeatureExtractionThreadPoolSize"         value="1"/>
+                <entry key="wordnet.index.directory"                        value="training/wordnet/similarity"/>
+                <entry key="wordnet.database.directory"                     value="training/wordnet/database"/>
+                <entry key="reverbTrainingDirectory"                        value="training/reverb/"/>
+                <entry key="namendEntityRecognizerClassifier"               value="training/classifier/conll.closed.iob2.crf.ser.gz"/>
                 
                 <!-- ############### neuronal network ############### -->
                 <entry key="neural.network.network.directory"           value="training/ml/de/wiki/"/>
@@ -101,6 +90,7 @@
                 
                 <!-- ############### other ############### -->
                 <entry key="question.answering.index" value="qa"/>
+                <entry key="patternMappingFolders"    value="/Users/gerb/Development/workspaces/experimental/en_wiki_exp"/>
             </map>
         </property> 
     </bean>

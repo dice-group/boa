@@ -10,9 +10,9 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.PatternScoreThread;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.PatternFeatureExtractionCallable;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPringProgressTask;
+import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPrintProgressTask;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 
 /**
@@ -60,20 +60,20 @@ public class PatternScoreFeatureCommand implements Command {
 		
 		List<Thread> threadList = new ArrayList<Thread>();
 		
-		// start all threads
-		for (int i = 0 ; i < numberOfConfidenceMeasureThreads ; i++ ) {
-			
-			Thread t = new PatternScoreThread(patternMappingSubLists.get(i));
-			t.setName("PatternScoreThread-" + (i + 1) + "-" + patternMappingSubLists.get(i).size());
-			threadList.add(i, t);
-			t.start();
-			System.out.println(t.getName() + " started!");
-			this.logger.info(t.getName() + " started!");
-		}
-		
+//		// start all threads
+//		for (int i = 0 ; i < numberOfConfidenceMeasureThreads ; i++ ) {
+//			
+//			Thread t = new PatternFeatureExtractionCallable(patternMappingSubLists.get(i));
+//			t.setName("PatternFeatureExtractionCallable-" + (i + 1) + "-" + patternMappingSubLists.get(i).size());
+//			threadList.add(i, t);
+//			t.start();
+//			System.out.println(t.getName() + " started!");
+//			this.logger.info(t.getName() + " started!");
+//		}
+//		
 		// print the progress
 		Timer timer = new Timer();
-//		timer.schedule(new PatternSearchPringProgressTask(threadList), 0, 30000);
+//		timer.schedule(new PatternSearchPrintProgressTask(threadList), 0, 30000);
 		
 		// wait for all to finish
 		for ( Thread t : threadList ) {
@@ -88,16 +88,16 @@ public class PatternScoreFeatureCommand implements Command {
 		}
 		timer.cancel();
 	
-		System.out.println("All confidence measurement threads are finished.\n Starting to update pattern NAMED_ENTITY_TAG_MAPPINGS..");
-		for ( Thread t: threadList ) {
-			
-			for ( PatternMapping mapping : ((PatternScoreThread)t).getScoredPatternMappings() ) {
-				
-				this.patternMappingDao.updatePatternMapping(mapping);
-			}
-			// set this so that the next command does not need to query them from the database again
-			this.patternMappingList.addAll(((PatternScoreThread)t).getScoredPatternMappings());
-		}
+//		System.out.println("All confidence measurement threads are finished.\n Starting to update pattern NAMED_ENTITY_TAG_MAPPINGS..");
+//		for ( Thread t: threadList ) {
+//			
+//			for ( PatternMapping mapping : ((PatternFeatureExtractionCallable)t).getScoredPatternMappings() ) {
+//				
+//				this.patternMappingDao.updatePatternMapping(mapping);
+//			}
+//			// set this so that the next command does not need to query them from the database again
+//			this.patternMappingList.addAll(((PatternFeatureExtractionCallable)t).getScoredPatternMappings());
+//		}
 	}
 	
 	private List<List<PatternMapping>> createPatternMappingSubLists(List<PatternMapping> patternMappingList, int numberOfConfidenceMeasureThreads) {

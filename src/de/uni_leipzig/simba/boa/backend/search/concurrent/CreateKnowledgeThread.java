@@ -131,7 +131,7 @@ public class CreateKnowledgeThread { //extends Thread {
 								double confidence = 0;
 								for ( Pattern patternLearnedFrom : triple.getLearnedFromPatterns() ) {
 									
-									confidence += patternLearnedFrom.getConfidence();
+									confidence += patternLearnedFrom.getScore();
 								}
 								// sigmoid function shifted to the right to boost pattern which are learned from more than one pattern
 								triple.setConfidence(1D / (1D + Math.pow(Math.E, - confidence * triple.getLearnedFromPatterns().size() + 1)));

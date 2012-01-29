@@ -24,7 +24,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilterFactory;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.persistance.kryo.SerializationManager;
+import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.AbstractPatternSearchModule;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
@@ -120,7 +120,6 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 					pattern.addLearnedFrom(label1 + "-;-" + label2);
 					pattern.addPatternMapping(currentMapping);
 					pattern.addLuceneDocIds(Integer.valueOf(documentId));
-					this.patternCount++;
 					
 					if ( patterns.get(propertyUri.hashCode()) != null ) {
 						
@@ -167,7 +166,6 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 				pattern.addLearnedFrom(label1 + "-;-" + label2);
 				pattern.addPatternMapping(currentMapping);
 				pattern.addLuceneDocIds(documentId);
-				this.patternCount++;
 				
 				currentMapping.addPattern(pattern);
 				
@@ -190,13 +188,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 		this.filterPatterns(mappings.values());
 		
 		// save the mappings
-		for (PatternMapping mapping : mappings.values()) {
-			
-			if ( mapping.getPatterns().size() > 0 ) {
-				
-				SerializationManager.getInstance().serializePatternMapping(mapping, PATTERN_MAPPING_FOLDER + mapping.getProperty().getLabel() + ".bin");
-			}
-		}
+		SerializationManager.getInstance().serializePatternMappings(mappings.values(), PATTERN_MAPPING_FOLDER);
 	}
 
 	/**
@@ -242,8 +234,12 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 	@Override
 	public String getReport() {
 
-		return "The pattern search took " + patternSearchTime + "ms where the pattern creating/serialization took " + patternCreationTime + "ms. "
-				+ " There are " + patternMappingCount + " mappings and " + patternCount + " patterns.";
+	    // we need to calculate this here because we have filter some out
+	    for (PatternMapping mapping : this.mappings.values()) 
+	        this.patternCount += mapping.getPatterns().size();
+	    
+		return "The pattern search took " + this.patternSearchTime + "ms where the pattern creating/serialization took " + this.patternCreationTime + "ms. "
+				+ " There are " + this.moduleInterchangeObject.getPatternMappings().size() + " mappings and " + this.patternCount + " patterns.";
 	}
 
 	/* (non-Javadoc)

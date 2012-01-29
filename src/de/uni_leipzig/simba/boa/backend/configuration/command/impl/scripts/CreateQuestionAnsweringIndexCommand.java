@@ -61,7 +61,7 @@ public class CreateQuestionAnsweringIndexCommand implements Command {
 					Document doc = new Document();
 					doc.add(new Field("uri", mapping.getProperty().getUri(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 					doc.add(new Field("nlr", pattern.getNaturalLanguageRepresentationWithoutVariables().trim(), Field.Store.YES, Field.Index.ANALYZED));
-					doc.add(new NumericField("confidence", Field.Store.YES, true).setDoubleValue(pattern.getConfidence()));
+					doc.add(new NumericField("confidence", Field.Store.YES, true).setDoubleValue(pattern.getScore()));
 					writer.addDocument(doc);
 				}
 			}

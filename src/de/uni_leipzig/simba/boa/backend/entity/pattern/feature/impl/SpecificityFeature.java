@@ -9,6 +9,7 @@ import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
+import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 /**
@@ -21,17 +22,11 @@ public class SpecificityFeature implements Feature {
 	private NLPediaLogger logger = new NLPediaLogger(SpecificityFeature.class);
 
 	@Override
-	public void score(List<PatternMapping> mappings) {
-
-		// nothing to do here
-	}
-	
-	@Override
-	public void scoreMapping(PatternMapping mapping) {
+	public void score(FeatureExtractionPair pair) {
 
 		long start = new Date().getTime();
 		
-		for (Pattern pattern : mapping.getPatterns()) {
+		for (Pattern pattern : pair.getMapping().getPatterns()) {
 			
 			double specificity = PatternScoreFeatureCommand.NUMBER_OF_PATTERN_MAPPINGS / 
 					patternMappingDao.findPatternMappingsWithSamePattern(pattern.getNaturalLanguageRepresentation()); 
@@ -40,6 +35,6 @@ public class SpecificityFeature implements Feature {
 			
 			pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.SPECIFICITY, specificity >= 0 ? specificity : 0);
 		}
-		logger.info("Specificity measuring for pattern_mapping: " + mapping.getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
+		logger.info("Specificity measuring for pattern_mapping: " + pair.getMapping().getProperty().getUri() + " finished in " + (new Date().getTime() - start) + "ms.");
 	}
 }

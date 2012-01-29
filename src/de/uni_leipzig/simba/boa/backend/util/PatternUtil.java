@@ -63,7 +63,7 @@ public class PatternUtil {
 
 			for (Pattern p : patterns) {
 
-				if ( p.getConfidence() >= scoreThreshold ) {
+				if ( p.getScore() >= scoreThreshold ) {
 
 					patternList.add(p);
 				}
@@ -95,7 +95,7 @@ public class PatternUtil {
 			@Override
 			public int compare(Pattern pattern1, Pattern pattern2) {
 
-				return pattern2.getConfidence().compareTo(pattern1.getConfidence());
+				return pattern2.getScore().compareTo(pattern1.getScore());
 			}
 		});
 		

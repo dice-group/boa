@@ -1,6 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.test.feature;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +32,9 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.ReverbFeature;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TotalOccurrenceFeature;
+import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
@@ -66,19 +69,28 @@ public class FeatureTest {
 	@Test
 	public void testTotalOccurrenceTest() throws IOException, ParseException{
 		
-		TotalOccurrenceFeature totalOccurrenceFeature = new TotalOccurrenceFeature();
 		List<PatternMapping> mappings = createTestData(this.numberOfMappings, this.numberOfMaxPatterns);
 		Directory idx = this.createSentenceIndex();
+//		TotalOccurrenceFeature totalOccurrenceFeature = new TotalOccurrenceFeature(new DefaultPatternSearcher(idx));
+		ReverbFeature reverbFeature = new ReverbFeature();
 		
 		for (PatternMapping mapping : mappings){
-			
-			totalOccurrenceFeature.scoreMapping(mapping, new DefaultPatternSearcher(idx));
+		    
+		    for (Pattern pattern :mapping.getPatterns()) {
+
+		        FeatureExtractionPair pair = new FeatureExtractionPair(mapping, pattern);
+		        
+//		        totalOccurrenceFeature.score(pair);
+		        reverbFeature.score(pair);
+		        System.out.println(pattern.getFeatures().get(Feature.REVERB).doubleValue());
+		    }
 		}
 		
 		Pattern pm0p0 = new ArrayList<Pattern>(mappings.get(0).getPatterns()).get(0);
 		Pattern pm0p10 = new ArrayList<Pattern>(mappings.get(0).getPatterns()).get(10);
 		Pattern pm9p101 = new ArrayList<Pattern>(mappings.get(9).getPatterns()).get(101);
-
+System.out.println(pm0p0.getFeatures().get(Feature.REVERB).doubleValue());
+		assertTrue("pm0p0.Reverb > 0", 0 < pm0p0.getFeatures().get(Feature.TOTAL_OCCURRENCE).doubleValue());
 		assertEquals("pm0p0.TO == 98", 98, (int) pm0p0.getFeatures().get(Feature.TOTAL_OCCURRENCE).doubleValue());
 		assertEquals("pm0p10-TO == 99", 99, (int) pm0p10.getFeatures().get(Feature.TOTAL_OCCURRENCE).doubleValue());
 		assertEquals("pm9p101-TO == 98", 98, (int) pm9p101.getFeatures().get(Feature.TOTAL_OCCURRENCE).doubleValue());
@@ -116,9 +128,10 @@ public class FeatureTest {
 				
 				Pattern pattern = new Pattern();
 				pattern.setNumberOfOccurrences(1000 / (j + 1));
+				pattern.setLuceneDocIds("$1$2");
 				
-				if ( j % 3 == 0 ) pattern.setNaturalLanguageRepresentation("?R? is a "+j+" nlr of ?D?");
-				else pattern.setNaturalLanguageRepresentation("?D? is a "+j+" nlr of ?R?");
+				if ( j % 3 == 0 ) pattern.setNaturalLanguageRepresentation("?R? was a very good friend of "+j+" ?D?");
+				else pattern.setNaturalLanguageRepresentation(("?D? was a very good friend of "+j+" ?R?"));
 				
 				Map<String,Integer> learnedFrom = new HashMap<String,Integer>();
 				learnedFrom.put("label1-;-label2", j+i % 10);
@@ -147,11 +160,10 @@ public class FeatureTest {
 
 			for (int i = 0 ; i <= 10000 ; i++ ) {
 				
-				String sentence = "This is the "+i+"th sentence which contains is a "+i%102+" nlr of a test blubb rofl.";
+				String sentence = "This is the "+i+"th sentence which contains was a very good friend of "+i+" test blubb rofl.";
 				
 				Document doc = new Document();
-				doc.add(new Field("sentence", sentence, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO));
-				doc.add(new Field("sentence-lc", sentence.toLowerCase(), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
+				doc.add(new Field("sentence", sentence, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
 				writer.addDocument(doc);
 			}
 			writer.optimize();

@@ -57,11 +57,11 @@ public class PatternDaoTest {
 	    
 	    Pattern pattern1 = new Pattern("x is a y");
 	    
-	    pattern1.setConfidence(5.4);
+	    pattern1.setScore(5.4);
 	    
 	    Pattern pattern2 = new Pattern("x is a y");
 	    
-	    pattern2.setConfidence(5.4);
+	    pattern2.setScore(5.4);
 	    
 	    PatternMapping mapping = (PatternMapping) patternMappingDao.createNewEntity();
 	    
