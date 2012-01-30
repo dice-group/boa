@@ -516,7 +516,7 @@ public class ConfidenceLearner {
      */
 	public double getConfidence(PatternMapping mapping, Pattern pattern) {
 
-		MLData data = getSingleEntry(pattern.buildFeatureString(mapping));
+		MLData data = getSingleEntry(pattern.buildFeatureVector(mapping));
 		return network.compute(data).getData(0);
 	}
 	

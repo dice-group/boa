@@ -36,7 +36,6 @@ import de.uni_leipzig.simba.boa.frontend.data.PatternContainer;
 import de.uni_leipzig.simba.boa.frontend.ui.DatabaseNavigationTree;
 import de.uni_leipzig.simba.boa.frontend.ui.PatternTable;
 import de.uni_leipzig.simba.boa.frontend.ui.PatternWindow;
-import de.uni_leipzig.simba.boa.frontend.ui.RdfModelTree;
 import de.uni_leipzig.simba.boa.frontend.ui.TripleTable;
 
 @SuppressWarnings("serial")
@@ -47,12 +46,9 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 
 	private Button triplesButton = new Button("Triples");
 	private Button databasesButton = new Button("Pattern Library");
-	private Button sparqlButton = new Button("SPARQL");
-	private Button startQuery = new Button("Query"); 
 	
 	private DatabaseNavigationTree tree;
 	private DatabaseNavigationTree tripleTree;
-	private RdfModelTree rdfSparqlTree;
 	private PatternTable patternTable;
 	
 	private HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
@@ -85,16 +81,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		else if ( source == this.databasesButton ) {
 			
 			this.buildHomeLayout();
-		}
-		else if ( source == this.sparqlButton ) {
-			
-			Panel p = new Panel();
-			p.addComponent(new Label("Hier kann man SPARQL Queries starten!"));
-			// setze linken teil auf die modelle
-			horizontalSplitPanel.setFirstComponent(rdfSparqlTree);			
-			// in denrechten teil kommt die erkl�rung
-			horizontalSplitPanel.setSecondComponent(p);
-			horizontalSplitPanel.setSplitPosition(130, HorizontalSplitPanel.UNITS_PIXELS);
 		}
 	}
 
@@ -215,7 +201,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		NLPediaSettings.getInstance().printMemoryUsage();
 		
 		this.tripleTree = new DatabaseNavigationTree(this);
-		this.rdfSparqlTree = new RdfModelTree(this);
 		
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
@@ -237,14 +222,11 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		databasesButton.setWidth("70px");
 		lo.addComponent(databasesButton,0,0);
 		lo.addComponent(triplesButton,1,0);
-		lo.addComponent(sparqlButton,2,0);
 		
 		triplesButton.addListener((ClickListener) this);
-		sparqlButton.addListener((ClickListener) this);
 		databasesButton.addListener((ClickListener) this);
 		
 		triplesButton.setIcon(new ThemeResource("icons/32/folder-add.png"));
-		sparqlButton.setIcon(new ThemeResource("icons/32/document-edit.png"));
 		databasesButton.setIcon(new ThemeResource("icons/32/globe.png"));
 		
 		lo.setMargin(true);

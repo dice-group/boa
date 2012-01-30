@@ -1,7 +1,5 @@
 package de.uni_leipzig.simba.boa.backend;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
@@ -27,20 +25,11 @@ import de.uni_leipzig.simba.boa.evaluation.Evaluation;
  */
 public class NLPedia {
 
-	public static final String CACHE_KEY_PATTERN_MAPPING_LIST = "CACHE_KEY_PATTERN_MAPPING_LIST";
-	public static final String CACHE_KEY_TRIPLE_LIST = "CACHE_KEY_TRIPLE_LIST";
-	
-	private static Map<String,Object> cache = new HashMap<String,Object>();
-	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 
-		// this is used to surpress the "error" messages from stanford etc.
-//		PrintStream newErr = new PrintStream(new ByteArrayOutputStream());
-//		System.setErr(newErr);
-		
 		// Initialize logging, settings, factories etc., needs to be FIRST call!!
 		NLPediaSetup setup = new NLPediaSetup(false);
 		NLPediaLogger logger = new NLPediaLogger(NLPedia.class);
@@ -148,21 +137,5 @@ public class NLPedia {
 			}
 	    } 
 	    while ( option != 0 ); 
-	}
-
-	/**
-	 * @return the cache
-	 */
-	public static Map<String,Object> getCache() {
-
-		return cache;
-	}
-
-	/**
-	 * @param cache the cache to set
-	 */
-	public static void setCache(Map<String,Object> cache) {
-
-		NLPedia.cache = cache;
 	}
 }

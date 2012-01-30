@@ -10,6 +10,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import de.danielgerber.file.BufferedFileWriter;
+import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
+import de.danielgerber.file.FileUtil;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
@@ -17,6 +21,7 @@ import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
+import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 
 public class CreateMachineLearningCommand implements Command {
 
@@ -25,12 +30,10 @@ public class CreateMachineLearningCommand implements Command {
 	@Override
 	public void execute() {
 
-		PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
-		
 		List<Pair> pairs = new ArrayList<Pair>();
 		
 		// collect all the patterns
-		for ( PatternMapping mapping : pmDao.findAllPatternMappings() ) {
+		for ( PatternMapping mapping : SerializationManager.getInstance().deserializePatternMappings(NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/") ) {
 			
 			// get x patterns for each mapping and add it with the mapping URI to the map 
 			List<Pattern> patterns = new ArrayList<Pattern>(mapping.getPatterns()); 
@@ -56,22 +59,15 @@ public class CreateMachineLearningCommand implements Command {
 		System.out.println(String.format("Found %s patterns at all", pairs.size()));
 		Collections.shuffle(pairs);
 		
-		try {
-//			Writer writer = new PrintWriter(new BufferedWriter(new FileWriter("/Users/gerb/machine_learning_input.txt")));
-			Writer writer = new PrintWriter(new BufferedWriter(new FileWriter("/home/gerber/machine_learning_input.txt")));
-			
-			int i = 0;
-			for ( Pair pair : pairs ) {
-				
-				if ( i++ == 1000 ) break;
-				writer.write(FeatureHelper.createNetworkTrainingFileLine(pair.getMapping(), pair.getPattern()));
-			}
-			writer.close();
-		}
-		catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+		BufferedFileWriter writer = FileUtil.openWriter("/Users/gerb/machine_learning_input.txt", "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
+		
+//		int i = 0;
+//		for ( Pair pair : pairs ) {
+//			
+//			if ( i++ == 1000 ) break;
+//			writer.write(FeatureHelper.createNetworkTrainingFileLine(pair.getMapping(), pair.getPattern()));
+//		}
+//		writer.close();
 	}
 	
 	private class Pair {
@@ -125,21 +121,8 @@ public class CreateMachineLearningCommand implements Command {
 	
 	public static void main(String[] args) {
 
-		NLPediaSetup s = new NLPediaSetup(false);
-		PatternMappingDao pmDao = (PatternMappingDao) DaoFactory.getInstance().createDAO(PatternMappingDao.class);
-		for ( PatternMapping mapping : pmDao.findAllPatternMappings() ) {
-			
-			for ( Pattern p : mapping.getPatterns() ) {
-				
-				if ( !doNotUseThose.contains( new Integer(p.getId())) ) {
-					
-					System.out.println(p.getId() + " is new and should be re-evaluated!");
-				}
-				else {
-					
-					System.out.println(p.getId() + " has already been evaluated!");
-				}
-			}
-		}
+		NLPediaSetup s = new NLPediaSetup(true);
+		CreateMachineLearningCommand c = new CreateMachineLearningCommand();
+		c.execute();
 	}
 }

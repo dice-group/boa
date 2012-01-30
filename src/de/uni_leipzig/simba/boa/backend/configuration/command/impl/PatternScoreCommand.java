@@ -1,13 +1,11 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.NeuralNetwork;
@@ -43,28 +41,7 @@ public class PatternScoreCommand implements Command {
 	@Override
 	public void execute() {
 
-		// begin updating the pattern NAMED_ENTITY_TAG_MAPPINGS
-		long start = new Date().getTime();
 		
-		// set global maxima and update pattern NAMED_ENTITY_TAG_MAPPINGS and cascade
-		for ( PatternMapping mapping : mappings ) {
-			
-			// score each pattern
-			for ( Pattern pattern : mapping.getPatterns() ) {
-				
-				Double score = this.learner.getScore(mapping, pattern);
-				pattern.setScore(
-						score == Double.NaN || 
-						score == Double.NEGATIVE_INFINITY || 
-						score == Double.POSITIVE_INFINITY
-						? 0D : score);
-				
-				this.logger.info(pattern.getNaturalLanguageRepresentation() + ": " +score);
-			}
-			this.logger.info("Updating pattern mapping " + mapping.getProperty().getUri());
-			this.patternMappingDao.updatePatternMapping(mapping);
-		}
-		System.out.println("Updating PatternMappings took " + (new Date().getTime() - start) + "ms.");
 	}
 	
 	public List<PatternMapping> getPatternMappingList() {

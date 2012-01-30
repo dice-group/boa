@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
 import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -58,7 +56,7 @@ public class StringSimilarityFeature implements Feature {
 				}
 				catch (WordNotFoundException e) {
 					
-//						this.logger.debug("Word not found: " + e);
+						this.logger.debug("Word not found: " + e);
 				}
 			}
 		}

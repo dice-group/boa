@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import de.danielgerber.format.OutputFormatter;
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
@@ -88,11 +89,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	 * 
 	 */
 	private Map<Feature, Double> features;
-	
-	/**
-	 * 
-	 */
-	private static final String FEATURE_FILE_COLUMN_SEPARATOR = "\t";
 	
 	/**
 	 * @param naturalLanguageRepresentation the naturalLanguageRepresentation to set
@@ -508,9 +504,9 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		this.features = features;
 	}
 	
-	public String buildFeatureString(PatternMapping mapping){
+	public List<Double> buildFeatureVector(PatternMapping mapping){
 		
-		StringBuffer output = new StringBuffer();
+		List<Double> featureValues = new ArrayList<Double>();
 
 		for ( Feature feature : Feature.values() ) {
 			
@@ -518,7 +514,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 				
 				// exclude everything which is not activated
 				if ( feature.useForPatternFeatureLearning() ) {
-					
+				    
 					// non zero to one values have to be normalized
 					if ( !feature.isZeroToOneValue() ) {
 						
@@ -533,16 +529,17 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 							
 							maximum = FeatureHelper.calculateLocalMaximum(mapping, feature);
 						}
-						output.append(OutputFormatter.format((this.features.get(feature) / maximum), "0.00000") + FEATURE_FILE_COLUMN_SEPARATOR);
+						featureValues.add(this.features.get(feature) / maximum);
+//						output.append(OutputFormatter.format((this.features.get(feature) / maximum), "0.00000") + Constants.FEATURE_FILE_COLUMN_SEPARATOR);
 					}
 					// we dont need to normalize a 0-1 value
 					else {
-						
-						output.append(OutputFormatter.format(this.features.get(feature), "0.00000") + FEATURE_FILE_COLUMN_SEPARATOR);
+//						output.append(OutputFormatter.format(this.features.get(feature), "0.00000") + Constants.FEATURE_FILE_COLUMN_SEPARATOR);
+					    featureValues.add(this.features.get(feature));
 					}
 				}
 			}
 		}
-		return output.toString();
+		return featureValues;
 	}
 }

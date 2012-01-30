@@ -6,7 +6,10 @@
     <bean id="MachineLearningToolFactory" class="de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningToolFactory"
         factory-method="getInstance" singleton="true">
 
-        <property name="neuralNetworks">
+        <property name="defaultMachineLearningTool"
+            value="de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.impl.EncogNeuralNetwork" />
+
+        <property name="machineLearningTools">
             <list>
                 <value>de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.impl.EncogNeuralNetwork</value>
             </list>

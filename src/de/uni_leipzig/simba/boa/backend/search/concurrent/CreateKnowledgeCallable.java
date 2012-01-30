@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.store.Directory;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;

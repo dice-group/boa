@@ -33,11 +33,9 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.ReverbFeature;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TotalOccurrenceFeature;
 import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
-import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 
 public class FeatureTest {
 

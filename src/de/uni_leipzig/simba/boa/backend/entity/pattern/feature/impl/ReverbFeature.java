@@ -12,7 +12,6 @@ import de.danielgerber.math.MathUtil;
 import de.danielgerber.string.StringUtil;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
 import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -68,70 +67,73 @@ public class ReverbFeature implements Feature {
             throw new RuntimeException(error, e);
         }
 
-		for ( Pattern pattern : pair.getMapping().getPatterns()) {
+		Set<Double> scores		= new HashSet<Double>();
+		Set<String> relations	= new HashSet<String>();
+		
+		try {
 			
-			Set<Double> scores		= new HashSet<Double>();
-			Set<String> relations	= new HashSet<String>();
-			
-			try {
+			// for all sentences we found the pattern in
+			for (String sentence : getReverbMeasureEvaluationSentences(pair.getPattern())) {
 				
-				// for all sentences we found the pattern in
-				for (String sentence : getReverbMeasureEvaluationSentences(pattern)) {
-					
-					try {
-					
-						// let ReVerb create the chunked sentences
-						for (ChunkedSentence sent : this.createDefaultSentenceReader(sentence).getSentences()) {
-							
-							// and extract all binary relations
-							for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
-	
-								double score = scoreFunc.getConf(extr);
-								if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
-								    
-									// we only want to add scores of relations, which are substring of our relations
-									// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
-									if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pattern.getNaturalLanguageRepresentation()) ) {
-										
-										scores.add(score);
-										relations.add(extr.getRelation().toString());
-									}
+				try {
+				
+					// let ReVerb create the chunked sentences
+					for (ChunkedSentence sent : this.createDefaultSentenceReader(sentence).getSentences()) {
+						
+						// and extract all binary relations
+						for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
+
+							double score = scoreFunc.getConf(extr);
+							if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
+							    
+								// we only want to add scores of relations, which are substring of our relations
+								// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
+								if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pair.getPattern().getNaturalLanguageRepresentation()) ) {
+									
+									scores.add(score);
+									relations.add(extr.getRelation().toString());
 								}
 							}
 						}
 					}
-					catch (ConfidenceFunctionException e) {
-						
-					    String error = "Reverb-ConfidenceFuntionException: \"" + pattern.getNaturalLanguageRepresentation() + "\"";
-		                this.logger.error(error, e);
-		                throw new RuntimeException(error, e);
-					}
-                    catch (IOException e) {
-                        
-                        String error = "Reverb-IOException: \"" + pattern.getNaturalLanguageRepresentation() + "\"";
-                        this.logger.error(error, e);
-                        throw new RuntimeException(error, e);
-                    }
 				}
+				catch (ConfidenceFunctionException e) {
+					
+				    String error = "Reverb-ConfidenceFuntionException: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\"";
+	                this.logger.error(error, e);
+	                throw new RuntimeException(error, e);
+				}
+                catch (IOException e) {
+                    
+                    String error = "Reverb-IOException: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\"";
+                    this.logger.error(error, e);
+                    throw new RuntimeException(error, e);
+                }
+				catch (NullPointerException e) {
+                    
+                    String error = "OpenNLP-NullPpinterException: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\"";
+                    this.logger.error(error, e);
+//                  throw new RuntimeException(error, e);
+                }
 			}
-			catch (ParseException e) {
-				
-	            String error = "Could not parse query: \"" + pattern.getNaturalLanguageRepresentation() + "\"";
-	            this.logger.error(error, e);
-	            throw new RuntimeException(error, e);
-			}
-            catch (IOException e) {
-                
-                String error = "Reverb-IOException: \"" + pattern.getNaturalLanguageRepresentation() + "\"";
-                this.logger.error(error, e);
-                throw new RuntimeException(error, e);
-            }
-			
-			double score = MathUtil.getAverage(scores);
-			// update the pattern
-			pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.REVERB, score >= 0 ? score : 0); // -1 is not useful for confidence
-			pattern.setGeneralizedPattern(StringUtil.getLongestSubstring(relations));
 		}
+		catch (ParseException e) {
+			
+            String error = "Could not parse query: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\"";
+            this.logger.error(error, e);
+            throw new RuntimeException(error, e);
+		}
+        catch (IOException e) {
+            
+            String error = "Reverb-IOException: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\"";
+            this.logger.error(error, e);
+            throw new RuntimeException(error, e);
+        }
+		
+		double score = MathUtil.getAverage(scores);
+		// update the pattern
+		pair.getPattern().getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.REVERB, score >= 0 ? score : 0); // -1 is not useful for confidence
+		pair.getPattern().setGeneralizedPattern(StringUtil.getLongestSubstring(relations));
 	}
 
 	private ChunkedSentenceReader createDefaultSentenceReader(String sentence) throws IOException {

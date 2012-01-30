@@ -19,7 +19,7 @@ public class TimeUtil {
      * @param millis
      * @return
      */
-    public String convertMilliSeconds(long millis) {
+    public static String convertMilliSeconds(long millis) {
         
         return String.format("%d min, %d sec", 
                 TimeUnit.MILLISECONDS.toMinutes(millis),

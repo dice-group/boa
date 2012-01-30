@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternScoreFeatureCommand;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
@@ -49,33 +47,30 @@ public class TfIdfFeature implements Feature {
 		
 		Map<String,Token> tokensInSingleDocument = createDocumentFrequencyAndFrequencyForTokens(documents.values(), distinctStringsForSingleDocument);
 		
-		for (Pattern p : pair.getMapping().getPatterns() ) {
+		double idfScore = 0;
+		double tfScore = 0;
+		for (String s : pair.getPattern().getNaturalLanguageRepresentationWithoutVariables().split(" ") ) {
 			
-			double idfScore = 0;
-			double tfScore = 0;
-			for (String s : p.getNaturalLanguageRepresentationWithoutVariables().split(" ") ) {
+			// should be always true since every word has been indexed, except stop words
+			if ( tokensInSingleDocument.containsKey(s) ) {
 				
-				// should be always true since every word has been indexed
-				if ( tokensInSingleDocument.containsKey(s) ) {
-					
-					double scoreIdf = tokensInSingleDocument.get(s).getIdf(documents.size());
-					if ( !Double.isInfinite(scoreIdf) && !Double.isNaN(scoreIdf) ) idfScore += scoreIdf;
-					
-					double scoreTf = tokensInSingleDocument.get(s).getTf();
-					if ( !Double.isInfinite(scoreTf) && !Double.isNaN(scoreTf) ) tfScore += scoreTf;
-				}
-				else {
-					
-				    if ( !Constants.STOP_WORDS.contains(s) ) {
-				        
-				        this.logger.error("There was a token not analyzed: " + s);
-				    }
-				}
+				double scoreIdf = tokensInSingleDocument.get(s).getIdf(documents.size());
+				if ( !Double.isInfinite(scoreIdf) && !Double.isNaN(scoreIdf) ) idfScore += scoreIdf;
+				
+				double scoreTf = tokensInSingleDocument.get(s).getTf();
+				if ( !Double.isInfinite(scoreTf) && !Double.isNaN(scoreTf) ) tfScore += scoreTf;
 			}
-			p.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_TFIDF, 	tfScore*idfScore	>= 0 ? tfScore*idfScore : 0);
-			p.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_TF, 		tfScore				>= 0 ? tfScore : 0);
-			p.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_IDF, 		idfScore			>= 0 ? idfScore : 0);
+			else {
+				
+			    if ( !Constants.STOP_WORDS.contains(s) ) {
+			        
+			        this.logger.error("There was a token not analyzed: " + s);
+			    }
+			}
 		}
+		pair.getPattern().getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_TFIDF, 	tfScore*idfScore	>= 0 ? tfScore*idfScore : 0);
+		pair.getPattern().getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_TF, 		tfScore				>= 0 ? tfScore : 0);
+		pair.getPattern().getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_IDF, 		idfScore			>= 0 ? idfScore : 0);
 	}
 	
 	private class Token {

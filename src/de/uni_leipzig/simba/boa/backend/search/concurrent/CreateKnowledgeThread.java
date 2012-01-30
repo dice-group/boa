@@ -1,6 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.search.concurrent;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.text.NumberFormat;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.store.Directory;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;

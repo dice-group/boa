@@ -21,6 +21,7 @@ public enum Language implements Serializable {
 		
 		if (language.equals("de") ) return GERMAN;
 		if (language.equals("en") ) return ENGLISH;
+		if (language.equals("kr") ) return KOREAN;
 		return UNSUPPORTED;
 	}
 }
