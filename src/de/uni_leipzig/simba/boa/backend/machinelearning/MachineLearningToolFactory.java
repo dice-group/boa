@@ -17,20 +17,21 @@ public class MachineLearningToolFactory {
 	
 	private final NLPediaLogger logger = new NLPediaLogger(MachineLearningToolFactory.class);
 	
-	private List<String> neuralNetworks;
+	private String defaultMachineLearningTool;
+	private List<String> machineLearningTools;
 	
 	/**
-	 * @return the neuralNetworks
+	 * @return the machineLearningTools
 	 */
-	public List<String> getNeuralNetworks() {
-		return neuralNetworks;
+	public List<String> getMachineLearningTools() {
+		return machineLearningTools;
 	}
 
 	/**
 	 * @param neuralNetworks the neuralNetworks to set
 	 */
-	public void setNeuralNetworks(List<String> neuralNetworks) {
-		this.neuralNetworks = neuralNetworks;
+	public void setMachineLearningTools(List<String> machineLearningTools) {
+		this.machineLearningTools = machineLearningTools;
 	}
 
 	/**
@@ -51,22 +52,23 @@ public class MachineLearningToolFactory {
 	}
 	
 	/**
-	 * Returns a new instance of the specified neuralNetworkClass.
-	 * The specific implementations of the neural networks have to be declared
-	 * in the nlpedia_setup.xml file.
+	 * Returns a new instance of the specified machineLearningToolClass.
+	 * The specific implementations of the machine learning have to be declared
+	 * in the machinelearning.xml file.
 	 * 
-	 * @param neuralNetworkClass - the neuralNetworkClass to be instantiated
-	 * @return the instantiated neuralNetworkClass 
-	 * @throws RuntimeExcpetion if no neuralNetworkClass could be found
+	 * @param machineLearningToolClass - the machineLearningToolClass to be instantiated
+	 * @return the instantiated machineLearningToolClass 
+	 * @throws RuntimeExcpetion if no machineLearningToolClass could be found
 	 */
-	public NeuralNetwork createNeuralNetwork(Class<? extends NeuralNetwork> neuralNetworkClass) {
+	public MachineLearningTool createMachineLearningTool(Class<? extends MachineLearningTool> machineLearningToolClass) {
 
-		if ( this.neuralNetworks.contains(neuralNetworkClass.getName()) ) {
+		if ( this.machineLearningTools.contains(machineLearningToolClass.getName()) ) {
 			
-			return (NeuralNetwork) createNewInstance(neuralNetworkClass);
+			return (NeuralNetwork) createNewInstance(machineLearningToolClass);
 		}
-		this.logger.error("Could not load neural network " + neuralNetworkClass);
-		throw new RuntimeException("Could not load neural network " + neuralNetworkClass);
+		String error = "Could not load neural network " + machineLearningToolClass;
+		this.logger.error(error);
+		throw new RuntimeException(error);
 	}
 	
 	/**
@@ -85,15 +87,53 @@ public class MachineLearningToolFactory {
 		catch (InstantiationException e) {
 
 			e.printStackTrace();
-			this.logger.fatal("Could not instantiate class: " + tool, e);
-			throw new RuntimeException("Could not instantiate class: " + tool, e);
+			String error = "Could not instantiate class: " + tool;
+			this.logger.fatal(error, e);
+			throw new RuntimeException(error, e);
 		}
 		catch (IllegalAccessException e) {
 			
 			e.printStackTrace();
-			this.logger.fatal("Could not instantiate class: " + tool, e);
-			throw new RuntimeException("Could not instantiate class: " + tool, e);
+			String error = "Could not instantiate class: " + tool;
+			this.logger.fatal(error, e);
+			throw new RuntimeException(error, e);
 		}
 	}
+	
+	/**
+     * @param defaultMachineLearningTool the defaultMachineLearningTool to set
+     */
+    public void setDefaultMachineLearningTool(String defaultMachineLearningTool) {
+    
+        this.defaultMachineLearningTool = defaultMachineLearningTool;
+    }
+	
+	
+    /**
+     * @return the defaultMachineLearningTool
+     */
+    public String getDefaultMachineLearningTool() {
+    
+        return defaultMachineLearningTool;
+    }
 
+    /**
+     * @return the default machine learning tool
+     */
+    @SuppressWarnings("unchecked")
+    public MachineLearningTool createDefaultMachineLearningTool() {
+
+        try {
+            
+            return (MachineLearningTool) createNewInstance(
+                    (Class<? extends MachineLearningTool>) Class.forName(defaultMachineLearningTool));
+        }
+        catch (ClassNotFoundException e) {
+
+            e.printStackTrace();
+            String error = "Could not load default machine learning tool:" + defaultMachineLearningTool;
+            this.logger.error(error, e);
+            throw new RuntimeException(error, e);
+        }
+    }
 }

@@ -48,7 +48,7 @@ public class NLPediaSettings {
 	
 	public Language getSystemLanguage() {
 		
-		return Language.getLanguage(this.getSetting("language"));
+		return Language.getLanguage(NLPediaSettings.BOA_LANGUAGE);
 	}
 	
 	/**
@@ -108,6 +108,15 @@ public class NLPediaSettings {
 		
 		return Integer.valueOf(this.getSetting(setting));
 	}
+	
+	/**
+	 * @param setting which has an double value 
+	 * @return the double value of the setting
+	 */
+    public double getDoubleSetting(String setting) {
+
+        return Double.valueOf(this.getSetting(setting));
+    }
 
 	/**
 	 * @param key the key of the setting

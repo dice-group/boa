@@ -54,7 +54,7 @@ public class FeatureFactory {
 	 * @param clazz - the class for the confidence measure
 	 * @return the requested pattern filter or null if not found
 	 */
-	public Feature getConfidenceMeasure(Class clazz) {
+	public Feature getConfidenceMeasure(Class<Feature> clazz) {
 		
 		FeatureFactory.logger.debug("There is/are " + FeatureFactory.featureMap.size() + " confidence measure(s) available!");
 		

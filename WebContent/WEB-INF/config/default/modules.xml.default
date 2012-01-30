@@ -153,4 +153,36 @@
         </property>
     </bean>
     
+    <!--  ############################################################################################ -->
+    <!--  ################################## Pattern Scoring ######################################### -->
+    <!--  ############################################################################################ -->
+
+    <bean id="DefaultPatternScoringModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.patternscoring.impl.DefaultPatternScoringModule">
+
+        <property name="overrideData" value="false" />
+
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl.DefaultPatternSearchModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternfeatureextraction.impl.DefaultPatternFeatureExtractionModule</value>
+            </set>
+        </property>
+
+        <property name="moduleSettings">
+            <set>
+              <value>neuronal.network.n.fold.cross.validation</value>
+              <value>neural.network.network.directory</value>
+              <value>neuronal.network.maxEpochs</value>
+              <value>neuronal.network.hidden.layer.ratio</value>
+              <value>neuronal.network.min.error</value>
+              <value>neuronal.network.error.decrement</value>
+              <value>neuronal.network.max.error</value>
+            </set>
+        </property>
+    </bean>
+    
 </beans>

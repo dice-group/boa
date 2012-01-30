@@ -14,8 +14,8 @@ public enum Feature implements Serializable {
 		/* 3*/SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM(		IsZeroToOneValue.NO,	NormalizeGlobaly.NO, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
 		/* 4*/TF_IDF_IDF(								IsZeroToOneValue.NO, 	NormalizeGlobaly.NO, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
 		/* 5*/TF_IDF_TF(								IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
-		/* 6*/TF_IDF_TFIDF(								IsZeroToOneValue.YES, 	NormalizeGlobaly.YES, 	UseForPatternLearning.NO,  Language.ENGLISH, Language.GERMAN),
-		/* 7*/TYPICITY(									IsZeroToOneValue.YES,	NormalizeGlobaly.YES, 	UseForPatternLearning.NO,  Language.ENGLISH, Language.GERMAN),
+		/* 6*/TF_IDF_TFIDF(								IsZeroToOneValue.YES, 	NormalizeGlobaly.YES, 	UseForPatternLearning.NO,  Language.ENGLISH, Language.GERMAN), //NO
+		/* 7*/TYPICITY(									IsZeroToOneValue.YES,	NormalizeGlobaly.YES, 	UseForPatternLearning.NO,  Language.ENGLISH, Language.GERMAN), //NO
 		/* 8*/TYPICITY_CORRECT_DOMAIN_NUMBER(			IsZeroToOneValue.YES,	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
 		/* 9*/TYPICITY_CORRECT_RANGE_NUMBER(			IsZeroToOneValue.YES,	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
 		/*10*/TYPICITY_SENTENCES(						IsZeroToOneValue.NO,	NormalizeGlobaly.NO, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
@@ -24,7 +24,7 @@ public enum Feature implements Serializable {
 		/*13*/TOKEN_COUNT(								IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
 		/*14*/CHARACTER_COUNT(							IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
 		/*15*/TOTAL_OCCURRENCE(							IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
-		/*16*/VERB_COUNT(								IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN),
+		/*16*/VERB_COUNT(								IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN), // TODO since pos tags were not available whiel pattern search
 		/*17*/AVERAGE_TOKEN_LENGHT(						IsZeroToOneValue.NO, 	NormalizeGlobaly.YES, 	UseForPatternLearning.YES, Language.ENGLISH, Language.GERMAN);
 		
 		private List<Language> supportedLanguages;

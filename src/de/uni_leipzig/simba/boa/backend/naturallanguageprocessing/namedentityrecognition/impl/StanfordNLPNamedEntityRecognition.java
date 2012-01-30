@@ -3,8 +3,10 @@
  */
 package de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +39,16 @@ public final class StanfordNLPNamedEntityRecognition implements NamedEntityRecog
 	public StanfordNLPNamedEntityRecognition() {
 		
 		try {
-			
-			this.classifier = CRFClassifier.getClassifier(new File(classifierPath));
+
+            // this is used to surpress the "error" messages from stanford etc.
+		    PrintStream standardErrorStream = System.err;
+            PrintStream newErr = new PrintStream(new ByteArrayOutputStream());
+            System.setErr(newErr);
+
+            this.classifier = CRFClassifier.getClassifier(new File(classifierPath));
+            
+            // revert to original standard error stream
+            System.setErr(standardErrorStream);
 		}
 		catch (ClassCastException e) {
 			

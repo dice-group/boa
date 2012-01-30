@@ -103,6 +103,11 @@ public class Constants {
 	 */
 	public static final String BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR = "_&_";
 	
+	/**
+     * 
+     */
+    public static final String FEATURE_FILE_COLUMN_SEPARATOR = "\t";
+	
 	// ##############################################################################
 	
 	/**

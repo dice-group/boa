@@ -63,7 +63,7 @@ public class Pipeline {
 		// configuration is correct so we can run each module
 		for ( PipelineModule module : this.pipelineConfiguration.getPipelineModules() ) {
 			
-			String launchMessage = "Launching module: " + module.getName();
+			String launchMessage = "Launching: " + module.getName();
 			this.logger.info(launchMessage);
 			System.out.println(launchMessage);
 			
@@ -80,7 +80,7 @@ public class Pipeline {
 			this.logger.info(report);
 			System.out.println("\t" + report);
 			
-			String shutdownMessage = "Shutting down module: " + module.getName();
+			String shutdownMessage = "Shutting down: " + module.getName();
 			this.logger.info(shutdownMessage);
 			System.out.println(shutdownMessage + "\n");
 		}

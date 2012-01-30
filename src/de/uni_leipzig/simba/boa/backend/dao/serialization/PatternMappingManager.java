@@ -8,9 +8,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.comparator.PatternMappingUriComparator;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
@@ -33,6 +33,10 @@ public class PatternMappingManager {
         this.mappings = new HashMap<String,List<PatternMapping>>();
     }
     
+    /**
+     * 
+     * @return
+     */
     public static PatternMappingManager getInstance() {
         
         if (PatternMappingManager.INSTANCE == null) {
@@ -42,6 +46,11 @@ public class PatternMappingManager {
         return PatternMappingManager.INSTANCE;
     }
     
+    /**
+     * 
+     * @param filepath
+     * @return
+     */
     public List<PatternMapping> getPatternMappings(String filepath) {
         
         if ( this.mappings.containsKey(filepath) ) {
@@ -58,6 +67,12 @@ public class PatternMappingManager {
         }
     }
 
+    /**
+     * 
+     * @param uri
+     * @param database
+     * @return
+     */
     public PatternMapping getPatternMapping(String uri, String database) {
 
         for  (PatternMapping mapping : this.mappings.get(database) ) {
@@ -65,5 +80,26 @@ public class PatternMappingManager {
             if ( mapping.getProperty().getUri().equals(uri) ) return mapping; 
         }
         return null;
+    }
+
+    /**
+     * 
+     * @param database
+     * @param naturalLanguageRepresentation
+     * @return
+     */
+    public int findPatternMappingsWithSamePattern(String database, String naturalLanguageRepresentation) {
+
+        int numberOfSamePatterns = 0;
+        
+        for ( PatternMapping mapping : this.mappings.get(database) )
+            for (Pattern pattern : mapping.getPatterns())
+                if ( pattern.getNaturalLanguageRepresentation().equalsIgnoreCase(naturalLanguageRepresentation) ) {
+                    
+                    numberOfSamePatterns++;
+                    break; // there will be only one pattern per pattern mapping with the same natural language representation, so go to next pattern mapping
+                }
+                
+        return numberOfSamePatterns;
     }        
 }

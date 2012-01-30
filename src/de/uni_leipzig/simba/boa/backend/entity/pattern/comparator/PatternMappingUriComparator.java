@@ -2,7 +2,6 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.comparator;
 
 import java.util.Comparator;
 
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 
 

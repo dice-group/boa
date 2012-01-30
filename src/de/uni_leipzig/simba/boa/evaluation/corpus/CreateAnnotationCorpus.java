@@ -3,7 +3,6 @@ package de.uni_leipzig.simba.boa.evaluation.corpus;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

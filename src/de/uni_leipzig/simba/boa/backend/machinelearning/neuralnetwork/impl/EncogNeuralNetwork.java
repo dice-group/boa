@@ -1,14 +1,10 @@
 package de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.impl;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
-import java.util.Arrays;
+import java.util.List;
 
 import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLData;
@@ -23,30 +19,33 @@ import org.encog.neural.networks.training.Train;
 import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
 import org.encog.util.obj.SerializeObject;
 
+import de.danielgerber.file.BufferedFileWriter;
+import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
+import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.NeuralNetwork;
 
 
 public class EncogNeuralNetwork implements NeuralNetwork {
 
-	private BasicNetwork network;
-    public double maxError = 0.10;
-    public double errorDecrement = 0.05;
-    public double minError = 0.05;
-    public double maxHiddenToInputRatio = 3;
-    public int maxEpochs = 10000;
+    private BasicNetwork network;
+    private double maxError                         = NLPediaSettings.getInstance().getDoubleSetting("neuronal.network.max.error");
+    private double errorDecrement                   = NLPediaSettings.getInstance().getDoubleSetting("neuronal.network.error.decrement");
+    private double minError                         = NLPediaSettings.getInstance().getDoubleSetting("neuronal.network.min.error");
+    private double maxHiddenToInputRatio            = NLPediaSettings.getInstance().getIntegerSetting("neuronal.network.hidden.layer.ratio");
+    private int maxEpochs                           = NLPediaSettings.getInstance().getIntegerSetting("neuronal.network.maxEpochs");
     
-	private static NLPediaSetup s = new NLPediaSetup(true);
-	private static int N_FOLD_CROSS_VALIDATION		= Integer.valueOf(NLPediaSettings.getInstance().getSetting("neuronal.network.n.fold.cross.validation"));
-	private static final String NETWORK_DIRECTORY	= NLPediaSettings.getInstance().getSetting("neural.network.network.directory");
-	private static final String LEARN_FILE			= NETWORK_DIRECTORY + "network_learn.txt";
-	private static String EVAL_OUTPUT_FILE			= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
-	private static String NETWORK_FILE				= NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
+    private final NLPediaLogger logger              = new NLPediaLogger(EncogNeuralNetwork.class);
+    private static int N_FOLD_CROSS_VALIDATION      = NLPediaSettings.getInstance().getIntegerSetting("neuronal.network.n.fold.cross.validation");
+    private static final String NETWORK_DIRECTORY   = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("neural.network.network.directory");
+    private static final String LEARN_FILE          = NETWORK_DIRECTORY + "network_learn.txt";
+    private static String EVAL_OUTPUT_FILE          = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
+    private static String NETWORK_FILE              = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
     
-	/**
+    /**
      * Default constructor
      * 
      */
@@ -175,14 +174,12 @@ public class EncogNeuralNetwork implements NeuralNetwork {
             }
             summary.append("\n");
         }
-        try {
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
-            writer.println(summary.toString().replace(".", ",") + "\n\n");
-            writer.println(output.toString().replace(".", ","));
-            writer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        
+        // write the eval file
+        BufferedFileWriter writer = FileUtil.openWriter(outputFile.getAbsolutePath(), "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
+        writer.write(summary.toString().replace(".", ",") + "\n");
+        writer.write(output.toString().replace(".", ","));
+        writer.close();
     }
 
     /**
@@ -207,8 +204,6 @@ public class EncogNeuralNetwork implements NeuralNetwork {
                 }
             }
         }
-        // System.out.println("Got " + result.getRecordCount() +
-        // " records for training");
         return result;
     }
 
@@ -229,84 +224,34 @@ public class EncogNeuralNetwork implements NeuralNetwork {
         for (int i = 0; i < n; i++) {
             data[i] = new BasicMLDataSet();
         }
-        int positiveCount = 0, negativeCount = 0;
-                    int gcd=1;
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String s = reader.readLine();
             int counter = 0;
-            double score;
-
             while (s != null) {
+                
+                if ( s.contains("MANUAL")) continue; // TODO fix this, each machine learning tool should have a machine learning training file
+                
                 String split[] = s.split("\t");
-                score = new Double(split[split.length - 4]);
-                if (score == 0) {
-                    negativeCount++;
-                } else {
-                    positiveCount++;
-                }
-                BigInteger pos = new BigInteger(positiveCount+"");
-                BigInteger neg = new BigInteger(negativeCount+"");
-                gcd = pos.gcd(neg).intValue();
-//					if ( counter < 109 ) data[0].add(entry, ideal);
-//					else data[1].add(entry, ideal);
-                s = reader.readLine();
-            }
-            reader.close();
-            System.out.println("Found " + negativeCount + " negatives and " + positiveCount + " positives.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//			System.out.println(data[1].getRecordCount());
-//			System.out.println(data[0].getRecordCount());
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            String s = reader.readLine();
-            int counter = 0;
-            double score, iterations;
-            while (s != null) {
-                //System.out.println(s);
-                String split[] = s.split("\t");
-                score = new Double(split[split.length - 4]);
-                MLData entry = new BasicMLData(split.length - 4);
-                for (int i = 0; i < split.length - 4; i++) {
+                MLData entry = new BasicMLData(split.length - 3);
+                
+                for (int i = 0; i < split.length - 3; i++) {
                     entry.add(i, Double.parseDouble(split[i]));
                 }
-                if (score == 0) {
-                    iterations = positiveCount/gcd;
-                } else {
-                    iterations = negativeCount/gcd;
-                }
-                for (int iter = 0; iter < iterations; iter++) {
-
-                    // maps each entry to the expected value
-
-                    BasicMLData ideal = new BasicMLData(1);
-                    ideal.add(0, score);
-//					if ( counter < 109 ) data[0].add(entry, ideal);
-//					else data[1].add(entry, ideal);
-                    data[counter % n].add(entry, ideal);
-                    counter++;
-                }
+                // maps each entry to the expected value
+                BasicMLData ideal = new BasicMLData(1);
+                ideal.add(0, new Double(split[split.length - 3]));
+                data[counter % n].add(entry, ideal);
                 s = reader.readLine();
-
+                counter++;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
-
-        for (int i = 0; i < n; i++) {
-            int pCount = 0, nCount = 0;
-
-            for (MLDataPair p : data[i]) {
-                if (p.getIdeal().getData()[0] == 0) {
-                    nCount++;
-                } else {
-                    pCount++;
-                }
-            }
-            System.out.println("Bucket " + i + " contains " + pCount + " positives and " + nCount + " negatives");
+        catch (Exception e) {
+            
+            e.printStackTrace();
+            String error = "Could not load data from file: " + file.getName();
+            this.logger.error(error, e);
+            throw new RuntimeException(error, e);
         }
         return data;
     }
@@ -378,24 +323,19 @@ public class EncogNeuralNetwork implements NeuralNetwork {
     public double trainAndEvaluate(MLDataSet trainingData, MLDataSet testData, int inputSize, int hiddenSize, int outputSize, double error) {
 
         network = generateBasicNetwork(inputSize, hiddenSize, outputSize);
-        // train
-        // default
-        // EncogUtility.trainToError(network, trainingData, error);
+
         Train train = new ResilientPropagation((ContainsFlat) network, trainingData);
         trainToError(train, error, maxEpochs);
 
         // evaluate
         double count = (double) testData.getRecordCount();
         for (MLDataPair pair : testData) {
+            
             MLData result = network.compute(pair.getInput());
             double value = 0;
-            if (result.getData(0) > 0.5) {
-                value = 1;
-            }
-            // System.out.println(pair.getIdeal().getData(0) + " -> " + value);
-            if (pair.getIdeal().getData(0) != value) {
-                count--;
-            }
+            
+            if (result.getData(0) > 0.5) value = 1;
+            if (pair.getIdeal().getData(0) != value) count--;
         }
         return count / (double) testData.getRecordCount();
     }
@@ -413,20 +353,15 @@ public class EncogNeuralNetwork implements NeuralNetwork {
      * @param maxEpochs
      *            Maximal number of epochs
      */
-    public static void trainToError(final Train train, final double error, final int maxEpochs) {
+    public void trainToError(final Train train, final double error, final int maxEpochs) {
 
         int epoch = 1;
-         System.out.println("Beginning training...");
-         System.out.println("Error "+error);
+        this.logger.debug("Traning for neural network begins with error rate " + error);
         do {
             train.iteration();
-
-            // System.out.println("Iteration     #" + Format.formatInteger(epoch)
-            // + " Error:" + Format.formatPercent(train.getError())
-            // + " Target Error: " + Format.formatPercent(error));
             epoch++;
-            
-        } while ((train.getError() > error) && !train.isTrainingDone() && (epoch <= maxEpochs));
+        } 
+        while ((train.getError() > error) && !train.isTrainingDone() && (epoch <= maxEpochs));
         train.finishTraining();
     }
 
@@ -437,14 +372,10 @@ public class EncogNeuralNetwork implements NeuralNetwork {
      *            String input
      * @return Data entry
      */
-    public static MLData getSingleEntry(String s) {
+    public MLData getSingleEntry(List<Double> features) {
 
-        String split[] = s.split("\t");
-        MLData data = new BasicMLData(split.length);
-
-        for (int i = 0; i < split.length - 4; i++) {
-            data.add(i, Double.parseDouble(split[i]));
-        }
+        MLData data = new BasicMLData(features.size());
+        for (int i = 0; i < features.size(); i++) data.add(i, features.get(i));
 
         return data;
     }
@@ -460,15 +391,19 @@ public class EncogNeuralNetwork implements NeuralNetwork {
      */
     public double getScore(String netFile, MLData data) {
 
-        double score = 0;
         try {
-            BasicNetwork net = (BasicNetwork) SerializeObject.load(new File(netFile));
+            
+            this.network = (BasicNetwork) SerializeObject.load(new File(netFile));
             MLData result = network.compute(data);
             return result.getData(0);
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
+            
             e.printStackTrace();
+            String error = "Could not get score for file: " + netFile + " and data " + data;
+            this.logger.error(error, e);
+            throw new RuntimeException(error, e);
         }
-        return score;
     }
 
     /**
@@ -478,31 +413,19 @@ public class EncogNeuralNetwork implements NeuralNetwork {
      *            Input file
      * @return Network
      */
-    public static BasicNetwork getNetwork(String netFile) {
+    public BasicNetwork getNetwork(String netFile) {
 
         try {
-            // return (BasicNetwork)EncogDirectoryPersistence.loadObject(new
-            // File(netFile));
+
             return (BasicNetwork) SerializeObject.load(new File(netFile));
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return null;
-    }
-
-    /**
-     * Computes the score of an entry given a network
-     * 
-     * @param net
-     *            Basic network
-     * @param entry
-     *            Data entry
-     * @return Confidence score
-     */
-    public static double getConfidence(BasicNetwork net, String entry) {
-
-        MLData data = getSingleEntry(entry);
-        return net.compute(data).getData(0);
+        catch (Exception e) {
+            
+            e.printStackTrace();
+            String error = "Could not load network from file: " + netFile;
+            this.logger.error(error, e);
+            throw new RuntimeException(error, e);
+        }
     }
 
     /**
@@ -513,25 +436,25 @@ public class EncogNeuralNetwork implements NeuralNetwork {
      *            Entry
      * @return Confidence
      */
-	public double getScore(PatternMapping mapping, Pattern pattern) {
+    public double getScore(PatternMapping mapping, Pattern pattern) {
 
-		MLData data = getSingleEntry(pattern.buildFeatureString(mapping));
-		return network.compute(data).getData(0);
-	}
-	
-    public static void main(String args[]) {
-
-//	    for (int i : Arrays.asList(2, 4, 5, 6, 7, 8, 9, 10)) {
-        for (int i : Arrays.asList(10)) {
-
-        	EncogNeuralNetwork.N_FOLD_CROSS_VALIDATION = i;
-        	EncogNeuralNetwork.NETWORK_FILE = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
-        	EncogNeuralNetwork.EVAL_OUTPUT_FILE = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
-            System.out.println("N-Fold-CV: " + i);
-            System.out.println(EncogNeuralNetwork.NETWORK_FILE);
-            System.out.println(EncogNeuralNetwork.EVAL_OUTPUT_FILE);
-            EncogNeuralNetwork enconNeuralNetwork = new EncogNeuralNetwork();
-        }
-        System.exit(1);
+        MLData data = getSingleEntry(pattern.buildFeatureVector(mapping));
+        return network.compute(data).getData(0);
     }
+    
+//    public static void main(String args[]) {
+//
+//        for (int i : Arrays.asList(2, 4, 5, 6, 7, 8, 9, 10)) {
+//        for (int i : Arrays.asList(10)) {
+//
+//            EncogNeuralNetwork.N_FOLD_CROSS_VALIDATION = i;
+//            EncogNeuralNetwork.NETWORK_FILE = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
+//            EncogNeuralNetwork.EVAL_OUTPUT_FILE = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
+//            System.out.println("N-Fold-CV: " + i);
+//            System.out.println(EncogNeuralNetwork.NETWORK_FILE);
+//            System.out.println(EncogNeuralNetwork.EVAL_OUTPUT_FILE);
+//            EncogNeuralNetwork enconNeuralNetwork = new EncogNeuralNetwork();
+//        }
+//        System.exit(1);
+//    }
 }
