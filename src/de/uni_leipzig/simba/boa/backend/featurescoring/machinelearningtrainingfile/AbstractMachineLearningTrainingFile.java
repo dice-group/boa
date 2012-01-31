@@ -1,33 +1,41 @@
 /**
  * 
  */
-package de.uni_leipzig.simba.boa.backend.featurescoring;
+package de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.danielgerber.format.OutputFormatter;
 import de.uni_leipzig.simba.boa.backend.Constants;
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry.MachineLearningTrainingFileEntry;
 
 
 /**
  * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
  */
-public class NeuronalNetworkTrainingFile {
+public abstract class AbstractMachineLearningTrainingFile implements MachineLearningTrainingFile {
 
-    private List<NeuronalNetworkTrainingFileEntry> annotatedEntries;
-    private List<NeuronalNetworkTrainingFileEntry> notAnnotatedEntries;
+    protected List<MachineLearningTrainingFileEntry> annotatedEntries;
+    protected List<MachineLearningTrainingFileEntry> notAnnotatedEntries;
+    
+    // used for spring
+    public AbstractMachineLearningTrainingFile() {
+        
+//        this.annotatedEntries = new ArrayList<MachineLearningTrainingFileEntry>();
+//        this.notAnnotatedEntries = new ArrayList<MachineLearningTrainingFileEntry>();
+    }
     
     /**
      * 
      * @param annotatedAntries
      */
-    public NeuronalNetworkTrainingFile(List<NeuronalNetworkTrainingFileEntry> entries) {
+    public AbstractMachineLearningTrainingFile(List<MachineLearningTrainingFileEntry> entries) {
         
-        this.annotatedEntries = new ArrayList<NeuronalNetworkTrainingFileEntry>();
-        this.notAnnotatedEntries = new ArrayList<NeuronalNetworkTrainingFileEntry>();
+        this.annotatedEntries = new ArrayList<MachineLearningTrainingFileEntry>();
+        this.notAnnotatedEntries = new ArrayList<MachineLearningTrainingFileEntry>();
         
-        for (NeuronalNetworkTrainingFileEntry entry : entries) this.addEntry(entry);
+        for (MachineLearningTrainingFileEntry entry : entries) this.addEntry(entry);
     }
 
     /* (non-Javadoc)
@@ -39,7 +47,7 @@ public class NeuronalNetworkTrainingFile {
         StringBuilder builder = new StringBuilder();
         
         // one entry corresponds to one line
-        for (NeuronalNetworkTrainingFileEntry entry : this.annotatedEntries) {
+        for (MachineLearningTrainingFileEntry entry : this.annotatedEntries) {
             
             // first the features tab separated
             for (Double featureValue : entry.getFeatures()) builder.append(OutputFormatter.format((featureValue), "0.00000")).append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
@@ -54,7 +62,7 @@ public class NeuronalNetworkTrainingFile {
             builder.append(Constants.NEW_LINE_SEPARATOR);
         }
         // one entry corresponds to one line
-        for (NeuronalNetworkTrainingFileEntry entry : this.notAnnotatedEntries) {
+        for (MachineLearningTrainingFileEntry entry : this.notAnnotatedEntries) {
             
             // first the features tab separated
             for (Double featureValue : entry.getFeatures()) builder.append(OutputFormatter.format((featureValue), "0.00000")).append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
@@ -82,14 +90,14 @@ public class NeuronalNetworkTrainingFile {
      * @param naturalLanguageRepresentation
      * @return
      */
-    public NeuronalNetworkTrainingFileEntry getEntry(String uri, String naturalLanguageRepresentation) {
+    public MachineLearningTrainingFileEntry getEntry(String uri, String naturalLanguageRepresentation) {
 
         // simply go through all annotatedAntries and look if the two properties match
-        for ( NeuronalNetworkTrainingFileEntry entry : this.annotatedEntries ) 
+        for ( MachineLearningTrainingFileEntry entry : this.annotatedEntries ) 
             if ( entry.getPatternMappingUri().equals(uri) && entry.getNaturalLanguageRepresentation().equals(naturalLanguageRepresentation)) 
                 return entry;
         
-        for ( NeuronalNetworkTrainingFileEntry entry : this.notAnnotatedEntries ) 
+        for ( MachineLearningTrainingFileEntry entry : this.notAnnotatedEntries ) 
             if ( entry.getPatternMappingUri().equals(uri) && entry.getNaturalLanguageRepresentation().equals(naturalLanguageRepresentation)) 
                 return entry;
 
@@ -100,7 +108,7 @@ public class NeuronalNetworkTrainingFile {
      * 
      * @param neuronalNetworkTrainingFileEntry
      */
-    public void addEntry(NeuronalNetworkTrainingFileEntry neuronalNetworkTrainingFileEntry) {
+    public void addEntry(MachineLearningTrainingFileEntry neuronalNetworkTrainingFileEntry) {
         
         if ( neuronalNetworkTrainingFileEntry.getAnnotation() != null ) 
             this.annotatedEntries.add(neuronalNetworkTrainingFileEntry);
@@ -112,7 +120,7 @@ public class NeuronalNetworkTrainingFile {
     /**
      * @return the annotatedAntries
      */
-    public List<NeuronalNetworkTrainingFileEntry> getAnnotatedAntries() {
+    public List<MachineLearningTrainingFileEntry> getAnnotatedEntries() {
     
         return this.annotatedEntries;
     }
@@ -121,7 +129,7 @@ public class NeuronalNetworkTrainingFile {
     /**
      * @param annotatedAntries the annotatedAntries to set
      */
-    public void setAnnotatedAntries(List<NeuronalNetworkTrainingFileEntry> annotatedAntries) {
+    public void setAnnotatedAntries(List<MachineLearningTrainingFileEntry> annotatedAntries) {
     
         this.annotatedEntries = annotatedAntries;
     }
@@ -130,7 +138,7 @@ public class NeuronalNetworkTrainingFile {
     /**
      * @return the notAnnotatedEntries
      */
-    public List<NeuronalNetworkTrainingFileEntry> getNotAnnotatedEntries() {
+    public List<MachineLearningTrainingFileEntry> getNotAnnotatedEntries() {
     
         return this.notAnnotatedEntries;
     }
@@ -139,7 +147,7 @@ public class NeuronalNetworkTrainingFile {
     /**
      * @param notAnnotatedEntries the notAnnotatedEntries to set
      */
-    public void setNotAnnotatedEntries(List<NeuronalNetworkTrainingFileEntry> notAnnotatedEntries) {
+    public void setNotAnnotatedEntries(List<MachineLearningTrainingFileEntry> notAnnotatedEntries) {
     
         this.notAnnotatedEntries = notAnnotatedEntries;
     }

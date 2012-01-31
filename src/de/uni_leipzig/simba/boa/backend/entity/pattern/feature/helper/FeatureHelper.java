@@ -11,7 +11,8 @@ import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.comparator.PatternComparatorGenerator;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.FeatureEnum;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 
 public class FeatureHelper {

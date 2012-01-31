@@ -42,8 +42,7 @@ public final class StanfordNLPNamedEntityRecognition implements NamedEntityRecog
 
             // this is used to surpress the "error" messages from stanford etc.
 		    PrintStream standardErrorStream = System.err;
-            PrintStream newErr = new PrintStream(new ByteArrayOutputStream());
-            System.setErr(newErr);
+            System.setErr(new PrintStream(new ByteArrayOutputStream()));
 
             this.classifier = CRFClassifier.getClassifier(new File(classifierPath));
             

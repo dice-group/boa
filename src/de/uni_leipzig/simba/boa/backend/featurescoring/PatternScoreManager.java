@@ -8,6 +8,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 
+import sun.nio.cs.ext.MacIceland;
+
 import de.danielgerber.file.BufferedFileWriter;
 import de.danielgerber.file.FileUtil;
 import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
@@ -16,6 +18,10 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.AbstractMachineLearningTrainingFile;
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry.MachineLearningTrainingFileEntry;
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.factory.MachineLearningTrainingFileFactory;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 
 /**
@@ -28,7 +34,7 @@ public class PatternScoreManager {
      * 
      * @param filepath
      */
-    public void writeNetworkTrainingFile(NeuronalNetworkTrainingFile networkTrainingFile, String filepath) {
+    public void writeNetworkTrainingFile(MachineLearningTrainingFile networkTrainingFile, String filepath) {
 
         BufferedFileWriter writer = FileUtil.openWriter(filepath, "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
         writer.writeLineNoNewLine(networkTrainingFile.toString());
@@ -40,26 +46,26 @@ public class PatternScoreManager {
      * @param mappings
      * @return
      */
-    public NeuronalNetworkTrainingFile createNeuronalNetworkTrainingFile(Set<PatternMapping> mappings) {
+    public MachineLearningTrainingFile createNeuronalNetworkTrainingFile(Set<PatternMapping> mappings) {
         
-        List<NeuronalNetworkTrainingFileEntry> trainingFileEntries = new ArrayList<NeuronalNetworkTrainingFileEntry>();
+        List<MachineLearningTrainingFileEntry> trainingFileEntries = new ArrayList<MachineLearningTrainingFileEntry>();
 
         // collect all the patterns
         for (PatternMapping mapping : mappings) {
             for (Pattern pattern : mapping.getPatterns() ) {
                 
-                trainingFileEntries.add(new NeuronalNetworkTrainingFileEntry(
-                                            mapping.getProperty().getUri(),
-                                            pattern.getNaturalLanguageRepresentation(),
-                                            pattern.buildFeatureVector(mapping),
-                                            null));
+                trainingFileEntries.add(MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFileEntry(
+                                                                                            mapping.getProperty().getUri(),
+                                                                                            pattern.getNaturalLanguageRepresentation(),
+                                                                                            pattern.buildFeatureVector(mapping),
+                                                                                            null));
             }
             // shuffle rather more then less
             Collections.shuffle(trainingFileEntries);
         }
         
         // create a file which contains all possible patterns, but there are shuffled so that we don't evaluate to much pattern of the same mapping
-        return new NeuronalNetworkTrainingFile(trainingFileEntries);
+        return MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFile(trainingFileEntries);
     }
     
     /**
@@ -68,17 +74,17 @@ public class PatternScoreManager {
      * @param neuronalNetworkTrainingFile
      * @return
      */
-    public NeuronalNetworkTrainingFile updateNetworkTrainingFile(Set<PatternMapping> patternMappings, NeuronalNetworkTrainingFile neuronalNetworkTrainingFile) {
+    public MachineLearningTrainingFile updateNetworkTrainingFile(Set<PatternMapping> patternMappings, MachineLearningTrainingFile neuronalNetworkTrainingFile) {
         
         for (PatternMapping mapping : patternMappings) {
             for (Pattern pattern : mapping.getPatterns()) {
                 
-                NeuronalNetworkTrainingFileEntry entry = neuronalNetworkTrainingFile.getEntry(mapping.getProperty().getUri(), pattern.getNaturalLanguageRepresentation());
+                MachineLearningTrainingFileEntry entry = neuronalNetworkTrainingFile.getEntry(mapping.getProperty().getUri(), pattern.getNaturalLanguageRepresentation());
                 
                 if ( entry != null )                  
                     entry.setFeatures(pattern.buildFeatureVector(mapping));
                 else 
-                    neuronalNetworkTrainingFile.addEntry(new NeuronalNetworkTrainingFileEntry(
+                    neuronalNetworkTrainingFile.addEntry(MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFileEntry(
                                                             mapping.getProperty().getUri(),
                                                             pattern.getNaturalLanguageRepresentation(),
                                                             pattern.buildFeatureVector(mapping),
@@ -97,9 +103,9 @@ public class PatternScoreManager {
      * @param encoding
      * @return
      */
-    public NeuronalNetworkTrainingFile readNetworkTrainingFile(String filepath, String encoding) {
+    public MachineLearningTrainingFile readNetworkTrainingFile(String filepath, String encoding) {
         
-        List<NeuronalNetworkTrainingFileEntry> entries = new ArrayList<NeuronalNetworkTrainingFileEntry>();
+        List<MachineLearningTrainingFileEntry> entries = new ArrayList<MachineLearningTrainingFileEntry>();
         
         for (String line : FileUtil.readFileInList(filepath, encoding)) {
             if ( line.trim().isEmpty() ) continue;
@@ -117,13 +123,13 @@ public class PatternScoreManager {
             String patternMappingUri = lineParts[lineParts.length - 2];
             String naturalLanguageRepresentation = lineParts[lineParts.length - 1];
             
-            entries.add(new NeuronalNetworkTrainingFileEntry(
-                                            patternMappingUri,
-                                            naturalLanguageRepresentation,
-                                            featureValues,
-                                            manual));
+            entries.add(MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFileEntry(
+                    patternMappingUri,
+                    naturalLanguageRepresentation,
+                    featureValues,
+                    manual));
         }
-        return new NeuronalNetworkTrainingFile(entries);
+        return MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFile(entries);
     }
     
     public static void main(String[] args) {

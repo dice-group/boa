@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Language;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Language;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 /**

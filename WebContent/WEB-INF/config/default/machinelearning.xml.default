@@ -3,6 +3,7 @@
     "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+
     <bean id="MachineLearningToolFactory" class="de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningToolFactory"
         factory-method="getInstance" singleton="true">
 
@@ -15,4 +16,17 @@
             </list>
         </property>
     </bean>
+    
+    <bean id="MachineLearningTrainingFileFactory" class="de.uni_leipzig.simba.boa.backend.featurescoring.MachineLearningTrainingFileFactory"
+        factory-method="getInstance" singleton="true">
+
+        <property name="defaultMachineLearningTraingingFile">
+            <bean id="DefaultMachineLearningFile" class="de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.impl.DefaultMachineLearningFile" />
+        </property>
+        
+        <property name="defaultMachineLearningTraingingFileEntry">
+            <bean id="DefaultMachineLearningFileEntry" class="de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.impl.DefaultMachineLearningFileEntry" />
+        </property>
+    </bean>
+    
 </beans>

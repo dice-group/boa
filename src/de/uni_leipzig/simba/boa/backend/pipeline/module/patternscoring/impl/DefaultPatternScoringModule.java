@@ -3,9 +3,13 @@
  */
 package de.uni_leipzig.simba.boa.backend.pipeline.module.patternscoring.impl;
 
+import java.io.File;
+
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.featurescoring.PatternScoreManager;
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningTool;
 import de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningToolFactory;
@@ -21,6 +25,7 @@ public class DefaultPatternScoringModule extends AbstractPatternScoringModule {
     
     // dependent settings
     private final String PATTERN_MAPPING_FOLDER             = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
+    private final String MACHINE_LEARNING_TRAINING_FILE     = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("neural.network.network.directory") + "network_learn.txt";
     
     private final NLPediaLogger logger                      = new NLPediaLogger(DefaultPatternScoringModule.class);
     private final MachineLearningTool machineLearningTool   = MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool();
@@ -62,6 +67,13 @@ public class DefaultPatternScoringModule extends AbstractPatternScoringModule {
             SerializationManager.getInstance().serializePatternMapping(mapping, PATTERN_MAPPING_FOLDER + mapping.getProperty().getLabel() + ".bin");
         }
         this.scoringTime = System.currentTimeMillis() - start;
+        
+        // only for test pruposes TODO remove
+        for ( PatternMapping mapping : this.moduleInterchangeObject.getPatternMappings()) {
+            for (Pattern pattern :mapping.getPatterns()) {
+                System.out.println(pattern);
+            }
+        }
     }
 
     /* (non-Javadoc)
@@ -87,7 +99,16 @@ public class DefaultPatternScoringModule extends AbstractPatternScoringModule {
      */
     @Override
     public boolean isDataAlreadyAvailable() {
-
+        
+        if ( !new File(MACHINE_LEARNING_TRAINING_FILE).exists() )
+            throw new RuntimeException("No training examples for pattern scoring available! Tag them first");
+        
+        PatternScoreManager pcm = new PatternScoreManager();
+        MachineLearningTrainingFile trainFile = pcm.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8");
+        
+        if ( trainFile.getAnnotatedEntries().size() == 0 )
+            throw new RuntimeException("No training examples for pattern scoring available! Tag them first");
+        
         boolean isAvailable = true;
         
         if ( this.moduleInterchangeObject.getPatternMappings() != null ) {

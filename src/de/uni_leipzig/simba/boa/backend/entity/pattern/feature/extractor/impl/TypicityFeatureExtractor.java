@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -17,7 +17,9 @@ import de.uni_leipzig.simba.boa.backend.entity.context.Context;
 import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
 import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
@@ -32,9 +34,9 @@ import edu.stanford.nlp.process.DocumentPreprocessor;
  * @author Daniel Gerber
  *
  */
-public class TypicityFeature implements Feature {
+public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 
-	private final NLPediaLogger logger					= new NLPediaLogger(TypicityFeature.class);
+	private final NLPediaLogger logger					= new NLPediaLogger(TypicityFeatureExtractor.class);
 	private NamedEntityRecognition ner;
 	private final int maxNumberOfEvaluationSentences 	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfTypicityConfidenceMeasureDocuments"));
 	
@@ -53,7 +55,7 @@ public class TypicityFeature implements Feature {
 	private DocumentPreprocessor preprocessor;
 	private StringBuilder stringBuilder;
 	
-	public TypicityFeature() {}
+	public TypicityFeatureExtractor() {}
 	
 	/* (non-Javadoc)
 	 * @see simba.nlpedia.entity.pattern.evaluation.PatternEvaluator#evaluatePattern(simba.nlpedia.entity.pattern.PatternMapping)
@@ -116,10 +118,10 @@ public class TypicityFeature implements Feature {
 		double rangeCorrectness = (double) correctRange / (double) sentencesToEvaluate.size();
 		double typicity = ((domainCorrectness + rangeCorrectness) / 2) * Math.log(sentences.size() + 1);
 		
-		pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_CORRECT_DOMAIN_NUMBER, domainCorrectness >= 0 ? domainCorrectness : 0);
-		pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_CORRECT_RANGE_NUMBER, rangeCorrectness >= 0 ? rangeCorrectness : 0);
-		pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY_SENTENCES, Math.log(sentences.size() + 1)  >= 0 ? Math.log(sentences.size() + 1) : 0);
-		pattern.getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TYPICITY, typicity >= 0 ? typicity : 0 );
+		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY_CORRECT_DOMAIN_NUMBER"), domainCorrectness >= 0 ? domainCorrectness : 0);
+		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY_CORRECT_RANGE_NUMBER"), rangeCorrectness >= 0 ? rangeCorrectness : 0);
+		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY_SENTENCES"), Math.log(sentences.size() + 1)  >= 0 ? Math.log(sentences.size() + 1) : 0);
+		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY"), typicity >= 0 ? typicity : 0 );
 		
 		this.logger.debug("Typicity feature for " + pair.getMapping().getProperty().getLabel() + "/\"" + pattern.getNaturalLanguageRepresentation() + "\"  finished in " + TimeUtil.convertMilliSeconds((new Date().getTime() - start)) + ".");
 	}
@@ -133,7 +135,7 @@ public class TypicityFeature implements Feature {
 	 */
 	private String replaceBrackets(String foundString) {
 
-		for (Map.Entry<String, String> bracket : TypicityFeature.BRACKETS.entrySet()) {
+		for (Map.Entry<String, String> bracket : TypicityFeatureExtractor.BRACKETS.entrySet()) {
 			
 			if ( foundString.contains(bracket.getKey())) {
 	

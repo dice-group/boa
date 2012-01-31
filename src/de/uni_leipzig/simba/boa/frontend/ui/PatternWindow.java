@@ -19,7 +19,7 @@ import com.vaadin.ui.Window;
 import de.danielgerber.format.OutputFormatter;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.FeatureEnum;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
 import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 
@@ -99,7 +99,7 @@ public class PatternWindow extends Window {
 		// similarity
 		HorizontalLayout hLayout3 = new HorizontalLayout();
 		Label simLabel = new Label("<b>Similarity: </b>", Label.CONTENT_XHTML);
-		Label similarity = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.WORDNET_DISTANCE), "##.###")));
+		Label similarity = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(FeatureEnum.WORDNET_DISTANCE), "##.###")));
 		hLayout3.addComponent(simLabel);
 		hLayout3.addComponent(similarity);
 		hLayout3.setComponentAlignment(simLabel, Alignment.MIDDLE_LEFT);
@@ -110,7 +110,7 @@ public class PatternWindow extends Window {
 		// support
 		HorizontalLayout hLayout4 = new HorizontalLayout();
 		Label supportLabel = new Label("<b>Support_Max: </b>", Label.CONTENT_XHTML);
-		Label support = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.SUPPORT_NUMBER_OF_MAX_PAIRS_LEARNED_FROM), "##.###")));
+		Label support = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(FeatureEnum.SUPPORT_NUMBER_OF_MAX_PAIRS_LEARNED_FROM), "##.###")));
 		hLayout4.addComponent(supportLabel);
 		hLayout4.addComponent(support);
 		hLayout4.setComponentAlignment(supportLabel, Alignment.MIDDLE_LEFT);
@@ -121,7 +121,7 @@ public class PatternWindow extends Window {
 		// support
 		HorizontalLayout hLayout41 = new HorizontalLayout();
 		Label supportLabel1 = new Label("<b>Support_Pair: </b>", Label.CONTENT_XHTML);
-		Label support1 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM), "##.###")));
+		Label support1 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(FeatureEnum.SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM), "##.###")));
 		hLayout41.addComponent(supportLabel1);
 		hLayout41.addComponent(support1);
 		hLayout41.setComponentAlignment(supportLabel1, Alignment.MIDDLE_LEFT);
@@ -132,7 +132,7 @@ public class PatternWindow extends Window {
 		// support
 		HorizontalLayout hLayout42 = new HorizontalLayout();
 		Label supportLabel2 = new Label("<b>Support: </b>", Label.CONTENT_XHTML);
-		Label support2 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM)*this.pattern.getFeatures().get(Feature.SUPPORT_NUMBER_OF_MAX_PAIRS_LEARNED_FROM), "##.###")));
+		Label support2 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(FeatureEnum.SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM)*this.pattern.getFeatures().get(FeatureEnum.SUPPORT_NUMBER_OF_MAX_PAIRS_LEARNED_FROM), "##.###")));
 		hLayout42.addComponent(supportLabel2);
 		hLayout42.addComponent(support2);
 		hLayout42.setComponentAlignment(supportLabel2, Alignment.MIDDLE_LEFT);
@@ -143,7 +143,7 @@ public class PatternWindow extends Window {
 		// typicity
 		HorizontalLayout hLayout5 = new HorizontalLayout();
 		Label typicityLabel = new Label("<b>Typicity-Domain: </b>", Label.CONTENT_XHTML);
-		Label typicity = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.TYPICITY_CORRECT_DOMAIN_NUMBER), "##.###")));
+		Label typicity = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(FeatureEnum.TYPICITY_CORRECT_DOMAIN_NUMBER), "##.###")));
 		hLayout5.addComponent(typicityLabel);
 		hLayout5.addComponent(typicity);
 		hLayout5.setComponentAlignment(typicityLabel, Alignment.MIDDLE_LEFT);
@@ -154,7 +154,7 @@ public class PatternWindow extends Window {
 		// typicity
 		HorizontalLayout hLayout51 = new HorizontalLayout();
 		Label typicityLabel1 = new Label("<b>Typicity-Range: </b>", Label.CONTENT_XHTML);
-		Label typicity1 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.TYPICITY_CORRECT_RANGE_NUMBER), "##.###")));
+		Label typicity1 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(FeatureEnum.TYPICITY_CORRECT_RANGE_NUMBER), "##.###")));
 		hLayout51.addComponent(typicityLabel1);
 		hLayout51.addComponent(typicity1);
 		hLayout51.setComponentAlignment(typicityLabel1, Alignment.MIDDLE_LEFT);
@@ -165,7 +165,7 @@ public class PatternWindow extends Window {
 		// typicity
 		HorizontalLayout hLayout52 = new HorizontalLayout();
 		Label typicityLabel2 = new Label("<b>Typicity-Sentences: </b>", Label.CONTENT_XHTML);
-		Label typicity2 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.TYPICITY_SENTENCES), "##.###")));
+		Label typicity2 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(FeatureEnum.TYPICITY_SENTENCES), "##.###")));
 		hLayout52.addComponent(typicityLabel2);
 		hLayout52.addComponent(typicity2);
 		hLayout52.setComponentAlignment(typicityLabel2, Alignment.MIDDLE_LEFT);
@@ -176,7 +176,7 @@ public class PatternWindow extends Window {
 		// typicity
 		HorizontalLayout hLayout53 = new HorizontalLayout();
 		Label typicityLabel3 = new Label("<b>Typicity: </b>", Label.CONTENT_XHTML);
-		Label typicity3 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.TYPICITY), "##.###")));
+		Label typicity3 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(FeatureEnum.TYPICITY), "##.###")));
 		hLayout53.addComponent(typicityLabel3);
 		hLayout53.addComponent(typicity3);
 		hLayout53.setComponentAlignment(typicityLabel3, Alignment.MIDDLE_LEFT);
@@ -187,7 +187,7 @@ public class PatternWindow extends Window {
 		// specificity
 		HorizontalLayout hLayout6 = new HorizontalLayout();
 		Label specificityLabel = new Label("<b>Specificity: </b>", Label.CONTENT_XHTML);
-		Label specificity = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.SPECIFICITY), "##.###")));
+		Label specificity = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(FeatureEnum.SPECIFICITY), "##.###")));
 		hLayout6.addComponent(specificityLabel);
 		hLayout6.addComponent(specificity);
 		hLayout6.setComponentAlignment(specificityLabel, Alignment.MIDDLE_LEFT);
@@ -198,7 +198,7 @@ public class PatternWindow extends Window {
 		// reverb
 		HorizontalLayout hLayout7 = new HorizontalLayout();
 		Label reverbLabel = new Label("<b>Reverb: </b>", Label.CONTENT_XHTML);
-		Label reverb = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.REVERB), "##.###")));
+		Label reverb = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(FeatureEnum.REVERB), "##.###")));
 		hLayout7.addComponent(reverbLabel);
 		hLayout7.addComponent(reverb);
 		hLayout7.setComponentAlignment(reverbLabel, Alignment.MIDDLE_LEFT);
@@ -209,7 +209,7 @@ public class PatternWindow extends Window {
 		// tf-idf
 		HorizontalLayout hLayout8 = new HorizontalLayout();
 		Label tfIdfLabel = new Label("<b>idf: </b>", Label.CONTENT_XHTML);
-		Label tfIdf = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.TF_IDF_IDF), "##.###")));
+		Label tfIdf = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(FeatureEnum.TF_IDF_IDF), "##.###")));
 		hLayout8.addComponent(tfIdfLabel);
 		hLayout8.addComponent(tfIdf);
 		hLayout8.setComponentAlignment(tfIdfLabel, Alignment.MIDDLE_LEFT);
@@ -220,7 +220,7 @@ public class PatternWindow extends Window {
 		// tf-idf
 		HorizontalLayout hLayout81 = new HorizontalLayout();
 		Label tfIdfLabel1 = new Label("<b>tf: </b>", Label.CONTENT_XHTML);
-		Label tfIdf1 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.TF_IDF_TF), "##.###")));
+		Label tfIdf1 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(FeatureEnum.TF_IDF_TF), "##.###")));
 		hLayout81.addComponent(tfIdfLabel1);
 		hLayout81.addComponent(tfIdf1);
 		hLayout81.setComponentAlignment(tfIdfLabel1, Alignment.MIDDLE_LEFT);
@@ -231,7 +231,7 @@ public class PatternWindow extends Window {
 		// tf-idf
 		HorizontalLayout hLayout82 = new HorizontalLayout();
 		Label tfIdfLabel2 = new Label("<b>tf-idf: </b>", Label.CONTENT_XHTML);
-		Label tfIdf2 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(Feature.TF_IDF_TFIDF), "##.###")));
+		Label tfIdf2 = new Label(String.valueOf(OutputFormatter.format(this.pattern.getFeatures().get(FeatureEnum.TF_IDF_TFIDF), "##.###")));
 		hLayout82.addComponent(tfIdfLabel2);
 		hLayout82.addComponent(tfIdf2);
 		hLayout82.setComponentAlignment(tfIdfLabel2, Alignment.MIDDLE_LEFT);

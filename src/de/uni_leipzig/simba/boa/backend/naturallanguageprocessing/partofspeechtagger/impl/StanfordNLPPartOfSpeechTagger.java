@@ -1,6 +1,8 @@
 package de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,14 @@ public final class StanfordNLPPartOfSpeechTagger implements PartOfSpeechTagger {
 		
 		try {
 			
+		    // this is used to surpress the "error" messages from stanford etc.
+            PrintStream standardErrorStream = System.err;
+            System.setErr(new PrintStream(new ByteArrayOutputStream()));
+		    
 			this.tagger = new MaxentTagger(NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("pos.tagger.model"));
+			
+			// revert to original standard error stream
+            System.setErr(standardErrorStream);
 		}
 		catch (ClassNotFoundException e) {
 			

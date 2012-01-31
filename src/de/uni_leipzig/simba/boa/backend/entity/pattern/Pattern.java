@@ -16,11 +16,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import de.danielgerber.format.OutputFormatter;
-import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 
 /**
  * 
@@ -210,8 +210,8 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Pattern [naturalLanguageRepresentation=");
 		builder.append(naturalLanguageRepresentation);
-//		builder.append(", numberOfOccurrences=");
-//		builder.append(numberOfOccurrences);
+		builder.append(", score=");
+		builder.append(score);
 //		builder.append(", useForPatternEvaluation=");
 //		builder.append(useForPatternEvaluation);
 //		builder.append(", patternMappings=");
@@ -508,37 +508,45 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		
 		List<Double> featureValues = new ArrayList<Double>();
 
-		for ( Feature feature : Feature.values() ) {
-			
-			if ( feature.getSupportedLanguages().contains(NLPediaSettings.getInstance().getSystemLanguage()) ) {
-				
-				// exclude everything which is not activated
-				if ( feature.useForPatternFeatureLearning() ) {
-				    
-					// non zero to one values have to be normalized
-					if ( !feature.isZeroToOneValue() ) {
-						
-						Double maximum = 0D;
-						// take every mapping into account to find the maximum value
-						if ( feature.needsGlobalNormalization() ) {
-							
-							maximum = FeatureHelper.calculateGlobalMaximum(feature);
-						}
-						// only use the current mapping to find the maximum
-						else {
-							
-							maximum = FeatureHelper.calculateLocalMaximum(mapping, feature);
-						}
-						featureValues.add(this.features.get(feature) / maximum);
-//						output.append(OutputFormatter.format((this.features.get(feature) / maximum), "0.00000") + Constants.FEATURE_FILE_COLUMN_SEPARATOR);
-					}
-					// we dont need to normalize a 0-1 value
-					else {
-//						output.append(OutputFormatter.format(this.features.get(feature), "0.00000") + Constants.FEATURE_FILE_COLUMN_SEPARATOR);
-					    featureValues.add(this.features.get(feature));
-					}
-				}
-			}
+		// we do only want all activated features
+		for ( FeatureExtractor featureextractor : FeatureFactory.getInstance().getFeatureExtractorMap().values() ) {
+		    for ( Feature feature : featureextractor.getHandeledFeatures() ) {
+		        
+                if ( feature.getSupportedLanguages().contains(NLPediaSettings.getInstance().getSystemLanguage()) ) {
+                    
+                    // exclude everything which is not activated
+                    if ( feature.isUseForPatternLearning() ) {
+                        
+                        // non zero to one values have to be normalized
+                        if ( !feature.isZeroToOneValue() ) {
+                            
+                            Double maximum = 0D;
+                            // take every mapping into account to find the maximum value
+                            if ( feature.isNormalizeGlobaly() ) {
+
+                                System.out.println("Pattern buildFeatureVector");
+                                for ( Map.Entry<Feature, Double> entry: this.features.entrySet()) {
+                                    
+                                    System.out.println(entry.getKey().getName() + " " + entry.getValue());
+                                }
+                                maximum = FeatureHelper.calculateGlobalMaximum(feature);
+                            }
+                            // only use the current mapping to find the maximum
+                            else {
+                                
+                                maximum = FeatureHelper.calculateLocalMaximum(mapping, feature);
+                            }
+                            featureValues.add(this.features.get(feature) / maximum);
+//	                        output.append(OutputFormatter.format((this.features.get(feature) / maximum), "0.00000") + Constants.FEATURE_FILE_COLUMN_SEPARATOR);
+                        }
+                        // we dont need to normalize a 0-1 value
+                        else {
+//	                        output.append(OutputFormatter.format(this.features.get(feature), "0.00000") + Constants.FEATURE_FILE_COLUMN_SEPARATOR);
+                            featureValues.add(this.features.get(feature));
+                        }
+                    }
+	            }
+		    }
 		}
 		return featureValues;
 	}

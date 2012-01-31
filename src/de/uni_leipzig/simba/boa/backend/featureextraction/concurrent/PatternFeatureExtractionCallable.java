@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.feature;
+package de.uni_leipzig.simba.boa.backend.featureextraction.concurrent;
 
 import java.util.Collection;
 import java.util.Date;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.uni_leipzig.simba.boa.backend.concurrent.BoaCallable;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -17,7 +18,7 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 public class PatternFeatureExtractionCallable extends BoaCallable<FeatureExtractionPair> {
 
 	private List<FeatureExtractionPair> patternMappingPatterns = null;
-	private Map<String,Feature> features = FeatureFactory.getInstance().getFeatureMap();
+	private Map<String,FeatureExtractor> features = FeatureFactory.getInstance().getFeatureExtractorMap();
 	
 	private final NLPediaLogger logger = new NLPediaLogger(PatternFeatureExtractionCallable.class);
 
@@ -31,7 +32,7 @@ public class PatternFeatureExtractionCallable extends BoaCallable<FeatureExtract
 	public Collection<FeatureExtractionPair> call() {
 		
 		// go through all features
-		for ( Feature feature : features.values() ) {
+		for ( FeatureExtractor feature : features.values() ) {
 
 			this.logger.info(feature.getClass().getSimpleName() + " started from " + this.getName() +"!");
 			long start = new Date().getTime();

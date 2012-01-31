@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -12,7 +12,9 @@ import de.danielgerber.math.MathUtil;
 import de.danielgerber.string.StringUtil;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
@@ -30,7 +32,7 @@ import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
 import edu.washington.cs.knowitall.util.DefaultObjects;
 
 
-public class ReverbFeature implements Feature {
+public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 
 	static {
 		// this is a hack to load the training data for reverb
@@ -41,12 +43,12 @@ public class ReverbFeature implements Feature {
 	private ReVerbConfFunction scoreFunc;
 	private DefaultPatternSearcher searcher;
 	
-	private NLPediaLogger logger = new NLPediaLogger(ReverbFeature.class);
+	private NLPediaLogger logger = new NLPediaLogger(ReverbFeatureExtractor.class);
 
 	/**
 	 * init the ReVerb-Toolkit
 	 */
-	public ReverbFeature() {
+	public ReverbFeatureExtractor() {
 
 	}
 	
@@ -132,7 +134,7 @@ public class ReverbFeature implements Feature {
 		
 		double score = MathUtil.getAverage(scores);
 		// update the pattern
-		pair.getPattern().getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.REVERB, score >= 0 ? score : 0); // -1 is not useful for confidence
+		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("REVERB"), score >= 0 ? score : 0); // -1 is not useful for confidence
 		pair.getPattern().setGeneralizedPattern(StringUtil.getLongestSubstring(relations));
 	}
 

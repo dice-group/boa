@@ -48,8 +48,10 @@ import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.FeatureEnum;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 import edu.stanford.nlp.ling.HasWord;
@@ -168,7 +170,7 @@ public class XXX {
 			features.add(new HashMap<Feature,List<Double>>());
 			
 			for (Pair pair : subLists.get(i)) {
-				for (Feature f : Feature.values()) {
+				for (Feature f : FeatureFactory.getInstance().getFeatureMap().values()) {
 					
 						if ( features.get(i).containsKey(f) ) {
 
@@ -423,14 +425,14 @@ public class XXX {
 		if ( feature.getSupportedLanguages().contains(NLPediaSettings.getInstance().getSystemLanguage()) ) {
 			
 			// exclude everything which is not activated
-			if ( feature.useForPatternFeatureLearning() ) {
+			if ( feature.isUseForPatternLearning() ) {
 				
 				// non zero to one values have to be normalized
 				if ( !feature.isZeroToOneValue() ) {
 					
 					Double maximum = 0D;
 					// take every mapping into account to find the maximum value
-					if ( feature.needsGlobalNormalization() ) {
+					if ( feature.isNormalizeGlobaly() ) {
 						
 						maximum = FeatureHelper.calculateGlobalMaximum(feature);
 					}

@@ -11,9 +11,12 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledgeManager;
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternSearchThreadManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.AbstractDefaultBackgroundKnowledgeCollectorModule;
+import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
+import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 
 
 /**
@@ -31,6 +34,9 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 	
 	private final int SPARQL_QUERY_LIMIT					= new Integer(NLPediaSettings.getInstance().getSetting("sparqlQueryLimit"));
 	private final String BOA_LANGUAGE						= NLPediaSettings.BOA_LANGUAGE;
+
+	// for the report
+    private long loadKnowledgeTime;
 	
 	@Override
 	public String getName() {
@@ -38,14 +44,20 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 		return "Datatype Property Background Knowledge Collector Module (de/en)";
 	}
 	
+    @Override
+    public String getReport() {
+
+        return "A total of " + this.backgroundKnowledge.size() + " datatype property triples has been added to the background knowledge repository!";
+    }
+	
 	@Override
 	public void run() {
 
-		if ( (this.isDataAlreadyAvailable() && this.isOverrideData()) || !this.isDataAlreadyAvailable() ) {
-			
-			queryDatatypeProperties();
-		}
-		else this.loadAlreadyAvailableData();
+	    this.logger.info("Starting pattern search!");
+        long startLoadingBackgroundKnowledge = System.currentTimeMillis();
+        queryDatatypeProperties();
+		this.loadKnowledgeTime = (System.currentTimeMillis() - startLoadingBackgroundKnowledge);
+        this.logger.info("Loading datatype background knowledge finished in " + TimeUtil.convertMilliSeconds(loadKnowledgeTime));
 	}
 	
 	@Override
@@ -53,8 +65,6 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 
 		this.backgroundKnowledge.addAll(
 				BackgroundKnowledgeManager.getInstance().getBackgroundKnowledgeInDirectory(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/datatype/"));
-		
-		
 	}
 	
 	@Override

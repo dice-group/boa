@@ -53,7 +53,7 @@ public class PatternFilterFactory {
 	 * @param clazz - the class for the filter
 	 * @return the requested pattern filter or null if not found
 	 */
-	public PatternFilter getPatternFilter(Class clazz) {
+	public PatternFilter getPatternFilter(Class<PatternFilter> clazz) {
 		
 		PatternFilterFactory.logger.debug("There is/are " + PatternFilterFactory.patternFilterMap.size() + " filter(s) available!");
 		

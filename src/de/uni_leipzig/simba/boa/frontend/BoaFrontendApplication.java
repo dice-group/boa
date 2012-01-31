@@ -1,6 +1,7 @@
 package de.uni_leipzig.simba.boa.frontend;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.TreeSet;
 
 import com.vaadin.Application;
@@ -57,6 +58,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 	public static String CURRENT_INDEX_DIR = "";
 	
 	private PatternMapping currentPatternMapping;
+	private PatternMappingManager patternMappingManager = new PatternMappingManager();
 	
 	@Override
 	public void init() {
@@ -101,7 +103,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				
 				long start = System.currentTimeMillis();
 				NLPediaSettings.getInstance().printMemoryUsage();
-				this.currentPatternMapping = PatternMappingManager.getInstance().getPatternMapping(uri, database);
+				this.currentPatternMapping = this.patternMappingManager.getPatternMapping(uri, database);
 				System.out.println("pmDao.findPatternMappingByUri() took: " + (System.currentTimeMillis() - start) + "ms.");
 				NLPediaSettings.getInstance().printMemoryUsage();
 				
@@ -196,11 +198,14 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		
 		long start = System.currentTimeMillis();
 		NLPediaSettings.getInstance().printMemoryUsage();
-		this.tree = new DatabaseNavigationTree(this);
+		
+		List<PatternMapping> mappings = this.patternMappingManager.getPatternMappings(CURRENT_DATABASE + "/patternmappings/");
+		
+		this.tree = new DatabaseNavigationTree(this, mappings);
 		System.out.println("building database nav tree took: " + (System.currentTimeMillis() - start) + "ms.");
 		NLPediaSettings.getInstance().printMemoryUsage();
 		
-		this.tripleTree = new DatabaseNavigationTree(this);
+		this.tripleTree = new DatabaseNavigationTree(this, mappings);
 		
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();

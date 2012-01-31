@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.uni_leipzig.simba.boa.backend.featurescoring;
+package de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry;
 
 import java.util.List;
 
@@ -13,14 +13,17 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHel
 /**
  * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
  */
-public class NeuronalNetworkTrainingFileEntry {
+public abstract class AbstractMachineLearningTrainingFileEntry implements MachineLearningTrainingFileEntry {
 
-    private List<Double> features;
-    private Boolean annotation;
-    private String patternMappingUri;
-    private String naturalLanguageRepresentation;
+    protected List<Double> features;
+    protected Boolean annotation;
+    protected String patternMappingUri;
+    protected String naturalLanguageRepresentation;
     
-    public NeuronalNetworkTrainingFileEntry(String patternMappingUri, String naturalLanguageRepresentation, List<Double> featureVector, Boolean annotation) {
+    // used for spring
+    public AbstractMachineLearningTrainingFileEntry() {}
+    
+    public AbstractMachineLearningTrainingFileEntry(String patternMappingUri, String naturalLanguageRepresentation, List<Double> featureVector, Boolean annotation) {
 
         this.patternMappingUri              = patternMappingUri;
         this.naturalLanguageRepresentation  = naturalLanguageRepresentation;

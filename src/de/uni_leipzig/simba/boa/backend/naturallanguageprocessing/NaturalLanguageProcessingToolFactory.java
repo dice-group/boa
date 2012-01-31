@@ -11,6 +11,7 @@ import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.josatagger.Jos
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.SentenceBoundaryDisambiguation;
+import de.uni_leipzig.simba.boa.backend.util.FactoryUtil;
 
 /**
  * Singleton - initialized by the spring framework
@@ -68,7 +69,7 @@ public class NaturalLanguageProcessingToolFactory {
 
 		if ( this.partOfSpeechTools.contains(partOfSpeechTaggerClass.getName()) ) {
 			
-			return (PartOfSpeechTagger) createNewInstance(partOfSpeechTaggerClass);
+			return (PartOfSpeechTagger) FactoryUtil.createNewInstance(partOfSpeechTaggerClass);
 		}
 		this.logger.error("Could not load pos tagger " + partOfSpeechTaggerClass);
 		throw new RuntimeException("Could not load pos tagger " + partOfSpeechTaggerClass);
@@ -87,7 +88,7 @@ public class NaturalLanguageProcessingToolFactory {
 
 		if ( this.josaTaggerTools.contains(josaTaggerClass.getName()) ) {
 			
-			return (JosaTagger) createNewInstance(josaTaggerClass);
+			return (JosaTagger) FactoryUtil.createNewInstance(josaTaggerClass);
 		}
 		this.logger.error("Could not load josa tagger " + josaTaggerClass);
 		throw new RuntimeException("Could not load josa tagger " + josaTaggerClass);
@@ -101,7 +102,7 @@ public class NaturalLanguageProcessingToolFactory {
 
 		try {
 			
-			return (PartOfSpeechTagger) createNewInstance(
+			return (PartOfSpeechTagger) FactoryUtil.createNewInstance(
 					(Class<? extends NaturalLanguageProcessingTool>) Class.forName(defaultPartOfSpeechTagger));
 		}
 		catch (ClassNotFoundException e) {
@@ -125,7 +126,7 @@ public class NaturalLanguageProcessingToolFactory {
 
 		if ( this.namedEntityRecognitionTools.contains(namedEntityDisambiguationClass.getName()) ) {
 			
-			return (NamedEntityRecognition) createNewInstance(namedEntityDisambiguationClass);
+			return (NamedEntityRecognition) FactoryUtil.createNewInstance(namedEntityDisambiguationClass);
 		}
 		this.logger.error("Could not load named entity recognition " + namedEntityDisambiguationClass);
 		throw new RuntimeException("Could not load named entity recognition " + namedEntityDisambiguationClass);
@@ -139,7 +140,7 @@ public class NaturalLanguageProcessingToolFactory {
 
 		try {
 			
-			return (NamedEntityRecognition) createNewInstance(
+			return (NamedEntityRecognition) FactoryUtil.createNewInstance(
 					(Class<? extends NaturalLanguageProcessingTool>) Class.forName(defaultNamedEntityRecognition));
 		}
 		catch (ClassNotFoundException e) {
@@ -163,7 +164,7 @@ public class NaturalLanguageProcessingToolFactory {
 
 		if ( this.sentenceBoundaryDisambiguationTools.contains(sentenceBoundaryDisambiguationClass.getName()) ) {
 			
-			return (SentenceBoundaryDisambiguation) createNewInstance(sentenceBoundaryDisambiguationClass);
+			return (SentenceBoundaryDisambiguation) FactoryUtil.createNewInstance(sentenceBoundaryDisambiguationClass);
 		}
 		this.logger.error("Could not load sentence boundary disambiguation " + sentenceBoundaryDisambiguationClass);
 		throw new RuntimeException("Could not load sentence boundary disambiguation " + sentenceBoundaryDisambiguationClass);
@@ -177,7 +178,7 @@ public class NaturalLanguageProcessingToolFactory {
 
 		try {
 			
-			return (SentenceBoundaryDisambiguation) createNewInstance(
+			return (SentenceBoundaryDisambiguation) FactoryUtil.createNewInstance(
 					(Class<? extends NaturalLanguageProcessingTool>) Class.forName(defaultSentenceBoundaryDisambiguation));
 		}
 		catch (ClassNotFoundException e) {
@@ -196,7 +197,7 @@ public class NaturalLanguageProcessingToolFactory {
 
 		try {
 			
-			return (JosaTagger) createNewInstance(
+			return (JosaTagger) FactoryUtil.createNewInstance(
 					(Class<? extends NaturalLanguageProcessingTool>) Class.forName(defaultJosaTagger));
 		}
 		catch (ClassNotFoundException e) {
@@ -350,33 +351,6 @@ public class NaturalLanguageProcessingToolFactory {
 		this.josaTaggerTools = josaTaggerTools;
 	}
 
-	/**
-	 * Instantiates a natural language processing tool.
-	 * 
-	 * @param tool the tool to be instantiated
-	 * @return a new instance of the tool
-	 * @throw RuntimeException if something wents wrong
-	 */
-	private NaturalLanguageProcessingTool createNewInstance(Class<? extends NaturalLanguageProcessingTool> tool){
-		
-		try {
-			
-			return tool.newInstance();
-		}
-		catch (InstantiationException e) {
-
-			e.printStackTrace();
-			this.logger.fatal("Could not instantiate class: " + tool, e);
-			throw new RuntimeException("Could not instantiate class: " + tool, e);
-		}
-		catch (IllegalAccessException e) {
-			
-			e.printStackTrace();
-			this.logger.fatal("Could not instantiate class: " + tool, e);
-			throw new RuntimeException("Could not instantiate class: " + tool, e);
-		}
-	}
-	
 	public static void main(String[] args) {
 
 		NLPediaSetup setup = new NLPediaSetup(true);

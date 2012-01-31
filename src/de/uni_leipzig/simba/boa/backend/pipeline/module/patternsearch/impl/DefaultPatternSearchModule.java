@@ -26,6 +26,7 @@ import de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.AbstractPa
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 import de.uni_leipzig.simba.boa.backend.search.result.comparator.SearchResultComparator;
+import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 
 
 /**
@@ -69,14 +70,14 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 		long startSearch = System.currentTimeMillis();
 		List<SearchResult> results = PatternSearchThreadManager.startPatternSearchCallables(this.moduleInterchangeObject.getBackgroundKnowledge(), TOTAL_NUMBER_OF_SEARCH_THREADS);
 		this.patternSearchTime = (System.currentTimeMillis() - startSearch);
-		this.logger.info("All threads finished in " + patternSearchTime + "ms! There are " + results.size() + " strings in the result list");
+		this.logger.info("All threads finished in " + TimeUtil.convertMilliSeconds(patternSearchTime) + "! There are " + results.size() + " strings in the result list");
 		
 		// second part is to sort and save them
 		this.logger.info("Starting pattern generation and saving!");
 		startSearch = System.currentTimeMillis();
 		this.createPatternMappings(results);
 		this.patternCreationTime = (System.currentTimeMillis() - startSearch);
-		this.logger.info("Pattern generation and serialization took " + patternCreationTime + "ms! There are " + this.patternMappingCount + " pattern mappings and " + this.patternCount + " patterns.");
+		this.logger.info("Pattern generation and serialization took " + TimeUtil.convertMilliSeconds(patternCreationTime) + "! There are " + this.patternMappingCount + " pattern mappings and " + this.patternCount + " patterns.");
 	}
 	
 	private void createPatternMappings(List<SearchResult> results) {
@@ -232,7 +233,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 	    for (PatternMapping mapping : this.mappings.values()) 
 	        this.patternCount += mapping.getPatterns().size();
 	    
-		return "The pattern search took " + this.patternSearchTime + "ms where the pattern creating/serialization took " + this.patternCreationTime + "ms. "
+		return "The pattern search took " + TimeUtil.convertMilliSeconds(this.patternSearchTime) + " where the pattern creating/serialization took " + TimeUtil.convertMilliSeconds(this.patternCreationTime) + "ms. "
 				+ " There are " + this.moduleInterchangeObject.getPatternMappings().size() + " mappings and " + this.patternCount + " patterns.";
 	}
 

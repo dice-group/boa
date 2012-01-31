@@ -1,21 +1,23 @@
 package de.uni_leipzig.simba.boa.frontend.ui;
 
 import java.util.Iterator;
+import java.util.List;
 
 import com.vaadin.event.Action;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Tree;
 
+import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 import de.uni_leipzig.simba.boa.frontend.data.DatabaseContainer;
 
 @SuppressWarnings("serial")
 public class DatabaseNavigationTree extends Tree {
 	
-	public DatabaseNavigationTree(BoaFrontendApplication app) {
+	public DatabaseNavigationTree(BoaFrontendApplication app, List<PatternMapping> mappings) {
 		
-		this.setContainerDataSource(new DatabaseContainer());
+		this.setContainerDataSource(new DatabaseContainer(mappings));
 //		this.setContainerDataSource(DatabaseContainer.getTestDatabaseContainer());
 		
 		this.addListener((ItemClickListener) app);
