@@ -7,44 +7,336 @@
         class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory"
         factory-method="getInstance" singleton="true">
 
-        <property name="featureMap">
+        <property name="featureExtractorMap">
             <map>
-                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.SupportFeature">
-                    <bean id="SupportFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.SupportFeature" />
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SupportFeatureExtractor">
+                    <bean id="SupportFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SupportFeatureExtractor" />
                 </entry>
                 
-                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TypicityFeature">
-                    <bean id="TypicityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TypicityFeature" />
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TypicityFeatureExtractor">
+                    <bean id="TypicityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TypicityFeatureExtractor" />
                 </entry>
                 
-                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.SpecificityFeature">
-                    <bean id="SpecificityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.SpecificityFeature" />
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SpecificityFeatureExtractor">
+                    <bean id="SpecificityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SpecificityFeatureExtractor" />
                 </entry>
                 
-                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.StringSimilarityFeature">
-                    <bean id="StringSimilarityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.StringSimilarityFeature" />
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.StringSimilarityFeatureExtractor">
+                    <bean id="StringSimilarityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.StringSimilarityFeatureExtractor" />
                 </entry>
                 
-                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TfIdfFeature">
-                    <bean id="TfIdfFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TfIdfFeature" />
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TfIdfFeatureExtractor">
+                    <bean id="TfIdfFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TfIdfFeatureExtractor" />
                 </entry>
                 
-                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.VerbCountFeature">
-                    <bean id="VerbCountFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.VerbCountFeature" />
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.VerbCountFeatureExtractor">
+                    <bean id="VerbCountFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.VerbCountFeatureExtractor" />
                 </entry>
                 
-                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TotalOccurrenceFeature">
-                    <bean id="TotalOccurrenceFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.TotalOccurrenceFeature" />
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TotalOccurrenceFeatureExtractor">
+                    <bean id="TotalOccurrenceFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TotalOccurrenceFeatureExtractor" />
                 </entry>
                 
-                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.LengthFeature">
-                    <bean id="LengthFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.LengthFeature" />
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.LengthFeatureExtractor">
+                    <bean id="LengthFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.LengthFeatureExtractor" />
                 </entry>
 
-                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.ReverbFeature">
-                    <bean id="ReverbFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.ReverbFeature" />
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.ReverbFeatureExtractor">
+                    <bean id="ReverbFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.ReverbFeatureExtractor" />
                 </entry>
             </map>
         </property>
+        
+        <property name="featureMap">
+            <map>
+            
+<!--                 <entry key="KEY">                                   use this key in the feature extractor to save the feature score in the patterns map -->                               
+<!--                     <bean id="$SAME_AS_KEY" -->
+<!--                         class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature"> -->
+<!--                         <constructor-arg value="$SAME_AS_KEY" />    name of the feature -->
+<!--                         <constructor-arg>                           list of languages the feature works for -->
+<!--                             <list> -->
+<!--                                 <value>de</value> -->
+<!--                                 <value>en</value> -->
+<!--                             </list> -->
+<!--                         </constructor-arg> -->
+<!--                         <constructor-arg value="true" />            IsZeroToOneValue - true/false    -->
+<!--                         <constructor-arg value="true" />            NormalizeGlobaly - true/false -->
+<!--                         <constructor-arg value="true" />            UseForPatternLearning - true/false -->
+<!--                     </bean> -->
+<!--                 </entry> -->
+            
+                <entry key="REVERB">
+                    <bean id="REVERB"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="REVERB" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="SPECIFICITY">
+                    <bean id="SPECIFICITY"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="SPECIFICITY" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="false" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="SUPPORT_NUMBER_OF_MAX_PAIRS_LEARNED_FROM">
+                    <bean id="SUPPORT_NUMBER_OF_MAX_PAIRS_LEARNED_FROM"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="SUPPORT_NUMBER_OF_MAX_PAIRS_LEARNED_FROM" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="false" />
+                        <constructor-arg value="false" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM">
+                    <bean id="SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="false" />
+                        <constructor-arg value="false" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="TF_IDF_IDF">
+                    <bean id="TF_IDF_IDF"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="TF_IDF_IDF" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="false" />
+                        <constructor-arg value="false" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="TF_IDF_TF">
+                    <bean id="TF_IDF_TF"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="TF_IDF_TF" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="false" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="TF_IDF_TFIDF">
+                    <bean id="TF_IDF_TFIDF"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="TF_IDF_TFIDF" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="false" />
+                    </bean>
+                </entry>
+                <entry key ="TYPICITY">
+                    <bean id="TYPICITY"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="TYPICITY" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="false" />
+                    </bean>
+                </entry>
+                <entry key ="TYPICITY_CORRECT_DOMAIN_NUMBER">
+                    <bean id="TYPICITY_CORRECT_DOMAIN_NUMBER"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="TYPICITY_CORRECT_DOMAIN_NUMBER" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="TYPICITY_CORRECT_RANGE_NUMBER">
+                    <bean id="TYPICITY_CORRECT_RANGE_NUMBER"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="TYPICITY_CORRECT_RANGE_NUMBER" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="TYPICITY_SENTENCES">
+                    <bean id="TYPICITY_SENTENCES"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="TYPICITY_SENTENCES" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="false" />
+                        <constructor-arg value="false" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="WORDNET_DISTANCE">
+                    <bean id="WORDNET_DISTANCE"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="WORDNET_DISTANCE" />
+                        <constructor-arg>
+                            <list>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="UPPERCASE_LETTER_COUNT">
+                    <bean id="UPPERCASE_LETTER_COUNT"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="UPPERCASE_LETTER_COUNT" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="false" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="TOKEN_COUNT">
+                    <bean id="TOKEN_COUNT"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="TOKEN_COUNT" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="false" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="CHARACTER_COUNT">
+                    <bean id="CHARACTER_COUNT"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="CHARACTER_COUNT" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="false" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="TOTAL_OCCURRENCE">
+                    <bean id="TOTAL_OCCURRENCE"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="TOTAL_OCCURRENCE" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="false" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="VERB_COUNT">
+                    <bean id="VERB_COUNT"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="VERB_COUNT" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="false" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+                <entry key ="AVERAGE_TOKEN_LENGHT">
+                    <bean id="AVERAGE_TOKEN_LENGHT"
+                        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+                        <constructor-arg value="AVERAGE_TOKEN_LENGHT" />
+                        <constructor-arg>
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                            </list>
+                        </constructor-arg>
+                        <constructor-arg value="false" />
+                        <constructor-arg value="true" />
+                        <constructor-arg value="true" />
+                    </bean>
+                </entry>
+            </map>
+        </property>
+        
     </bean>
 </beans>

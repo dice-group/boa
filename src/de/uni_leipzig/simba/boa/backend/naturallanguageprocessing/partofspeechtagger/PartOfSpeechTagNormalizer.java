@@ -21,6 +21,8 @@ public class PartOfSpeechTagNormalizer {
 		PART_OF_SPEECH_TAG_MAPPINGS.put("LS",	"LS");
 		PART_OF_SPEECH_TAG_MAPPINGS.put("MD",	"MD");
 		PART_OF_SPEECH_TAG_MAPPINGS.put("NN",	"NN");
+		PART_OF_SPEECH_TAG_MAPPINGS.put("NNP",  "NNP");
+		PART_OF_SPEECH_TAG_MAPPINGS.put("NNPS",  "NNPS");
 		PART_OF_SPEECH_TAG_MAPPINGS.put("NNS",	"NNS");
 		PART_OF_SPEECH_TAG_MAPPINGS.put("NP",	"NP");
 		PART_OF_SPEECH_TAG_MAPPINGS.put("NPS",	"NPS");
@@ -28,6 +30,8 @@ public class PartOfSpeechTagNormalizer {
 		PART_OF_SPEECH_TAG_MAPPINGS.put("POS",	"POS");
 		PART_OF_SPEECH_TAG_MAPPINGS.put("PP",	"PP");
 		PART_OF_SPEECH_TAG_MAPPINGS.put("PP$",	"PP$");
+		PART_OF_SPEECH_TAG_MAPPINGS.put("PRP",  "PRP");
+		PART_OF_SPEECH_TAG_MAPPINGS.put("PRP$", "PRP$");
 		PART_OF_SPEECH_TAG_MAPPINGS.put("RB",	"RB");
 		PART_OF_SPEECH_TAG_MAPPINGS.put("RBR",	"RBR");
 		PART_OF_SPEECH_TAG_MAPPINGS.put("RBS",	"RBS");
@@ -54,5 +58,7 @@ public class PartOfSpeechTagNormalizer {
 		PART_OF_SPEECH_TAG_MAPPINGS.put("''",	"''");
 		PART_OF_SPEECH_TAG_MAPPINGS.put("``",	"``");
 		PART_OF_SPEECH_TAG_MAPPINGS.put(":",	":");
+		PART_OF_SPEECH_TAG_MAPPINGS.put("-LRB-","-LRB-");
+        PART_OF_SPEECH_TAG_MAPPINGS.put("-RRB-","-RRB-");
 	}
 }

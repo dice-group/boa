@@ -26,24 +26,9 @@ public class PatternMappingManager {
     
     private final String PATTERN_MAPPING_FOLDER         = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
     
-    private static PatternMappingManager INSTANCE;
-    
-    private PatternMappingManager() {
+    public PatternMappingManager() {
         
         this.mappings = new HashMap<String,List<PatternMapping>>();
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public static PatternMappingManager getInstance() {
-        
-        if (PatternMappingManager.INSTANCE == null) {
-            
-            PatternMappingManager.INSTANCE = new PatternMappingManager();
-        }
-        return PatternMappingManager.INSTANCE;
     }
     
     /**

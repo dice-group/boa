@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -6,17 +6,19 @@ import java.util.List;
 import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.SimilarityAssessor;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.WordNotFoundException;
 
 
-public class StringSimilarityFeature implements Feature {
+public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 
 	private SimilarityAssessor similarityAssessor = new SimilarityAssessor();
-	private NLPediaLogger logger = new NLPediaLogger(StringSimilarityFeature.class);
+	private NLPediaLogger logger = new NLPediaLogger(StringSimilarityFeatureExtractor.class);
 	
 	@Override
 	public void score(FeatureExtractionPair pair) {
@@ -60,6 +62,6 @@ public class StringSimilarityFeature implements Feature {
 				}
 			}
 		}
-		pair.getPattern().getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.WORDNET_DISTANCE, similarity >= 0 ? similarity : 0);
+		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("WORDNET_DISTANCE"), similarity >= 0 ? similarity : 0);
 	}
 }

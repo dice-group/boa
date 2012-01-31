@@ -31,8 +31,8 @@ import org.junit.Test;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.ReverbFeature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.ReverbFeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.FeatureEnum;
 import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
@@ -69,8 +69,8 @@ public class FeatureTest {
 		
 		List<PatternMapping> mappings = createTestData(this.numberOfMappings, this.numberOfMaxPatterns);
 		Directory idx = this.createSentenceIndex();
-//		TotalOccurrenceFeature totalOccurrenceFeature = new TotalOccurrenceFeature(new DefaultPatternSearcher(idx));
-		ReverbFeature reverbFeature = new ReverbFeature();
+//		TotalOccurrenceFeatureExtractor totalOccurrenceFeature = new TotalOccurrenceFeatureExtractor(new DefaultPatternSearcher(idx));
+		ReverbFeatureExtractor reverbFeature = new ReverbFeatureExtractor();
 		
 		for (PatternMapping mapping : mappings){
 		    
@@ -80,18 +80,18 @@ public class FeatureTest {
 		        
 //		        totalOccurrenceFeature.score(pair);
 		        reverbFeature.score(pair);
-		        System.out.println(pattern.getFeatures().get(Feature.REVERB).doubleValue());
+		        System.out.println(pattern.getFeatures().get(FeatureEnum.REVERB).doubleValue());
 		    }
 		}
 		
 		Pattern pm0p0 = new ArrayList<Pattern>(mappings.get(0).getPatterns()).get(0);
 		Pattern pm0p10 = new ArrayList<Pattern>(mappings.get(0).getPatterns()).get(10);
 		Pattern pm9p101 = new ArrayList<Pattern>(mappings.get(9).getPatterns()).get(101);
-System.out.println(pm0p0.getFeatures().get(Feature.REVERB).doubleValue());
-		assertTrue("pm0p0.Reverb > 0", 0 < pm0p0.getFeatures().get(Feature.TOTAL_OCCURRENCE).doubleValue());
-		assertEquals("pm0p0.TO == 98", 98, (int) pm0p0.getFeatures().get(Feature.TOTAL_OCCURRENCE).doubleValue());
-		assertEquals("pm0p10-TO == 99", 99, (int) pm0p10.getFeatures().get(Feature.TOTAL_OCCURRENCE).doubleValue());
-		assertEquals("pm9p101-TO == 98", 98, (int) pm9p101.getFeatures().get(Feature.TOTAL_OCCURRENCE).doubleValue());
+System.out.println(pm0p0.getFeatures().get(FeatureEnum.REVERB).doubleValue());
+		assertTrue("pm0p0.Reverb > 0", 0 < pm0p0.getFeatures().get(FeatureEnum.TOTAL_OCCURRENCE).doubleValue());
+		assertEquals("pm0p0.TO == 98", 98, (int) pm0p0.getFeatures().get(FeatureEnum.TOTAL_OCCURRENCE).doubleValue());
+		assertEquals("pm0p10-TO == 99", 99, (int) pm0p10.getFeatures().get(FeatureEnum.TOTAL_OCCURRENCE).doubleValue());
+		assertEquals("pm9p101-TO == 98", 98, (int) pm9p101.getFeatures().get(FeatureEnum.TOTAL_OCCURRENCE).doubleValue());
 	}
 	
 	@Test

@@ -1,24 +1,26 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 
 
-public class TotalOccurrenceFeature implements Feature {
+public class TotalOccurrenceFeatureExtractor extends AbstractFeatureExtractor {
 
     private final int MAXIMUM_NUMBER_OF_TOTAL_OCCURRENCES = NLPediaSettings.getInstance().getIntegerSetting("maxmimumNumberOfTotalOccurrences");
 	private PatternSearcher searcher;
 	
-	public TotalOccurrenceFeature() {
+	public TotalOccurrenceFeatureExtractor() {
 
         this.searcher = new DefaultPatternSearcher();
     }
 	
-	public TotalOccurrenceFeature(PatternSearcher patternSearcher) {
+	public TotalOccurrenceFeatureExtractor(PatternSearcher patternSearcher) {
 
 	    this.searcher = patternSearcher;
     }
@@ -35,8 +37,6 @@ public class TotalOccurrenceFeature implements Feature {
 		int totalOccurrences = searcher.getExactMatchSentences(
 		        pattern.getNaturalLanguageRepresentationWithoutVariables(), MAXIMUM_NUMBER_OF_TOTAL_OCCURRENCES).size();
 		
-		pattern.getFeatures().put(
-			de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TOTAL_OCCURRENCE, 
-			Double.valueOf(totalOccurrences));
+		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TOTAL_OCCURRENCE"), Double.valueOf(totalOccurrences));
 	}
 }

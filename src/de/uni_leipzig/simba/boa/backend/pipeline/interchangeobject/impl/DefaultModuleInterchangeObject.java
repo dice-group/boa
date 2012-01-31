@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.lucene.store.Directory;
+
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.pipeline.interchangeobject.ModuleInterchangeObject;
@@ -23,6 +25,7 @@ public class DefaultModuleInterchangeObject implements ModuleInterchangeObject {
 	private Set<BackgroundKnowledge> backgroundKnowledge;
 	private Set<PatternMapping> patternMappings;
 	private Map<Integer,Property> properties;
+    private Directory index;
 	
 	public DefaultModuleInterchangeObject(){
 		
@@ -66,4 +69,16 @@ public class DefaultModuleInterchangeObject implements ModuleInterchangeObject {
 
 		this.properties = properties;		
 	}
+
+    @Override
+    public Directory getIndex() {
+
+        return this.index;
+    }
+
+    @Override
+    public void setIndex(Directory index) {
+
+        this.index = index;
+    }
 }

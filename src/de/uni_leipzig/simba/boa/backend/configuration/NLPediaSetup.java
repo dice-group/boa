@@ -8,10 +8,14 @@ import org.springframework.beans.BeansException;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilterFactory;
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry.MachineLearningTrainingFileEntry;
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.factory.MachineLearningTrainingFileFactory;
 import de.uni_leipzig.simba.boa.backend.logging.LoggingConfigurator;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
+import de.uni_leipzig.simba.boa.backend.search.PatternSearcherFactory;
 import de.uni_leipzig.simba.boa.backend.util.BeanUtility;
 
 /**
@@ -81,8 +85,8 @@ public class NLPediaSetup {
 			}
 			
 			// fill factory singleton with data
-			BeanUtility.getBeansOfType(setupFile, DaoFactory.class);
-			logger.info("Initialized DaoFactory...");
+			BeanUtility.getBeansOfType(setupFile, PatternSearcherFactory.class);
+            logger.info("Initialized PatternFilterFactory...");
 			
 			BeanUtility.getBeansOfType(setupFile, PatternFilterFactory.class);
 			logger.info("Initialized PatternFilterFactory...");
@@ -95,6 +99,9 @@ public class NLPediaSetup {
 			
 			BeanUtility.getBeansOfType(setupFile, MachineLearningToolFactory.class);
 			logger.info("Initialized MachineLearningToolFactory...");
+			
+			BeanUtility.getBeansOfType(setupFile, MachineLearningTrainingFileFactory.class);
+            logger.info("Initialized MachineLearningTrainingFileFactory...");
 		}
 		catch (BeansException be) {
 			

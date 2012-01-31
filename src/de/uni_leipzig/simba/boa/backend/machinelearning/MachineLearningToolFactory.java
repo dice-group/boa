@@ -7,6 +7,7 @@ import java.util.List;
 
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.NeuralNetwork;
+import de.uni_leipzig.simba.boa.backend.util.FactoryUtil;
 
 /**
  *@author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
@@ -64,58 +65,12 @@ public class MachineLearningToolFactory {
 
 		if ( this.machineLearningTools.contains(machineLearningToolClass.getName()) ) {
 			
-			return (NeuralNetwork) createNewInstance(machineLearningToolClass);
+			return (NeuralNetwork) FactoryUtil.createNewInstance(machineLearningToolClass);
 		}
 		String error = "Could not load neural network " + machineLearningToolClass;
 		this.logger.error(error);
 		throw new RuntimeException(error);
 	}
-	
-	/**
-	 * Instantiates a machine learning tool tool.
-	 * 
-	 * @param tool the tool to be instantiated
-	 * @return a new instance of the tool
-	 * @throw RuntimeException if something wents wrong
-	 */
-	private MachineLearningTool createNewInstance(Class<? extends MachineLearningTool> tool){
-		
-		try {
-			
-			return tool.newInstance();
-		}
-		catch (InstantiationException e) {
-
-			e.printStackTrace();
-			String error = "Could not instantiate class: " + tool;
-			this.logger.fatal(error, e);
-			throw new RuntimeException(error, e);
-		}
-		catch (IllegalAccessException e) {
-			
-			e.printStackTrace();
-			String error = "Could not instantiate class: " + tool;
-			this.logger.fatal(error, e);
-			throw new RuntimeException(error, e);
-		}
-	}
-	
-	/**
-     * @param defaultMachineLearningTool the defaultMachineLearningTool to set
-     */
-    public void setDefaultMachineLearningTool(String defaultMachineLearningTool) {
-    
-        this.defaultMachineLearningTool = defaultMachineLearningTool;
-    }
-	
-	
-    /**
-     * @return the defaultMachineLearningTool
-     */
-    public String getDefaultMachineLearningTool() {
-    
-        return defaultMachineLearningTool;
-    }
 
     /**
      * @return the default machine learning tool
@@ -125,7 +80,7 @@ public class MachineLearningToolFactory {
 
         try {
             
-            return (MachineLearningTool) createNewInstance(
+            return (MachineLearningTool) FactoryUtil.createNewInstance(
                     (Class<? extends MachineLearningTool>) Class.forName(defaultMachineLearningTool));
         }
         catch (ClassNotFoundException e) {
@@ -135,5 +90,21 @@ public class MachineLearningToolFactory {
             this.logger.error(error, e);
             throw new RuntimeException(error, e);
         }
+    }
+    
+    /**
+     * @param defaultMachineLearningTool the defaultMachineLearningTool to set
+     */
+    public void setDefaultMachineLearningTool(String defaultMachineLearningTool) {
+    
+        this.defaultMachineLearningTool = defaultMachineLearningTool;
+    }
+    
+    /**
+     * @return the defaultMachineLearningTool
+     */
+    public String getDefaultMachineLearningTool() {
+    
+        return defaultMachineLearningTool;
     }
 }

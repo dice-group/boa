@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -13,20 +13,22 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 
 
-public class TfIdfFeature implements Feature {
+public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 
-	private NLPediaLogger logger = new NLPediaLogger(TfIdfFeature.class);
+	private NLPediaLogger logger = new NLPediaLogger(TfIdfFeatureExtractor.class);
 	private Map<PatternMapping,String> documents = new HashMap<PatternMapping,String>();
 	
 	private final String PATTERN_MAPPING_FOLDER            = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
 	
-	public TfIdfFeature() {
+	public TfIdfFeatureExtractor() {
 	    
 	    for ( PatternMapping mapping : SerializationManager.getInstance().deserializePatternMappings(PATTERN_MAPPING_FOLDER) ) {
             
@@ -68,9 +70,9 @@ public class TfIdfFeature implements Feature {
 			    }
 			}
 		}
-		pair.getPattern().getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_TFIDF, 	tfScore*idfScore	>= 0 ? tfScore*idfScore : 0);
-		pair.getPattern().getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_TF, 		tfScore				>= 0 ? tfScore : 0);
-		pair.getPattern().getFeatures().put(de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature.TF_IDF_IDF, 		idfScore			>= 0 ? idfScore : 0);
+		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("TF_IDF_TFIDF"), 	tfScore*idfScore	>= 0 ? tfScore*idfScore : 0);
+		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("TF_IDF_TF"), 		tfScore				>= 0 ? tfScore : 0);
+		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("TF_IDF_IDF"), 		idfScore			>= 0 ? idfScore : 0);
 	}
 	
 	private class Token {

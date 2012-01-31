@@ -1,10 +1,12 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.comparator;
 
 import java.util.Comparator;
+import java.util.Map;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.FeatureEnum;
 
 /**
  * 
@@ -24,7 +26,21 @@ public class PatternComparatorGenerator {
 
             @Override
             public int compare(Pattern pattern1, Pattern pattern2) {
-
+                
+                System.out.println("THE " + feature.getName());
+                
+                System.out.println("Pattern 1 Comparator");
+                for ( Map.Entry<Feature, Double> entry: pattern1.getFeatures().entrySet()) {
+                    
+                    System.out.println(entry.getKey().getName() + " " + entry.getValue());
+                }
+                
+                System.out.println("Pattern 2 Comparator");
+                for ( Map.Entry<Feature, Double> entry: pattern2.getFeatures().entrySet()) {
+                    
+                    System.out.println(entry.getKey().getName() + " " + entry.getValue());
+                }
+                
                 double x = pattern1.getFeatures().get(feature) - pattern2.getFeatures().get(feature);
                 if ( x < 0 ) return -1;
                 if ( x == 0 ) return 0;

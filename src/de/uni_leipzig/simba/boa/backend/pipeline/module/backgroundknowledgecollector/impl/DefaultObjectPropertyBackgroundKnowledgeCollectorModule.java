@@ -14,6 +14,7 @@ import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledgeM
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.AbstractDefaultBackgroundKnowledgeCollectorModule;
+import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 
 
 /**
@@ -31,6 +32,9 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	
 	private final int SPARQL_QUERY_LIMIT	= new Integer(NLPediaSettings.getInstance().getSetting("sparqlQueryLimit"));
 	private final String BOA_LANGUAGE		= NLPediaSettings.BOA_LANGUAGE;
+
+	// for the report
+    private long loadKnowledgeTime;
 	
 	@Override
 	public String getName() {
@@ -38,10 +42,20 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 		return "Object Property Background Knowledge Collector Module (de/en)";
 	}
 	
+    @Override
+    public String getReport() {
+
+        return "A total of " + this.backgroundKnowledge.size() + " object property triples has been added to the background knowledge repository!";
+    }
+	
 	@Override
 	public void run() {
 		
-		queryObjectProperties();
+		this.logger.info("Starting pattern search!");
+        long startLoadingBackgroundKnowledge = System.currentTimeMillis();
+        queryObjectProperties();
+        this.loadKnowledgeTime = (System.currentTimeMillis() - startLoadingBackgroundKnowledge);
+        this.logger.info("Loading object background knowledge finished in " + TimeUtil.convertMilliSeconds(loadKnowledgeTime));
 	}
 	
 	@Override

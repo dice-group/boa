@@ -3,7 +3,8 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 
@@ -22,7 +23,8 @@ public class FeatureFactory {
 	/**
 	 * Ordered list for all confidence measures
 	 */
-	private static Map<String,Feature> featureMap = null;
+	private Map<String,FeatureExtractor> featureExtractorMap = new HashMap<String,FeatureExtractor>();
+	private Map<String,Feature> featureMap = new HashMap<String,Feature>();
 	
 	/**
 	 * don't allow construction of this factory 
@@ -41,7 +43,6 @@ public class FeatureFactory {
 		if ( FeatureFactory.INSTANCE == null ) {
 			
 			FeatureFactory.INSTANCE = new FeatureFactory();
-			featureMap = new HashMap<String,Feature>();
 		}
 		
 		return FeatureFactory.INSTANCE;
@@ -54,16 +55,16 @@ public class FeatureFactory {
 	 * @param clazz - the class for the confidence measure
 	 * @return the requested pattern filter or null if not found
 	 */
-	public Feature getConfidenceMeasure(Class<Feature> clazz) {
+	public FeatureExtractor getConfidenceMeasure(Class<FeatureExtractor> clazz) {
 		
-		FeatureFactory.logger.debug("There is/are " + FeatureFactory.featureMap.size() + " confidence measure(s) available!");
+		FeatureFactory.logger.debug("There is/are " + featureExtractorMap.size() + " confidence measure(s) available!");
 		
-		for ( Feature confidenceMeasure : FeatureFactory.featureMap.values() ) {
+		for ( FeatureExtractor confidenceMeasure : featureExtractorMap.values() ) {
 
-			FeatureFactory.logger.debug("Feature: " + confidenceMeasure.getClass().getName() + " is available!");
+			FeatureFactory.logger.debug("FeatureExtractor: " + confidenceMeasure.getClass().getName() + " is available!");
 		}
 		
-		Feature pe = FeatureFactory.featureMap.get(clazz.getName());
+		FeatureExtractor pe = featureExtractorMap.get(clazz.getName());
 		
 		if ( pe == null ) {
 			
@@ -73,24 +74,27 @@ public class FeatureFactory {
 	}
 
 	/**
-	 * @param featureMap the featureMap to set
+	 * @param featureExtractorMap the featureExtractorMap to set
 	 */
-	public void setFeatureMap(Map<String,Feature> featureMap) {
+	public void setFeatureExtractorMap(Map<String,FeatureExtractor> featureMap) {
 
-		FeatureFactory.featureMap = featureMap;
+		featureExtractorMap = featureMap;
 	}
 
 	/**
-	 * @return the featureMap
+	 * @return the featureExtractorMap
 	 */
-	public Map<String,Feature> getFeatureMap() {
+	public Map<String,FeatureExtractor> getFeatureExtractorMap() {
 
-		Map<String,Feature> map = new HashMap<String,Feature>();
-		for ( Map.Entry<String,Feature> entry : FeatureFactory.featureMap.entrySet() ) {
+		Map<String,FeatureExtractor> map = new HashMap<String,FeatureExtractor>();
+		for ( Map.Entry<String,FeatureExtractor> entry : featureExtractorMap.entrySet() ) {
 			
 			try {
 				
-				map.put(entry.getKey(), entry.getValue().getClass().newInstance());
+			    FeatureExtractor fe = entry.getValue().getClass().newInstance();
+			    fe.setHandeledFeatures(entry.getValue().getHandeledFeatures());
+			    
+				map.put(entry.getKey(), fe);
 			}
 			catch (InstantiationException e) {
 				// TODO Auto-generated catch block
@@ -104,4 +108,30 @@ public class FeatureFactory {
 		
 		return map;
 	}
+
+    /**
+     * @return the featureMap
+     */
+    public Map<String,Feature> getFeatureMap() {
+
+        return featureMap;
+    }
+
+    /**
+     * @param featureMap the featureMap to set
+     */
+    public void setFeatureMap(Map<String,Feature> featureMap) {
+
+        this.featureMap = featureMap;
+    }
+
+    /**
+     * 
+     * @param key
+     * @return
+     */
+    public Feature getFeature(String key) {
+
+        return this.featureMap.get(key);
+    }
 }

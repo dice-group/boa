@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.concurrent.Callable;
 
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.PatternFeatureExtractionCallable;
 import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPrintProgressTask;

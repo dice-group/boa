@@ -59,12 +59,6 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 	}
 	
 	@Override
-	public String getReport() {
-
-		return "A total of " + backgroundKnowledge.size() + " triples has been added to the background knowledge repository!";
-	}
-	
-	@Override
 	public void updateModuleInterchangeObject() {
 
 		this.moduleInterchangeObject.getBackgroundKnowledge().addAll(this.backgroundKnowledge);

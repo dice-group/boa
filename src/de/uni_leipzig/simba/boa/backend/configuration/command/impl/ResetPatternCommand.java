@@ -9,7 +9,8 @@ import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.FeatureEnum;
 
 
 public class ResetPatternCommand implements Command {

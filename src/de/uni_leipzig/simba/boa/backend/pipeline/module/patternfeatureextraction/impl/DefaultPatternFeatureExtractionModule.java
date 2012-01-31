@@ -11,8 +11,10 @@ import de.uni_leipzig.simba.boa.backend.concurrent.PatternFeatureExtractionThrea
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.featurescoring.NeuronalNetworkTrainingFile;
 import de.uni_leipzig.simba.boa.backend.featurescoring.PatternScoreManager;
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.AbstractMachineLearningTrainingFile;
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.factory.MachineLearningTrainingFileFactory;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningTool;
 import de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningToolFactory;
@@ -34,9 +36,10 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 	
 	private static final int N_FOLD_CROSS_VALIDATION                = NLPediaSettings.getInstance().getIntegerSetting("neuronal.network.n.fold.cross.validation");
     private static final String NETWORK_DIRECTORY                   = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("neural.network.network.directory");
-    private static final String LEARN_FILE                          = NETWORK_DIRECTORY + "network_learn.txt";
     private static final String EVAL_OUTPUT_FILE                    = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
     private static final String NETWORK_FILE                        = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
+    
+    private final PatternScoreManager patternScoreManager = new PatternScoreManager();
 	
 	// for the report
 	private long patternFeatureExtractionTime;
@@ -47,7 +50,7 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 	@Override
 	public String getName() {
 
-		return "Default Feature Extraction Module";
+		return "Default FeatureExtractor Extraction Module";
 	}
 
 	@Override
@@ -58,36 +61,34 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 		long startFeatureExtraction = System.currentTimeMillis();
 		PatternFeatureExtractionThreadManager.startFeatureExtractionCallables(this.moduleInterchangeObject.getPatternMappings(), TOTAL_NUMBER_OF_FEATURE_EXTRACTION_THREADS);
 		this.patternFeatureExtractionTime = (System.currentTimeMillis() - startFeatureExtraction);
-		this.logger.info("Extaction of pattern features finished in " + TimeUtil.convertMilliSeconds(patternFeatureExtractionTime) + "!");
+		this.logger.info("Extaction of pattern features finished in " + TimeUtil.convertMilliSeconds(this.patternFeatureExtractionTime) + "!");
 		
 		// serialize the new pattern mappings 
         this.logger.info("Starting to save features!");
         long patternSaveTime = System.currentTimeMillis();
         SerializationManager.getInstance().serializePatternMappings(this.moduleInterchangeObject.getPatternMappings(), PATTERN_MAPPING_FOLDER);
         this.patternSaveTime = (System.currentTimeMillis() - patternSaveTime);
-        this.logger.info("Extraction of pattern features finished in " + TimeUtil.convertMilliSeconds(patternFeatureExtractionTime) + "!");
+        this.logger.info("Extraction of pattern features finished in " + TimeUtil.convertMilliSeconds(this.patternSaveTime) + "!");
 		
         // generate update the machine learning training file
         this.logger.info("Starting to generate/update machine learning training file!");
         long networkUpdateTime = System.currentTimeMillis();
         this.createOrUpdateMachineLearningTrainingFile();
         machineLearningTrainingTime = System.currentTimeMillis() - networkUpdateTime;
-        this.logger.info("The update of the machine learning training file took " + TimeUtil.convertMilliSeconds(machineLearningTrainingTime) + "!");
+        this.logger.info("The update of the machine learning training file took " + TimeUtil.convertMilliSeconds(this.machineLearningTrainingTime) + "!");
         
         // retrain the machine learning tool
         this.logger.info("Starting to retrain the neural network based on the extracted features!");
         long networkRetrainingTime = System.currentTimeMillis();
         MachineLearningTool machineLearningTool = MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool();
-        machineLearningTool.train(new File(LEARN_FILE), new File(EVAL_OUTPUT_FILE), new File(NETWORK_FILE), N_FOLD_CROSS_VALIDATION);
-        machineLearningReTrainingTime = System.currentTimeMillis() - networkRetrainingTime;
-        this.logger.info("Retraining of the neural network finished after " + TimeUtil.convertMilliSeconds(machineLearningReTrainingTime) + "!");
         
-        // only for test pruposes TODO remove
-		for ( PatternMapping mapping : this.moduleInterchangeObject.getPatternMappings()) {
-		    for (Pattern pattern :mapping.getPatterns()) {
-		        System.out.println(pattern);
-		    }
-		}
+        // only train the file if we have annotated patterns in the network learn file
+        MachineLearningTrainingFile trainFile = patternScoreManager.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8");
+        if ( trainFile.getAnnotatedEntries().size() > 0 ) 
+            machineLearningTool.train(trainFile, new File(EVAL_OUTPUT_FILE), new File(NETWORK_FILE), N_FOLD_CROSS_VALIDATION);
+            
+        machineLearningReTrainingTime = System.currentTimeMillis() - networkRetrainingTime;
+        this.logger.info("Retraining of the neural network finished after " + TimeUtil.convertMilliSeconds(this.machineLearningReTrainingTime) + "!");
 	}
 
 	/**
@@ -95,8 +96,7 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 	 */
 	private void createOrUpdateMachineLearningTrainingFile() {
 
-	    PatternScoreManager patternScoreManager = new PatternScoreManager();
-	    NeuronalNetworkTrainingFile file = null;
+	    MachineLearningTrainingFile file = null;
 	    
 	    if ( new File(MACHINE_LEARNING_TRAINING_FILE).exists() ) {
 	            
@@ -114,7 +114,7 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 	public String getReport() {
 
 		// TODO Auto-generated method stub
-		return "Pattern Feature Extraction finished in " + TimeUtil.convertMilliSeconds(patternFeatureExtractionTime) + ". Updated pattern mappings successfully.";
+		return "Pattern FeatureExtractor Extraction finished in " + TimeUtil.convertMilliSeconds(patternFeatureExtractionTime) + ". Updated pattern mappings successfully.";
 	}
 
 	@Override

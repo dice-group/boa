@@ -6,6 +6,8 @@ package de.uni_leipzig.simba.boa.backend.pipeline.interchangeobject;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.lucene.store.Directory;
+
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
@@ -17,6 +19,8 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
  */
 public interface ModuleInterchangeObject {
 
+    
+    
 	/**
 	 * 
 	 * @return
@@ -48,5 +52,17 @@ public interface ModuleInterchangeObject {
 	 * 
 	 * @return
 	 */
-	public void setProperties(Map<Integer,Property> properties);
+	public abstract void setProperties(Map<Integer,Property> properties);
+	
+	/**
+     * 
+     * @return
+     */
+    public abstract Directory getIndex();
+    
+    /**
+     * 
+     * @return
+     */
+    public abstract void setIndex(Directory directory);
 }

@@ -1,10 +1,10 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.enums;
+package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum Feature implements Serializable {
+public enum FeatureEnum implements Serializable {
 		
 		// IMPORTANT: make sure those are in alphabetcal order, otherwise you get total confusion
 		// REVERB is 1 in database, specificity is 2 in db etc.
@@ -32,7 +32,7 @@ public enum Feature implements Serializable {
 		private NormalizeGlobaly needsGlobalNormalization;
 		private UseForPatternLearning useForPatternFeatureLearning;
 		
-		Feature(IsZeroToOneValue isZeroToOneValue, NormalizeGlobaly needsGlobalNormalization, UseForPatternLearning useForPatternFeatureLearning) {
+		FeatureEnum(IsZeroToOneValue isZeroToOneValue, NormalizeGlobaly needsGlobalNormalization, UseForPatternLearning useForPatternFeatureLearning) {
 			
 			this.isZeroToOneValue = isZeroToOneValue;
 			this.needsGlobalNormalization = needsGlobalNormalization;
@@ -40,7 +40,7 @@ public enum Feature implements Serializable {
 			this.supportedLanguages = new ArrayList<Language>();
 		}
 		
-		Feature(IsZeroToOneValue isZeroToOneValue, NormalizeGlobaly needsGlobalNormalization, UseForPatternLearning useForPatternFeatureLearning, Language ... supportedLanguages) {
+		FeatureEnum(IsZeroToOneValue isZeroToOneValue, NormalizeGlobaly needsGlobalNormalization, UseForPatternLearning useForPatternFeatureLearning, Language ... supportedLanguages) {
 			
 			this.isZeroToOneValue = isZeroToOneValue;
 			this.needsGlobalNormalization = needsGlobalNormalization;

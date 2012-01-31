@@ -1,5 +1,7 @@
 package de.uni_leipzig.simba.boa.frontend.data;
 
+import java.util.List;
+
 import com.vaadin.data.Item;
 import com.vaadin.data.util.HierarchicalContainer;
 
@@ -19,7 +21,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 	public static final String[] DATABASE_IDS = new String[]{
 	        NLPediaSettings.getInstance().getSetting("patternMappingFolders")};
 	
-	public DatabaseContainer() {
+	public DatabaseContainer(List<PatternMapping> mappings) {
 		
 		Item item = null;
 		
@@ -37,7 +39,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 			
 //			System.out.println(pmDao.findPatternMappingsWithPatterns()); 
 			
-			for (PatternMapping mapping : PatternMappingManager.getInstance().getPatternMappings(database + "/patternmappings/") ) {
+			for (PatternMapping mapping : mappings ) {
 				
 				String itemID = database + ":" + mapping.getProperty().getUri();
 				
