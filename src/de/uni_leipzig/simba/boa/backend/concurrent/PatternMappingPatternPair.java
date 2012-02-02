@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.backend.featureextraction;
+package de.uni_leipzig.simba.boa.backend.concurrent;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
@@ -11,12 +11,12 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
  * @author gerb
  *
  */
-public class FeatureExtractionPair {
+public class PatternMappingPatternPair {
 
 	private PatternMapping mapping;
 	private Pattern pattern;
 	
-	public FeatureExtractionPair(PatternMapping mapping, Pattern pattern) {
+	public PatternMappingPatternPair(PatternMapping mapping, Pattern pattern) {
 		
 		this.setMapping(mapping);
 		this.setPattern(pattern);

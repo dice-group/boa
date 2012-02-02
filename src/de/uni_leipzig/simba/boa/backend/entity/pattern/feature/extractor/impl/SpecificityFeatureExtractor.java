@@ -2,12 +2,12 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
 import java.util.Date;
 
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.dao.serialization.PatternMappingManager;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
-import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 
@@ -23,7 +23,7 @@ public class SpecificityFeatureExtractor extends AbstractFeatureExtractor {
 	private final PatternMappingManager manager = new PatternMappingManager();
 
 	@Override
-	public void score(FeatureExtractionPair pair) {
+	public void score(PatternMappingPatternPair pair) {
 
 		long start = new Date().getTime();
 		

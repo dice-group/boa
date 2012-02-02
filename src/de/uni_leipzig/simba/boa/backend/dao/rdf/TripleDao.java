@@ -144,7 +144,7 @@ public class TripleDao extends AbstractDao {
 			@Override
 			public int compare(Triple o1, Triple o2) {
 
-				double x = (o2.getConfidence() - o1.getConfidence());
+				double x = (o2.getScore() - o1.getScore());
 				if ( x < 0 ) return -1;
 				if ( x == 0 ) return 0;
 				return 1;

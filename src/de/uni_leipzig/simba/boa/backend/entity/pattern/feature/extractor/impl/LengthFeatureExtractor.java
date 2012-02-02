@@ -1,15 +1,15 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
-import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 
 
 public class LengthFeatureExtractor extends AbstractFeatureExtractor {
 
 	@Override
-	public void score(FeatureExtractionPair pair) {
+	public void score(PatternMappingPatternPair pair) {
 
 		String patternWithoutVariables = pair.getPattern().getNaturalLanguageRepresentationWithoutVariables();
 		String[] patternParts = patternWithoutVariables.split(" ");

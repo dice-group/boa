@@ -50,7 +50,7 @@ public class PatternLengthEvaluator extends Initializeable implements PatternFil
 				
 				String[] naturalLanguageRepresentation = p.getNaturalLanguageRepresentation().substring(0, p.getNaturalLanguageRepresentation().length() - 3).substring(3).trim().split(" ");
 				
-				// the number of chunks (words get seperated at " ") needs to smaller then the configured max value
+				// the number of chunks (words get seperated at " ") needs to be smaller then the configured max size and greater then the configured min size
 				p.setUseForPatternEvaluation(
 						
 						naturalLanguageRepresentation.length 

@@ -1,6 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.entity.context;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -88,7 +89,10 @@ public class LeftContext extends Context {
         String[] taggedWords = nerTaggedString.split(" ");
         String[] cleanWords = sentenceWithoutNerTags.split(" ");
         
-        if ( taggedWords.length != cleanWords.length ) throw new IllegalArgumentException("Could not create a context because the tagged string and the clean string have not the same size.");
+        if ( taggedWords.length != cleanWords.length ) 
+            throw new IllegalArgumentException("Could not create a context because the tagged string and the clean string have not the same size.\n" +
+            		"cleanWords:  " + Arrays.toString(cleanWords) + "\n" +
+                    "taggedWords: " + Arrays.toString(taggedWords));
         
         for( int i = 0; i < leftContextString.split(" ").length + this.pattern.split(" ").length - 1 ; i++){
            

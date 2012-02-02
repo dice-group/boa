@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
 import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
@@ -20,7 +21,6 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
-import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
@@ -61,7 +61,7 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 	 * @see simba.nlpedia.entity.pattern.evaluation.PatternEvaluator#evaluatePattern(simba.nlpedia.entity.pattern.PatternMapping)
 	 */
 	@Override
-	public void score(FeatureExtractionPair pair) {
+	public void score(PatternMappingPatternPair pair) {
 		
 		long start = new Date().getTime();
 		
@@ -81,8 +81,9 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 		final List<String> sentences = new ArrayList<String>(patternSearcher.getExactMatchSentences(patternWithOutVariables, maxNumberOfEvaluationSentences));
 		List<String> sentencesToEvaluate = sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0, this.maxNumberOfEvaluationSentences) : sentences;
 		
-		double correctDomain	= 0;
-		double correctRange		= 0;
+		double correctDomain  = 0;
+		double correctRange   = 0;
+		int sentenceCount     = sentences.size();
 		
 		// go through all sentences which were found in the index containing the pattern
 		for (String foundString : sentencesToEvaluate) {
@@ -96,8 +97,15 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 			if ( nerTagged != null && foundString != null && segmentedPattern != null &&
 					nerTagged.length() > 0 && foundString.length() > 0 && segmentedPattern.length() > 0 ) {
 				
-				Context leftContext = new LeftContext(nerTagged, foundString, segmentedPattern);
-				Context rightContext = new RightContext(nerTagged, foundString, segmentedPattern);
+				Context leftContext     = this.createContext(LeftContext.class, nerTagged, foundString, segmentedPattern);
+				Context rightContext    = this.createContext(RightContext.class, nerTagged, foundString, segmentedPattern);
+				
+				// there are sentence which can not be parsed
+				if ( leftContext == null || rightContext == null ) {
+				    
+				    sentenceCount--; // we don't want to include broken sentences in the statistics
+				    continue;
+				}
 				
 				// to the left of the pattern is the domain resource, to the right the range resource
 				if ( beginsWithDomain ) {
@@ -114,8 +122,8 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 			}
 		}
 	
-		double domainCorrectness = (double) correctDomain / (double) sentencesToEvaluate.size();
-		double rangeCorrectness = (double) correctRange / (double) sentencesToEvaluate.size();
+		double domainCorrectness = (double) correctDomain / (double) sentenceCount;
+		double rangeCorrectness = (double) correctRange / (double) sentenceCount;
 		double typicity = ((domainCorrectness + rangeCorrectness) / 2) * Math.log(sentences.size() + 1);
 		
 		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY_CORRECT_DOMAIN_NUMBER"), domainCorrectness >= 0 ? domainCorrectness : 0);
@@ -127,6 +135,37 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 	}
 	
 	/**
+	 * 
+	 * @param clazz
+	 * @param nerTagged
+	 * @param foundString
+	 * @param segmentedPattern
+	 * @return
+	 */
+	private Context createContext(Class<? extends Context> clazz, String nerTagged, String foundString, String segmentedPattern) {
+
+	    Context context = null;
+	    
+	    try {
+	        
+	        if ( clazz.equals(LeftContext.class) ) context = new LeftContext(nerTagged, foundString, segmentedPattern);
+	        else {
+	            
+	            if ( clazz.equals(RightContext.class) ) context = new RightContext(nerTagged, foundString, segmentedPattern);
+	            else {
+	                
+	                throw new RuntimeException("Not appropriate class given: " + clazz);
+	            }
+	        }
+	    }
+	    catch (java.lang.IllegalArgumentException e) {
+	        
+	        this.logger.error("Could not create context!", e);
+	    }
+	    return context;
+    }
+
+    /**
 	 * Replaces the abbreviations from Lucene with regular brackets.
 	 * This is done to improve POS-Tag quality.
 	 * 

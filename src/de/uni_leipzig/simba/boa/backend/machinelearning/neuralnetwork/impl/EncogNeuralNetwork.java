@@ -31,29 +31,53 @@ import de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.NeuralNetw
 
 public class EncogNeuralNetwork implements NeuralNetwork {
 
-    private BasicNetwork network;
-    private double maxError                         = NLPediaSettings.getInstance().getDoubleSetting("neuronal.network.max.error");
-    private double errorDecrement                   = NLPediaSettings.getInstance().getDoubleSetting("neuronal.network.error.decrement");
-    private double minError                         = NLPediaSettings.getInstance().getDoubleSetting("neuronal.network.min.error");
-    private double maxHiddenToInputRatio            = NLPediaSettings.getInstance().getIntegerSetting("neuronal.network.hidden.layer.ratio");
-    private int maxEpochs                           = NLPediaSettings.getInstance().getIntegerSetting("neuronal.network.maxEpochs");
+    private final NLPediaLogger logger               = new NLPediaLogger(EncogNeuralNetwork.class);
     
-    private final NLPediaLogger logger              = new NLPediaLogger(EncogNeuralNetwork.class);
-    private static int N_FOLD_CROSS_VALIDATION      = NLPediaSettings.getInstance().getIntegerSetting("neuronal.network.n.fold.cross.validation");
-    private static final String NETWORK_DIRECTORY   = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("neural.network.network.directory");
-    private static String NETWORK_FILE              = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
+    private BasicNetwork network;
+    private double maxError                          = NLPediaSettings.getInstance().getDoubleSetting("neuronal.network.max.error");
+    private double errorDecrement                    = NLPediaSettings.getInstance().getDoubleSetting("neuronal.network.error.decrement");
+    private double minError                          = NLPediaSettings.getInstance().getDoubleSetting("neuronal.network.min.error");
+    private double maxHiddenToInputRatio             = NLPediaSettings.getInstance().getIntegerSetting("neuronal.network.hidden.layer.ratio");
+    private int maxEpochs                            = NLPediaSettings.getInstance().getIntegerSetting("neuronal.network.maxEpochs");
+    
+    private static final int N_FOLD_CROSS_VALIDATION = NLPediaSettings.getInstance().getIntegerSetting("neuronal.network.n.fold.cross.validation");
+    private static final String NETWORK_DIRECTORY    = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("neural.network.network.directory");
+    private static final String EVAL_OUTPUT_FILE     = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
+    private static final String NETWORK_FILE         = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
+    
+    private MachineLearningTrainingFile trainingFile = null;
     
     /**
      * Default constructor
      * 
      */
-    public EncogNeuralNetwork() {
+    public EncogNeuralNetwork(MachineLearningTrainingFile trainingFile) {
         
-        // load the network from disk in case it exists
-        if (new File(NETWORK_FILE).exists()) {
+        this.trainingFile = trainingFile;
+        this.loadModel();
+    }
+    
+    @Override
+    public void loadModel() {
+        
+        if ( this.network == null ) {
             
-            network = getNetwork(NETWORK_FILE);
-            this.logger.info("Reading trained network file!");
+            // load the network from disk in case it exists
+            if ( new File(NETWORK_FILE).exists() ) {
+                
+                network = getNetwork(NETWORK_FILE);
+                this.logger.info("Reading trained network file!");
+            }
+            else {
+                
+                // there is no network file available but annotated data, so we can train the network
+                if ( this.trainingFile != null && this.trainingFile.getAnnotatedEntries().size() > 0 ) {
+                    
+                    train(this.trainingFile, new File(EVAL_OUTPUT_FILE), new File(NETWORK_FILE), N_FOLD_CROSS_VALIDATION);
+                    network = getNetwork(NETWORK_FILE);
+                }
+                else this.logger.error("Could not read network file from location : " + NETWORK_FILE);
+            }
         }
     }
 
@@ -327,7 +351,19 @@ public class EncogNeuralNetwork implements NeuralNetwork {
      */
     public double getScore(PatternMapping mapping, Pattern pattern) {
 
-        MLData data = getSingleEntry(pattern.buildFeatureVector(mapping));
+        MLData data = getSingleEntry(pattern.buildNormalizedFeatureVector(mapping));
         return network.compute(data).getData(0);
+    }
+
+    @Override
+    public MachineLearningTrainingFile getMachineLearningTrainingFile() {
+
+        return this.trainingFile;
+    }
+    
+    @Override
+    public void setMachineLearningTrainingFile(MachineLearningTrainingFile machineLearningTrainingFile) {
+
+        this.trainingFile = machineLearningTrainingFile;
     }
 }

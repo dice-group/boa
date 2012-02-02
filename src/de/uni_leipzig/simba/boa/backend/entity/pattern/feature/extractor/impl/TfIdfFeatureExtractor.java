@@ -10,13 +10,13 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
-import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 
@@ -42,7 +42,7 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 	}
 	
 	@Override
-	public void score(FeatureExtractionPair pair) {
+	public void score(PatternMappingPatternPair pair) {
 		
 		Set<String> distinctStringsForSingleDocument = new HashSet<String>();
 		distinctStringsForSingleDocument.addAll(createDistinctStrings(pair.getMapping()));

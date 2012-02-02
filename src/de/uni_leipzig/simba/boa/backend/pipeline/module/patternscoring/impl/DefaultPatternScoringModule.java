@@ -28,7 +28,6 @@ public class DefaultPatternScoringModule extends AbstractPatternScoringModule {
     private final String MACHINE_LEARNING_TRAINING_FILE     = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("neural.network.network.directory") + "network_learn.txt";
     
     private final NLPediaLogger logger                      = new NLPediaLogger(DefaultPatternScoringModule.class);
-    private final MachineLearningTool machineLearningTool   = MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool();
     
     // for the report
     private long scoringTime = 0;
@@ -49,6 +48,10 @@ public class DefaultPatternScoringModule extends AbstractPatternScoringModule {
     public void run() {
 
         long start = System.currentTimeMillis();
+
+        // get ML from interchange object make sure there is a neural network read from disk
+        final MachineLearningTool machineLearningTool   = this.moduleInterchangeObject.getMachineLearningTool();
+        machineLearningTool.loadModel();
         
         // go through each mapping / pattern combination
         for ( PatternMapping mapping : this.moduleInterchangeObject.getPatternMappings() ) {

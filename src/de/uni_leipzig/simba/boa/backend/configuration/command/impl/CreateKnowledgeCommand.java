@@ -118,7 +118,7 @@ public class CreateKnowledgeCommand implements Command {
 			@Override
 			public int compare(Triple triple1, Triple triple2) {
 
-				double x = (triple2.getConfidence() - triple1.getConfidence());
+				double x = (triple2.getScore() - triple1.getScore());
 				if ( x < 0 ) return -1;
 				if ( x == 0 ) return 0;
 				return 1;
@@ -204,7 +204,7 @@ public class CreateKnowledgeCommand implements Command {
 				
 				Triple t = triples.get(i);
 				tripleWriter.write(i + "\t" + t.getSubject().getUri() + "\t" + t.getProperty().getUri() + "\t" + t.getObject().getUri() + Constants.NEW_LINE_SEPARATOR);
-				metaWriter.write(i + "\t" + t.getSubject().getLabel() + "\t" + t.getObject().getLabel() + "\t" + t.getConfidence() + "\t" + Constants.NEW_LINE_SEPARATOR);
+				metaWriter.write(i + "\t" + t.getSubject().getLabel() + "\t" + t.getObject().getLabel() + "\t" + t.getScore() + "\t" + Constants.NEW_LINE_SEPARATOR);
 				for ( String sentence : t.getLearnedFromSentences() ) {
 					
 					metaWriter.write("\t" + sentence + Constants.NEW_LINE_SEPARATOR);

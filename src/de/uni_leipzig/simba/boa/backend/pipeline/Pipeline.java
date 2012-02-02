@@ -68,17 +68,28 @@ public class Pipeline {
 			System.out.println(launchMessage);
 			
 			// do only run the module if either we don't have data already or we have data and want to override it 
-			if ( (module.isDataAlreadyAvailable() && module.isOverrideData()) || !module.isDataAlreadyAvailable() ) 
-				module.run();
-			else 
-				module.loadAlreadyAvailableData();
+			if ( (module.isDataAlreadyAvailable() && module.isOverrideData()) || !module.isDataAlreadyAvailable() ) {
+			    
+			    String runMessage = "  Beginning to create data!";
+	            this.logger.info(runMessage);
+	            System.out.println(runMessage);
+			    module.run();
+			}
+			else {
+			    
+			    String runMessage = "  Loading already available data!";
+                this.logger.info(runMessage);
+                System.out.println(runMessage);
+			    module.loadAlreadyAvailableData();
+			}
+				
 			
 			// we want to update the interchange module anyway
 			module.updateModuleInterchangeObject();
 			
 			String report = module.getReport();
 			this.logger.info(report);
-			System.out.println("\t" + report);
+			System.out.println("  " + report);
 			
 			String shutdownMessage = "Shutting down: " + module.getName();
 			this.logger.info(shutdownMessage);

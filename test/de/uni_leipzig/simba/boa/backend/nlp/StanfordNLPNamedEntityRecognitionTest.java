@@ -51,6 +51,9 @@ public class StanfordNLPNamedEntityRecognitionTest extends TestCase {
 		
 		NamedEntityRecognition ned = new StanfordNLPNamedEntityRecognition();
 		assertEquals("PERSON PERSON OTHER OTHER OTHER OTHER OTHER ORGANIZATION ORGANIZATION OTHER OTHER OTHER PERSON PERSON OTHER OTHER OTHER PLACE OTHER", ned.getAnnotations(string));
+		
+		System.out.println(ned.getAnnotatedString("\"Moby Dick\" was written by American author Herman Melville."));
+		
 	}
 	
 	@Test

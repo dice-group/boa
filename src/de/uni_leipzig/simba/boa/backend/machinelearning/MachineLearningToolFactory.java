@@ -3,8 +3,11 @@
  */
 package de.uni_leipzig.simba.boa.backend.machinelearning;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
+import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry.MachineLearningTrainingFileEntry;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.NeuralNetwork;
 import de.uni_leipzig.simba.boa.backend.util.FactoryUtil;
@@ -65,7 +68,7 @@ public class MachineLearningToolFactory {
 
 		if ( this.machineLearningTools.contains(machineLearningToolClass.getName()) ) {
 			
-			return (NeuralNetwork) FactoryUtil.createNewInstance(machineLearningToolClass);
+			return (MachineLearningTool) FactoryUtil.createNewInstance(machineLearningToolClass);
 		}
 		String error = "Could not load neural network " + machineLearningToolClass;
 		this.logger.error(error);
@@ -75,15 +78,14 @@ public class MachineLearningToolFactory {
     /**
      * @return the default machine learning tool
      */
-    @SuppressWarnings("unchecked")
-    public MachineLearningTool createDefaultMachineLearningTool() {
+    public MachineLearningTool createDefaultMachineLearningTool(MachineLearningTrainingFile file) {
 
         try {
             
-            return (MachineLearningTool) FactoryUtil.createNewInstance(
-                    (Class<? extends MachineLearningTool>) Class.forName(defaultMachineLearningTool));
+            return (MachineLearningTool) Class.forName(this.defaultMachineLearningTool).
+                    getDeclaredConstructor(MachineLearningTrainingFile.class).newInstance(file);
         }
-        catch (ClassNotFoundException e) {
+        catch (Exception e) {
 
             e.printStackTrace();
             String error = "Could not load default machine learning tool:" + defaultMachineLearningTool;
