@@ -43,7 +43,19 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		this.label = label;
 	}
 	
-	public Resource() {}
+	/**
+     * @param uri
+     * @param label
+     * @param type
+     */
+    public Resource(String uri, String label, String type) {
+
+        this.uri = uri;
+        this.label = label;
+        this.type = type;
+    }
+
+    public Resource() {}
 
 	/**
 	 * @param label the label to set

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.concurrent.Callable;
 
-import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPrintProgressTask;
 
@@ -21,10 +21,10 @@ import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPrintProg
 public class PatternFeatureExtractionPrintProgressTask extends TimerTask {
 
     private DecimalFormat format = new DecimalFormat("##");
-    private List<Callable<Collection<FeatureExtractionPair>>> callableList;
+    private List<Callable<Collection<PatternMappingPatternPair>>> callableList;
     private final NLPediaLogger logger = new NLPediaLogger(PatternSearchPrintProgressTask.class);
     
-    public PatternFeatureExtractionPrintProgressTask(List<Callable<Collection<FeatureExtractionPair>>> callableList) {
+    public PatternFeatureExtractionPrintProgressTask(List<Callable<Collection<PatternMappingPatternPair>>> callableList) {
         
         this.callableList = callableList;
     }
@@ -35,7 +35,7 @@ public class PatternFeatureExtractionPrintProgressTask extends TimerTask {
     @Override
     public void run() {
 
-        for (Callable<Collection<FeatureExtractionPair>> patternFeatureExtractionCallable : this.callableList) {
+        for (Callable<Collection<PatternMappingPatternPair>> patternFeatureExtractionCallable : this.callableList) {
 
             PatternFeatureExtractionCallable patternFeatureExtractionThread = (PatternFeatureExtractionCallable) patternFeatureExtractionCallable;
 

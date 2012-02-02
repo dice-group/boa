@@ -129,7 +129,7 @@ public class Evaluation implements Command {
 				@Override
 				public int compare(Triple o1, Triple o2) {
 
-					double x = (o2.getConfidence() - o1.getConfidence());
+					double x = (o2.getScore() - o1.getScore());
 					if ( x < 0 ) return -1;
 					if ( x == 0 ) return 0;
 					return 1;
@@ -141,7 +141,7 @@ public class Evaluation implements Command {
 				
 				if ( i++ < 501 ) {
 					
-					this.writeResults(triple.toString() + "\t" + triple.getConfidence() +  Constants.NEW_LINE_SEPARATOR);
+					this.writeResults(triple.toString() + "\t" + triple.getScore() +  Constants.NEW_LINE_SEPARATOR);
 					
 					List<String> sentences = new ArrayList<String>(triple.getLearnedFromSentences());
 					sentences = sentences.size() > 2 ? sentences.subList(0, 2) : sentences;

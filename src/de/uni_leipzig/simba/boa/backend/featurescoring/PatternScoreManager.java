@@ -57,7 +57,7 @@ public class PatternScoreManager {
                 trainingFileEntries.add(MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFileEntry(
                                                                                             mapping.getProperty().getUri(),
                                                                                             pattern.getNaturalLanguageRepresentation(),
-                                                                                            pattern.buildFeatureVector(mapping),
+                                                                                            pattern.buildNormalizedFeatureVector(mapping),
                                                                                             null));
             }
             // shuffle rather more then less
@@ -82,12 +82,12 @@ public class PatternScoreManager {
                 MachineLearningTrainingFileEntry entry = neuronalNetworkTrainingFile.getEntry(mapping.getProperty().getUri(), pattern.getNaturalLanguageRepresentation());
                 
                 if ( entry != null )                  
-                    entry.setFeatures(pattern.buildFeatureVector(mapping));
+                    entry.setFeatures(pattern.buildNormalizedFeatureVector(mapping));
                 else 
                     neuronalNetworkTrainingFile.addEntry(MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFileEntry(
                                                             mapping.getProperty().getUri(),
                                                             pattern.getNaturalLanguageRepresentation(),
-                                                            pattern.buildFeatureVector(mapping),
+                                                            pattern.buildNormalizedFeatureVector(mapping),
                                                             null));
                     
             }

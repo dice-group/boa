@@ -1,7 +1,11 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
@@ -133,5 +137,18 @@ public class FeatureFactory {
     public Feature getFeature(String key) {
 
         return this.featureMap.get(key);
+    }
+
+    /**
+     * @return all available features
+     */
+    public Set<Feature> getHandeldFeatures() {
+
+        Set<Feature> features = new HashSet<Feature>();
+        for (FeatureExtractor extractor : featureExtractorMap.values()) {
+            
+            features.addAll(extractor.getHandeledFeatures());
+        }
+        return features;
     }
 }

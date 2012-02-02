@@ -7,8 +7,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -17,6 +21,7 @@ import org.apache.commons.lang.SerializationUtils;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 
 /**
@@ -109,6 +114,46 @@ public class SerializationManager {
         for (PatternMapping mapping : patternMappings) {
  
             this.serializePatternMapping(mapping, patternMappingFolder + mapping.getProperty().getLabel() + ".bin");
+        }
+    }
+
+    /**
+     * 
+     * @param absoluteFile
+     * @return
+     */
+    public Set<Triple> deserializeTriples(String absoluteFile) {
+
+        try {
+            
+            return (Set<Triple>) SerializationUtils.deserialize(new FileInputStream(new File(absoluteFile)));
+        }
+        catch (FileNotFoundException e) {
+            
+            e.printStackTrace();
+            String error = "Could not deserialize triples from file " + absoluteFile;
+            logger.error(error, e);
+            throw new RuntimeException(error, e);
+        }
+    }
+    
+    /**
+     * 
+     * @param mapping
+     * @param filepath
+     */
+    public void serializeTriples(Set<Triple> triples, String filepath) {
+        
+        try {
+            
+            SerializationUtils.serialize((Serializable) triples, new FileOutputStream(new File(filepath)));
+        }
+        catch (FileNotFoundException e) {
+            
+            e.printStackTrace();
+            String error = "Could not serialize triples to " + filepath;
+            logger.error(error, e);
+            throw new RuntimeException(error, e);
         }
     }
 }

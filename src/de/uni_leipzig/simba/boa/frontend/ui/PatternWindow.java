@@ -396,7 +396,7 @@ public class PatternWindow extends Window {
 		}
 		
 		String pattern = this.pattern.getNaturalLanguageRepresentationWithoutVariables();
-		Iterator<String> iter = PatternUtil.getLuceneDocuments(BoaFrontendApplication.CURRENT_INDEX_DIR, this.pattern.retrieveLuceneDocIdsAsList()).iterator();
+		Iterator<String> iter = this.pattern.getFoundInSentences().iterator();
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("<h2>Pattern \"" + this.pattern.getNaturalLanguageRepresentation() + "\" learned from:</h2>");

@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
-import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.SimilarityAssessor;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.WordNotFoundException;
@@ -21,7 +21,7 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 	private NLPediaLogger logger = new NLPediaLogger(StringSimilarityFeatureExtractor.class);
 	
 	@Override
-	public void score(FeatureExtractionPair pair) {
+	public void score(PatternMappingPatternPair pair) {
 
 		// we calculate the qgram distance between the NLR and the label of the property
 			

@@ -3,8 +3,8 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor;
 import java.util.List;
 import java.util.Map;
 
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
-import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 
 /**
  * 
@@ -16,7 +16,7 @@ public interface FeatureExtractor {
 	 * 
 	 * @param pair
 	 */
-	public void score(FeatureExtractionPair pair);
+	public void score(PatternMappingPatternPair pair);
 
 	/**
 	 * 

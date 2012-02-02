@@ -138,7 +138,7 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	 * @return the confidence
 	 */
 	@Basic
-	public double getConfidence() {
+	public double getScore() {
 	
 		return confidence;
 	}

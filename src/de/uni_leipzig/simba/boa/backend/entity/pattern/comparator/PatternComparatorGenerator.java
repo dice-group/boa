@@ -27,20 +27,6 @@ public class PatternComparatorGenerator {
             @Override
             public int compare(Pattern pattern1, Pattern pattern2) {
                 
-                System.out.println("THE " + feature.getName());
-                
-                System.out.println("Pattern 1 Comparator");
-                for ( Map.Entry<Feature, Double> entry: pattern1.getFeatures().entrySet()) {
-                    
-                    System.out.println(entry.getKey().getName() + " " + entry.getValue());
-                }
-                
-                System.out.println("Pattern 2 Comparator");
-                for ( Map.Entry<Feature, Double> entry: pattern2.getFeatures().entrySet()) {
-                    
-                    System.out.println(entry.getKey().getName() + " " + entry.getValue());
-                }
-                
                 double x = pattern1.getFeatures().get(feature) - pattern2.getFeatures().get(feature);
                 if ( x < 0 ) return -1;
                 if ( x == 0 ) return 0;

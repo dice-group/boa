@@ -1,11 +1,11 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
-import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 
@@ -15,10 +15,7 @@ public class TotalOccurrenceFeatureExtractor extends AbstractFeatureExtractor {
     private final int MAXIMUM_NUMBER_OF_TOTAL_OCCURRENCES = NLPediaSettings.getInstance().getIntegerSetting("maxmimumNumberOfTotalOccurrences");
 	private PatternSearcher searcher;
 	
-	public TotalOccurrenceFeatureExtractor() {
-
-        this.searcher = new DefaultPatternSearcher();
-    }
+	public TotalOccurrenceFeatureExtractor() {}
 	
 	public TotalOccurrenceFeatureExtractor(PatternSearcher patternSearcher) {
 
@@ -26,8 +23,10 @@ public class TotalOccurrenceFeatureExtractor extends AbstractFeatureExtractor {
     }
 
     @Override
-	public void score(FeatureExtractionPair pair) {
+	public void score(PatternMappingPatternPair pair) {
 		
+        if ( this.searcher == null ) this.searcher = new DefaultPatternSearcher();
+        
 		// this is for junit testing
 		this.scoreMapping(pair.getPattern());
 	}

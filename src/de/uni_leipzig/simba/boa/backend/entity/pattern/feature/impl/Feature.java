@@ -84,6 +84,15 @@ public final class Feature implements Serializable {
 
         return name;
     }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+
+        return this.name;
+    }
 
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()

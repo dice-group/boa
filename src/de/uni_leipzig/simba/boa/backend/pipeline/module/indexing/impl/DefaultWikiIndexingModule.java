@@ -29,6 +29,7 @@ import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.lucene.LowerCaseWhitespaceAnalyzer;
+import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.SentenceBoundaryDisambiguation;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.AbstractPipelineModule;
@@ -41,9 +42,9 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 
 	private final NLPediaLogger logger		= new NLPediaLogger(DefaultWikiIndexingModule.class);
 	
-	private final String RAW_DATA_DIRECTORY	= NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("rawSentenceDirectory");
-	private final String INDEX_DIRECTORY	= NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory");
-	private final int RAM_BUFFER_MAX_SIZE	= new Integer(NLPediaSettings.getInstance().getSetting("ramBufferMaxSizeInMb")).intValue();
+	private final String RAW_DATA_DIRECTORY	= NLPediaSettings.BOA_DATA_DIRECTORY + "raw/";
+	private final String INDEX_DIRECTORY	= NLPediaSettings.BOA_DATA_DIRECTORY + "index/corpus/";
+	private final int RAM_BUFFER_MAX_SIZE	= NLPediaSettings.getInstance().getIntegerSetting("ramBufferMaxSizeInMb");
 	private final boolean OVERWRITE_INDEX	= this.overrideData;
 	
 	// remember how many files get indexed
@@ -58,17 +59,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	@Override
 	public boolean isDataAlreadyAvailable() {
 
-		try {
-			
-			return IndexReader.indexExists(FSDirectory.open(new File(INDEX_DIRECTORY)));
-		}
-		catch (IOException e) {
-			
-			e.printStackTrace();
-			String error = "Check if index exists failed!";
-			this.logger.fatal(error, e);
-			throw new RuntimeException(error, e);
-		}
+	    return LuceneIndexHelper.isIndexExisting(INDEX_DIRECTORY);
 	}
 	
 	@Override
@@ -110,8 +101,8 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 		// create the index writer configuration and create a new index writer
 		IndexWriterConfig indexWriterConfig = new IndexWriterConfig(Version.LUCENE_34, new LowerCaseWhitespaceAnalyzer());
 		indexWriterConfig.setRAMBufferSizeMB(RAM_BUFFER_MAX_SIZE);
-		indexWriterConfig.setOpenMode(OVERWRITE_INDEX ? OpenMode.CREATE : OpenMode.APPEND);
-		IndexWriter writer = this.createIndex(new File(INDEX_DIRECTORY), indexWriterConfig);
+		indexWriterConfig.setOpenMode(OVERWRITE_INDEX || !LuceneIndexHelper.isIndexExisting(INDEX_DIRECTORY) ? OpenMode.CREATE : OpenMode.APPEND);
+		IndexWriter writer = LuceneIndexHelper.createIndex(INDEX_DIRECTORY, indexWriterConfig);
 
 		// go through all files which are not hidden in the raw sentence directory
 		for (File file : FileUtils.listFiles(new File(RAW_DATA_DIRECTORY), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE)) {
@@ -153,7 +144,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 				indexDocumentCount += documents.size();
 			}
 		}
-		this.closeIndexWriter(writer);
+		LuceneIndexHelper.closeIndexWriter(writer);
 	}
 
 	/**
@@ -163,27 +154,13 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	 * @param documents - all documents to be processed
 	 */
 	protected void indexDocuments(IndexWriter writer, List<IndexDocument> documents) {
-		try {
-			
-			// go through every document
-			for (IndexDocument doc : documents)
-				// get every sentence from this document
-				for (String sentence : doc.getSentences() )
-					// add it to the index
-					writer.addDocument(this.createLuceneDocument(doc.uri, sentence));
-		}
-		catch (CorruptIndexException e) {
-			
-			this.logger.fatal("Could not index list of documents", e);
-			e.printStackTrace();
-			throw new RuntimeException("Could not index list of documents", e);
-		}
-		catch (IOException e) {
-			
-			this.logger.fatal("Could not index list of documents", e);
-			e.printStackTrace();
-			throw new RuntimeException("Could not index list of documents", e);
-		}
+		
+	    // go through every document
+		for (IndexDocument doc : documents)
+			// get every sentence from this document
+			for (String sentence : doc.getSentences() )
+				// add it to the index
+			    LuceneIndexHelper.indexDocument(writer, this.createLuceneDocument(doc.uri, sentence));
 	}
 	
 	/**
@@ -235,70 +212,6 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 		public List<String> getSentences() {
 			
 			return this.sentenceBoundaryDisambiguation.getSentences(Jsoup.parse(this.text.toString()).text());
-		}
-	}
-	
-	/**
-	 * Opens a Lucene IndexWriter with the specified settings.
-	 * This method catches all Lucene exceptions.
-	 * 
-	 * @param file - the directory where to write the index
-	 * @param indexWriterConfig - the config for the index writer
-	 * @return an opened indexwriter for the specified settings.
-	 * @throws RuntimeException if something goes wrong
-	 */
-	private IndexWriter createIndex(File file, IndexWriterConfig indexWriterConfig) {
-
-		try {
-			
-			return new IndexWriter(FSDirectory.open(new File(INDEX_DIRECTORY)), indexWriterConfig);
-		}
-		catch (CorruptIndexException e) {
-			
-			this.logger.fatal("Could not create index", e);
-			e.printStackTrace();
-			throw new RuntimeException("Could not create index", e);
-		}
-		catch (LockObtainFailedException e) {
-			
-			this.logger.fatal("Could not create index", e);
-			e.printStackTrace();
-			throw new RuntimeException("Could not create index", e);
-		}
-		catch (IOException e) {
-			
-			this.logger.fatal("Could not create index", e);
-			e.printStackTrace();
-			throw new RuntimeException("Could not create index", e);
-		}
-	}
-	
-	/**
-	 * Closes a given index writer without Lucene exceptions.
-	 * This method performs a optimze step before closing.
-	 * 
-	 * @param writer the writer to close
-	 * @throws RuntimeException if something goes wrong
-	 */
-	private void closeIndexWriter(IndexWriter writer) {
-
-		try {
-			
-			// close the index and do a full optmize
-			writer.optimize();
-			writer.close();
-		}
-		catch (CorruptIndexException e) {
-			
-			this.logger.fatal("Could not close/optimize index", e);
-			e.printStackTrace();
-			throw new RuntimeException("Could not close/optimize index", e);
-		}
-		catch (IOException e) {
-			
-			this.logger.fatal("Could not close/optimize index", e);
-			e.printStackTrace();
-			throw new RuntimeException("Could not close/optimize index", e);
 		}
 	}
 }

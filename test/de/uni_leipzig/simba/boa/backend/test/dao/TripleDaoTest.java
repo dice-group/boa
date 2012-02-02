@@ -82,9 +82,9 @@ public class TripleDaoTest {
 		
 		List<Triple> topNTriple = tripleDao.queryTopNTriples(100);
 		assertEquals(50, topNTriple.size());
-		assertEquals(1, topNTriple.get(0).getConfidence(), 0);
-		assertEquals(0.5, topNTriple.get(1).getConfidence(), 0.5);
-		assertEquals(1D/50D, topNTriple.get(topNTriple.size()-1).getConfidence(), 0);
+		assertEquals(1, topNTriple.get(0).getScore(), 0);
+		assertEquals(0.5, topNTriple.get(1).getScore(), 0.5);
+		assertEquals(1D/50D, topNTriple.get(topNTriple.size()-1).getScore(), 0);
 	}
 	
 	@Test

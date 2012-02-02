@@ -24,7 +24,7 @@ public class PatternScoreCommand implements Command {
 	private List<PatternMapping> mappings;
 	
 	// the learner which uses a neuronal network
-	private NeuralNetwork learner = new EncogNeuralNetwork();
+//	private NeuralNetwork learner = new EncogNeuralNetwork();
 	
 	public PatternScoreCommand(List<PatternMapping> mappings) {
 		

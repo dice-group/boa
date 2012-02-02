@@ -59,7 +59,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	public DefaultPatternSearcher() {
 
 		// create index searcher in read only mode
-		this.directory = LuceneIndexHelper.openIndex(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory"));
+		this.directory = LuceneIndexHelper.openIndex(NLPediaSettings.BOA_DATA_DIRECTORY + "index/corpus/");
 		this.analyzer = new LowerCaseWhitespaceAnalyzer();
 		this.indexSearcher = LuceneIndexHelper.openIndexSearcher(directory, true);
 		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
@@ -69,7 +69,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	
 	public DefaultPatternSearcher(String indexDir) {
 
-		this.directory = LuceneIndexHelper.openIndex(NLPediaSettings.BOA_DATA_DIRECTORY + NLPediaSettings.getInstance().getSetting("indexSentenceDirectory"));
+		this.directory = LuceneIndexHelper.openIndex(NLPediaSettings.BOA_DATA_DIRECTORY + "index/corpus/");
 		this.analyzer = new LowerCaseWhitespaceAnalyzer();
 
 		// create index searcher in read only mode
@@ -220,7 +220,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 							currentMatches.put(hits[i].doc, match2[j]);
 						}
 					}
-					this.addSearchResults(results, currentMatches, backgroundKnowledge, hits[i], sentenceLowerCase, sentence);
+					this.addSearchResults(results, currentMatches, backgroundKnowledge, hits[i], sentence);
 				}
 			}
 		}
@@ -237,17 +237,18 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	 * @param hit
 	 * @param isSubject
 	 */
-	private void addSearchResults(List<SearchResult> results, Map<Integer, String> currentMatches, BackgroundKnowledge backgroundKnowledge, ScoreDoc hit, String sentenceLowerCase, String sentenceNormalCase) {
+	private void addSearchResults(List<SearchResult> results, Map<Integer, String> currentMatches, BackgroundKnowledge backgroundKnowledge, ScoreDoc hit, String sentenceNormalCase) {
 
 		for (String match : currentMatches.values()) {
 
-			String nlr = this.getCorrectCaseNLR(sentenceLowerCase, sentenceNormalCase, match);
+			String nlr = this.getCorrectCaseNLR(sentenceNormalCase.toLowerCase(), sentenceNormalCase, match);
 
 			// but only for those who are suitable
 			if (!match.isEmpty() && this.isPatternSuitable(match)) {
 
 				SearchResult result = new SearchResult();
 				result.setProperty(backgroundKnowledge.getProperty().getUri());
+				result.setSentence(sentenceNormalCase);
 				result.setNaturalLanguageRepresentation(nlr);
 				result.setRdfsRange(backgroundKnowledge.getProperty().getRdfsRange());
 				result.setRdfsDomain(backgroundKnowledge.getProperty().getRdfsDomain());
@@ -261,7 +262,6 @@ public class DefaultPatternSearcher implements PatternSearcher {
 					result.setFirstLabel(backgroundKnowledge.getObject().getLabel());
 					result.setSecondLabel(backgroundKnowledge.getSubject().getLabel());
 				}
-				result.setIndexId(hit.doc);
 				if ( this.posTagger == null ) this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
 				result.setPosTags(this.posTagger.getAnnotations(result.getNaturalLanguageRepresentationWithoutVariables()));
 				results.add(result);

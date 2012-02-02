@@ -45,7 +45,7 @@ public class PatternSearcherFactory {
     public PatternSearcher createDefaultPatternSearcher() {
 
         try {
-            
+
             return (PatternSearcher) createNewInstance(
                     (Class<? extends PatternSearcher>) Class.forName(defaultPatternSearcher));
         }
@@ -105,5 +105,41 @@ public class PatternSearcherFactory {
             this.logger.fatal(error, e);
             throw new RuntimeException(error, e);
         }
+    }
+
+    
+    /**
+     * @return the defaultPatternSearcher
+     */
+    public String getDefaultPatternSearcher() {
+    
+        return defaultPatternSearcher;
+    }
+
+    
+    /**
+     * @param defaultPatternSearcher the defaultPatternSearcher to set
+     */
+    public void setDefaultPatternSearcher(String defaultPatternSearcher) {
+    
+        this.defaultPatternSearcher = defaultPatternSearcher;
+    }
+
+    
+    /**
+     * @return the patternSearcher
+     */
+    public List<String> getPatternSearcher() {
+    
+        return patternSearcher;
+    }
+
+    
+    /**
+     * @param patternSearcher the patternSearcher to set
+     */
+    public void setPatternSearcher(List<String> patternSearcher) {
+    
+        this.patternSearcher = patternSearcher;
     }
 }

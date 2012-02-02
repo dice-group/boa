@@ -11,7 +11,7 @@ public class SearchResult {
 	private String firstLabel;
 	private String secondLabel;
 	private String posTags;
-	private int indexId;
+	private String sentence;
 	
 	/**
 	 * @return the property
@@ -114,22 +114,6 @@ public class SearchResult {
 		this.secondLabel = secondLabel;
 	}
 
-	/**
-	 * @param indexId the indexId to set
-	 */
-	public void setIndexId(int indexId) {
-
-		this.indexId = indexId;
-	}
-
-	/**
-	 * @return the indexId
-	 */
-	public int getIndexId() {
-
-		return indexId;
-	}
-
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -149,8 +133,6 @@ public class SearchResult {
 		builder.append(firstLabel);
 		builder.append(", secondLabel=");
 		builder.append(secondLabel);
-		builder.append(", indexId=");
-		builder.append(indexId);
 		builder.append("]");
 		return builder.toString();
 	}
@@ -170,4 +152,20 @@ public class SearchResult {
 
 		this.posTags = posTagsForSentence;
 	}
+
+    /**
+     * @return the sentence
+     */
+    public String getSentence() {
+
+        return sentence;
+    }
+
+    /**
+     * @param sentence the sentence to set
+     */
+    public void setSentence(String sentence) {
+
+        this.sentence = sentence;
+    }
 }

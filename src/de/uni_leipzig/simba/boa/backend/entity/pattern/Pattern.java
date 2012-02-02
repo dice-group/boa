@@ -78,7 +78,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	/**
 	 * 
 	 */
-	private String luceneDocIds;
+	private List<String> foundInSentences;
 	
 	/**
 	 * 
@@ -118,7 +118,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		this.patternMappings = new ArrayList<PatternMapping>();
 		this.numberOfOccurrences = 1;
 		this.useForPatternEvaluation = true;
-		this.luceneDocIds = "";
+		this.setFoundInSentences(new ArrayList<String>());
 		this.features = new HashMap<Feature,Double>();
 	}
 
@@ -352,42 +352,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		}
 	}
 
-
-	/**
-	 * @param luceneDocIds the luceneDocIds to set
-	 */
-	public void setLuceneDocIds(String luceneDocIds) {
-
-		this.luceneDocIds = luceneDocIds;
-	}
-
-	/**
-	 * @return the luceneDocIds
-	 */
-	@Basic
-	@Column(length=5012)
-	public String getLuceneDocIds() {
-
-		return luceneDocIds;
-	}
-	
-	public void addLuceneDocIds(int id){
-		
-		this.luceneDocIds += "$" + id; 
-	}
-	
-	public List<Integer> retrieveLuceneDocIdsAsList(){
-		
-		List<Integer> ids = new ArrayList<Integer>();
-		String[] s = this.luceneDocIds.substring(1).split("\\$");
-		for (String id : s) {
-			
-			ids.add(Integer.valueOf(id));
-		}
-		return ids;
-	}
-
-
 	public int retrieveMaxLearnedFrom() {
 
 		int maximum = 0;
@@ -438,7 +402,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	 * @return the maxLearnedFrom
 	 */
 	@Transient
-	public double getMaxLearnedFrom() {
+	public int getMaxLearnedFrom() {
 
 		int max = 0;
 		for ( Map.Entry<String, Integer> entry : this.learnedFrom.entrySet()) {
@@ -504,7 +468,23 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		this.features = features;
 	}
 	
-	public List<Double> buildFeatureVector(PatternMapping mapping){
+	/**
+     * @return the foundInSentences
+     */
+    public List<String> getFoundInSentences() {
+
+        return foundInSentences;
+    }
+
+    /**
+     * @param foundInSentences the foundInSentences to set
+     */
+    public void setFoundInSentences(List<String> foundInSentences) {
+
+        this.foundInSentences = foundInSentences;
+    }
+
+    public List<Double> buildNormalizedFeatureVector(PatternMapping mapping){
 		
 		List<Double> featureValues = new ArrayList<Double>();
 
@@ -524,11 +504,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
                             // take every mapping into account to find the maximum value
                             if ( feature.isNormalizeGlobaly() ) {
 
-                                System.out.println("Pattern buildFeatureVector");
-                                for ( Map.Entry<Feature, Double> entry: this.features.entrySet()) {
-                                    
-                                    System.out.println(entry.getKey().getName() + " " + entry.getValue());
-                                }
                                 maximum = FeatureHelper.calculateGlobalMaximum(feature);
                             }
                             // only use the current mapping to find the maximum
@@ -537,11 +512,10 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
                                 maximum = FeatureHelper.calculateLocalMaximum(mapping, feature);
                             }
                             featureValues.add(this.features.get(feature) / maximum);
-//	                        output.append(OutputFormatter.format((this.features.get(feature) / maximum), "0.00000") + Constants.FEATURE_FILE_COLUMN_SEPARATOR);
                         }
                         // we dont need to normalize a 0-1 value
                         else {
-//	                        output.append(OutputFormatter.format(this.features.get(feature), "0.00000") + Constants.FEATURE_FILE_COLUMN_SEPARATOR);
+                            
                             featureValues.add(this.features.get(feature));
                         }
                     }

@@ -98,7 +98,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 			String label1			= searchResult.getFirstLabel();
 			String label2			= searchResult.getSecondLabel();
 			String posTagged		= searchResult.getPosTags();
-			Integer documentId		= new Integer(searchResult.getIndexId());
+			String sentence		    = searchResult.getSentence();
 
 			// next line is for the same property
 			if ( propertyUri.equals(currentProperty) ) {
@@ -114,7 +114,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 					pattern.setPosTaggedString(posTagged);
 					pattern.addLearnedFrom(label1 + "-;-" + label2);
 					pattern.addPatternMapping(currentMapping);
-					pattern.addLuceneDocIds(Integer.valueOf(documentId));
+					pattern.getFoundInSentences().add(sentence);
 					
 					if ( patterns.get(propertyUri.hashCode()) != null ) {
 						
@@ -134,7 +134,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 					
 					pattern.increaseNumberOfOccurrences();
 					pattern.addLearnedFrom(label1 + "-;-" + label2);
-					pattern.addLuceneDocIds(Integer.valueOf(documentId));
+					pattern.getFoundInSentences().add(sentence);
 					pattern.addPatternMapping(currentMapping);
 				}
 			}
@@ -160,7 +160,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 				pattern.setPosTaggedString(posTagged);
 				pattern.addLearnedFrom(label1 + "-;-" + label2);
 				pattern.addPatternMapping(currentMapping);
-				pattern.addLuceneDocIds(documentId);
+				pattern.getFoundInSentences().add(sentence);
 				
 				currentMapping.addPattern(pattern);
 				

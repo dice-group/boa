@@ -119,22 +119,6 @@ public class CreateKnowledgeThread { //extends Thread {
 						}
 						// close the searcher or you get a ioexception because too many files are open
 						patternSearcher.close();
-						
-						// confidence of triple is number of patterns the triple has been learned from times the sum of their confidences
-						for ( Triple triple : newTripleMap.values() ) {
-							
-							// new knowledge (knowledge not put in as background knowledge) is always not correct
-							if ( !triple.isCorrect() ) {
-								
-								double confidence = 0;
-								for ( Pattern patternLearnedFrom : triple.getLearnedFromPatterns() ) {
-									
-									confidence += patternLearnedFrom.getScore();
-								}
-								// sigmoid function shifted to the right to boost pattern which are learned from more than one pattern
-								triple.setConfidence(1D / (1D + Math.pow(Math.E, - confidence * triple.getLearnedFromPatterns().size() + 1)));
-							}
-						}
 					}
 				}
 				this.logger.info("Finished creating knowledge for: "  + mapping.getProperty().getUri() + " with " + newTripleMap.values().size() + " triples.");

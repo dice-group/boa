@@ -28,12 +28,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.ReverbFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.FeatureEnum;
-import de.uni_leipzig.simba.boa.backend.featureextraction.FeatureExtractionPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 
@@ -76,7 +76,7 @@ public class FeatureTest {
 		    
 		    for (Pattern pattern :mapping.getPatterns()) {
 
-		        FeatureExtractionPair pair = new FeatureExtractionPair(mapping, pattern);
+		        PatternMappingPatternPair pair = new PatternMappingPatternPair(mapping, pattern);
 		        
 //		        totalOccurrenceFeature.score(pair);
 		        reverbFeature.score(pair);

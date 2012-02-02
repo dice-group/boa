@@ -245,7 +245,7 @@ public class EvaluationFileLoader {
 			
 			for (Triple t : new CreateKnowledgeCallable(mapping, idx).call()) {
 				
-				if ( t.getConfidence() >= tripleScoreThreshold ) {
+				if ( t.getScore() >= tripleScoreThreshold ) {
 					
 					String subjectUri	= t.getSubject().getUri().toLowerCase();
 					String propertyUri	= t.getProperty().getUri().toLowerCase();
