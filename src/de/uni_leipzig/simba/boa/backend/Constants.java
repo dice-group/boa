@@ -93,8 +93,11 @@ public class Constants {
      * 
      */
     public static final String WIKIPEDIA_DUMP_PATH = "wikipedia/";
-    
-    public static final String DBPEDIA_PATH = "dbpedia/";
+
+    /**
+     * 
+     */
+    public static final String DBPEDIA_DUMP_PATH = "dbpedia/";
 
     // ##############################################################################
     

@@ -27,7 +27,7 @@ public class TranslateBackgroundKnowledgeModule extends AbstractPreprocessingMod
     private final NLPediaLogger logger = new NLPediaLogger(TranslateBackgroundKnowledgeModule.class);
     
     private final String BACKGROUND_KNOWLEDGE_OBJECT_PATH       = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH;
-    private final String TARGET_LANGUAGE_DBPEDIA_LABELS_FILE    = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_PATH + "labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
+    private final String TARGET_LANGUAGE_DBPEDIA_LABELS_FILE    = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
     private final String TARGET_LANGUAGE_OUTPUT_PATH            = BACKGROUND_KNOWLEDGE_OBJECT_PATH + NLPediaSettings.BOA_LANGUAGE;
 
     // for the report
