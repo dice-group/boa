@@ -21,7 +21,6 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
-import de.uni_leipzig.simba.boa.backend.search.concurrent.CreateKnowledgeCallable;
 
 
 public class EvaluationFileLoader {
@@ -243,25 +242,25 @@ public class EvaluationFileLoader {
 		Set<Triple> boaTriples = new HashSet<Triple>(); 
 		for (PatternMapping mapping : mappings ) {
 			
-			for (Triple t : new CreateKnowledgeCallable(mapping, idx).call()) {
-				
-				if ( t.getScore() >= tripleScoreThreshold ) {
-					
-					String subjectUri	= t.getSubject().getUri().toLowerCase();
-					String propertyUri	= t.getProperty().getUri().toLowerCase();
-					String objectUri	= t.getObject().getUri().toLowerCase();
-					
-					subjectUri	= subjectUri.replace("http://dbpedia.org/resource/", "wiki:");
-					propertyUri	= propertyUri.replace("http://dbpedia.org/ontology/", "dbpedia-owl:");
-					objectUri	= objectUri.replace( "http://dbpedia.org/resource/", "wiki:"); 
-					
-					// we need to lowercase all letters because the annotators made mistakes
-					t.getSubject().setUri(subjectUri);
-					t.getProperty().setUri(propertyUri);
-					t.getObject().setUri(objectUri);
-					boaTriples.add(t);
-				}
-			}
+//			for (Triple t : new CreateKnowledgeCallable(mapping, idx).call()) {
+//				
+//				if ( t.getScore() >= tripleScoreThreshold ) {
+//					
+//					String subjectUri	= t.getSubject().getUri().toLowerCase();
+//					String propertyUri	= t.getProperty().getUri().toLowerCase();
+//					String objectUri	= t.getObject().getUri().toLowerCase();
+//					
+//					subjectUri	= subjectUri.replace("http://dbpedia.org/resource/", "wiki:");
+//					propertyUri	= propertyUri.replace("http://dbpedia.org/ontology/", "dbpedia-owl:");
+//					objectUri	= objectUri.replace( "http://dbpedia.org/resource/", "wiki:"); 
+//					
+//					// we need to lowercase all letters because the annotators made mistakes
+//					t.getSubject().setUri(subjectUri);
+//					t.getProperty().setUri(propertyUri);
+//					t.getObject().setUri(objectUri);
+//					boaTriples.add(t);
+//				}
+//			}
 		}
 		return boaTriples;
 	}

@@ -122,6 +122,7 @@
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/java-getopt-1.0.9.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/LBJ2.jar"/>
 		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/kryo-1.04-all.jar"/>
+		 	<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/JHanNanum_0.8.2.jar"/>
 		</jar>
 	</target>
 	<!-- ==================== configure jawa ==================== -->

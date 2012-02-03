@@ -107,7 +107,7 @@ public class XXX {
 	
 	public void translateEnglishToKoreanLabels() {
 		
-		Map<String,String> uriToLabelMapping = NtripleUtil.parseNTripleFile("/Users/gerb/labels_ko.nt");
+		Map<String,String> uriToLabelMapping = NtripleUtil.getSubjectAndObjectsMappingFromNTriple("/Users/gerb/labels_ko.nt", "UTF-8");
 		
 		BufferedFileReader reader = FileUtil.openReader("/Users/gerb/en_relation_surface.txt");
 		BufferedFileWriter writer = FileUtil.openWriter("/Users/gerb/ko_relation_surface.txt", "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
