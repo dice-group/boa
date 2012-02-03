@@ -42,8 +42,8 @@ public class DBpediaSpotlightSurfaceFormGenerator {
     public static final String SURFACE_FORMS_FILE               = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_uri_surface_form.tsv";
 
     private static List<String> LOWERCASE_STOPWORDS = null;
-    private final List<String> STOPWORDS                        = FileUtil.readFileInList(NLPediaSettings.BOA_BASE_DIRECTORY + "dbpedia/stopwords.txt", "UTF-8");
-    private static final List<String> BLACKLISTED_URI_PATTERN   = FileUtil.readFileInList(NLPediaSettings.BOA_BASE_DIRECTORY + "dbpedia/badUris.txt", "UTF-8");
+    private final List<String> STOPWORDS                        = FileUtil.readFileInList(NLPediaSettings.BOA_BASE_DIRECTORY + "dbpedia/" + NLPediaSettings.BOA_LANGUAGE + "/stopwords.txt", "UTF-8");
+    private static final List<String> BLACKLISTED_URI_PATTERN   = FileUtil.readFileInList(NLPediaSettings.BOA_BASE_DIRECTORY + "dbpedia/" + NLPediaSettings.BOA_LANGUAGE + "/badUris.txt", "UTF-8");
     
     public DBpediaSpotlightSurfaceFormGenerator() {
         
