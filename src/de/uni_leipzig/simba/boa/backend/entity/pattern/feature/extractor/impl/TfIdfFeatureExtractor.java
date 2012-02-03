@@ -28,7 +28,7 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 	
 	private final String PATTERN_MAPPING_FOLDER            = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
 	
-	public TfIdfFeatureExtractor() {
+	private void init() {
 	    
 	    for ( PatternMapping mapping : SerializationManager.getInstance().deserializePatternMappings(PATTERN_MAPPING_FOLDER) ) {
             
@@ -43,6 +43,8 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 	
 	@Override
 	public void score(PatternMappingPatternPair pair) {
+	    
+	    if ( this.documents.size() == 0 ) this.init();
 		
 		Set<String> distinctStringsForSingleDocument = new HashSet<String>();
 		distinctStringsForSingleDocument.addAll(createDistinctStrings(pair.getMapping()));
