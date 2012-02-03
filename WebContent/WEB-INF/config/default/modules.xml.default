@@ -5,6 +5,101 @@
 <beans>
 
     <!--  ############################################################################################ -->
+    <!--  #################################### Pre-processing ######################################## -->
+    <!--  ############################################################################################ -->
+
+    <bean id="CreateDataDirectoryStructureModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule">
+
+        <property name="overrideData" value="false" />
+        <property name="moduleDependencies">
+            <set></set>
+        </property>
+        <property name="moduleSettings">
+            <set></set>
+        </property>
+    </bean>
+    
+    <bean id="WikipediaDownloadModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.WikipediaDownloadModule">
+
+        <property name="overrideData" value="false" />
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
+            </set>
+        </property>
+        <property name="moduleSettings">
+            <set></set>
+        </property>
+    </bean>
+    
+    
+    <bean id="WikipediaExtractorModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.WikipediaExtractorModule">
+
+        <property name="overrideData" value="false" />
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.WikipediaDownloadModule</value>
+            </set>
+        </property>
+        <property name="moduleSettings">
+            <set></set>
+        </property>
+    </bean>
+    
+    <bean id="DBpediaSpotlightDownloadModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.DBpediaSpotlightDownloadModule">
+
+        <property name="overrideData" value="false" />
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
+            </set>
+        </property>
+        <property name="moduleSettings">
+            <set></set>
+        </property>
+    </bean>
+    
+    <bean id="DBpediaSpotlightSurfaceFormModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.DBpediaSpotlightSurfaceFormModule">
+
+        <property name="overrideData" value="false" />
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.DBpediaSpotlightDownloadModule</value>
+            </set>
+        </property>
+        <property name="moduleSettings">
+            <set></set>
+        </property>
+    </bean>
+    
+    <bean id="TranslateBackgroundKnowledgeModule"  
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.TranslateBackgroundKnowledgeModule">
+
+        <!-- DANGER: this module is not supposed to be in the pipeline, this is a one time thing 
+             so you first need to gather the English background knowledge and the target language's
+             labels file. You should let the first run be the one that downloads all English data. 
+             And then use the second run to download the target language's files. You won't need to 
+             download the English wikipedia corpus. -->
+
+        <property name="overrideData" value="false" />
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
+            </set>
+        </property>
+        <property name="moduleSettings">
+            <set></set>
+        </property>
+    </bean>
+
+    <!--  ############################################################################################ -->
     <!--  #################################### Background Knowledge ################################## -->
     <!--  ############################################################################################ -->
 
@@ -15,7 +110,7 @@
 
         <property name="moduleDependencies">
             <set>
-                <!-- none -->
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
             </set>
         </property>
 
@@ -39,7 +134,7 @@
 
         <property name="moduleDependencies">
             <set>
-                <!-- none -->
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
             </set>
         </property>
 
@@ -67,6 +162,7 @@
 
         <property name="moduleDependencies">
             <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
             </set>
         </property>
 
@@ -86,6 +182,7 @@
 
         <property name="moduleDependencies">
             <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
             </set>
         </property>
 
@@ -103,15 +200,15 @@
     <!--  ###################################### Search ############################################## -->
     <!--  ############################################################################################ -->
 
-    <bean id="DeafultPatternSearchModule"
-        class="de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl">
+    <bean id="DefaultPatternSearchModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl.DefaultPatternSearchModule">
 
         <property name="overrideData" value="false" />
 
         <property name="moduleDependencies">
             <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
                 <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule</value>
-                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule</value>
                 <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule</value>
                 <value>de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule</value>
             </set>
@@ -138,6 +235,7 @@
 
         <property name="moduleDependencies">
             <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
                 <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule</value>
                 <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule</value>
                 <value>de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule</value>
@@ -164,6 +262,7 @@
 
         <property name="moduleDependencies">
             <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
                 <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule</value>
                 <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule</value>
                 <value>de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule</value>
@@ -185,4 +284,136 @@
         </property>
     </bean>
     
+    <!--  ############################################################################################ -->
+    <!--  ################################## Knowledge Creation ###################################### -->
+    <!--  ############################################################################################ -->
+
+    <bean id="DefaultKnowledgeCreationModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.knowledgecreation.impl.DefaultKnowledgeCreationModule">
+
+        <property name="overrideData" value="true" />
+
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl.DefaultPatternSearchModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternfeatureextraction.impl.DefaultPatternFeatureExtractionModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternscoring.impl.DefaultPatternScoringModule</value>
+            </set>
+        </property>
+
+        <property name="moduleSettings">
+            <set>
+              <value>knowledgeCreationThreadPoolSize</value>
+              <value>score.threshold.create.knowledge</value>
+              <value>max.number.of.documents.generation</value>
+            </set>
+        </property>
+    </bean>
+    
+    <!--  ############################################################################################ -->
+    <!--  ################################## Postprocessing ########################################## -->
+    <!--  ############################################################################################ -->
+
+    <bean id="DefaultPatternIndexCreationModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.postprocessing.impl.DefaultPatternIndexCreationModule">
+
+        <property name="overrideData" value="true" />
+
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl.DefaultPatternSearchModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternfeatureextraction.impl.DefaultPatternFeatureExtractionModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternscoring.impl.DefaultPatternScoringModule</value>
+            </set>
+        </property>
+
+        <property name="moduleSettings">
+            <set>
+              <value>ramBufferMaxSizeInMb</value>
+            </set>
+        </property>
+    </bean>
+    
+    <bean id="DetailedPatternIndexCreationModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.postprocessing.impl.DetailedPatternIndexCreationModule">
+
+        <property name="overrideData" value="true" />
+
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl.DefaultPatternSearchModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternfeatureextraction.impl.DefaultPatternFeatureExtractionModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternscoring.impl.DefaultPatternScoringModule</value>
+            </set>
+        </property>
+
+        <property name="moduleSettings">
+            <set>
+              <value>ramBufferMaxSizeInMb</value>
+            </set>
+        </property>
+    </bean>
+    
+    <bean id="NTripleOutputGeneratorModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.postprocessing.impl.NTripleOutputGeneratorModule">
+
+        <property name="overrideData" value="true" />
+
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl.DefaultPatternSearchModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternfeatureextraction.impl.DefaultPatternFeatureExtractionModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternscoring.impl.DefaultPatternScoringModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.knowledgecreation.impl.DefaultKnowledgeCreationModule</value>
+            </set>
+        </property>
+
+        <property name="moduleSettings">
+            <set>
+              <value>score.threshold.write.nt.knowledge</value>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="PlainTextTripleOutputGeneratorModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.postprocessing.impl.PlainTextTripleOutputGeneratorModule">
+
+        <property name="overrideData" value="true" />
+
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl.DefaultPatternSearchModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternfeatureextraction.impl.DefaultPatternFeatureExtractionModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternscoring.impl.DefaultPatternScoringModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.knowledgecreation.impl.DefaultKnowledgeCreationModule</value>
+            </set>
+        </property>
+
+        <property name="moduleSettings">
+            <set>
+              <value>score.threshold.write.plaintext.knowledge</value>
+            </set>
+        </property>
+    </bean>
+
 </beans>

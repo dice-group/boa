@@ -36,7 +36,7 @@ public class MeshupUriRetrieval implements UriRetrieval {
 			logger.error("Sometimes we get an httpexception for label: \"" + label + "\" has occured.", e);
 			uri = "http://boa.akws.org/resource/"+label.replaceAll(" ", "_");
 		}
-		if ( uri.startsWith("http://scms.eu/") ) uri = uri.replace("http://scms.eu/", "http://boa.akws.org/resource/");
+		if ( uri.startsWith("http://scms.eu/") ) uri = uri.replace("http://scms.eu/", "http://boa.aksw.org/resource/");
 		return uri;
 	}
 	

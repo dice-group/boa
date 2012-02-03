@@ -11,12 +11,33 @@
         
         <property name="pipelineModules">
             <list>
-                <ref bean="ObjectPropertyBackgroundKnowledgeCollectorModule"/>
-                <ref bean="DatatypePropertyBackgroundKnowledgeCollectorModule"/>
-                <ref bean="DefaultWikiIndexingModule"/>
-                <ref bean="DefaultPatternSearchModule"/>
-                <ref bean="DefaultPatternFeatureExtractionModule"/>
-                <ref bean="DefaultPatternScoringModule"/>
+                <ref bean="CreateDataDirectoryStructureModule"/>
+                <ref bean="DBpediaSpotlightDownloadModule"/>
+
+<!--            Please note the Wikipedia Download and Extractor take a very long time -->
+<!--            depending on the dump you want to process. -->
+
+<!--                 <ref bean="WikipediaDownloadModule"/> -->
+<!--                 <ref bean="WikipediaExtractorModule"/> -->
+
+<!--                 <ref bean="ObjectPropertyBackgroundKnowledgeCollectorModule"/> -->
+<!--                 <ref bean="DatatypePropertyBackgroundKnowledgeCollectorModule"/> -->
+<!--                 <ref bean="DefaultWikiIndexingModule"/> -->
+<!--                 <ref bean="DefaultPatternSearchModule"/> -->
+<!--                 <ref bean="DefaultPatternFeatureExtractionModule"/> -->
+
+<!--            Please keep in mind that the scoring module needs human annotated input. -->
+<!--            So this module should not get startet in the first iteration! -->
+
+<!--                 <ref bean="DefaultPatternScoringModule"/>  -->
+<!--                 <ref bean="DefaultKnowledgeCreationModule"/> -->
+<!--                 <ref bean="DefaultPatternIndexCreationModule"/> -->
+<!--                 <ref bean="DetailedPatternIndexCreationModule"/> -->
+<!--                 <ref bean="NTripleOutputGeneratorModule"/> -->
+<!--                 <ref bean="PlainTextTripleOutputGeneratorModule"/> -->
+
+<!--                 This is not default -->
+
 <!--                 <ref bean="KoreanWikiIndexingModule"/> -->
             </list>
         </property>
