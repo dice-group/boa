@@ -61,19 +61,31 @@ public class BackgroundKnowledgeManager {
 
 		for ( File file : FileUtils.listFiles(new File(directory), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE) ) {
 			
-			this.logger.info(String.format("Reading background knowledge from file %s", file.getName()));
-			
-			BufferedFileReader br = FileUtil.openReader(file.getAbsolutePath(), "UTF-8");
-			
-			String line;
-			while ((line = br.readLine()) != null) {
-				
-				backgroundKnowledge.add(this.createBackgroundKnowledge(line));
-			}
-			br.close();
+			backgroundKnowledge.addAll(this.getBackgroundKnowledge(file.getAbsolutePath()));
 		}
 		return backgroundKnowledge;
 	}
+
+	/**
+	 * 
+	 * @param filename
+	 * @return
+	 */
+	public List<BackgroundKnowledge> getBackgroundKnowledge(String filename) {
+        
+        List<BackgroundKnowledge> backgroundKnowledge = new ArrayList<BackgroundKnowledge>();
+        this.logger.info(String.format("Reading background knowledge from file %s", filename));
+
+        BufferedFileReader br = FileUtil.openReader(filename, "UTF-8");
+
+        String line;
+        while ((line = br.readLine()) != null) {
+
+            backgroundKnowledge.add(this.createBackgroundKnowledge(line));
+        }
+        br.close();
+        return backgroundKnowledge;
+    }
 	
 	/**
 	 * Reads a line of a background knowledge file to a java POJO

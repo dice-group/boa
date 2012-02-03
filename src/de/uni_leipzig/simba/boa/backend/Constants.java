@@ -1,8 +1,11 @@
 package de.uni_leipzig.simba.boa.backend;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 
 /**
  * This class contains common constants used in the NLPedia project.
@@ -10,7 +13,91 @@ import java.util.Set;
  * @author Daniel Gerber
  */
 public class Constants {
+    
+    /**
+     * 
+     */
+    public static final String BACKGROUND_KNOWLEDGE_PATH = "backgroundknowledge/";
+    
+    /**
+     * 
+     */
+    public static final String BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH = "backgroundknowledge/object/";
+    
+    /**
+     * 
+     */
+    public static final String BACKGROUND_KNOWLEDGE_DATATYPE_PROPERTY_PATH = "backgroundknowledge/datatype/";
+    
+    /**
+     * 
+     */
+    public static final String INDEX_PATH = "index/";
+    
+    /**
+     * 
+     */
+    public static final String INDEX_CORPUS_PATH = "index/corpus/";
+    
+    /**
+     * 
+     */
+    public static final String INDEX_PATTERN_PATH = "index/pattern/";
+    
+    /**
+     * 
+     */
+    public static final String INDEX_DEFAULT_PATTERN_PATH = "index/pattern/default/";
+    
+    /**
+     * 
+     */
+    public static final String INDEX_DETAIL_PATTERN_PATH = "index/pattern/detail/";
+    
+    /**
+     * 
+     */
+    public static final String PATTERN_MAPPINGS_PATH = "patternmappings/";
+    
+    /**
+     * 
+     */
+    public static final String RAW_DATA_PATH = "raw/";
+    
+    /**
+     * 
+     */
+    public static final String RDF_DATA_PATH = "rdf/";
+    
+    /**
+     * 
+     */
+    public static final String RDF_DATA_BINARY_PATH = "rdf/binary/";
+    
+    /**
+     * 
+     */
+    public static final String RDF_DATA_NTRIPLES_PATH = "rdf/nt/";
+    
+    /**
+     * 
+     */
+    public static final String RDF_DATA_TEXT_PATH = "rdf/text/";
+    
+    /**
+     * 
+     */
+    public static final String SENTENCE_CORPUS_PATH = "sentences/";
+    
+    /**
+     * 
+     */
+    public static final String WIKIPEDIA_DUMP_PATH = "wikipedia/";
+    
+    public static final String DBPEDIA_PATH = "dbpedia/";
 
+    // ##############################################################################
+    
 	/**
 	 * 
 	 */

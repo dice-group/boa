@@ -86,7 +86,7 @@ public class NLPediaSetup {
 			
 			// fill factory singleton with data
 			BeanUtility.getBeansOfType(setupFile, PatternSearcherFactory.class);
-            logger.info("Initialized PatternFilterFactory...");
+            logger.info("Initialized PatternSearcherFactory...");
 			
 			BeanUtility.getBeansOfType(setupFile, PatternFilterFactory.class);
 			logger.info("Initialized PatternFilterFactory...");

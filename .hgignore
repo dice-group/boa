@@ -51,3 +51,5 @@ syntax: regexp
 ^WebContent/WEB-INF/config/pipeline\.xml$
 syntax: regexp
 ^WebContent/WEB-INF/config/settings\.xml$
+syntax: regexp
+^WebContent/WEB-INF/config/patternsearcher\.xml$
