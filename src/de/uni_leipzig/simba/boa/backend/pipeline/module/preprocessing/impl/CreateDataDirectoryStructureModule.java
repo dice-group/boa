@@ -83,6 +83,10 @@ public class CreateDataDirectoryStructureModule extends AbstractPreprocessingMod
         // wikipedia dumps
         if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.WIKIPEDIA_DUMP_PATH).exists()) 
             new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.WIKIPEDIA_DUMP_PATH).mkdir();
+        
+        // wikipedia dumps
+        if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH).exists()) 
+            new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH).mkdir();
     }
 
     /* (non-Javadoc)

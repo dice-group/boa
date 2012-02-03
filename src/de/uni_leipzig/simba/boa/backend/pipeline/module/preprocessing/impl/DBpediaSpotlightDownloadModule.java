@@ -22,17 +22,17 @@ public class DBpediaSpotlightDownloadModule extends AbstractPreprocessingModule 
 
     private NLPediaLogger logger = new NLPediaLogger(DBpediaSpotlightDownloadModule.class);
     
-    public static final String DBPEDIA_LABELS_FILE                  = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_PATH + "labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
+    public static final String DBPEDIA_LABELS_FILE                  = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
     public static final String DBPEDIA_LABELS_FILE_URL              = "http://downloads.dbpedia.org/3.7/" + NLPediaSettings.BOA_LANGUAGE + "/labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
-    public static final String DBPEDIA_LABELS_FILE_BZ2              = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_PATH + "labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
+    public static final String DBPEDIA_LABELS_FILE_BZ2              = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
 
-    public static final String DBPEDIA_REDIRECTS_FILE               = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_PATH + "redirects_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
+    public static final String DBPEDIA_REDIRECTS_FILE               = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "redirects_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
     public static final String DBPEDIA_REDIRECTS_FILE_URL           = "http://downloads.dbpedia.org/3.7/" + NLPediaSettings.BOA_LANGUAGE + "/redirects_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
-    public static final String DBPEDIA_REDIRECTS_FILE_BZ2           = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_PATH + "redirects_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
+    public static final String DBPEDIA_REDIRECTS_FILE_BZ2           = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "redirects_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
     
-    public static final String DBPEDIA_DISAMBIGUATIONS_FILE         = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_PATH + "disambiguations_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
+    public static final String DBPEDIA_DISAMBIGUATIONS_FILE         = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "disambiguations_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
     public static final String DBPEDIA_DISAMBIGUATIONS_FILE_URL     = "http://downloads.dbpedia.org/3.7/" + NLPediaSettings.BOA_LANGUAGE + "/disambiguations_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
-    public static final String DBPEDIA_DISAMBIGUATIONS_FILE_BZ2     = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_PATH + "disambiguations_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
+    public static final String DBPEDIA_DISAMBIGUATIONS_FILE_BZ2     = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "disambiguations_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
     
     private long downloadDBpediaSpotlightFilesTime = 0;
 
