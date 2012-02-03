@@ -15,7 +15,6 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternSearchThreadManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
@@ -110,7 +109,6 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 				if ( pattern == null ) {
 					
 					pattern = new Pattern(patternString);
-					pattern.setFoundInIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
 					pattern.setPosTaggedString(posTagged);
 					pattern.addLearnedFrom(label1 + "-;-" + label2);
 					pattern.addPatternMapping(currentMapping);
@@ -156,7 +154,6 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 				}
 				
 				Pattern pattern = new Pattern(patternString);
-				pattern.setFoundInIteration(IterationCommand.CURRENT_ITERATION_NUMBER);
 				pattern.setPosTaggedString(posTagged);
 				pattern.addLearnedFrom(label1 + "-;-" + label2);
 				pattern.addPatternMapping(currentMapping);

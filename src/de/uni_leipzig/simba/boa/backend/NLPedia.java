@@ -4,16 +4,10 @@ import java.util.Scanner;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateIndexCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateKnowledgeCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.IterationCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternScoreCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternScoreFeatureCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternSearchCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PrintOptionCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.StartQueryCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOptionCommand;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.WriteRelationToFileCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.StartScriptsCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.pipeline.Pipeline;
@@ -61,29 +55,9 @@ public class NLPedia {
 						printOptionCommand.execute();
 						break;
 					
-					case 2: // start indexing
-						Command indexOptionCommand = new CreateIndexCommand();
-						indexOptionCommand.execute();
-						break;
-						
-					case 3: // evaluate pattern
-						Command patternConfidenceMeasureCommand = new PatternScoreFeatureCommand(null);
-						patternConfidenceMeasureCommand.execute();
-						break;
-						
-					case 4: // query a single phrase
-						Command patternScoreCommand = new PatternScoreCommand(null);
-						patternScoreCommand.execute();
-						break;
-						
 					case 5: // start looking for patterns in index and write them to the db
 						Command patternSearchCommand = new PatternSearchCommand(null);
 						patternSearchCommand.execute();
-						break;
-						
-					case 6: // query dbpedia and serialize background knowledge
-						Command writeRealtionToFileCommand = new WriteRelationToFileCommand();
-						writeRealtionToFileCommand.execute();
 						break;
 						
 					case 7: // start scripts here
@@ -91,20 +65,9 @@ public class NLPedia {
 						startScriptCommand.execute();
 						break;
 						
-					case 8: // 
-						Command createKnowledgeCommand = new CreateKnowledgeCommand(null);
-						createKnowledgeCommand.execute();
-						break;
-						
 					case 9: 
 						Command startQueryCommand = new StartQueryCommand();
 						startQueryCommand.execute();
-						break;
-						
-					case 10:
-						
-						Command iterationCommand = new IterationCommand();
-						iterationCommand.execute();
 						break;
 						
 					case 11:

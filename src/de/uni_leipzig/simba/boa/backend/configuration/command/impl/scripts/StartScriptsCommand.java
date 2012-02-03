@@ -3,7 +3,6 @@ package de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts;
 import java.util.Scanner;
 
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.CreateMachineLearningCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.ResetPatternCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOptionCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -69,12 +68,6 @@ public class StartScriptsCommand implements Command {
 							createQaIndexCommand.execute();
 							break;
 							
-						case 5:
-							
-							Command createMLCommand = new CreateMachineLearningCommand();
-							createMLCommand.execute();
-							break;
-						
 						default: // option not supported
 							Command unkownOptionCommand = new UnknownOptionCommand(System.out);
 							unkownOptionCommand.execute();
