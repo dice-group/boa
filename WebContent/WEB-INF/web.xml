@@ -14,6 +14,12 @@
 			<param-name>application</param-name>
 			<param-value>de.uni_leipzig.simba.boa.frontend2.BoaApplication</param-value>
 		</init-param>
+		<init-param>
+			<description>
+			Application widgetset</description>
+			<param-name>widgetset</param-name>
+			<param-value>de.uni_leipzig.simba.boa.frontend.widgetset.BoaWidgetset</param-value>
+		</init-param>
 	</servlet>
 	<session-config>
     	<session-timeout>60</session-timeout>
