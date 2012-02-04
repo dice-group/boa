@@ -4,22 +4,22 @@
 	<context-param>
 		<description>Vaadin production mode</description>
 		<param-name>productionMode</param-name>
-		<param-value>false</param-value>
+		<param-value>true</param-value>
 	</context-param>
 	<servlet>
-		<servlet-name>BoaFrontendApplication</servlet-name>
+		<servlet-name>BoaApplication</servlet-name>
 		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
 		<init-param>
 			<description>Vaadin application class to start</description>
 			<param-name>application</param-name>
-			<param-value>de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication</param-value>
+			<param-value>de.uni_leipzig.simba.boa.frontend2.BoaApplication</param-value>
 		</init-param>
 	</servlet>
 	<session-config>
     	<session-timeout>60</session-timeout>
 	</session-config>
 	<servlet-mapping>
-		<servlet-name>BoaFrontendApplication</servlet-name>
+		<servlet-name>BoaApplication</servlet-name>
 		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
