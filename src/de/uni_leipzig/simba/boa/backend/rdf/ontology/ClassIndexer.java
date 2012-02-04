@@ -66,15 +66,18 @@ public class ClassIndexer {
     	
     	OntModel classHierarchie = classUriToClassHierarchy.get(classUri);
     	Set<String> classLabels = new HashSet<String>();
-    	Set<OntClass> classes = classHierarchie.listClasses().toSet();
-    	
-    	// try to get labels for the given language
-    	for ( OntClass clazz : classes) {
-    		
-    		if ( !clazz.getURI().equals("http://www.w3.org/2002/07/owl#Thing") && !clazz.getURI().equals("http://www.w3.org/2000/01/rdf-schema#Resource") ) {
-    			
-    			classLabels.add(clazz.getURI());
-    		}
+    	if ( classHierarchie != null ) {
+    	    
+    	    Set<OntClass> classes = classHierarchie.listClasses().toSet();
+            
+            // try to get labels for the given language
+            for ( OntClass clazz : classes) {
+                
+                if ( !clazz.getURI().equals("http://www.w3.org/2002/07/owl#Thing") && !clazz.getURI().equals("http://www.w3.org/2000/01/rdf-schema#Resource") ) {
+                    
+                    classLabels.add(clazz.getURI());
+                }
+            }
     	}
     	return classLabels;
     }
