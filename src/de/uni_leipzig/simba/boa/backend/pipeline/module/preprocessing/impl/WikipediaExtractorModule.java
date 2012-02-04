@@ -68,7 +68,7 @@ public class WikipediaExtractorModule extends AbstractPreprocessingModule {
                 this.logger.info("Unzipping of wikipedia dump finished!");
             }
             
-            Process wikiextract = Runtime.getRuntime().exec(extractorScriptPath + " -i " + extractorInputPath + " -l ko -o " + outputPath);
+            Process wikiextract = Runtime.getRuntime().exec(extractorScriptPath + " -i " + extractorInputPath + " -l " + NLPediaSettings.BOA_LANGUAGE + " -o " + outputPath);
             if ( wikiextract.waitFor() != 0 ) throw new RuntimeException("Wikiextractor failed!");
             this.logger.info("Extracting of wikipedia article text from xml format done.");
         }
