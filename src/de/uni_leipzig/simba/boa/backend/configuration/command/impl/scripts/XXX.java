@@ -422,7 +422,7 @@ public class XXX {
 	
 	private double normalizeFeature(Feature feature, PatternMapping mapping, Double value) {
 
-		if ( feature.getSupportedLanguages().contains(NLPediaSettings.getInstance().getSystemLanguage()) ) {
+		if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) ) {
 			
 			// exclude everything which is not activated
 			if ( feature.isUseForPatternLearning() ) {

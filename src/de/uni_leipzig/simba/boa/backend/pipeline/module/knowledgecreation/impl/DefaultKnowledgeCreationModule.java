@@ -33,8 +33,8 @@ import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 public class DefaultKnowledgeCreationModule extends AbstractKnowledgeCreationModule {
 
     private static final String KNOWLEDGE_CREATION_BINARY_OUTPUT_PATH       = NLPediaSettings.BOA_DATA_DIRECTORY + "rdf/binary/";
-    private static final Double KNOWLEDGE_CREATION_PATTERN_SCORE_THRESHOLD  = NLPediaSettings.getInstance().getDoubleSetting("score.threshold.create.knowledge");
-    private static final int KNOWLEDGE_CREATION_NUMBER_OF_THREADS           = NLPediaSettings.getInstance().getIntegerSetting("number.of.create.knowledge.threads");
+    private static final Double KNOWLEDGE_CREATION_PATTERN_SCORE_THRESHOLD  = NLPediaSettings.getDoubleSetting("score.threshold.create.knowledge");
+    private static final int KNOWLEDGE_CREATION_NUMBER_OF_THREADS           = NLPediaSettings.getIntegerSetting("number.of.create.knowledge.threads");
     private final NLPediaLogger logger                                      = new NLPediaLogger(DefaultKnowledgeCreationModule.class);
     
     // for the report

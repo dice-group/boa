@@ -43,9 +43,9 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 	
 	private final NLPediaLogger logger 			= new NLPediaLogger(AbstractDefaultBackgroundKnowledgeCollectorModule.class);
 	
-	private final String SPARQL_ENDPOINT_URI				= NLPediaSettings.getInstance().getSetting("dbpediaSparqlEndpoint");
-	private final String DBPEDIA_DEFAULT_GRAPH				= NLPediaSettings.getInstance().getSetting("dbpediaDefaultGraph");
-	private final int SPARQL_QUERY_LIMIT					= new Integer(NLPediaSettings.getInstance().getSetting("sparqlQueryLimit"));
+	private final String SPARQL_ENDPOINT_URI				= NLPediaSettings.getSetting("dbpediaSparqlEndpoint");
+	private final String DBPEDIA_DEFAULT_GRAPH				= NLPediaSettings.getSetting("dbpediaDefaultGraph");
+	private final int SPARQL_QUERY_LIMIT					= NLPediaSettings.getIntegerSetting("sparqlQueryLimit");
 	protected final String BACKGROUND_KNOWLEDGE_OUTPUT_PATH	= NLPediaSettings.BOA_DATA_DIRECTORY + de.uni_leipzig.simba.boa.backend.Constants.BACKGROUND_KNOWLEDGE_PATH;
 	protected final String BOA_LANGUAGE						= NLPediaSettings.BOA_LANGUAGE;
 	

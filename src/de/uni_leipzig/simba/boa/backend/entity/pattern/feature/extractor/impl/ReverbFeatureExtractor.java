@@ -39,7 +39,7 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 
 	static {
 		// this is a hack to load the training data for reverb
-		DefaultObjects.setPath(NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("reverbTrainingDirectory"));
+		DefaultObjects.setPath(NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getSetting("reverbTrainingDirectory"));
 	}
 	
 	private ReVerbExtractor extractor;

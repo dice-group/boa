@@ -32,7 +32,7 @@ import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 public class KnowledgeCreationThreadManager {
 
     private static final NLPediaLogger logger = new NLPediaLogger(KnowledgeCreationThreadManager.class);
-    private static final int KNOWLEDGE_CREATION_THREAD_POOL_SIZE = NLPediaSettings.getInstance().getIntegerSetting("knowledgeCreationThreadPoolSize");
+    private static final int KNOWLEDGE_CREATION_THREAD_POOL_SIZE = NLPediaSettings.getIntegerSetting("knowledgeCreationThreadPoolSize");
 
     /**
      * 

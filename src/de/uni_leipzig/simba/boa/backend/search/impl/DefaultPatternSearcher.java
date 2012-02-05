@@ -41,9 +41,9 @@ import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
  */
 public class DefaultPatternSearcher implements PatternSearcher {
 
-	private final static int MAX_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getInstance().getSetting("maxPatternLenght")).intValue();
-	private final static int MIN_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getInstance().getSetting("minPatternLenght")).intValue();
-	private final static int MAX_NUMBER_OF_DOCUMENTS = Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
+	private final static int MAX_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getSetting("maxPatternLenght")).intValue();
+	private final static int MIN_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getSetting("minPatternLenght")).intValue();
+	private final static int MAX_NUMBER_OF_DOCUMENTS = Integer.valueOf(NLPediaSettings.getSetting("maxNumberOfDocuments"));
 
 	private PartOfSpeechTagger posTagger;
 

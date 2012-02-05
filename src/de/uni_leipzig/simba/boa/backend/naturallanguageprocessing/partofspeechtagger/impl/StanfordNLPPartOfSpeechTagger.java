@@ -32,7 +32,7 @@ public final class StanfordNLPPartOfSpeechTagger implements PartOfSpeechTagger {
             PrintStream standardErrorStream = System.err;
             System.setErr(new PrintStream(new ByteArrayOutputStream()));
 		    
-			this.tagger = new MaxentTagger(NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("pos.tagger.model"));
+			this.tagger = new MaxentTagger(NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getSetting("pos.tagger.model"));
 			
 			// revert to original standard error stream
             System.setErr(standardErrorStream);

@@ -35,7 +35,7 @@ public class PlainTextTripleOutputGeneratorModule extends AbstractPostProcessing
     private final NLPediaLogger logger = new NLPediaLogger(PlainTextTripleOutputGeneratorModule.class);
     
     private static final String RDF_TEXT_OUTPUT_PATH    = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.RDF_DATA_TEXT_PATH;
-    private static final Double TRIPLE_SCORE_THRESHOLD  = NLPediaSettings.getInstance().getDoubleSetting("score.threshold.write.plaintext.knowledge");
+    private static final Double TRIPLE_SCORE_THRESHOLD  = NLPediaSettings.getDoubleSetting("score.threshold.write.plaintext.knowledge");
     
     // for the report
     private long writePlainTextOutputFilesTime = 0;

@@ -31,7 +31,7 @@ import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 public class PatternFeatureExtractionThreadManager {
 
     private static final NLPediaLogger logger                               = new NLPediaLogger(PatternFeatureExtractionThreadManager.class);
-    private static final int PATTERN_FEATURE_EXTRACTION_THREAD_POOL_SIZE    = NLPediaSettings.getInstance().getIntegerSetting("patternFeatureExtractionThreadPoolSize");
+    private static final int PATTERN_FEATURE_EXTRACTION_THREAD_POOL_SIZE    = NLPediaSettings.getIntegerSetting("patternFeatureExtractionThreadPoolSize");
     
     public static List<PatternMappingPatternPair> startFeatureExtractionCallables(Set<PatternMapping> patternMappings, int numberOfTotalFeatureExtractionThreads) {
 

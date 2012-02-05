@@ -20,7 +20,7 @@ public class WordnetQuery {
 	 * 
 	 */
     static {
-        System.setProperty("wordnet.database.dir", NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("wordnet.database.directory"));
+        System.setProperty("wordnet.database.dir", NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getSetting("wordnet.database.directory"));
     }
 
     /**

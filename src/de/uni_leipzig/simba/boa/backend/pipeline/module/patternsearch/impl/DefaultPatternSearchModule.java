@@ -35,7 +35,7 @@ import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 	
 	private final NLPediaLogger logger					= new NLPediaLogger(DefaultPatternSearchModule.class);
-	private final int TOTAL_NUMBER_OF_SEARCH_THREADS	= NLPediaSettings.getInstance().getIntegerSetting("numberOfSearchThreads");
+	private final int TOTAL_NUMBER_OF_SEARCH_THREADS	= NLPediaSettings.getIntegerSetting("numberOfSearchThreads");
 	private final String PATTERN_MAPPING_FOLDER			= NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
 	
 	// caches for various objects

@@ -130,8 +130,8 @@ public class Pipeline {
 		Set<String> moduleSettings = module.getModuleSettings();
 		for (String setting : moduleSettings) {
 			
-			if ( NLPediaSettings.getInstance().getSetting(setting) == null || 
-					NLPediaSettings.getInstance().getSetting(setting).isEmpty() ) {
+			if ( NLPediaSettings.getSetting(setting) == null || 
+					NLPediaSettings.getSetting(setting).isEmpty() ) {
 				
 				return setting;
 			}
