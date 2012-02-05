@@ -58,6 +58,8 @@ public class PartOfSpeechTagNormalizer {
 		PART_OF_SPEECH_TAG_MAPPINGS.put("''",	"''");
 		PART_OF_SPEECH_TAG_MAPPINGS.put("``",	"``");
 		PART_OF_SPEECH_TAG_MAPPINGS.put(":",	":");
+		PART_OF_SPEECH_TAG_MAPPINGS.put("$",    "$");
+		PART_OF_SPEECH_TAG_MAPPINGS.put("#",    "#");
 		PART_OF_SPEECH_TAG_MAPPINGS.put("-LRB-","-LRB-");
         PART_OF_SPEECH_TAG_MAPPINGS.put("-RRB-","-RRB-");
 	}
