@@ -25,7 +25,7 @@ public class DefaultPatternScoringModule extends AbstractPatternScoringModule {
     
     // dependent settings
     private final String PATTERN_MAPPING_FOLDER             = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
-    private final String MACHINE_LEARNING_TRAINING_FILE     = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("neural.network.network.directory") + "network_learn.txt";
+    private final String MACHINE_LEARNING_TRAINING_FILE     = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getSetting("neural.network.network.directory") + "network_learn.txt";
     
     private final NLPediaLogger logger                      = new NLPediaLogger(DefaultPatternScoringModule.class);
     

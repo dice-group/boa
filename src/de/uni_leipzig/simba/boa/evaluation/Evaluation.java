@@ -77,8 +77,8 @@ public class Evaluation implements Command {
 				// take only the first n best scored pattern
 				for ( int topNPattern : Arrays.asList(1, 3, 5, 10, 20, 50, 100, 1000) ) {
 					
-					NLPediaSettings.getInstance().setSetting("score.threshold.create.knowledge", String.valueOf(scoreThreshold));
-					NLPediaSettings.getInstance().setSetting("top.n.pattern", String.valueOf(topNPattern));
+					NLPediaSettings.setSetting("score.threshold.create.knowledge", String.valueOf(scoreThreshold));
+					NLPediaSettings.setSetting("top.n.pattern", String.valueOf(topNPattern));
 					
 					// filter out triples which might occur randomly, due to bad patterns
 					for ( double tripleScoreThreshold : Arrays.asList(0.1D, 0.2D, 0.3D, 0.4D, 0.5D, 0.6D, 0.7D, 0.8D, 0.9D, 1.0D) ) {
@@ -90,15 +90,15 @@ public class Evaluation implements Command {
 						
 						String output = goldStandard.size() + " " +
 										testData.size() + " " +
-										NLPediaSettings.getInstance().getSetting("score.threshold.create.knowledge") + " " + 
-										NLPediaSettings.getInstance().getSetting("top.n.pattern") + " " +
+										NLPediaSettings.getSetting("score.threshold.create.knowledge") + " " + 
+										NLPediaSettings.getSetting("top.n.pattern") + " " +
 										tripleScoreThreshold + " " +
 										decimalFormat.format(precisionRecallFMeasure.getPrecision()) + " " +
 										decimalFormat.format(precisionRecallFMeasure.getRecall()) + " " +
 										decimalFormat.format(precisionRecallFMeasure.getFMeasure());	
 						
 						System.out.println( "GSS: " + goldStandard.size() + " BS: " + testData.size() +
-											" ST: " + NLPediaSettings.getInstance().getSetting("score.threshold.create.knowledge") + " TNP: " + NLPediaSettings.getInstance().getSetting("top.n.pattern") + " TST: " + tripleScoreThreshold + 
+											" ST: " + NLPediaSettings.getSetting("score.threshold.create.knowledge") + " TNP: " + NLPediaSettings.getSetting("top.n.pattern") + " TST: " + tripleScoreThreshold + 
 											" P: " + precisionRecallFMeasure.getPrecision() + " R: " + precisionRecallFMeasure.getRecall() + " F: " + precisionRecallFMeasure.getFMeasure());
 						
 						maxFMeasure = Math.max(maxFMeasure, precisionRecallFMeasure.getFMeasure());
@@ -159,7 +159,7 @@ public class Evaluation implements Command {
 
 		try {
 			
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(NLPediaSettings.getInstance().getSetting("eval.output.file"), true), "UTF-8"));
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(NLPediaSettings.getSetting("eval.output.file"), true), "UTF-8"));
 			if ( result == null ) writer.write(Evaluation.OUTPUT.append(Constants.NEW_LINE_SEPARATOR).append(Constants.NEW_LINE_SEPARATOR).toString());				
 			else writer.write(result); 
 			writer.close();

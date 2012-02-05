@@ -35,7 +35,7 @@ public class PatternSearchCommand implements Command {
 
 	private final NLPediaLogger logger					= new NLPediaLogger(PatternSearchCommand.class);
 	
-	private static final String BACKGROUND_KNOWLEDGE = NLPediaSettings.getInstance().getSetting("bk.out.file");
+	private static final String BACKGROUND_KNOWLEDGE = NLPediaSettings.getSetting("bk.out.file");
 	private Map<Integer,PatternMapping> mappings		= new HashMap<Integer,PatternMapping>();
 	private Map<Integer,Triple> triples 				= new HashMap<Integer,Triple>();
 	private Map<Integer,Property> properties			= new HashMap<Integer,Property>();
@@ -58,19 +58,19 @@ public class PatternSearchCommand implements Command {
 		
 		this.properties	= this.createPropertyMap(propertyDao.findAllProperties());
 		
-		System.out.println("Number of search operations: " + triples.size() + " for input file " + NLPediaSettings.getInstance().getSetting("labelOutputFile"));
-		System.out.println("Number of search threads: " + NLPediaSettings.getInstance().getSetting("numberOfSearchThreads"));
-		System.out.println("Number of allowed documents: " + NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
-		System.out.println("Index directory: " + NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
-		System.out.println("Hibernate connection: " + NLPediaSettings.getInstance().getSetting("hibernateConnectionUrl"));
+		System.out.println("Number of search operations: " + triples.size() + " for input file " + NLPediaSettings.getSetting("labelOutputFile"));
+		System.out.println("Number of search threads: " + NLPediaSettings.getSetting("numberOfSearchThreads"));
+		System.out.println("Number of allowed documents: " + NLPediaSettings.getSetting("maxNumberOfDocuments"));
+		System.out.println("Index directory: " + NLPediaSettings.getSetting("sentenceIndexDirectory"));
+		System.out.println("Hibernate connection: " + NLPediaSettings.getSetting("hibernateConnectionUrl"));
 		
-		this.logger.info("Number of search operations: " + triples.size() + " for input file " + NLPediaSettings.getInstance().getSetting("labelOutputFile"));
-		this.logger.info("Number of search threads: " + NLPediaSettings.getInstance().getSetting("numberOfSearchThreads"));
-		this.logger.info("Number of allowed documents: " + NLPediaSettings.getInstance().getSetting("maxNumberOfDocuments"));
-		this.logger.info("Index directory: " + NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"));
-		this.logger.info("Hibernate connection: " + NLPediaSettings.getInstance().getSetting("hibernateConnectionUrl"));
+		this.logger.info("Number of search operations: " + triples.size() + " for input file " + NLPediaSettings.getSetting("labelOutputFile"));
+		this.logger.info("Number of search threads: " + NLPediaSettings.getSetting("numberOfSearchThreads"));
+		this.logger.info("Number of allowed documents: " + NLPediaSettings.getSetting("maxNumberOfDocuments"));
+		this.logger.info("Index directory: " + NLPediaSettings.getSetting("sentenceIndexDirectory"));
+		this.logger.info("Hibernate connection: " + NLPediaSettings.getSetting("hibernateConnectionUrl"));
 		
-		int numberOfSearchThreads = new Integer(NLPediaSettings.getInstance().getSetting("numberOfSearchThreads")).intValue();
+		int numberOfSearchThreads = new Integer(NLPediaSettings.getSetting("numberOfSearchThreads")).intValue();
 		
 		List<SearchResult> results = new ArrayList<SearchResult>(triples.size() * 10);
 		List<List<Triple>> triplesSubLists = ListUtil.split(new ArrayList<Triple>(triples.values()), (triples.size() / numberOfSearchThreads) + 1 );
@@ -108,7 +108,7 @@ public class PatternSearchCommand implements Command {
 		catch (Exception e) {
 
 			e.printStackTrace();
-			logger.error("Could not read file: " + NLPediaSettings.getInstance().getSetting("patternStoreFile"), e);
+			logger.error("Could not read file: " + NLPediaSettings.getSetting("patternStoreFile"), e);
 		}
 		
 		System.out.println("Searching took " + (System.currentTimeMillis() - startSearchDate.getTime()) + "ms.");

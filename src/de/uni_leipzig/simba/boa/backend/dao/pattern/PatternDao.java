@@ -73,7 +73,7 @@ public class PatternDao extends AbstractDao {
     	
     	Session session = HibernateFactory.getSessionFactory().openSession();
     	Transaction tx = session.beginTransaction();
-    	int batchSize = Integer.valueOf(NLPediaSettings.getInstance().getSetting("hibernate.jdbc.batch_size"));
+    	int batchSize = Integer.valueOf(NLPediaSettings.getSetting("hibernate.jdbc.batch_size"));
     	   
     	for ( int i = 0; i < pattern.size() ; i++ ) {
     	    
@@ -103,7 +103,7 @@ public class PatternDao extends AbstractDao {
 
 		Session session = HibernateFactory.getSessionFactory().openSession();
     	Transaction tx = session.beginTransaction();
-    	int batchSize = Integer.valueOf(NLPediaSettings.getInstance().getSetting("hibernate.jdbc.batch_size"));
+    	int batchSize = Integer.valueOf(NLPediaSettings.getSetting("hibernate.jdbc.batch_size"));
     	
     	Iterator<Pattern> iter = wrongPatterns.iterator();
     	for ( int i = 0 ; i < wrongPatterns.size() ; i++ ) {

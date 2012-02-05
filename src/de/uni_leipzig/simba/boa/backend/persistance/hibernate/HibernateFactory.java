@@ -40,13 +40,13 @@ public class HibernateFactory {
 									            .addAnnotatedClass(Triple.class)
 									            
 									            // Add settings
-										        .setProperty("hibernate.connection.driver_class", 	NLPediaSettings.getInstance().getSetting("hibernateConnectionDriverClass"))
-										        .setProperty("hibernate.connection.url", 			NLPediaSettings.getInstance().getSetting("hibernateConnectionUrl"))
-										        .setProperty("hibernate.connection.username", 		NLPediaSettings.getInstance().getSetting("hibernateConnectionUsername"))
-										        .setProperty("hibernate.connection.password", 		NLPediaSettings.getInstance().getSetting("hibernateConnectionPassword"))
-										        .setProperty("hibernate.dialect", 					NLPediaSettings.getInstance().getSetting("hibernateDialect"))
-										        .setProperty("hibernate.hbm2ddl.auto",				NLPediaSettings.getInstance().getSetting("hibernateHbm2ddlAuto"))
-										        .setProperty("hibernate.jdbc.batch_size", 			NLPediaSettings.getInstance().getSetting("hibernate.jdbc.batch_size"))
+										        .setProperty("hibernate.connection.driver_class", 	NLPediaSettings.getSetting("hibernateConnectionDriverClass"))
+										        .setProperty("hibernate.connection.url", 			NLPediaSettings.getSetting("hibernateConnectionUrl"))
+										        .setProperty("hibernate.connection.username", 		NLPediaSettings.getSetting("hibernateConnectionUsername"))
+										        .setProperty("hibernate.connection.password", 		NLPediaSettings.getSetting("hibernateConnectionPassword"))
+										        .setProperty("hibernate.dialect", 					NLPediaSettings.getSetting("hibernateDialect"))
+										        .setProperty("hibernate.hbm2ddl.auto",				NLPediaSettings.getSetting("hibernateHbm2ddlAuto"))
+										        .setProperty("hibernate.jdbc.batch_size", 			NLPediaSettings.getSetting("hibernate.jdbc.batch_size"))
 										        .setProperty("hibernate.connection.autoReconnect", 	"true")
 										        .buildSessionFactory();
     	}
@@ -71,7 +71,7 @@ public class HibernateFactory {
         .setProperty("hibernate.connection.password", 		"root")
         .setProperty("hibernate.dialect", 					"org.hibernate.dialect.MySQLDialect")
         .setProperty("hibernate.hbm2ddl.auto",				"update")
-        .setProperty("hibernate.jdbc.batch_size", 			NLPediaSettings.getInstance().getSetting("hibernate.jdbc.batch_size"))
+        .setProperty("hibernate.jdbc.batch_size", 			NLPediaSettings.getSetting("hibernate.jdbc.batch_size"))
         .setProperty("hibernate.connection.autoReconnect", 	"true")
         .buildSessionFactory();
     }

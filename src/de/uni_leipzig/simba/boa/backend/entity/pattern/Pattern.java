@@ -492,7 +492,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		for ( FeatureExtractor featureextractor : FeatureFactory.getInstance().getFeatureExtractorMap().values() ) {
 		    for ( Feature feature : featureextractor.getHandeledFeatures() ) {
 		        
-                if ( feature.getSupportedLanguages().contains(NLPediaSettings.getInstance().getSystemLanguage()) ) {
+                if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) ) {
                     
                     // exclude everything which is not activated
                     if ( feature.isUseForPatternLearning() ) {

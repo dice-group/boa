@@ -19,7 +19,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 	public static final Object PATTERN_MAPPING_ID	= "pm_id";
 	
 	public static final String[] DATABASE_IDS = new String[]{
-	        NLPediaSettings.getInstance().getSetting("patternMappingFolders")};
+	        NLPediaSettings.getSetting("patternMappingFolders")};
 	
 	public DatabaseContainer(List<PatternMapping> mappings) {
 		

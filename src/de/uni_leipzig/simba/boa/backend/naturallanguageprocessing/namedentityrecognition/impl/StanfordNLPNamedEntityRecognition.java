@@ -29,7 +29,7 @@ import edu.stanford.nlp.ling.CoreLabel;
 public final class StanfordNLPNamedEntityRecognition implements NamedEntityRecognition {
 
 	private final NLPediaLogger logger	= new NLPediaLogger(StanfordNLPNamedEntityRecognition.class);
-	private final String classifierPath	= NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("namendEntityRecognizerClassifier");
+	private final String classifierPath	= NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getSetting("namendEntityRecognizerClassifier");
 	
 	private CRFClassifier<CoreLabel> classifier;
 

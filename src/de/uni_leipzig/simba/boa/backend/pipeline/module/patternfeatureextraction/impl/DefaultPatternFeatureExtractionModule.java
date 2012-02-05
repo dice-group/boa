@@ -33,8 +33,8 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 	private final NLPediaLogger logger = new NLPediaLogger(DefaultPatternFeatureExtractionModule.class);
 
 	private final String PATTERN_MAPPING_FOLDER						= NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
-	private final int TOTAL_NUMBER_OF_FEATURE_EXTRACTION_THREADS	= NLPediaSettings.getInstance().getIntegerSetting("numberOfFeatureExtractionsThreads");
-	private final String MACHINE_LEARNING_TRAINING_FILE             = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("neural.network.network.directory") + "network_learn.txt";
+	private final int TOTAL_NUMBER_OF_FEATURE_EXTRACTION_THREADS	= NLPediaSettings.getIntegerSetting("numberOfFeatureExtractionsThreads");
+	private final String MACHINE_LEARNING_TRAINING_FILE             = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getSetting("neural.network.network.directory") + "network_learn.txt";
 	
     private final PatternScoreManager patternScoreManager = new PatternScoreManager();
     private MachineLearningTrainingFile trainFile;

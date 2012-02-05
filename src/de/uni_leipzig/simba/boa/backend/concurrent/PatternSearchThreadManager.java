@@ -26,7 +26,7 @@ import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 public class PatternSearchThreadManager {
 
     private static final NLPediaLogger logger = new NLPediaLogger(PatternSearchThreadManager.class);
-    private static final int PATTERN_SEARCH_THREAD_POOL_SIZE = NLPediaSettings.getInstance().getIntegerSetting("patternSearchThreadPoolSize");
+    private static final int PATTERN_SEARCH_THREAD_POOL_SIZE = NLPediaSettings.getIntegerSetting("patternSearchThreadPoolSize");
 
     /**
      * 

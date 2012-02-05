@@ -38,7 +38,7 @@ public class DBpediaSpotlightSurfaceFormGenerator {
     
     private static final NLPediaLogger logger = new NLPediaLogger(DBpediaSpotlightSurfaceFormGenerator.class);
     
-    private static final int MAXIMUM_SURFACE_FORM_LENGHT        = NLPediaSettings.getInstance().getIntegerSetting("spotlight.maxSurfaceFormLength");
+    private static final int MAXIMUM_SURFACE_FORM_LENGHT        = NLPediaSettings.getIntegerSetting("spotlight.maxSurfaceFormLength");
     public static final String SURFACE_FORMS_FILE               = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_uri_surface_form.tsv";
 
     private static List<String> LOWERCASE_STOPWORDS             = null;

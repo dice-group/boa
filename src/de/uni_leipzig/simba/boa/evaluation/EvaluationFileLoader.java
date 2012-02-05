@@ -25,11 +25,11 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 public class EvaluationFileLoader {
 	
-	public static final String FIRST_BATCH_ANNOTATOR_ONE_FILE	= NLPediaSettings.getInstance().getSetting("first.batch.annotator.one.file"); //"/Users/gerb/Desktop/EVAL/EVAL_Haack_595.txt";
-	public static final String FIRST_BATCH_ANNOTATOR_TWO_FILE	= NLPediaSettings.getInstance().getSetting("first.batch.annotator.two.file");//"/Users/gerb/Desktop/EVAL/EVAL_Upmeier_595.txt";
+	public static final String FIRST_BATCH_ANNOTATOR_ONE_FILE	= NLPediaSettings.getSetting("first.batch.annotator.one.file"); //"/Users/gerb/Desktop/EVAL/EVAL_Haack_595.txt";
+	public static final String FIRST_BATCH_ANNOTATOR_TWO_FILE	= NLPediaSettings.getSetting("first.batch.annotator.two.file");//"/Users/gerb/Desktop/EVAL/EVAL_Upmeier_595.txt";
 	
-	public static final String SECOND_BATCH_ANNOTATOR_ONE_FILE	= NLPediaSettings.getInstance().getSetting("second.batch.annotator.one.file");//"/Users/gerb/Desktop/EVAL/Evaluation_2_Haack_303.txt";
-	public static final String SECOND_BATCH_ANNOTATOR_TWO_FILE	= NLPediaSettings.getInstance().getSetting("second.batch.annotator.two.file");//"/Users/gerb/Desktop/EVAL/Evaluation_2_Upmeier_241.txt";
+	public static final String SECOND_BATCH_ANNOTATOR_ONE_FILE	= NLPediaSettings.getSetting("second.batch.annotator.one.file");//"/Users/gerb/Desktop/EVAL/Evaluation_2_Haack_303.txt";
+	public static final String SECOND_BATCH_ANNOTATOR_TWO_FILE	= NLPediaSettings.getSetting("second.batch.annotator.two.file");//"/Users/gerb/Desktop/EVAL/Evaluation_2_Upmeier_241.txt";
 	
 	public enum ExcludeRdfTypeStatements { YES, NO }
 	

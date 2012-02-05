@@ -58,7 +58,7 @@ public class StartQueryCommand implements Command {
 		catch (ParseException pe) {
 
 			pe.printStackTrace();
-			this.logger.error("Could not read index in directory " + NLPediaSettings.getInstance().getSetting("sentenceIndexDirectory"), pe);
+			this.logger.error("Could not read index in directory " + NLPediaSettings.getSetting("sentenceIndexDirectory"), pe);
 		}
 	}
 	

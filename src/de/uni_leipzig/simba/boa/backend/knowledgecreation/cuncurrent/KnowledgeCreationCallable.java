@@ -38,7 +38,7 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
 
     private final NLPediaLogger logger = new NLPediaLogger(PatternFeatureExtractionCallable.class);
 
-    private static final int CONTEXT_LOOK_AHEAD = NLPediaSettings.getInstance().getIntegerSetting("contextLookAhead");
+    private static final int CONTEXT_LOOK_AHEAD = NLPediaSettings.getIntegerSetting("contextLookAhead");
     
     private List<PatternMappingPatternPair> patternMappingPatternPairs;
     private PatternSearcher patternSearcher;
@@ -63,7 +63,7 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
 
             Set<String> sentences = this.patternSearcher.getExactMatchSentences(
                     pair.getPattern().getNaturalLanguageRepresentationWithoutVariables(),
-                    Integer.valueOf(NLPediaSettings.getInstance().getSetting("max.number.of.documents.generation")));
+                    NLPediaSettings.getIntegerSetting("max.number.of.documents.generation"));
             
             this.logger.debug("\tCreating knowledge for pattern mapping: " + pair.getMapping().getProperty().getUri() + 
                     " / \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\" with " + sentences.size() + " sentences");

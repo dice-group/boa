@@ -33,7 +33,7 @@ public class NTripleOutputGeneratorModule extends AbstractPostProcessingModule {
     private final NLPediaLogger logger = new NLPediaLogger(NTripleOutputGeneratorModule.class);
 
     private static final String RDF_NTRIPLE_OUTPUT_PATH = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.RDF_DATA_NTRIPLES_PATH;
-    private static final Double TRIPLE_SCORE_THRESHOLD  = NLPediaSettings.getInstance().getDoubleSetting("score.threshold.write.nt.knowledge");
+    private static final Double TRIPLE_SCORE_THRESHOLD  = NLPediaSettings.getDoubleSetting("score.threshold.write.nt.knowledge");
     
     // for the report
     private long writingNTripleFilesTime;

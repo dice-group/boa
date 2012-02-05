@@ -45,7 +45,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	
 	private final String RAW_DATA_DIRECTORY	= NLPediaSettings.BOA_DATA_DIRECTORY + "raw/";
 	private final String INDEX_DIRECTORY	= NLPediaSettings.BOA_DATA_DIRECTORY + "index/corpus/";
-	private final int RAM_BUFFER_MAX_SIZE	= NLPediaSettings.getInstance().getIntegerSetting("ramBufferMaxSizeInMb");
+	private final int RAM_BUFFER_MAX_SIZE	= NLPediaSettings.getIntegerSetting("ramBufferMaxSizeInMb");
 	private final boolean OVERWRITE_INDEX	= this.overrideData;
 	
 	// remember how many files get indexed

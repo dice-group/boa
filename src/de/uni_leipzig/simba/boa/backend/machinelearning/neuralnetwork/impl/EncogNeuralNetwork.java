@@ -34,14 +34,14 @@ public class EncogNeuralNetwork implements NeuralNetwork {
     private final NLPediaLogger logger               = new NLPediaLogger(EncogNeuralNetwork.class);
     
     private BasicNetwork network;
-    private double maxError                          = NLPediaSettings.getInstance().getDoubleSetting("neuronal.network.max.error");
-    private double errorDecrement                    = NLPediaSettings.getInstance().getDoubleSetting("neuronal.network.error.decrement");
-    private double minError                          = NLPediaSettings.getInstance().getDoubleSetting("neuronal.network.min.error");
-    private double maxHiddenToInputRatio             = NLPediaSettings.getInstance().getIntegerSetting("neuronal.network.hidden.layer.ratio");
-    private int maxEpochs                            = NLPediaSettings.getInstance().getIntegerSetting("neuronal.network.maxEpochs");
+    private double maxError                          = NLPediaSettings.getDoubleSetting("neuronal.network.max.error");
+    private double errorDecrement                    = NLPediaSettings.getDoubleSetting("neuronal.network.error.decrement");
+    private double minError                          = NLPediaSettings.getDoubleSetting("neuronal.network.min.error");
+    private double maxHiddenToInputRatio             = NLPediaSettings.getIntegerSetting("neuronal.network.hidden.layer.ratio");
+    private int maxEpochs                            = NLPediaSettings.getIntegerSetting("neuronal.network.maxEpochs");
     
-    private static final int N_FOLD_CROSS_VALIDATION = NLPediaSettings.getInstance().getIntegerSetting("neuronal.network.n.fold.cross.validation");
-    private static final String NETWORK_DIRECTORY    = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("neural.network.network.directory");
+    private static final int N_FOLD_CROSS_VALIDATION = NLPediaSettings.getIntegerSetting("neuronal.network.n.fold.cross.validation");
+    private static final String NETWORK_DIRECTORY    = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getSetting("neural.network.network.directory");
     private static final String EVAL_OUTPUT_FILE     = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
     private static final String NETWORK_FILE         = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
     

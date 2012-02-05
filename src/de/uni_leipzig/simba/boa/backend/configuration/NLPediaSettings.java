@@ -28,7 +28,7 @@ public class NLPediaSettings {
 	/**
 	 * @return
 	 */
-	public static NLPediaSettings getInstance() {
+	private static NLPediaSettings getInstance() {
 		
 		if ( NLPediaSettings.INSTANCE == null ) {
 			
@@ -46,7 +46,7 @@ public class NLPediaSettings {
 		this.complexSettings = new HashMap<String,Object>();
 	}
 	
-	public Language getSystemLanguage() {
+	public static Language getSystemLanguage() {
 		
 		return Language.getLanguage(NLPediaSettings.BOA_LANGUAGE);
 	}
@@ -122,7 +122,7 @@ public class NLPediaSettings {
 	 * @param key the key of the setting
 	 * @param value the value of the setting
 	 */
-	public void setSetting(String key, String value) {
+	public static void setSetting(String key, String value) {
 
 		NLPediaSettings.nlpediaSettings.put(key, value);
 	}

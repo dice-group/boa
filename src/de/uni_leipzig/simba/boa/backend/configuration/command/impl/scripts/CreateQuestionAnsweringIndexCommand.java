@@ -40,7 +40,7 @@ public class CreateQuestionAnsweringIndexCommand implements Command {
 		// create the index 
 		try {
 			
-			String directory = NLPediaSettings.getInstance().getSetting("question.answering.index");
+			String directory = NLPediaSettings.getSetting("question.answering.index");
 			Directory indexDirectory = FSDirectory.open(new File(directory));
 			Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_30);
 			IndexWriter writer = new IndexWriter(indexDirectory, analyzer, true, IndexWriter.MaxFieldLength.LIMITED);
@@ -94,7 +94,7 @@ public class CreateQuestionAnsweringIndexCommand implements Command {
 		
 		System.out.println(booleanQuery);
 		
-		String directory = NLPediaSettings.getInstance().getSetting("question.answering.index");
+		String directory = NLPediaSettings.getSetting("question.answering.index");
 		IndexSearcher indexSearcher = new IndexSearcher(FSDirectory.open(new File(directory)), true);
 		
 		ScoreDoc[] hits = indexSearcher.search(booleanQuery, 100).scoreDocs;
