@@ -48,7 +48,8 @@ public class LoggingConfigurator {
 			}
 			else {
 				
-				path = path.substring(5, path.indexOf("build/classes/"));
+//				path = path.substring(5, path.indexOf("build/classes/"));
+			    path = path.substring(5, path.indexOf("build/"));
 				CONFIG_FILE = path + "WebContent/WEB-INF/config/log4j.xml";
 			}
 

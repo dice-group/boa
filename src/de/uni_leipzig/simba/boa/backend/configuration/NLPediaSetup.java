@@ -62,7 +62,7 @@ public class NLPediaSetup {
 		}
 		else {
 			
-			path = path.substring(5, path.indexOf("build/classes/"));
+			path = path.substring(5, path.indexOf("build/"));
 			NLPEDIA_SETUP_FILE = path + "WebContent/WEB-INF/config/nlpedia_setup.xml";
 		}
 		

@@ -38,7 +38,7 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 
 	private final NLPediaLogger logger					= new NLPediaLogger(TypicityFeatureExtractor.class);
 	private NamedEntityRecognition ner;
-	private final int maxNumberOfEvaluationSentences 	= Integer.valueOf(NLPediaSettings.getInstance().getSetting("maxNumberOfTypicityConfidenceMeasureDocuments"));
+	private final int maxNumberOfEvaluationSentences 	= NLPediaSettings.getIntegerSetting("maxNumberOfTypicityConfidenceMeasureDocuments");
 	
 	private DefaultPatternSearcher patternSearcher;
 	private static final Map<String,String> BRACKETS = new HashMap<String,String>();
