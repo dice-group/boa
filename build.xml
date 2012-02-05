@@ -29,7 +29,19 @@
 			<pathelement path="${build.dir}"/>
 		</path>
 	</target>
+	
+	<!-- ==================== run boa ==================== -->
 
+	<target name="boa" depends="init">
+	        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
+	            <classpath refid="master-classpath"/>
+	        </javac>
+	        <java classname="de.uni_leipzig.simba.boa.backend.NLpedia" fork="true">
+	            <classpath refid="master-classpath"/>
+	            <jvmarg value="-Xmx2G"/>
+	        </java>
+	</target>
+	
 	<!-- ==================== build nlpedia ==================== -->
 
 	<target name="build" depends="init" description="Compile main source tree java files">

@@ -16,9 +16,9 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
  */
 public class OccurrenceFilter implements PatternFilter {
 
-	private static final int NUMBER_OF_OCCURRENCES_THRESHOLD = Integer.valueOf(NLPediaSettings.getInstance().getSetting("number.of.occurrence.threshold"));
-	private static final int NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD = Integer.valueOf(NLPediaSettings.getInstance().getSetting("number.of.unique.occurrence.threshold"));
-	private static final int NUMBER_OF_LEARNED_PAIRS = Integer.valueOf(NLPediaSettings.getInstance().getSetting("number.of.learned.pairs"));
+	private static final int NUMBER_OF_OCCURRENCES_THRESHOLD           = NLPediaSettings.getIntegerSetting("number.of.occurrence.threshold");
+	private static final int NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD    = NLPediaSettings.getIntegerSetting("number.of.unique.occurrence.threshold");
+	private static final int NUMBER_OF_LEARNED_PAIRS                   = NLPediaSettings.getIntegerSetting("number.of.learned.pairs");
 	
 //	private final NLPediaLogger logger = new NLPediaLogger(OccurrenceFilter.class);
 	

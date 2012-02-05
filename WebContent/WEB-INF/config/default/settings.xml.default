@@ -5,8 +5,7 @@
 <beans>
     <!-- ********** SETUP ********** -->
     <bean id="NLPediaSettings"
-        class="de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings"
-        singleton="true" factory-method="getInstance">
+        class="de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings">
         
         <!-- base and data directory need to have a "/" (or "\" for windows) at the end -->
         <property name="boaBaseDirectory" value="@BOA_BASE_DIRECTORY@"/>
