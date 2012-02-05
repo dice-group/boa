@@ -47,7 +47,6 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
 	private PartOfSpeechTagger posTagger;
 
-	private Directory directory = null;
 	private Analyzer analyzer = null;
 	private IndexSearcher indexSearcher = null;
 
@@ -58,30 +57,29 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
 	public DefaultPatternSearcher() {
 
-		// create index searcher in read only mode
-		this.directory        = LuceneIndexHelper.openIndex(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH);
+	    // create index searcher in read only mode
 		this.analyzer         = new LowerCaseWhitespaceAnalyzer();
-		this.indexSearcher    = LuceneIndexHelper.openIndexSearcher(directory, true);
+		this.indexSearcher    = LuceneIndexHelper.getIndexSearcher(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH);
 		this.parser           = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 	}
 	
 	public DefaultPatternSearcher(String indexDir) {
 
-		this.directory = LuceneIndexHelper.openIndex(indexDir);
+//		this.directory = LuceneIndexHelper.openIndex(indexDir);
 		this.analyzer = new LowerCaseWhitespaceAnalyzer();
 
 		// create index searcher in read only mode
-		this.indexSearcher = LuceneIndexHelper.openIndexSearcher(directory, true);
+//		this.indexSearcher = LuceneIndexHelper.openIndexSearcher(directory, true);
 		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 	}
 	
 	public DefaultPatternSearcher(Directory indexDir) {
 
-		this.directory = indexDir;
+//		this.directory = indexDir;
 		this.analyzer = new LowerCaseWhitespaceAnalyzer();
 
 		// create index searcher in read only mode
-		this.indexSearcher = LuceneIndexHelper.openIndexSearcher(directory, true);
+//		this.indexSearcher = LuceneIndexHelper.openIndexSearcher(directory, true);
 		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 
 		this.hits = null;

@@ -13,12 +13,14 @@ import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.NIOFSDirectory;
+import org.apache.lucene.util.Version;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -30,6 +32,8 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 public class LuceneIndexHelper {
 
 	private static NLPediaLogger logger = new NLPediaLogger(LuceneIndexHelper.class);
+	
+	private static IndexSearcher indexSearcher;
 	
 	/**
 	 * 
@@ -49,6 +53,38 @@ public class LuceneIndexHelper {
 			logger.fatal(error, e);
 			throw new RuntimeException(error, e);
 		}
+	}
+	
+	public synchronized static IndexSearcher getIndexSearcher(String indexDir) {
+	    
+	    if ( LuceneIndexHelper.indexSearcher != null ) return indexSearcher;
+	    else {
+	        
+	        // create the index writer configuration and create a new index writer
+	        IndexWriterConfig indexWriterConfig = new IndexWriterConfig(Version.LUCENE_34, new LowerCaseWhitespaceAnalyzer());
+	        indexWriterConfig.setOpenMode(!LuceneIndexHelper.isIndexExisting(indexDir) ? OpenMode.CREATE : OpenMode.APPEND);
+	        IndexWriter writer = LuceneIndexHelper.createIndex(indexDir, indexWriterConfig);
+	        
+	        try {
+	            
+	            indexSearcher = new IndexSearcher(IndexReader.open(writer, false));
+	            return indexSearcher;
+	        }
+	        catch (CorruptIndexException e) {
+	            
+	            e.printStackTrace();
+	            String error = "Could not open index searcher for directory: " + indexDir;
+	            logger.fatal(error, e);
+	            throw new RuntimeException(error, e);
+	        }
+	        catch (IOException e) {
+	            
+	            e.printStackTrace();
+	            String error = "Could not open index searcher for directory: " + indexDir;
+	            logger.fatal(error, e);
+	            throw new RuntimeException(error, e);
+	        }
+	    }
 	}
 	
     /**
@@ -111,7 +147,7 @@ public class LuceneIndexHelper {
 
         try {
             
-            return new IndexWriter(FSDirectory.open(new File(absoluteFilePath)), indexWriterConfig);
+            return new IndexWriter(NIOFSDirectory.open(new File(absoluteFilePath)), indexWriterConfig);
         }
         catch (CorruptIndexException e) {
             

@@ -177,7 +177,9 @@ public class DBpediaSpotlightDownloadModule extends AbstractPreprocessingModule 
     @Override
     public boolean isDataAlreadyAvailable() {
 
-        return new File(DBPEDIA_DISAMBIGUATIONS_FILE_BZ2).exists() && new File(DBPEDIA_REDIRECTS_FILE_BZ2).exists() && new File(DBPEDIA_LABELS_FILE_BZ2).exists();
+        return (new File(DBPEDIA_DISAMBIGUATIONS_FILE_BZ2).exists() && new File(DBPEDIA_REDIRECTS_FILE_BZ2).exists() && new File(DBPEDIA_LABELS_FILE_BZ2).exists()) 
+                ||
+               (new File(DBPEDIA_DISAMBIGUATIONS_FILE).exists() && new File(DBPEDIA_REDIRECTS_FILE).exists() && new File(DBPEDIA_LABELS_FILE).exists());
     }
 
     /* (non-Javadoc)
