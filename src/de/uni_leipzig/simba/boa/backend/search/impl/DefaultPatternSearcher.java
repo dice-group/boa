@@ -150,16 +150,16 @@ public class DefaultPatternSearcher implements PatternSearcher {
 		boolean inverse = false;
 		List<SearchResult> results = new ArrayList<SearchResult>();
 		
-		Set<String> firstLabels = backgroundKnowledge.getSubject().retrieveLabels();
-		Set<String> secondLabels = backgroundKnowledge.getObject().retrieveLabels();
+		Set<String> firstLabels = backgroundKnowledge.getSubjectSurfaceForms();
+		Set<String> secondLabels = backgroundKnowledge.getObjectSurfaceForms();
 
 		// switch the labels in case we have more subject labels than object labels
 		if ( firstLabels.size() > secondLabels.size() ) {
 			
 			inverse = true;
 			
-			firstLabels = backgroundKnowledge.getObject().retrieveLabels();
-			secondLabels = backgroundKnowledge.getSubject().retrieveLabels();
+			firstLabels = backgroundKnowledge.getObjectSurfaceForms();
+			secondLabels = backgroundKnowledge.getSubjectSurfaceForms();
 		}
 		
 		// go through all surface form combinations
