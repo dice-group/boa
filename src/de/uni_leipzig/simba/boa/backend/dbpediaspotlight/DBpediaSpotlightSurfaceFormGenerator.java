@@ -34,8 +34,6 @@ import edu.stanford.nlp.util.StringUtils;
  */
 public class DBpediaSpotlightSurfaceFormGenerator {
     
-    static NLPediaSetup s = new NLPediaSetup(true);
-    
     private static final NLPediaLogger logger = new NLPediaLogger(DBpediaSpotlightSurfaceFormGenerator.class);
     
     private static final int MAXIMUM_SURFACE_FORM_LENGHT        = NLPediaSettings.getIntegerSetting("spotlight.maxSurfaceFormLength");
