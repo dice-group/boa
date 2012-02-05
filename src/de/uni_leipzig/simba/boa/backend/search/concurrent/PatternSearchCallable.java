@@ -25,12 +25,15 @@ public class PatternSearchCallable extends BoaCallable<SearchResult>{
 	public PatternSearchCallable(List<BackgroundKnowledge> backgroundKnowledge) {
 		
 		this.backgroundKnowledgeList = backgroundKnowledge;
-		this.patternSearcher = new DefaultPatternSearcher();
 	}
 	
 	@Override
 	public Collection<SearchResult> call() throws Exception {
 
+	    // initialize the pattern searcher at thread execution
+	    // otherwise we would have X non running threads with an opened index
+	    this.patternSearcher = new DefaultPatternSearcher();
+	    
 		List<SearchResult> results = new ArrayList<SearchResult>();
 		
 		for ( BackgroundKnowledge backgroundKnowledge : this.backgroundKnowledgeList ) {

@@ -8,7 +8,7 @@
         factory-method="getInstance" singleton="true">
 
         <property name="defaultPartOfSpeechTagger"
-            value="de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.impl.KoreanPartOfSpeechTagger" />
+            value="de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.impl.StanfordNLPPartOfSpeechTagger" />
 
         <property name="defaultNamedEntityRecognition"
             value="de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.impl.StanfordNLPNamedEntityRecognition" />
