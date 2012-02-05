@@ -8,7 +8,6 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -78,7 +77,7 @@ public class IndexBroker {
 	 * Holds a reference to an instance of a Searcher that allows searches to be
 	 * conducted in the opened index.
 	 */
-	private Searcher searcher;
+	private IndexSearcher searcher;
 
 	/**
 	 * Holds a reference to an instance of a Parser; a parser parses the query.
@@ -102,9 +101,9 @@ public class IndexBroker {
 
 		try {
 
-			INDEX_DIR = FSDirectory.open(new File(NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getInstance().getSetting("wordnet.index.directory")));
+			INDEX_DIR = FSDirectory.open(new File(NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getSetting("wordnet.index.directory")));
 			searcher = new IndexSearcher(INDEX_DIR);
-			parser = new QueryParser(Version.LUCENE_30, WORDS, new WhitespaceAnalyzer());
+			parser = new QueryParser(Version.LUCENE_30, WORDS, new WhitespaceAnalyzer(Version.LUCENE_34));
 			parser.setDefaultOperator(QueryParser.AND_OPERATOR);
 		}
 		catch (IOException ex) {
@@ -170,7 +169,7 @@ public class IndexBroker {
 	/**
 	 * @return the searcher
 	 */
-	public Searcher getSearcher() {
+	public IndexSearcher getSearcher() {
 
 		return searcher;
 	}
@@ -179,7 +178,7 @@ public class IndexBroker {
 	 * @param searcher
 	 *            the searcher to set
 	 */
-	public void setSearcher(Searcher searcher) {
+	public void setSearcher(IndexSearcher searcher) {
 
 		this.searcher = searcher;
 	}
