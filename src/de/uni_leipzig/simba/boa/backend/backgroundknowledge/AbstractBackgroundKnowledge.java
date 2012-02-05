@@ -18,8 +18,8 @@ public abstract class AbstractBackgroundKnowledge implements BackgroundKnowledge
 	
 	public AbstractBackgroundKnowledge(Resource subject, Resource object) {
 	    
-	    this.subjectSurfaceForms = subject.retrieveLabels();
-        this.objectSurfaceForms = object.retrieveLabels();
+	    this.subjectSurfaceForms    = subject.retrieveLabels() != null ? subject.retrieveLabels() : new HashSet<String>();
+        this.objectSurfaceForms     = object.retrieveLabels() != null ? object.retrieveLabels() : new HashSet<String>();
 	}
 	
 	/**
