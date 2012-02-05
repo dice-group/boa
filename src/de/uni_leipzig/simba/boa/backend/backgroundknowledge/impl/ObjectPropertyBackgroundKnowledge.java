@@ -16,14 +16,11 @@ public final class ObjectPropertyBackgroundKnowledge extends AbstractBackgroundK
 	private Set<String> objectSurfaceForms;
 	
 	public ObjectPropertyBackgroundKnowledge(Resource subject, Property property, Resource object) {
-		super();
+		super(subject, object);
 		
 		this.subject	= subject;
 		this.property	= property;
 		this.object		= object;
-		
-		this.subjectSurfaceForms = new HashSet<String>();
-		this.objectSurfaceForms = new HashSet<String>();
 	}
 
 	
@@ -63,41 +60,5 @@ public final class ObjectPropertyBackgroundKnowledge extends AbstractBackgroundK
 		builder.append(this.property.getRdfsDomain());
 		
 		return builder.toString();
-	}
-
-
-	/**
-	 * @return the subjectSurfaceForms
-	 */
-	public Set<String> getSubjectSurfaceForms() {
-	
-		return subjectSurfaceForms;
-	}
-
-	
-	/**
-	 * @param subjectSurfaceForms the subjectSurfaceForms to set
-	 */
-	public void setSubjectSurfaceForms(Set<String> subjectSurfaceForms) {
-	
-		this.subjectSurfaceForms = subjectSurfaceForms;
-	}
-
-	
-	/**
-	 * @return the objectSurfaceForms
-	 */
-	public Set<String> getObjectSurfaceForms() {
-	
-		return objectSurfaceForms;
-	}
-
-	
-	/**
-	 * @param objectSurfaceForms the objectSurfaceForms to set
-	 */
-	public void setObjectSurfaceForms(Set<String> objectSurfaceForms) {
-	
-		this.objectSurfaceForms = objectSurfaceForms;
 	}
 }

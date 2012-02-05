@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import de.uni_leipzig.simba.boa.backend.entity.context.Context;
+
 @Entity
 @Table(name="resource")
 public class Resource extends de.uni_leipzig.simba.boa.backend.entity.Entity {
@@ -156,11 +158,11 @@ public class Resource extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 				labels.add(" " + s.trim() + " ");
 			}
 			// this is very experimental 
-//			if ( Context.namedEntityRecognitionMappings.get(this.type).equals("PER") ) {
-//				
-//				labels.add("he");
-//				labels.add("she");
-//			}
+			if ( Context.namedEntityRecognitionMappings.get(this.type).equals("PER") ) {
+				
+				labels.add("he");
+				labels.add("she");
+			}
 		}
 		if ( this.label.length() > 1 ) labels.add(" " + this.label.toLowerCase() + " ");
 		return labels;

@@ -1,11 +1,13 @@
 package de.uni_leipzig.simba.boa.backend.backgroundknowledge;
 
+import java.util.Set;
+
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 
 /**
  * 
- * @author gerb
+ * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
  */
 public interface BackgroundKnowledge {
 
@@ -38,4 +40,27 @@ public interface BackgroundKnowledge {
 	 * @param object the object to set
 	 */
 	public void setObject(Resource object);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Set<String> getSubjectSurfaceForms();
+	
+	/**
+	 * 
+	 * @param subjectSurfaceForms
+	 */
+	public void setSubjectSurfaceForms(Set<String> subjectSurfaceForms);
+	
+	/**
+	 *@return 
+	 */
+	public Set<String> getObjectSurfaceForms();
+	
+	/**
+	 * 
+	 * @param subjectSurfaceForms
+	 */
+	public void setObjectSurfaceForms(Set<String> subjectSurfaceForms);
 }

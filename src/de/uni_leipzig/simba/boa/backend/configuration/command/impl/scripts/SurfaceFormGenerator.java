@@ -145,24 +145,32 @@ public class SurfaceFormGenerator {
 		if ( this.urisToLabels.containsKey(subjectUri) ) {
 			
 			Set<String> surfaceForms = urisToLabels.get(subjectUri);
-			System.out.println("Found " + surfaceForms.size() + " for subject in spotlight");
+			logger.info("Found " + surfaceForms.size() + " for subject in spotlight");
 			for (String classUri : classIndexer.getSuperClassUrisForClassUri(domain, NLPediaSettings.BOA_LANGUAGE)) {
-				System.out.println(classUri + "  " + this.classUrisToLabels.get(classUri));
-				surfaceForms.add(this.classUrisToLabels.get(classUri));
+
+			    if ( classUri.equals("http://dbpedia.org/ontology/Person")) {
+			        surfaceForms.add("he");
+			        surfaceForms.add("she");
+			    }
+			    surfaceForms.add(this.classUrisToLabels.get(classUri));
 			}
-			System.out.println("Found " + surfaceForms.size() + " at all");
+			logger.info("Found " + surfaceForms.size() + " at all");
 			objectPropertyBackgroundKnowledge.setSubjectSurfaceForms(surfaceForms);
 		}
 		// we found labels for the object in the surface form file
 		if ( this.urisToLabels.containsKey(objectUri) ) {
 			
 			Set<String> surfaceForms = urisToLabels.get(objectUri);
-			System.out.println("Found " + surfaceForms.size() + " for subject in spotlight");
+			logger.info("Found " + surfaceForms.size() + " for subject in spotlight");
 			for (String classUri : classIndexer.getSuperClassUrisForClassUri(range, NLPediaSettings.BOA_LANGUAGE)) {
 				
+			    if ( classUri.equals("http://dbpedia.org/ontology/Person")) {
+                    surfaceForms.add("he");
+                    surfaceForms.add("she");
+                }
 				surfaceForms.add(this.classUrisToLabels.get(classUri));
 			}
-			System.out.println("Found " + surfaceForms.size() + " at all");
+			logger.info("Found " + surfaceForms.size() + " at all");
 			objectPropertyBackgroundKnowledge.setObjectSurfaceForms(surfaceForms);
 		}
 		return objectPropertyBackgroundKnowledge;
