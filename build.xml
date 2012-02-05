@@ -32,11 +32,11 @@
 	
 	<!-- ==================== run boa ==================== -->
 
-	<target name="boa" depends="init">
-	        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
+	<target name="boa" depends="init,build">
+	        <javac srcdir="${src.dir}" destdir="${build.dir}/classes" includeantruntime="false">
 	            <classpath refid="master-classpath"/>
 	        </javac>
-	        <java classname="de.uni_leipzig.simba.boa.backend.NLpedia" fork="true">
+	        <java classname="de.uni_leipzig.simba.boa.backend.Boa" fork="true">
 	            <classpath refid="master-classpath"/>
 	            <jvmarg value="-Xmx2G"/>
 	        </java>
