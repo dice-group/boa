@@ -12,6 +12,7 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
 
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
@@ -31,8 +32,8 @@ public class DefaultPatternIndexCreationModule extends AbstractPostProcessingMod
 
     private final NLPediaLogger logger          = new NLPediaLogger(DefaultPatternIndexCreationModule.class);  
     
-    protected String PATTERN_INDEX_DIRECTORY    = NLPediaSettings.BOA_DATA_DIRECTORY + "index/pattern/default/";
-    private final int RAM_BUFFER_MAX_SIZE       = NLPediaSettings.getInstance().getIntegerSetting("ramBufferMaxSizeInMb");
+    protected String PATTERN_INDEX_DIRECTORY    = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_DEFAULT_PATTERN_PATH;
+    private final int RAM_BUFFER_MAX_SIZE       = NLPediaSettings.getIntegerSetting("ramBufferMaxSizeInMb");
     
     // the index where the patterns get scored
     protected Directory index;
