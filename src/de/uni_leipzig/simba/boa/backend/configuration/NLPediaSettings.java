@@ -21,7 +21,7 @@ public class NLPediaSettings {
 	public static String BOA_LANGUAGE;
 	
 	private NLPediaLogger logger = new NLPediaLogger(NLPediaSettings.class);
-	private Map<String, String> nlpediaSettings	= null;
+	private static Map<String, String> nlpediaSettings	= null;
 	private Map<String, Object> complexSettings = null;
 	private static NLPediaSettings INSTANCE		= null;
 	
@@ -78,7 +78,7 @@ public class NLPediaSettings {
 	 */
 	public Map<String, String> getNlpediaSettings() {
 		
-		return this.nlpediaSettings;
+		return nlpediaSettings;
 	}
 	
 	/**
@@ -88,34 +88,34 @@ public class NLPediaSettings {
 	 */
 	public void setNlpediaSettings(Map<String, String> nlpediaSettings) {
 		
-		this.nlpediaSettings = nlpediaSettings;
+		NLPediaSettings.nlpediaSettings = nlpediaSettings;
 	}
 	
 	/**
 	 * @param setting - the setting asked for, have a look at the nlpedia_setup.xml
 	 * @return the setting for the key or null if no key exists
 	 */
-	public String getSetting(String setting) {
+	public static String getSetting(String setting) {
 		
-		return this.nlpediaSettings.get(setting);
+		return nlpediaSettings.get(setting);
 	}
 	
 	/**
 	 * @param setting which has an integer value
 	 * @return the integer value of the setting
 	 */
-	public int getIntegerSetting(String setting){
+	public static int getIntegerSetting(String setting){
 		
-		return Integer.valueOf(this.getSetting(setting));
+		return Integer.valueOf(getSetting(setting));
 	}
 	
 	/**
 	 * @param setting which has an double value 
 	 * @return the double value of the setting
 	 */
-    public double getDoubleSetting(String setting) {
+    public static double getDoubleSetting(String setting) {
 
-        return Double.valueOf(this.getSetting(setting));
+        return Double.valueOf(getSetting(setting));
     }
 
 	/**
@@ -124,7 +124,7 @@ public class NLPediaSettings {
 	 */
 	public void setSetting(String key, String value) {
 
-		this.nlpediaSettings.put(key, value);
+		NLPediaSettings.nlpediaSettings.put(key, value);
 	}
 
 	
@@ -190,7 +190,7 @@ public class NLPediaSettings {
 		this.logger.info("\tBOA-Base-Directory: " + BOA_BASE_DIRECTORY);
 		this.logger.info("\tBOA-Data-Directory: " + BOA_DATA_DIRECTORY);
 		
-		for (Entry<String,String> entry : this.nlpediaSettings.entrySet()) {
+		for (Entry<String,String> entry : NLPediaSettings.nlpediaSettings.entrySet()) {
 			
 			this.logger.info("\t" + entry.getKey() + ": " + entry.getValue());
 		}
@@ -202,4 +202,9 @@ public class NLPediaSettings {
 		System.out.println("Used memory is megabytes: " + (memory / NLPediaSettings.MEGABYTE));
 		this.logger.info("Used memory is megabytes: " + (memory / NLPediaSettings.MEGABYTE));
 	}
+
+    public static boolean getBooleanSetting(String string) {
+
+        return Boolean.valueOf(getSetting(string));
+    }
 }

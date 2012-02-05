@@ -14,15 +14,15 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.NIOFSDirectory;
+import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 /**
@@ -32,6 +32,11 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 public class LuceneIndexHelper {
 
 	private static NLPediaLogger logger = new NLPediaLogger(LuceneIndexHelper.class);
+	public enum LuceneIndexType {
+	    
+	    RAM_INDEX,
+	    DIRECTORY_INDEX;
+	}
 	
 	private static IndexSearcher indexSearcher;
 	
@@ -63,7 +68,8 @@ public class LuceneIndexHelper {
 	        // create the index writer configuration and create a new index writer
 	        IndexWriterConfig indexWriterConfig = new IndexWriterConfig(Version.LUCENE_34, new LowerCaseWhitespaceAnalyzer());
 	        indexWriterConfig.setOpenMode(!LuceneIndexHelper.isIndexExisting(indexDir) ? OpenMode.CREATE : OpenMode.APPEND);
-	        IndexWriter writer = LuceneIndexHelper.createIndex(indexDir, indexWriterConfig);
+	        IndexWriter writer = LuceneIndexHelper.createIndex(indexDir, indexWriterConfig, 
+	                NLPediaSettings.getBooleanSetting("useRamDirectory") ? LuceneIndexType.RAM_INDEX : LuceneIndexType.DIRECTORY_INDEX);
 	        
 	        try {
 	            
@@ -143,11 +149,22 @@ public class LuceneIndexHelper {
      * @return an opened indexwriter for the specified settings.
      * @throws RuntimeException if something goes wrong
      */
-    public static IndexWriter createIndex(String absoluteFilePath, IndexWriterConfig indexWriterConfig) {
+    public static IndexWriter createIndex(String absoluteFilePath, IndexWriterConfig indexWriterConfig, LuceneIndexType indexType) {
 
         try {
             
-            return new IndexWriter(NIOFSDirectory.open(new File(absoluteFilePath)), indexWriterConfig);
+            Directory index = null;
+            if ( indexType.equals(LuceneIndexType.RAM_INDEX) ) {
+                
+                index = new RAMDirectory(NIOFSDirectory.open(new File(absoluteFilePath)));
+            }
+            else if ( indexType.equals(LuceneIndexType.DIRECTORY_INDEX) ){
+                
+                index = NIOFSDirectory.open(new File(absoluteFilePath));
+            }
+            else throw new RuntimeException("Unknown IndexType provided!");
+            
+            return new IndexWriter(index, indexWriterConfig);
         }
         catch (CorruptIndexException e) {
             

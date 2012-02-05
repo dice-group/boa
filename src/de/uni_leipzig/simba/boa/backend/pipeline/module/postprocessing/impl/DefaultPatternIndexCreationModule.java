@@ -18,6 +18,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.lucene.LowerCaseWhitespaceAnalyzer;
 import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
+import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper.LuceneIndexType;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.postprocessing.AbstractPostProcessingModule;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 
@@ -62,7 +63,7 @@ public class DefaultPatternIndexCreationModule extends AbstractPostProcessingMod
         IndexWriterConfig indexWriterConfig = new IndexWriterConfig(Version.LUCENE_34, new LowerCaseWhitespaceAnalyzer());
         indexWriterConfig.setRAMBufferSizeMB(RAM_BUFFER_MAX_SIZE);
         indexWriterConfig.setOpenMode(OpenMode.CREATE);
-        IndexWriter writer = LuceneIndexHelper.createIndex(PATTERN_INDEX_DIRECTORY, indexWriterConfig);
+        IndexWriter writer = LuceneIndexHelper.createIndex(PATTERN_INDEX_DIRECTORY, indexWriterConfig, LuceneIndexType.DIRECTORY_INDEX);
         
         // index all the pattern in default settings
         for (PatternMapping mapping : this.moduleInterchangeObject.getPatternMappings()) {
