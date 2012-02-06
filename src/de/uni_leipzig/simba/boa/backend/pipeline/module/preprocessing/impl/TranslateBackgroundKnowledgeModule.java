@@ -66,7 +66,7 @@ public class TranslateBackgroundKnowledgeModule extends AbstractPreprocessingMod
 	        while ((line = reader.readLine()) != null) {
 	            
 	            // read the background knowledge 
-	            BackgroundKnowledge bk = BackgroundKnowledgeManager.getInstance().createBackgroundKnowledge(line);
+	            BackgroundKnowledge bk = BackgroundKnowledgeManager.getInstance().createBackgroundKnowledge(line, true);
 	            
 	            // we only include the current english triple if we have translations for subject and object
 	            if (uriToLabelMapping.containsKey(bk.getSubjectUri()) && uriToLabelMapping.containsKey(bk.getObjectUri())) {

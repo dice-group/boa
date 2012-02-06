@@ -29,6 +29,11 @@ public class Constants {
     /**
      * 
      */
+    public static final String NEURAL_NETWORK_PATH = "neuralnetwork/";
+    
+    /**
+     * 
+     */
     public static final String BACKGROUND_KNOWLEDGE_PATH = "backgroundknowledge/";
     
     /**

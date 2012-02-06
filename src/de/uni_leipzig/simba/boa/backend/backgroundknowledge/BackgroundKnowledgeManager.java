@@ -57,13 +57,13 @@ public class BackgroundKnowledgeManager {
 	 * 
 	 * @return list of triples
 	 */
-	public List<BackgroundKnowledge> getBackgroundKnowledgeInDirectory(String directory) {
+	public List<BackgroundKnowledge> getBackgroundKnowledgeInDirectory(String directory, boolean isObjectProperty) {
 		
 		List<BackgroundKnowledge> backgroundKnowledge = new ArrayList<BackgroundKnowledge>();
 
 		for ( File file : FileUtils.listFiles(new File(directory), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE) ) {
 			
-			backgroundKnowledge.addAll(this.getBackgroundKnowledge(file.getAbsolutePath()));
+			backgroundKnowledge.addAll(this.getBackgroundKnowledge(file.getAbsolutePath(), isObjectProperty));
 		}
 		return backgroundKnowledge;
 	}
@@ -73,7 +73,7 @@ public class BackgroundKnowledgeManager {
 	 * @param filename
 	 * @return
 	 */
-	public List<BackgroundKnowledge> getBackgroundKnowledge(String filename) {
+	public List<BackgroundKnowledge> getBackgroundKnowledge(String filename, boolean isObjectProperty) {
         
         List<BackgroundKnowledge> backgroundKnowledge = new ArrayList<BackgroundKnowledge>();
         this.logger.info(String.format("Reading background knowledge from file %s", filename));
@@ -83,7 +83,7 @@ public class BackgroundKnowledgeManager {
         String line;
         while ((line = br.readLine()) != null) {
 
-            backgroundKnowledge.add(this.createBackgroundKnowledge(line));
+            backgroundKnowledge.add(this.createBackgroundKnowledge(line, isObjectProperty));
         }
         br.close();
         return backgroundKnowledge;
@@ -95,7 +95,7 @@ public class BackgroundKnowledgeManager {
 	 * @param line
 	 * @return
 	 */
-	public BackgroundKnowledge createBackgroundKnowledge(String line) {
+	public BackgroundKnowledge createBackgroundKnowledge(String line, boolean isObjectProperty) {
 		
 		String[] parts = line.split(Constants.BACKGROUND_KNOWLEDGE_VALUE_SEPARATOR_REGEX);
 		
@@ -108,14 +108,14 @@ public class BackgroundKnowledgeManager {
 		// all object information
 		final String objectUri    = parts[4].replace(Constants.DBPEDIA_RESOURCE_PREFIX, "");
 		final String objectLabel  = parts[5].replaceAll("\\(.+?\\)", "").trim();
-		Set<String> objectLabels     = new HashSet<String>();
-//		String objectContext	= "";
+		Set<String> objectLabels  = new HashSet<String>();
+//		String objectContext	  = "";
 		
 		// all predicate information
-		final String predicate      = parts[3].replace(Constants.DBPEDIA_ONTOLOGY_PREFIX, "");
-		final String predicateType  = parts[4].startsWith("http://") ? Constants.OWL_OBJECT_PROPERTY : Constants.OWL_DATATYPE_PROPERTY;
-		final String range    = parts[7].equals("null") ? null : parts[7].replace(Constants.DBPEDIA_ONTOLOGY_PREFIX, "");
-		final String domain   = parts[8].equals("null") ? null : parts[8].replace(Constants.DBPEDIA_ONTOLOGY_PREFIX, "");
+		final String predicate        = parts[3].replace(Constants.DBPEDIA_ONTOLOGY_PREFIX, "");
+		final String predicateType    = isObjectProperty ? Constants.OWL_OBJECT_PROPERTY : Constants.OWL_DATATYPE_PROPERTY;
+		final String range            = parts[7].equals("null") ? null : parts[7].replace(Constants.DBPEDIA_ONTOLOGY_PREFIX, "");
+		final String domain           = parts[8].equals("null") ? null : parts[8].replace(Constants.DBPEDIA_ONTOLOGY_PREFIX, "");
 		
 		// ################ SUBJECT ############################
 		
@@ -123,7 +123,11 @@ public class BackgroundKnowledgeManager {
 //	    Matcher matcher = pattern.matcher(parts[1]);
 //	    while (matcher.find()) { subjectContext = matcher.group(); }
 		// labels from wikipedia surface forms
-		for (String part : parts[2].split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  subjectLabels.add(part) ;
+		for (String part : parts[2].split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
+		    
+		    final String surfaceForm = part;
+		    subjectLabels.add(surfaceForm) ;
+		}
 		// rdf:type of the subject
 		
 		// ################ OBJECT ############################
@@ -132,7 +136,11 @@ public class BackgroundKnowledgeManager {
 //	    matcher			= pattern.matcher(parts[5]);
 //	    while (matcher.find()) { objectContext = matcher.group(); }
 		// labels from wikipedia surface forms
-	    for (String part : parts[6].split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  objectLabels.add(part) ;
+	    for (String part : parts[6].split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
+	        
+	        final String surfaceForm = part;
+	        objectLabels.add(surfaceForm) ;
+	    }
 		
 		// ################ resources: subject, property, object ############################
 		
