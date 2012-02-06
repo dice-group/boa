@@ -7,8 +7,8 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 
 public final class DatatypePropertyBackgroundKnowledge extends AbstractBackgroundKnowledge {
 
-	public DatatypePropertyBackgroundKnowledge(Resource sub, Property p, Resource obj) {
-		super(sub,obj);
+	public DatatypePropertyBackgroundKnowledge() {
+	    
+	    // TODO implement
 	}
-
 }

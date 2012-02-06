@@ -1,32 +1,11 @@
 package de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.HiddenFileFilter;
-import org.apache.commons.io.filefilter.TrueFileFilter;
-import org.apache.commons.lang3.StringUtils;
-
-import weka.core.tokenizers.NGramTokenizer;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -37,11 +16,7 @@ import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.DatatypePropertyBackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.ObjectPropertyBackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
-import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.ontology.ClassIndexer;
 
 /**
@@ -136,32 +111,32 @@ public class SurfaceFormGenerator {
 	 */
 	private BackgroundKnowledge createSurfaceFormsForObjectProperty(ObjectPropertyBackgroundKnowledge objectPropertyBackgroundKnowledge) {
 
-		String subjectUri	= objectPropertyBackgroundKnowledge.getSubject().getUri();
-		String objectUri	= objectPropertyBackgroundKnowledge.getObject().getUri();
-		String domain		= objectPropertyBackgroundKnowledge.getProperty().getRdfsDomain();
-		String range		= objectPropertyBackgroundKnowledge.getProperty().getRdfsRange();
+		String subjectUri	= objectPropertyBackgroundKnowledge.getSubjectUri();
+		String objectUri	= objectPropertyBackgroundKnowledge.getObjectUri();
+		String domain		= objectPropertyBackgroundKnowledge.getRdfsDomain();
+		String range		= objectPropertyBackgroundKnowledge.getRdfsRange();
 		
 		// we found labels for the subject in the surface form file
 		if ( this.urisToLabels.containsKey(subjectUri) ) {
 			
 			Set<String> surfaceForms = urisToLabels.get(subjectUri);
-			logger.info("Found " + surfaceForms.size() + " for subject in spotlight");
+			logger.debug("Found " + surfaceForms.size() + " for subject in spotlight");
 			for (String classUri : classIndexer.getSuperClassUrisForClassUri(domain, NLPediaSettings.BOA_LANGUAGE)) {
 
-			    if ( classUri.equals("http://dbpedia.org/ontology/Person")) {
+			    if ( classUri.equals("Person")) {
 			        surfaceForms.add("he");
 			        surfaceForms.add("she");
 			    }
 			    surfaceForms.add(this.classUrisToLabels.get(classUri));
 			}
-			logger.info("Found " + surfaceForms.size() + " at all");
+			logger.debug("Found " + surfaceForms.size() + " at all!");
 			objectPropertyBackgroundKnowledge.setSubjectSurfaceForms(surfaceForms);
 		}
 		// we found labels for the object in the surface form file
 		if ( this.urisToLabels.containsKey(objectUri) ) {
 			
 			Set<String> surfaceForms = urisToLabels.get(objectUri);
-			logger.info("Found " + surfaceForms.size() + " for subject in spotlight");
+			logger.debug("Found " + surfaceForms.size() + " for subject in spotlight");
 			for (String classUri : classIndexer.getSuperClassUrisForClassUri(range, NLPediaSettings.BOA_LANGUAGE)) {
 				
 			    if ( classUri.equals("http://dbpedia.org/ontology/Person")) {
@@ -170,7 +145,7 @@ public class SurfaceFormGenerator {
                 }
 				surfaceForms.add(this.classUrisToLabels.get(classUri));
 			}
-			logger.info("Found " + surfaceForms.size() + " at all");
+			logger.debug("Found " + surfaceForms.size() + " at all");
 			objectPropertyBackgroundKnowledge.setObjectSurfaceForms(surfaceForms);
 		}
 		return objectPropertyBackgroundKnowledge;

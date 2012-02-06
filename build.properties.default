@@ -13,3 +13,4 @@ src.dir         = ${base.dir}/src
 config.dir      = ${base.dir}/WebContent/WEB-INF/config
 log.dir         = ${base.dir}/WebContent/WEB-INF/log
 build.dir       = ${base.dir}/build
+Xmx             = 2G

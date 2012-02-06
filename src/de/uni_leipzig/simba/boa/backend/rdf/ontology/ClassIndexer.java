@@ -15,6 +15,8 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
+import de.uni_leipzig.simba.boa.backend.Constants;
+
 /**
  * Indexes an Ontology
  * skips complex classes per default, this does not affect the hierarchy outcome
@@ -75,7 +77,7 @@ public class ClassIndexer {
                 
                 if ( !clazz.getURI().equals("http://www.w3.org/2002/07/owl#Thing") && !clazz.getURI().equals("http://www.w3.org/2000/01/rdf-schema#Resource") ) {
                     
-                    classLabels.add(clazz.getURI());
+                    classLabels.add(clazz.getURI().replace(Constants.DBPEDIA_ONTOLOGY_PREFIX, ""));
                 }
             }
     	}

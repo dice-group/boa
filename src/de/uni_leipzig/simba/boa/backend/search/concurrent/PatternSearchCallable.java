@@ -38,7 +38,7 @@ public class PatternSearchCallable extends BoaCallable<SearchResult>{
 		
 		for ( BackgroundKnowledge backgroundKnowledge : this.backgroundKnowledgeList ) {
 			
-			if ( !backgroundKnowledge.getSubject().getLabel().equals(backgroundKnowledge.getObject().getLabel()) ) {
+			if ( !backgroundKnowledge.getSubjectLabel().equals(backgroundKnowledge.getObjectLabel()) ) {
 				
 				results.addAll(patternSearcher.queryBackgroundKnowledge(backgroundKnowledge));
 				progress++;

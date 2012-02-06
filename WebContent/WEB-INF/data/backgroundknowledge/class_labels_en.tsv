@@ -1,319 +1,319 @@
-http://dbpedia.org/ontology/Company	company
-http://dbpedia.org/ontology/Animal	animal
-http://dbpedia.org/ontology/Athlete	athlete
-http://dbpedia.org/ontology/AustralianRulesFootballPlayer	Australian rules football player
-http://dbpedia.org/ontology/Person	person
-http://dbpedia.org/ontology/Governor	governor
-http://dbpedia.org/ontology/Software	software
-http://dbpedia.org/ontology/Single	single
-http://dbpedia.org/ontology/AdministrativeRegion	administrative region
-http://dbpedia.org/ontology/Building	building
-http://dbpedia.org/ontology/Royalty	royalty
-http://dbpedia.org/ontology/AutoRacingLeague	auto racing league
-http://dbpedia.org/ontology/ChristianBishop	Christian Bishop
-http://dbpedia.org/ontology/Cleric	cleric
-http://dbpedia.org/ontology/Weapon	weapon
-http://dbpedia.org/ontology/Device	device
-http://dbpedia.org/ontology/Asteroid	asteroid
-http://dbpedia.org/ontology/Cyclist	cyclist
-http://dbpedia.org/ontology/Species	species
-http://dbpedia.org/ontology/Tunnel	tunnel
-http://dbpedia.org/ontology/AnatomicalStructure	anatomical structure
-http://dbpedia.org/ontology/Stream	stream
-http://dbpedia.org/ontology/Station	station
-http://dbpedia.org/ontology/Aircraft	aircraft
-http://dbpedia.org/ontology/Fungus	fungus
-http://dbpedia.org/ontology/Election	Election
-http://dbpedia.org/ontology/Mammal	mammal
-http://dbpedia.org/ontology/Surname	surname
-http://dbpedia.org/ontology/Criminal	criminal
-http://dbpedia.org/ontology/Project	project
-http://dbpedia.org/ontology/Website	website
-http://dbpedia.org/ontology/Mountain	mountain
-http://dbpedia.org/ontology/Bridge	bridge
-http://dbpedia.org/ontology/AustralianFootballLeague	australian football league
-http://dbpedia.org/ontology/LacrosseLeague	lacrosse league
-http://dbpedia.org/ontology/ClubMoss	club moss
-http://dbpedia.org/ontology/EducationalInstitution	educational institution
-http://dbpedia.org/ontology/Artist	artist
-http://dbpedia.org/ontology/Monument	monument
-http://dbpedia.org/ontology/Disease	disease
-http://dbpedia.org/ontology/Painting	Painting
-http://dbpedia.org/ontology/InlineHockeyLeague	inline hockey league
-http://dbpedia.org/ontology/Musical	musical
-http://dbpedia.org/ontology/FieldHockeyLeague	field hockey league
-http://dbpedia.org/ontology/Artery	artery
-http://dbpedia.org/ontology/Senator	senator
-http://dbpedia.org/ontology/Currency	currency
-http://dbpedia.org/ontology/BadmintonPlayer	badminton player
-http://dbpedia.org/ontology/Activity	activity
-http://dbpedia.org/ontology/Language	language
-http://dbpedia.org/ontology/Rocket	rocket
-http://dbpedia.org/ontology/MountainPass	mountain pass
-http://dbpedia.org/ontology/Airline	airline
-http://dbpedia.org/ontology/MusicalWork	musical work
-http://dbpedia.org/ontology/Olympics	olympics
-http://dbpedia.org/ontology/Library	library
-http://dbpedia.org/ontology/Priest	priest
-http://dbpedia.org/ontology/Theatre	theatre
-http://dbpedia.org/ontology/Village	village
-http://dbpedia.org/ontology/YearInSpaceflight	year in spaceflight
-http://dbpedia.org/ontology/Deputy	deputy
-http://dbpedia.org/ontology/Planet	planet
-http://dbpedia.org/ontology/Colour	colour
-http://dbpedia.org/ontology/PrimeMinister	prime minister
-http://dbpedia.org/ontology/SkiArea	ski area
-http://dbpedia.org/ontology/PeriodicalLiterature	periodical literature
-http://dbpedia.org/ontology/College	college
-http://dbpedia.org/ontology/Museum	museum
-http://dbpedia.org/ontology/Stadium	stadium
-http://dbpedia.org/ontology/Mollusca	mollusca
-http://dbpedia.org/ontology/Cardinal	cardinal
-http://dbpedia.org/ontology/Bacteria	bacteria
-http://dbpedia.org/ontology/GridironFootballPlayer	gridiron football player
-http://dbpedia.org/ontology/Reptile	reptile
-http://dbpedia.org/ontology/NationalCollegiateAthleticAssociationAthlete	national collegiate athletic association athlete
-http://dbpedia.org/ontology/Insect	insect
-http://dbpedia.org/ontology/Holiday	holiday
-http://dbpedia.org/ontology/EthnicGroup	ethnic group
-http://dbpedia.org/ontology/Database	Database
-http://dbpedia.org/ontology/PersonFunction	person function
-http://dbpedia.org/ontology/School	school
-http://dbpedia.org/ontology/Monarch	monarch
-http://dbpedia.org/ontology/ComicsCreator	comics creator
-http://dbpedia.org/ontology/Comedian	comedian
-http://dbpedia.org/ontology/CanadianFootballTeam	canadian football team
-http://dbpedia.org/ontology/Ideology	ideology
-http://dbpedia.org/ontology/Writer	writer
-http://dbpedia.org/ontology/Valley	valley
-http://dbpedia.org/ontology/Ginkgo	ginkgo
-http://dbpedia.org/ontology/Hospital	hospital
-http://dbpedia.org/ontology/Muscle	muscle
-http://dbpedia.org/ontology/Island	island
-http://dbpedia.org/ontology/Airport	airport
-http://dbpedia.org/ontology/LawFirm	law firm
-http://dbpedia.org/ontology/Magazine	magazine
-http://dbpedia.org/ontology/Country	country
-http://dbpedia.org/ontology/WomensTennisAssociationTournament	Women's Tennis Association tournament
-http://dbpedia.org/ontology/Wrestler	wrestler
-http://dbpedia.org/ontology/Conifer	conifer
-http://dbpedia.org/ontology/FormulaOneRacer	Formula One racer
-http://dbpedia.org/ontology/Protein	protein
-http://dbpedia.org/ontology/Arachnid	arachnid
-http://dbpedia.org/ontology/Archaea	archaea
-http://dbpedia.org/ontology/Beverage	beverage
-http://dbpedia.org/ontology/MilitaryConflict	military conflict
-http://dbpedia.org/ontology/CyclingLeague	cycling league
-http://dbpedia.org/ontology/TelevisionShow	television show
-http://dbpedia.org/ontology/Crustacean	crustacean
-http://dbpedia.org/ontology/LegalCase	Legal Case
-http://dbpedia.org/ontology/Chancellor	chancellor
-http://dbpedia.org/ontology/Politician	politician
-http://dbpedia.org/ontology/BasketballPlayer	basketball player
-http://dbpedia.org/ontology/MountainRange	mountain range
-http://dbpedia.org/ontology/TradeUnion	trade union
-http://dbpedia.org/ontology/VideoGame	video game
-http://dbpedia.org/ontology/MixedMartialArtsEvent	mixed martial arts event
-http://dbpedia.org/ontology/SportsEvent	sports event
-http://dbpedia.org/ontology/Spacecraft	spacecraft
-http://dbpedia.org/ontology/SoftballLeague	softball league
-http://dbpedia.org/ontology/PopulatedPlace	populated place
-http://dbpedia.org/ontology/Astronaut	astronaut
-http://dbpedia.org/ontology/PolishKing	king of Poland
-http://dbpedia.org/ontology/PoloLeague	polo league
-http://dbpedia.org/ontology/WineRegion	wine region
-http://dbpedia.org/ontology/Lighthouse	lighthouse
-http://dbpedia.org/ontology/Celebrity	celebrity
-http://dbpedia.org/ontology/Lieutenant	lieutenant
-http://dbpedia.org/ontology/SoccerClub	soccer club
-http://dbpedia.org/ontology/SportsTeam	sports team
-http://dbpedia.org/ontology/Instrument	Instrument
-http://dbpedia.org/ontology/RoadTunnel	road tunnel
-http://dbpedia.org/ontology/GreenAlga	green alga
-http://dbpedia.org/ontology/RouteOfTransportation	route of transportation
-http://dbpedia.org/ontology/Embryology	embryology
-http://dbpedia.org/ontology/ComicsCharacter	comics character
-http://dbpedia.org/ontology/Eukaryote	eukaryote
-http://dbpedia.org/ontology/Continent	continent
-http://dbpedia.org/ontology/Scientist	scientist
-http://dbpedia.org/ontology/HockeyTeam	hockey team
-http://dbpedia.org/ontology/AmericanFootballLeague	american football league
-http://dbpedia.org/ontology/WorldHeritageSite	World Heritage Site
-http://dbpedia.org/ontology/FloweringPlant	flowering plant
-http://dbpedia.org/ontology/MilitaryUnit	military unit
-http://dbpedia.org/ontology/Journalist	journalist
-http://dbpedia.org/ontology/Convention	convention
-http://dbpedia.org/ontology/Settlement	municipality
-http://dbpedia.org/ontology/EurovisionSongContestEntry	Eurovision song contest entry
-http://dbpedia.org/ontology/GivenName	first name
-http://dbpedia.org/ontology/Architect	architect
-http://dbpedia.org/ontology/ChessPlayer	chess player
-http://dbpedia.org/ontology/Skyscraper	skyscraper
-http://dbpedia.org/ontology/GolfLeague	golf league
-http://dbpedia.org/ontology/Amphibian	amphibian
-http://dbpedia.org/ontology/Restaurant	restaurant
-http://dbpedia.org/ontology/WrittenWork	written work
-http://dbpedia.org/ontology/GolfPlayer	golf player
-http://dbpedia.org/ontology/GrandPrix	Grand Prix
-http://dbpedia.org/ontology/Sculpture	Sculpture
-http://dbpedia.org/ontology/VoiceActor	voice actor
-http://dbpedia.org/ontology/Congressman	congressman
-http://dbpedia.org/ontology/MusicGenre	music genre
-http://dbpedia.org/ontology/ProtectedArea	protected area
-http://dbpedia.org/ontology/bibo:Book	book
-http://dbpedia.org/ontology/SnookerWorldRanking	snooker world ranking
-http://dbpedia.org/ontology/Ambassador	ambassador
-http://dbpedia.org/ontology/PoliticalParty	political party
-http://dbpedia.org/ontology/MusicalArtist	musical artist
-http://dbpedia.org/ontology/AmericanFootballPlayer	american football player
-http://dbpedia.org/ontology/Newspaper	newspaper
-http://dbpedia.org/ontology/SoccerManager	soccer manager
-http://dbpedia.org/ontology/SupremeCourtOfTheUnitedStatesCase	Supreme Court of the United States case
-http://dbpedia.org/ontology/Automobile	automobile
-http://dbpedia.org/ontology/BiologicalDatabase	Biological database
-http://dbpedia.org/ontology/CollegeCoach	college coach
-http://dbpedia.org/ontology/SoccerPlayer	soccer player
-http://dbpedia.org/ontology/President	president
-http://dbpedia.org/ontology/SoccerLeague	soccer league
-http://dbpedia.org/ontology/AdultActor	adult actor
-http://dbpedia.org/ontology/MotorcycleRacingLeague	motorcycle racing league
-http://dbpedia.org/ontology/Locomotive	locomotive
-http://dbpedia.org/ontology/VideogamesLeague	videogames league
-http://dbpedia.org/ontology/Gnetophytes	Gnetophytes
-http://dbpedia.org/ontology/Cricketer	cricketer
-http://dbpedia.org/ontology/MusicFestival	music festival
-http://dbpedia.org/ontology/LaunchPad	launch pad
-http://dbpedia.org/ontology/University	university
-http://dbpedia.org/ontology/BasketballLeague	basketball league
-http://dbpedia.org/ontology/Cycad	cycad
-http://dbpedia.org/ontology/Plant	plant
-http://dbpedia.org/ontology/NaturalPlace	natural place
-http://dbpedia.org/ontology/CricketLeague	cricket league
-http://dbpedia.org/ontology/SportsLeague	sports league
-http://dbpedia.org/ontology/MeanOfTransportation	mean of transportation
-http://dbpedia.org/ontology/MixedMartialArtsLeague	mixed martial arts league
-http://dbpedia.org/ontology/BritishRoyalty	British royalty
-http://dbpedia.org/ontology/Place	place
-http://dbpedia.org/ontology/MemberOfParliament	member of parliament
-http://dbpedia.org/ontology/Lake	lake
-http://dbpedia.org/ontology/Race	race
-http://dbpedia.org/ontology/Mayor	mayor
-http://dbpedia.org/ontology/VicePrimeMinister	vice prime minister
-http://dbpedia.org/ontology/ChemicalSubstance	chemical substance
-http://dbpedia.org/ontology/FictionalCharacter	fictional character
-http://dbpedia.org/ontology/River	river
-http://dbpedia.org/ontology/Moss	moss
-http://dbpedia.org/ontology/RadioControlledRacingLeague	radio-controlled racing league
-http://dbpedia.org/ontology/Event	event
-http://dbpedia.org/ontology/Name	name
-http://dbpedia.org/ontology/Arena	arena
-http://dbpedia.org/ontology/ResearchProject	research project
-http://dbpedia.org/ontology/Lymph	lymph
-http://dbpedia.org/ontology/Work	work
-http://dbpedia.org/ontology/Cave	cave
-http://dbpedia.org/ontology/WrestlingEvent	wrestling event
-http://dbpedia.org/ontology/BroadcastNetwork	broadcast network
-http://dbpedia.org/ontology/Pope	pope
-http://dbpedia.org/ontology/PaintballLeague	paintball league
-http://dbpedia.org/ontology/SpaceStation	space station
-http://dbpedia.org/ontology/VicePresident	vice president
-http://dbpedia.org/ontology/Grape	grape
-http://dbpedia.org/ontology/ShoppingMall	shopping mall
-http://dbpedia.org/ontology/City	city
-http://dbpedia.org/ontology/Bone	bone
-http://dbpedia.org/ontology/Song	song
-http://dbpedia.org/ontology/Award	award
-http://dbpedia.org/ontology/Ship	ship
-http://dbpedia.org/ontology/Judge	judge
-http://dbpedia.org/ontology/SpaceMission	space mission
-http://dbpedia.org/ontology/Atoll	atoll
-http://dbpedia.org/ontology/Drug	drug
-http://dbpedia.org/ontology/Actor	actor
-http://dbpedia.org/ontology/Legislature	legislature
-http://dbpedia.org/ontology/Game	game
-http://dbpedia.org/ontology/Book	book
-http://dbpedia.org/ontology/PokerPlayer	poker player
-http://dbpedia.org/ontology/Saint	saint
-http://dbpedia.org/ontology/Bird	bird
-http://dbpedia.org/ontology/VolleyballLeague	volleyball league
-http://dbpedia.org/ontology/Album	album
-http://dbpedia.org/ontology/Play	play
-http://dbpedia.org/ontology/Food	Food
-http://dbpedia.org/ontology/Model	model
-http://dbpedia.org/ontology/Hotel	hotel
-http://dbpedia.org/ontology/Nerve	nerve
-http://dbpedia.org/ontology/Sport	Αθλήματα
-http://dbpedia.org/ontology/Canal	canal
-http://dbpedia.org/ontology/BasketballTeam	basketball team
-http://dbpedia.org/ontology/Film	film
-http://dbpedia.org/ontology/Vein	vein
-http://dbpedia.org/ontology/NascarDriver	nascar driver
-http://dbpedia.org/ontology/FigureSkater	figure skater
-http://dbpedia.org/ontology/Gene	gene
-http://dbpedia.org/ontology/IceHockeyLeague	ice hockey league
-http://dbpedia.org/ontology/SiteOfSpecialScientificInterest	Site of Special Scientific Interest
-http://dbpedia.org/ontology/Non-ProfitOrganisation	non-profit organisation
-http://dbpedia.org/ontology/VolleyballPlayer	volleyball player
-http://dbpedia.org/ontology/PlayboyPlaymate	Playboy Playmate
-http://dbpedia.org/ontology/Road	road
-http://dbpedia.org/ontology/RadioStation	radio station
-http://dbpedia.org/ontology/Philosopher	philosopher
-http://dbpedia.org/ontology/Fern	fern
-http://dbpedia.org/ontology/Boxer	boxer
-http://dbpedia.org/ontology/WaterwayTunnel	waterway tunnel
-http://dbpedia.org/ontology/Fish	fish
-http://dbpedia.org/ontology/Band	Band
-http://dbpedia.org/ontology/Brain	brain
-http://dbpedia.org/ontology/Sales	sales
-http://dbpedia.org/ontology/SpeedwayLeague	speedway league
-http://dbpedia.org/ontology/PowerStation	power station
-http://dbpedia.org/ontology/Town	town
-http://dbpedia.org/ontology/GovernmentType	Government Type
-http://dbpedia.org/ontology/SpeedwayTeam	speedway team
-http://dbpedia.org/ontology/Park	park
-http://dbpedia.org/ontology/SpaceShuttle	space shuttle
-http://dbpedia.org/ontology/FilmFestival	film festival
-http://dbpedia.org/ontology/IceHockeyPlayer	ice hockey player
-http://dbpedia.org/ontology/CurlingLeague	curling league
-http://dbpedia.org/ontology/LunarCrater	lunar crater
-http://dbpedia.org/ontology/Broadcaster	broadcaster
-http://dbpedia.org/ontology/Organisation	organisation
-http://dbpedia.org/ontology/OfficeHolder	office holder
-http://dbpedia.org/ontology/ArchitecturalStructure	architectural structure
-http://dbpedia.org/ontology/HistoricPlace	historic place
-http://dbpedia.org/ontology/BodyOfWater	body of water
-http://dbpedia.org/ontology/RugbyLeague	rugby league
-http://dbpedia.org/ontology/TelevisionStation	television station
-http://dbpedia.org/ontology/BaseballPlayer	baseball player
-http://dbpedia.org/ontology/Infrastructure	infrastructure
-http://dbpedia.org/ontology/TennisLeague	tennis league
-http://dbpedia.org/ontology/BoxingLeague	boxing league
-http://dbpedia.org/ontology/ChemicalCompound	chemical compound
-http://dbpedia.org/ontology/BaseballLeague	baseball league
-http://dbpedia.org/ontology/GaelicGamesPlayer	Gaelic games player
-http://dbpedia.org/ontology/AmericanFootballTeam	american football team
-http://dbpedia.org/ontology/GeopoliticalOrganisation	geopolitical organisation
-http://dbpedia.org/ontology/HistoricBuilding	historic building
-http://dbpedia.org/ontology/OlympicResult	olympic result
-http://dbpedia.org/ontology/MartialArtist	martial artist
-http://dbpedia.org/ontology/ChemicalElement	chemical element
-http://dbpedia.org/ontology/RailwayTunnel	railway tunnel
-http://dbpedia.org/ontology/RailwayLine	railway line
-http://dbpedia.org/ontology/HandballLeague	handball league
-http://dbpedia.org/ontology/RugbyPlayer	rugby player
-http://dbpedia.org/ontology/ProgrammingLanguage	programming language
-http://dbpedia.org/ontology/BowlingLeague	bowling league
-http://dbpedia.org/ontology/CanadianFootballLeague	canadian football league
-http://dbpedia.org/ontology/RecordLabel	record label
-http://dbpedia.org/ontology/SnookerChamp	snooker world champion
-http://dbpedia.org/ontology/SnookerPlayer	snooker player
-http://dbpedia.org/ontology/GovernmentAgency	government agency
-http://dbpedia.org/ontology/CanadianFootballPlayer	canadian football player
-http://dbpedia.org/ontology/AcademicJournal	academic journal
-http://dbpedia.org/ontology/TennisPlayer	tennis player
-http://dbpedia.org/ontology/RoadJunction	road junction
-http://dbpedia.org/ontology/TelevisionEpisode	television episode
-http://dbpedia.org/ontology/FootballMatch	football match
-http://dbpedia.org/ontology/PublicTransitSystem	public transit system
-http://dbpedia.org/ontology/AutomobileEngine	automobile engine
-http://dbpedia.org/ontology/MilitaryPerson	military person
+Company	company
+Animal	animal
+Athlete	athlete
+AustralianRulesFootballPlayer	Australian rules football player
+Person	person
+Governor	governor
+Software	software
+Single	single
+AdministrativeRegion	administrative region
+Building	building
+Royalty	royalty
+AutoRacingLeague	auto racing league
+ChristianBishop	Christian Bishop
+Cleric	cleric
+Weapon	weapon
+Device	device
+Asteroid	asteroid
+Cyclist	cyclist
+Species	species
+Tunnel	tunnel
+AnatomicalStructure	anatomical structure
+Stream	stream
+Station	station
+Aircraft	aircraft
+Fungus	fungus
+Election	Election
+Mammal	mammal
+Surname	surname
+Criminal	criminal
+Project	project
+Website	website
+Mountain	mountain
+Bridge	bridge
+AustralianFootballLeague	australian football league
+LacrosseLeague	lacrosse league
+ClubMoss	club moss
+EducationalInstitution	educational institution
+Artist	artist
+Monument	monument
+Disease	disease
+Painting	Painting
+InlineHockeyLeague	inline hockey league
+Musical	musical
+FieldHockeyLeague	field hockey league
+Artery	artery
+Senator	senator
+Currency	currency
+BadmintonPlayer	badminton player
+Activity	activity
+Language	language
+Rocket	rocket
+MountainPass	mountain pass
+Airline	airline
+MusicalWork	musical work
+Olympics	olympics
+Library	library
+Priest	priest
+Theatre	theatre
+Village	village
+YearInSpaceflight	year in spaceflight
+Deputy	deputy
+Planet	planet
+Colour	colour
+PrimeMinister	prime minister
+SkiArea	ski area
+PeriodicalLiterature	periodical literature
+College	college
+Museum	museum
+Stadium	stadium
+Mollusca	mollusca
+Cardinal	cardinal
+Bacteria	bacteria
+GridironFootballPlayer	gridiron football player
+Reptile	reptile
+NationalCollegiateAthleticAssociationAthlete	national collegiate athletic association athlete
+Insect	insect
+Holiday	holiday
+EthnicGroup	ethnic group
+Database	Database
+PersonFunction	person function
+School	school
+Monarch	monarch
+ComicsCreator	comics creator
+Comedian	comedian
+CanadianFootballTeam	canadian football team
+Ideology	ideology
+Writer	writer
+Valley	valley
+Ginkgo	ginkgo
+Hospital	hospital
+Muscle	muscle
+Island	island
+Airport	airport
+LawFirm	law firm
+Magazine	magazine
+Country	country
+WomensTennisAssociationTournament	Women's Tennis Association tournament
+Wrestler	wrestler
+Conifer	conifer
+FormulaOneRacer	Formula One racer
+Protein	protein
+Arachnid	arachnid
+Archaea	archaea
+Beverage	beverage
+MilitaryConflict	military conflict
+CyclingLeague	cycling league
+TelevisionShow	television show
+Crustacean	crustacean
+LegalCase	Legal Case
+Chancellor	chancellor
+Politician	politician
+BasketballPlayer	basketball player
+MountainRange	mountain range
+TradeUnion	trade union
+VideoGame	video game
+MixedMartialArtsEvent	mixed martial arts event
+SportsEvent	sports event
+Spacecraft	spacecraft
+SoftballLeague	softball league
+PopulatedPlace	populated place
+Astronaut	astronaut
+PolishKing	king of Poland
+PoloLeague	polo league
+WineRegion	wine region
+Lighthouse	lighthouse
+Celebrity	celebrity
+Lieutenant	lieutenant
+SoccerClub	soccer club
+SportsTeam	sports team
+Instrument	Instrument
+RoadTunnel	road tunnel
+GreenAlga	green alga
+RouteOfTransportation	route of transportation
+Embryology	embryology
+ComicsCharacter	comics character
+Eukaryote	eukaryote
+Continent	continent
+Scientist	scientist
+HockeyTeam	hockey team
+AmericanFootballLeague	american football league
+WorldHeritageSite	World Heritage Site
+FloweringPlant	flowering plant
+MilitaryUnit	military unit
+Journalist	journalist
+Convention	convention
+Settlement	municipality
+EurovisionSongContestEntry	Eurovision song contest entry
+GivenName	first name
+Architect	architect
+ChessPlayer	chess player
+Skyscraper	skyscraper
+GolfLeague	golf league
+Amphibian	amphibian
+Restaurant	restaurant
+WrittenWork	written work
+GolfPlayer	golf player
+GrandPrix	Grand Prix
+Sculpture	Sculpture
+VoiceActor	voice actor
+Congressman	congressman
+MusicGenre	music genre
+ProtectedArea	protected area
+bibo:Book	book
+SnookerWorldRanking	snooker world ranking
+Ambassador	ambassador
+PoliticalParty	political party
+MusicalArtist	musical artist
+AmericanFootballPlayer	american football player
+Newspaper	newspaper
+SoccerManager	soccer manager
+SupremeCourtOfTheUnitedStatesCase	Supreme Court of the United States case
+Automobile	automobile
+BiologicalDatabase	Biological database
+CollegeCoach	college coach
+SoccerPlayer	soccer player
+President	president
+SoccerLeague	soccer league
+AdultActor	adult actor
+MotorcycleRacingLeague	motorcycle racing league
+Locomotive	locomotive
+VideogamesLeague	videogames league
+Gnetophytes	Gnetophytes
+Cricketer	cricketer
+MusicFestival	music festival
+LaunchPad	launch pad
+University	university
+BasketballLeague	basketball league
+Cycad	cycad
+Plant	plant
+NaturalPlace	natural place
+CricketLeague	cricket league
+SportsLeague	sports league
+MeanOfTransportation	mean of transportation
+MixedMartialArtsLeague	mixed martial arts league
+BritishRoyalty	British royalty
+Place	place
+MemberOfParliament	member of parliament
+Lake	lake
+Race	race
+Mayor	mayor
+VicePrimeMinister	vice prime minister
+ChemicalSubstance	chemical substance
+FictionalCharacter	fictional character
+River	river
+Moss	moss
+RadioControlledRacingLeague	radio-controlled racing league
+Event	event
+Name	name
+Arena	arena
+ResearchProject	research project
+Lymph	lymph
+Work	work
+Cave	cave
+WrestlingEvent	wrestling event
+BroadcastNetwork	broadcast network
+Pope	pope
+PaintballLeague	paintball league
+SpaceStation	space station
+VicePresident	vice president
+Grape	grape
+ShoppingMall	shopping mall
+City	city
+Bone	bone
+Song	song
+Award	award
+Ship	ship
+Judge	judge
+SpaceMission	space mission
+Atoll	atoll
+Drug	drug
+Actor	actor
+Legislature	legislature
+Game	game
+Book	book
+PokerPlayer	poker player
+Saint	saint
+Bird	bird
+VolleyballLeague	volleyball league
+Album	album
+Play	play
+Food	Food
+Model	model
+Hotel	hotel
+Nerve	nerve
+Sport	Αθλήματα
+Canal	canal
+BasketballTeam	basketball team
+Film	film
+Vein	vein
+NascarDriver	nascar driver
+FigureSkater	figure skater
+Gene	gene
+IceHockeyLeague	ice hockey league
+SiteOfSpecialScientificInterest	Site of Special Scientific Interest
+Non-ProfitOrganisation	non-profit organisation
+VolleyballPlayer	volleyball player
+PlayboyPlaymate	Playboy Playmate
+Road	road
+RadioStation	radio station
+Philosopher	philosopher
+Fern	fern
+Boxer	boxer
+WaterwayTunnel	waterway tunnel
+Fish	fish
+Band	Band
+Brain	brain
+Sales	sales
+SpeedwayLeague	speedway league
+PowerStation	power station
+Town	town
+GovernmentType	Government Type
+SpeedwayTeam	speedway team
+Park	park
+SpaceShuttle	space shuttle
+FilmFestival	film festival
+IceHockeyPlayer	ice hockey player
+CurlingLeague	curling league
+LunarCrater	lunar crater
+Broadcaster	broadcaster
+Organisation	organisation
+OfficeHolder	office holder
+ArchitecturalStructure	architectural structure
+HistoricPlace	historic place
+BodyOfWater	body of water
+RugbyLeague	rugby league
+TelevisionStation	television station
+BaseballPlayer	baseball player
+Infrastructure	infrastructure
+TennisLeague	tennis league
+BoxingLeague	boxing league
+ChemicalCompound	chemical compound
+BaseballLeague	baseball league
+GaelicGamesPlayer	Gaelic games player
+AmericanFootballTeam	american football team
+GeopoliticalOrganisation	geopolitical organisation
+HistoricBuilding	historic building
+OlympicResult	olympic result
+MartialArtist	martial artist
+ChemicalElement	chemical element
+RailwayTunnel	railway tunnel
+RailwayLine	railway line
+HandballLeague	handball league
+RugbyPlayer	rugby player
+ProgrammingLanguage	programming language
+BowlingLeague	bowling league
+CanadianFootballLeague	canadian football league
+RecordLabel	record label
+SnookerChamp	snooker world champion
+SnookerPlayer	snooker player
+GovernmentAgency	government agency
+CanadianFootballPlayer	canadian football player
+AcademicJournal	academic journal
+TennisPlayer	tennis player
+RoadJunction	road junction
+TelevisionEpisode	television episode
+FootballMatch	football match
+PublicTransitSystem	public transit system
+AutomobileEngine	automobile engine
+MilitaryPerson	military person

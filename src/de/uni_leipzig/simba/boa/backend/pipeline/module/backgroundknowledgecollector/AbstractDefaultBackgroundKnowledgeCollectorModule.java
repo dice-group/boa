@@ -63,7 +63,8 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 
 		this.moduleInterchangeObject.getBackgroundKnowledge().addAll(this.backgroundKnowledge);
 		for ( BackgroundKnowledge bk : this.backgroundKnowledge ) 
-			this.moduleInterchangeObject.getProperties().put(bk.getProperty().hashCode(), bk.getProperty());
+			this.moduleInterchangeObject.getProperties().put(bk.getPropertyUri().hashCode(), 
+			        new Property(bk.getPropertyUri(), bk.getPropertyLabel(), bk.getRdfsRange(), bk.getRdfsDomain()));
 	}
 	
 	/**
@@ -153,7 +154,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 			Resource object		= new Resource(obj, obj);
 			BackgroundKnowledge backgroundKnowledge = 
 					SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(
-						new DatatypePropertyBackgroundKnowledge(subject, property, object));
+						new DatatypePropertyBackgroundKnowledge());
 
 			writer.write(backgroundKnowledge.toString());
 			this.backgroundKnowledge.add(backgroundKnowledge);
@@ -189,11 +190,17 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 				if (subjectLabel.contains("@")) subjectLabel = subjectLabel.substring(0, subjectLabel.lastIndexOf("@"));
 				
 				// create new background knowledge and generate the surface forms 
-				Resource subject	= new Resource(solution.get("s").toString(), subjectLabel);
-				Resource object		= new Resource(solution.get("o").toString(), objectLabel);
+				ObjectPropertyBackgroundKnowledge objectBackgroundKnowledge = new ObjectPropertyBackgroundKnowledge();
+				objectBackgroundKnowledge.setSubjectUri(solution.get("s").toString());
+				objectBackgroundKnowledge.setSubjectLabel(subjectLabel);
+				objectBackgroundKnowledge.setObjectUri(solution.get("o").toString());
+				objectBackgroundKnowledge.setObjectLabel(objectLabel);
+				objectBackgroundKnowledge.setPropertyUri(property.getUri());
+				objectBackgroundKnowledge.setRdfsRange(property.getRdfsRange());
+				objectBackgroundKnowledge.setRdfsDomain(property.getRdfsDomain());
+				
 				BackgroundKnowledge backgroundKnowledge = 
-						SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(
-							new ObjectPropertyBackgroundKnowledge(subject, property, object));
+						SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(objectBackgroundKnowledge);
 
 				writer.write(backgroundKnowledge.toString());
 				this.backgroundKnowledge.add(backgroundKnowledge);

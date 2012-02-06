@@ -38,7 +38,7 @@
 	        </javac>
 	        <java classname="de.uni_leipzig.simba.boa.backend.Boa" fork="true">
 	            <classpath refid="master-classpath"/>
-	            <jvmarg value="-Xmx2G"/>
+	            <jvmarg value="-Xmx${Xmx}"/>
 	        </java>
 	</target>
 	

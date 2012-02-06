@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 
 import de.danielgerber.file.FileUtil;
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledgeManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -63,14 +64,14 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 
 		// lists all files in the directory which end with .txt and does not go into subdirectories
 		return // true of more than one file is found
-			FileUtils.listFiles(new File(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/object/"), FileFilterUtils.suffixFileFilter(".txt"), null).size() > 0;
+			FileUtils.listFiles(new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH), FileFilterUtils.suffixFileFilter(".txt"), null).size() > 0;
 	}
 	
 	@Override
 	public void loadAlreadyAvailableData() {
 
 		this.backgroundKnowledge.addAll(
-				BackgroundKnowledgeManager.getInstance().getBackgroundKnowledgeInDirectory(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/object/"));
+				BackgroundKnowledgeManager.getInstance().getBackgroundKnowledgeInDirectory(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH));
 	}
 	
 	/**
@@ -88,9 +89,9 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 			
 			this.logger.info("Processing property: " + objectPropertyUri);
 			String query	= createObjectPropertyQuery(objectPropertyUri);
-			String filePath	= BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/object/";
 			
-			super.getKnowledge(query, objectPropertyUri, filePath + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/"), objectPropertyUri.length())+".txt");
+			super.getKnowledge(query, objectPropertyUri, NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH 
+			        + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/") + 1) + ".txt");
 		}
 	}
 	

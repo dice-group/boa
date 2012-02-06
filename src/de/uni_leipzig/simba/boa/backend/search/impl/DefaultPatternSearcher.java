@@ -41,9 +41,9 @@ import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
  */
 public class DefaultPatternSearcher implements PatternSearcher {
 
-	private final static int MAX_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getSetting("maxPatternLenght")).intValue();
-	private final static int MIN_PATTERN_CHUNK_LENGTH = new Integer(NLPediaSettings.getSetting("minPatternLenght")).intValue();
-	private final static int MAX_NUMBER_OF_DOCUMENTS = Integer.valueOf(NLPediaSettings.getSetting("maxNumberOfDocuments"));
+	private final static int MAX_PATTERN_CHUNK_LENGTH  = NLPediaSettings.getIntegerSetting("maxPatternLenght");
+	private final static int MIN_PATTERN_CHUNK_LENGTH  = NLPediaSettings.getIntegerSetting("minPatternLenght");
+	private final static int MAX_NUMBER_OF_DOCUMENTS   = NLPediaSettings.getIntegerSetting("maxNumberOfDocuments");
 
 	private PartOfSpeechTagger posTagger;
 
@@ -241,20 +241,20 @@ public class DefaultPatternSearcher implements PatternSearcher {
 			if (!match.isEmpty() && this.isPatternSuitable(match)) {
 
 				SearchResult result = new SearchResult();
-				result.setProperty(backgroundKnowledge.getProperty().getUri());
+				result.setProperty(backgroundKnowledge.getPropertyUri());
 				result.setSentence(sentenceNormalCase);
 				result.setNaturalLanguageRepresentation(nlr);
-				result.setRdfsRange(backgroundKnowledge.getProperty().getRdfsRange());
-				result.setRdfsDomain(backgroundKnowledge.getProperty().getRdfsDomain());
+				result.setRdfsRange(backgroundKnowledge.getRdfsRange());
+				result.setRdfsDomain(backgroundKnowledge.getRdfsDomain());
 				// the subject of the triple is the domain of the property so,
 				// replace every occurrence with ?D?
 				if (nlr.startsWith("?D?")) {
-					result.setFirstLabel(backgroundKnowledge.getSubject().getLabel());
-					result.setSecondLabel(backgroundKnowledge.getObject().getLabel());
+					result.setFirstLabel(backgroundKnowledge.getSubjectLabel());
+					result.setSecondLabel(backgroundKnowledge.getObjectLabel());
 				}
 				else {
-					result.setFirstLabel(backgroundKnowledge.getObject().getLabel());
-					result.setSecondLabel(backgroundKnowledge.getSubject().getLabel());
+					result.setFirstLabel(backgroundKnowledge.getObjectLabel());
+					result.setSecondLabel(backgroundKnowledge.getSubjectLabel());
 				}
 				if ( this.posTagger == null ) this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
 				result.setPosTags(this.posTagger.getAnnotations(result.getNaturalLanguageRepresentationWithoutVariables()));

@@ -17,6 +17,18 @@ public class Constants {
     /**
      * 
      */
+    public static final String DBPEDIA_RESOURCE_PREFIX = "http://dbpedia.org/resource/";
+    
+    /**
+     * 
+     */
+    public static final String DBPEDIA_ONTOLOGY_PREFIX = "http://dbpedia.org/ontology/";
+    
+    /* ##################################################################################### */ 
+    
+    /**
+     * 
+     */
     public static final String BACKGROUND_KNOWLEDGE_PATH = "backgroundknowledge/";
     
     /**
