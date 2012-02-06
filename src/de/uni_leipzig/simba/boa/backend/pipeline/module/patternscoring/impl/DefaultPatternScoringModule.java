@@ -5,6 +5,7 @@ package de.uni_leipzig.simba.boa.backend.pipeline.module.patternscoring.impl;
 
 import java.io.File;
 
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
@@ -24,8 +25,8 @@ import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 public class DefaultPatternScoringModule extends AbstractPatternScoringModule {
     
     // dependent settings
-    private final String PATTERN_MAPPING_FOLDER             = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
-    private final String MACHINE_LEARNING_TRAINING_FILE     = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getSetting("neural.network.network.directory") + "network_learn.txt";
+    private final String PATTERN_MAPPING_FOLDER             = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.PATTERN_MAPPINGS_PATH;
+    private final String MACHINE_LEARNING_TRAINING_FILE     = NLPediaSettings.BOA_BASE_DIRECTORY + Constants.NEURAL_NETWORK_PATH + "network_learn.txt";
     
     private final NLPediaLogger logger                      = new NLPediaLogger(DefaultPatternScoringModule.class);
     

@@ -62,9 +62,14 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 	public void updateModuleInterchangeObject() {
 
 		this.moduleInterchangeObject.getBackgroundKnowledge().addAll(this.backgroundKnowledge);
-		for ( BackgroundKnowledge bk : this.backgroundKnowledge ) 
-			this.moduleInterchangeObject.getProperties().put(bk.getPropertyUri().hashCode(), 
-			        new Property(bk.getPropertyUri(), bk.getPropertyLabel(), bk.getRdfsRange(), bk.getRdfsDomain()));
+		for ( BackgroundKnowledge bk : this.backgroundKnowledge ) {
+		    
+		    if ( bk.getPropertyUri() == null ) System.out.println("nul");
+		    
+		    this.moduleInterchangeObject.getProperties().put(bk.getPropertyUri().hashCode(), 
+                    new Property(bk.getPropertyUri(), bk.getPropertyLabel(), bk.getRdfsRange(), bk.getRdfsDomain()));
+		}
+			
 	}
 	
 	/**

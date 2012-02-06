@@ -64,7 +64,7 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 	public void loadAlreadyAvailableData() {
 
 		this.backgroundKnowledge.addAll(
-				BackgroundKnowledgeManager.getInstance().getBackgroundKnowledgeInDirectory(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/datatype/"));
+				BackgroundKnowledgeManager.getInstance().getBackgroundKnowledgeInDirectory(BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/datatype/", false));
 	}
 	
 	@Override

@@ -13,6 +13,7 @@
             <list>
                 <ref bean="CreateDataDirectoryStructureModule"/>
                 <ref bean="DBpediaSpotlightDownloadModule"/>
+                <ref bean="DBpediaSpotlightSurfaceFormModule"/>
 
 <!--            Please note the Wikipedia Download and Extractor take a very long time -->
 <!--            depending on the dump you want to process. -->
@@ -27,7 +28,7 @@
 <!--                 <ref bean="DefaultPatternFeatureExtractionModule"/> -->
 
 <!--            Please keep in mind that the scoring module needs human annotated input. -->
-<!--            So this module should not get startet in the first iteration! -->
+<!--            So this module should not get started in the first iteration! -->
 
 <!--                 <ref bean="DefaultPatternScoringModule"/>  -->
 <!--                 <ref bean="DefaultKnowledgeCreationModule"/> -->

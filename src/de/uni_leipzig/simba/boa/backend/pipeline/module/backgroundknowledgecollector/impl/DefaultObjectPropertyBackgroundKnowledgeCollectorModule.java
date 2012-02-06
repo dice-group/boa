@@ -71,7 +71,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	public void loadAlreadyAvailableData() {
 
 		this.backgroundKnowledge.addAll(
-				BackgroundKnowledgeManager.getInstance().getBackgroundKnowledgeInDirectory(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH));
+				BackgroundKnowledgeManager.getInstance().getBackgroundKnowledgeInDirectory(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH, true));
 	}
 	
 	/**
