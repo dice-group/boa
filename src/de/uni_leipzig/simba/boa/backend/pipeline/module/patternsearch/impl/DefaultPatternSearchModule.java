@@ -13,6 +13,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternSearchThreadManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
@@ -36,7 +37,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 	
 	private final NLPediaLogger logger					= new NLPediaLogger(DefaultPatternSearchModule.class);
 	private final int TOTAL_NUMBER_OF_SEARCH_THREADS	= NLPediaSettings.getIntegerSetting("numberOfSearchThreads");
-	private final String PATTERN_MAPPING_FOLDER			= NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
+	private final String PATTERN_MAPPING_FOLDER			= NLPediaSettings.BOA_DATA_DIRECTORY + Constants.PATTERN_MAPPINGS_PATH;
 	
 	// caches for various objects
 	private Map<Integer,PatternMapping> mappings		= new HashMap<Integer,PatternMapping>();
@@ -141,10 +142,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 			else {
 				
 				// create it to use the proper hash function, the properties map has a COMPLETE list of all properties
-				Property p = new Property();
-				p.setUri(propertyUri);
-				p = properties.get(p.hashCode());
-				
+				Property p = properties.get(propertyUri.hashCode());
 				currentMapping = mappings.get(propertyUri.hashCode());
 				
 				if ( currentMapping == null ) {
@@ -175,7 +173,6 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 			}
 			currentProperty = propertyUri;
 		}
-		
 		// filter the patterns which do not abide certain thresholds, mostly occurrence thresholds
 		this.filterPatterns(mappings.values());
 		

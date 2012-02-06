@@ -51,11 +51,12 @@ public class Property extends Resource {
 		super(uri);
 	}
 	
-	public Property(String uri, String label, String rdfsRange, String rdfsDomain) {
+	public Property(String uri, String label, String rdfsRange, String rdfsDomain, String synsets) {
 
 		super(uri, label);
 		this.rdfsRange = rdfsRange;
 		this.rdfsDomain = rdfsDomain;
+		this.synsets = synsets;
 	}
 
 	

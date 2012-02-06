@@ -156,13 +156,17 @@ public class DefaultPatternSearcher implements PatternSearcher {
 			secondLabels = backgroundKnowledge.getSubjectSurfaceForms();
 		}
 		
+		logger.debug("Query index for: " + backgroundKnowledge.getSubjectUri() + " and " +  backgroundKnowledge.getObjectUri() + " with: " + backgroundKnowledge.getSubjectSurfaceForms().size() + " and " + backgroundKnowledge.getObjectSurfaceForms().size() + " labels");
+		logger.debug("Subject: " + firstLabels);
+		logger.debug("Object: " + secondLabels);
+		
 		// go through all surface form combinations
 		for (String firstLabel : firstLabels) {
 
 			// check if we find at least sentences with the first token, if not we can skip this search word combination
 			TotalHitCountCollector collector = new TotalHitCountCollector();
 			this.searchIndex(this.parseQuery("+sentence:\"" + QueryParser.escape(firstLabel) + "\""), collector);
-			if (collector.getTotalHits() == 0 ) continue; 
+			if (collector.getTotalHits() == 0 ) continue;
 			
 			for (String secondLabel : secondLabels) {
 				
@@ -170,22 +174,20 @@ public class DefaultPatternSearcher implements PatternSearcher {
 				hits = this.searchIndex(query, null, MAX_NUMBER_OF_DOCUMENTS);
 				
 				for (int i = 0; i < hits.length; i++) {
-
+				    
 					String sentence				= this.getIndexDocument(hits[i], "sentence");
 					String sentenceLowerCase	= sentence.toLowerCase();
-					String firstLabelLowerCase	= firstLabel;
-					String secondLabelLowerCase	= secondLabel;
 
 					Map<Integer, String> currentMatches = new HashMap<Integer, String>();
 					
 					// the switching is neccessary because it could be possible that we change the label sets, see above 					
 					String[] match1; 
 					if ( !inverse ) {
-						match1 = StringUtils.substringsBetween(sentenceLowerCase, firstLabelLowerCase, secondLabelLowerCase);
+						match1 = StringUtils.substringsBetween(sentenceLowerCase, firstLabel, secondLabel);
 					}
 					else {
 						
-						match1 = StringUtils.substringsBetween(sentenceLowerCase, secondLabelLowerCase, firstLabelLowerCase);
+						match1 = StringUtils.substringsBetween(sentenceLowerCase, secondLabel, firstLabel);
 					}
 					
 					if (match1 != null) {
@@ -200,11 +202,11 @@ public class DefaultPatternSearcher implements PatternSearcher {
 					// the switching is neccessary because it could be possible that we change the label sets, see above 
 					String[] match2; 
 					if ( !inverse ) {
-						match2 = StringUtils.substringsBetween(sentenceLowerCase, secondLabelLowerCase, firstLabelLowerCase);
+						match2 = StringUtils.substringsBetween(sentenceLowerCase, secondLabel, firstLabel);
 					}
 					else {
 						
-						match2 = StringUtils.substringsBetween(sentenceLowerCase, firstLabelLowerCase, secondLabelLowerCase);
+						match2 = StringUtils.substringsBetween(sentenceLowerCase, firstLabel, secondLabel);
 					}
 					if (match2 != null) {
 
@@ -218,6 +220,8 @@ public class DefaultPatternSearcher implements PatternSearcher {
 				}
 			}
 		}
+		
+		logger.debug("Found " + results.size() + " results!");
 		
 		return results;
 	}
