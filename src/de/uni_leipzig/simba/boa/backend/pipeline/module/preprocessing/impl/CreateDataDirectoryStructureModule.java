@@ -84,13 +84,17 @@ public class CreateDataDirectoryStructureModule extends AbstractPreprocessingMod
         if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.WIKIPEDIA_DUMP_PATH).exists()) 
             new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.WIKIPEDIA_DUMP_PATH).mkdir();
         
-        // wikipedia dumps
+        // dbpedia dumps like redirect, dismabiguations, labels
         if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH).exists()) 
             new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH).mkdir();
         
-        // wikipedia dumps
+        // the training file for the network and the network and the evaluation of the network
         if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.NEURAL_NETWORK_PATH).exists()) 
             new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.NEURAL_NETWORK_PATH).mkdir();
+        
+        // the output/input folder of the evaluation
+        if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.EVALUATION_PATH).exists()) 
+            new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.EVALUATION_PATH).mkdir();
     }
 
     /* (non-Javadoc)
