@@ -11,7 +11,6 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOption
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.StartScriptsCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.pipeline.Pipeline;
-import de.uni_leipzig.simba.boa.evaluation.Evaluation;
 
 /**
  * 
@@ -68,12 +67,6 @@ public class NLPedia {
 					case 9: 
 						Command startQueryCommand = new StartQueryCommand();
 						startQueryCommand.execute();
-						break;
-						
-					case 11:
-						
-						Command evaluationCommand = new Evaluation();
-						evaluationCommand.execute();
 						break;
 						
 					case 12:

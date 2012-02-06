@@ -195,13 +195,15 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 				
 				// create new background knowledge and generate the surface forms 
 				ObjectPropertyBackgroundKnowledge objectBackgroundKnowledge = new ObjectPropertyBackgroundKnowledge();
-				objectBackgroundKnowledge.setSubjectUri(solution.get("s").toString());
+				objectBackgroundKnowledge.setSubjectUri(solution.get("s").toString().replace(de.uni_leipzig.simba.boa.backend.Constants.DBPEDIA_RESOURCE_PREFIX, ""));
 				objectBackgroundKnowledge.setSubjectLabel(subjectLabel);
-				objectBackgroundKnowledge.setObjectUri(solution.get("o").toString());
+				
+				objectBackgroundKnowledge.setObjectUri(solution.get("o").toString().replace(de.uni_leipzig.simba.boa.backend.Constants.DBPEDIA_RESOURCE_PREFIX, ""));
 				objectBackgroundKnowledge.setObjectLabel(objectLabel);
-				objectBackgroundKnowledge.setPropertyUri(property.getUri());
-				objectBackgroundKnowledge.setRdfsRange(property.getRdfsRange());
-				objectBackgroundKnowledge.setRdfsDomain(property.getRdfsDomain());
+				
+				objectBackgroundKnowledge.setPropertyUri(property.getUri().replace(de.uni_leipzig.simba.boa.backend.Constants.DBPEDIA_ONTOLOGY_PREFIX, ""));
+				objectBackgroundKnowledge.setRdfsRange(property.getRdfsRange().replace(de.uni_leipzig.simba.boa.backend.Constants.DBPEDIA_ONTOLOGY_PREFIX, ""));
+				objectBackgroundKnowledge.setRdfsDomain(property.getRdfsDomain().replace(de.uni_leipzig.simba.boa.backend.Constants.DBPEDIA_ONTOLOGY_PREFIX, ""));
 				objectBackgroundKnowledge.setPropertyWordnetSynsets(StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(property.getLabel()), ","));
 				
 				BackgroundKnowledge backgroundKnowledge = 
