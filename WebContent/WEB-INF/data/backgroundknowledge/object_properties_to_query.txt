@@ -30,7 +30,6 @@ http://dbpedia.org/ontology/leaderName
 http://dbpedia.org/ontology/creator
 http://dbpedia.org/ontology/author
 http://dbpedia.org/ontology/riverMouth
-http://dbpedia.org/ontology/discoverer
 http://dbpedia.org/ontology/editing
 http://dbpedia.org/ontology/influencedBy
 http://dbpedia.org/ontology/arrondissement
