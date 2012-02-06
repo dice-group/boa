@@ -123,7 +123,7 @@ public class BackgroundKnowledgeManager {
 //	    Matcher matcher = pattern.matcher(parts[1]);
 //	    while (matcher.find()) { subjectContext = matcher.group(); }
 		// labels from wikipedia surface forms
-		for (String part : parts[2].split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
+		for (String part : parts[2].toLowerCase().split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
 		    
 		    final String surfaceForm = part;
 		    subjectLabels.add(surfaceForm) ;
@@ -136,7 +136,7 @@ public class BackgroundKnowledgeManager {
 //	    matcher			= pattern.matcher(parts[5]);
 //	    while (matcher.find()) { objectContext = matcher.group(); }
 		// labels from wikipedia surface forms
-	    for (String part : parts[6].split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
+	    for (String part : parts[6].toLowerCase().split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
 	        
 	        final String surfaceForm = part;
 	        objectLabels.add(surfaceForm) ;

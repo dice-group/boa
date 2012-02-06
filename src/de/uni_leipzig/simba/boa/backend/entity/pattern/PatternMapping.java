@@ -57,7 +57,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	 */
 	public PatternMapping(String uri, String label, String domain, String range) {
 		
-		this.property	= new Property(uri, label, range, domain);
+		this.property	= new Property(uri, label, range, domain, "");
 		this.patterns	= new HashSet<Pattern>();
 		this.patternMap	= new HashMap<Integer,Pattern>();
 	}

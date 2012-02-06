@@ -9,11 +9,15 @@ public class Boa {
 
     public static void main(String[] args) {
 
+        System.out.println("Starting BOA Framework!");
+        
         // Initialize logging, settings, factories etc., needs to be FIRST call!!
         NLPediaSetup setup = new NLPediaSetup(false);
         NLPediaLogger logger = new NLPediaLogger(NLPedia.class);
         
         Pipeline pipeline = new Pipeline();
         pipeline.run();
+        
+        System.out.println("Stopping BOA Framework!");
     }
 }

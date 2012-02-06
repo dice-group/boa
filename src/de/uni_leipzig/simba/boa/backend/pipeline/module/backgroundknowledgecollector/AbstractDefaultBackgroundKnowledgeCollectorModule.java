@@ -28,6 +28,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts.Surfa
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
+import de.uni_leipzig.simba.boa.backend.wordnet.query.WordnetQuery;
 
 
 /**
@@ -64,10 +65,8 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 		this.moduleInterchangeObject.getBackgroundKnowledge().addAll(this.backgroundKnowledge);
 		for ( BackgroundKnowledge bk : this.backgroundKnowledge ) {
 		    
-		    if ( bk.getPropertyUri() == null ) System.out.println("nul");
-		    
 		    this.moduleInterchangeObject.getProperties().put(bk.getPropertyUri().hashCode(), 
-                    new Property(bk.getPropertyUri(), bk.getPropertyLabel(), bk.getRdfsRange(), bk.getRdfsDomain()));
+                    new Property(bk.getPropertyUri(), bk.getPropertyLabel(), bk.getRdfsRange(), bk.getRdfsDomain(), bk.getPropertyWordnetSynsets()));
 		}
 			
 	}
@@ -203,6 +202,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 				objectBackgroundKnowledge.setPropertyUri(property.getUri());
 				objectBackgroundKnowledge.setRdfsRange(property.getRdfsRange());
 				objectBackgroundKnowledge.setRdfsDomain(property.getRdfsDomain());
+				objectBackgroundKnowledge.setPropertyWordnetSynsets(StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(property.getLabel()), ","));
 				
 				BackgroundKnowledge backgroundKnowledge = 
 						SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(objectBackgroundKnowledge);
@@ -247,7 +247,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 			QuerySolution qs = results.next();
 			Property p = new Property(propertyUri, 
 					StringUtils.join(propertyUri.replace("http://dbpedia.org/ontology/", "").split("(?=\\p{Upper})"), " ").toLowerCase(), 
-					qs.get("range").toString(), qs.get("domain").toString());
+					qs.get("range").toString(), qs.get("domain").toString(), "");
 			this.properties.put(p.hashCode(), p);
 			
 			return p;
