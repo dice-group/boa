@@ -1,6 +1,5 @@
 http://dbpedia.org/ontology/birthPlace
 http://dbpedia.org/ontology/formerCoach
-http://dbpedia.org/ontology/isPartOf
 http://dbpedia.org/ontology/starring
 http://dbpedia.org/ontology/occupation
 http://dbpedia.org/ontology/deathPlace
