@@ -69,10 +69,10 @@ public class TranslateBackgroundKnowledgeModule extends AbstractPreprocessingMod
 	            BackgroundKnowledge bk = BackgroundKnowledgeManager.getInstance().createBackgroundKnowledge(line);
 	            
 	            // we only include the current english triple if we have translations for subject and object
-	            if (uriToLabelMapping.containsKey(bk.getSubject().getUri()) && uriToLabelMapping.containsKey(bk.getObject().getUri())) {
+	            if (uriToLabelMapping.containsKey(bk.getSubjectUri()) && uriToLabelMapping.containsKey(bk.getObjectUri())) {
 
-	                bk.getSubject().setLabel(uriToLabelMapping.get(bk.getSubject().getUri()));
-	                bk.getObject().setLabel(uriToLabelMapping.get(bk.getObject().getUri()));
+	                bk.setSubjectLabel(uriToLabelMapping.get(bk.getSubjectUri()));
+	                bk.setObjectLabel(uriToLabelMapping.get(bk.getObjectUri()));
 	                
 	                // first time takes forever because it loads the surface form file
 	                bk = SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(bk);

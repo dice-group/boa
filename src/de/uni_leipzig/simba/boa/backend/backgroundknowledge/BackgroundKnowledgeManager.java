@@ -2,7 +2,9 @@ package de.uni_leipzig.simba.boa.backend.backgroundknowledge;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -98,95 +100,65 @@ public class BackgroundKnowledgeManager {
 		String[] parts = line.split(Constants.BACKGROUND_KNOWLEDGE_VALUE_SEPARATOR_REGEX);
 		
 		// all subject information
-		String subjectUri		= "";
-		String subjectLabel		= "";
-		String subjectLabels	= "";
-		String subjectContext	= "";
-		String subjectType		= "";
+		final String subjectUri   = parts[0].replace(Constants.DBPEDIA_RESOURCE_PREFIX, "");
+		final String subjectLabel = parts[1].replaceAll("\\(.+?\\)", "").trim();
+		Set<String> subjectLabels = new HashSet<String>();
+//		String subjectContext     = "";
 		
 		// all object information
-		String objectUri		= "";
-		String objectLabel		= "";
-		String objectLabels		= "";
-		String objectContext	= "";
-		String objectType		= "";
+		final String objectUri    = parts[4].replace(Constants.DBPEDIA_RESOURCE_PREFIX, "");
+		final String objectLabel  = parts[5].replaceAll("\\(.+?\\)", "").trim();
+		Set<String> objectLabels     = new HashSet<String>();
+//		String objectContext	= "";
 		
 		// all predicate information
-		String predicate		= parts[3];
-		String predicateType	= parts[4].startsWith("http://") ? Constants.OWL_OBJECT_PROPERTY : Constants.OWL_DATATYPE_PROPERTY;
-		String range			= parts[7].equals("null") ? null : parts[7];
-		String domain			= parts[8].equals("null") ? null : parts[8];
+		final String predicate      = parts[3].replace(Constants.DBPEDIA_ONTOLOGY_PREFIX, "");
+		final String predicateType  = parts[4].startsWith("http://") ? Constants.OWL_OBJECT_PROPERTY : Constants.OWL_DATATYPE_PROPERTY;
+		final String range    = parts[7].equals("null") ? null : parts[7].replace(Constants.DBPEDIA_ONTOLOGY_PREFIX, "");
+		final String domain   = parts[8].equals("null") ? null : parts[8].replace(Constants.DBPEDIA_ONTOLOGY_PREFIX, "");
 		
 		// ################ SUBJECT ############################
 		
-		// uri of the subject
-		subjectUri 		= parts[0];
 		// context like person: heist_(artist)
-	    Matcher matcher = pattern.matcher(parts[1]);
-	    while (matcher.find()) { subjectContext = matcher.group(); }
-	    // subject label without text in brackets
-		subjectLabel	= parts[1].replaceAll("\\(.+?\\)", "").trim();
+//	    Matcher matcher = pattern.matcher(parts[1]);
+//	    while (matcher.find()) { subjectContext = matcher.group(); }
 		// labels from wikipedia surface forms
-		subjectLabels	= parts[2];
+		for (String part : parts[2].split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  subjectLabels.add(part) ;
 		// rdf:type of the subject
-		subjectType		= domain;
 		
 		// ################ OBJECT ############################
 		
-		// uri of the object
-		objectUri		= parts[4];
 		// context like person: heist_(artist)
-	    matcher			= pattern.matcher(parts[5]);
-	    while (matcher.find()) { objectContext = matcher.group(); }
-		// object label without text in brackets
-	    objectLabel		= parts[5].replaceAll("\\(.+?\\)", "").trim();
+//	    matcher			= pattern.matcher(parts[5]);
+//	    while (matcher.find()) { objectContext = matcher.group(); }
 		// labels from wikipedia surface forms
-		objectLabels	= parts[6];
-		// rdf:type of the object
-		objectType		= range;
+	    for (String part : parts[6].split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  objectLabels.add(part) ;
 		
 		// ################ resources: subject, property, object ############################
 		
-		// create the subject 
-		Resource sub = new Resource();
-		sub.setUri(subjectUri);
-		sub.setLabel(subjectLabel);
-		sub.setSurfaceForms(subjectLabels);
-		sub.setType(subjectType);
-		if ( subjectContext.length() > 0 ) {
-			sub.setContext(subjectContext.substring(1, subjectContext.length()-1));	
-		}
-		
-		// create the property 
-		Property p = new Property();
-		p.setUri(predicate);
-		p.setRdfsDomain(domain);
-		p.setRdfsRange(range);
-		p.setType(predicateType);
-		p.setLabel(StringUtils.join(predicate.replace("http://dbpedia.org/ontology/", "").split("(?=\\p{Upper})"), " ").toLowerCase());
-		p.setSynsets(StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(p.getLabel()), ","));
-		
-		// create the resource: object if not found
-		Resource obj = new Resource();
-		obj.setType(objectType);
-		obj.setLabel(objectLabel);
-		obj.setSurfaceForms(objectLabels);
-			
 		// object properties have there own labels
 		if ( predicateType.equals(Constants.OWL_OBJECT_PROPERTY) ) {
 			
-			obj.setUri(objectUri);
-			// only resources have context information
-			if ( objectContext.length() > 0 ) {
-				obj.setContext(objectContext.substring(1, objectContext.length()-1));
-			}
-			return new ObjectPropertyBackgroundKnowledge(sub, p, obj);
+			ObjectPropertyBackgroundKnowledge objectBackgroundKnowledge = new ObjectPropertyBackgroundKnowledge();
+            objectBackgroundKnowledge.setSubjectUri(subjectUri);
+            objectBackgroundKnowledge.setSubjectLabel(subjectLabel);
+            objectBackgroundKnowledge.setSubjectSurfaceForms(subjectLabels);
+            
+            objectBackgroundKnowledge.setObjectUri(objectUri.replace(Constants.DBPEDIA_RESOURCE_PREFIX, ""));
+            objectBackgroundKnowledge.setObjectLabel(objectLabel);
+            objectBackgroundKnowledge.setObjectSurfaceForms(objectLabels);
+            
+            objectBackgroundKnowledge.setPropertyUri(predicate);
+            objectBackgroundKnowledge.setRdfsRange(range);
+            objectBackgroundKnowledge.setRdfsDomain(domain);
+            objectBackgroundKnowledge.setPropertyWordnetSynsets(
+                    StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(predicate), ","));
+			
+			return objectBackgroundKnowledge;
 		}
 		else {
 			
-			// they dont have uris so create random strings
-			obj.setUri(UUID.randomUUID().toString());
-			return new DatatypePropertyBackgroundKnowledge(sub, p, obj);
+			return new DatatypePropertyBackgroundKnowledge();
 		}
 	}
 }

@@ -66,7 +66,7 @@ public class DBpediaSpotlightSurfaceFormGenerator {
             if ( isGoodUri(subject) && !badUris.contains(subject) ) conceptUris.add(subject);
         }
 
-        logger.info("Concept Uris construction complete!");
+        logger.info("Concept Uris construction complete! Total of: " + conceptUris.size() + " concept URIs found!");
         return conceptUris;
     }
     
@@ -78,6 +78,7 @@ public class DBpediaSpotlightSurfaceFormGenerator {
             lowerCaseStopWords.add(stopword.toLowerCase());
         }
         LOWERCASE_STOPWORDS = lowerCaseStopWords;
+        logger.info("There were " + LOWERCASE_STOPWORDS.size() + " lowercase stopwords found.");
     }
     
     public static void createSurfaceForms() {
@@ -90,17 +91,21 @@ public class DBpediaSpotlightSurfaceFormGenerator {
         for ( String uri : conceptUris ) {
             if ( !uri.contains("%") ) {
                 
-                addSurfaceForm(surfaceForms, uri);
+                addSurfaceForm(surfaceForms, uri, uri);
             }
         }
-        logger.info("Finished adding all conceptUris.");
+        logger.info("Finished adding all conceptUris: " + surfaceForms.size());
         
         List<String[]> subjectToObject = NtripleUtil.getSubjectAndObjectsFromNTriple(DBpediaSpotlightDownloadModule.DBPEDIA_DISAMBIGUATIONS_FILE, DBpediaSpotlightSurfaceFormModule.DBPEDIA_PREFIX);
         subjectToObject.addAll(NtripleUtil.getSubjectAndObjectsFromNTriple(DBpediaSpotlightDownloadModule.DBPEDIA_REDIRECTS_FILE, DBpediaSpotlightSurfaceFormModule.DBPEDIA_PREFIX));
         
         for ( String[] subjectAndObject : subjectToObject ) {
             
-            if ( conceptUris.contains(subjectAndObject[1]) ) addSurfaceForm(surfaceForms, subjectAndObject[0]);
+            if ( conceptUris.contains(subjectAndObject[1]) ) {
+                
+//                System.out.println("ConceptUris contains obj: " + subjectAndObject[1] + " so add sub: " + subjectAndObject[0] + " to surface forms");
+                addSurfaceForm(surfaceForms, subjectAndObject[1], subjectAndObject[0]);
+            }
         }
         logger.info("Finished generation of surface forms.");
         
@@ -108,23 +113,23 @@ public class DBpediaSpotlightSurfaceFormGenerator {
         BufferedFileWriter writer = FileUtil.openWriter(SURFACE_FORMS_FILE, "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
         for (Map.Entry<String, Set<String>> entry : surfaceForms.entrySet()) {
             
-            writer.write(DBpediaSpotlightSurfaceFormModule.DBPEDIA_PREFIX + entry.getKey() + "\t" + StringUtils.join(entry.getValue(), "\t"));
+            writer.write(entry.getKey() + "\t" + StringUtils.join(entry.getValue(), "\t"));
         }
         logger.info("Finished writing of surface forms to disk.");
     }
     
-    private static void addSurfaceForm(Map<String, Set<String>> surfaceForms, String uri) {
+    private static void addSurfaceForm(Map<String, Set<String>> surfaceForms, String key, String value) {
 
         // clean and URL decode, whitespace removal
-        String newSurfaceForm =  createCleanSurfaceForm(uri);
+        String newSurfaceForm =  createCleanSurfaceForm(value);
         if ( newSurfaceForm != null ) {
             
-            if ( surfaceForms.containsKey(uri) ) surfaceForms.get(uri).add(newSurfaceForm);
+            if ( surfaceForms.containsKey(key) ) surfaceForms.get(key).add(newSurfaceForm);
             else {
                 
                 Set<String> sfList = new HashSet<String>();
                 sfList.add(newSurfaceForm);
-                surfaceForms.put(uri, sfList);
+                surfaceForms.put(key, sfList);
             }
         }
     }
@@ -157,14 +162,17 @@ public class DBpediaSpotlightSurfaceFormGenerator {
 
         if ( uri.contains("/") || uri.contains("%23") || uri.matches("^[\\W\\d]+$") ) {
             
-            logger.debug("Uri: <" + uri + "> is not a good uri!");
+            logger.debug("Uri: <" + uri + "> is not a good uri! / or %23 or regex");
             return false;
         }
         // prevents things like ^List or ^Disambiguation from being a good uri
         for ( String regex : BLACKLISTED_URI_PATTERN ) {
             
-            logger.debug("Uri: <" + uri + "> is not a good uri!");
-            if (uri.matches(regex)) return false;
+            if (uri.matches(regex)) {
+                
+                logger.debug("Uri: <" + uri + "> is not a good uri! bad pattern");
+                return false;
+            }
         }
         
         return true;
@@ -173,7 +181,11 @@ public class DBpediaSpotlightSurfaceFormGenerator {
     private static boolean isGoodSurfaceForm(String surfaceForm) {
         
         if ( surfaceForm.length() > MAXIMUM_SURFACE_FORM_LENGHT 
-                || surfaceForm.matches("^[\\W\\d]+$")) return false;
+                || surfaceForm.matches("^[\\W\\d]+$")) {
+            
+            logger.debug("Surfaceform: " + surfaceForm +  " is not a good surface form because its too long or regex match.");
+            return false;
+        }
         
         int i = 0;
         for ( String token : surfaceForm.toLowerCase().split(" ") ) {
@@ -185,7 +197,7 @@ public class DBpediaSpotlightSurfaceFormGenerator {
         if ( i > 0 ) return true;
         else {
             
-            logger.debug("Surfaceform: " + surfaceForm +  " is not a good surface form.");
+            logger.debug("Surfaceform: " + surfaceForm +  " is not a good surface form because it contains only stop words.");
             return false;
         }
     }
