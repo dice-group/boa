@@ -20,6 +20,7 @@ import org.encog.util.obj.SerializeObject;
 import de.danielgerber.file.BufferedFileWriter;
 import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
 import de.danielgerber.file.FileUtil;
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
@@ -41,7 +42,7 @@ public class EncogNeuralNetwork implements NeuralNetwork {
     private int maxEpochs                            = NLPediaSettings.getIntegerSetting("neuronal.network.maxEpochs");
     
     private static final int N_FOLD_CROSS_VALIDATION = NLPediaSettings.getIntegerSetting("neuronal.network.n.fold.cross.validation");
-    private static final String NETWORK_DIRECTORY    = NLPediaSettings.BOA_BASE_DIRECTORY + NLPediaSettings.getSetting("neural.network.network.directory");
+    private static final String NETWORK_DIRECTORY    = NLPediaSettings.BOA_BASE_DIRECTORY + Constants.NEURAL_NETWORK_PATH;
     private static final String EVAL_OUTPUT_FILE     = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
     private static final String NETWORK_FILE         = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
     
