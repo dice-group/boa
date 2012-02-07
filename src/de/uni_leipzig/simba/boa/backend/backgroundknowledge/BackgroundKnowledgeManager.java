@@ -2,6 +2,7 @@ package de.uni_leipzig.simba.boa.backend.backgroundknowledge;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -126,8 +127,10 @@ public class BackgroundKnowledgeManager {
 		for (String part : parts[2].toLowerCase().split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
 		    
 		    final String surfaceForm = part;
-		    subjectLabels.add(surfaceForm) ;
+		    subjectLabels.add(surfaceForm);
 		}
+		subjectLabels.add(subjectLabel);
+		subjectLabels.removeAll(Arrays.asList("", null));
 		// rdf:type of the subject
 		
 		// ################ OBJECT ############################
@@ -139,8 +142,10 @@ public class BackgroundKnowledgeManager {
 	    for (String part : parts[6].toLowerCase().split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
 	        
 	        final String surfaceForm = part;
-	        objectLabels.add(surfaceForm) ;
+	        objectLabels.add(surfaceForm);
 	    }
+	    objectLabels.add(objectLabel);
+	    objectLabels.removeAll(Arrays.asList("", null));
 		
 		// ################ resources: subject, property, object ############################
 		

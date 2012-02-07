@@ -120,6 +120,7 @@ public class SurfaceFormGenerator {
 		if ( this.urisToLabels.containsKey(subjectUri) ) {
 			
 			Set<String> surfaceForms = urisToLabels.get(subjectUri);
+			surfaceForms.add(objectPropertyBackgroundKnowledge.getSubjectLabel());
 			logger.debug("Found " + surfaceForms.size() + " for subject in spotlight");
 			for (String classUri : classIndexer.getSuperClassUrisForClassUri(Constants.DBPEDIA_ONTOLOGY_PREFIX + domain, NLPediaSettings.BOA_LANGUAGE)) {
 
@@ -134,12 +135,14 @@ public class SurfaceFormGenerator {
 			    surfaceForms.add(this.classUrisToLabels.get(classUri));
 			}
 			logger.debug("Found " + surfaceForms.size() + " at all!");
+			surfaceForms.removeAll(Arrays.asList("", null));
 			objectPropertyBackgroundKnowledge.setSubjectSurfaceForms(surfaceForms);
 		}
 		// we found labels for the object in the surface form file
 		if ( this.urisToLabels.containsKey(objectUri) ) {
 			
 			Set<String> surfaceForms = urisToLabels.get(objectUri);
+			surfaceForms.add(objectPropertyBackgroundKnowledge.getObjectLabel());
 			logger.debug("Found " + surfaceForms.size() + " for subject in spotlight");
 			for (String classUri : classIndexer.getSuperClassUrisForClassUri(Constants.DBPEDIA_ONTOLOGY_PREFIX + range, NLPediaSettings.BOA_LANGUAGE)) {
 				
@@ -154,6 +157,7 @@ public class SurfaceFormGenerator {
 				surfaceForms.add(this.classUrisToLabels.get(classUri));
 			}
 			logger.debug("Found " + surfaceForms.size() + " at all");
+			surfaceForms.removeAll(Arrays.asList("", null));
 			objectPropertyBackgroundKnowledge.setObjectSurfaceForms(surfaceForms);
 		}
 		return objectPropertyBackgroundKnowledge;
