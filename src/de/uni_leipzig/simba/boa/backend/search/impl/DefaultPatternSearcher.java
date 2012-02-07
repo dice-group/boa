@@ -152,19 +152,15 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
 		Set<String> firstLabels =  backgroundKnowledge.getSubjectSurfaceForms();
         Set<String> secondLabels = backgroundKnowledge.getObjectSurfaceForms();
-		
-		if ( firstLabels.size() == 0 ) {
+
+        this.logger.debug(firstLabels.toString());
+        this.logger.debug(secondLabels.toString());
+        
+		if ( firstLabels.size() == 0 || secondLabels.size() == 0 ) { 
 		    
-		    HashSet<String> label = new HashSet<String>();
-		    label.add(backgroundKnowledge.getSubjectLabel());
-		    firstLabels = label;
+		    this.logger.debug("Surface forms were empty, first: " + firstLabels + " second: " + secondLabels);
+		    return results;
 		}
-		if ( secondLabels.size() == 0 ) {
-            
-            HashSet<String> label = new HashSet<String>();
-            label.add(backgroundKnowledge.getObjectLabel());
-            secondLabels = label;
-        }
 		
 		// nested boolean query: (label1 or label2 or label3) and (label4 or label5)
         Query q = this.parseQuery("sentence:(" + StringUtils.join(escapeList(firstLabels), " OR ") + ")" +  
@@ -201,11 +197,13 @@ public class DefaultPatternSearcher implements PatternSearcher {
                         for (int j = 0; j < match2.length; j++) 
                             currentMatches.add("?R? " + match2[j].trim() + " ?D?");
                     }
-                    this.addSearchResults(results, currentMatches, backgroundKnowledge, sentence);
+                    if (!currentMatches.isEmpty()) {
+                        
+                        this.addSearchResults(results, currentMatches, backgroundKnowledge, sentence);
+                    }
                 }
             }
         }
-            
 		logger.debug("Found " + results.size() + " results!");
 		
 		return results;
