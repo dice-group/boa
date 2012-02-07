@@ -137,9 +137,9 @@ public class SurfaceFormGenerator {
 			    subjectSurfaceForms.add(this.classUrisToLabels.get(classUri));
 			}
 			logger.debug("Found " + subjectSurfaceForms.size() + " at all!");
-			subjectSurfaceForms.removeAll(Arrays.asList("", null));
-			objectPropertyBackgroundKnowledge.setSubjectSurfaceForms(subjectSurfaceForms);
 		}
+		subjectSurfaceForms.removeAll(Arrays.asList("", null));
+		objectPropertyBackgroundKnowledge.setSubjectSurfaceForms(subjectSurfaceForms);
 		
 		Set<String> objectSurfaceForms = new HashSet<String>();
 		objectSurfaceForms.add(objectPropertyBackgroundKnowledge.getObjectLabel());
@@ -162,9 +162,10 @@ public class SurfaceFormGenerator {
 			    objectSurfaceForms.add(this.classUrisToLabels.get(classUri));
 			}
 			logger.debug("Found " + objectSurfaceForms.size() + " at all");
-			objectSurfaceForms.removeAll(Arrays.asList("", null));
-			objectPropertyBackgroundKnowledge.setObjectSurfaceForms(objectSurfaceForms);
 		}
+		objectSurfaceForms.removeAll(Arrays.asList("", null));
+        objectPropertyBackgroundKnowledge.setObjectSurfaceForms(objectSurfaceForms);
+        
 		return objectPropertyBackgroundKnowledge;
 	}
 	
