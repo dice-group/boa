@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.apache.lucene.util.Version;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.lucene.LowerCaseWhitespaceAnalyzer;
 import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
@@ -41,6 +43,8 @@ import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
  */
 public class DefaultPatternSearcher implements PatternSearcher {
 
+    private static NLPediaSetup s = new NLPediaSetup(true);
+    
 	private final static int MAX_PATTERN_CHUNK_LENGTH  = NLPediaSettings.getIntegerSetting("maxPatternLenght");
 	private final static int MIN_PATTERN_CHUNK_LENGTH  = NLPediaSettings.getIntegerSetting("minPatternLenght");
 	private final static int MAX_NUMBER_OF_DOCUMENTS   = NLPediaSettings.getIntegerSetting("maxNumberOfDocuments");
@@ -141,92 +145,75 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	 */
 	public Collection<SearchResult> queryBackgroundKnowledge(BackgroundKnowledge backgroundKnowledge) {
 
-		boolean inverse = false;
+	    // initialize very late
+	    if ( this.posTagger == null ) this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
+	    
 		List<SearchResult> results = new ArrayList<SearchResult>();
 		
 		Set<String> firstLabels = backgroundKnowledge.getSubjectSurfaceForms();
 		Set<String> secondLabels = backgroundKnowledge.getObjectSurfaceForms();
 
-		// switch the labels in case we have more subject labels than object labels
-		if ( firstLabels.size() > secondLabels.size() ) {
-			
-			inverse = true;
-			
-			firstLabels = backgroundKnowledge.getObjectSurfaceForms();
-			secondLabels = backgroundKnowledge.getSubjectSurfaceForms();
-		}
-		
-		logger.debug("Query index for: " + backgroundKnowledge.getSubjectUri() + " and " +  backgroundKnowledge.getObjectUri() + " with: " + backgroundKnowledge.getSubjectSurfaceForms().size() + " and " + backgroundKnowledge.getObjectSurfaceForms().size() + " labels");
-		logger.debug("Subject: " + firstLabels);
-		logger.debug("Object: " + secondLabels);
-		
-		// go through all surface form combinations
-		for (String firstLabel : firstLabels) {
+		// nested boolean query: (label1 or label2 or label3) and (label4 or label5)
+        Query q = this.parseQuery("sentence:(" + StringUtils.join(escapeList(firstLabels), " OR ") + ")" +  
+                                    " AND " +
+                                  "sentence:(" + StringUtils.join(escapeList(secondLabels), " OR ") + ")");
+        
+        hits = this.searchIndexWithoutFilter(q, MAX_NUMBER_OF_DOCUMENTS);
+        
+        Set<String> sentences = new HashSet<String>();
+        
+        // collect all sentences
+        for ( int n = 0 ; n < hits.length; n++)             
+            sentences.add(LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "sentence"));
 
-			// check if we find at least sentences with the first token, if not we can skip this search word combination
-			TotalHitCountCollector collector = new TotalHitCountCollector();
-			this.searchIndex(this.parseQuery("+sentence:\"" + QueryParser.escape(firstLabel) + "\""), collector);
-			if (collector.getTotalHits() == 0 ) continue;
-			
-			for (String secondLabel : secondLabels) {
-				
-				Query query = this.parseQuery("+sentence:\"" + QueryParser.escape(firstLabel) + "\" && +sentence:\"" + QueryParser.escape(secondLabel) + "\"");
-				hits = this.searchIndex(query, null, MAX_NUMBER_OF_DOCUMENTS);
-				
-				for (int i = 0; i < hits.length; i++) {
-				    
-					String sentence				= this.getIndexDocument(hits[i], "sentence");
-					String sentenceLowerCase	= sentence.toLowerCase();
+        // go through all sentences and surface form combinations 
+        for ( String sentence : sentences ) {
+            for (String firstLabel : firstLabels) {
+                for (String secondLabel : secondLabels) {
+                    
+                    String sentenceLowerCase    = sentence.toLowerCase();
+                    List<String> currentMatches = new ArrayList<String>();
+                    
+                    // subject comes first
+                    String[] match1 = StringUtils.substringsBetween(sentenceLowerCase, firstLabel, secondLabel);
+                    if (match1 != null) {
 
-					Map<Integer, String> currentMatches = new HashMap<Integer, String>();
-					
-					// the switching is neccessary because it could be possible that we change the label sets, see above 					
-					String[] match1; 
-					if ( !inverse ) {
-						match1 = StringUtils.substringsBetween(sentenceLowerCase, firstLabel, secondLabel);
-					}
-					else {
-						
-						match1 = StringUtils.substringsBetween(sentenceLowerCase, secondLabel, firstLabel);
-					}
-					
-					if (match1 != null) {
+                        for (int j = 0; j < match1.length; j++) 
+                            currentMatches.add("?D? " + match1[j].trim() + " ?R?");
+                    }
+                    // object comes first
+                    String[] match2 = StringUtils.substringsBetween(sentenceLowerCase, secondLabel, firstLabel);
+                    if (match2 != null) {
 
-						for (int j = 0; j < match1.length; j++) {
-
-							match1[j] = "?D? " + match1[j].trim() + " ?R?";
-							currentMatches.put(hits[i].doc, match1[j]);
-						}
-					}
-
-					// the switching is neccessary because it could be possible that we change the label sets, see above 
-					String[] match2; 
-					if ( !inverse ) {
-						match2 = StringUtils.substringsBetween(sentenceLowerCase, secondLabel, firstLabel);
-					}
-					else {
-						
-						match2 = StringUtils.substringsBetween(sentenceLowerCase, firstLabel, secondLabel);
-					}
-					if (match2 != null) {
-
-						for (int j = 0; j < match2.length; j++) {
-
-							match2[j] = "?R? " + match2[j].trim() + " ?D?";
-							currentMatches.put(hits[i].doc, match2[j]);
-						}
-					}
-					this.addSearchResults(results, currentMatches, backgroundKnowledge, hits[i], sentence);
-				}
-			}
-		}
-		
+                        for (int j = 0; j < match2.length; j++) 
+                            currentMatches.add("?R? " + match2[j].trim() + " ?D?");
+                    }
+                    this.addSearchResults(results, currentMatches, backgroundKnowledge, sentence);
+                }
+            }
+        }
+            
 		logger.debug("Found " + results.size() + " results!");
 		
 		return results;
 	}
 
-	/**
+	private ScoreDoc[] searchIndexWithoutFilter(Query q, int maxNumberOfDocuments) {
+
+	    try {
+            
+            return indexSearcher.search(q, maxNumberOfDocuments).scoreDocs;
+        }
+        catch (IOException e) {
+            
+            e.printStackTrace();
+            String error = "Could not query index for query: \"" + q.toString() + "\"";
+            this.logger.error(error, e);
+            throw new RuntimeException(error, e);
+        }
+    }
+
+    /**
 	 * Create the search results
 	
 	 * @param results 
@@ -235,9 +222,9 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	 * @param hit
 	 * @param isSubject
 	 */
-	private void addSearchResults(List<SearchResult> results, Map<Integer, String> currentMatches, BackgroundKnowledge backgroundKnowledge, ScoreDoc hit, String sentenceNormalCase) {
+	private void addSearchResults(List<SearchResult> results, List<String> currentMatches, BackgroundKnowledge backgroundKnowledge, String sentenceNormalCase) {
 
-		for (String match : currentMatches.values()) {
+		for (String match : currentMatches) {
 
 			String nlr = this.getCorrectCaseNLR(sentenceNormalCase.toLowerCase(), sentenceNormalCase, match);
 
@@ -260,7 +247,6 @@ public class DefaultPatternSearcher implements PatternSearcher {
 					result.setFirstLabel(backgroundKnowledge.getObjectLabel());
 					result.setSecondLabel(backgroundKnowledge.getSubjectLabel());
 				}
-				if ( this.posTagger == null ) this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
 				result.setPosTags(this.posTagger.getAnnotations(result.getNaturalLanguageRepresentationWithoutVariables()));
 				results.add(result);
 			}
@@ -280,35 +266,30 @@ public class DefaultPatternSearcher implements PatternSearcher {
 		return firstVariable + " " + normalCase.substring(start, end) + " " + secondVariable;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 
-		String lowerCase = "anarchist themes can be found in the works of taoist sages laozi and zhuangzi .";
-		String upperCase = "Anarchist themes can be found in the works of Taoist sages Laozi and Zhuangzi .";
-		String pattern = "?D? can be found in ?R?";
-
-		String test = "it lies 123 km south of tirana , the capital of albania .";
-
-		String[] matches = StringUtils.substringsBetween(test, "albania", "tirana");
-
-		if (matches != null) {
-			for (String s : matches) {
-
-				System.out.println(s);
-				;
-			}
-		}
-		System.out.println();
-		matches = StringUtils.substringsBetween(test, "tirana", "albania");
-		if (matches != null) {
-			for (String s : matches) {
-
-				System.out.println(s);
-				;
-			}
-		}
-
-		// System.out.println(getCorrectCaseNLR(lowerCase,upperCase,pattern));
-
+		Set<String> labels = new HashSet<String>();
+		labels.add("Foo Bar");
+		labels.add("Bar");
+		labels.add("Foobar");
+		
+		QueryParser qp = new QueryParser(Version.LUCENE_34, "sentence", new LowerCaseWhitespaceAnalyzer());
+//		System.out.println(qp.parse("+sentence:(\"" + QueryParser.escape("first label") + "\" OR \"" + QueryParser.escape("foo bar") + "\") && +sentence:\"" + QueryParser.escape("second label") + "\""));
+		
+		String first =  "sentence:(" + StringUtils.join(escapeList(labels), " OR ") + ")";
+		String second = "sentence:(" + StringUtils.join(escapeList(labels), " OR ") + ")";
+		
+		System.out.println(qp.parse(first + " AND " + second));
+	}
+	
+	private static Set<String> escapeList(Set<String> tokens) {
+	    
+	    Set<String> labels = new HashSet<String>();
+	    for ( String label : tokens ) {
+	        
+	        labels.add("\"" + QueryParser.escape(label) + "\"");
+	    }
+	    return labels;
 	}
 
 	public boolean isPatternSuitable(String naturalLanguageRepresentation) {
@@ -371,7 +352,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
 	public Set<String> getExactMatchSentences(String keyphrase, int maxNumberOfDocuments) {
 
-		ScoreDoc[] hits = this.searchIndex(this.parseQuery("+sentence:\"" + QueryParser.escape(keyphrase) + "\""), null, maxNumberOfDocuments);
+		ScoreDoc[] hits = this.searchIndexWithoutFilter(this.parseQuery("+sentence:\"" + QueryParser.escape(keyphrase) + "\""), maxNumberOfDocuments);
 		TreeSet<String> list = new TreeSet<String>();
 
 		// reverse order because longer sentences come last, longer sentences

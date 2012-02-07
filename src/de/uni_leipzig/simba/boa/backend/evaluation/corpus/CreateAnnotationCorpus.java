@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.evaluation.corpus;
+package de.uni_leipzig.simba.boa.backend.evaluation.corpus;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

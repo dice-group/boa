@@ -121,12 +121,16 @@ public class SurfaceFormGenerator {
 			
 			Set<String> surfaceForms = urisToLabels.get(subjectUri);
 			logger.debug("Found " + surfaceForms.size() + " for subject in spotlight");
-			for (String classUri : classIndexer.getSuperClassUrisForClassUri(domain, NLPediaSettings.BOA_LANGUAGE)) {
+			for (String classUri : classIndexer.getSuperClassUrisForClassUri(Constants.DBPEDIA_ONTOLOGY_PREFIX + domain, NLPediaSettings.BOA_LANGUAGE)) {
 
-			    if ( classUri.equals("Person")) {
+			    if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("en") ) {
 			        surfaceForms.add("he");
 			        surfaceForms.add("she");
 			    }
+			    if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("de") ) {
+                    surfaceForms.add("er");
+                    surfaceForms.add("sie");
+                }
 			    surfaceForms.add(this.classUrisToLabels.get(classUri));
 			}
 			logger.debug("Found " + surfaceForms.size() + " at all!");
@@ -137,11 +141,15 @@ public class SurfaceFormGenerator {
 			
 			Set<String> surfaceForms = urisToLabels.get(objectUri);
 			logger.debug("Found " + surfaceForms.size() + " for subject in spotlight");
-			for (String classUri : classIndexer.getSuperClassUrisForClassUri(range, NLPediaSettings.BOA_LANGUAGE)) {
+			for (String classUri : classIndexer.getSuperClassUrisForClassUri(Constants.DBPEDIA_ONTOLOGY_PREFIX + range, NLPediaSettings.BOA_LANGUAGE)) {
 				
-			    if ( classUri.equals("http://dbpedia.org/ontology/Person")) {
+			    if ( classUri.equalsIgnoreCase("Person")) {
                     surfaceForms.add("he");
                     surfaceForms.add("she");
+                }
+			    if ( classUri.equalsIgnoreCase("Person")) {
+                    surfaceForms.add("er");
+                    surfaceForms.add("sie");
                 }
 				surfaceForms.add(this.classUrisToLabels.get(classUri));
 			}

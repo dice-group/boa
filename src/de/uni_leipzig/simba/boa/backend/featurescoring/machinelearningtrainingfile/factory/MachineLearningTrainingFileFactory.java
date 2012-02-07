@@ -59,13 +59,13 @@ public class MachineLearningTrainingFileFactory {
         }
     }
     
-    public MachineLearningTrainingFile getDefaultMachineLearningTrainingFile(List<MachineLearningTrainingFileEntry> trainingFileEntries) {
+    public MachineLearningTrainingFile getDefaultMachineLearningTrainingFile(List<String> featureNames, List<MachineLearningTrainingFileEntry> trainingFileEntries) {
         
         try {
             
             return ((Class<? extends MachineLearningTrainingFile>) this.defaultMachineLearningTrainingFileClass).
-                    getDeclaredConstructor(List.class).
-                    newInstance(trainingFileEntries);
+                    getDeclaredConstructor(List.class, List.class).
+                    newInstance(featureNames, trainingFileEntries);
         }
         catch (Exception e) {
             

@@ -20,8 +20,8 @@ public class DefaultMachineLearningTrainingFile extends AbstractMachineLearningT
      * 
      * @param entries a set of entries either annotated or not annotated
      */
-    public DefaultMachineLearningTrainingFile(List<MachineLearningTrainingFileEntry> entries) {
-        super(entries);
+    public DefaultMachineLearningTrainingFile(List<String> featureNames, List<MachineLearningTrainingFileEntry> entries) {
+        super(featureNames, entries);
     }
     
     // used for spring

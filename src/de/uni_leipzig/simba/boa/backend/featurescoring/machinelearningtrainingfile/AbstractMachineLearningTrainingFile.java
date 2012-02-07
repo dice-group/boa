@@ -6,6 +6,8 @@ package de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingf
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import de.danielgerber.format.OutputFormatter;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry.MachineLearningTrainingFileEntry;
@@ -18,6 +20,7 @@ public abstract class AbstractMachineLearningTrainingFile implements MachineLear
 
     protected List<MachineLearningTrainingFileEntry> annotatedEntries;
     protected List<MachineLearningTrainingFileEntry> notAnnotatedEntries;
+    protected List<String> featureNames;
     
     // used for spring
     public AbstractMachineLearningTrainingFile() {
@@ -30,10 +33,11 @@ public abstract class AbstractMachineLearningTrainingFile implements MachineLear
      * 
      * @param annotatedAntries
      */
-    public AbstractMachineLearningTrainingFile(List<MachineLearningTrainingFileEntry> entries) {
+    public AbstractMachineLearningTrainingFile(List<String> featureNames, List<MachineLearningTrainingFileEntry> entries) {
         
-        this.annotatedEntries = new ArrayList<MachineLearningTrainingFileEntry>();
-        this.notAnnotatedEntries = new ArrayList<MachineLearningTrainingFileEntry>();
+        this.featureNames           = featureNames;
+        this.annotatedEntries       = new ArrayList<MachineLearningTrainingFileEntry>();
+        this.notAnnotatedEntries    = new ArrayList<MachineLearningTrainingFileEntry>();
         
         for (MachineLearningTrainingFileEntry entry : entries) this.addEntry(entry);
     }
@@ -45,6 +49,8 @@ public abstract class AbstractMachineLearningTrainingFile implements MachineLear
     public String toString() {
 
         StringBuilder builder = new StringBuilder();
+        
+        builder.append(StringUtils.join(this.featureNames, "\t") + Constants.NEW_LINE_SEPARATOR);
         
         // one entry corresponds to one line
         for (MachineLearningTrainingFileEntry entry : this.annotatedEntries) {
