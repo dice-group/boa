@@ -116,60 +116,60 @@ public class AnnotatorScorer {
 				}
 			}
 		}
-		Evaluation.OUTPUT.append(" * *Sentences with no annotations from annotator 1:* " + annotatorOneNotAnnotatedCount).append(Constants.NEW_LINE_SEPARATOR);
-		Evaluation.OUTPUT.append(" * *Sentences with no annotations from annotator 2:* " + annotatorTwoNotAnnotatedCount).append(Constants.NEW_LINE_SEPARATOR);
-		Evaluation.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Sentences with no annotations from annotator 1:* " + annotatorOneNotAnnotatedCount).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Sentences with no annotations from annotator 2:* " + annotatorTwoNotAnnotatedCount).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
 		
 		
-		Evaluation.OUTPUT.append(" * *Sentences of rdf:type annotations from annotator 1:* " + annotatorOneRdfTypeCount).append(Constants.NEW_LINE_SEPARATOR);
-		Evaluation.OUTPUT.append(" * *Sentences of rdf:type annotations from annotator 2:* " + annotatorTwoRdfTypeCount).append(Constants.NEW_LINE_SEPARATOR);
-		Evaluation.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Sentences of rdf:type annotations from annotator 1:* " + annotatorOneRdfTypeCount).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Sentences of rdf:type annotations from annotator 2:* " + annotatorTwoRdfTypeCount).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
 		
 		
-		Evaluation.OUTPUT.append(" * *Number of distinct properties by annotator 1:* " + propertiesToOccurrenceByAnnotatorOne.size()).append(Constants.NEW_LINE_SEPARATOR);
-		Evaluation.OUTPUT.append(" * *Number of distinct properties by annotator 2:* " + propertiesToOccurrenceByAnnotatorTwo.size()).append(Constants.NEW_LINE_SEPARATOR);
-		Evaluation.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Number of distinct properties by annotator 1:* " + propertiesToOccurrenceByAnnotatorOne.size()).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Number of distinct properties by annotator 2:* " + propertiesToOccurrenceByAnnotatorTwo.size()).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
 		
 		
-		Evaluation.OUTPUT.append(" * *Number of triples per sentence (non empty) for annotator 1:* " + new DecimalFormat("#0.00").format((double)tripleCountOne / (double)(annotatorOneFile.size() - annotatorOneNotAnnotatedCount))).append(Constants.NEW_LINE_SEPARATOR);
-		Evaluation.OUTPUT.append(" * *Number of triples per sentence (non empty) for annotator 2:* " + new DecimalFormat("#0.00").format((double)tripleCountTwo / (double)(annotatorTwoFile.size() - annotatorTwoNotAnnotatedCount))).append(Constants.NEW_LINE_SEPARATOR);
-		Evaluation.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Number of triples per sentence (non empty) for annotator 1:* " + new DecimalFormat("#0.00").format((double)tripleCountOne / (double)(annotatorOneFile.size() - annotatorOneNotAnnotatedCount))).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Number of triples per sentence (non empty) for annotator 2:* " + new DecimalFormat("#0.00").format((double)tripleCountTwo / (double)(annotatorTwoFile.size() - annotatorTwoNotAnnotatedCount))).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
 		
 		
-		Evaluation.OUTPUT.append(" * *Number of same triples:* " + sameAnnotationCount).append(Constants.NEW_LINE_SEPARATOR);
-		Evaluation.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Number of same triples:* " + sameAnnotationCount).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
 		
 		
-		Evaluation.OUTPUT.append(" * *Number of sentences with same triple count:* " + annotatedTriplePerLineCount).append(Constants.NEW_LINE_SEPARATOR);
-		Evaluation.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Number of sentences with same triple count:* " + annotatedTriplePerLineCount).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
 		
 		
-		Evaluation.OUTPUT.append(" * *Number of triples where subject and object are the same:* " + sameAnnotationWithDifferentPropertyCount).append(Constants.NEW_LINE_SEPARATOR);
-		Evaluation.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Number of triples where subject and object are the same:* " + sameAnnotationWithDifferentPropertyCount).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
 		
 		
-		Evaluation.OUTPUT.append(" * *Top 5 properties by annotator 1:*").append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Top 5 properties by annotator 1:*").append(Constants.NEW_LINE_SEPARATOR);
 		printTopNProperties(propertiesToOccurrenceByAnnotatorOne, 5);
-		Evaluation.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
 		
 		
-		Evaluation.OUTPUT.append(" * *Top 5 properties by annotator 2:*").append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Top 5 properties by annotator 2:*").append(Constants.NEW_LINE_SEPARATOR);
 		printTopNProperties(propertiesToOccurrenceByAnnotatorTwo, 5);
-		Evaluation.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
 		
 		
-		Evaluation.OUTPUT.append(" * *Triples with different properties (Subject/Object identical): ("+differentPropertyList.size()/3+" pairs)* ").append(Constants.NEW_LINE_SEPARATOR);
-		for (String s : differentPropertyList) Evaluation.OUTPUT.append("      * " + s.replace("[", "").replace("]", "").replace("Triple", "").replace("_", "+")).append(Constants.NEW_LINE_SEPARATOR);
-		Evaluation.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Triples with different properties (Subject/Object identical): ("+differentPropertyList.size()/3+" pairs)* ").append(Constants.NEW_LINE_SEPARATOR);
+		for (String s : differentPropertyList) EvaluationManager.OUTPUT.append("      * " + s.replace("[", "").replace("]", "").replace("Triple", "").replace("_", "+")).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
 				
 				
-		Evaluation.OUTPUT.append(" * *Triples with one resource difference (Subject/Predicate or Predicate/Object identical): ("+oneDifferentPartList.size()/3+" pairs)* ").append(Constants.NEW_LINE_SEPARATOR);
-		for (String s : oneDifferentPartList) Evaluation.OUTPUT.append("      * " + s.replace("[", "").replace("]", "").replace("Triple", "").replace("_", "+")).append(Constants.NEW_LINE_SEPARATOR);
-		Evaluation.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Triples with one resource difference (Subject/Predicate or Predicate/Object identical): ("+oneDifferentPartList.size()/3+" pairs)* ").append(Constants.NEW_LINE_SEPARATOR);
+		for (String s : oneDifferentPartList) EvaluationManager.OUTPUT.append("      * " + s.replace("[", "").replace("]", "").replace("Triple", "").replace("_", "+")).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append("----").append(Constants.NEW_LINE_SEPARATOR);
 				
 				
-		Evaluation.OUTPUT.append(" * *Different triples: ("+notRdfTypeTripleList.size()/3+" pairs)* ").append(Constants.NEW_LINE_SEPARATOR);
-		for (String s : notRdfTypeTripleList) Evaluation.OUTPUT.append("      * " + s.replace("[", "").replace("]", "").replace("Triple", "").replace("_", "+")).append(Constants.NEW_LINE_SEPARATOR);
+		EvaluationManager.OUTPUT.append(" * *Different triples: ("+notRdfTypeTripleList.size()/3+" pairs)* ").append(Constants.NEW_LINE_SEPARATOR);
+		for (String s : notRdfTypeTripleList) EvaluationManager.OUTPUT.append("      * " + s.replace("[", "").replace("]", "").replace("Triple", "").replace("_", "+")).append(Constants.NEW_LINE_SEPARATOR);
 	}
 	
 	private void printTopNProperties(Map<String, Integer> map, int topN) {
@@ -182,7 +182,7 @@ public class AnnotatorScorer {
 			if ( topN != 0 ) {
 				
 				topN--;				
-				Evaluation.OUTPUT.append("   # " + entry.getKey() + ": " +  entry.getValue()).append(Constants.NEW_LINE_SEPARATOR);
+				EvaluationManager.OUTPUT.append("   # " + entry.getKey() + ": " +  entry.getValue()).append(Constants.NEW_LINE_SEPARATOR);
 			}
 		}
 	}

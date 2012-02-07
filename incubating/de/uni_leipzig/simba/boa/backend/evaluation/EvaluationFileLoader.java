@@ -151,13 +151,13 @@ public class EvaluationFileLoader {
 //			System.out.println(entry.getKey() + " " + entry.getValue() + " " + i++);
 //		}
 //
-//		Evaluation.OUTPUT.append("*Annotator: \t" + filename + "*").append(Constants.NEW_LINE_SEPARATOR);
-//		Evaluation.OUTPUT.append(" * Number of Sentences: \t" + sentenceNumberToTriples.size()).append(Constants.NEW_LINE_SEPARATOR);
-//		Evaluation.OUTPUT.append(" * Empty Sentences: \t" + openingAndClosingBracketCounter).append(Constants.NEW_LINE_SEPARATOR);
-//		Evaluation.OUTPUT.append(" * Parsed Triples: \t" + tripleCount).append(Constants.NEW_LINE_SEPARATOR);
-//		Evaluation.OUTPUT.append(" * Annotated Triples: \t" + (openingBracketCounter - openingAndClosingBracketCounter)).append(Constants.NEW_LINE_SEPARATOR); 
-//		Evaluation.OUTPUT.append(" * Parsed Triples == Annotated Triples? -> " + new Boolean((openingBracketCounter - openingAndClosingBracketCounter) == tripleCount)).append(Constants.NEW_LINE_SEPARATOR);
-//		Evaluation.OUTPUT.append(Constants.NEW_LINE_SEPARATOR);
+//		EvaluationManager.OUTPUT.append("*Annotator: \t" + filename + "*").append(Constants.NEW_LINE_SEPARATOR);
+//		EvaluationManager.OUTPUT.append(" * Number of Sentences: \t" + sentenceNumberToTriples.size()).append(Constants.NEW_LINE_SEPARATOR);
+//		EvaluationManager.OUTPUT.append(" * Empty Sentences: \t" + openingAndClosingBracketCounter).append(Constants.NEW_LINE_SEPARATOR);
+//		EvaluationManager.OUTPUT.append(" * Parsed Triples: \t" + tripleCount).append(Constants.NEW_LINE_SEPARATOR);
+//		EvaluationManager.OUTPUT.append(" * Annotated Triples: \t" + (openingBracketCounter - openingAndClosingBracketCounter)).append(Constants.NEW_LINE_SEPARATOR); 
+//		EvaluationManager.OUTPUT.append(" * Parsed Triples == Annotated Triples? -> " + new Boolean((openingBracketCounter - openingAndClosingBracketCounter) == tripleCount)).append(Constants.NEW_LINE_SEPARATOR);
+//		EvaluationManager.OUTPUT.append(Constants.NEW_LINE_SEPARATOR);
 		
 		return sentenceNumberToTriples;
 	}

@@ -308,7 +308,8 @@
         <property name="moduleSettings">
             <set>
               <value>knowledgeCreationThreadPoolSize</value>
-              <value>score.threshold.create.knowledge</value>
+              <value>pattern.score.threshold.create.knowledge</value>
+              <value>triple.score.threshold.create.knowledge</value>
               <value>max.number.of.documents.generation</value>
             </set>
         </property>

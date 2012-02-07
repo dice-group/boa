@@ -65,7 +65,7 @@ public class StatementForm extends Form {
 		
 		List<Statement> statmentsToVerify = this.filterCorrectStatements(randomStatments, id, graph);
 		
-		Window subwindow = new Window("Evaluation of RDF Model " + graph);
+		Window subwindow = new Window("EvaluationManager of RDF Model " + graph);
         subwindow.setModal(false);
         VerticalLayout vlayout = (VerticalLayout) subwindow.getContent();
         vlayout.setMargin(true);

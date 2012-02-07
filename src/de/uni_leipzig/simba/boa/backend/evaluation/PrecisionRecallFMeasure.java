@@ -6,7 +6,6 @@ import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
-
 public class PrecisionRecallFMeasure {
 
 	private double precision	= 0D;

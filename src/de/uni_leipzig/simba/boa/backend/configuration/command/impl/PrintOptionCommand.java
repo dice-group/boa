@@ -33,8 +33,8 @@ public class PrintOptionCommand implements Command {
 			"||     7. Start Scripts                               ||\n" + 
 			"||     8. Query text with patterns                    ||\n" + 
 			"||     9. Query keyphrase                             ||\n" +
-			"||    10. Search - Evaluation - Generate              ||\n" +
-			"||    11. Evaluation                                  ||\n" +
+			"||    10. Search - EvaluationManager - Generate              ||\n" +
+			"||    11. EvaluationManager                                  ||\n" +
 			"||    12. Start Pipeline                              ||\n" +
 			"========================================================\n";
 		
