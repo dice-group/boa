@@ -124,22 +124,27 @@ public class SurfaceFormGenerator {
 			
 		    subjectSurfaceForms = urisToLabels.get(subjectUri);
 			logger.debug("Found " + subjectSurfaceForms.size() + " for subject in spotlight");
-			for (String classUri : classIndexer.getSuperClassUrisForClassUri(Constants.DBPEDIA_ONTOLOGY_PREFIX + domain, NLPediaSettings.BOA_LANGUAGE)) {
-
-			    if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("en") ) {
-			        subjectSurfaceForms.add("he");
-			        subjectSurfaceForms.add("she");
-			    }
-			    if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("de") ) {
-			        subjectSurfaceForms.add("er");
-			        subjectSurfaceForms.add("sie");
-                }
-			    subjectSurfaceForms.add(this.classUrisToLabels.get(classUri));
-			}
-			logger.debug("Found " + subjectSurfaceForms.size() + " at all!");
 		}
+		// add the class labels and special ons for person
+		for (String classUri : classIndexer.getSuperClassUrisForClassUri(Constants.DBPEDIA_ONTOLOGY_PREFIX + domain, NLPediaSettings.BOA_LANGUAGE)) {
+
+            if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("en") ) {
+                subjectSurfaceForms.add("he");
+                subjectSurfaceForms.add("she");
+            }
+            if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("de") ) {
+                subjectSurfaceForms.add("er");
+                subjectSurfaceForms.add("sie");
+            }
+            subjectSurfaceForms.add(this.classUrisToLabels.get(classUri));
+        }
+        logger.debug("Found " + subjectSurfaceForms.size() + " at all!");
 		subjectSurfaceForms.removeAll(Arrays.asList("", null));
 		objectPropertyBackgroundKnowledge.setSubjectSurfaceForms(subjectSurfaceForms);
+		
+		// ################################################################################
+		// ################################################################################
+		// ################################################################################
 		
 		Set<String> objectSurfaceForms = new HashSet<String>();
 		objectSurfaceForms.add(objectPropertyBackgroundKnowledge.getObjectLabel());
@@ -149,20 +154,22 @@ public class SurfaceFormGenerator {
 			
 		    objectSurfaceForms = urisToLabels.get(objectUri);
 			logger.debug("Found " + objectSurfaceForms.size() + " for subject in spotlight");
-			for (String classUri : classIndexer.getSuperClassUrisForClassUri(Constants.DBPEDIA_ONTOLOGY_PREFIX + range, NLPediaSettings.BOA_LANGUAGE)) {
-				
-			    if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("en") ) {
-			        objectSurfaceForms.add("he");
-			        objectSurfaceForms.add("she");
-                }
-			    if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("de") ) {
-			        objectSurfaceForms.add("er");
-			        objectSurfaceForms.add("sie");
-                }
-			    objectSurfaceForms.add(this.classUrisToLabels.get(classUri));
-			}
-			logger.debug("Found " + objectSurfaceForms.size() + " at all");
 		}
+	      // add the class labels and special ons for person
+		for (String classUri : classIndexer.getSuperClassUrisForClassUri(Constants.DBPEDIA_ONTOLOGY_PREFIX + range, NLPediaSettings.BOA_LANGUAGE)) {
+            
+            if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("en") ) {
+                objectSurfaceForms.add("he");
+                objectSurfaceForms.add("she");
+            }
+            if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("de") ) {
+                objectSurfaceForms.add("er");
+                objectSurfaceForms.add("sie");
+            }
+            objectSurfaceForms.add(this.classUrisToLabels.get(classUri));
+        }
+        logger.debug("Found " + objectSurfaceForms.size() + " at all");
+		
 		objectSurfaceForms.removeAll(Arrays.asList("", null));
         objectPropertyBackgroundKnowledge.setObjectSurfaceForms(objectSurfaceForms);
         
