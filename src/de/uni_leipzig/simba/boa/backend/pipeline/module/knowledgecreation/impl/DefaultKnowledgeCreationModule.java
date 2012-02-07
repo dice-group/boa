@@ -14,11 +14,13 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.KnowledgeCreationThreadManager;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.knowledgecreation.KnowledgeCreationManager;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.knowledgecreation.AbstractKnowledgeCreationModule;
@@ -32,9 +34,7 @@ import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
  */
 public class DefaultKnowledgeCreationModule extends AbstractKnowledgeCreationModule {
 
-    private static final String KNOWLEDGE_CREATION_BINARY_OUTPUT_PATH       = NLPediaSettings.BOA_DATA_DIRECTORY + "rdf/binary/";
-    private static final Double KNOWLEDGE_CREATION_PATTERN_SCORE_THRESHOLD  = NLPediaSettings.getDoubleSetting("score.threshold.create.knowledge");
-    private static final int KNOWLEDGE_CREATION_NUMBER_OF_THREADS           = NLPediaSettings.getIntegerSetting("number.of.create.knowledge.threads");
+    private static final String KNOWLEDGE_CREATION_BINARY_OUTPUT_PATH       = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.RDF_DATA_BINARY_PATH;
     private final NLPediaLogger logger                                      = new NLPediaLogger(DefaultKnowledgeCreationModule.class);
     
     // for the report
@@ -57,16 +57,18 @@ public class DefaultKnowledgeCreationModule extends AbstractKnowledgeCreationMod
      */
     @Override
     public void run() {
+        
+        KnowledgeCreationManager knowledgeManager = new KnowledgeCreationManager();
 
         this.logger.info("Starting to find new triples!");
         long startNewTripleSearch = System.currentTimeMillis();
-        Map<String, List<Triple>> newKnowledge = this.findNewTriples();
+        Map<String, List<Triple>> newKnowledge = knowledgeManager.findNewTriples(this.moduleInterchangeObject.getPatternMappings());
         this.newTripleSearchTime = System.currentTimeMillis() - startNewTripleSearch;
         this.logger.info("Finding new triples took " + TimeUtil.convertMilliSeconds(newTripleSearchTime) + ".");
         
         this.logger.info("Starting to merge and score new triples");
         long startMergeTriple = System.currentTimeMillis();
-        Map<String, Set<Triple>> mergedTriples = this.mergeAndScoreTriples(newKnowledge);
+        Map<String, Set<Triple>> mergedTriples = knowledgeManager.mergeAndScoreTriples(newKnowledge);
         this.mergeAndScoreTripleTime = System.currentTimeMillis() - startMergeTriple;
         this.logger.info("Merging and scoring of new triples took: " + TimeUtil.convertMilliSeconds(mergeAndScoreTripleTime) + ".");
         
@@ -95,82 +97,6 @@ public class DefaultKnowledgeCreationModule extends AbstractKnowledgeCreationMod
         this.moduleInterchangeObject.setNewKnowledge(mergedTriples);
         this.savingTriplesTime = System.currentTimeMillis() - startSavingTriples;
         this.logger.info("Saving of " + this.tripleCount + " new triples took " + TimeUtil.convertMilliSeconds(savingTriplesTime) + ".");
-    }
-
-    /**
-     * 
-     * @param newKnowledge
-     * @return
-     */
-    private Map<String, Set<Triple>> mergeAndScoreTriples(Map<String, List<Triple>> newKnowledge) {
-
-        Map<String,Set<Triple>> results =  new HashMap<String,Set<Triple>>();
-        Map<Integer,Triple> mergedTriples;
-        
-        for ( Map.Entry<String, List<Triple>> entry : newKnowledge.entrySet()) {
-            
-            mergedTriples = new HashMap<Integer,Triple>();
-            
-            String propertyUri = entry.getKey();
-            List<Triple> triples = entry.getValue();
-            
-            for ( Triple triple : triples ) {
-                
-                // we have seen this triple before, so merge it
-                if ( mergedTriples.containsKey(triple.hashCode()) ) {
-                    
-                    // subject, predicate, object is the same, so don't change it
-                    // the triple also has not a score yet
-                    // the only things we need to merge are the patterns and the sentences this
-                    // triple has been learned from
-                    Triple knownTriple = mergedTriples.get(triple.hashCode());
-                    knownTriple.getLearnedFromPatterns().addAll(triple.getLearnedFromPatterns());
-                    knownTriple.getLearnedFromSentences().addAll(triple.getLearnedFromSentences());
-                }
-                else // we can simply put it in the list
-                    mergedTriples.put(triple.hashCode(), triple);
-            }
-            results.put(propertyUri, this.calculateConfidence(mergedTriples.values()));
-        }
-        return results;
-    }
-
-    /**
-     * 
-     * @param unscoredTriples
-     * @return
-     */
-    private Set<Triple> calculateConfidence(Collection<Triple> unscoredTriples) {
-
-        Set<Triple> scoredTriples = new HashSet<Triple>();
-        for ( Triple triple : unscoredTriples ) {
-            
-            double confidence = 0;
-            for ( Pattern patternLearnedFrom : triple.getLearnedFromPatterns() ) {
-                
-                confidence += patternLearnedFrom.getScore();
-            }
-            // sigmoid function shifted to the right to boost pattern which are learned from more than one pattern
-            triple.setConfidence(1D / (1D + Math.pow(Math.E, - confidence * triple.getLearnedFromPatterns().size() + 1)));
-            
-            scoredTriples.add(triple);
-        }
-        return scoredTriples;
-    }
-
-    private Map<String, List<Triple>> findNewTriples() {
-        
-        // create the input for the search threads  
-        Set<PatternMappingPatternPair> pairs = new HashSet<PatternMappingPatternPair>();
-        for ( PatternMapping mapping : this.moduleInterchangeObject.getPatternMappings()) {
-            for (Pattern pattern : mapping.getPatterns()) {
-                
-                // but only those patterns which are higher scored then the threshold
-                if ( pattern.getScore() >= KNOWLEDGE_CREATION_PATTERN_SCORE_THRESHOLD )
-                    pairs.add(new PatternMappingPatternPair(mapping, pattern));
-            }
-        }
-        return KnowledgeCreationThreadManager.startKnowledgeCreationCallables(pairs, KNOWLEDGE_CREATION_NUMBER_OF_THREADS);
     }
 
     /* (non-Javadoc)
@@ -214,7 +140,7 @@ public class DefaultKnowledgeCreationModule extends AbstractKnowledgeCreationMod
         for (File file : FileUtils.listFiles(new File(KNOWLEDGE_CREATION_BINARY_OUTPUT_PATH), FileFilterUtils.suffixFileFilter(".bin"), null)) {
             
             Set<Triple> triples = SerializationManager.getInstance().deserializeTriples(file.getAbsolutePath());
-            this.moduleInterchangeObject.getNewKnowledge().put("http://dbpedia.org/ontology/" + file.getName().replace(".bin", ""), triples);
+            this.moduleInterchangeObject.getNewKnowledge().put(file.getName().replace(".bin", ""), triples);
         }
     }
 

@@ -38,7 +38,7 @@ public class Evaluation implements Command {
 	public static void main(String[] args) throws CorruptIndexException, LockObtainFailedException, IOException {
 
 		NLPediaSetup SETUP = new NLPediaSetup(false);
-		new Evaluation().execute();
+		new EvaluationManager().execute();
 	}
 	
 	@Override
@@ -59,59 +59,12 @@ public class Evaluation implements Command {
 		AnnotatorScorer scorer = new AnnotatorScorer();
 		scorer.calculateScores(annotatorOneFile, annotatorTwoFile);
 		
-		System.out.println(Evaluation.OUTPUT.toString());
-		Evaluation.OUTPUT = new StringBuffer();
+		System.out.println(EvaluationManager.OUTPUT.toString());
+		EvaluationManager.OUTPUT = new StringBuffer();
 		
 		Set<Triple> goldStandard = evaluationFileLoader.loadGoldStandard(EvaluationFileLoader.ExcludeRdfTypeStatements.YES);
 		
-		// we want to test different databases
-		for (String testDatabase : TEST_DATABASES) {
-			
-			double maxFMeasure = 0D;
-			
-			// switch to db
-			HibernateFactory.changeConnection(testDatabase);
-			
-			// we want to see if the knowledge creation threshold, i.e. the pattern score produced by the NN matters
-			for ( double scoreThreshold : Arrays.asList(0.1D, 0.2D, 0.3D, 0.4D, 0.5D, 0.6D, 0.7D, 0.8D, 0.9D, 1.0D) ) {
-				// take only the first n best scored pattern
-				for ( int topNPattern : Arrays.asList(1, 3, 5, 10, 20, 50, 100, 1000) ) {
-					
-					NLPediaSettings.setSetting("score.threshold.create.knowledge", String.valueOf(scoreThreshold));
-					NLPediaSettings.setSetting("top.n.pattern", String.valueOf(topNPattern));
-					
-					// filter out triples which might occur randomly, due to bad patterns
-					for ( double tripleScoreThreshold : Arrays.asList(0.1D, 0.2D, 0.3D, 0.4D, 0.5D, 0.6D, 0.7D, 0.8D, 0.9D, 1.0D) ) {
-						
-						Set<Triple> testData		= evaluationFileLoader.loadBoa(EvaluationIndexCreator.createGoldStandardIndex(), tripleScoreThreshold);
-						
-						PrecisionRecallFMeasure precisionRecallFMeasure = new PrecisionRecallFMeasure(goldStandard, testData);
-						DecimalFormat decimalFormat = new DecimalFormat("#.###");
-						
-						String output = goldStandard.size() + " " +
-										testData.size() + " " +
-										NLPediaSettings.getSetting("score.threshold.create.knowledge") + " " + 
-										NLPediaSettings.getSetting("top.n.pattern") + " " +
-										tripleScoreThreshold + " " +
-										decimalFormat.format(precisionRecallFMeasure.getPrecision()) + " " +
-										decimalFormat.format(precisionRecallFMeasure.getRecall()) + " " +
-										decimalFormat.format(precisionRecallFMeasure.getFMeasure());	
-						
-						System.out.println( "GSS: " + goldStandard.size() + " BS: " + testData.size() +
-											" ST: " + NLPediaSettings.getSetting("score.threshold.create.knowledge") + " TNP: " + NLPediaSettings.getSetting("top.n.pattern") + " TST: " + tripleScoreThreshold + 
-											" P: " + precisionRecallFMeasure.getPrecision() + " R: " + precisionRecallFMeasure.getRecall() + " F: " + precisionRecallFMeasure.getFMeasure());
-						
-						maxFMeasure = Math.max(maxFMeasure, precisionRecallFMeasure.getFMeasure());
-						this.writeResults(output + Constants.NEW_LINE_SEPARATOR);
-						for ( Triple t : testData ) {
-							this.writeResults(t.toString()+Constants.NEW_LINE_SEPARATOR);
-						}
-						this.writeResults(Constants.NEW_LINE_SEPARATOR);
-					}
-				}
-			}
-			this.writeResults("Maximum F-Measure: " + String.valueOf(maxFMeasure));
-		}
+		
 	}
 	
 	private void startManualEvaluation() {
@@ -160,10 +113,10 @@ public class Evaluation implements Command {
 		try {
 			
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(NLPediaSettings.getSetting("eval.output.file"), true), "UTF-8"));
-			if ( result == null ) writer.write(Evaluation.OUTPUT.append(Constants.NEW_LINE_SEPARATOR).append(Constants.NEW_LINE_SEPARATOR).toString());				
+			if ( result == null ) writer.write(EvaluationManager.OUTPUT.append(Constants.NEW_LINE_SEPARATOR).append(Constants.NEW_LINE_SEPARATOR).toString());				
 			else writer.write(result); 
 			writer.close();
-			Evaluation.OUTPUT.delete(0, Evaluation.OUTPUT.length());
+			EvaluationManager.OUTPUT.delete(0, EvaluationManager.OUTPUT.length());
 		}
 		catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block

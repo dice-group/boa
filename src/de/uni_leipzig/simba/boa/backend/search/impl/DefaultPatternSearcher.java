@@ -149,10 +149,23 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	    if ( this.posTagger == null ) this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
 	    
 		List<SearchResult> results = new ArrayList<SearchResult>();
-		
-		Set<String> firstLabels = backgroundKnowledge.getSubjectSurfaceForms();
-		Set<String> secondLabels = backgroundKnowledge.getObjectSurfaceForms();
 
+		Set<String> firstLabels =  backgroundKnowledge.getSubjectSurfaceForms();
+        Set<String> secondLabels = backgroundKnowledge.getObjectSurfaceForms();
+		
+		if ( firstLabels.size() == 0 ) {
+		    
+		    HashSet<String> label = new HashSet<String>();
+		    label.add(backgroundKnowledge.getSubjectLabel());
+		    firstLabels = label;
+		}
+		if ( secondLabels.size() == 0 ) {
+            
+            HashSet<String> label = new HashSet<String>();
+            label.add(backgroundKnowledge.getObjectLabel());
+            secondLabels = label;
+        }
+		
 		// nested boolean query: (label1 or label2 or label3) and (label4 or label5)
         Query q = this.parseQuery("sentence:(" + StringUtils.join(escapeList(firstLabels), " OR ") + ")" +  
                                     " AND " +
@@ -197,7 +210,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 		
 		return results;
 	}
-
+	
 	private ScoreDoc[] searchIndexWithoutFilter(Query q, int maxNumberOfDocuments) {
 
 	    try {
@@ -268,18 +281,9 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
 	public static void main(String[] args) throws ParseException {
 
-		Set<String> labels = new HashSet<String>();
-		labels.add("Foo Bar");
-		labels.add("Bar");
-		labels.add("Foobar");
-		
-		QueryParser qp = new QueryParser(Version.LUCENE_34, "sentence", new LowerCaseWhitespaceAnalyzer());
-//		System.out.println(qp.parse("+sentence:(\"" + QueryParser.escape("first label") + "\" OR \"" + QueryParser.escape("foo bar") + "\") && +sentence:\"" + QueryParser.escape("second label") + "\""));
-		
-		String first =  "sentence:(" + StringUtils.join(escapeList(labels), " OR ") + ")";
-		String second = "sentence:(" + StringUtils.join(escapeList(labels), " OR ") + ")";
-		
-		System.out.println(qp.parse(first + " AND " + second));
+	    HashSet<String> list = new HashSet<String>();
+        list.add("THIS");
+        System.out.println(StringUtils.join(list, " OR "));
 	}
 	
 	private static Set<String> escapeList(Set<String> tokens) {

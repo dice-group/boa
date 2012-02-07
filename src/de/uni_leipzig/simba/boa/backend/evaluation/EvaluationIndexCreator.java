@@ -33,7 +33,7 @@ public class EvaluationIndexCreator {
             indexWriterConfig.setOpenMode(OpenMode.CREATE);
             IndexWriter writer = new IndexWriter(index, indexWriterConfig);
 
-            System.out.println("Adding " + sentences.size() + " sentences to evaluation index!");
+            logger.info("Adding " + sentences.size() + " sentences to evaluation index!");
 
             for (String sentence : sentences) {
 

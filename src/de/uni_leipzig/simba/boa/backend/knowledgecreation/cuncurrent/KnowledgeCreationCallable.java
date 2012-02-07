@@ -38,8 +38,6 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
 
     private final NLPediaLogger logger = new NLPediaLogger(PatternFeatureExtractionCallable.class);
 
-    private static final int CONTEXT_LOOK_AHEAD = NLPediaSettings.getIntegerSetting("contextLookAhead");
-    
     private List<PatternMappingPatternPair> patternMappingPatternPairs;
     private PatternSearcher patternSearcher;
     private NamedEntityRecognition nerTagger;
@@ -117,8 +115,8 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
 
                 if (leftContext.containsSuitableEntity(domainUri) && rightContext.containsSuitableEntity(rangeUri)) {
 
-                    if ( leftContext.getSuitableEntityDistance(domainUri) <= CONTEXT_LOOK_AHEAD 
-                            && rightContext.getSuitableEntityDistance(rangeUri) <= CONTEXT_LOOK_AHEAD ) {
+                    if ( leftContext.getSuitableEntityDistance(domainUri) <= NLPediaSettings.getIntegerSetting("contextLookAhead") 
+                            && rightContext.getSuitableEntityDistance(rangeUri) <= NLPediaSettings.getIntegerSetting("contextLookAhead") ) {
                         
                         String subjectLabel = leftContext.getSuitableEntity(domainUri);
                         String objectLabel = rightContext.getSuitableEntity(rangeUri);
@@ -143,8 +141,8 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
                 if (leftContext.containsSuitableEntity(rangeUri) && rightContext.containsSuitableEntity(domainUri)) {
                     
                     // left context contains object, right context contains subject
-                    if (leftContext.getSuitableEntityDistance(rangeUri) <= CONTEXT_LOOK_AHEAD 
-                            && rightContext.getSuitableEntityDistance(domainUri) <= CONTEXT_LOOK_AHEAD ) {
+                    if (leftContext.getSuitableEntityDistance(rangeUri) <= NLPediaSettings.getIntegerSetting("contextLookAhead") 
+                            && rightContext.getSuitableEntityDistance(domainUri) <= NLPediaSettings.getIntegerSetting("contextLookAhead") ) {
                         
                         String objectLabel = leftContext.getSuitableEntity(rangeUri);
                         String subjectLabel = rightContext.getSuitableEntity(domainUri);
