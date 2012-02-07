@@ -18,6 +18,9 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.AbstractMachineLearningTrainingFile;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry.MachineLearningTrainingFileEntry;
@@ -49,6 +52,15 @@ public class PatternScoreManager {
     public MachineLearningTrainingFile createNeuronalNetworkTrainingFile(Set<PatternMapping> mappings) {
         
         List<MachineLearningTrainingFileEntry> trainingFileEntries = new ArrayList<MachineLearningTrainingFileEntry>();
+        List<String> featureNames = new ArrayList<String>();
+        
+        // get the feature names but only those which are activated for the current language
+        for ( FeatureExtractor featureextractor : FeatureFactory.getInstance().getFeatureExtractorMap().values() )
+            for ( Feature feature : featureextractor.getHandeledFeatures() )
+                if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) )
+                    if ( feature.isUseForPatternLearning() ) 
+                        featureNames.add(feature.getName());
+                 
 
         // collect all the patterns
         for (PatternMapping mapping : mappings) {
@@ -65,7 +77,7 @@ public class PatternScoreManager {
         }
         
         // create a file which contains all possible patterns, but there are shuffled so that we don't evaluate to much pattern of the same mapping
-        return MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFile(trainingFileEntries);
+        return MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFile(featureNames, trainingFileEntries);
     }
     
     /**
@@ -107,7 +119,12 @@ public class PatternScoreManager {
         
         List<MachineLearningTrainingFileEntry> entries = new ArrayList<MachineLearningTrainingFileEntry>();
         
-        for (String line : FileUtil.readFileInList(filepath, encoding)) {
+        // we need to skip the first line because it contains the feature names and no entries
+        List<String> lines = FileUtil.readFileInList(filepath, encoding);
+        List<String> featureNames = Arrays.asList(lines.get(0).split("\t"));
+        
+        for (String line : lines.subList(1, lines.size())) {
+            
             if ( line.trim().isEmpty() ) continue;
             
             String[] lineParts = line.split(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
@@ -129,7 +146,7 @@ public class PatternScoreManager {
                     featureValues,
                     manual));
         }
-        return MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFile(entries);
+        return MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFile(featureNames, entries);
     }
     
     public static void main(String[] args) {

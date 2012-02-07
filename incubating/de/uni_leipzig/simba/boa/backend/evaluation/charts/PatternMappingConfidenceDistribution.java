@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.boa.evaluation.charts;
+package de.uni_leipzig.simba.boa.backend.evaluation.charts;
 
 import static com.googlecode.charts4j.Color.BLACK;
 import static com.googlecode.charts4j.Color.BLUEVIOLET;
