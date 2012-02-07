@@ -116,49 +116,54 @@ public class SurfaceFormGenerator {
 		String domain		= objectPropertyBackgroundKnowledge.getRdfsDomain();
 		String range		= objectPropertyBackgroundKnowledge.getRdfsRange();
 		
+		Set<String> subjectSurfaceForms = new HashSet<String>();
+		subjectSurfaceForms.add(objectPropertyBackgroundKnowledge.getSubjectLabel());
+		
 		// we found labels for the subject in the surface form file
 		if ( this.urisToLabels.containsKey(subjectUri) ) {
 			
-			Set<String> surfaceForms = urisToLabels.get(subjectUri);
-			surfaceForms.add(objectPropertyBackgroundKnowledge.getSubjectLabel());
-			logger.debug("Found " + surfaceForms.size() + " for subject in spotlight");
+		    subjectSurfaceForms = urisToLabels.get(subjectUri);
+			logger.debug("Found " + subjectSurfaceForms.size() + " for subject in spotlight");
 			for (String classUri : classIndexer.getSuperClassUrisForClassUri(Constants.DBPEDIA_ONTOLOGY_PREFIX + domain, NLPediaSettings.BOA_LANGUAGE)) {
 
 			    if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("en") ) {
-			        surfaceForms.add("he");
-			        surfaceForms.add("she");
+			        subjectSurfaceForms.add("he");
+			        subjectSurfaceForms.add("she");
 			    }
 			    if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("de") ) {
-                    surfaceForms.add("er");
-                    surfaceForms.add("sie");
+			        subjectSurfaceForms.add("er");
+			        subjectSurfaceForms.add("sie");
                 }
-			    surfaceForms.add(this.classUrisToLabels.get(classUri));
+			    subjectSurfaceForms.add(this.classUrisToLabels.get(classUri));
 			}
-			logger.debug("Found " + surfaceForms.size() + " at all!");
-			surfaceForms.removeAll(Arrays.asList("", null));
-			objectPropertyBackgroundKnowledge.setSubjectSurfaceForms(surfaceForms);
+			logger.debug("Found " + subjectSurfaceForms.size() + " at all!");
+			subjectSurfaceForms.removeAll(Arrays.asList("", null));
+			objectPropertyBackgroundKnowledge.setSubjectSurfaceForms(subjectSurfaceForms);
 		}
+		
+		Set<String> objectSurfaceForms = new HashSet<String>();
+		objectSurfaceForms.add(objectPropertyBackgroundKnowledge.getObjectLabel());
+		
 		// we found labels for the object in the surface form file
 		if ( this.urisToLabels.containsKey(objectUri) ) {
 			
-			Set<String> surfaceForms = urisToLabels.get(objectUri);
-			surfaceForms.add(objectPropertyBackgroundKnowledge.getObjectLabel());
-			logger.debug("Found " + surfaceForms.size() + " for subject in spotlight");
+		    objectSurfaceForms = urisToLabels.get(objectUri);
+			logger.debug("Found " + objectSurfaceForms.size() + " for subject in spotlight");
 			for (String classUri : classIndexer.getSuperClassUrisForClassUri(Constants.DBPEDIA_ONTOLOGY_PREFIX + range, NLPediaSettings.BOA_LANGUAGE)) {
 				
 			    if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("en") ) {
-                    surfaceForms.add("he");
-                    surfaceForms.add("she");
+			        objectSurfaceForms.add("he");
+			        objectSurfaceForms.add("she");
                 }
 			    if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("de") ) {
-                    surfaceForms.add("er");
-                    surfaceForms.add("sie");
+			        objectSurfaceForms.add("er");
+			        objectSurfaceForms.add("sie");
                 }
-				surfaceForms.add(this.classUrisToLabels.get(classUri));
+			    objectSurfaceForms.add(this.classUrisToLabels.get(classUri));
 			}
-			logger.debug("Found " + surfaceForms.size() + " at all");
-			surfaceForms.removeAll(Arrays.asList("", null));
-			objectPropertyBackgroundKnowledge.setObjectSurfaceForms(surfaceForms);
+			logger.debug("Found " + objectSurfaceForms.size() + " at all");
+			objectSurfaceForms.removeAll(Arrays.asList("", null));
+			objectPropertyBackgroundKnowledge.setObjectSurfaceForms(objectSurfaceForms);
 		}
 		return objectPropertyBackgroundKnowledge;
 	}
