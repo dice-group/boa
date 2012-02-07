@@ -143,11 +143,11 @@ public class SurfaceFormGenerator {
 			logger.debug("Found " + surfaceForms.size() + " for subject in spotlight");
 			for (String classUri : classIndexer.getSuperClassUrisForClassUri(Constants.DBPEDIA_ONTOLOGY_PREFIX + range, NLPediaSettings.BOA_LANGUAGE)) {
 				
-			    if ( classUri.equalsIgnoreCase("Person")) {
+			    if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("en") ) {
                     surfaceForms.add("he");
                     surfaceForms.add("she");
                 }
-			    if ( classUri.equalsIgnoreCase("Person")) {
+			    if ( classUri.equalsIgnoreCase("Person") && NLPediaSettings.BOA_LANGUAGE.equals("de") ) {
                     surfaceForms.add("er");
                     surfaceForms.add("sie");
                 }
