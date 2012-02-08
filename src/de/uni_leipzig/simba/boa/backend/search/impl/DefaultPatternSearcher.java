@@ -44,8 +44,6 @@ import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
  */
 public class DefaultPatternSearcher implements PatternSearcher {
 
-    private static NLPediaSetup s = new NLPediaSetup(true);
-    
 	private final static int MAX_PATTERN_CHUNK_LENGTH  = NLPediaSettings.getIntegerSetting("maxPatternLenght");
 	private final static int MIN_PATTERN_CHUNK_LENGTH  = NLPediaSettings.getIntegerSetting("minPatternLenght");
 	private final static int MAX_NUMBER_OF_DOCUMENTS   = NLPediaSettings.getIntegerSetting("maxNumberOfDocuments");
@@ -174,23 +172,24 @@ public class DefaultPatternSearcher implements PatternSearcher {
         
         // collect all sentences
         for ( int n = 0 ; n < hits.length; n++)             
-            sentences.add(LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "sentence"));
+            sentences.add(hits[n].doc + " " + LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "sentence"));
 
         // go through all sentences and surface form combinations 
         for ( String sentence : sentences ) {
+            
+            int splitPosition   = sentence.indexOf(" ");
+            Integer sentenceId  = Integer.valueOf(sentence.substring(0, splitPosition));
+            sentence            = sentence.substring(splitPosition + 1);
+            
             for (String firstLabel : firstLabels) {
                 for (String secondLabel : secondLabels) {
+                    
                     List<String> currentMatches = findMatchedText(sentence, firstLabel, secondLabel);
                     
                     if (!currentMatches.isEmpty()) {
-                        this.addSearchResults(results, currentMatches, backgroundKnowledge, sentence);
+                        
+                        this.addSearchResults(results, currentMatches, backgroundKnowledge, sentence, sentenceId);
                     }
-                    
-                    Iterator<String> iter	= currentMatches.iterator();
-                    while(iter.hasNext()){
-                    	System.out.println("MATCH: " + iter.next());
-                    }
-
                 }
             }
         }
@@ -245,7 +244,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	 * @param hit
 	 * @param isSubject
 	 */
-	private void addSearchResults(List<SearchResult> results, List<String> currentMatches, BackgroundKnowledge backgroundKnowledge, String sentenceNormalCase) {
+	private void addSearchResults(List<SearchResult> results, List<String> currentMatches, BackgroundKnowledge backgroundKnowledge, String sentenceNormalCase, Integer sentenceId) {
 
 		for (String match : currentMatches) {
 
@@ -256,7 +255,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
 				SearchResult result = new SearchResult();
 				result.setProperty(backgroundKnowledge.getPropertyUri());
-				result.setSentence(sentenceNormalCase);
+				result.setSentence(sentenceId);
 				result.setNaturalLanguageRepresentation(nlr);
 				result.setRdfsRange(backgroundKnowledge.getRdfsRange());
 				result.setRdfsDomain(backgroundKnowledge.getRdfsDomain());

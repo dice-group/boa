@@ -78,7 +78,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	/**
 	 * 
 	 */
-	private List<String> foundInSentences;
+	private List<Integer> foundInSentences;
 	
 	/**
 	 * 
@@ -118,7 +118,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		this.patternMappings = new ArrayList<PatternMapping>();
 		this.numberOfOccurrences = 1;
 		this.useForPatternEvaluation = true;
-		this.setFoundInSentences(new ArrayList<String>());
+		this.setFoundInSentences(new ArrayList<Integer>());
 		this.features = new HashMap<Feature,Double>();
 	}
 
@@ -471,7 +471,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	/**
      * @return the foundInSentences
      */
-    public List<String> getFoundInSentences() {
+    public List<Integer> getFoundInSentences() {
 
         return foundInSentences;
     }
@@ -479,7 +479,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
     /**
      * @param foundInSentences the foundInSentences to set
      */
-    public void setFoundInSentences(List<String> foundInSentences) {
+    public void setFoundInSentences(List<Integer> foundInSentences) {
 
         this.foundInSentences = foundInSentences;
     }

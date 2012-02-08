@@ -11,7 +11,7 @@ public class SearchResult {
 	private String firstLabel;
 	private String secondLabel;
 	private String posTags;
-	private String sentence;
+	private Integer sentenceId;
 	
 	/**
 	 * @return the property
@@ -154,18 +154,18 @@ public class SearchResult {
 	}
 
     /**
-     * @return the sentence
+     * @return the sentenceId
      */
-    public String getSentence() {
+    public Integer getSentence() {
 
-        return sentence;
+        return sentenceId;
     }
 
     /**
-     * @param sentence the sentence to set
+     * @param sentenceId the sentenceId to set
      */
-    public void setSentence(String sentence) {
+    public void setSentence(Integer sentenceId) {
 
-        this.sentence = sentence;
+        this.sentenceId = sentenceId;
     }
 }

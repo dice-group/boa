@@ -98,7 +98,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 			String label1			= searchResult.getFirstLabel();
 			String label2			= searchResult.getSecondLabel();
 			String posTagged		= searchResult.getPosTags();
-			String sentence		    = searchResult.getSentence();
+			Integer sentence	    = searchResult.getSentence();
 
 			// next line is for the same property
 			if ( propertyUri.equals(currentProperty) ) {
