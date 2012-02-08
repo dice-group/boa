@@ -30,9 +30,15 @@
 		</path>
 	</target>
 	
+	<!-- ==================== delete build dir ==================== -->
+	
+	<target name="clean">
+	        <delete dir="${build.dir}"/>
+	</target>
+	
 	<!-- ==================== run boa ==================== -->
 
-	<target name="boa" depends="init,build">
+	<target name="boa" depends="clean,init,build">
 	        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
 	            <classpath refid="master-classpath"/>
 	        </javac>

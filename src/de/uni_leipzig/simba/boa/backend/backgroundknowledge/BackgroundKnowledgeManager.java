@@ -62,7 +62,7 @@ public class BackgroundKnowledgeManager {
 		
 		List<BackgroundKnowledge> backgroundKnowledge = new ArrayList<BackgroundKnowledge>();
 
-		for ( File file : FileUtils.listFiles(new File(directory), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE) ) {
+		for ( File file : FileUtils.listFiles(new File(directory), HiddenFileFilter.VISIBLE, null) ) {
 			
 			backgroundKnowledge.addAll(this.getBackgroundKnowledge(file.getAbsolutePath(), isObjectProperty));
 		}
