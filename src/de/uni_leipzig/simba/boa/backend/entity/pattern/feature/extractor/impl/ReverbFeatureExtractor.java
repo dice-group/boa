@@ -32,6 +32,7 @@ import edu.washington.cs.knowitall.extractor.mapper.SentenceLengthFilter;
 import edu.washington.cs.knowitall.extractor.mapper.SentenceStartFilter;
 import edu.washington.cs.knowitall.nlp.ChunkedSentence;
 import edu.washington.cs.knowitall.nlp.ChunkedSentenceReader;
+import edu.washington.cs.knowitall.nlp.OpenNlpSentenceChunker;
 import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
 import edu.washington.cs.knowitall.util.DefaultObjects;
 
@@ -45,6 +46,7 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 	
 	private ReVerbExtractor extractor;
 	private ReVerbConfFunction scoreFunc;
+	private OpenNlpSentenceChunker chunker;
 	
 	private NLPediaLogger logger                = new NLPediaLogger(ReverbFeatureExtractor.class);
     private int maxNumberOfEvaluationSentences  = 100;
@@ -60,6 +62,7 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 	        searcher    = LuceneIndexHelper.getIndexSearcher(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH);
             extractor   = new ReVerbExtractor();
             scoreFunc   = new ReVerbConfFunction();
+            chunker     = new OpenNlpSentenceChunker();
         }
         catch (IOException e) {
             
@@ -84,22 +87,18 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 			
 			try {
 			
-				// let ReVerb create the chunked sentences
-				for (ChunkedSentence sent : this.createDefaultSentenceReader(sentence).getSentences()) {
-					
-					// and extract all binary relations
-					for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
+				// and extract all binary relations
+				for (ChunkedBinaryExtraction extr : extractor.extract(chunker.chunkSentence(sentence))) {
 
-						double score = scoreFunc.getConf(extr);
-						if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
-						    
-							// we only want to add scores of relations, which are substring of our relations
-							// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
-							if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pair.getPattern().getNaturalLanguageRepresentation()) ) {
-								
-								scores.add(score);
-								relations.add(extr.getRelation().toString());
-							}
+					double score = scoreFunc.getConf(extr);
+					if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
+					    
+						// we only want to add scores of relations, which are substring of our relations
+						// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
+						if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pair.getPattern().getNaturalLanguageRepresentation()) ) {
+							
+							scores.add(score);
+							relations.add(extr.getRelation().toString());
 						}
 					}
 				}
@@ -110,12 +109,6 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
                 this.logger.error(error, e);
                 throw new RuntimeException(error, e);
 			}
-            catch (IOException e) {
-                
-                String error = "Reverb-IOException: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\"";
-                this.logger.error(error, e);
-                throw new RuntimeException(error, e);
-            }
 			catch (NullPointerException e) {
                 
                 String error = "OpenNLP-NullPointerException: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\" and sentence: " + sentence;
@@ -132,16 +125,5 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 		// update the pattern
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("REVERB"), score >= 0 ? score : 0); // -1 is not useful for confidence
 		pair.getPattern().setGeneralizedPattern(StringUtil.getLongestSubstring(relations));
-	}
-
-	private ChunkedSentenceReader createDefaultSentenceReader(String sentence) throws IOException {
-
-		SentenceExtractor extractor = new SentenceExtractor();
-		extractor.addMapper(new BracketsRemover());
-		extractor.addMapper(new SentenceEndFilter());
-		extractor.addMapper(new SentenceStartFilter());
-		extractor.addMapper(SentenceLengthFilter.minFilter(4));
-		ChunkedSentenceReader reader = new ChunkedSentenceReader(new StringReader(sentence), extractor);
-		return reader;
 	}
 }
