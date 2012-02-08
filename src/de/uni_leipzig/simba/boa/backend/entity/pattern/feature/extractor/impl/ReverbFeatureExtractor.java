@@ -12,6 +12,7 @@ import org.apache.lucene.store.Directory;
 
 import de.danielgerber.math.MathUtil;
 import de.danielgerber.string.StringUtil;
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
@@ -45,7 +46,9 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 	private ReVerbExtractor extractor;
 	private ReVerbConfFunction scoreFunc;
 	
-	private NLPediaLogger logger = new NLPediaLogger(ReverbFeatureExtractor.class);
+	private NLPediaLogger logger                = new NLPediaLogger(ReverbFeatureExtractor.class);
+    private int maxNumberOfEvaluationSentences  = 100;
+    private IndexSearcher searcher;
 
 	/**
 	 * init the ReVerb-Toolkit
@@ -54,6 +57,7 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 
 	    try {
             
+	        searcher    = LuceneIndexHelper.getIndexSearcher(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH);
             extractor   = new ReVerbExtractor();
             scoreFunc   = new ReVerbConfFunction();
         }
@@ -69,11 +73,14 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 	@Override
 	public void score(PatternMappingPatternPair pair) {
 	    
-		Set<Double> scores		= new HashSet<Double>();
-		Set<String> relations	= new HashSet<String>();
+		Set<Double> scores    = new HashSet<Double>();
+		Set<String> relations = new HashSet<String>();
+		
+		List<String> sentences = LuceneIndexHelper.getFieldValueByIds(this.searcher, pair.getPattern().getFoundInSentences(), "sentence");
+		sentences = sentences.size() >= this.maxNumberOfEvaluationSentences  ? sentences.subList(0, this.maxNumberOfEvaluationSentences) : sentences;
 		
 		// for all sentences we found the pattern in
-		for (String sentence : pair.getPattern().getFoundInSentences()) {
+		for (String sentence : sentences) {
 			
 			try {
 			
@@ -111,9 +118,14 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
             }
 			catch (NullPointerException e) {
                 
-                String error = "OpenNLP-NullPpinterException: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\"";
+                String error = "OpenNLP-NullPointerException: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\" and sentence: " + sentence;
                 this.logger.error(error, e);
             }
+			catch (Exception e) {
+			    
+			    String error = "Unknown-Exception: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\"" + "\" and sentence: " + sentence;
+                this.logger.fatal(error, e);
+			}
 		}
 		
 		double score = MathUtil.getAverage(scores);

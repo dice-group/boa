@@ -196,10 +196,10 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 				// create new background knowledge and generate the surface forms 
 				ObjectPropertyBackgroundKnowledge objectBackgroundKnowledge = new ObjectPropertyBackgroundKnowledge();
 				objectBackgroundKnowledge.setSubjectUri(solution.get("s").toString().replace(de.uni_leipzig.simba.boa.backend.Constants.DBPEDIA_RESOURCE_PREFIX, ""));
-				objectBackgroundKnowledge.setSubjectLabel(subjectLabel);
+				objectBackgroundKnowledge.setSubjectLabel(subjectLabel.replaceAll("\\(.+?\\)", "").trim());
 				
 				objectBackgroundKnowledge.setObjectUri(solution.get("o").toString().replace(de.uni_leipzig.simba.boa.backend.Constants.DBPEDIA_RESOURCE_PREFIX, ""));
-				objectBackgroundKnowledge.setObjectLabel(objectLabel);
+				objectBackgroundKnowledge.setObjectLabel(objectLabel.replaceAll("\\(.+?\\)", "").trim());
 				
 				objectBackgroundKnowledge.setPropertyUri(property.getUri().replace(de.uni_leipzig.simba.boa.backend.Constants.DBPEDIA_ONTOLOGY_PREFIX, ""));
 				objectBackgroundKnowledge.setRdfsRange(property.getRdfsRange().replace(de.uni_leipzig.simba.boa.backend.Constants.DBPEDIA_ONTOLOGY_PREFIX, ""));
