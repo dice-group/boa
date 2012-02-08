@@ -439,7 +439,7 @@ public class XXX {
 					// only use the current mapping to find the maximum
 					else {
 						
-						maximum = FeatureHelper.calculateLocalMaximum(mapping, feature);
+						maximum = FeatureHelper.getLocalMaximum(mapping, feature);
 					}
 					return value / maximum;
 				}
