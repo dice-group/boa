@@ -6,7 +6,9 @@ package de.uni_leipzig.simba.boa.backend.lucene;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
@@ -130,9 +132,9 @@ public class LuceneIndexHelper {
      * @param indexSearcher
      * @return
      */
-    public static List<String> getFieldValueByIds(IndexSearcher searcher, List<Integer> ids, String fieldname) {
+    public static Set<String> getFieldValueByIds(IndexSearcher searcher, Set<Integer> ids, String fieldname) {
 
-        List<String> sentences = new ArrayList<String>();
+        Set<String> sentences = new HashSet<String>();
         for (Integer id : ids) {
 
             sentences.add(getFieldValueByDocId(searcher, id, fieldname));

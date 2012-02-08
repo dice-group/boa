@@ -2,6 +2,7 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,35 +52,17 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 	private NLPediaLogger logger                = new NLPediaLogger(ReverbFeatureExtractor.class);
     private int maxNumberOfEvaluationSentences  = 100;
     private IndexSearcher searcher;
+    private boolean initialized = false;
 
-	/**
-	 * init the ReVerb-Toolkit
-	 */
-	public ReverbFeatureExtractor() {
-
-	    try {
-            
-	        searcher    = LuceneIndexHelper.getIndexSearcher(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH);
-            extractor   = new ReVerbExtractor();
-            scoreFunc   = new ReVerbConfFunction();
-            chunker     = new OpenNlpSentenceChunker();
-        }
-        catch (IOException e) {
-            
-            e.printStackTrace();
-            String error = "Could not load ReVerb";
-            logger.fatal(error, e);
-            throw new RuntimeException(error, e);
-        }
-	}
-	
 	@Override
 	public void score(PatternMappingPatternPair pair) {
+	    
+	    if ( !this.initialized ) this.init();
 	    
 		Set<Double> scores    = new HashSet<Double>();
 		Set<String> relations = new HashSet<String>();
 		
-		List<String> sentences = LuceneIndexHelper.getFieldValueByIds(this.searcher, pair.getPattern().getFoundInSentences(), "sentence");
+		List<String> sentences = new ArrayList<String>(LuceneIndexHelper.getFieldValueByIds(this.searcher, pair.getPattern().getFoundInSentences(), "sentence"));
 		sentences = sentences.size() >= this.maxNumberOfEvaluationSentences  ? sentences.subList(0, this.maxNumberOfEvaluationSentences) : sentences;
 		
 		// for all sentences we found the pattern in
@@ -126,4 +109,24 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("REVERB"), score >= 0 ? score : 0); // -1 is not useful for confidence
 		pair.getPattern().setGeneralizedPattern(StringUtil.getLongestSubstring(relations));
 	}
+
+    private void init() {
+
+        try {
+            
+            searcher    = LuceneIndexHelper.getIndexSearcher(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH);
+            extractor   = new ReVerbExtractor();
+            scoreFunc   = new ReVerbConfFunction();
+            chunker     = new OpenNlpSentenceChunker();
+        }
+        catch (IOException e) {
+            
+            e.printStackTrace();
+            String error = "Could not load ReVerb";
+            logger.fatal(error, e);
+            throw new RuntimeException(error, e);
+        }
+        
+        this.initialized = true;
+    }
 }

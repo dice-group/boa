@@ -25,6 +25,7 @@ import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfi
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry.MachineLearningTrainingFileEntry;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.factory.MachineLearningTrainingFileFactory;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 
 /**
@@ -33,6 +34,8 @@ import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationM
  */
 public class PatternScoreManager {
 
+    private NLPediaLogger logger = new NLPediaLogger(PatternScoreManager.class);
+    
     /**
      * 
      * @param filepath
@@ -51,21 +54,22 @@ public class PatternScoreManager {
      */
     public MachineLearningTrainingFile createNeuronalNetworkTrainingFile(Set<PatternMapping> mappings) {
         
-        List<MachineLearningTrainingFileEntry> trainingFileEntries = new ArrayList<MachineLearningTrainingFileEntry>();
-        List<String> featureNames = new ArrayList<String>();
+        List<MachineLearningTrainingFileEntry> trainingFileEntries  = new ArrayList<MachineLearningTrainingFileEntry>();
+        List<String> featureNames                                   = new ArrayList<String>();
         
         // get the feature names but only those which are activated for the current language
-        for ( FeatureExtractor featureextractor : FeatureFactory.getInstance().getFeatureExtractorMap().values() )
-            for ( Feature feature : featureextractor.getHandeledFeatures() )
-                if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) )
-                    if ( feature.isUseForPatternLearning() ) 
-                        featureNames.add(feature.getName());
-                 
+        for ( Feature feature : FeatureFactory.getInstance().getHandeldFeatures() )
+            if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) )
+                if ( feature.isUseForPatternLearning() ) 
+                    featureNames.add(feature.getName());
+        
+        this.logger.info("Finished generation of feature names");
 
         // collect all the patterns
         for (PatternMapping mapping : mappings) {
             for (Pattern pattern : mapping.getPatterns() ) {
                 
+                this.logger.debug("Generation of training example: " + mapping.getProperty().getUri() + "/" + pattern.getNaturalLanguageRepresentation());
                 trainingFileEntries.add(MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFileEntry(
                                                                                             mapping.getProperty().getUri(),
                                                                                             pattern.getNaturalLanguageRepresentation(),
