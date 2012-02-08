@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -179,34 +180,45 @@ public class DefaultPatternSearcher implements PatternSearcher {
         for ( String sentence : sentences ) {
             for (String firstLabel : firstLabels) {
                 for (String secondLabel : secondLabels) {
+                    List<String> currentMatches = findMatchedText(sentence, firstLabel, secondLabel);
                     
-                    String sentenceLowerCase    = sentence.toLowerCase();
-                    List<String> currentMatches = new ArrayList<String>();
-                    
-                    // subject comes first
-                    String[] match1 = StringUtils.substringsBetween(sentenceLowerCase, firstLabel, secondLabel);
-                    if (match1 != null) {
-
-                        for (int j = 0; j < match1.length; j++) 
-                            currentMatches.add("?D? " + match1[j].trim() + " ?R?");
-                    }
-                    // object comes first
-                    String[] match2 = StringUtils.substringsBetween(sentenceLowerCase, secondLabel, firstLabel);
-                    if (match2 != null) {
-
-                        for (int j = 0; j < match2.length; j++) 
-                            currentMatches.add("?R? " + match2[j].trim() + " ?D?");
-                    }
                     if (!currentMatches.isEmpty()) {
-                        
                         this.addSearchResults(results, currentMatches, backgroundKnowledge, sentence);
                     }
+                    
+                    Iterator<String> iter	= currentMatches.iterator();
+                    while(iter.hasNext()){
+                    	System.out.println("MATCH: " + iter.next());
+                    }
+
                 }
             }
         }
 		logger.debug("Found " + results.size() + " results!");
 		
 		return results;
+	}
+	
+	protected List<String> findMatchedText(String sentence, String firstLabel, String secondLabel){
+		String sentenceLowerCase    = sentence.toLowerCase();
+		List<String> currentMatches = new ArrayList<String>();
+		
+        // subject comes first
+        String[] match1 = StringUtils.substringsBetween(sentenceLowerCase, firstLabel, secondLabel);
+        if (match1 != null) {
+
+            for (int j = 0; j < match1.length; j++) 
+                currentMatches.add("?D? " + match1[j].trim() + " ?R?");
+        }
+        // object comes first
+        String[] match2 = StringUtils.substringsBetween(sentenceLowerCase, secondLabel, firstLabel);
+        if (match2 != null) {
+
+            for (int j = 0; j < match2.length; j++) 
+                currentMatches.add("?R? " + match2[j].trim() + " ?D?");
+        }
+
+        return currentMatches;
 	}
 	
 	private ScoreDoc[] searchIndexWithoutFilter(Query q, int maxNumberOfDocuments) {
