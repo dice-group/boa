@@ -29,6 +29,7 @@ public class FeatureFactory {
 	 */
 	private Map<String,FeatureExtractor> featureExtractorMap = new HashMap<String,FeatureExtractor>();
 	private Map<String,Feature> featureMap = new HashMap<String,Feature>();
+	private static Set<Feature> handeledfeatures;
 	
 	/**
 	 * don't allow construction of this factory 
@@ -144,11 +145,14 @@ public class FeatureFactory {
      */
     public Set<Feature> getHandeldFeatures() {
 
-        Set<Feature> features = new HashSet<Feature>();
-        for (FeatureExtractor extractor : featureExtractorMap.values()) {
+        if ( handeledfeatures == null ) {
             
-            features.addAll(extractor.getHandeledFeatures());
+            handeledfeatures = new HashSet<Feature>();
+            for (FeatureExtractor extractor : featureExtractorMap.values()) {
+                
+                handeledfeatures.addAll(extractor.getHandeledFeatures());
+            }
         }
-        return features;
+        return handeledfeatures;
     }
 }

@@ -32,11 +32,6 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	/**
 	 * 
 	 */
-	private Map<Integer,Pattern> patternMap;
-	
-	/**
-	 * 
-	 */
 	private Property property;
 	
 	/**
@@ -59,7 +54,6 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 		
 		this.property	= new Property(uri, label, range, domain, "");
 		this.patterns	= new HashSet<Pattern>();
-		this.patternMap	= new HashMap<Integer,Pattern>();
 	}
 
 	/**
@@ -72,7 +66,6 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 
 		this.property = property;
 		this.patterns = new HashSet<Pattern>();
-		this.patternMap	= new HashMap<Integer,Pattern>();
 	}
 
 	/**
@@ -109,7 +102,6 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	public PatternMapping addPattern(Pattern pattern) {
 		
 		this.patterns.add(pattern);
-		this.patternMap.put(pattern.getNaturalLanguageRepresentation().hashCode(), pattern);
 		return this;
 	}
 	
@@ -167,19 +159,6 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 		builder.append(patterns.size());
 		builder.append("]");
 		return builder.toString();
-	}
-
-	/**
-	 * This method returns the pattern with the specified natural language representation
-	 * if this pattern is present in the current list of patterns for this mapping, else it 
-	 * will return null. 
-	 * 
-	 * @param naturalLanguageRepresentation - the natural language representation of the pattern to search for
-	 * @return the pattern or null if no such pattern was found
-	 */
-	public Pattern getPatternByNaturalLanguageRepresentation(int patternHashCode) { 
-		
-		return this.patternMap.get(patternHashCode);
 	}
 
 	/**

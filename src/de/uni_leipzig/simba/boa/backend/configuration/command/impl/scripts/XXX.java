@@ -434,7 +434,7 @@ public class XXX {
 					// take every mapping into account to find the maximum value
 					if ( feature.isNormalizeGlobaly() ) {
 						
-						maximum = FeatureHelper.calculateGlobalMaximum(feature);
+						maximum = FeatureHelper.getGlobalMaximum(feature);
 					}
 					// only use the current mapping to find the maximum
 					else {

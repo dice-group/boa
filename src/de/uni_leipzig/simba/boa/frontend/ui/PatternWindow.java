@@ -396,29 +396,29 @@ public class PatternWindow extends Window {
 		}
 		
 		String pattern = this.pattern.getNaturalLanguageRepresentationWithoutVariables();
-		Iterator<String> iter = this.pattern.getFoundInSentences().iterator();
+//		Iterator<String> iter = this.pattern.getFoundInSentences().iterator();
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("<h2>Pattern \"" + this.pattern.getNaturalLanguageRepresentation() + "\" learned from:</h2>");
 
 		int i = 1;
-		while ( iter.hasNext() && i < 11 ) {
-			
-			String sentence = iter.next();
-			
-			// replace the pattern between the entities
-			sentence = sentence.replaceFirst(pattern, "<span style=\"color: red;\">"+pattern+"</span>");
-			
-			// replace the entities
-			for (String learnedPair : this.pattern.getLearnedFrom().keySet() ) {
-				
-				String[] pair =  learnedPair.split("-;-");
-				sentence = sentence.replaceAll(pair[0], "<span style=\"color: green;\">"+pair[0]+"</span>");
-				sentence = sentence.replaceAll(pair[1], "<span style=\"color: green;\">"+pair[1]+"</span>");
-			}
-			builder.append("<b>("+i++ + ")</b> " + sentence + "<br/>");
-			if (iter.hasNext()) builder.append("<hr/>");
-		}
+//		while ( iter.hasNext() && i < 11 ) {
+//			
+//			String sentence = iter.next();
+//			
+//			// replace the pattern between the entities
+//			sentence = sentence.replaceFirst(pattern, "<span style=\"color: red;\">"+pattern+"</span>");
+//			
+//			// replace the entities
+//			for (String learnedPair : this.pattern.getLearnedFrom().keySet() ) {
+//				
+//				String[] pair =  learnedPair.split("-;-");
+//				sentence = sentence.replaceAll(pair[0], "<span style=\"color: green;\">"+pair[0]+"</span>");
+//				sentence = sentence.replaceAll(pair[1], "<span style=\"color: green;\">"+pair[1]+"</span>");
+//			}
+//			builder.append("<b>("+i++ + ")</b> " + sentence + "<br/>");
+//			if (iter.hasNext()) builder.append("<hr/>");
+//		}
 		return builder.toString();
 	}
 	
