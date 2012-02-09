@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.TreeSet;
 
 import com.vaadin.terminal.ThemeResource;
@@ -424,8 +425,9 @@ public class PatternWindow extends Window {
 	
 	private String buildTab3Content(){
 		
-		Set<String> sentences = PatternUtil.exactQueryIndex(BoaFrontendApplication.CURRENT_INDEX_DIR, this.pattern, 10);
-		
+//		Set<String> sentences = PatternUtil.exactQueryIndex(BoaFrontendApplication.CURRENT_INDEX_DIR, this.pattern, 10);
+		Set<String> sentences = new HashSet<String>();
+	    
 		StringBuilder builder = new StringBuilder();
 		builder.append("<h2>Search for label \""+ this.pattern.getNaturalLanguageRepresentation()+"\" in the index:</h2>");
 		
