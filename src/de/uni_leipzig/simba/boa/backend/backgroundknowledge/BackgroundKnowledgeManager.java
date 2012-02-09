@@ -130,7 +130,7 @@ public class BackgroundKnowledgeManager {
 		    final String surfaceForm = part;
 		    if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength")) {
                 
-		        subjectLabels.add(surfaceForm);
+		        subjectLabels.add(" " + surfaceForm + " ");
             }
 		}
 		subjectLabels.add(subjectLabel);
@@ -148,7 +148,7 @@ public class BackgroundKnowledgeManager {
 	        final String surfaceForm = part;
 	        if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength")) {
 	            
-	            objectLabels.add(surfaceForm);
+	            objectLabels.add(" " + surfaceForm + " ");
 	        }
 	    }
 	    objectLabels.add(objectLabel);
