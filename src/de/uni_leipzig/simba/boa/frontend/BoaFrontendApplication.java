@@ -73,7 +73,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 			Panel p = new Panel();
 			// setze linken teil auf die modelle
 			horizontalSplitPanel.setFirstComponent(rdfTree);
-			// in den rechten teil kommt die erklŠrung
+			// in den rechten teil kommt die erklï¿½rung
 			horizontalSplitPanel.setSecondComponent(p);
 		}
 		else if ( source == this.databasesButton ) {
@@ -82,7 +82,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 			p.addComponent(new Label("Hier kann man sich die Patterns anschauen"));
 			// setze linken teil auf die modelle
 			horizontalSplitPanel.setFirstComponent(tree);			
-			// in denrechten teil kommt die erklŠrung
+			// in denrechten teil kommt die erklï¿½rung
 			horizontalSplitPanel.setSecondComponent(p);
 		}
 	}
@@ -115,7 +115,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				gridLayout.addComponent(rdfsDomainLabel, 1, 0);
 				gridLayout.setComponentAlignment(rdfsDomainLabel, Alignment.MIDDLE_LEFT);
 				
-				Link rdfsDomainLink = new Link(pm.getRdfsDomain(), new ExternalResource(pm.getRdfsDomain()));
+				Link rdfsDomainLink = new Link(pm.getProperty().getRdfsDomain(), new ExternalResource(pm.getProperty().getRdfsDomain()));
 				gridLayout.addComponent(rdfsDomainLink, 2, 0);
 				gridLayout.setComponentAlignment(rdfsDomainLink, Alignment.MIDDLE_LEFT);
 				
@@ -123,7 +123,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 				gridLayout.addComponent(rdfsRangeLabel, 3, 0);
 				gridLayout.setComponentAlignment(rdfsRangeLabel, Alignment.MIDDLE_RIGHT);
 				
-				Link rdfsRangeLink = new Link(pm.getRdfsRange(), new ExternalResource(pm.getRdfsRange()));
+				Link rdfsRangeLink = new Link(pm.getProperty().getRdfsRange(), new ExternalResource(pm.getProperty().getRdfsRange()));
 				gridLayout.addComponent(rdfsRangeLink, 4, 0);
 				gridLayout.setComponentAlignment(rdfsRangeLink, Alignment.MIDDLE_LEFT);
 				
@@ -161,7 +161,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 		this.setMainWindow(new Window("Boa Frontend"));
 		this.setTheme("boa");
 		
-		this.tree = new DatabaseNavigationTree(this);
+		this.tree = new DatabaseNavigationTree(this, null); // TODO FIXs
 		this.rdfTree = new RdfModelTree(this);
 		
 		VerticalLayout layout = new VerticalLayout();
