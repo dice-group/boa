@@ -20,6 +20,7 @@ import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.DatatypePropertyBackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.ObjectPropertyBackgroundKnowledge;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
@@ -127,7 +128,10 @@ public class BackgroundKnowledgeManager {
 		for (String part : parts[2].toLowerCase().split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
 		    
 		    final String surfaceForm = part;
-		    subjectLabels.add(surfaceForm);
+		    if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength")) {
+                
+		        subjectLabels.add(surfaceForm);
+            }
 		}
 		subjectLabels.add(subjectLabel);
 		subjectLabels.removeAll(Arrays.asList("", null));
@@ -142,7 +146,10 @@ public class BackgroundKnowledgeManager {
 	    for (String part : parts[6].toLowerCase().split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
 	        
 	        final String surfaceForm = part;
-	        objectLabels.add(surfaceForm);
+	        if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength")) {
+	            
+	            objectLabels.add(surfaceForm);
+	        }
 	    }
 	    objectLabels.add(objectLabel);
 	    objectLabels.removeAll(Arrays.asList("", null));

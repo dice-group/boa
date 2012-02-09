@@ -71,7 +71,14 @@ public class SurfaceFormGenerator {
 		for ( String line : surfaceForms ) {
 			
 			String[] lineParts = line.split("\t");
-			this.urisToLabels.put(lineParts[0], new HashSet<String>(Arrays.asList(Arrays.copyOfRange(lineParts, 1, lineParts.length))));
+			String[] surfaceFormsPart = Arrays.copyOfRange(lineParts, 1, lineParts.length);
+			Set<String> filteredSurfaceForms = new HashSet<String>();
+			
+			for ( String surfaceForm : surfaceFormsPart) {
+			    
+			    if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength") ) filteredSurfaceForms.add(surfaceForm);
+			}
+			this.urisToLabels.put(lineParts[0], filteredSurfaceForms);
 		}
 //		// initialize the class labels which can also be used a sort of coreference resolution mechanism
 //		for ( String classLabel : classLabels ){
