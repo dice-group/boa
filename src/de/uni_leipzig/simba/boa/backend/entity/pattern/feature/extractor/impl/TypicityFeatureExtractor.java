@@ -160,7 +160,7 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 	    }
 	    catch (java.lang.IllegalArgumentException e) {
 	        
-	        this.logger.error("Could not create context!", e);
+	        this.logger.debug("Could not create context!", e);
 	    }
 	    return context;
     }

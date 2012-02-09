@@ -56,7 +56,7 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 			// do feature score with respect to each pattern mapping
 			for (PatternMappingPatternPair pair : patternMappingPatterns) {
 				
-				this.logger.debug(feature.getClass().getSimpleName() + "/" + this.name + "for: " + pair.getMapping().getProperty().getUri() + " / " + pair.getPattern().getNaturalLanguageRepresentation());
+				this.logger.debug(feature.getClass().getSimpleName() + "/" + this.name + ": " + pair.getMapping().getProperty().getUri() + " / " + pair.getPattern().getNaturalLanguageRepresentation());
 				feature.score(pair);
 				this.progress++;
 			}
