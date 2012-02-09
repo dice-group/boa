@@ -24,9 +24,9 @@ public class PrintJvmMemoryTimerTask extends TimerTask {
     public void run() {
 
         this.logger.info("##### Heap utilization statistics #####");
-        this.logger.info("Used Memory:\t"     + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / NLPediaSettings.MEGABYTE);
-        this.logger.info("Free Memory:\t"     + Runtime.getRuntime().freeMemory() / NLPediaSettings.MEGABYTE);
-        this.logger.info("Total Memory:\t"    + Runtime.getRuntime().totalMemory() / NLPediaSettings.MEGABYTE);
-        this.logger.info("Max Memory:\t"      + Runtime.getRuntime().maxMemory() / NLPediaSettings.MEGABYTE);
+        this.logger.info("Used Memory:\t\t"     + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / NLPediaSettings.MEGABYTE + "MB");
+        this.logger.info("Free Memory:\t\t"     + Runtime.getRuntime().freeMemory() / NLPediaSettings.MEGABYTE + "MB");
+        this.logger.info("Total Memory:\t"    + Runtime.getRuntime().totalMemory() / NLPediaSettings.MEGABYTE + "MB");
+        this.logger.info("Max Memory:\t\t"      + Runtime.getRuntime().maxMemory() / NLPediaSettings.MEGABYTE + "MB");
     }
 }

@@ -274,11 +274,6 @@ public class DefaultPatternSearcher implements PatternSearcher {
 					result.setSecondLabel(subjectLabel);
 				}
 				result.setPosTags(this.posTagger.getAnnotations(result.getNaturalLanguageRepresentationWithoutVariables()));
-				
-				BufferedFileWriter writer =  FileUtil.openWriter("/Users/gerb/searchResults.txt", "UTF-8", WRITER_WRITE_MODE.APPEND);
-		        writer.write(result.toString() + " " + sentenceId + " " + sentenceNormalCase);
-		        writer.close();
-				
 				results.add(result);
 			}
 		}
