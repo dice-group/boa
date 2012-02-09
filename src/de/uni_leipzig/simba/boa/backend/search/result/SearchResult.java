@@ -121,19 +121,7 @@ public class SearchResult {
 	public String toString() {
 
 		StringBuilder builder = new StringBuilder();
-		builder.append("SearchResult [property=");
-		builder.append(property);
-		builder.append(", naturalLanguageRepresentation=");
-		builder.append(naturalLanguageRepresentation);
-		builder.append(", rdfsRange=");
-		builder.append(rdfsRange);
-		builder.append(", rdfsDomain=");
-		builder.append(rdfsDomain);
-		builder.append(", firstLabel=");
-		builder.append(firstLabel);
-		builder.append(", secondLabel=");
-		builder.append(secondLabel);
-		builder.append("]");
+		builder.append(property + ": <" + firstLabel + "> <" + naturalLanguageRepresentation + "> <" + secondLabel + "> .");
 		return builder.toString();
 	}
 	

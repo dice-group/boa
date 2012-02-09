@@ -422,9 +422,8 @@ public class XXX {
 	
 	private double normalizeFeature(Feature feature, PatternMapping mapping, Double value) {
 
-		if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) ) {
-			
-			// exclude everything which is not activated
+        // exclude everything which is not activated
+		if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) )
 			if ( feature.isUseForPatternLearning() ) {
 				
 				// non zero to one values have to be normalized
@@ -449,7 +448,7 @@ public class XXX {
 					return value;
 				}
 			}
-		}
+		
 		return 0;
 	}
 }
