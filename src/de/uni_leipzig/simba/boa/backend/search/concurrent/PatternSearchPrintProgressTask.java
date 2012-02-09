@@ -45,7 +45,7 @@ public class PatternSearchPrintProgressTask extends TimerTask {
 						"(" + patternSearchThread.getNumberDone() + "/" + patternSearchThread.getNumberTotal() + ")");
 			}
 		}
-		this.logger.info(Integer.valueOf(format.format((totalProgress / totalNumber) * 100)) + "% (" + totalProgress + "/" + totalNumber + ")");
+		this.logger.info(Integer.valueOf(format.format(((double) totalProgress / totalNumber) * 100)) + "% (" + totalProgress + "/" + totalNumber + ")");
 		this.logger.info("########################################");
 	}
 }
