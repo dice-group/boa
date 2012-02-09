@@ -26,6 +26,9 @@ import org.apache.lucene.search.TotalHitCountCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
 
+import de.danielgerber.file.BufferedFileWriter;
+import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
+import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -188,7 +191,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
                     
                     if (!currentMatches.isEmpty()) {
                         
-                        this.addSearchResults(results, currentMatches, backgroundKnowledge, sentence, sentenceId);
+                        this.addSearchResults(results, currentMatches, firstLabel, secondLabel, backgroundKnowledge, sentence, sentenceId);
                     }
                 }
             }
@@ -198,8 +201,9 @@ public class DefaultPatternSearcher implements PatternSearcher {
 		return results;
 	}
 	
-	protected List<String> findMatchedText(String sentence, String firstLabel, String secondLabel){
-		String sentenceLowerCase    = sentence.toLowerCase();
+	protected List<String> findMatchedText(final String sentence, final String firstLabel, final String secondLabel){
+		
+	    final String sentenceLowerCase    = sentence.toLowerCase();
 		List<String> currentMatches = new ArrayList<String>();
 		
         // subject comes first
@@ -244,7 +248,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	 * @param hit
 	 * @param isSubject
 	 */
-	private void addSearchResults(List<SearchResult> results, List<String> currentMatches, BackgroundKnowledge backgroundKnowledge, String sentenceNormalCase, Integer sentenceId) {
+	private void addSearchResults(List<SearchResult> results, List<String> currentMatches, String subjectLabel, String objectLabel, BackgroundKnowledge backgroundKnowledge, String sentenceNormalCase, Integer sentenceId) {
 
 		for (String match : currentMatches) {
 
@@ -262,14 +266,19 @@ public class DefaultPatternSearcher implements PatternSearcher {
 				// the subject of the triple is the domain of the property so,
 				// replace every occurrence with ?D?
 				if (nlr.startsWith("?D?")) {
-					result.setFirstLabel(backgroundKnowledge.getSubjectLabel());
-					result.setSecondLabel(backgroundKnowledge.getObjectLabel());
+					result.setFirstLabel(subjectLabel);
+					result.setSecondLabel(objectLabel);
 				}
 				else {
-					result.setFirstLabel(backgroundKnowledge.getObjectLabel());
-					result.setSecondLabel(backgroundKnowledge.getSubjectLabel());
+					result.setFirstLabel(objectLabel);
+					result.setSecondLabel(subjectLabel);
 				}
 				result.setPosTags(this.posTagger.getAnnotations(result.getNaturalLanguageRepresentationWithoutVariables()));
+				
+				BufferedFileWriter writer =  FileUtil.openWriter("/Users/gerb/searchResults.txt", "UTF-8", WRITER_WRITE_MODE.APPEND);
+		        writer.write(result.toString() + " " + sentenceId + " " + sentenceNormalCase);
+		        writer.close();
+				
 				results.add(result);
 			}
 		}
