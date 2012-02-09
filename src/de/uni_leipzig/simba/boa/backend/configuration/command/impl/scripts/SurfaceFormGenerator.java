@@ -76,7 +76,7 @@ public class SurfaceFormGenerator {
 			
 			for ( String surfaceForm : surfaceFormsPart) {
 			    
-			    if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength") ) filteredSurfaceForms.add(surfaceForm);
+			    if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength") ) filteredSurfaceForms.add(" " + surfaceForm + " ");
 			}
 			this.urisToLabels.put(lineParts[0], filteredSurfaceForms);
 		}

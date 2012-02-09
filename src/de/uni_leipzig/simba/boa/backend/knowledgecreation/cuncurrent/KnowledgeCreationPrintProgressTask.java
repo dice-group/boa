@@ -25,7 +25,9 @@ public class KnowledgeCreationPrintProgressTask extends TimerTask {
 
     @Override
     public void run() {
-
+        
+        this.logger.info("########################################");
+        
         for (Callable<Collection<Map<String, List<Triple>>>> knowledgeCreationCallable : this.callableList) {
 
             KnowledgeCreationCallable knowledgeCreationThread = (KnowledgeCreationCallable) knowledgeCreationCallable;
@@ -38,7 +40,7 @@ public class KnowledgeCreationPrintProgressTask extends TimerTask {
                         "(" + knowledgeCreationThread.getNumberDone() + "/" + knowledgeCreationThread.getNumberTotal() + ")");
             }
         }
-        this.logger.info("########################################################################################");
+        this.logger.info("########################################");
     }
 
 }
