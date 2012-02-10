@@ -7,7 +7,8 @@ import java.util.List;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.concurrent.BoaCallable;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
+import de.uni_leipzig.simba.boa.backend.search.PatternSearcherFactory;
 import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 
 /**
@@ -20,7 +21,7 @@ public class PatternSearchCallable extends BoaCallable<SearchResult>{
 	private final NLPediaLogger logger = new NLPediaLogger(PatternSearchCallable.class);
 	
 	private List<BackgroundKnowledge> backgroundKnowledgeList;
-	private DefaultPatternSearcher patternSearcher;
+	private PatternSearcher patternSearcher;
 	
 	public PatternSearchCallable(List<BackgroundKnowledge> backgroundKnowledge) {
 		
@@ -32,7 +33,7 @@ public class PatternSearchCallable extends BoaCallable<SearchResult>{
 
 	    // initialize the pattern searcher at thread execution
 	    // otherwise we would have X non running threads with an opened index
-	    this.patternSearcher = new DefaultPatternSearcher();
+	    this.patternSearcher = PatternSearcherFactory.getInstance().createDefaultPatternSearcher();
 	    
 		List<SearchResult> results = new ArrayList<SearchResult>();
 		

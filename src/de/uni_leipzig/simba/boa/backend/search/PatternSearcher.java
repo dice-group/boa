@@ -27,4 +27,6 @@ public interface PatternSearcher {
 	public Set<String> getExactMatchSentences(String keyphrase, int maxNumberOfDocuments);
 	
 	public Set<String> getExactMatchSentencesForLabels(String label1, String label2, int maxNumberOfDocuments);
+	
+	public void close();
 }
