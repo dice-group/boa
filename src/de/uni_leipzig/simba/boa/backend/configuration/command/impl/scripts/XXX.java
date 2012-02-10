@@ -422,9 +422,8 @@ public class XXX {
 	
 	private double normalizeFeature(Feature feature, PatternMapping mapping, Double value) {
 
-		if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) ) {
-			
-			// exclude everything which is not activated
+        // exclude everything which is not activated
+		if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) )
 			if ( feature.isUseForPatternLearning() ) {
 				
 				// non zero to one values have to be normalized
@@ -434,12 +433,12 @@ public class XXX {
 					// take every mapping into account to find the maximum value
 					if ( feature.isNormalizeGlobaly() ) {
 						
-						maximum = FeatureHelper.calculateGlobalMaximum(feature);
+						maximum = FeatureHelper.getGlobalMaximum(feature);
 					}
 					// only use the current mapping to find the maximum
 					else {
 						
-						maximum = FeatureHelper.calculateLocalMaximum(mapping, feature);
+						maximum = FeatureHelper.getLocalMaximum(mapping, feature);
 					}
 					return value / maximum;
 				}
@@ -449,7 +448,7 @@ public class XXX {
 					return value;
 				}
 			}
-		}
+		
 		return 0;
 	}
 }

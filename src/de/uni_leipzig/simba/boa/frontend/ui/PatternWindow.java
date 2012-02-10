@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.TreeSet;
 
 import com.vaadin.terminal.ThemeResource;
@@ -396,36 +397,37 @@ public class PatternWindow extends Window {
 		}
 		
 		String pattern = this.pattern.getNaturalLanguageRepresentationWithoutVariables();
-		Iterator<String> iter = this.pattern.getFoundInSentences().iterator();
+//		Iterator<String> iter = this.pattern.getFoundInSentences().iterator();
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("<h2>Pattern \"" + this.pattern.getNaturalLanguageRepresentation() + "\" learned from:</h2>");
 
 		int i = 1;
-		while ( iter.hasNext() && i < 11 ) {
-			
-			String sentence = iter.next();
-			
-			// replace the pattern between the entities
-			sentence = sentence.replaceFirst(pattern, "<span style=\"color: red;\">"+pattern+"</span>");
-			
-			// replace the entities
-			for (String learnedPair : this.pattern.getLearnedFrom().keySet() ) {
-				
-				String[] pair =  learnedPair.split("-;-");
-				sentence = sentence.replaceAll(pair[0], "<span style=\"color: green;\">"+pair[0]+"</span>");
-				sentence = sentence.replaceAll(pair[1], "<span style=\"color: green;\">"+pair[1]+"</span>");
-			}
-			builder.append("<b>("+i++ + ")</b> " + sentence + "<br/>");
-			if (iter.hasNext()) builder.append("<hr/>");
-		}
+//		while ( iter.hasNext() && i < 11 ) {
+//			
+//			String sentence = iter.next();
+//			
+//			// replace the pattern between the entities
+//			sentence = sentence.replaceFirst(pattern, "<span style=\"color: red;\">"+pattern+"</span>");
+//			
+//			// replace the entities
+//			for (String learnedPair : this.pattern.getLearnedFrom().keySet() ) {
+//				
+//				String[] pair =  learnedPair.split("-;-");
+//				sentence = sentence.replaceAll(pair[0], "<span style=\"color: green;\">"+pair[0]+"</span>");
+//				sentence = sentence.replaceAll(pair[1], "<span style=\"color: green;\">"+pair[1]+"</span>");
+//			}
+//			builder.append("<b>("+i++ + ")</b> " + sentence + "<br/>");
+//			if (iter.hasNext()) builder.append("<hr/>");
+//		}
 		return builder.toString();
 	}
 	
 	private String buildTab3Content(){
 		
-		Set<String> sentences = PatternUtil.exactQueryIndex(BoaFrontendApplication.CURRENT_INDEX_DIR, this.pattern, 10);
-		
+//		Set<String> sentences = PatternUtil.exactQueryIndex(BoaFrontendApplication.CURRENT_INDEX_DIR, this.pattern, 10);
+		Set<String> sentences = new HashSet<String>();
+	    
 		StringBuilder builder = new StringBuilder();
 		builder.append("<h2>Search for label \""+ this.pattern.getNaturalLanguageRepresentation()+"\" in the index:</h2>");
 		

@@ -11,7 +11,7 @@ public class SearchResult {
 	private String firstLabel;
 	private String secondLabel;
 	private String posTags;
-	private String sentence;
+	private Integer sentenceId;
 	
 	/**
 	 * @return the property
@@ -121,19 +121,7 @@ public class SearchResult {
 	public String toString() {
 
 		StringBuilder builder = new StringBuilder();
-		builder.append("SearchResult [property=");
-		builder.append(property);
-		builder.append(", naturalLanguageRepresentation=");
-		builder.append(naturalLanguageRepresentation);
-		builder.append(", rdfsRange=");
-		builder.append(rdfsRange);
-		builder.append(", rdfsDomain=");
-		builder.append(rdfsDomain);
-		builder.append(", firstLabel=");
-		builder.append(firstLabel);
-		builder.append(", secondLabel=");
-		builder.append(secondLabel);
-		builder.append("]");
+		builder.append(property + ": <" + firstLabel + "> <" + naturalLanguageRepresentation + "> <" + secondLabel + "> .");
 		return builder.toString();
 	}
 	
@@ -154,18 +142,18 @@ public class SearchResult {
 	}
 
     /**
-     * @return the sentence
+     * @return the sentenceId
      */
-    public String getSentence() {
+    public Integer getSentence() {
 
-        return sentence;
+        return sentenceId;
     }
 
     /**
-     * @param sentence the sentence to set
+     * @param sentenceId the sentenceId to set
      */
-    public void setSentence(String sentence) {
+    public void setSentence(Integer sentenceId) {
 
-        this.sentence = sentence;
+        this.sentenceId = sentenceId;
     }
 }

@@ -2,6 +2,7 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +13,7 @@ import org.apache.lucene.store.Directory;
 
 import de.danielgerber.math.MathUtil;
 import de.danielgerber.string.StringUtil;
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
@@ -31,6 +33,7 @@ import edu.washington.cs.knowitall.extractor.mapper.SentenceLengthFilter;
 import edu.washington.cs.knowitall.extractor.mapper.SentenceStartFilter;
 import edu.washington.cs.knowitall.nlp.ChunkedSentence;
 import edu.washington.cs.knowitall.nlp.ChunkedSentenceReader;
+import edu.washington.cs.knowitall.nlp.OpenNlpSentenceChunker;
 import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
 import edu.washington.cs.knowitall.util.DefaultObjects;
 
@@ -44,55 +47,41 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 	
 	private ReVerbExtractor extractor;
 	private ReVerbConfFunction scoreFunc;
+	private OpenNlpSentenceChunker chunker;
 	
-	private NLPediaLogger logger = new NLPediaLogger(ReverbFeatureExtractor.class);
+	private NLPediaLogger logger                = new NLPediaLogger(ReverbFeatureExtractor.class);
+    private int maxNumberOfEvaluationSentences  = 100;
+    private IndexSearcher searcher;
+    private boolean initialized = false;
 
-	/**
-	 * init the ReVerb-Toolkit
-	 */
-	public ReverbFeatureExtractor() {
-
-	    try {
-            
-            extractor   = new ReVerbExtractor();
-            scoreFunc   = new ReVerbConfFunction();
-        }
-        catch (IOException e) {
-            
-            e.printStackTrace();
-            String error = "Could not load ReVerb";
-            logger.fatal(error, e);
-            throw new RuntimeException(error, e);
-        }
-	}
-	
 	@Override
 	public void score(PatternMappingPatternPair pair) {
 	    
-		Set<Double> scores		= new HashSet<Double>();
-		Set<String> relations	= new HashSet<String>();
+	    if ( !this.initialized ) this.init();
+	    
+		Set<Double> scores    = new HashSet<Double>();
+		Set<String> relations = new HashSet<String>();
+		
+		List<String> sentences = new ArrayList<String>(LuceneIndexHelper.getFieldValueByIds(this.searcher, pair.getPattern().getFoundInSentences(), "sentence"));
+		sentences = sentences.size() >= this.maxNumberOfEvaluationSentences  ? sentences.subList(0, this.maxNumberOfEvaluationSentences) : sentences;
 		
 		// for all sentences we found the pattern in
-		for (String sentence : pair.getPattern().getFoundInSentences()) {
+		for (String sentence : sentences) {
 			
 			try {
 			
-				// let ReVerb create the chunked sentences
-				for (ChunkedSentence sent : this.createDefaultSentenceReader(sentence).getSentences()) {
-					
-					// and extract all binary relations
-					for (ChunkedBinaryExtraction extr : extractor.extract(sent)) {
+				// and extract all binary relations
+				for (ChunkedBinaryExtraction extr : extractor.extract(chunker.chunkSentence(sentence))) {
 
-						double score = scoreFunc.getConf(extr);
-						if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
-						    
-							// we only want to add scores of relations, which are substring of our relations
-							// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
-							if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pair.getPattern().getNaturalLanguageRepresentation()) ) {
-								
-								scores.add(score);
-								relations.add(extr.getRelation().toString());
-							}
+					double score = scoreFunc.getConf(extr);
+					if ( !Double.isInfinite(score) && !Double.isNaN(score) ) {
+					    
+						// we only want to add scores of relations, which are substring of our relations
+						// to avoid relation like "is" to appear in strings like "?R? district of Kent , ?D?" look for " relation "
+						if ( StringUtil.isSubstringOf(" " + extr.getRelation().toString() + " ", pair.getPattern().getNaturalLanguageRepresentation()) ) {
+							
+							scores.add(score);
+							relations.add(extr.getRelation().toString());
 						}
 					}
 				}
@@ -103,17 +92,16 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
                 this.logger.error(error, e);
                 throw new RuntimeException(error, e);
 			}
-            catch (IOException e) {
-                
-                String error = "Reverb-IOException: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\"";
-                this.logger.error(error, e);
-                throw new RuntimeException(error, e);
-            }
 			catch (NullPointerException e) {
                 
-                String error = "OpenNLP-NullPpinterException: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\"";
+                String error = "OpenNLP-NullPointerException: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\" and sentence: " + sentence;
                 this.logger.error(error, e);
             }
+			catch (Exception e) {
+			    
+			    String error = "Unknown-Exception: \"" + pair.getPattern().getNaturalLanguageRepresentation() + "\"" + "\" and sentence: " + sentence;
+                this.logger.fatal(error, e);
+			}
 		}
 		
 		double score = MathUtil.getAverage(scores);
@@ -122,14 +110,23 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 		pair.getPattern().setGeneralizedPattern(StringUtil.getLongestSubstring(relations));
 	}
 
-	private ChunkedSentenceReader createDefaultSentenceReader(String sentence) throws IOException {
+    private void init() {
 
-		SentenceExtractor extractor = new SentenceExtractor();
-		extractor.addMapper(new BracketsRemover());
-		extractor.addMapper(new SentenceEndFilter());
-		extractor.addMapper(new SentenceStartFilter());
-		extractor.addMapper(SentenceLengthFilter.minFilter(4));
-		ChunkedSentenceReader reader = new ChunkedSentenceReader(new StringReader(sentence), extractor);
-		return reader;
-	}
+        try {
+            
+            searcher    = LuceneIndexHelper.getIndexSearcher(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH);
+            extractor   = new ReVerbExtractor();
+            scoreFunc   = new ReVerbConfFunction();
+            chunker     = new OpenNlpSentenceChunker();
+        }
+        catch (IOException e) {
+            
+            e.printStackTrace();
+            String error = "Could not load ReVerb";
+            logger.fatal(error, e);
+            throw new RuntimeException(error, e);
+        }
+        
+        this.initialized = true;
+    }
 }

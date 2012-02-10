@@ -56,10 +56,6 @@ public class DetailedPatternIndexCreationModule extends DefaultPatternIndexCreat
         doc.add(new NumericField("learnedfrom",     Field.Store.YES, true).setIntValue(pattern.getLearnedFromPairs()));
         doc.add(new NumericField("maxlearnedfrom",  Field.Store.YES, true).setIntValue(pattern.getMaxLearnedFrom()));
 
-        for (String sentence : pattern.getFoundInSentences() ) {
-            
-            doc.add(new Field("found",              sentence, Field.Store.YES, Field.Index.NOT_ANALYZED));
-        }
         return doc;
     }
 }

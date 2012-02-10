@@ -35,6 +35,8 @@ public class PatternFeatureExtractionPrintProgressTask extends TimerTask {
     @Override
     public void run() {
 
+        this.logger.info("########################################");
+        
         for (Callable<Collection<PatternMappingPatternPair>> patternFeatureExtractionCallable : this.callableList) {
 
             PatternFeatureExtractionCallable patternFeatureExtractionThread = (PatternFeatureExtractionCallable) patternFeatureExtractionCallable;
@@ -47,6 +49,6 @@ public class PatternFeatureExtractionPrintProgressTask extends TimerTask {
                         "(" + patternFeatureExtractionThread.getNumberDone() + "/" + patternFeatureExtractionThread.getNumberTotal() + ")");
             }
         }
-        this.logger.info("########################################################################################");
+        this.logger.info("########################################");
     }
 }

@@ -2,9 +2,11 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -78,7 +80,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	/**
 	 * 
 	 */
-	private List<String> foundInSentences;
+	private Set<Integer> foundInSentences;
 	
 	/**
 	 * 
@@ -118,7 +120,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		this.patternMappings = new ArrayList<PatternMapping>();
 		this.numberOfOccurrences = 1;
 		this.useForPatternEvaluation = true;
-		this.setFoundInSentences(new ArrayList<String>());
+		this.setFoundInSentences(new HashSet<Integer>());
 		this.features = new HashMap<Feature,Double>();
 	}
 
@@ -471,7 +473,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	/**
      * @return the foundInSentences
      */
-    public List<String> getFoundInSentences() {
+    public Set<Integer> getFoundInSentences() {
 
         return foundInSentences;
     }
@@ -479,7 +481,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
     /**
      * @param foundInSentences the foundInSentences to set
      */
-    public void setFoundInSentences(List<String> foundInSentences) {
+    public void setFoundInSentences(Set<Integer> foundInSentences) {
 
         this.foundInSentences = foundInSentences;
     }
@@ -489,39 +491,37 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		List<Double> featureValues = new ArrayList<Double>();
 
 		// we do only want all activated features
-		for ( FeatureExtractor featureextractor : FeatureFactory.getInstance().getFeatureExtractorMap().values() ) {
-		    for ( Feature feature : featureextractor.getHandeledFeatures() ) {
-		        
-                if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) ) {
+	    for ( Feature feature : FeatureFactory.getInstance().getHandeldFeatures() ) {
+	        
+            if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) ) {
+                
+                // exclude everything which is not activated
+                if ( feature.isUseForPatternLearning() ) {
                     
-                    // exclude everything which is not activated
-                    if ( feature.isUseForPatternLearning() ) {
+                    // non zero to one values have to be normalized
+                    if ( !feature.isZeroToOneValue() ) {
                         
-                        // non zero to one values have to be normalized
-                        if ( !feature.isZeroToOneValue() ) {
-                            
-                            Double maximum = 0D;
-                            // take every mapping into account to find the maximum value
-                            if ( feature.isNormalizeGlobaly() ) {
+                        Double maximum = 0D;
+                        // take every mapping into account to find the maximum value
+                        if ( feature.isNormalizeGlobaly() ) {
 
-                                maximum = FeatureHelper.calculateGlobalMaximum(feature);
-                            }
-                            // only use the current mapping to find the maximum
-                            else {
-                                
-                                maximum = FeatureHelper.calculateLocalMaximum(mapping, feature);
-                            }
-                            featureValues.add(this.features.get(feature) / maximum);
+                            maximum = FeatureHelper.getGlobalMaximum(feature);
                         }
-                        // we dont need to normalize a 0-1 value
+                        // only use the current mapping to find the maximum
                         else {
                             
-                            featureValues.add(this.features.get(feature));
+                            maximum = FeatureHelper.getLocalMaximum(mapping, feature);
                         }
+                        featureValues.add(this.features.get(feature) / maximum);
                     }
-	            }
-		    }
-		}
+                    // we dont need to normalize a 0-1 value
+                    else {
+                        
+                        featureValues.add(this.features.get(feature));
+                    }
+                }
+            }
+	    }
 		return featureValues;
 	}
 }

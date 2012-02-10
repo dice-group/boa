@@ -13,6 +13,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.featurescoring.PatternScoreManager;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.AbstractMachineLearningTrainingFile;
@@ -95,16 +96,22 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 	 */
 	private void createOrUpdateMachineLearningTrainingFile() {
 
+	    // create the maximas beforehand, so we can use them as a cache
+	    FeatureHelper.createLocalMaxima(this.moduleInterchangeObject.getPatternMappings());
 	    MachineLearningTrainingFile file = null;
 	    
 	    if ( new File(MACHINE_LEARNING_TRAINING_FILE).exists() ) {
-	            
+	        
+	        this.logger.info("Updating network train file!");
 	        file = patternScoreManager.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8");
 	        file = patternScoreManager.updateNetworkTrainingFile(this.moduleInterchangeObject.getPatternMappings(), file);
+	        this.logger.info("Finished updating network train file!");
 	    }
 	    else {
 	        
+	        this.logger.info("Starting to create new network train file!");
 	        file = patternScoreManager.createNeuronalNetworkTrainingFile(this.moduleInterchangeObject.getPatternMappings());
+	        this.logger.info("Finished creation of new network train file");
 	    }
 	    patternScoreManager.writeNetworkTrainingFile(file, MACHINE_LEARNING_TRAINING_FILE);
     }

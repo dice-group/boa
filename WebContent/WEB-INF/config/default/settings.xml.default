@@ -31,6 +31,7 @@
                 <entry key="useRamDirectory"                                value="false"/>
                 <entry key="maxPatternLenght"                               value="10"/>
                 <entry key="minPatternLenght"                               value="1"/>
+                <entry key="surfaceFormMinimumLength"                       value="3"/>
                 <entry key="pos.tagger.model"                               value="training/pos/left3words-wsj-0-18.tagger"/>
                 
                <!-- ############### confidence measure ############### -->
