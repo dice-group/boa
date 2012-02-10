@@ -1,0 +1,183 @@
+private String createDatatypePropertyLabels(String objectLabel, String predicateType) throws ParseException, NumberFormatException, IOException {
+
+		StringBuffer labels = new StringBuffer();
+		
+		if ( predicateType.equals("null") ) {
+			
+			// test the string if it is empty, if yes then skip this triple 
+			String tempLabel = objectLabel.replaceAll("'|\"|,|-|\\.|/|~", "");
+			tempLabel = objectLabel.replace("none", "").replace("None", "").replace("see below", "");
+			if ( tempLabel.trim().isEmpty() ) throw new NumberFormatException();
+			
+			String ret = null;
+			
+			// try to parse as double
+			Double d = null;
+			try {
+				
+				d = Double.valueOf(objectLabel);
+			}
+			catch ( NumberFormatException nfe ) {}
+			if ( d != null ) {
+				
+				ret = createDatatypePropertyLabels(String.valueOf(d), "http://www.w3.org/2001/XMLSchema#double");
+			}
+			
+			// try to parse as an integer
+			Integer i = null;
+			try {
+				
+				i = Integer.valueOf(objectLabel);
+			}
+			catch (NumberFormatException nfe) {}
+			if ( i != null ) {
+				
+				ret = createDatatypePropertyLabels(String.valueOf(i), "http://www.w3.org/2001/XMLSchema#nonNegativeInteger");
+			}
+			
+			// not an integer nor a double -> it has to be string
+			if ( i == null && d == null ) {
+				
+				Set<String> surfaceForms = urisToLabels.get(objectLabel.replace(" ", "_"));
+				// replace whitespace with _ and try to get surface forms from the "index"
+				if ( surfaceForms != null ) {
+					
+					ret = StringUtils.join(surfaceForms, "_&_");
+				}
+				else {
+					ret = objectLabel;
+				}
+			}
+			labels.append(ret);
+		}
+		else if ( predicateType.equals("http://www.w3.org/2001/XMLSchema#double") ) {
+			
+			// make sure its a number
+			Double d = new Double(objectLabel);
+			Integer i = d.intValue();
+			
+			Set<String> variations = new HashSet<String>();
+			variations.add(String.valueOf(d));
+			variations.add(String.valueOf(i)); // rounded to integer
+			variations.add(String.valueOf(((i/5)*5))); // rounded down to next 5: 104 -> 100
+			variations.add(String.valueOf(((i/10)*10))); // rounded down to next 10
+			variations.add(new DecimalFormat("#.0").format(d));
+			variations.add(new DecimalFormat("#.00").format(d));
+			labels.append(StringUtils.join(variations, "_&_"));
+		}
+		else if ( predicateType.equals("http://www.w3.org/2001/XMLSchema#nonNegativeInteger") ) {
+			
+			labels.append(handleNonNegativeInteger(objectLabel));
+		}
+		else if ( predicateType.equals("http://www.w3.org/2001/XMLSchema#string") ) {
+			
+			labels.append(handleString(objectLabel));
+		}
+		else if ( predicateType.equals("http://www.w3.org/2001/XMLSchema#date") ) {
+			
+			String d = getDateString(objectLabel, "yyyy-MM-dd", "d");
+			String MM = getDateString(objectLabel, "yyyy-MM-dd", "MM");
+			String MMM = getDateString(objectLabel, "yyyy-MM-dd", "MMM");
+			String MMMM = getDateString(objectLabel, "yyyy-MM-dd", "MMMM");
+			String yy = getDateString(objectLabel, "yyyy-MM-dd", "yy");
+			String yyyy = getDateString(objectLabel, "yyyy-MM-dd", "yyyy");
+			
+			labels.append(d + getOrdinalFor(Integer.valueOf(d)) + " of " + MMMM + " " + yyyy).append("_&_").
+			append(d + " " + MMMM + " " + yyyy).append("_&_").
+			append(d + "." + MM + "." + yyyy).append("_&_").
+			append(d + "." + MM + "." + yy).append("_&_").
+			append(d + " " + MMM + " " + yyyy).append("_&_").
+			append(d + " " + MMMM  + " '" + yy).append("_&_").
+			append(d + " " + MMM  + " '" + yy).append("_&_").
+			append(MMM + " " + d  + " , " + yyyy).append("_&_").
+			append(MMMM + " " + yyyy).append("_&_").
+			append(MMM + " " + yyyy).append("_&_").
+			append(MMMM).append("_&_").
+			append(yyyy);
+		}
+		else {
+			
+			logger.error("There is something obiously wrong: " + objectLabel + "  " + predicateType);
+		}
+		
+		return labels.toString();
+	}
+	
+	private String handleString(String objectLabel) {
+
+		Set<String> variations = new HashSet<String>();
+		
+		// create some ngrams
+		NGramTokenizer ngt = new NGramTokenizer();
+		ngt.setDelimiters(" ");
+		ngt.setNGramMaxSize(2);
+		ngt.setNGramMinSize(2);
+		ngt.tokenize(objectLabel);
+		while (ngt.hasMoreElements())
+			variations.add(String.valueOf(ngt.nextElement()));
+		
+		Set<String> surfaceForms = urisToLabels.get(objectLabel.replace(" ", "_"));
+		// replace whitespace with _ and try to get surface forms from the "index"
+		if ( surfaceForms != null ) variations.addAll(surfaceForms);
+		
+		// for some labels there are multiple ones coded in divided by comma  
+		if (objectLabel.contains(",")) variations.addAll(Arrays.asList(objectLabel.split(",")));
+		
+		// sepcial cases
+		if (objectLabel.contains("C++") ) variations.add("C + +");
+		if (objectLabel.contains("C#") ) variations.add("C #");
+		
+		return StringUtils.join(variations, "_&_");
+	}
+
+	private String handleNonNegativeInteger(String parseCandidate) {
+
+		if ( parseCandidate.contains(".") ) parseCandidate = parseCandidate.replaceAll("\\.[0-9]+$", "");
+		Integer i = Integer.valueOf(parseCandidate);
+		Set<String> variations = new HashSet<String>();
+		if ( i == 1 ) variations.add("first");
+		if ( i == 2 ) variations.add("second");
+		if ( i == 3 ) variations.add("third");
+		if ( i == 4 ) variations.add("fourth");
+		if ( i == 5 ) variations.add("fifth");
+		if ( i > 0 && i < 32 ) variations.add(i + getOrdinalFor(i));
+		variations.add(i.toString());
+		variations.add(String.valueOf(((i/5)*5))); // rounded down to next 5: 104 -> 100
+		variations.add(String.valueOf(((i/10)*10))); // rounded down to next 10
+		if ( i > 100 ) variations.add(String.valueOf(((i/100)*100))); // rounded down to next 100
+		if ( i > 1000 )variations.add(String.valueOf(((i/1000)*1000))); // rounded down to next 1000
+		if ( i > 1000000 ) variations.add(String.format("%.1f", i / 1000000.0));
+		if ( i > 1000000 ) variations.add(String.format("%.0f", i / 1000000.0));
+		if ( i > 1000000000 ) variations.add(String.format("%.1f", i / 1000000000.0));
+		if ( i > 1000000000 ) variations.add(String.format("%.0f", i / 1000000000.0));
+		
+		return StringUtils.join(variations, "_&_");
+	}
+
+	private String getDateString(String dateString, String fromPattern, String toPattern) throws ParseException {
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(fromPattern);
+		Date date1 = simpleDateFormat.parse(dateString);
+		simpleDateFormat.applyPattern(toPattern);
+		return simpleDateFormat.format(date1);
+	}
+	
+	public String getOrdinalFor(int value) {
+
+		int hundredRemainder = value % 100;
+		int tenRemainder = value % 10;
+		if (hundredRemainder - tenRemainder == 10) {
+			return "th";
+		}
+
+		switch (tenRemainder) {
+		case 1:
+			return "st";
+		case 2:
+			return "nd";
+		case 3:
+			return "rd";
+		default:
+			return "th";
+		}
+	}

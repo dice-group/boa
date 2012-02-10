@@ -1,0 +1,155 @@
+################################ http://dbpedia.org/ontology/author #################################
+
+
+
+1.[Goodnight Moon] [Margaret Wise Brown]		[http://dbpedia.org/resource/Goodnight_Moon,http://dbpedia.org/resource/Margaret_Wise_Brown]
+
+[o] In 1947 `` Goodnight Moon '' written by Margaret Wise Brown and illustrated by Clement Hurd was published .
+
+
+
+
+2.[Point Blanc] [Anthony Horowitz]		[http://dbpedia.org/resource/Point_Blanc,http://dbpedia.org/resource/Anthony_Horowitz]
+
+[o] `` Point Blanc '' -LRB- North America , `` Point Blank '' -RRB- is the second book in the `` Alex Rider '' series , written by British author Anthony Horowitz .
+
+
+
+
+3.[Sprig Muslin] [Georgette Heyer]		[http://dbpedia.org/resource/Sprig_Muslin,http://dbpedia.org/resource/Georgette_Heyer]
+
+[o] `` Sprig Muslin '' is a Regency romance novel by Georgette Heyer .
+
+
+
+
+4.[The Spy Who Came in from the Cold] [John le Carré]		[http://dbpedia.org/resource/The_Spy_Who_Came_in_from_the_Cold,http://dbpedia.org/resource/John_le_Carr%C3%A9]
+
+[o] `` The Spy Who Came in from the Cold '' is a 1965 film adaptation of the novel of the same name by John le Carré .
+
+
+
+
+5.[The Vanishing Thieves] [Franklin W. Dixon]		[http://dbpedia.org/resource/The_Vanishing_Thieves,http://dbpedia.org/resource/Franklin_W._Dixon]
+
+[o] `` The Vanishing Thieves '' is the title of a Hardy Boys Digest novel , written by Franklin W. Dixon .
+
+
+
+
+6.[Cloudsplitter] [Russell Banks]		[http://dbpedia.org/resource/Cloudsplitter,http://dbpedia.org/resource/Russell_Banks]
+
+[o] He narrates Russell Banks ' novel about John Brown , `` Cloudsplitter '' .
+
+
+
+
+7.[The Two of Them] [Joanna Russ]		[http://dbpedia.org/resource/The_Two_of_Them,http://dbpedia.org/resource/Joanna_Russ]
+
+[o] `` The Two of Them '' is a feminist science fiction novel by Joanna Russ .
+
+
+
+
+8.[Fifth Business] [Robertson Davies]		[http://dbpedia.org/resource/Fifth_Business,http://dbpedia.org/resource/Robertson_Davies]
+
+[o] A brazen head plays an important role at the end of Robertson Davies ' novel `` Fifth Business '' .
+
+
+
+
+9.[The Penguin Guide to Jazz] [Brian Morton]		[http://dbpedia.org/resource/The_Penguin_Guide_to_Jazz,http://dbpedia.org/resource/Brian_Morton_%28Scottish_writer%29]
+
+[o] -LRB- Richard Cook & Brian Morton , `` The Penguin Guide to Jazz on CD '' -RRB- .
+
+
+
+
+10.[Blood Music] [Greg Bear]		[http://dbpedia.org/resource/Blood_Music_%28novel%29,http://dbpedia.org/resource/Greg_Bear]
+
+[o] `` Blood Music '' is a science fiction novel by Greg Bear -LRB- ISBN 0-7434-4496-5 -RRB- .
+
+
+
+
+11.[Six Characters in Search of an Author] [Luigi Pirandello]		[http://dbpedia.org/resource/Six_Characters_in_Search_of_an_Author,http://dbpedia.org/resource/Luigi_Pirandello]
+
+[o] One commonly cited precursor is Luigi Pirandello , especially `` Six Characters in Search of an Author '' .
+
+
+
+
+12.[The Year of Our War] [Steph Swainston]		[http://dbpedia.org/resource/The_Year_of_Our_War,http://dbpedia.org/resource/Steph_Swainston]
+
+[o] The fantasy novel `` The Year of Our War '' -LRB- 2004 -RRB- is the first book by British author Steph Swainston .
+
+
+
+
+13.[In Dubious Battle] [John Steinbeck]		[http://dbpedia.org/resource/In_Dubious_Battle,http://dbpedia.org/resource/John_Steinbeck]
+
+[o] `` In Dubious Battle '' is a novel by John Steinbeck , written in 1936 .
+
+
+
+
+14.[The Assistant] [Bernard Malamud]		[http://dbpedia.org/resource/The_Assistant_%28novel%29,http://dbpedia.org/resource/Bernard_Malamud]
+
+[o] `` The Assistant '' -LRB- 1957 , ISBN 0-374-50484-9 -RRB- is Bernard Malamud 's second novel .
+
+
+
+
+15.[The Crimson Flame] [Franklin W. Dixon]		[http://dbpedia.org/resource/The_Crimson_Flame,http://dbpedia.org/resource/Franklin_W._Dixon]
+
+[o] `` The Crimson Flame '' is the title of a Hardy Boys Digest novel , written by Franklin W. Dixon .
+
+
+
+
+16.[The Green Hills of Earth] [Robert A. Heinlein]		[http://dbpedia.org/resource/The_Green_Hills_of_Earth_%28short_story_collection%29,http://dbpedia.org/resource/Robert_A._Heinlein]
+
+[o] The Green Hills of Earth is a short story by Robert A. Heinlein .
+
+
+
+
+17.[The Emerald City of Oz] [L. Frank Baum]		[http://dbpedia.org/resource/The_Emerald_City_of_Oz,http://dbpedia.org/resource/L._Frank_Baum]
+
+[o] `` The Emerald City of Oz '' is the sixth of L. Frank Baum 's fourteen Land of Oz books .
+
+
+
+
+18.[LaTeX] [Leslie Lamport]		[http://dbpedia.org/resource/LaTeX,http://dbpedia.org/resource/Leslie_Lamport]
+
+[o] In 1985 , Patashnik created the bibliography-system , BibTeX , in collaboration with Leslie Lamport , the creator of LaTeX .
+
+
+
+
+19.[The Emperor] [Ryszard Kapuściński]		[http://dbpedia.org/resource/The_Emperor_%28book%29,http://dbpedia.org/resource/Ryszard_Kapu%C5%9Bci%C5%84ski]
+
+[o] `` The Emperor : Downfall of an Autocrat '' , published in 1978 , is Polish journalist Ryszard Kapuściński 's analysis of the decline and fall of Haile Selassie 's regime in Ethiopia .
+
+
+
+
+20.[Quartet in Autumn] [Barbara Pym]		[http://dbpedia.org/resource/Quartet_in_Autumn,http://dbpedia.org/resource/Barbara_Pym]
+
+[o] `` Quartet in Autumn '' is a novel by Barbara Pym , first published in 1977 and shortlisted for the Booker Prize .
+
+
+
+
+21.[A Perfect Stranger] [Danielle Steel]		[http://dbpedia.org/resource/A_Perfect_Stranger,http://dbpedia.org/resource/Danielle_Steel]
+
+[o] Danielle Steel 's A Perfect Stranger .
+
+
+
+
+
+
+
+

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="PipelineConfiguration" class="de.uni_leipzig.simba.boa.backend.pipeline.configuration.PipelineConfiguration">
+        
+        <property name="moduleInterchangeObject">
+            <ref bean="ModuleInterchangeObject"/>
+        </property>
+        
+        <property name="pipelineModules">
+            <list>
+                <ref bean="CreateDataDirectoryStructureModule"/>
+                <ref bean="DBpediaSpotlightDownloadModule"/>
+                <ref bean="DBpediaSpotlightSurfaceFormModule"/>
+
+<!--            Please note the Wikipedia Download and Extractor take a very long time -->
+<!--            depending on the dump you want to process. -->
+
+<!--                 <ref bean="WikipediaDownloadModule"/> -->
+<!--                 <ref bean="WikipediaExtractorModule"/> -->
+
+<!--                 <ref bean="ObjectPropertyBackgroundKnowledgeCollectorModule"/> -->
+<!--                 <ref bean="DatatypePropertyBackgroundKnowledgeCollectorModule"/> -->
+<!--                 <ref bean="DefaultWikiIndexingModule"/> -->
+<!--                 <ref bean="DefaultPatternSearchModule"/> -->
+<!--                 <ref bean="DefaultPatternFeatureExtractionModule"/> -->
+
+<!--            Please keep in mind that the scoring module needs human annotated input. -->
+<!--            So this module should not get started in the first iteration! -->
+
+<!--                 <ref bean="DefaultPatternScoringModule"/>  -->
+<!--                 <ref bean="DefaultKnowledgeCreationModule"/> -->
+<!--                 <ref bean="DefaultPatternIndexCreationModule"/> -->
+<!--                 <ref bean="DetailedPatternIndexCreationModule"/> -->
+<!--                 <ref bean="NTripleOutputGeneratorModule"/> -->
+<!--                 <ref bean="PlainTextTripleOutputGeneratorModule"/> -->
+
+<!--                 This is not default -->
+
+<!--                 <ref bean="KoreanWikiIndexingModule"/> -->
+            </list>
+        </property>
+    </bean>
+</beans>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <!-- ********** SETUP ********** -->
+    <bean id="NLPediaSettings"
+        class="de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings">
+        
+        <!-- base and data directory need to have a "/" (or "\" for windows) at the end -->
+        <property name="boaBaseDirectory" value="@BOA_BASE_DIRECTORY@"/>
+        <property name="boaDataDirectory" value="@BOA_DATA_DIRECTORY@"/>
+        <property name="boaLanguage" value="@BOA_LANGUAGE@"/>
+        
+        <property name="nlpediaSettings">
+            <map>
+        
+                <!-- ############### eval stuff ############### -->
+                <entry key="eval.output.file"                               value="evaluation/Evaluation.txt"/>
+                <entry key="top.n.eval.triples"                             value="100"/>
+            
+                <!-- ############### index stuff ############### -->
+                <entry key="rawSentenceDirectory"                           value="raw" />
+                <entry key="indexSentenceDirectory"                         value="index"/>
+                <entry key="ramBufferMaxSizeInMb"                           value="1000"/>
+                
+                <!-- ############### pattern search ############### -->
+                <entry key="maxNumberOfDocuments"                           value="10"/>
+                <entry key="numberOfSearchThreads"                          value="2"/>
+                <entry key="patternSearchThreadPoolSize"                    value="2"/>
+                <entry key="useRamDirectory"                                value="false"/>
+                <entry key="maxPatternLenght"                               value="10"/>
+                <entry key="minPatternLenght"                               value="1"/>
+                <entry key="pos.tagger.model"                               value="training/pos/left3words-wsj-0-18.tagger"/>
+                
+               <!-- ############### confidence measure ############### -->
+                <entry key="number.of.occurrence.threshold"                 value="3"/>
+                <entry key="number.of.unique.occurrence.threshold"          value="3"/>
+                <entry key="number.of.learned.pairs"                        value="3"/>
+                <entry key="maxNumberOfTypicityConfidenceMeasureDocuments"  value="10"/>
+                <entry key="maxmimumNumberOfTotalOccurrences"               value="100"/>
+                <entry key="numberOfFeatureExtractionsThreads"              value="4"/>
+                <entry key="patternFeatureExtractionThreadPoolSize"         value="4"/>
+                <entry key="wordnet.index.directory"                        value="training/wordnet/similarity"/>
+                <entry key="wordnet.database.directory"                     value="training/wordnet/database"/>
+                <entry key="reverbTrainingDirectory"                        value="training/reverb/"/>
+                <entry key="namendEntityRecognizerClassifier"               value="training/classifier/conll.closed.iob2.crf.ser.gz"/>
+
+                <!-- ############### neuronal network ############### -->
+                <entry key="neural.network.network.directory"               value="training/ml/en/wiki/"/>
+                <entry key="neuronal.network.n.fold.cross.validation"       value="10"/>
+                <entry key="neuronal.network.max.error"                     value="0.1"/>
+                <entry key="neuronal.network.error.decrement"               value="0.05"/>
+                <entry key="neuronal.network.min.error"                     value="0.05"/>
+                <entry key="neuronal.network.hidden.layer.ratio"            value="3"/>
+                <entry key="neuronal.network.maxEpochs"                     value="10000"/>
+                
+                <!-- ############### create knowledge ############### -->
+                <entry key="top.n.pattern"                                  value="100"/>
+                <entry key="knowledgeCreationThreadPoolSize"                value="2"/>
+                <entry key="number.of.create.knowledge.threads"             value="2"/>
+                <entry key="max.number.of.documents.generation"             value="3"/>
+                <entry key="contextLookAhead"                               value="5"/>
+                <entry key="ntriples.file.path"                             value="/Users/gerb/Development/workspaces/experimental/en_wiki_exp/rdf/"/>
+                <entry key="pattern.score.threshold.create.knowledge"       value="0"/>
+                <entry key="triple.score.threshold.create.knowledge"        value="0"/>
+                <entry key="score.threshold.write.nt.knowledge"             value="0.3"/>
+                <entry key="score.threshold.write.plaintext.knowledge"      value="0.3"/>
+                
+                <!-- ############### get background knowledge ############### -->
+                <entry key="dbpediaSparqlEndpoint"                          value="http://dbpedia.org/sparql"/>
+                <entry key="dbpediaDefaultGraph"                            value="http://dbpedia.org"/>
+                <entry key="sparqlQueryLimit"                               value="10"/>
+                <entry key="queryObjectProperties"                          value="true"/>
+                <entry key="queryDatatypeProperties"                        value="true"/>
+                <entry key="backgroundKnowledgeOutputFilePath"              value="backgroundknowledge"/>
+                <entry key="surfaceFormsTSV"                                value="backgroundknowledge/en_uri_surface_form.tsv"/>
+                
+                <!-- ############### other ############### -->
+                <entry key="question.answering.index"                       value="qa"/>
+                <entry key="patternMappingFolders"                          value="/Users/gerb/Development/workspaces/experimental/en_wiki_exp"/>
+                <entry key="spotlight.maxSurfaceFormLength"                 value="50"/>
+            </map>
+        </property> 
+    </bean>
+</beans>

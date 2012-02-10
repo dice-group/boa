@@ -1,0 +1,6 @@
+http://dbpedia.org/ontology/managerClub
+http://dbpedia.org/ontology/spouse
+http://dbpedia.org/ontology/leaderName
+http://dbpedia.org/ontology/author
+http://dbpedia.org/ontology/riverMouth
+http://dbpedia.org/ontology/architect

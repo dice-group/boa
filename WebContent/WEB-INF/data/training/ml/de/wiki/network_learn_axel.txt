@@ -1,0 +1,182 @@
+1.00000	0.52068	0.35342	0.96778	0.29539	0.76923	0.84615	0.38215	1	524	http://dbpedia.org/ontology/canton	?D? im Domleschg im schweizerischen Kanton ?R?	
+0.79342	0.63093	0.68682	0.48583	0.09591	0.64767	0.79447	0.92316	0	181	http://dbpedia.org/ontology/largestCity	?D? , einem Vorort von ?R?	
+1.00000	0.64956	0.48908	0.29224	0.12868	0.25806	0.26815	0.99884	0	576	http://dbpedia.org/ontology/deathPlace	?D? an der University of ?R?	
+0.79342	1.00000	1.00000	0.41956	0.30633	0.15176	0.22211	0.99928	0	729	http://dbpedia.org/ontology/musicalArtist	?D? '' von den ?R?	
+1.00000	0.36085	0.77371	0.95076	0.28355	0.92857	0.92857	0.61977	0	301	http://dbpedia.org/ontology/influenced	?D? , Johann Gottlieb Fichte , ?R?	
+0.79342	0.68261	0.75413	1.00000	0.39529	0.17735	0.13026	0.99971	1	339	http://dbpedia.org/ontology/musicalBand	?R? den Song `` ?D?	
+1.00000	1.00000	1.00000	1.00000	0.06066	0.72727	0.45455	0.85972	0	559	http://dbpedia.org/ontology/majorIsland	?R? , Föhr und ?D?	
+1.00000	1.00000	0.76496	0.38792	0.30633	0.14502	0.09265	0.99898	0	699	http://dbpedia.org/ontology/starring	?D? '' -RRB- mit ?R?	
+0.86966	0.77592	0.84463	0.62733	0.51258	0.52419	0.71505	0.95725	1	633	http://dbpedia.org/ontology/administrativeDistrict	?D? im oberbayerischen Landkreis ?R?	
+1.00000	0.35542	0.52656	0.28470	0.19183	0.59375	0.87500	0.73582	1	516	http://dbpedia.org/ontology/canton	?D? , im Kanton ?R?	
+0.79342	1.00000	1.00000	0.41956	0.30633	0.15075	0.21106	0.99928	0	345	http://dbpedia.org/ontology/musicalBand	?D? '' von den ?R?	
+1.00000	0.73795	0.67119	0.68308	0.13881	0.23810	0.04762	0.60197	1	707	http://dbpedia.org/ontology/department	?R? und Geschichte Arrondissement ?D?	
+0.86966	0.44211	0.55712	1.00000	0.08579	0.10121	0.47874	1.00000	1	212	http://dbpedia.org/ontology/arrondissement	?D? in der Nähe von ?R?	
+0.86966	1.00000	1.00000	0.50000	0.09591	0.27475	0.48788	1.00000	1	337	http://dbpedia.org/ontology/ceremonialCounty	?D? in der Grafschaft ?R?	
+1.00000	0.77398	0.33736	0.50000	0.04289	0.28571	0.57143	0.30103	0	366	http://dbpedia.org/ontology/neighboringMunicipality	?D? , Tschierv und ?R?	
+1.00000	1.00000	1.00000	1.00000	0.04289	0.90850	0.89542	1.00000	1	726	http://dbpedia.org/ontology/child	?R? , dem Sohn von ?D?	
+1.00000	1.00000	0.26416	0.29945	0.09591	0.71429	1.00000	0.30099	0	328	http://dbpedia.org/ontology/birthPlace	?D? - Universität in ?R?	
+0.79342	0.56458	1.00000	0.51591	0.40678	0.88800	0.71000	1.00000	0	322	http://dbpedia.org/ontology/birthPlace	?R? ; eigentlich `` ?D?	
+1.00000	1.00000	0.50000	0.53272	0.12868	0.25530	0.27851	0.99869	0	562	http://dbpedia.org/ontology/hometown	?D? der University of ?R?	
+1.00000	0.68261	0.52863	0.51869	0.06066	0.91742	0.96073	0.99956	1	565	http://dbpedia.org/ontology/spouse	?D? und dessen Ehefrau ?R?	
+1.00000	0.41007	0.78285	0.28413	0.12132	0.18350	0.86102	0.99041	0	747	http://dbpedia.org/ontology/capital	?D? mit Sitz in ?R?	
+1.00000	0.36673	0.56760	0.31842	0.09591	0.10120	0.40381	0.99971	0	582	http://dbpedia.org/ontology/deathPlace	?D? an die Universität ?R?	
+1.00000	0.52832	1.00000	0.38792	0.30633	0.37700	0.08900	1.00000	1	585	http://dbpedia.org/ontology/notableWork	?R? '' -RRB- von ?D?	
+1.00000	0.40149	0.30767	0.95791	0.50772	0.17647	0.04706	0.64474	1	254	http://dbpedia.org/ontology/isPartOf	?D? im Norden der chinesischen Provinz ?R?	
+1.00000	0.68261	0.58488	1.00000	0.15658	0.33205	0.52896	0.80605	1	338	http://dbpedia.org/ontology/ceremonialCounty	?D? in der englischen Grafschaft ?R?	
+0.86966	0.68261	0.73060	0.41956	0.32099	0.13718	0.14801	0.91463	0	735	http://dbpedia.org/ontology/musicalArtist	?D? `` von den ?R?	
+1.00000	0.28046	0.57268	0.65846	0.27784	0.07440	0.01969	0.88683	1	279	http://dbpedia.org/ontology/isPartOf	?D? in der niederländischen Provinz ?R?	
+1.00000	1.00000	0.74722	1.00000	0.62732	0.07545	0.20926	1.00000	0	333	http://dbpedia.org/ontology/sisterStation	?D? '' , `` ?R?	
+0.69737	0.47712	1.00000	1.00000	0.62732	0.12679	0.07464	0.99765	0	334	http://dbpedia.org/ontology/sisterStation	?R? '' und `` ?D?	
+1.00000	1.00000	0.68301	1.00000	0.17021	0.87399	0.84274	0.99942	1	572	http://dbpedia.org/ontology/spouse	?R? und seiner Frau ?D?	
+1.00000	1.00000	1.00000	1.00000	0.10507	0.39024	0.43902	1.00000	1	336	http://dbpedia.org/ontology/unitaryAuthority	?D? , einer Insel der ?R?	
+1.00000	0.54048	0.54048	0.46717	0.11349	0.39109	0.42574	1.00000	0	740	http://dbpedia.org/ontology/riverMouth	?R? und nördlich der ?D?	
+1.00000	0.68261	0.73249	0.50000	0.06066	0.32051	0.53526	0.83197	1	318	http://dbpedia.org/ontology/managerClub	?D? als Trainer bei ?R?	
+1.00000	0.79248	0.71241	0.63377	0.32099	0.07490	0.45951	1.00000	0	186	http://dbpedia.org/ontology/party	?D? von der `` ?R?	
+0.86966	1.00000	1.00000	1.00000	0.11349	0.28674	0.47312	1.00000	1	586	http://dbpedia.org/ontology/leftTributary	?R? , einem Nebenfluss des ?D?	
+1.00000	0.68261	1.00000	0.50000	0.04289	0.79459	0.01703	1.00000	0	319	http://dbpedia.org/ontology/managerClub	?R? als Nachfolger von ?D?	
+1.00000	0.36858	0.54951	0.62559	0.49481	0.73529	1.00000	0.51476	1	436	http://dbpedia.org/ontology/federalState	?D? im Landkreis Emmendingen in ?R?	
+1.00000	0.82709	0.26416	0.31692	0.07430	0.68468	0.86486	0.68297	0	321	http://dbpedia.org/ontology/birthPlace	?R? am Main bei ?D?	
+0.79342	0.27804	1.00000	1.00000	0.40678	0.88800	0.71000	1.00000	0	561	http://dbpedia.org/ontology/hometown	?R? ; eigentlich `` ?D?	
+1.00000	0.68261	1.00000	0.51869	0.04289	0.73821	0.88834	0.96938	1	551	http://dbpedia.org/ontology/ground	?D? ist ein Fußballverein aus ?R?	
+1.00000	0.68261	1.00000	0.51869	0.06066	0.98995	0.93970	0.76734	0	570	http://dbpedia.org/ontology/spouse	?R? und der Schauspielerin ?D?	
+1.00000	0.52863	0.61315	1.00000	0.19928	1.00000	1.00000	0.31727	0	297	http://dbpedia.org/ontology/influenced	?D? , Arthur Schopenhauer , Friedrich ?R?	
+1.00000	0.52680	0.22397	0.34761	0.06066	0.42169	0.46386	0.89924	0	655	http://dbpedia.org/ontology/administrativeDistrict	?D? und südlich von ?R?	
+0.86966	0.52863	0.61315	0.63384	0.19086	0.42857	0.85714	0.86080	0	306	http://dbpedia.org/ontology/influenced	?R? und Jean Paul ?D?	
+1.00000	1.00000	0.50000	1.00000	0.10356	0.34468	0.79149	0.79109	1	317	http://dbpedia.org/ontology/managerClub	?D? als Trainer beim ?R?	
+1.00000	1.00000	0.38776	0.50000	0.04289	0.00000	0.50000	0.36085	1	727	http://dbpedia.org/ontology/tenant	?D? ist das Baseballstadion der ?R?	
+1.00000	0.41007	0.29209	0.29448	0.47378	0.32096	0.34970	0.97620	0	759	http://dbpedia.org/ontology/capital	?R? und das Land ?D?	
+0.86966	0.56458	0.43083	0.29945	0.08579	0.86730	0.65605	0.99136	0	326	http://dbpedia.org/ontology/birthPlace	?D? , Erzbischof von ?R?	
+0.86966	0.36673	0.67828	0.31842	0.08579	0.86412	0.65605	0.99136	0	580	http://dbpedia.org/ontology/deathPlace	?D? , Erzbischof von ?R?	
+1.00000	0.25143	0.55287	0.32086	0.16050	0.62069	0.43103	0.59158	1	758	http://dbpedia.org/ontology/capital	?R? , die Hauptstadt von ?D?	
+0.86966	0.68261	0.52680	1.00000	0.39212	0.11538	0.61538	0.47705	0	730	http://dbpedia.org/ontology/musicalArtist	?D? '' -LRB- Original von ?R?	
+0.73933	0.69897	0.91631	1.00000	0.62732	0.07362	0.12474	0.99765	0	332	http://dbpedia.org/ontology/sisterStation	?D? '' und `` ?R?	
+1.00000	0.68261	0.75865	0.84743	0.38165	0.62037	0.16358	0.83766	0	553	http://dbpedia.org/ontology/ground	?R? -LRB- offiziell `` ?D?	
+1.00000	1.00000	0.38248	1.00000	0.34922	0.10000	0.76667	0.49705	0	697	http://dbpedia.org/ontology/starring	?D? '' -LRB- 2000 -RRB- mit ?R?	
+1.00000	0.84248	0.77371	0.63384	0.24265	0.90741	0.88889	0.91713	0	299	http://dbpedia.org/ontology/influenced	?D? und Georg Wilhelm ?R?	
+1.00000	0.71241	0.26416	1.00000	0.16008	1.00000	1.00000	0.20066	0	327	http://dbpedia.org/ontology/birthPlace	?R? am Main bei Theodor W. ?D?	
+1.00000	0.68261	0.52863	0.51869	0.09591	0.57905	0.53474	0.99956	1	564	http://dbpedia.org/ontology/spouse	?D? und seine Frau ?R?	
+1.00000	0.36858	0.69739	0.62559	0.49481	0.59574	0.95745	0.56049	1	497	http://dbpedia.org/ontology/federalState	?D? im Landkreis Demmin in ?R?	
+0.86966	0.73249	0.63241	0.48583	0.10507	0.89055	0.74627	0.77014	0	179	http://dbpedia.org/ontology/largestCity	?R? , im US-Bundesstaat ?D?	
+0.79342	0.69897	0.67119	1.00000	0.62732	0.20825	0.07545	1.00000	0	331	http://dbpedia.org/ontology/sisterStation	?R? '' , `` ?D?	
+1.00000	1.00000	1.00000	1.00000	0.04289	0.39320	0.25728	1.00000	1	703	http://dbpedia.org/ontology/inflow	?D? und damit in den ?R?	
+1.00000	0.78761	0.52832	0.31692	0.06066	0.97603	0.87671	1.00000	0	211	http://dbpedia.org/ontology/influencedBy	?R? und Heinrich von ?D?	
+1.00000	0.42832	1.00000	0.44416	0.11349	0.46953	0.28674	0.93852	1	742	http://dbpedia.org/ontology/riverMouth	?D? , einem Nebenfluss des ?R?	
+0.79342	0.53211	0.56591	0.29945	0.13564	0.12254	0.37965	0.98700	1	721	http://dbpedia.org/ontology/department	?D? in der Region ?R?	
+1.00000	0.36673	0.56760	0.36317	0.04289	1.00000	0.41667	0.46591	0	579	http://dbpedia.org/ontology/deathPlace	?D? , einem US-Senator von ?R?	
+0.86966	1.00000	0.73060	0.97141	0.40224	0.21719	0.38009	0.78200	0	343	http://dbpedia.org/ontology/musicalBand	?D? '' von The ?R?	
+1.00000	1.00000	1.00000	1.00000	0.06066	0.45455	0.72727	0.85972	0	558	http://dbpedia.org/ontology/majorIsland	?D? , Föhr und ?R?	
+1.00000	1.00000	1.00000	1.00000	0.16422	0.28452	0.50628	1.00000	1	310	http://dbpedia.org/ontology/borough	?D? im Stadtbezirk London Borough of ?R?	
+1.00000	1.00000	1.00000	1.00000	0.34922	0.31034	0.62069	1.00000	1	335	http://dbpedia.org/ontology/network	?D? '' des Senders ?R?	
+0.73933	1.00000	0.52680	0.83913	0.62732	0.02658	0.07362	0.99678	0	732	http://dbpedia.org/ontology/musicalArtist	?D? '' und `` ?R?	
+1.00000	0.36834	0.42791	0.66043	0.22116	0.16000	0.76000	0.47269	1	754	http://dbpedia.org/ontology/capital	?R? , der Hauptstadt des US-Bundesstaates ?D?	
+0.79342	0.35542	0.48250	0.27483	0.14859	0.28993	0.04705	0.98743	1	518	http://dbpedia.org/ontology/canton	?R? in der Gemeinde ?D?	
+0.79342	0.68261	0.52680	0.83913	0.62732	0.04427	0.07445	0.99913	0	346	http://dbpedia.org/ontology/musicalBand	?R? '' , `` ?D?	
+0.86966	0.35542	0.54567	0.29945	0.09591	0.16851	0.63892	1.00000	0	513	http://dbpedia.org/ontology/canton	?D? im Norden , ?R?	
+1.00000	0.83683	1.00000	1.00000	0.19183	0.69622	0.66995	0.92993	1	213	http://dbpedia.org/ontology/arrondissement	?R? und zum Kanton ?D?	
+1.00000	0.84248	0.66667	0.63384	0.24265	0.88889	0.90741	0.70549	0	199	http://dbpedia.org/ontology/influencedBy	?R? und Georg Wilhelm ?D?	
+0.69737	0.89824	1.00000	0.43022	0.12132	0.86102	0.18350	1.00000	1	316	http://dbpedia.org/ontology/administrativeCollectivity	?R? mit Sitz in ?D?	
+1.00000	0.98397	0.66667	0.63384	0.26208	1.00000	0.93443	0.72659	0	208	http://dbpedia.org/ontology/influencedBy	?R? und Johann Wolfgang von ?D?	
+0.79342	0.68261	0.52680	0.83913	0.62732	0.04427	0.11771	0.99913	0	731	http://dbpedia.org/ontology/musicalArtist	?R? '' , `` ?D?	
+1.00000	1.00000	0.23028	1.00000	0.12132	0.90000	0.10000	0.34713	0	374	http://dbpedia.org/ontology/neighboringMunicipality	?R? , Les Bayards , ?D?	
+1.00000	0.29209	0.63720	0.57353	0.45664	0.08308	0.27928	0.99986	1	549	http://dbpedia.org/ontology/writer	?R? den Film `` ?D?	
+0.86966	1.00000	0.52832	0.63384	0.26208	0.92308	1.00000	0.76925	0	201	http://dbpedia.org/ontology/influencedBy	?D? , Johann Wolfgang von ?R?	
+1.00000	0.88094	0.29988	0.68158	0.14645	0.12500	0.93750	0.41009	0	575	http://dbpedia.org/ontology/deathPlace	?D? Theatre Institute in ?R?	
+1.00000	0.29209	0.51422	0.30931	0.06066	0.64985	0.70623	0.84309	0	426	http://dbpedia.org/ontology/federalState	?D? -LRB- heute zu ?R?	
+1.00000	1.00000	1.00000	1.00000	0.11719	0.01111	0.54444	1.00000	1	216	http://dbpedia.org/ontology/recordedIn	?D? Agent einen Vertrag bei den ?R?	
+1.00000	0.42832	0.69856	0.93858	0.18778	0.17407	0.80370	0.93308	1	738	http://dbpedia.org/ontology/riverMouth	?D? ist ein rechter Nebenfluss der ?R?	
+1.00000	0.66667	0.23028	1.00000	0.08579	0.00000	0.00000	0.20069	0	350	http://dbpedia.org/ontology/neighboringMunicipality	?R? , Brunnenthal , Messen und ?D?	
+1.00000	1.00000	1.00000	1.00000	0.34922	0.00000	1.00000	0.54431	1	704	http://dbpedia.org/ontology/creator	?D? '' - Erfinder ?R?	
+1.00000	0.86165	0.36085	1.00000	0.34922	0.97500	0.20000	0.53752	1	584	http://dbpedia.org/ontology/notableWork	?R? '' von Adam ?D?	
+1.00000	0.66667	0.48299	0.86095	0.82119	0.10959	0.95890	0.62299	1	311	http://dbpedia.org/ontology/author	?R? ' Roman `` ?D?	
+1.00000	0.88948	1.00000	0.63384	0.24265	0.96610	0.81356	0.72081	0	193	http://dbpedia.org/ontology/influencedBy	?R? , Georg Wilhelm ?D?	
+1.00000	0.67699	0.61072	0.65239	0.49481	0.80392	0.99346	0.72907	1	640	http://dbpedia.org/ontology/administrativeDistrict	?D? im nordhessischen Landkreis ?R?	
+0.79342	0.68261	0.61139	1.00000	0.39529	0.07600	0.14700	1.00000	1	736	http://dbpedia.org/ontology/musicalArtist	?R? das Lied `` ?D?	
+1.00000	0.86165	0.23028	0.90235	0.19148	1.00000	1.00000	0.28170	1	356	http://dbpedia.org/ontology/neighboringMunicipality	?R? -RRB- zur Gemeinde Val ?D?	
+1.00000	0.29209	0.75634	0.59295	0.38062	0.16761	0.97017	0.94926	0	536	http://dbpedia.org/ontology/writer	?D? '' unter der Regie von ?R?	
+0.86966	1.00000	1.00000	1.00000	0.51258	0.52151	0.71505	0.96877	1	315	http://dbpedia.org/ontology/administrativeCollectivity	?D? im oberbayerischen Landkreis ?R?	
+1.00000	1.00000	0.62467	0.38792	0.30633	0.09337	0.18474	0.99942	0	691	http://dbpedia.org/ontology/starring	?D? '' , in dem ?R?	
+1.00000	1.00000	0.42832	1.00000	0.11719	0.14286	1.00000	0.45105	1	743	http://dbpedia.org/ontology/riverMouth	?D? ist er Teil des Einzugsgebietes des ?R?	
+1.00000	0.89824	1.00000	1.00000	0.06066	0.29412	0.47059	1.00000	0	560	http://dbpedia.org/ontology/majorIsland	?R? , Amrum und ?D?	
+1.00000	0.68261	0.88562	0.50000	0.04289	0.19556	0.07460	0.99913	0	320	http://dbpedia.org/ontology/managerClub	?R? bekannt , dass ?D?	
+1.00000	0.61139	0.71889	0.69522	0.10356	0.55828	0.69325	0.73817	1	643	http://dbpedia.org/ontology/administrativeDistrict	?D? des Berliner Bezirks ?R?	
+1.00000	0.89824	1.00000	1.00000	0.06066	0.47059	0.29412	1.00000	0	557	http://dbpedia.org/ontology/majorIsland	?D? , Amrum und ?R?	
+1.00000	0.42832	0.85663	0.93858	0.18778	0.12414	0.58621	0.83006	1	739	http://dbpedia.org/ontology/riverMouth	?D? ist ein rechter Nebenfluss des ?R?	
+1.00000	0.84248	0.77371	0.95076	0.35614	0.89655	1.00000	0.77840	0	300	http://dbpedia.org/ontology/influenced	?D? und Georg Wilhelm Friedrich ?R?	
+1.00000	0.78373	0.40841	0.34154	0.09591	0.60784	0.94118	0.57192	1	722	http://dbpedia.org/ontology/department	?R? , im Arrondissement ?D?	
+1.00000	1.00000	0.93578	1.00000	0.04289	0.54545	0.32231	0.93118	0	527	http://dbpedia.org/ontology/formerTeam	?R? , die im Gegenzug ?D?	
+0.86966	0.63093	1.00000	0.44589	0.10507	0.17683	0.04878	1.00000	0	183	http://dbpedia.org/ontology/largestCity	?R? auf der Insel ?D?	
+1.00000	1.00000	0.51050	1.00000	0.19183	0.81013	0.28692	0.79346	1	214	http://dbpedia.org/ontology/arrondissement	?R? , zum Kanton ?D?	
+1.00000	1.00000	1.00000	0.50000	0.07430	0.05376	0.45161	0.87396	0	217	http://dbpedia.org/ontology/recordedIn	?D? Agent von den ?R?	
+1.00000	0.29209	0.70384	0.62032	0.34922	0.16017	0.98268	0.78838	0	544	http://dbpedia.org/ontology/writer	?D? '' von Regisseur ?R?	
+1.00000	0.34393	0.53002	0.34154	0.17686	0.01805	0.00502	0.99957	1	272	http://dbpedia.org/ontology/isPartOf	?D? in der chinesischen ?R?	
+1.00000	1.00000	1.00000	1.00000	0.04289	0.73759	0.09524	0.99985	1	185	http://dbpedia.org/ontology/party	?R? unter der Führung von ?D?	
+1.00000	0.29209	0.60848	0.60156	0.20925	0.33333	1.00000	0.37137	1	490	http://dbpedia.org/ontology/federalState	?R? mit Verwaltungssitz in der Gemeinde ?D?	
+1.00000	1.00000	0.38248	1.00000	0.34922	0.26667	1.00000	0.40132	0	688	http://dbpedia.org/ontology/starring	?D? '' mit Arnold ?R?	
+1.00000	0.68261	0.91068	1.00000	0.17021	0.84476	0.87399	0.99942	1	567	http://dbpedia.org/ontology/spouse	?D? und seiner Frau ?R?	
+0.86966	0.66667	1.00000	0.24063	0.30633	0.08700	0.37500	1.00000	1	312	http://dbpedia.org/ontology/author	?D? '' -RRB- von ?R?	
+1.00000	1.00000	1.00000	1.00000	0.30633	0.17405	0.24473	1.00000	0	702	http://dbpedia.org/ontology/garrison	?D? '' auf der ?R?	
+1.00000	1.00000	0.36085	0.95588	0.36699	1.00000	0.06667	0.55417	1	583	http://dbpedia.org/ontology/notableWork	?R? '' von Heinrich von ?D?	
+1.00000	0.17197	0.37199	0.27483	0.12868	0.03704	0.02963	0.94318	0	268	http://dbpedia.org/ontology/isPartOf	?D? und der University of ?R?	
+1.00000	0.52832	0.53771	1.00000	0.42455	0.09322	0.67797	0.89149	1	313	http://dbpedia.org/ontology/author	?R? in seinem Roman `` ?D?	
+1.00000	1.00000	0.93059	0.51869	0.09591	0.83534	0.92068	1.00000	1	571	http://dbpedia.org/ontology/spouse	?D? und dessen Frau ?R?	
+1.00000	0.68261	0.94937	0.51869	0.06066	0.93970	0.98995	0.76734	0	566	http://dbpedia.org/ontology/spouse	?D? und der Schauspielerin ?R?	
+1.00000	0.36858	0.54951	0.62559	0.53771	0.92857	1.00000	0.39209	0	449	http://dbpedia.org/ontology/federalState	?D? -LRB- Landkreis Heilbronn , ?R?	
+1.00000	0.32626	0.61262	0.60162	0.18778	0.58537	0.01463	0.77118	0	713	http://dbpedia.org/ontology/department	?D? als rechter Nebenfluss in die ?R?	
+1.00000	0.50000	0.63241	0.44589	0.12868	0.24593	0.42222	0.94538	0	182	http://dbpedia.org/ontology/largestCity	?R? und der University of ?D?	
+1.00000	1.00000	1.00000	1.00000	0.34922	0.14257	0.96586	0.99942	0	683	http://dbpedia.org/ontology/starring	?D? '' an der Seite von ?R?	
+0.79342	0.68261	0.75413	1.00000	0.39529	0.16633	0.36273	0.99971	1	734	http://dbpedia.org/ontology/musicalArtist	?R? den Song `` ?D?	
+1.00000	1.00000	0.32970	0.74386	0.97500	0.26316	0.89474	0.43361	0	314	http://dbpedia.org/ontology/author	?R? ' `` A ?D?	
+1.00000	0.73060	0.60026	0.58450	0.60051	0.80263	1.00000	0.62874	1	665	http://dbpedia.org/ontology/administrativeDistrict	?D? , einer Gemeinde im Landkreis ?R?	
+1.00000	0.45534	0.77371	0.68308	0.08579	1.00000	0.95455	0.71760	0	304	http://dbpedia.org/ontology/influenced	?D? , Bertrand Russell und ?R?	
+1.00000	0.53724	0.62851	0.36317	0.04289	0.84168	0.45190	0.99971	0	578	http://dbpedia.org/ontology/deathPlace	?D? , Bischof von ?R?	
+1.00000	1.00000	0.52656	0.65846	0.17158	0.56985	0.45956	0.81229	1	519	http://dbpedia.org/ontology/canton	?D? des Schweizer Kantons ?R?	
+0.86966	0.29209	0.59570	0.59295	0.38165	0.05611	0.07816	0.99971	1	533	http://dbpedia.org/ontology/writer	?R? unter dem Titel `` ?D?	
+1.00000	0.47638	0.51422	0.62559	0.49481	0.51220	1.00000	0.54116	1	442	http://dbpedia.org/ontology/federalState	?D? im Landkreis Ostprignitz-Ruppin in ?R?	
+1.00000	0.63093	0.56806	1.00000	0.14796	0.83486	0.26606	0.78186	0	184	http://dbpedia.org/ontology/largestCity	?R? auf der dänischen Insel ?D?	
+1.00000	1.00000	1.00000	1.00000	0.04289	0.93103	0.10345	1.00000	1	563	http://dbpedia.org/ontology/occupation	?D? , CEO von ?R?	
+0.86966	0.64956	1.00000	0.31842	0.09591	0.21820	0.46122	0.99515	0	577	http://dbpedia.org/ontology/deathPlace	?D? an der Universität ?R?	
+1.00000	0.52832	0.75115	0.91679	0.25249	1.00000	0.50000	0.58012	1	360	http://dbpedia.org/ontology/neighboringMunicipality	?R? im Kanton Solothurn sowie ?D?	
+0.86966	1.00000	0.38776	0.93172	0.23375	0.16532	0.76210	0.90076	1	178	http://dbpedia.org/ontology/largestCity	?D? State University in ?R?	
+1.00000	0.66667	0.71981	0.91679	0.25249	0.52174	0.98551	0.61503	1	353	http://dbpedia.org/ontology/neighboringMunicipality	?D? im Kanton Freiburg sowie ?R?	
+1.00000	0.55287	0.36634	0.33333	0.07430	0.31579	0.89474	0.43374	1	499	http://dbpedia.org/ontology/federalState	?D? im Alb-Donau-Kreis , ?R?	
+1.00000	0.29209	0.44512	0.57353	0.45664	0.12844	0.33028	0.68037	0	530	http://dbpedia.org/ontology/writer	?R? an dem Film `` ?D?	
+1.00000	0.68261	0.69856	0.84743	0.38165	0.71625	0.06636	0.88087	0	556	http://dbpedia.org/ontology/ground	?R? -LRB- offiziell : `` ?D?	
+1.00000	1.00000	0.31635	0.38792	0.32099	0.05252	0.09578	0.99574	0	692	http://dbpedia.org/ontology/starring	?R? in der `` ?D?	
+1.00000	0.68261	0.75865	0.51869	0.04289	0.83949	0.82022	0.93213	1	552	http://dbpedia.org/ontology/ground	?D? ist ein Sportverein aus ?R?	
+1.00000	1.00000	1.00000	1.00000	0.04289	0.42960	0.70758	1.00000	1	763	http://dbpedia.org/ontology/jointCommunity	?D? in der Samtgemeinde ?R?	
+1.00000	0.81518	0.36527	0.34761	0.06066	0.77041	0.95408	0.76471	1	646	http://dbpedia.org/ontology/administrativeDistrict	?D? in der Städteregion ?R?	
+0.79342	0.29209	0.54585	0.24063	0.30633	0.15075	0.22211	0.99928	1	532	http://dbpedia.org/ontology/writer	?D? '' von den ?R?	
+1.00000	0.25143	0.55287	0.98128	0.32623	0.52113	0.69014	0.62047	1	755	http://dbpedia.org/ontology/capital	?D? State Capitol in der Hauptstadt ?R?	
+1.00000	1.00000	0.35218	0.92458	0.45664	0.09910	0.30330	0.99986	0	698	http://dbpedia.org/ontology/starring	?R? für den Film `` ?D?	
+1.00000	1.00000	0.85663	1.00000	0.11719	0.04116	0.33233	1.00000	1	555	http://dbpedia.org/ontology/ground	?D? in seiner Heimatstadt ?R?	
+1.00000	0.52863	0.52832	0.68308	0.08579	1.00000	0.92857	0.47675	0	197	http://dbpedia.org/ontology/influencedBy	?D? , Juan Gris und ?R?	
+1.00000	1.00000	1.00000	1.00000	0.04289	0.39306	0.23699	1.00000	1	528	http://dbpedia.org/ontology/formerTeam	?D? von den Boston ?R?	
+1.00000	0.89824	1.00000	1.00000	0.08579	0.25000	0.30000	1.00000	1	728	http://dbpedia.org/ontology/tenant	?D? , der Spielstätte des Gastgebers ?R?	
+0.69737	1.00000	0.54048	0.65747	0.62732	0.11145	0.05828	0.99736	0	554	http://dbpedia.org/ontology/ground	?R? '' und `` ?D?	
+1.00000	0.56458	0.52832	0.51591	0.40678	0.90200	0.12400	1.00000	0	324	http://dbpedia.org/ontology/birthPlace	?R? , eigentlich `` ?D?	
+1.00000	0.53239	0.26501	1.00000	0.33850	0.02349	0.00000	0.94446	0	219	http://dbpedia.org/ontology/isPartOf	?D? län und der historischen Provinz ?R?	
+0.86966	1.00000	1.00000	1.00000	0.11349	0.28674	0.46953	1.00000	1	526	http://dbpedia.org/ontology/rightTributary	?R? , einem Nebenfluss des ?D?	
+1.00000	0.88948	0.77371	0.95076	0.35614	0.96552	1.00000	0.77840	0	308	http://dbpedia.org/ontology/influenced	?D? , Georg Wilhelm Friedrich ?R?	
+1.00000	0.79248	1.00000	0.66667	0.12132	0.78947	0.34211	0.66846	1	309	http://dbpedia.org/ontology/borough	?D? , London Borough of ?R?	
+0.69737	0.68261	0.70502	0.83913	0.62732	0.01943	0.07260	0.99678	0	340	http://dbpedia.org/ontology/musicalBand	?R? '' und `` ?D?	
+0.79342	0.25143	0.42791	0.32086	0.09591	0.64767	0.79447	0.92316	0	756	http://dbpedia.org/ontology/capital	?D? , einem Vorort von ?R?	
+1.00000	0.32301	0.36527	0.67017	0.28172	0.61905	0.80952	0.44741	1	651	http://dbpedia.org/ontology/administrativeDistrict	?D? im schleswig-holsteinischen Kreis ?R?	
+1.00000	0.32626	0.53725	0.65846	0.12868	0.26506	0.53815	0.79920	1	710	http://dbpedia.org/ontology/department	?D? des französischen Départements ?R?	
+1.00000	0.32626	0.36170	0.65846	0.17854	0.62500	0.87500	0.31803	1	724	http://dbpedia.org/ontology/department	?D? im Elsass -LRB- Département ?R?	
+1.00000	0.71241	0.68261	0.61208	0.04289	0.06790	0.90741	1.00000	1	705	http://dbpedia.org/ontology/creator	?D? , geschaffen von ?R?	
+1.00000	0.29209	0.54585	0.62032	0.34922	0.14286	0.97479	0.69296	1	546	http://dbpedia.org/ontology/writer	?D? '' , geschrieben von ?R?	
+0.86966	0.44534	0.42791	0.61533	0.23375	0.16532	0.76210	0.90076	1	749	http://dbpedia.org/ontology/capital	?D? State University in ?R?	
+1.00000	1.00000	1.00000	0.31692	0.13564	0.84900	0.61900	1.00000	1	715	http://dbpedia.org/ontology/department	?D? , im Département ?R?	
+1.00000	0.52832	0.84377	0.46396	0.07430	0.62763	0.75976	1.00000	1	377	http://dbpedia.org/ontology/neighboringMunicipality	?D? im Südosten , ?R?	
+1.00000	1.00000	1.00000	0.50000	0.07430	0.02976	0.42262	0.98680	0	215	http://dbpedia.org/ontology/recordedIn	?D? Agent bei den ?R?	
+1.00000	0.21700	0.30767	0.29945	0.09591	0.00000	0.09524	0.44741	1	260	http://dbpedia.org/ontology/isPartOf	?R? -RRB- , einem Vorort von ?D?	
+1.00000	0.35542	0.48250	0.58415	0.27762	0.52459	0.93443	0.59764	1	521	http://dbpedia.org/ontology/canton	?D? im heutigen Kanton ?R?	
+0.86966	0.88562	0.84635	0.48583	0.16050	0.59875	0.83784	0.89631	1	180	http://dbpedia.org/ontology/largestCity	?R? , der Hauptstadt von ?D?	
+1.00000	0.42832	0.62747	0.53283	0.04289	0.52294	0.21101	0.78291	1	741	http://dbpedia.org/ontology/riverMouth	?D? , einem Zufluss der ?R?	
+1.00000	0.35542	0.50563	0.34154	0.04289	0.65677	0.46865	0.82786	0	522	http://dbpedia.org/ontology/canton	?R? ; heimatberechtigt in ?D?	
+0.86966	0.68261	0.73060	0.41956	0.32099	0.13357	0.12816	0.91463	0	341	http://dbpedia.org/ontology/musicalBand	?D? `` von den ?R?	
+1.00000	1.00000	1.00000	1.00000	0.34922	0.33333	0.18605	1.00000	1	680	http://dbpedia.org/ontology/publisher	?D? '' des Verlags ?R?	
+1.00000	0.56458	0.43083	0.34154	0.04289	0.83516	0.87912	0.75404	1	330	http://dbpedia.org/ontology/birthPlace	?D? , geboren in ?R?	
+1.00000	0.42389	0.21002	0.94316	0.50772	0.01389	0.00000	0.62102	1	289	http://dbpedia.org/ontology/isPartOf	?D? im Nordosten der chinesischen Provinz ?R?	
+0.73933	1.00000	0.52680	0.83913	0.62732	0.02556	0.12168	0.99678	0	347	http://dbpedia.org/ontology/musicalBand	?D? '' und `` ?R?	
+1.00000	0.63915	0.66667	0.63384	0.26208	0.99048	0.87619	0.82100	0	209	http://dbpedia.org/ontology/influencedBy	?R? , Johann Wolfgang ?D?
