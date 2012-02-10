@@ -30,6 +30,7 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Language;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.lucene.LowerCaseWhitespaceAnalyzer;
 import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
@@ -50,7 +51,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	private final static int MIN_PATTERN_CHUNK_LENGTH  = NLPediaSettings.getIntegerSetting("minPatternLenght");
 	private final static int MAX_NUMBER_OF_DOCUMENTS   = NLPediaSettings.getIntegerSetting("maxNumberOfDocuments");
 
-	private PartOfSpeechTagger posTagger;
+	protected PartOfSpeechTagger posTagger;
 
 	private Analyzer analyzer = null;
 	private IndexSearcher indexSearcher = null;
@@ -173,24 +174,24 @@ public class DefaultPatternSearcher implements PatternSearcher {
         Set<String> sentences = new HashSet<String>();
         
         // collect all sentences
-        for ( int n = 0 ; n < hits.length; n++)             
-            sentences.add(LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "sentence"));
+        for ( int n = 0 ; n < hits.length; n++){
+        	if(NLPediaSettings.BOA_LANGUAGE.equals("ko")){
+        		sentences.add(LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "originalsentence"));
+        	}else{
+        		sentences.add(LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "sentence"));
+        	}
+        }
 
         // go through all sentences and surface form combinations 
         for ( String sentence : sentences ) {
             for (String firstLabel : firstLabels) {
                 for (String secondLabel : secondLabels) {
-                    List<String> currentMatches = findMatchedText(sentence, firstLabel, secondLabel);
+                    List<String> currentMatches = this.findMatchedText(sentence, firstLabel, secondLabel);
                     
                     if (!currentMatches.isEmpty()) {
                         this.addSearchResults(results, currentMatches, backgroundKnowledge, sentence);
                     }
                     
-                    Iterator<String> iter	= currentMatches.iterator();
-                    while(iter.hasNext()){
-                    	System.out.println("MATCH: " + iter.next());
-                    }
-
                 }
             }
         }
@@ -276,7 +277,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 		}
 	}
 
-	private String getCorrectCaseNLR(String lowerCase, String normalCase, String pattern) {
+	protected String getCorrectCaseNLR(String lowerCase, String normalCase, String pattern) {
 
 		String firstVariable = pattern.substring(0, 3);
 		String secondVariable = pattern.substring(pattern.length() - 3, pattern.length());
@@ -286,6 +287,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 		// get the start of the pattern and got until its end
 		int start = lowerCase.indexOf(pattern);
 		int end = start + pattern.length();
+	
 		return firstVariable + " " + normalCase.substring(start, end) + " " + secondVariable;
 	}
 

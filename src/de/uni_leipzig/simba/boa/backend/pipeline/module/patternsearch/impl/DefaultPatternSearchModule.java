@@ -88,6 +88,10 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 		// sort the patterns first by property and then by their natural language representation
 		Collections.sort(results, new SearchResultComparator());
 		
+		for(SearchResult sr:results){
+			System.out.println(sr.getFirstLabel() + "\t" + sr.getSecondLabel() + "\t" + sr.getNaturalLanguageRepresentation());
+		}
+		
 		String currentProperty = "";
 		PatternMapping currentMapping = null;
 		

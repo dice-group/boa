@@ -3,6 +3,8 @@ package de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 
@@ -38,7 +40,7 @@ public class KoreanWikiIndexingModule extends DefaultWikiIndexingModule {
 				for (String sentence : doc.getSentences() ){
 					// add it to the index					
 					String JosaSeparatedSentence	= kjt.getJosaSeparatedSentence(sentence);
-					writer.addDocument(this.createLuceneDocument(doc.uri, JosaSeparatedSentence));
+					writer.addDocument(this.createLuceneDocument(doc.uri, sentence, JosaSeparatedSentence));
 				}
 		}
 		catch (CorruptIndexException e) {
@@ -54,5 +56,15 @@ public class KoreanWikiIndexingModule extends DefaultWikiIndexingModule {
 			throw new RuntimeException("Could not index list of documents", e);
 		}
 	}
+	
+	protected Document createLuceneDocument(String uri, String origSentence, String sentence) {
+
+		Document luceneDocument = new Document();
+		luceneDocument.add(new Field("uri", uri, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
+		luceneDocument.add(new Field("sentence", sentence, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
+		luceneDocument.add(new Field("originalsentence", origSentence, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO));
+		return luceneDocument;
+	}
+	
 
 }
