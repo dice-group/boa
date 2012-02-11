@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 
 import de.danielgerber.file.FileUtil;
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledgeManager;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternSearchThreadManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -90,7 +91,7 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 			String query = createDatatypePropertyQuery(datatypePropertyUri);
 			String filePath	= BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/datatype/";
 			
-			getKnowledge(query, datatypePropertyUri, filePath + datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/"), datatypePropertyUri.length()) + ".txt");
+			getKnowledge(query, datatypePropertyUri, filePath + datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/")) + ".txt");
 		}
 	}
 
@@ -107,11 +108,14 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 		return 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>  " +
-			"SELECT ?s ?sl <"+propertyUri+"> ?o " +
+			"SELECT ?s ?sl <"+propertyUri+"> ?o ?oLabel " +
 			"WHERE {" +
 			 "	?s rdfs:label ?sl . " +
 			 "  ?s <" + propertyUri + "> ?o . " +
 			 "	FILTER (   lang(?sl)= \""+BOA_LANGUAGE+"\" ) . " + 
+			 "  OPTIONAL {" +
+			 "     ?o rdfs:label ?oLabel . " +
+			 "  } " +
 			 "} " +
 			 "LIMIT " + SPARQL_QUERY_LIMIT +  " " +
 			 "OFFSET &OFFSET";

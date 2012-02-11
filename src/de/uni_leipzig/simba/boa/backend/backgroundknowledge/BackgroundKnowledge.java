@@ -119,4 +119,16 @@ public interface BackgroundKnowledge {
      * @return
      */
     public String getPropertyLabel();
+    
+    /**
+     * 
+     * @return
+     */
+    public String getPropertyPrefix();
+
+    /**
+     * 
+     * @param prefix
+     */
+    public void setPropertyPrefix(String prefix);
 }

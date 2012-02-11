@@ -23,11 +23,9 @@ public class StartScriptsCommand implements Command {
 		    	try {
 		    		
 		    		System.out.println("\t\t0. Go back");
-		    		System.out.println("\t\t2. Reset pattern confidence measures");
-		    		System.out.println("\t\t3. Create learned from distribution");
-		    		System.out.println("\t\t4. Create pos distirbution");
-		    		System.out.println("\t\t5. Create pattern index");
-		    		System.out.println("\t\t6. Create machine learning input");
+		    		System.out.println("\t\t1. Reset pattern confidence measures");
+		    		System.out.println("\t\t2. Create pos distirbution");
+		    		System.out.println("\t\t3. Create pattern index");
 		    		System.out.println("\t\t");
 		    		System.out.println("");
 		    		
@@ -52,17 +50,11 @@ public class StartScriptsCommand implements Command {
 							
 						case 2:
 							
-							Command createLearndFromDistributionCommand = new CreateLearndFromDistributionCommand();
-							createLearndFromDistributionCommand.execute();
-							break;
-							
-						case 3:
-							
 							Command posDistributionCommand = new PosDistributionCommand();
 							posDistributionCommand.execute();
 							break;	
 					
-						case 4:
+						case 3:
 							
 							Command createQaIndexCommand = new CreateQuestionAnsweringIndexCommand();
 							createQaIndexCommand.execute();

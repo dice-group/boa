@@ -178,7 +178,23 @@ public class BackgroundKnowledgeManager {
 		}
 		else {
 			
-			return new DatatypePropertyBackgroundKnowledge();
+		    DatatypePropertyBackgroundKnowledge datattypeBackgroundKnowledge = new DatatypePropertyBackgroundKnowledge();
+		    datattypeBackgroundKnowledge.setSubjectUri(subjectUri);
+		    datattypeBackgroundKnowledge.setSubjectLabel(subjectLabel);
+		    datattypeBackgroundKnowledge.setSubjectSurfaceForms(subjectLabels);
+            
+		    datattypeBackgroundKnowledge.setObjectUri(objectUri.replace(Constants.DBPEDIA_RESOURCE_PREFIX, ""));
+		    datattypeBackgroundKnowledge.setObjectLabel(objectLabel);
+		    datattypeBackgroundKnowledge.setObjectSurfaceForms(objectLabels);
+            
+		    datattypeBackgroundKnowledge.setPropertyUri(predicate);
+		    datattypeBackgroundKnowledge.setRdfsRange(range);
+		    datattypeBackgroundKnowledge.setRdfsDomain(domain);
+		    datattypeBackgroundKnowledge.setPropertyWordnetSynsets(
+                    StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(predicate), ","));
+		    datattypeBackgroundKnowledge.setObjectDatatype(parts[9]);
+            
+            return datattypeBackgroundKnowledge;
 		}
 	}
 }

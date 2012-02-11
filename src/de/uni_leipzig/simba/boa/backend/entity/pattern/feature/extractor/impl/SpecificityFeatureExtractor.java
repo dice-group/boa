@@ -27,8 +27,8 @@ public class SpecificityFeatureExtractor extends AbstractFeatureExtractor {
 
 		long start = new Date().getTime();
 		
-		Double specificity = (double) manager.getPatternMappings(PATTERN_MAPPINGS_FOLDER).size() / 
-		        (double) manager.findPatternMappingsWithSamePattern(PATTERN_MAPPINGS_FOLDER, pair.getPattern().getNaturalLanguageRepresentation()); 
+		Double specificity = (double) manager.getPatternMappings().size() / 
+		        (double) manager.findPatternMappingsWithSamePattern(pair.getPattern().getNaturalLanguageRepresentation()); 
 			
 		specificity = Math.log(specificity) / Math.log(2);
 		specificity = specificity.isInfinite() || specificity.isNaN() ? 0D : specificity; 
