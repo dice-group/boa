@@ -18,11 +18,12 @@ public class DatabaseContainer extends HierarchicalContainer{
 	public static final Object DISPLAY_NAME			= "name";
 	public static final Object PATTERN_MAPPING_ID	= "pm_id";
 	
-	public static final String[] DATABASE_IDS = new String[]{
-	        NLPediaSettings.getSetting("patternMappingFolders")};
+	public static String[] DATABASE_IDS;
 	
 	public DatabaseContainer(List<PatternMapping> mappings) {
 		
+	    DATABASE_IDS = new String[]{NLPediaSettings.getSetting("patternMappingFolders")};
+	    
 		Item item = null;
 		
 		this.addContainerProperty(URI, String.class, null);
@@ -36,8 +37,6 @@ public class DatabaseContainer extends HierarchicalContainer{
 			item = this.addItem(database);
 			item.getItemProperty(DISPLAY_NAME).setValue(database.substring(database.lastIndexOf("/") + 1));
 			this.setChildrenAllowed(database, true);
-			
-//			System.out.println(pmDao.findPatternMappingsWithPatterns()); 
 			
 			for (PatternMapping mapping : mappings ) {
 				
@@ -54,6 +53,8 @@ public class DatabaseContainer extends HierarchicalContainer{
 				this.setChildrenAllowed(itemID, false);
 			}
 		}
+		// sort the tree from a to z
+		this.sort(new Object[]{ DISPLAY_NAME }, new boolean[]{ true });
 	}
 	
 	public static HierarchicalContainer getTestDatabaseContainer() {

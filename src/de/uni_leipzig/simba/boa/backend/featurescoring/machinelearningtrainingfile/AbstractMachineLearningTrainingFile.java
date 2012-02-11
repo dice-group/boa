@@ -157,4 +157,16 @@ public abstract class AbstractMachineLearningTrainingFile implements MachineLear
     
         this.notAnnotatedEntries = notAnnotatedEntries;
     }
+    
+    @Override
+    public void setFeatureNames(List<String> featureNames) {
+
+        this.featureNames = featureNames;
+    }
+
+    @Override
+    public List<String> getFeatureNames() {
+
+        return this.featureNames;
+    }
 }
