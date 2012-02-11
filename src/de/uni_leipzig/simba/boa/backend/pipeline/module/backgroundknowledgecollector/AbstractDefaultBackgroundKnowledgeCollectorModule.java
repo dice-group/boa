@@ -153,6 +153,10 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 			if ( obj.contains("@"+BOA_LANGUAGE) ) obj = obj.substring(0, obj.lastIndexOf("@"));
 			if ( obj.contains("^^") ) obj = obj.substring(0, solution.get("o").toString().indexOf("^"));
 			
+			DatatypePropertyBackgroundKnowledge datatypeBackgroundKnowledge = new DatatypePropertyBackgroundKnowledge();
+			datatypeBackgroundKnowledge.setSubjectUri(subjectUri);
+			
+			
 			// create new background knowledge and generate the surface forms 
 			Resource subject	= new Resource(subjectUri, subjectLabel);
 			Resource object		= new Resource(obj, obj);
