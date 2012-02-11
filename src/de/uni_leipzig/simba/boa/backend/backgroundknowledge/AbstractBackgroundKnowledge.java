@@ -15,6 +15,7 @@ public abstract class AbstractBackgroundKnowledge implements BackgroundKnowledge
 	protected String subjectLabel;
 	protected Set<String> subjectSurfaceForms  = new HashSet<String>();
 	
+	protected String propertyPrefix;
 	protected String propertyUri;
 	protected String rdfsDomain;
     protected String rdfsRange;
@@ -225,5 +226,25 @@ public abstract class AbstractBackgroundKnowledge implements BackgroundKnowledge
     public void setPropertyWordnetSynsets(String propertyWordnetSynsets) {
     
         this.propertyWordnetSynsets = propertyWordnetSynsets;
+    }
+
+
+    
+    /**
+     * @return the propertyPrefix
+     */
+    public String getPropertyPrefix() {
+    
+        return propertyPrefix;
+    }
+
+
+    
+    /**
+     * @param propertyPrefix the propertyPrefix to set
+     */
+    public void setPropertyPrefix(String propertyPrefix) {
+    
+        this.propertyPrefix = propertyPrefix;
     }
 }

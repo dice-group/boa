@@ -36,7 +36,7 @@ public class PatternMappingManager {
      * @param filepath
      * @return
      */
-    public List<PatternMapping> getPatternMappings(String filepath) {
+    public List<PatternMapping> getPatternMappings() {
         
         return mappings;
     }
@@ -62,7 +62,7 @@ public class PatternMappingManager {
      * @param naturalLanguageRepresentation
      * @return
      */
-    public int findPatternMappingsWithSamePattern(String database, String naturalLanguageRepresentation) {
+    public int findPatternMappingsWithSamePattern(String naturalLanguageRepresentation) {
 
         int numberOfSamePatterns = 0;
         

@@ -79,7 +79,11 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     @Override
     public void init() {
         
-        mappings = this.patternMappingManager.getPatternMappings(CURRENT_DATABASE + "/patternmappings/");
+        this.mappings = new ArrayList<PatternMapping>();
+        for( PatternMapping mapping : this.patternMappingManager.getPatternMappings()) {
+            
+            if (mapping.getPatterns().size() > 0 ) this.mappings.add(mapping);
+        }
         nlrPatternContainer = this.getNaturalLanguagePatternContainer();
         this.tree = new DatabaseNavigationTree(this, mappings);
         this.tripleTree = new DatabaseNavigationTree(this, mappings);
@@ -311,7 +315,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         }
         return naturalLanguagePatternContainer;
     }
-    
     
     private ComponentContainer buildStartPage() {
 

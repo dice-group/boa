@@ -44,11 +44,20 @@ public class Property extends Resource {
 	private String rdfsRange;
 	private String rdfsDomain;
 	private String synsets;
+	private String prefix;
 	private PatternMapping patternMapping;
+    private String rangePrefix;
+    private String domainPrefix;
 
 	public Property(String uri) {
 
 		super(uri);
+		this.rdfsRange = "";
+        this.rdfsDomain = "";
+        this.synsets = "";
+        this.prefix = "";
+        this.domainPrefix = "";
+        this.rangePrefix = "";
 	}
 	
 	public Property(String uri, String label, String rdfsRange, String rdfsDomain, String synsets) {
@@ -56,6 +65,8 @@ public class Property extends Resource {
 		super(uri, label);
 		this.rdfsRange = rdfsRange;
 		this.rdfsDomain = rdfsDomain;
+		this.domainPrefix = "";
+		this.rangePrefix = "";
 		this.synsets = synsets;
 	}
 
@@ -142,4 +153,40 @@ public class Property extends Resource {
 
 		this.synsets = synsets;
 	}
+
+    /**
+     * @return the prefix
+     */
+    public String getPrefix() {
+
+        return prefix;
+    }
+
+    /**
+     * @param prefix the prefix to set
+     */
+    public void setPrefix(String prefix) {
+
+        this.prefix = prefix;
+    }
+
+    public String getDomainPrefix() {
+
+        return this.domainPrefix;
+    }
+    
+    public void setDomainPrefix(String domainPrefix) {
+
+        this.domainPrefix = domainPrefix;
+    }
+
+    public String getRangePrefix() {
+
+        return this.rangePrefix; 
+    }
+
+    public void setRangePrefix(String rangePrefix) {
+
+        this.rangePrefix = rangePrefix;
+    }
 }
