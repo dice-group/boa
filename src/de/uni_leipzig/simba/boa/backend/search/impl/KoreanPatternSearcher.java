@@ -278,7 +278,7 @@ public class KoreanPatternSearcher extends DefaultPatternSearcher{
 		return -1;
 	}
 	
-	@ Override
+	@Override
 	protected String getCorrectCaseNLR(String lowerCase, String normalCase, String pattern) {
 		int firstValIdx		= pattern.indexOf("?D?");
 		int secondValIdx	= pattern.indexOf("?R?");

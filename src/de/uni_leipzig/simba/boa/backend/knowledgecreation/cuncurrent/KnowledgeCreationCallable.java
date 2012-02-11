@@ -183,4 +183,10 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
         return this.patternMappingPatternPairs.size();
     }
 
+    @Override
+    public int getNumberOfResultsSoFar() {
+
+        return -1;
+    }
+
 }

@@ -41,8 +41,8 @@ public class PatternSearchPrintProgressTask extends TimerTask {
 
 			if (progress != 100 && (patternSearchThread.getProgress() > 0 && patternSearchThread.getProgress() < 100) ) {
 
-				this.logger.info(patternSearchThread.getName() + ": " + progress + "%. " +
-						"(" + patternSearchThread.getNumberDone() + "/" + patternSearchThread.getNumberTotal() + ")");
+				this.logger.info(patternSearchThread.getName() + ": " + progress + "%. Found: " + patternSearchThread.getNumberOfResultsSoFar() + 
+						"  (" + patternSearchThread.getNumberDone() + "/" + patternSearchThread.getNumberTotal() + ")");
 			}
 		}
 		this.logger.info(Integer.valueOf(format.format(((double) totalProgress / totalNumber) * 100)) + "% (" + totalProgress + "/" + totalNumber + ")");
