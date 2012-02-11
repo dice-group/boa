@@ -77,4 +77,10 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 
         return this.patternMappingPatterns.size() * features.values().size();
     }
+
+    @Override
+    public int getNumberOfResultsSoFar() {
+
+        return -1;
+    }
 }

@@ -22,10 +22,12 @@ public class PatternSearchCallable extends BoaCallable<SearchResult>{
 	
 	private List<BackgroundKnowledge> backgroundKnowledgeList;
 	private PatternSearcher patternSearcher;
+	private List<SearchResult> results;
 	
 	public PatternSearchCallable(List<BackgroundKnowledge> backgroundKnowledge) {
 		
 		this.backgroundKnowledgeList = backgroundKnowledge;
+		this.results                 = new ArrayList<SearchResult>();
 	}
 	
 	@Override
@@ -34,8 +36,6 @@ public class PatternSearchCallable extends BoaCallable<SearchResult>{
 	    // initialize the pattern searcher at thread execution
 	    // otherwise we would have X non running threads with an opened index
 	    this.patternSearcher = PatternSearcherFactory.getInstance().createDefaultPatternSearcher();
-	    
-		List<SearchResult> results = new ArrayList<SearchResult>();
 		
 		for ( BackgroundKnowledge backgroundKnowledge : this.backgroundKnowledgeList ) {
 			
@@ -60,5 +60,11 @@ public class PatternSearchCallable extends BoaCallable<SearchResult>{
 
         // TODO Auto-generated method stub
         return this.backgroundKnowledgeList.size();
+    }
+
+    @Override
+    public int getNumberOfResultsSoFar() {
+
+        return this.results.size();
     }
 }

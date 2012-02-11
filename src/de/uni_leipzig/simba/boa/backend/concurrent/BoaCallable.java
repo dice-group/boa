@@ -16,7 +16,7 @@ public abstract class BoaCallable<V> implements Callable<Collection<V>>{
     
     // for the report / statistics
     protected int progress = 0;
-
+    
     /**
      * 
      * @param name
@@ -55,4 +55,10 @@ public abstract class BoaCallable<V> implements Callable<Collection<V>>{
      * @return
      */
     public abstract int getNumberTotal();
+    
+    /**
+     * 
+     * @return
+     */
+    public abstract int getNumberOfResultsSoFar();
 }
