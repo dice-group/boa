@@ -463,16 +463,21 @@ public class DefaultPatternSearcher implements PatternSearcher {
      * @param query - the query to execute
      * @param collector - the document collector
      */
-    private void searchIndex(Query query, TotalHitCountCollector collector) {
+    @Override
+    public int getTotalHits(String pattern) {
 
         try {
             
-            indexSearcher.search(query, collector);
+            Query query = this.parseQuery("+sentence:\"" + QueryParser.escape(pattern) + "\"");
+            TotalHitCountCollector thcc = new TotalHitCountCollector();
+            indexSearcher.search(query, thcc);
+            
+            return thcc.getTotalHits();
         }
         catch (IOException e) {
             
             e.printStackTrace();
-            String error = "Could not execute query: \"" + query.toString() + "\"";
+            String error = "Could not get total his for pattern: \"" + pattern.toString() + "\"";
             this.logger.error(error, e);
             throw new RuntimeException(error, e);
         }

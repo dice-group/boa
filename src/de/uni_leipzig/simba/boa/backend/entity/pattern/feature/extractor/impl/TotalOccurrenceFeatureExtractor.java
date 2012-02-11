@@ -1,5 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
+import org.apache.lucene.search.TotalHitCountCollector;
+
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
@@ -32,8 +34,7 @@ public class TotalOccurrenceFeatureExtractor extends AbstractFeatureExtractor {
 	
 	public void scoreMapping(Pattern pattern) {
 
-		int totalOccurrences = searcher.getExactMatchSentences(
-		        pattern.getNaturalLanguageRepresentationWithoutVariables(), MAXIMUM_NUMBER_OF_TOTAL_OCCURRENCES).size();
+		int totalOccurrences = searcher.getTotalHits(pattern.getNaturalLanguageRepresentationWithoutVariables());
 		
 		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TOTAL_OCCURRENCE"), Double.valueOf(totalOccurrences));
 	}

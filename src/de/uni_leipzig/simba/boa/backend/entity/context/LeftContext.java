@@ -10,7 +10,7 @@ import edu.stanford.nlp.util.StringUtils;
 
 public class LeftContext extends Context {
 
-	public LeftContext(String nerTaggedString, String sentence, String patternWithOutVariables) throws IllegalArgumentException {
+	public LeftContext(String nerTaggedString, String sentence, String patternWithOutVariables) throws IllegalArgumentException, StringIndexOutOfBoundsException {
 
 		this.cleanWords = new ArrayList<String>();
 		this.taggedWords = new ArrayList<String>();
@@ -83,7 +83,7 @@ public class LeftContext extends Context {
 	 * 
 	 * @param nerTaggedString
 	 */
-	private void createLeftContext(String nerTaggedString, String sentenceWithoutNerTags) throws IllegalArgumentException {
+	private void createLeftContext(String nerTaggedString, String sentenceWithoutNerTags) throws IllegalArgumentException, StringIndexOutOfBoundsException {
 
 		String leftContextString = sentenceWithoutNerTags.substring(0, sentenceWithoutNerTags.toLowerCase().lastIndexOf(this.pattern.toLowerCase()) - 1).trim();
         String[] taggedWords = nerTaggedString.split(" ");
