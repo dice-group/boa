@@ -1,4 +1,4 @@
- @import url(../reindeer/styles.css);
+@import url(../reindeer/styles.css);
 /* Using the old default theme (runo) as the basis for now */
 
 /* Add some padding to the tree */
@@ -7,16 +7,20 @@
       padding-left: 4px;
 }
 
+/* .v-tree-node-selected { */
+	
+/* 	 background: #7AB42F repeat-x; */
+/* 	 background-image: none; */
+/* } */
+
 .toolbar .v-button {
       display: block;
-      width: 65px;
-      height: 55px;
       background: transparent;
       border: none;
       background-image: none;
       text-align: center;
 }
- 
+
 .toolbar .v-button .v-button-wrap, 
 .toolbar .v-disabled.v-button .v-button-wrap {
    background: transparent;
@@ -30,40 +34,59 @@
 }
 .toolbar .v-button:active .v-button-wrap,
 .toolbar .v-button.v-pressed .v-button-wrap {
-   background: transparent;
-   -webkit-box-shadow: none;
-   -moz-box-shadow: none;
-   box-shadow: none;
+
+   border-radius: 5px;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      
+      -moz-box-shadow:    1px 1px 5px 1px rgba(122,180,47,0.7);
+      -webkit-box-shadow: 1px 1px 5px 1px rgba(122,180,47,0.7);
+      box-shadow:         1px 1px 5px 1px rgba(122,180,47,0.7);
 }
  
 .toolbar .v-button img {
       display: block;
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 5px;
 }
 
 .toolbar .v-button span {
-      font-size: x-small;
-      text-shadow: #fafafa 1px 1px 0;
+      font-size: 120%;
+      /*text-shadow: #fafafa 1px 1px 0;*/
+/*       padding-bottom: 8px; */
+/*       padding-top: 8px; */
+}
+
+.toolbar .patternSearch {
+	
+	font-size: 16px;
 }
 
 .v-app {
       background: white;
+      background-image: url(images/boa.png);
+      background-repeat: no-repeat;
+      background-position: bottom right;
       font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
       color: #222;
 }
 
 .toolbar {
-      background: #ccc url(images/gradient.png) repeat-x bottom left;
+    /*background: #7AB42F;*/
+    background-color:rgba(122,180,47,0.34);
+    -moz-border-radius: 15px;
+    border-radius: 10px;
+    -moz-box-shadow:    2px 2px 7px 6px #ccc;
+    -webkit-box-shadow: 2px 2px 7px 6px #ccc;
+    box-shadow:         2px 2px 7px 6px #ccc;
+    margin: 7px;
+      /* #ccc url(images/gradient.png) repeat-x bottom left;*/
 }
 
 .v-panel-caption-view {
       color: #004b98;
 }
- 
+
 .view {
-      background: white;     
+      background: white;
 }
 
  /* Theme table to look bit lighter */
@@ -84,29 +107,43 @@
  
 .v-table-body {
       border: none;
+      background: rgba(0,0,0,0.0);
 }
- 
+
+.v-table-row {
+      background: rgba(255,255,255,0.3);
+}
+
 .v-table-row-odd {
-      background: #f1f5fa;
+      background: rgba(122,180,47,0.3);
 }
  
 .v-table-row:hover {
-      background: #fff;
+      background: rgba(122,180,47,0.7);
 }
  
 .v-table-row-odd:hover {
-      background: #f1f5fa;
+      background: rgba(122,180,47,0.7);
 }
  
 .v-table .v-selected {
-      background: #3d80df;
+      
+      background: rgba(122,180,47,0.7);
+      color: #000;
+      text-shadow: none;
 }
- 
+.v-table .v-selected .v-table-cell-content {
+	
+    border-right-color: #A6A8AB;
+}
+
 .v-table-cell-content {
       padding: 2px 6px 2px 3px;
       line-height: normal;
       font-size: 85%;
 }
- 
- 
+
+.v-link a:link span {
+    color: rgba(122,180,47,0.9);
+}
 
