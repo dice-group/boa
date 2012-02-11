@@ -156,7 +156,8 @@ public class SurfaceFormGenerator {
 
         BackgroundKnowledge dbk =  this.createSurfaceFormsForObjectProperty(backgroundKnowledge);
         
-        if ( ((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype() != "NA" ) {
+        if ( !((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype().equals("NA")
+                && !((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype().isEmpty() ) {
             
             dbk.setObjectSurfaceForms(
                     this.createDatatypePropertyLabels(dbk.getObjectLabel(), ((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype()));
