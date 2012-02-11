@@ -29,4 +29,6 @@ public interface PatternSearcher {
 	public Set<String> getExactMatchSentencesForLabels(String label1, String label2, int maxNumberOfDocuments);
 	
 	public void close();
+
+    public int getTotalHits(String naturalLanguageRepresentationWithoutVariables);
 }

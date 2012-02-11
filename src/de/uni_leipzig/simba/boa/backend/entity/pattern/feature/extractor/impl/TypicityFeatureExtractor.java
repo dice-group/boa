@@ -162,6 +162,10 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 	        
 	        this.logger.debug("Could not create context!", e);
 	    }
+	    catch (java.lang.StringIndexOutOfBoundsException e) {
+	        
+	        this.logger.debug("Could not create context!", e);
+	    }
 	    return context;
     }
 
