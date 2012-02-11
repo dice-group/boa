@@ -18,13 +18,14 @@ import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 public class SpecificityFeatureExtractor extends AbstractFeatureExtractor {
 	
 	private NLPediaLogger logger = new NLPediaLogger(SpecificityFeatureExtractor.class);
-	private static final String PATTERN_MAPPINGS_FOLDER = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
 	
-	private final PatternMappingManager manager = new PatternMappingManager();
+	private PatternMappingManager manager;
 
 	@Override
 	public void score(PatternMappingPatternPair pair) {
 
+	    if ( manager == null ) manager = new PatternMappingManager();
+	    
 		long start = new Date().getTime();
 		
 		Double specificity = (double) manager.getPatternMappings().size() / 

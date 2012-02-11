@@ -12,9 +12,6 @@ http://dbpedia.org/property/foundation
 http://dbpedia.org/property/populationUrban
 http://dbpedia.org/property/publisher
 http://dbpedia.org/property/country
-
-
-
 http://dbpedia.org/ontology/elevation
 http://dbpedia.org/ontology/birthDate
 http://dbpedia.org/ontology/seasonNumber
