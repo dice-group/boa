@@ -184,7 +184,8 @@ public class SurfaceFormGenerator {
         // ######################################################################
         
         else if ( predicateType.equals("http://www.w3.org/2001/XMLSchema#nonNegativeInteger") 
-                || predicateType.equals("http://www.w3.org/2001/XMLSchema#int") ) {
+                || predicateType.equals("http://www.w3.org/2001/XMLSchema#int")
+                || predicateType.equals("http://dbpedia.org/datatype/second") ) {
             
             labels.addAll(handleNonNegativeInteger(objectLabel));
         }
@@ -320,6 +321,12 @@ public class SurfaceFormGenerator {
         if ( i > 1000000000 ) variations.add(String.format("%.0f", i / 1000000000.0));
         
         return variations;
+    }
+    
+    public static void main(String[] args) {
+
+        SurfaceFormGenerator s = new SurfaceFormGenerator();
+        System.out.println(s.handleNonNegativeInteger("259200.0"));
     }
 
     /**
