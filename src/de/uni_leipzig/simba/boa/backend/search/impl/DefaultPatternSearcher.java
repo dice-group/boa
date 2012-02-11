@@ -71,11 +71,10 @@ public class DefaultPatternSearcher implements PatternSearcher {
 	
 	public DefaultPatternSearcher(String indexDir) {
 
-//		this.directory = LuceneIndexHelper.openIndex(indexDir);
 		this.analyzer = new LowerCaseWhitespaceAnalyzer();
 
 		// create index searcher in read only mode
-//		this.indexSearcher = LuceneIndexHelper.openIndexSearcher(directory, true);
+		this.indexSearcher = LuceneIndexHelper.openIndexSearcher(LuceneIndexHelper.openIndex(indexDir), true);
 		this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 	}
 	

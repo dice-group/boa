@@ -92,6 +92,16 @@ public class PatternScoreManager {
      */
     public MachineLearningTrainingFile updateNetworkTrainingFile(Set<PatternMapping> patternMappings, MachineLearningTrainingFile neuronalNetworkTrainingFile) {
         
+        List<String> featureNames                                   = new ArrayList<String>();
+        
+        // get the feature names but only those which are activated for the current language
+        for ( Feature feature : FeatureFactory.getInstance().getHandeldFeatures() )
+            if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) )
+                if ( feature.isUseForPatternLearning() ) 
+                    featureNames.add(feature.getName());
+                
+        neuronalNetworkTrainingFile.setFeatureNames(featureNames);
+        
         for (PatternMapping mapping : patternMappings) {
             for (Pattern pattern : mapping.getPatterns()) {
                 

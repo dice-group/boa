@@ -23,7 +23,7 @@ public class DatabaseNavigationTree extends Tree {
 		this.addListener((ItemClickListener) app);
 
         // Add actions (context menu)
-		this.addActionHandler((Action.Handler) app);
+//		this.addActionHandler((Action.Handler) app);
 
         // Cause valueChange immediately when the user selects
 		this.setImmediate(true);
@@ -40,6 +40,7 @@ public class DatabaseNavigationTree extends Tree {
 		 */
 		setSelectable(true);
 		setNullSelectionAllowed(false);
+//		setSizeFull();
 	}
 	
 	public String getFirstUri(){

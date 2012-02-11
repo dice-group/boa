@@ -1,14 +1,21 @@
 package de.uni_leipzig.simba.boa.backend.logging;
 
+import java.io.Serializable;
+
 /**
  * Log file for comfortable logging in one class.
  * Create it as a static field if you want to use it in a static context.
  * <br>
  * For more details see Logging.java in same package.
  */
-public class NLPediaLogger {
+public class NLPediaLogger /*implements Serializable*/ {
 	
-	private Class loggingClazz;
+	/**
+     * 
+     */
+//    private static final long serialVersionUID = 3687086210560615529L;
+    
+    private Class loggingClazz;
 	
 	public NLPediaLogger(Class clazz) {
 		

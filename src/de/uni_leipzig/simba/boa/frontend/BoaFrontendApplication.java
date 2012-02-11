@@ -1,27 +1,38 @@
 package de.uni_leipzig.simba.boa.frontend;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
 
 import com.vaadin.Application;
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.event.Action;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.terminal.ExternalResource;
-import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
+import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.AbstractSelect.Filtering;
+import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
-import com.vaadin.ui.Panel;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
@@ -40,13 +51,16 @@ import de.uni_leipzig.simba.boa.frontend.ui.PatternWindow;
 import de.uni_leipzig.simba.boa.frontend.ui.TripleTable;
 
 @SuppressWarnings("serial")
-public class BoaFrontendApplication extends Application implements ItemClickListener, Action.Handler, Button.ClickListener, TextChangeListener {
+public class BoaFrontendApplication extends Application implements ItemClickListener, Button.ClickListener, Property.ValueChangeListener {
 
     private NLPediaSetup setup = new NLPediaSetup(false);
     private NLPediaLogger logger = new NLPediaLogger(BoaFrontendApplication.class);
 
     private Button triplesButton = new Button("Triples");
+    private Button sourceButton = new Button("Source");
+    private Button downloadsButton = new Button("Downloads");
     private Button databasesButton = new Button("Pattern Library");
+    private ComboBox patternSearchField = new ComboBox();
     
     private DatabaseNavigationTree tree;
     private DatabaseNavigationTree tripleTree;
@@ -56,14 +70,20 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     
     public static String CURRENT_DATABASE;
     public static String CURRENT_INDEX_DIR = "";
-    
+
+    private IndexedContainer nlrPatternContainer; 
     private PatternMapping currentPatternMapping;
     private PatternMappingManager patternMappingManager = new PatternMappingManager();
+    private List<PatternMapping> mappings;
     
     @Override
     public void init() {
         
-        System.out.println("Total memory available in MB: " + Runtime.getRuntime().totalMemory() / NLPediaSettings.MEGABYTE);;
+        mappings = this.patternMappingManager.getPatternMappings(CURRENT_DATABASE + "/patternmappings/");
+        nlrPatternContainer = this.getNaturalLanguagePatternContainer();
+        this.tree = new DatabaseNavigationTree(this, mappings);
+        this.tripleTree = new DatabaseNavigationTree(this, mappings);
+
         buildMainLayout();
     }
     
@@ -73,16 +93,37 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         
         if (source == this.triplesButton) {
             
-            TripleTable table = new TripleTable(this, tripleTree.getFirstUri());
-            // setze linken teil auf die modelle
+//            TripleTable table = new TripleTable(this, tripleTree.getFirstUri());
             horizontalSplitPanel.setFirstComponent(tripleTree);
-            // in den rechten teil kommt die erkl�rung
-            horizontalSplitPanel.setSecondComponent(table);
-            horizontalSplitPanel.setSplitPosition(280, HorizontalSplitPanel.UNITS_PIXELS);
+            
+            VerticalLayout triples = new VerticalLayout();
+            triples.setSizeFull();
+            triples.setMargin(true);
+            triples.addComponent(new Label("Triples"));
+            
+            horizontalSplitPanel.setSecondComponent(triples);
         }
         else if ( source == this.databasesButton ) {
             
-            this.buildHomeLayout();
+            horizontalSplitPanel.setSecondComponent(buildStartPage());
+        }
+        else if ( source == this.downloadsButton ) {
+            
+            VerticalLayout downloads = new VerticalLayout();
+            downloads.setSizeFull();
+            downloads.setMargin(true);
+            downloads.addComponent(new Label("Downloads"));
+            
+            horizontalSplitPanel.setSecondComponent(downloads);
+        }
+        else if ( source == this.sourceButton ) {
+            
+            VerticalLayout sourceCode = new VerticalLayout();
+            sourceCode.setSizeFull();
+            sourceCode.setMargin(true);
+            sourceCode.addComponent(new Label("Source Code"));
+            
+            horizontalSplitPanel.setSecondComponent(sourceCode);
         }
     }
 
@@ -96,63 +137,54 @@ public class BoaFrontendApplication extends Application implements ItemClickList
                 
                 String database = (String) this.tree.getItem(itemId).getItemProperty(DatabaseContainer.DATABASE_ID).getValue();
                 String uri = (String) this.tree.getItem(itemId).getItemProperty(DatabaseContainer.URI).getValue();
-//              String id = (String) this.tree.getItem(itemId).getItemProperty(DatabaseContainer.PATTERN_MAPPING_ID).getValue();
                 
-                BoaFrontendApplication.CURRENT_DATABASE     = database;
-                BoaFrontendApplication.CURRENT_INDEX_DIR    = NLPediaSettings.getSetting(BoaFrontendApplication.CURRENT_DATABASE);
-                
-                long start = System.currentTimeMillis();
                 this.currentPatternMapping = this.patternMappingManager.getPatternMapping(uri, database);
-                System.out.println("pmDao.findPatternMappingByUri() took: " + (System.currentTimeMillis() - start) + "ms.");
                 
-                GridLayout gridLayout = new GridLayout(4,4);
-                gridLayout.setSpacing(true);
-                gridLayout.setMargin(true);
-                gridLayout.setSizeFull();
+                HorizontalLayout propertyInfos = new HorizontalLayout();
+                propertyInfos.setSizeFull();
+                
+                GridLayout uriAndLabel = new GridLayout(2,2);
+                uriAndLabel.setSizeFull();
+                uriAndLabel.setSpacing(true);
+                uriAndLabel.setMargin(true);
                 
                 Label uriLabel = new Label("URI:");
-                Link uriLink = new Link(this.currentPatternMapping.getProperty().getUri(), new ExternalResource(this.currentPatternMapping.getProperty().getUri()));
-                gridLayout.addComponent(uriLabel,0,0);
-                gridLayout.addComponent(uriLink,1,0);
+                Link uriLink = new Link(this.currentPatternMapping.getProperty().getUri(), new ExternalResource("http://dbpedia.org/ontology/" + this.currentPatternMapping.getProperty().getUri()));
+                uriAndLabel.addComponent(uriLabel, 0, 0);
+                uriAndLabel.addComponent(uriLink, 1, 0);
+                
+                Label rdfsLabel = new Label("rdfs:label");
+                Label rdfsLabelString = new Label(this.currentPatternMapping.getProperty().getLabel());
+                uriAndLabel.addComponent(rdfsLabel, 0, 1);
+                uriAndLabel.addComponent(rdfsLabelString, 1, 1);
+                
+                GridLayout domainAndRange = new GridLayout(2,2);
+                domainAndRange.setSizeFull();
+                domainAndRange.setSpacing(true);
+                domainAndRange.setMargin(true);
                 
                 Label rdfsDomainLabel = new Label("rdfs:domain (?D?)");
                 String domain = this.currentPatternMapping.getProperty().getRdfsDomain() == null ? "not defined" : this.currentPatternMapping.getProperty().getRdfsDomain();
                 Link rdfsDomainLink = new Link(domain, new ExternalResource(domain));
-                gridLayout.addComponent(rdfsDomainLabel,0,1);
-                gridLayout.addComponent(rdfsDomainLink,1,1);
-                
+                domainAndRange.addComponent(rdfsDomainLabel, 0, 0);
+                domainAndRange.addComponent(rdfsDomainLink, 1, 0);
+
                 Label rdfsRangeLabel = new Label("rdfs:range (?R?)");
                 String range = this.currentPatternMapping.getProperty().getRdfsRange() == null ? "not defined" : this.currentPatternMapping.getProperty().getRdfsRange();
                 Link rdfsRangeLink = new Link(range, new ExternalResource(range));
-                gridLayout.addComponent(rdfsRangeLabel,0,2);
-                gridLayout.addComponent(rdfsRangeLink,1,2);
+                domainAndRange.addComponent(rdfsRangeLabel, 0, 1);
+                domainAndRange.addComponent(rdfsRangeLink, 1, 1);
                 
-                Label rdfsLabel = new Label("rdfs:label");
-                Label rdfsLabelString = new Label(this.currentPatternMapping.getProperty().getLabel());
-                gridLayout.addComponent(rdfsLabel,0,3);
-                gridLayout.addComponent(rdfsLabelString,1,3);
+                propertyInfos.addComponent(uriAndLabel);
+                propertyInfos.addComponent(domainAndRange);
                 
                 VerticalSplitPanel vPanel = new VerticalSplitPanel();
-                vPanel.setFirstComponent(gridLayout);
-                vPanel.setSplitPosition(25);
+                vPanel.setFirstComponent(propertyInfos);
+                vPanel.setSplitPosition(20);
+                vPanel.setLocked(true);
                 
-                try {
-
-                    start = System.currentTimeMillis();
-                    this.patternTable = new PatternTable(this, new PatternContainer(this.currentPatternMapping));
-                    System.out.println("Loading PatternContainer took: " + (System.currentTimeMillis() - start) + "ms.");
-                    
-//                  this.patternTable = new PatternTable(this, PatternContainer.createTestPatternContainer());
-                    vPanel.setSecondComponent(this.patternTable);
-                }
-                catch (InstantiationException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                catch (IllegalAccessException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                this.patternTable = new PatternTable(this, new ArrayList<Pattern>(this.currentPatternMapping.getPatterns()));
+                vPanel.setSecondComponent(this.patternTable);
                 this.horizontalSplitPanel.setSecondComponent(vPanel);
             }
         }
@@ -172,76 +204,116 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         }
         else if (event.getSource() == this.patternTable ) {
             
-            Pattern pattern = (Pattern) event.getItemId();
-            long start = System.currentTimeMillis();
+            Pattern pattern = this.patternTable.getSelectedPattern((Integer) event.getItemId());
             this.getMainWindow().addWindow(new PatternWindow(this, pattern, this.currentPatternMapping));
-            System.out.println("Loading Pattern Window took: " + (System.currentTimeMillis() - start) + "ms.");
         }
     }
     
-    private TreeSet<String> createDummySentences() {
-
-        return new TreeSet<String>(Arrays.asList("Humboldt University of Berlin is the oldest university in Germany's capital city, Berlin.", 
-                "As well as all of this, Germany's capital city Berlin is one of the biggest and liveliest in Europe, with the country's politicians mixing with office workers, artists and young people who love to party!"));
-    }
-
     private void buildMainLayout() {
         
-        this.setMainWindow(new Window("Boa Frontend"));
+        Window main = new Window("Boa Frontend");
+        main.setContent(new VerticalLayout());
+        this.setMainWindow(main);
         this.setTheme("boa");
         
-        long start = System.currentTimeMillis();
-        
-        List<PatternMapping> mappings = this.patternMappingManager.getPatternMappings(CURRENT_DATABASE + "/patternmappings/");
-        
-        this.tree = new DatabaseNavigationTree(this, mappings);
-        System.out.println("building database nav tree took: " + (System.currentTimeMillis() - start) + "ms.");
-        
-        this.tripleTree = new DatabaseNavigationTree(this, mappings);
-        
         VerticalLayout layout = new VerticalLayout();
-        layout.setSizeFull();
-        layout.addComponent(this.createToolbar());
+        layout.setWidth("90%");
+        layout.setHeight("90%");
+        GridLayout topGrid = this.createToolbar();
+        topGrid.setHeight("75%");
+        topGrid.setWidth("97%");
+        layout.setSpacing(true);
+        layout.setMargin(true);
+        layout.addComponent(topGrid);
         layout.addComponent(horizontalSplitPanel);
-        layout.setExpandRatio(horizontalSplitPanel, 1);
         
-        horizontalSplitPanel.setSplitPosition(280, HorizontalSplitPanel.UNITS_PIXELS);
+        horizontalSplitPanel.setSplitPosition(150, HorizontalSplitPanel.UNITS_PIXELS);
         horizontalSplitPanel.setFirstComponent(tree);
+        horizontalSplitPanel.setSecondComponent(buildStartPage());
+        horizontalSplitPanel.setWidth("97%");
+        horizontalSplitPanel.setLocked(true);
         
-        this.buildHomeLayout();
+        layout.setExpandRatio(topGrid, 1f);
+        layout.setExpandRatio(horizontalSplitPanel, 5f);
         
-        this.getMainWindow().setContent(layout);
+        layout.setComponentAlignment(horizontalSplitPanel, Alignment.MIDDLE_CENTER);
+        layout.setComponentAlignment(topGrid, Alignment.TOP_CENTER);
+        
+        this.getMainWindow().getContent().addComponent(layout);
+        VerticalLayout content = (VerticalLayout) this.getMainWindow().getContent();
+        content.setSizeFull();
+        content.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
     }
     
     private GridLayout createToolbar() {
         
-        GridLayout lo = new GridLayout(30,1);
-        databasesButton.setWidth("70px");
-        lo.addComponent(databasesButton,0,0);
-        lo.addComponent(triplesButton,1,0);
+        GridLayout topGrid = new GridLayout(2,1);
+        
+        HorizontalLayout buttons = new HorizontalLayout();
+        buttons.setHeight("100%");
+        buttons.setWidth("100%");
+        buttons.addComponent(databasesButton);
+        buttons.addComponent(triplesButton);
+        buttons.addComponent(sourceButton);
+        buttons.addComponent(downloadsButton);
+        buttons.setComponentAlignment(databasesButton, Alignment.MIDDLE_LEFT);
+        buttons.setComponentAlignment(triplesButton, Alignment.MIDDLE_LEFT);
+        buttons.setComponentAlignment(sourceButton, Alignment.MIDDLE_LEFT);
+        buttons.setComponentAlignment(downloadsButton, Alignment.MIDDLE_LEFT);
+        
+        patternSearchField = new ComboBox(null, nlrPatternContainer);
+        patternSearchField.setWidth("60%");
+        patternSearchField.setStyleName("patternSearch");
+        patternSearchField.setValue("Search for a pattern...");
+        patternSearchField.setItemCaptionPropertyId("NLR");
+        patternSearchField.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
+        patternSearchField.setFilteringMode(Filtering.FILTERINGMODE_CONTAINS);
+        patternSearchField.setNullSelectionAllowed(false);
+        patternSearchField.setImmediate(true);
+        
+        VerticalLayout search = new VerticalLayout();
+        search.setWidth("100%");
+        search.setHeight("100%");
+        search.setMargin(true);
+        search.addComponent(patternSearchField);
+        search.setComponentAlignment(patternSearchField, Alignment.MIDDLE_RIGHT);
+        
+        topGrid.addComponent(buttons, 0, 0);
+        topGrid.addComponent(search, 1, 0);
+        topGrid.setStyleName("toolbar");
+        topGrid.setSizeFull();
+        topGrid.setComponentAlignment(buttons, Alignment.MIDDLE_LEFT);
         
         triplesButton.addListener((ClickListener) this);
         databasesButton.addListener((ClickListener) this);
+        sourceButton.addListener((ClickListener) this);
+        downloadsButton.addListener((ClickListener) this);
+        patternSearchField.addListener((Property.ValueChangeListener) this);
         
-        triplesButton.setIcon(new ThemeResource("icons/32/folder-add.png"));
-        databasesButton.setIcon(new ThemeResource("icons/32/globe.png"));
-        
-        lo.setMargin(true);
-        lo.setSpacing(false);
-        lo.setStyleName("toolbar");
-        lo.setWidth("100%");
-        
-        this.horizontalSplitPanel.setSizeFull();
-
-//      Embedded em = new Embedded("", new ThemeResource("images/logo.png"));
-//      lo.addComponent(em);
-//      lo.setComponentAlignment(em, Alignment.MIDDLE_RIGHT);
-//      lo.setExpandRatio(em, 1);
-
-        return lo;
+        return topGrid;
     }
     
-    private void buildHomeLayout() {
+    public IndexedContainer getNaturalLanguagePatternContainer() {
+        
+        IndexedContainer naturalLanguagePatternContainer = new IndexedContainer();
+        naturalLanguagePatternContainer.addContainerProperty("NLR", String.class, "");
+        naturalLanguagePatternContainer.addContainerProperty("PATTERN", Pattern.class, "");
+        naturalLanguagePatternContainer.addContainerProperty("MAPPING", PatternMapping.class, "");
+
+        for (PatternMapping mapping : this.mappings ) {
+            for ( Pattern pattern : mapping.getPatterns() ) {
+                
+                Item item = naturalLanguagePatternContainer.addItem(mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
+                item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation());
+                item.getItemProperty("PATTERN").setValue(pattern);
+                item.getItemProperty("MAPPING").setValue(mapping);
+            }
+        }
+        return naturalLanguagePatternContainer;
+    }
+    
+    
+    private ComponentContainer buildStartPage() {
 
         Label preformattedText = new Label(
                 "<b><h1>BOA - a framework for BOostrapping the datA web.</h1></b><br/>" +
@@ -257,35 +329,24 @@ public class BoaFrontendApplication extends Application implements ItemClickList
                 "<b>The BOA Architecture:</b>");
         preformattedText.setContentMode(Label.CONTENT_XHTML);
         
+        VerticalLayout p =  new VerticalLayout();
+        p.setMargin(true);
         
-        Panel p =  new Panel();
         Embedded e = new Embedded("", new ThemeResource("images/BOA_Architecture.png"));
-        e.setWidth(700, Sizeable.UNITS_PIXELS);
-        p.setSizeFull();
+        e.setWidth("700px");
+        e.setHeight("424px");
+        
         p.addComponent(preformattedText);
         p.addComponent(e);
-        horizontalSplitPanel.setFirstComponent(tree);
-        horizontalSplitPanel.setSecondComponent(p);
+        return p;
     }
 
     @Override
-    public void textChange(TextChangeEvent event) {
+    public void valueChange(ValueChangeEvent event) {
 
-        // TODO Auto-generated method stub
-        
-    }
-    
-    @Override
-    public Action[] getActions(Object target, Object sender) {
-
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void handleAction(Action action, Object sender, Object target) {
-
-        // TODO Auto-generated method stub
-        
+        Pattern pattern = (Pattern) nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "PATTERN").getValue();
+        PatternMapping mapping = (PatternMapping) nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "MAPPING").getValue();
+        this.patternSearchField.setValue(null);
+        getMainWindow().addWindow(new PatternWindow(this, pattern, mapping));
     }
 }
