@@ -171,12 +171,16 @@ public class DefaultPatternSearcher implements PatternSearcher {
         
         Set<String> sentences = new HashSet<String>();
         
-     // collect all sentences
+        // collect all sentences
         for ( int n = 0 ; n < hits.length; n++){
-            if(NLPediaSettings.BOA_LANGUAGE.equals("ko")){
-                sentences.add(LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "originalsentence"));
-            }else{
-                sentences.add(LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "sentence"));
+            
+            if ( NLPediaSettings.BOA_LANGUAGE.equals("ko") ) {
+                
+                sentences.add(hits[n].doc + " " + LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "originalsentence"));
+            } 
+            else {
+                
+                sentences.add(hits[n].doc + " " + LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "sentence"));
             }
         }
 
