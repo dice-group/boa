@@ -76,6 +76,12 @@
 				<include name="lucene-core-3.4.0.jar"/>
 				<include name="vaadin-6.7.4.jar"/>
 				<include name="utk.jar"/>
+				<include name="spring.jar"/>
+				<include name="log4j-1.2.16.jar"/>
+				<include name="commons-logging-1.1.1.jar"/>
+				<include name="commons-io-2.1.jar"/>
+				<include name="opennlp-tools-1.5.0.jar"/>
+				<include name="reverb.jar"/>
 			</lib>
 			<classes dir="${build.dir}" />
 		</war>
