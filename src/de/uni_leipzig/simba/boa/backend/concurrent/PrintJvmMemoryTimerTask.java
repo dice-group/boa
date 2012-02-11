@@ -5,12 +5,12 @@ package de.uni_leipzig.simba.boa.backend.concurrent;
 
 import java.util.TimerTask;
 
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
-
 /**
- * @author gerb
+ * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
  *
  */
 public class PrintJvmMemoryTimerTask extends TimerTask {
@@ -23,10 +23,14 @@ public class PrintJvmMemoryTimerTask extends TimerTask {
     @Override
     public void run() {
 
-        this.logger.info("##### Heap utilization statistics #####");
-        this.logger.info("Used Memory:\t\t"     + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / NLPediaSettings.MEGABYTE + "MB");
-        this.logger.info("Free Memory:\t\t"     + Runtime.getRuntime().freeMemory() / NLPediaSettings.MEGABYTE + "MB");
-        this.logger.info("Total Memory:\t"    + Runtime.getRuntime().totalMemory() / NLPediaSettings.MEGABYTE + "MB");
-        this.logger.info("Max Memory:\t\t"      + Runtime.getRuntime().maxMemory() / NLPediaSettings.MEGABYTE + "MB");
+        StringBuffer output = new StringBuffer();
+        
+        output.append("##### Heap utilization statistics #####\n").
+        append("Used Memory:\t\t"     + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / NLPediaSettings.MEGABYTE + "MB\n").
+        append("Free Memory:\t\t"     + Runtime.getRuntime().freeMemory() / NLPediaSettings.MEGABYTE + "MB\n").
+        append("Total Memory:\t"    + Runtime.getRuntime().totalMemory() / NLPediaSettings.MEGABYTE + "MB\n").
+        append("Max Memory:\t\t"      + Runtime.getRuntime().maxMemory() / NLPediaSettings.MEGABYTE + "MB\n");
+        
+        this.logger.info(output.toString());
     }
 }

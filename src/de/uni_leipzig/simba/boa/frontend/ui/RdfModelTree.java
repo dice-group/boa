@@ -14,7 +14,7 @@ public class RdfModelTree extends Tree {
 	
 	public RdfModelTree(BoaFrontendApplication app) {
 		
-		this.addListener(app);
+//		this.addListener(app);
 		
 		Item item = null;
 		

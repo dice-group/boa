@@ -56,4 +56,16 @@ public interface MachineLearningTrainingFile {
      * @param notAnnotatedEntries the notAnnotatedEntries to set
      */
     public abstract void setNotAnnotatedEntries(List<MachineLearningTrainingFileEntry> notAnnotatedEntries);
+    
+    /**
+     * 
+     * @param featureNames
+     */
+    public abstract void setFeatureNames(List<String> featureNames);
+    
+    /**
+     * 
+     * @return
+     */
+    public abstract List<String> getFeatureNames();
 }

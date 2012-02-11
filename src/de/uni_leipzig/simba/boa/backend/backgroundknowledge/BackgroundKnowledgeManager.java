@@ -127,7 +127,7 @@ public class BackgroundKnowledgeManager {
 		// labels from wikipedia surface forms
 		for (String part : parts[2].toLowerCase().split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
 		    
-		    final String surfaceForm = part;
+		    final String surfaceForm = part.trim();
 		    if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength")) {
                 
 		        subjectLabels.add(" " + surfaceForm + " ");
@@ -145,7 +145,7 @@ public class BackgroundKnowledgeManager {
 		// labels from wikipedia surface forms
 	    for (String part : parts[6].toLowerCase().split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
 	        
-	        final String surfaceForm = part;
+	        final String surfaceForm = part.trim();
 	        if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength")) {
 	            
 	            objectLabels.add(" " + surfaceForm + " ");
