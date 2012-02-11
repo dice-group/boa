@@ -151,8 +151,15 @@ public class SurfaceFormGenerator {
         if ( !((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype().equals("NA")
                 && !((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype().isEmpty() ) {
             
-            dbk.setObjectSurfaceForms(
-                    this.createDatatypePropertyLabels(dbk.getObjectLabel(), ((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype()));
+            try {
+            
+                dbk.setObjectSurfaceForms(
+                        this.createDatatypePropertyLabels(dbk.getObjectLabel(), ((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype()));
+            }
+            catch (Exception e) {
+                
+                System.out.println(dbk.getObjectLabel()  +" . " + ((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype());
+            }
         }
         
         return dbk;
