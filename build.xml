@@ -45,9 +45,9 @@
 		<java classname="de.uni_leipzig.simba.boa.backend.Boa" fork="true">
 			<classpath refid="master-classpath"/>
 			<jvmarg value="-Xmx${Xmx}"/>
-			<jvmarg value="-Dcom.sun.management.jmxremote.port=9876"/>
+			<!--jvmarg value="-Dcom.sun.management.jmxremote.port=9876"/>
 			<jvmarg value="-Dcom.sun.management.jmxremote.ssl=false"/>
-			<jvmarg value="-Dcom.sun.management.jmxremote.authenticate=false"/>
+			<jvmarg value="-Dcom.sun.management.jmxremote.authenticate=false"/-->
 		</java>
 	</target>
 
