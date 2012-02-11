@@ -8,7 +8,7 @@
         factory-method="getInstance" singleton="true">
 
         <property name="defaultPatternSearcher"
-            value="de.uni_leipzig.simba.boa.backend.search.impl.KoreanPatternSearcher" />
+            value="de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher" />
 
         <property name="patternSearcher">
             <list>
