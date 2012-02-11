@@ -1,6 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.search.surfaceforms;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,13 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-
 import weka.core.tokenizers.NGramTokenizer;
-
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
@@ -27,7 +20,6 @@ import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.DatatypePropert
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.ObjectPropertyBackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.rdf.ontology.ClassIndexer;
 
 /**
  * This thing needs at least 4GB of RAM.
@@ -210,7 +202,8 @@ public class SurfaceFormGenerator {
         else {
             
             logger.error("There is something obiously wrong: " + objectLabel + "  " + predicateType);
-            throw new RuntimeException("There is something obiously wrong: " + objectLabel + "  " + predicateType);
+            System.out.println("There is something obiously wrong: " + objectLabel + "  " + predicateType);
+//            throw new RuntimeException("There is something obiously wrong: " + objectLabel + "  " + predicateType);
         }
         return labels;
     }
