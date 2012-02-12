@@ -59,6 +59,12 @@ public class StartScriptsCommand implements Command {
 							Command createQaIndexCommand = new CreateQuestionAnsweringIndexCommand();
 							createQaIndexCommand.execute();
 							break;
+						
+						case 4:
+                            
+                            Command xxxCommand = new XXX();
+                            xxxCommand.execute();
+                            break;
 							
 						default: // option not supported
 							Command unkownOptionCommand = new UnknownOptionCommand(System.out);
