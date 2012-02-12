@@ -154,8 +154,10 @@ public class SurfaceFormGenerator {
             
             try {
             
-                dbk.getObjectSurfaceForms().addAll(
-                        this.createDatatypePropertyLabels(dbk.getObjectLabel(), ((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype()));
+                for ( String variation : this.createDatatypePropertyLabels(dbk.getObjectLabel(), ((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype())) {
+                    
+                    dbk.getObjectSurfaceForms().add(" " + variation + " ");
+                }
             }
             catch (Exception e) {
                 
