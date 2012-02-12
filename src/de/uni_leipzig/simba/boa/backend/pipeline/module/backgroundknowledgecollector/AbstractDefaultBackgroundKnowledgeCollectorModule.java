@@ -182,7 +182,8 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
                 objectUri = solution.get("o").toString();
                 if (objectUri.contains("^^")) objectType    = objectUri.substring(objectUri.lastIndexOf("^^") + 2);
                 if (objectUri.contains("^^")) objectUri     = objectUri.substring(0, objectUri.indexOf("^"));
-                objectLabel = objectUri;
+                if (objectLabel.contains("@" + BOA_LANGUAGE)) objectLabel = objectLabel.substring(0, objectLabel.lastIndexOf("@"));
+                if (objectLabel.isEmpty()) objectLabel = objectUri;
             }
 
             DatatypePropertyBackgroundKnowledge datatypeBackgroundKnowledge = new DatatypePropertyBackgroundKnowledge();
@@ -200,7 +201,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
             datatypeBackgroundKnowledge.setPropertyWordnetSynsets(StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(property.getLabel()), ","));
 
             BackgroundKnowledge backgroundKnowledge = SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(datatypeBackgroundKnowledge);
-            System.out.println(backgroundKnowledge.toString() + "\n----------------------------------");
+
             writer.write(backgroundKnowledge.toString());
             this.backgroundKnowledge.add(backgroundKnowledge);
         }
