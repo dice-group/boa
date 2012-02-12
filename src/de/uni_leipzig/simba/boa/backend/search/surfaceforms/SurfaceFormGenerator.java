@@ -110,7 +110,7 @@ public class SurfaceFormGenerator {
         String objectUri    = objectPropertyBackgroundKnowledge.getObjectUri();
         
         Set<String> subjectSurfaceForms = new HashSet<String>();
-        subjectSurfaceForms.add(objectPropertyBackgroundKnowledge.getSubjectLabel());
+        subjectSurfaceForms.add(" " + objectPropertyBackgroundKnowledge.getSubjectLabel() + " ");
         
         // we found labels for the subject in the surface form file
         if ( this.urisToLabels.containsKey(subjectUri) ) {
@@ -126,7 +126,7 @@ public class SurfaceFormGenerator {
         // ################################################################################
         
         Set<String> objectSurfaceForms = new HashSet<String>();
-        objectSurfaceForms.add(objectPropertyBackgroundKnowledge.getObjectLabel());
+        objectSurfaceForms.add(" " + objectPropertyBackgroundKnowledge.getObjectLabel() + " ");
         
         // we found labels for the object in the surface form file
         if ( this.urisToLabels.containsKey(objectUri) ) {
