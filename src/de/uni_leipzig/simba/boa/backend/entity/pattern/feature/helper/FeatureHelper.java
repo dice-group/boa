@@ -83,9 +83,13 @@ public class FeatureHelper {
 	        // calculate the local maximum of the current feature for all pattern mappings 
 	        for ( PatternMapping mapping : mappings ) {
 	            
-	            logger.info("Starting to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
-	            maximas.put(mapping, calculateLocalMaximum(mapping, feature));
-	            logger.info("Finished to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
+	            // empty patterns wont have a maximum
+	            if ( mapping.getPatterns().size() > 0 ) {
+	                
+	                logger.info("Starting to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
+	                maximas.put(mapping, calculateLocalMaximum(mapping, feature));
+	                logger.info("Finished to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
+	            }
 	        }
 	                
 	        FeatureHelper.localFeatureMaxima.put(feature, maximas);

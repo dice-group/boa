@@ -231,7 +231,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         layout.addComponent(topGrid);
         layout.addComponent(horizontalSplitPanel);
         
-        horizontalSplitPanel.setSplitPosition(150, HorizontalSplitPanel.UNITS_PIXELS);
+        horizontalSplitPanel.setSplitPosition(215, HorizontalSplitPanel.UNITS_PIXELS);
         horizontalSplitPanel.setFirstComponent(tree);
         horizontalSplitPanel.setSecondComponent(buildStartPage());
         horizontalSplitPanel.setWidth("97%");
@@ -349,7 +349,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 
         Pattern pattern = (Pattern) nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "PATTERN").getValue();
         PatternMapping mapping = (PatternMapping) nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "MAPPING").getValue();
-        this.patternSearchField.setValue(null);
         getMainWindow().addWindow(new PatternWindow(this, pattern, mapping));
     }
 }
