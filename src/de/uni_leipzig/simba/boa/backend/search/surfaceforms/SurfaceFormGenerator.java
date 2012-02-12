@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -153,7 +154,7 @@ public class SurfaceFormGenerator {
             
             try {
             
-                dbk.setObjectSurfaceForms(
+                dbk.getObjectSurfaceForms().addAll(
                         this.createDatatypePropertyLabels(dbk.getObjectLabel(), ((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype()));
             }
             catch (Exception e) {
@@ -182,11 +183,13 @@ public class SurfaceFormGenerator {
         // ################   Non-Negative Integer    
         // ######################################################################
         
-        else if ( predicateType.equals("http://www.w3.org/2001/XMLSchema#nonNegativeInteger") 
-                || predicateType.equals("http://www.w3.org/2001/XMLSchema#int")
-                || predicateType.equals("http://dbpedia.org/datatype/second") ) {
+        else if ( predicateType.equalsIgnoreCase("http://www.w3.org/2001/XMLSchema#nonNegativeInteger") 
+                || predicateType.equalsIgnoreCase("http://www.w3.org/2001/XMLSchema#int")
+                || predicateType.equalsIgnoreCase("http://www.w3.org/2001/XMLSchema#integer")
+                || predicateType.equalsIgnoreCase("http://dbpedia.org/datatype/second")
+                || predicateType.equalsIgnoreCase("http://dbpedia.org/datatype/integer")) {
             
-            labels.addAll(handleNonNegativeInteger(objectLabel));
+            labels.addAll(handleInteger(objectLabel));
         }
 
         // ######################################################################
@@ -205,6 +208,10 @@ public class SurfaceFormGenerator {
         else if ( predicateType.equals("http://www.w3.org/2001/XMLSchema#date") ) {
             
             labels.addAll(this.handleDate(objectLabel));
+        }
+        else if ( predicateType.equalsIgnoreCase("http://www.w3.org/2001/XMLSchema#gMonthDay")) {
+            
+            labels.addAll(this.handelGMonthDay(objectLabel));
         }
         else {
             
@@ -291,7 +298,7 @@ public class SurfaceFormGenerator {
      * @param parseCandidate
      * @return
      */
-    private Set<String> handleNonNegativeInteger(String parseCandidate) {
+    private Set<String> handleInteger(String parseCandidate) {
 
         // some non-negative integers contain decimals and other stuff, so remove it
         if ( parseCandidate.contains(".") ) parseCandidate = parseCandidate.replaceAll("\\.[0-9]+$", "");
@@ -323,10 +330,36 @@ public class SurfaceFormGenerator {
         return variations;
     }
     
-    public static void main(String[] args) {
+    private Collection<? extends String> handelGMonthDay(String objectLabel) {
+
+        String d = getDateString(objectLabel, "--MM-dd", "d");
+        String MM = getDateString(objectLabel, "--MM-dd", "MM");
+        String MMM = getDateString(objectLabel, "--MM-dd", "MMM");
+        String MMMM = getDateString(objectLabel, "--MM-dd", "MMMM");
+        
+        Set<String> variations = new HashSet<String>();
+        
+        variations.add(getOrdinalFor(Integer.valueOf(d)) + " of " + MMMM);
+        variations.add(getOrdinalFor(Integer.valueOf(d)) + " " + MMMM);
+        variations.add(d + " " + MMMM);
+        variations.add(d + "." + MM);
+        variations.add(d + "." + MM + ".");
+        variations.add(d + ". " + MMM);
+        variations.add(d + ". " + MMMM);
+        variations.add(d + " " + MMM);
+        variations.add(d + " " + MMMM);
+        variations.add(d + " " + MMM);
+        variations.add(MMM + " " + d);
+        variations.add(MMM);
+        variations.add(MMMM);
+        
+        return variations;
+    }
+    
+    public static void main(String[] args) throws ParseException {
 
         SurfaceFormGenerator s = new SurfaceFormGenerator();
-        System.out.println(s.handleNonNegativeInteger("259200.0"));
+        System.out.println(s.handleInteger("259200.0"));
     }
 
     /**

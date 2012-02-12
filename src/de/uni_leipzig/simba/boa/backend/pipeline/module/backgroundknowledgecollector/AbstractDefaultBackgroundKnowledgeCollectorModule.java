@@ -154,7 +154,6 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 
         BufferedFileWriter writer = FileUtil.openWriter(fileName, Constants.UTF_8_ENCODING, WRITER_WRITE_MODE.APPEND);
 
-        int uri = 0;
         for (QuerySolution solution : resultSets) {
 
             // get the subject and its label with the language tag
@@ -200,7 +199,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
             datatypeBackgroundKnowledge.setPropertyWordnetSynsets(StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(property.getLabel()), ","));
 
             BackgroundKnowledge backgroundKnowledge = SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(datatypeBackgroundKnowledge);
-
+            System.out.println(backgroundKnowledge.toString() + "\n----------------------------------");
             writer.write(backgroundKnowledge.toString());
             this.backgroundKnowledge.add(backgroundKnowledge);
         }
