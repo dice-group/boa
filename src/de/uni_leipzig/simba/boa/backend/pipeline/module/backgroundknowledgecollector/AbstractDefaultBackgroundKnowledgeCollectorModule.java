@@ -128,6 +128,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
                     property.setType("http://www.w3.org/2002/07/owl#DatatypeProperty");
                     handleDatatypePropertyQuery(property, fileName, resultSetList);
                 }
+                break;
             }
             else { // end of query for current property
 
