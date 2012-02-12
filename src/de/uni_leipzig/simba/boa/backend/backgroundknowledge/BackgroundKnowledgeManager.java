@@ -140,7 +140,7 @@ public class BackgroundKnowledgeManager {
 		        subjectLabels.add(" " + surfaceForm + " ");
             }
 		}
-		subjectLabels.add(subjectLabel);
+		subjectLabels.add(" " +  subjectLabel + " ");
 		subjectLabels.removeAll(Arrays.asList("", null));
 		// rdf:type of the subject
 		
@@ -158,7 +158,7 @@ public class BackgroundKnowledgeManager {
 	            objectLabels.add(" " + surfaceForm + " ");
 	        }
 	    }
-	    objectLabels.add(objectLabel);
+	    objectLabels.add(" " + objectLabel + " ");
 	    objectLabels.removeAll(Arrays.asList("", null));
 		
 		// ################ resources: subject, property, object ############################

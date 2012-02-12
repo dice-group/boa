@@ -115,7 +115,10 @@ public class SurfaceFormGenerator {
         // we found labels for the subject in the surface form file
         if ( this.urisToLabels.containsKey(subjectUri) ) {
             
-            subjectSurfaceForms = urisToLabels.get(subjectUri);
+            for (String s : urisToLabels.get(subjectUri) ) {
+                
+                subjectSurfaceForms.add(s.toLowerCase());
+            }
         }
         logger.debug("Found " + subjectSurfaceForms.size() + " at all!");
         subjectSurfaceForms.removeAll(Arrays.asList("", null));
@@ -131,7 +134,10 @@ public class SurfaceFormGenerator {
         // we found labels for the object in the surface form file
         if ( this.urisToLabels.containsKey(objectUri) ) {
             
-            objectSurfaceForms = urisToLabels.get(objectUri);
+            for (String s : urisToLabels.get(objectUri)) {
+                
+                objectSurfaceForms.add(s.toLowerCase());
+            }
         }
         logger.debug("Found " + objectSurfaceForms.size() + " at all");
         
@@ -156,7 +162,7 @@ public class SurfaceFormGenerator {
             
                 for ( String variation : this.createDatatypePropertyLabels(dbk.getObjectLabel(), ((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype())) {
                     
-                    dbk.getObjectSurfaceForms().add(" " + variation + " ");
+                    dbk.getObjectSurfaceForms().add(" " + variation.toLowerCase() + " ");
                 }
             }
             catch (Exception e) {
