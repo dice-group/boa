@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
@@ -15,6 +17,7 @@ import com.vaadin.ui.Table;
 
 import de.danielgerber.format.OutputFormatter;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.comparator.FeatureNameComparator;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 
@@ -26,20 +29,25 @@ public class PatternTable extends Table {
 	public PatternTable(BoaFrontendApplication app, List<Pattern> patterns) {
 		setSizeFull();
 		
+		List<Feature> featureList = new ArrayList<Feature>(patterns.get(0).getFeatures().keySet());
+		Collections.sort(featureList, new FeatureNameComparator());
+		
 		setSortAscending(false);
 		sort();
 		setColumnCollapsingAllowed(true);
 		setColumnReorderingAllowed(true);
 		
-		this.addContainerProperty("SCORE",        String.class, null);
-		this.addContainerProperty("OCCURRENCE",   Integer.class, null);
-		this.addContainerProperty("GENERALIZED",  String.class, null);
-		this.addContainerProperty("NLR",          String.class, null);
-		this.addContainerProperty("POS",          String.class, null);
-		for (Map.Entry<Feature,Double> feature : patterns.get(0).getFeatures().entrySet()) {
+		this.addContainerProperty("Score",                            String.class, null);
+		this.addContainerProperty("Occurrence",                       Integer.class, null);
+		this.addContainerProperty("Generalized",                      String.class, null);
+		this.addContainerProperty("Natural Language Representation",  String.class, null);
+		this.addContainerProperty("Part Of Speech",                   String.class, null);
+		for ( Feature feature : featureList ) {
 		    
-		    this.addContainerProperty(feature.getKey().getName(), Double.class, null);
-		    this.setColumnCollapsed(feature.getKey().getName(), true);
+		    String name = WordUtils.capitalize(feature.getName().replace("_", " ").toLowerCase());
+		    
+		    this.addContainerProperty(name, Double.class, null);
+		    this.setColumnCollapsed(name, true);
 		}
 		
 		int i = 0;
@@ -51,10 +59,8 @@ public class PatternTable extends Table {
             entries.add(pattern.getGeneralizedPattern());
             entries.add(pattern.getNaturalLanguageRepresentation());
             entries.add(pattern.getPosTaggedString());
-            for (Map.Entry<Feature,Double> feature : pattern.getFeatures().entrySet()) {
-                
-                entries.add(feature.getValue());
-            }
+            
+            for (Feature feature : featureList) entries.add(pattern.getFeatures().get(feature));
             this.patterns.put(new Integer(i), pattern);
             this.addItem(entries.toArray(), i++);
         }
@@ -77,7 +83,6 @@ public class PatternTable extends Table {
 			
 			// Format by property type
 	        if (property.getType() == Double.class) {
-	        	
 	        	return OutputFormatter.format((Double) property.getValue(), "####.##");
 	        }
 

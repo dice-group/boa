@@ -22,13 +22,13 @@ import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationM
  */
 public class PatternMappingManager {
 
-    private List<PatternMapping> mappings;
+    private static List<PatternMapping> mappings;
     
     private final String PATTERN_MAPPING_FOLDER         = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
     
     public PatternMappingManager() {
         
-        this.mappings = new ArrayList<PatternMapping>(SerializationManager.getInstance().deserializePatternMappings(PATTERN_MAPPING_FOLDER));
+        mappings = new ArrayList<PatternMapping>(SerializationManager.getInstance().deserializePatternMappings(PATTERN_MAPPING_FOLDER));
     }
     
     /**
@@ -49,7 +49,7 @@ public class PatternMappingManager {
      */
     public PatternMapping getPatternMapping(String uri, String database) {
 
-        for  (PatternMapping mapping : this.mappings ) {
+        for  (PatternMapping mapping : mappings ) {
             
             if ( mapping.getProperty().getUri().equals(uri) ) return mapping; 
         }
@@ -66,7 +66,7 @@ public class PatternMappingManager {
 
         int numberOfSamePatterns = 0;
         
-        for ( PatternMapping mapping : this.mappings )
+        for ( PatternMapping mapping : mappings )
             for (Pattern pattern : mapping.getPatterns())
                 if ( pattern.getNaturalLanguageRepresentation().equalsIgnoreCase(naturalLanguageRepresentation) ) {
                     

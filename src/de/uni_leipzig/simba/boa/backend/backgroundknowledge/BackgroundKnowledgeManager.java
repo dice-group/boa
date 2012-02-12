@@ -192,7 +192,8 @@ public class BackgroundKnowledgeManager {
 		    datattypeBackgroundKnowledge.setRdfsDomain(domain);
 		    datattypeBackgroundKnowledge.setPropertyWordnetSynsets(
                     StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(predicate), ","));
-		    datattypeBackgroundKnowledge.setObjectDatatype(parts[9]);
+		    
+		    if ( parts.length == 10 ) datattypeBackgroundKnowledge.setObjectDatatype(parts[9]);
             
             return datattypeBackgroundKnowledge;
 		}

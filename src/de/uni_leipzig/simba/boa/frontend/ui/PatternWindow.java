@@ -1,15 +1,21 @@
 package de.uni_leipzig.simba.boa.frontend.ui;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
@@ -24,6 +30,7 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.comparator.FeatureNameComparator;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.FeatureEnum;
 import de.uni_leipzig.simba.boa.backend.util.PatternUtil;
@@ -47,13 +54,13 @@ public class PatternWindow extends Window {
 		this.patternMapping = pm;
 		
 		this.setModal(true);
-		this.setWidth("900px");
-		this.setHeight("500px");
+		this.setWidth("800px");
+		this.setHeight("510px");
 		this.setResizable(false);
 		
         VerticalLayout l2 = new VerticalLayout();
-//        l2.setMargin(true);
         l2.addComponent(this.buildTab2Content());
+        
         VerticalLayout l3 = new VerticalLayout();
         l3.setMargin(true);
         l3.addComponent(new Label(this.buildTab3Content(), Label.CONTENT_XHTML));
@@ -79,6 +86,8 @@ public class PatternWindow extends Window {
 		HorizontalLayout hLayout2 = new HorizontalLayout();
 		Label confLabel = new Label("<b>Score: </b>", Label.CONTENT_XHTML);
 		Label confidence = new Label(OutputFormatter.format(this.pattern.getScore(), "##.###"));
+		confLabel.setWidth(null);
+		confidence.setWidth(null);
 		hLayout2.addComponent(confLabel);
 		hLayout2.addComponent(confidence);
 		hLayout2.setComponentAlignment(confLabel, Alignment.MIDDLE_LEFT);
@@ -88,16 +97,22 @@ public class PatternWindow extends Window {
 		
         leftVerticalLayout.addComponent(hLayout2);
 		
-		for (Map.Entry<Feature, Double> feature : this.pattern.getFeatures().entrySet()) {
+        List<Feature> features = new ArrayList<Feature>(this.pattern.getFeatures().keySet());
+        Collections.sort(features, new FeatureNameComparator());
+        
+		for (Feature feature : features) {
 
 		    // similarity
 	        HorizontalLayout hLayoutFeature = new HorizontalLayout();
-	        Label featureLabel = new Label("<b>"+feature.getKey().getName()+": </b>", Label.CONTENT_XHTML);
-	        Label featureValue = new Label(String.valueOf(OutputFormatter.format(feature.getValue(), "##.###")));
+	        Label featureLabel = new Label("<b>" + WordUtils.capitalize(feature.getName().replace("_", " ").toLowerCase()) + ": </b>", Label.CONTENT_XHTML);
+	        Label featureValue = new Label(String.valueOf(OutputFormatter.format(pattern.getFeatures().get(feature), "##.###")));
+	        featureLabel.setWidth(null);
+	        featureValue.setWidth(null);
 	        hLayoutFeature.addComponent(featureLabel);
 	        hLayoutFeature.addComponent(featureValue);
 	        hLayoutFeature.setComponentAlignment(featureLabel, Alignment.MIDDLE_LEFT);
-	        hLayoutFeature.setComponentAlignment(featureValue, Alignment.MIDDLE_CENTER);
+	        hLayoutFeature.setComponentAlignment(featureValue, Alignment.MIDDLE_RIGHT);
+	        hLayoutFeature.setExpandRatio(featureLabel, 2.5f);
 	        hLayoutFeature.setSpacing(true);
 	        hLayoutFeature.setSizeFull();
 	        
@@ -171,15 +186,12 @@ public class PatternWindow extends Window {
 		// humanFeedback
 		HorizontalLayout hLayout17 = new HorizontalLayout();
 		Label humanFeedbackLabel = new Label("<b>Rate this pattern: </b>", Label.CONTENT_XHTML);
-		Slider slider = new Slider("Select a value between 0 (poor) and 10 (good)!");
-        slider.setWidth("100%");
-        slider.setMin(0);
-        slider.setMax(10);
-        slider.setImmediate(true);
+		CheckBox cb = new CheckBox();
+        cb.setImmediate(true);
         hLayout17.addComponent(humanFeedbackLabel);
-        hLayout17.addComponent(slider);
+        hLayout17.addComponent(cb);
         hLayout17.setComponentAlignment(humanFeedbackLabel, Alignment.MIDDLE_LEFT);
-        hLayout17.setComponentAlignment(slider, Alignment.MIDDLE_RIGHT);
+        hLayout17.setComponentAlignment(cb, Alignment.MIDDLE_LEFT);
         hLayout17.setSpacing(true);
         hLayout17.setSizeFull();
 		
@@ -196,9 +208,9 @@ public class PatternWindow extends Window {
 		hLayout.addComponent(leftVerticalLayout);
 		hLayout.setComponentAlignment(leftVerticalLayout, Alignment.MIDDLE_LEFT);
 		hLayout.addComponent(rightVerticalLayout);
-		hLayout.setComponentAlignment(rightVerticalLayout, Alignment.MIDDLE_RIGHT);
-		hLayout.setExpandRatio(leftVerticalLayout, 2);
-		hLayout.setExpandRatio(rightVerticalLayout, 3.8f);
+		hLayout.setComponentAlignment(rightVerticalLayout, Alignment.TOP_CENTER);
+		hLayout.setExpandRatio(leftVerticalLayout, 2.5f);
+		hLayout.setExpandRatio(rightVerticalLayout, 2.5f);
 		
 		return hLayout;
 	}
@@ -207,7 +219,7 @@ public class PatternWindow extends Window {
 		
 	    Table table = new Table();
 	    table.setSizeFull();
-
+	        
 	    /* Define the names and data types of columns.
 	     * The "default value" parameter is meaningless here. */
 	    table.addContainerProperty("Subject",      String.class,  null);
