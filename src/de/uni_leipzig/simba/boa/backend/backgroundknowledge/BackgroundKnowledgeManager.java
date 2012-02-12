@@ -85,7 +85,14 @@ public class BackgroundKnowledgeManager {
         String line;
         while ((line = br.readLine()) != null) {
 
-            backgroundKnowledge.add(this.createBackgroundKnowledge(line, isObjectProperty));
+            try {
+                
+                backgroundKnowledge.add(this.createBackgroundKnowledge(line, isObjectProperty));
+            }
+            catch (java.lang.ArrayIndexOutOfBoundsException e ) {
+                
+                System.out.println(line);
+            }
         }
         br.close();
         return backgroundKnowledge;
