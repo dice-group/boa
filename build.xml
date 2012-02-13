@@ -83,6 +83,7 @@
 				<include name="opennlp-tools-1.5.0.jar"/>
 				<include name="reverb.jar"/>
                 <include name="commons-lang-2.5.jar"/>
+				<include name="commons-lang3-3.0.jar"/>
 			</lib>
 			<classes dir="${build.dir}" />
 		</war>
