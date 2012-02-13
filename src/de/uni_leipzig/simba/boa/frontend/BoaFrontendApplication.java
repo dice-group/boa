@@ -60,6 +60,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     private Button sourceButton = new Button("Source");
     private Button downloadsButton = new Button("Downloads");
     private Button databasesButton = new Button("Pattern Library");
+    private Button publicationsButton = new Button("Publications");
     private ComboBox patternSearchField = new ComboBox();
     
     private DatabaseNavigationTree tree;
@@ -126,6 +127,15 @@ public class BoaFrontendApplication extends Application implements ItemClickList
             sourceCode.setSizeFull();
             sourceCode.setMargin(true);
             sourceCode.addComponent(new Label("Source Code"));
+            
+            horizontalSplitPanel.setSecondComponent(sourceCode);
+        }
+        else if ( source == this.publicationsButton ) {
+            
+            VerticalLayout sourceCode = new VerticalLayout();
+            sourceCode.setSizeFull();
+            sourceCode.setMargin(true);
+            sourceCode.addComponent(new Label("Publications"));
             
             horizontalSplitPanel.setSecondComponent(sourceCode);
         }
@@ -223,7 +233,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         VerticalLayout layout = new VerticalLayout();
         layout.setWidth("90%");
         layout.setHeight("90%");
-        GridLayout topGrid = this.createToolbar();
+        HorizontalLayout topGrid = this.createToolbar();
         topGrid.setHeight("75%");
         topGrid.setWidth("97%");
         layout.setSpacing(true);
@@ -249,24 +259,27 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         content.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
     }
     
-    private GridLayout createToolbar() {
+    private HorizontalLayout createToolbar() {
         
-        GridLayout topGrid = new GridLayout(2,1);
+        HorizontalLayout topGrid = new HorizontalLayout();
         
         HorizontalLayout buttons = new HorizontalLayout();
         buttons.setHeight("100%");
         buttons.setWidth("100%");
+        buttons.setSpacing(false);
         buttons.addComponent(databasesButton);
         buttons.addComponent(triplesButton);
         buttons.addComponent(sourceButton);
         buttons.addComponent(downloadsButton);
+        buttons.addComponent(publicationsButton);
         buttons.setComponentAlignment(databasesButton, Alignment.MIDDLE_LEFT);
         buttons.setComponentAlignment(triplesButton, Alignment.MIDDLE_LEFT);
         buttons.setComponentAlignment(sourceButton, Alignment.MIDDLE_LEFT);
         buttons.setComponentAlignment(downloadsButton, Alignment.MIDDLE_LEFT);
+        buttons.setComponentAlignment(publicationsButton, Alignment.MIDDLE_LEFT);
         
         patternSearchField = new ComboBox(null, nlrPatternContainer);
-        patternSearchField.setWidth("60%");
+        patternSearchField.setWidth("100%");
         patternSearchField.setStyleName("patternSearch");
         patternSearchField.setValue("Search for a pattern...");
         patternSearchField.setItemCaptionPropertyId("NLR");
@@ -282,8 +295,10 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         search.addComponent(patternSearchField);
         search.setComponentAlignment(patternSearchField, Alignment.MIDDLE_RIGHT);
         
-        topGrid.addComponent(buttons, 0, 0);
-        topGrid.addComponent(search, 1, 0);
+        topGrid.addComponent(buttons);
+        topGrid.addComponent(search);
+        topGrid.setExpandRatio(buttons, 3);
+        topGrid.setExpandRatio(search, 2);
         topGrid.setStyleName("toolbar");
         topGrid.setSizeFull();
         topGrid.setComponentAlignment(buttons, Alignment.MIDDLE_LEFT);

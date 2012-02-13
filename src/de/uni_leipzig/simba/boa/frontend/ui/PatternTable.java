@@ -28,16 +28,12 @@ public class PatternTable extends Table {
 	
 	public PatternTable(BoaFrontendApplication app, List<Pattern> patterns) {
 		setSizeFull();
+		setColumnCollapsingAllowed(true);
 		
 		List<Feature> featureList = new ArrayList<Feature>(patterns.get(0).getFeatures().keySet());
 		Collections.sort(featureList, new FeatureNameComparator());
 		
-		setSortAscending(false);
-		sort();
-		setColumnCollapsingAllowed(true);
-		setColumnReorderingAllowed(true);
-		
-		this.addContainerProperty("Score",                            String.class, null);
+		this.addContainerProperty("Score",                            Double.class, null);
 		this.addContainerProperty("Occurrence",                       Integer.class, null);
 		this.addContainerProperty("Generalized",                      String.class, null);
 		this.addContainerProperty("Natural Language Representation",  String.class, null);
@@ -65,6 +61,10 @@ public class PatternTable extends Table {
             this.addItem(entries.toArray(), i++);
         }
         
+        setSortContainerPropertyId("Score");
+        setSortAscending(false);
+        sort();
+        setColumnReorderingAllowed(true);
 		setSelectable(true);
 		setImmediate(true);
 		addListener((ItemClickListener) app);
