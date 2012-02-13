@@ -17,9 +17,10 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternSearchThreadManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilterFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.impl.SubjectPredicateObjectPattern;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.AbstractPatternSearchModule;
@@ -109,7 +110,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                 // pattern was not found, create a new pattern 
                 if ( pattern == null ) {
                     
-                    pattern = new Pattern(patternString);
+                    pattern = new SubjectPredicateObjectPattern(patternString);
                     pattern.setPosTaggedString(posTagged);
                     pattern.addLearnedFrom(label1 + "-;-" + label2);
                     pattern.addPatternMapping(currentMapping);
@@ -151,7 +152,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                     this.patternMappingCount++;
                 }
                 
-                Pattern pattern = new Pattern(patternString);
+                Pattern pattern = new SubjectPredicateObjectPattern(patternString);
                 pattern.setPosTaggedString(posTagged);
                 pattern.addLearnedFrom(label1 + "-;-" + label2);
                 pattern.addPatternMapping(currentMapping);

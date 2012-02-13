@@ -5,10 +5,6 @@ package de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingf
 
 import java.util.List;
 
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
-
 
 /**
  * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>

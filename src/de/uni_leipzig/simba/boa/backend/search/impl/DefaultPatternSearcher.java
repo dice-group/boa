@@ -54,7 +54,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
     protected PartOfSpeechTagger posTagger;
 
     private final Analyzer analyzer;
-    private final IndexSearcher indexSearcher;
+    protected final IndexSearcher indexSearcher;
 
     private final QueryParser parser;
     private ScoreDoc[] hits;
@@ -169,20 +169,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
         
         hits = this.searchIndexWithoutFilter(q, MAX_NUMBER_OF_DOCUMENTS);
         
-        Set<String> sentences = new HashSet<String>();
-        
-        // collect all sentences
-        for ( int n = 0 ; n < hits.length; n++){
-            
-            if ( NLPediaSettings.BOA_LANGUAGE.equals("ko") ) {
-                
-                sentences.add(hits[n].doc + " " + LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "originalsentence"));
-            } 
-            else {
-                
-                sentences.add(hits[n].doc + " " + LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "sentence"));
-            }
-        }
+        Set<String> sentences = this.getSentencesFromIndex(hits);
 
         // go through all sentences and surface form combinations 
         for ( String sentence : sentences ) {
@@ -208,6 +195,18 @@ public class DefaultPatternSearcher implements PatternSearcher {
         return results;
     }
     
+    protected Set<String> getSentencesFromIndex(ScoreDoc[] hits) {
+        
+        Set<String> sentences = new HashSet<String>();
+        
+        // collect all sentences
+        for ( int n = 0 ; n < hits.length; n++){
+            
+            sentences.add(hits[n].doc + " " + LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "sentence"));
+        }
+        return sentences;
+    }
+
     protected List<String> findMatchedText(final String sentence, final String firstLabel, final String secondLabel){
         
         final String sentenceLowerCase    = sentence.toLowerCase();

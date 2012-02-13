@@ -2,13 +2,18 @@ package de.uni_leipzig.simba.boa.backend.search.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.search.ScoreDoc;
 
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.impl.KoreanPartOfSpeechTagger;
 
 public class KoreanPatternSearcher extends DefaultPatternSearcher{
@@ -364,6 +369,19 @@ public class KoreanPatternSearcher extends DefaultPatternSearcher{
 		}
 		
 		return pattern.substring(firstValIdx, firstValIdx + 3) + pattern.substring(secondValIdx, pattern.length());
+	}
+	
+	@Override
+	protected Set<String> getSentencesFromIndex(ScoreDoc[] hits) {
+	
+	    Set<String> sentences = new HashSet<String>();
+        
+        // collect all sentences
+        for ( int n = 0 ; n < hits.length; n++){
+            
+            sentences.add(hits[n].doc + " " + LuceneIndexHelper.getFieldValueByDocId(indexSearcher, hits[n].doc, "originalsentence"));
+        }
+        return sentences;
 	}
 
 }

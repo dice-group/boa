@@ -1,14 +1,14 @@
 package de.uni_leipzig.simba.boa.backend.concurrent;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 
 /**
  * 
  */
 
 /**
- * @author gerb
+ * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
  *
  */
 public class PatternMappingPatternPair {

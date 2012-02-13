@@ -3,7 +3,6 @@
  */
 package de.uni_leipzig.simba.boa.backend.pipeline.interchangeobject.impl;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.Set;
 import org.apache.lucene.store.Directory;
 
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningTool;
 import de.uni_leipzig.simba.boa.backend.pipeline.interchangeobject.ModuleInterchangeObject;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
