@@ -3,7 +3,6 @@ package de.uni_leipzig.simba.boa.backend.configuration.command.impl.scripts;
 import java.util.Scanner;
 
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.ResetPatternCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOptionCommand;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
@@ -42,25 +41,19 @@ public class StartScriptsCommand implements Command {
 							goBack = true;
 							break;
 					
-						case 1: // look if generated triples are present in dbpedia
-							
-							Command resetPatternCommand = new ResetPatternCommand();
-							resetPatternCommand.execute();
-							break;
-							
-						case 2:
+						case 1:
 							
 							Command posDistributionCommand = new PosDistributionCommand();
 							posDistributionCommand.execute();
 							break;	
 					
-						case 3:
+						case 2:
 							
 							Command createQaIndexCommand = new CreateQuestionAnsweringIndexCommand();
 							createQaIndexCommand.execute();
 							break;
 						
-						case 4:
+						case 3:
                             
                             Command xxxCommand = new XXX();
                             xxxCommand.execute();

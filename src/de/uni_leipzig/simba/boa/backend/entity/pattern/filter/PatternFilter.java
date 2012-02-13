@@ -1,6 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.filter;
 
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 
 /**
  * Interface for all evaluators.

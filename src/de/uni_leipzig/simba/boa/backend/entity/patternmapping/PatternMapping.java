@@ -1,8 +1,6 @@
-package de.uni_leipzig.simba.boa.backend.entity.pattern;
+package de.uni_leipzig.simba.boa.backend.entity.patternmapping;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 
 /**

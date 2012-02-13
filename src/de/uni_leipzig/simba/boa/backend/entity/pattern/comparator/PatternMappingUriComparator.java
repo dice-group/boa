@@ -2,9 +2,13 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.comparator;
 
 import java.util.Comparator;
 
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 
-
+/**
+ * 
+ * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
+ *
+ */
 public class PatternMappingUriComparator implements Comparator<PatternMapping> {
 
 	@Override

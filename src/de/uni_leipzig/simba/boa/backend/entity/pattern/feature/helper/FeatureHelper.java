@@ -2,21 +2,13 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.uni_leipzig.simba.boa.backend.Constants;
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.comparator.PatternComparatorGenerator;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.FeatureEnum;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 
 public class FeatureHelper {
     

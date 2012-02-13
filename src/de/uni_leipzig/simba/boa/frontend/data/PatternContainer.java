@@ -5,7 +5,8 @@ import java.io.Serializable;
 import com.vaadin.data.util.BeanItemContainer;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.impl.SubjectPredicateObjectPattern;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 
 
 @SuppressWarnings("serial")
@@ -20,9 +21,7 @@ public class PatternContainer extends BeanItemContainer<Pattern> implements Seri
 	
 	public static BeanItemContainer<Pattern> createTestPatternContainer() throws InstantiationException, IllegalAccessException {
 		
-		
-		Pattern capital1 = new Pattern( "?D? 's capital city ?R?");
-		capital1.setId(1);
+		Pattern capital1 = new SubjectPredicateObjectPattern( "?D? 's capital city ?R?");
 		capital1.setScore(0.96);
 //		capital1.setSimilarity(0.77);
 //		capital1.setTypicity(22.76);

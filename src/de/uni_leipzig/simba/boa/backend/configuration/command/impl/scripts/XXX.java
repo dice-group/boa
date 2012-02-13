@@ -47,13 +47,13 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
 import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
 import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
-import de.uni_leipzig.simba.boa.backend.dao.serialization.PatternMappingManager;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.FeatureEnum;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.PatternMappingManager;
 import de.uni_leipzig.simba.boa.backend.featurescoring.PatternScoreManager;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -157,7 +157,7 @@ public class XXX implements Command {
 		
 		PatternMappingDao patternDao = (PatternMappingDao)DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 		List<Pair> xyz = new ArrayList<Pair>();		
-		List<PatternMapping> patternMappings = patternDao.findAllPatternMappings();
+		List<PatternMapping> patternMappings = new ArrayList<PatternMapping>();
 		for ( PatternMapping pm : patternMappings ){
 			for ( Pattern p :pm.getPatterns()) {
 				

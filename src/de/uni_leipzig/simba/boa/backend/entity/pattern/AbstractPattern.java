@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,10 +18,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 
 /**
  * 
@@ -30,7 +29,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
  */
 @Entity
 @Table(name="pattern")
-public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
+public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.entity.Entity implements Pattern {
 
 	/**
 	 * 
@@ -40,57 +39,57 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	/**
 	 * 
 	 */
-	private String naturalLanguageRepresentation;
+	protected String naturalLanguageRepresentation;
 	
 	/**
 	 * 
 	 */
-	private Integer numberOfOccurrences;
+	protected Integer numberOfOccurrences;
 	
 	/**
 	 * 
 	 */
-	private Boolean useForPatternEvaluation;
+	protected Boolean useForPatternEvaluation;
 
 	/**
 	 * 
 	 */
-	private String posTaggedString;
+	protected String posTaggedString;
 	
 	/**
 	 * 
 	 */
-	private String generalizedPattern;
+	protected String generalizedPattern;
 	
 	/**
 	 * 
 	 */
-	private Integer foundInIteration;
+	protected Integer foundInIteration;
 	
 	/**
 	 * 
 	 */
-	private List<PatternMapping> patternMappings;
+	protected List<PatternMapping> patternMappings;
 
 	/**
 	 * 
 	 */
-	private Map<String,Integer> learnedFrom;
+	protected Map<String,Integer> learnedFrom;
 	
 	/**
 	 * 
 	 */
-	private Set<Integer> foundInSentences;
+	protected Set<Integer> foundInSentences;
 	
 	/**
 	 * 
 	 */
-	private Double score = 0D;
+	protected Double score = 0D;
 	
 	/**
 	 * 
 	 */
-	private Map<Feature, Double> features;
+	protected Map<Feature, Double> features;
 	
 	/**
 	 * @param naturalLanguageRepresentation the naturalLanguageRepresentation to set
@@ -100,7 +99,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		this.naturalLanguageRepresentation = naturalLanguageRepresentation;
 	}
 	
-	public Pattern(){
+	public AbstractPattern(){
 		
 		this.learnedFrom = new HashMap<String,Integer>();
 		this.patternMappings = new ArrayList<PatternMapping>();
@@ -113,7 +112,7 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	 * 
 	 * @param patternString
 	 */
-	public Pattern(String patternString) {
+	public AbstractPattern(String patternString) {
 
 		this.naturalLanguageRepresentation = patternString;
 		this.learnedFrom = new HashMap<String,Integer>();
@@ -131,15 +130,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	public String getNaturalLanguageRepresentation() {
 	
 		return this.naturalLanguageRepresentation;
-	}
-	
-	/**
-	 * @return the NLR with ?D? and ?R?
-	 */
-	@Transient
-	public String getNaturalLanguageRepresentationWithoutVariables() {
-		
-		return this.naturalLanguageRepresentation.substring(0, this.naturalLanguageRepresentation.length() - 3).substring(3).trim();
 	}
 	
 	/**
@@ -214,14 +204,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		builder.append(naturalLanguageRepresentation);
 		builder.append(", score=");
 		builder.append(score);
-//		builder.append(", useForPatternEvaluation=");
-//		builder.append(useForPatternEvaluation);
-//		builder.append(", patternMappings=");
-//		builder.append(patternMappings);
-//		builder.append(", learnedFrom=");
-//		builder.append(learnedFrom);
-//		builder.append(", luceneDocIds=");
-//		builder.append(luceneDocIds);
 		builder.append(", features=");
         builder.append(features);
 		builder.append("]");
@@ -229,55 +211,50 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	}
 
 	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
 
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((naturalLanguageRepresentation == null) ? 0 : naturalLanguageRepresentation.hashCode());
-		result = prime * result + ((patternMappings == null) ? 0 : patternMappings.hashCode());
-		return result;
-	}
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((naturalLanguageRepresentation == null) ? 0 : naturalLanguageRepresentation.hashCode());
+        result = prime * result + ((patternMappings == null) ? 0 : patternMappings.hashCode());
+        return result;
+    }
+
 
 	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
 
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pattern other = (Pattern) obj;
-		if (naturalLanguageRepresentation == null) {
-			if (other.naturalLanguageRepresentation != null)
-				return false;
-		}
-		else
-			if (!naturalLanguageRepresentation.equals(other.naturalLanguageRepresentation))
-				return false;
-		if (patternMappings == null) {
-			if (other.patternMappings != null) {
-				
-				return false;
-			}
-		}
-		else
-			if (!patternMappings.equals(other.patternMappings)) {
-				
-				return false;
-			}
-				
-		return true;
-	}
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        AbstractPattern other = (AbstractPattern) obj;
+        if (naturalLanguageRepresentation == null) {
+            if (other.naturalLanguageRepresentation != null)
+                return false;
+        }
+        else
+            if (!naturalLanguageRepresentation.equals(other.naturalLanguageRepresentation))
+                return false;
+        if (patternMappings == null) {
+            if (other.patternMappings != null)
+                return false;
+        }
+        else
+            if (!patternMappings.equals(other.patternMappings))
+                return false;
+        return true;
+    }
 
-
-	/**
+    /**
 	 * @param posTaggedString the posTaggedString to set
 	 */
 	public void setPosTaggedString(String posTaggedString) {
@@ -331,7 +308,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		this.learnedFrom = learnedFrom;
 	}
 
-
 	/**
 	 * @return the learnedFrom
 	 */
@@ -378,9 +354,9 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		return this.score;
 	}
 
-	public void setScore(Double confidence) {
+	public void setScore(Double score) {
 
-		this.score = confidence;
+		this.score = score;
 	}
 
 	/**
@@ -433,24 +409,6 @@ public class Pattern extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 		return this.naturalLanguageRepresentation.startsWith("?D?") ? true : false;
 	}
 
-//	/**
-//	 * @return the featureMap
-//	 */
-//	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//	@JoinColumn(name="feature_map_fk")
-//	public FeatureMap getFeatureMap() {
-//
-//		return featureMap;
-//	}
-//
-//	/**
-//	 * @param featureMap the featureMap to set
-//	 */
-//	public void setFeatureMap(FeatureMap featureMap) {
-//
-//		this.featureMap = featureMap;
-//	}
-	
 	/**
 	 * @return the features
 	 */

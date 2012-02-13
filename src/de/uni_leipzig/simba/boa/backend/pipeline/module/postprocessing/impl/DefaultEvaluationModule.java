@@ -21,7 +21,7 @@ import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.evaluation.EvaluationManager;
 import de.uni_leipzig.simba.boa.backend.evaluation.EvaluationIndexCreator;
 import de.uni_leipzig.simba.boa.backend.evaluation.EvaluationResult;

@@ -12,7 +12,7 @@ import java.util.Set;
 import org.apache.lucene.store.Directory;
 
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
 import de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningTool;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
