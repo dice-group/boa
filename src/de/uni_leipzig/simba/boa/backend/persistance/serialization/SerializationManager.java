@@ -76,6 +76,7 @@ public class SerializationManager {
 		
 		try {
 			
+		    logger.info("Deserializing mapping from: " + filepath);
 			return (PatternMapping) SerializationUtils.deserialize(new FileInputStream(new File(filepath)));
 		}
 		catch (FileNotFoundException e) {

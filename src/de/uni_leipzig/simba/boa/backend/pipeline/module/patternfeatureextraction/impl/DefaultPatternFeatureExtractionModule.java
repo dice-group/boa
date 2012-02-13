@@ -172,10 +172,18 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 		
 		// load the machine learning in case we did not run the run method of the feature extraction
         // this happens when we annotated data and restart the system
-        if ( new File(MACHINE_LEARNING_TRAINING_FILE).exists() && this.moduleInterchangeObject.getMachineLearningTool() != null ) {
-            
+        if ( new File(MACHINE_LEARNING_TRAINING_FILE).exists() ) {
+
             MachineLearningTrainingFile trainFile = patternScoreManager.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8");
-            this.moduleInterchangeObject.setMachineLearningTool(MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool(trainFile));
+            
+            if ( this.moduleInterchangeObject.getMachineLearningTool() == null ) 
+                this.moduleInterchangeObject.setMachineLearningTool(MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool(trainFile));
+
+            else logger.warn("Machine learning object already exist. This should not be possible in the first iteration!");
+        }
+        else {
+            
+            this.logger.error("Machine learning traing file does not exist: " + MACHINE_LEARNING_TRAINING_FILE + ".");
         }
 	}
 }

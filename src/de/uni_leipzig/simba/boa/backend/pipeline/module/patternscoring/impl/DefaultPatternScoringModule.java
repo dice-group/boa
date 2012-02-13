@@ -9,6 +9,7 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 import de.uni_leipzig.simba.boa.backend.featurescoring.PatternScoreManager;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -53,6 +54,8 @@ public class DefaultPatternScoringModule extends AbstractPatternScoringModule {
         // get ML from interchange object make sure there is a neural network read from disk
         final MachineLearningTool machineLearningTool   = this.moduleInterchangeObject.getMachineLearningTool();
         machineLearningTool.loadModel();
+        // fill the cache
+        FeatureHelper.createLocalMaxima(this.moduleInterchangeObject.getPatternMappings());
         
         // go through each mapping / pattern combination
         for ( PatternMapping mapping : this.moduleInterchangeObject.getPatternMappings() ) {
