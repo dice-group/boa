@@ -6,9 +6,11 @@ package de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -38,17 +40,17 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     
     private final NLPediaLogger logger                  = new NLPediaLogger(DefaultPatternSearchModule.class);
     private final int TOTAL_NUMBER_OF_SEARCH_THREADS    = NLPediaSettings.getIntegerSetting("numberOfSearchThreads");
-    private final String PATTERN_MAPPING_FOLDER         = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.PATTERN_MAPPINGS_PATH;
+    protected final String PATTERN_MAPPING_FOLDER         = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.PATTERN_MAPPINGS_PATH;
     
     // caches for various objects
-    private Map<Integer,PatternMapping> mappings        = new HashMap<Integer,PatternMapping>();
-    private Map<Integer,Property> properties;           
-    private Map<Integer,Map<Integer,Pattern>> patterns  = new HashMap<Integer,Map<Integer,Pattern>>();
+    protected Map<Integer,PatternMapping> mappings        = new HashMap<Integer,PatternMapping>();
+    protected Map<Integer,Property> properties;           
+    protected Map<Integer,Map<Integer,Pattern>> patterns  = new HashMap<Integer,Map<Integer,Pattern>>();
     
     // for the report
     private long patternSearchTime      = 0;
     private long patternCreationTime    = 0;
-    private long patternMappingCount    = 0;
+    protected long patternMappingCount    = 0;
     private long patternCount           = 0;
 
     /* (non-Javadoc)
@@ -81,7 +83,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         this.logger.info("Pattern generation and serialization took " + TimeUtil.convertMilliSeconds(patternCreationTime) + "! There are " + this.patternMappingCount + " pattern mappings and " + this.patternCount + " patterns.");
     }
     
-    private void createPatternMappings(List<SearchResult> results) {
+    protected void createPatternMappings(List<SearchResult> results) {
         
         // get the cache from the interchange object
         this.properties = this.moduleInterchangeObject.getProperties();
@@ -93,6 +95,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         PatternMapping currentMapping = null;
         
         for ( SearchResult searchResult : results) {
+        	
             
             String propertyUri      = searchResult.getProperty();
             String patternString    = searchResult.getNaturalLanguageRepresentation();
@@ -100,7 +103,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
             String label2           = searchResult.getSecondLabel();
             String posTagged        = searchResult.getPosTags();
             Integer sentence        = searchResult.getSentence();
-
+      
             // next line is for the same property
             if ( propertyUri.equals(currentProperty) ) {
                 
@@ -174,6 +177,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
             }
             currentProperty = propertyUri;
         }
+        
         // filter the patterns which do not abide certain thresholds, mostly occurrence thresholds
         this.filterPatterns(mappings.values());
         
@@ -185,7 +189,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
      * 
      * @param patternMappings
      */
-    private void filterPatterns(Collection<PatternMapping> patternMappings) {
+    protected void filterPatterns(Collection<PatternMapping> patternMappings) {
 
         Map<String,PatternFilter> patternEvaluators = PatternFilterFactory.getInstance().getPatternFilterMap();
         

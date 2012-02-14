@@ -17,10 +17,16 @@ public class SubjectObjectPredicatePattern extends AbstractPattern {
      */
     private static final long serialVersionUID = -204649984648292668L;
 
+    
+    public SubjectObjectPredicatePattern(String strPattern){
+    	super(strPattern);
+    }
+    
+    /**
+     * @return the NLR without ?D? and ?R?
+     */
     @Override
     public String getNaturalLanguageRepresentationWithoutVariables() {
-
-        // TODO Auto-generated method stub
-        return null;
+          return this.naturalLanguageRepresentation.substring(7).trim();
     }
 }
