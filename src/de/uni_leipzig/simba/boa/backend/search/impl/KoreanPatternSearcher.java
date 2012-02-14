@@ -2,6 +2,7 @@ package de.uni_leipzig.simba.boa.backend.search.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -12,6 +13,7 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.ScoreDoc;
 
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.impl.KoreanPartOfSpeechTagger;
@@ -56,6 +58,8 @@ public class KoreanPatternSearcher extends DefaultPatternSearcher{
 		sentence					= sentence.toLowerCase();
 		POSTaggingResult[] wtr		= analyzePOS(sentence);
 		List<String> currentMatches = new ArrayList<String>();
+		firstLabel					= firstLabel.trim();
+		secondLabel					= secondLabel.trim();
 		
 		int[] labelJudge			= new int[sentence.length()];
 		initializeIntegerArr(labelJudge);		
@@ -227,9 +231,9 @@ public class KoreanPatternSearcher extends DefaultPatternSearcher{
 	/**
 	 * Locate first verb after second offset, and create patterns til that.
 	 * @param sentence
-	 * @param lo
-	 * @param firstLabel
-	 * @param secondLabel
+	 * @param lo Location information of the first/second labels.
+	 * @param firstLabel  Desired first label.
+	 * @param secondLabel Desired second label.
 	 * @return
 	 */
 	private String getPatternTilFirstVerb(String sentence, POSTaggingResult[] wtr, LabelOffset lo, String firstLabel, String secondLabel){
@@ -254,7 +258,6 @@ public class KoreanPatternSearcher extends DefaultPatternSearcher{
 		}
 		
 		String ptn	= "?R? " + sentence.substring(lo.firstIndex + secondLabel.length(), lo.secondIndex) + " ?D? " + sentence.substring(lo.secondIndex + firstLabel.length(), firstVerbIndex);
-//		System.out.println(sentence + "\n" + ptn);
 		return ptn;
 	}
 	
@@ -285,29 +288,7 @@ public class KoreanPatternSearcher extends DefaultPatternSearcher{
 	
 	@Override
 	protected String getCorrectCaseNLR(String lowerCase, String normalCase, String pattern) {
-		int firstValIdx		= pattern.indexOf("?D?");
-		int secondValIdx	= pattern.indexOf("?R?");
-		if(firstValIdx > secondValIdx){
-			int tmp			= firstValIdx;
-			firstValIdx		= secondValIdx;
-			secondValIdx	= tmp;
-		}
-		
-		String firstPtnChk	= pattern.substring(0, firstValIdx).trim();
-		String secondPtnChk	= pattern.substring(firstValIdx + 3, secondValIdx).trim();
-		String thirdPtnChk	= pattern.substring(secondValIdx + 3).trim();
-		
-		String firstVariable = pattern.substring(firstValIdx, firstValIdx + 3);
-		String secondVariable = pattern.substring(secondValIdx, secondValIdx + 3);
-		
-		if(!firstPtnChk.equals("")){
-			firstPtnChk		+= " ";
-		}
-		if(!thirdPtnChk.equals("")){
-			thirdPtnChk		= " " + thirdPtnChk;
-		}
-
-		return firstPtnChk + firstVariable + " " + secondPtnChk + " " + secondVariable + thirdPtnChk;		
+		return pattern;
 	}
 	
 	/**
@@ -368,7 +349,7 @@ public class KoreanPatternSearcher extends DefaultPatternSearcher{
 			return pattern.substring(firstValIdx, secondValIdx + 3);
 		}
 		
-		return pattern.substring(firstValIdx, firstValIdx + 3) + pattern.substring(secondValIdx, pattern.length());
+		return pattern.substring(firstValIdx, firstValIdx + 3) + " " + pattern.substring(secondValIdx, pattern.length());
 	}
 	
 	@Override
@@ -382,6 +363,45 @@ public class KoreanPatternSearcher extends DefaultPatternSearcher{
             sentences.add(hits[n].doc + " " + LuceneIndexHelper.getFieldValueByDocId(indexSearcher, hits[n].doc, "originalsentence"));
         }
         return sentences;
+	}
+	
+	@Override
+	public boolean isPatternSuitable(String naturalLanguageRepresentation) {
+		String patternWithoutVariables = naturalLanguageRepresentation
+				.substring(0, naturalLanguageRepresentation.length() - 3)
+				.substring(3).trim();
+
+		// patterns are only allowed to have 256 characters
+		if (naturalLanguageRepresentation.length() > 256
+				|| naturalLanguageRepresentation.isEmpty())
+			return false;
+
+		// pattern need to start with either ?D? or ?R? and have to end with ?D?
+		// or ?R?
+		if ((!naturalLanguageRepresentation.startsWith("?D?") && !naturalLanguageRepresentation
+				.startsWith("?R?"))
+				|| (!naturalLanguageRepresentation.endsWith("?D?") && !naturalLanguageRepresentation
+						.endsWith("?R?"))
+				&& (!naturalLanguageRepresentation.startsWith("?D? ?R?") && !naturalLanguageRepresentation
+						.startsWith("?R? ?D?")))
+			return false;
+
+		// patterns need to have only one domain and only one range
+		if (StringUtils.countMatches(naturalLanguageRepresentation, "?D?") != 1
+				|| StringUtils.countMatches(naturalLanguageRepresentation,
+						"?R?") != 1)
+			return false;
+
+		// patterns need to be bigger/equal than min chunk size and
+		// smaller/equal then max chunk size
+		// true or correct if the number of stop-words in the pattern is not
+		// equal to the number of tokens
+		Set<String> naturalLanguageRepresentationChunks = new HashSet<String>(
+				Arrays.asList(patternWithoutVariables.toLowerCase().split(" ")));
+		if (naturalLanguageRepresentationChunks.size() >= MAX_PATTERN_CHUNK_LENGTH)
+			return false;
+
+		return true;
 	}
 
 }

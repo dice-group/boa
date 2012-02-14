@@ -224,6 +224,28 @@
         </property>
     </bean>
     
+     <bean id="KoreanPatternSearchModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl.KoreanPatternSearchModule">
+
+        <property name="overrideData" value="true" />
+
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.KoreanWikiIndexingModule</value> <!--  FIX THIS PART -->
+            </set>
+        </property>
+
+        <property name="moduleSettings">
+            <set>
+                <value>indexSentenceDirectory</value>
+                <value>maxNumberOfDocuments</value>
+                <value>numberOfSearchThreads</value>
+                <value>patternSearchThreadPoolSize</value>
+            </set>
+        </property>
+    </bean>
+    
     <!--  ############################################################################################ -->
     <!--  ################################## Feature Extraction ###################################### -->
     <!--  ############################################################################################ -->
