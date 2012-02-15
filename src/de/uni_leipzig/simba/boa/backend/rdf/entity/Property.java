@@ -29,7 +29,6 @@ public class Property extends Resource {
 
 	private String propertyPrefix;
 	private String propertyLocalname;
-	private String propertyLabel;
 	
 	private String rdfsRangePrefix;
 	private String rdfsRangeLocalname;
@@ -50,7 +49,7 @@ public class Property extends Resource {
 
         this.propertyLocalname = uri.substring(Math.max(lastIndexOfSlashP, lastIndexOfSharpP) + 1);
         this.propertyPrefix = uri.replace(propertyLocalname, "");
-        this.propertyLabel = StringUtils.join(propertyLocalname.split("(?=\\p{Upper})"), " ").toLowerCase();
+        this.label = StringUtils.join(propertyLocalname.split("(?=\\p{Upper})"), " ").toLowerCase();
 
         if ( !rdfsDomain.equals("NA") ) {
 
@@ -103,14 +102,6 @@ public class Property extends Resource {
 		return synsets;
 	}
 	
-    /**
-     * @return the propertyLabel
-     */
-    public String getPropertyLabel() {
-    
-        return propertyLabel;
-    }
-    
     /**
      * 
      * @return
