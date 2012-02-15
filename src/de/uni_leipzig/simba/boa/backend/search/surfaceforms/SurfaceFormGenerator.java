@@ -113,9 +113,9 @@ public class SurfaceFormGenerator {
         subjectSurfaceForms.add(" " + objectPropertyBackgroundKnowledge.getSubjectLabel() + " ");
         
         // we found labels for the subject in the surface form file
-        if ( this.urisToLabels.containsKey(subjectUri) ) {
+        if ( this.urisToLabels.containsKey(subjectUri.replace(Constants.DBPEDIA_RESOURCE_PREFIX, "")) ) {
             
-            for (String s : urisToLabels.get(subjectUri) ) {
+            for (String s : urisToLabels.get(subjectUri.replace(Constants.DBPEDIA_RESOURCE_PREFIX, "")) ) {
                 
                 subjectSurfaceForms.add(s.toLowerCase());
             }
@@ -132,9 +132,9 @@ public class SurfaceFormGenerator {
         objectSurfaceForms.add(" " + objectPropertyBackgroundKnowledge.getObjectLabel() + " ");
         
         // we found labels for the object in the surface form file
-        if ( this.urisToLabels.containsKey(objectUri) ) {
+        if ( this.urisToLabels.containsKey(objectUri.replace(Constants.DBPEDIA_RESOURCE_PREFIX, "")) ) {
             
-            for (String s : urisToLabels.get(objectUri)) {
+            for (String s : urisToLabels.get(objectUri.replace(Constants.DBPEDIA_RESOURCE_PREFIX, ""))) {
                 
                 objectSurfaceForms.add(s.toLowerCase());
             }
