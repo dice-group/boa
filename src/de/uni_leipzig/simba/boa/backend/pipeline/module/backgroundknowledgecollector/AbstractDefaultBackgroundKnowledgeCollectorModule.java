@@ -287,13 +287,13 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
                 String range    = qs.get("range") == null   ? "NA" : qs.get("range").toString();
                 
                 p = new Property(propertyUri, domain, range);
-                p.setSynsets(WordnetQuery.getSynsetsForAllSynsetTypes(property.getLabel()));
+                p.setSynsets(WordnetQuery.getSynsetsForAllSynsetTypes(p.getLabel()));
                 this.properties.put(p.hashCode(), p);
             }
             else {
 
                 p = new Property(propertyUri);
-                p.setSynsets(WordnetQuery.getSynsetsForAllSynsetTypes(property.getLabel()));
+                p.setSynsets(WordnetQuery.getSynsetsForAllSynsetTypes(p.getLabel()));
             }
 
             return p;
