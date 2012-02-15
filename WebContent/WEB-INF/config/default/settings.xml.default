@@ -32,12 +32,12 @@
                 <entry key="maxPatternLenght"                               value="10"/>
                 <entry key="minPatternLenght"                               value="1"/>
                 <entry key="surfaceFormMinimumLength"                       value="3"/>
-                <entry key="pos.tagger.model"                               value="training/pos/left3words-wsj-0-18.tagger"/>
-                
-               <!-- ############### confidence measure ############### -->
                 <entry key="number.of.occurrence.threshold"                 value="3"/>
                 <entry key="number.of.unique.occurrence.threshold"          value="3"/>
                 <entry key="number.of.learned.pairs"                        value="3"/>
+                <entry key="pos.tagger.model"                               value="training/pos/left3words-wsj-0-18.tagger"/>
+                
+               <!-- ############### confidence measure ############### -->
                 <entry key="maxNumberOfTypicityConfidenceMeasureDocuments"  value="10"/>
                 <entry key="maxmimumNumberOfTotalOccurrences"               value="100"/>
                 <entry key="numberOfFeatureExtractionsThreads"              value="4"/>

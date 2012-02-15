@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.uni_leipzig.simba.boa.backend.rdf.entity;
+package de.uni_leipzig.simba.boa.backend.entity;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -17,6 +17,9 @@ import org.junit.Test;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 
 /**
@@ -51,13 +54,13 @@ public class TripleTest {
     public void testTriple() {
         
         Resource subject1   = new Resource("s1", "sLabel1");
-        Property property1  = new Property("p1", "pLabel1", "range", "domain");
+        Property property1  = new Property("p1", "range", "domain");
         Resource object1    = new Resource("o1", "oLabel1");
         
         Triple t1 = new Triple(subject1, property1, object1);
         
         Resource subject2   = new Resource("s1", "sLabel2");
-        Property property2  = new Property("p1", "pLabel2", "range", "domain");
+        Property property2  = new Property("p1", "range", "domain");
         Resource object2    = new Resource("o1", "oLabel2");
         
         Triple t2 = new Triple(subject2, property2, object2);

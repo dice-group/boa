@@ -22,8 +22,8 @@ import org.junit.Test;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
+import de.uni_leipzig.simba.boa.backend.entity.TripleTest;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.TripleTest;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 
 
@@ -70,7 +70,7 @@ public class LuceneTest {
         assertEquals(this.query1Test(searcher, qp, list5, list6), this.query2Test(searcher, qp, list5, list6));
         
         long start = System.currentTimeMillis();
-        for (int i = 0; i < 1000 ; i++) {
+        for (int i = 0; i < 100 ; i++) {
             
             this.query1Test(searcher, qp, list1, list2);
             this.query1Test(searcher, qp, list3, list4);
@@ -80,7 +80,7 @@ public class LuceneTest {
         System.out.println("Time for combined query: " + TimeUtil.convertMilliSeconds(end) + ". Average: " + (double) end / 1000);
         
         start = System.currentTimeMillis();
-        for (int i = 0; i < 1000 ; i++) {
+        for (int i = 0; i < 100 ; i++) {
             
             this.query2Test(searcher, qp, list1, list2);
             this.query2Test(searcher, qp, list3, list4);

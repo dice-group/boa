@@ -67,8 +67,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
         this.moduleInterchangeObject.getBackgroundKnowledge().addAll(this.backgroundKnowledge);
         for (BackgroundKnowledge bk : this.backgroundKnowledge) {
 
-            this.moduleInterchangeObject.getProperties().put(bk.getPropertyUri().hashCode(),
-                    new Property(bk.getPropertyUri(), bk.getPropertyLabel(), bk.getRdfsRange(), bk.getRdfsDomain(), bk.getPropertyWordnetSynsets()));
+            this.moduleInterchangeObject.getProperties().put(bk.getProperty().getUri().hashCode(), bk.getProperty());
         }
 
     }
@@ -170,10 +169,9 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
             // if we have found a label the object is a resource
             if (solution.get("oLabel") != null) {
 
-                objectUri = solution.get("o").toString().replace(de.uni_leipzig.simba.boa.backend.Constants.DBPEDIA_RESOURCE_PREFIX, "");
+                objectUri = solution.get("o").toString();
                 objectLabel = solution.get("oLabel").toString();
-                if (objectLabel.contains("@" + BOA_LANGUAGE))
-                    objectLabel = objectLabel.substring(0, objectLabel.lastIndexOf("@"));
+                if (objectLabel.contains("@" + BOA_LANGUAGE)) objectLabel = objectLabel.substring(0, objectLabel.lastIndexOf("@"));
             }
             else {
 
@@ -181,23 +179,19 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
                 objectUri = solution.get("o").toString();
                 if (objectUri.contains("^^")) objectType    = objectUri.substring(objectUri.lastIndexOf("^^") + 2);
                 if (objectUri.contains("^^")) objectUri     = objectUri.substring(0, objectUri.indexOf("^"));
-                if (objectLabel.contains("@" + BOA_LANGUAGE)) objectLabel = objectLabel.substring(0, objectLabel.lastIndexOf("@"));
+                if (objectLabel.endsWith("@" + BOA_LANGUAGE)) objectLabel = objectLabel.replace("@" + BOA_LANGUAGE, "");
                 if (objectLabel.isEmpty()) objectLabel = objectUri;
             }
 
             DatatypePropertyBackgroundKnowledge datatypeBackgroundKnowledge = new DatatypePropertyBackgroundKnowledge();
-            datatypeBackgroundKnowledge.setSubjectUri(solution.get("s").toString().replace(de.uni_leipzig.simba.boa.backend.Constants.DBPEDIA_RESOURCE_PREFIX, ""));
+            datatypeBackgroundKnowledge.setSubjectPrefixAndLocalname(solution.get("s").toString());
             datatypeBackgroundKnowledge.setSubjectLabel(subjectLabel.replaceAll("\\(.+?\\)", "").trim());
 
-            datatypeBackgroundKnowledge.setObjectUri(objectUri);
+            datatypeBackgroundKnowledge.setObjectPrefixAndLocalname(objectUri);
             datatypeBackgroundKnowledge.setObjectLabel(objectLabel.replaceAll("\\(.+?\\)", "").trim());
             datatypeBackgroundKnowledge.setObjectDatatype(objectType);
-
-            datatypeBackgroundKnowledge.setPropertyUri(property.getUri());
-            datatypeBackgroundKnowledge.setPropertyPrefix(property.getPrefix());
-            datatypeBackgroundKnowledge.setRdfsRange(property.getRdfsRange());
-            datatypeBackgroundKnowledge.setRdfsDomain(property.getRdfsDomain());
-            datatypeBackgroundKnowledge.setPropertyWordnetSynsets(StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(property.getLabel()), ","));
+            
+            datatypeBackgroundKnowledge.setProperty(property);
 
             BackgroundKnowledge backgroundKnowledge = SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(datatypeBackgroundKnowledge);
 
@@ -206,13 +200,6 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
         }
         writer.flush();
         writer.close();
-    }
-
-    public static void main(String[] args) {
-
-        String s = "012345^^datatype";
-
-        System.out.println(s.substring(s.lastIndexOf("^^") + 2));
     }
 
     /**
@@ -240,25 +227,19 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
                 String objectLabel = solution.get("ol").toString();
 
                 // cut of language tags
-                if (objectLabel.contains("@"))
-                    objectLabel = objectLabel.substring(0, objectLabel.lastIndexOf("@"));
-                if (subjectLabel.contains("@"))
-                    subjectLabel = subjectLabel.substring(0, subjectLabel.lastIndexOf("@"));
+                if (objectLabel.contains("@")) objectLabel = objectLabel.substring(0, objectLabel.lastIndexOf("@"));
+                if (subjectLabel.contains("@")) subjectLabel = subjectLabel.substring(0, subjectLabel.lastIndexOf("@"));
 
                 // create new background knowledge and generate the surface
                 // forms
                 ObjectPropertyBackgroundKnowledge objectBackgroundKnowledge = new ObjectPropertyBackgroundKnowledge();
-                objectBackgroundKnowledge.setSubjectUri(solution.get("s").toString().replace(de.uni_leipzig.simba.boa.backend.Constants.DBPEDIA_RESOURCE_PREFIX, ""));
+                objectBackgroundKnowledge.setSubjectPrefixAndLocalname(solution.get("s").toString());
                 objectBackgroundKnowledge.setSubjectLabel(subjectLabel.replaceAll("\\(.+?\\)", "").trim());
 
-                objectBackgroundKnowledge.setObjectUri(solution.get("o").toString().replace(de.uni_leipzig.simba.boa.backend.Constants.DBPEDIA_RESOURCE_PREFIX, ""));
+                objectBackgroundKnowledge.setObjectPrefixAndLocalname(solution.get("o").toString());
                 objectBackgroundKnowledge.setObjectLabel(objectLabel.replaceAll("\\(.+?\\)", "").trim());
 
-                objectBackgroundKnowledge.setPropertyUri(property.getUri());
-                objectBackgroundKnowledge.setPropertyPrefix(property.getPrefix());
-                objectBackgroundKnowledge.setRdfsRange(property.getRdfsRange());
-                objectBackgroundKnowledge.setRdfsDomain(property.getRdfsDomain());
-                objectBackgroundKnowledge.setPropertyWordnetSynsets(StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(property.getLabel()), ","));
+                objectBackgroundKnowledge.setProperty(property);
 
                 BackgroundKnowledge backgroundKnowledge = SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(objectBackgroundKnowledge);
 
@@ -296,41 +277,23 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 
             ResultSet results = qexecProperty.execSelect();
 
-            String prefix = propertyUri.substring(0, propertyUri.lastIndexOf("/"));
-            String localName = propertyUri.replace(prefix + "/", "");
-            String label = StringUtils.join(propertyUri.replace(prefix + "/", "").split("(?=\\p{Upper})"), " ").toLowerCase();
-
             Property p;
 
             if (results.hasNext()) {
 
                 QuerySolution qs = results.next();
 
-                String domain = qs.get("domain").toString();
-                int lastIndexOfSlashD = domain.lastIndexOf("/");
-                int lastIndexOfSharpD = domain.lastIndexOf("#");
-                String domainName = domain.substring(Math.max(lastIndexOfSlashD, lastIndexOfSharpD) + 1);
-                String domainPrefix = domain.replace(domainName, "");
-
-                String range = qs.get("range").toString();
-                int lastIndexOfSlashR = range.lastIndexOf("/");
-                int lastIndexOfSharpR = range.lastIndexOf("#");
-                String rangeName = range.substring(Math.max(lastIndexOfSlashR, lastIndexOfSharpR) + 1);
-                String rangePrefix = range.replace(rangeName, "");
-
-                p = new Property(localName, label, rangeName, domainName, "");
-                p.setPrefix(prefix);
-                p.setDomainPrefix(domainPrefix);
-                p.setRangePrefix(rangePrefix);
+                String domain   = qs.get("domain") == null  ? "NA" : qs.get("domain").toString();
+                String range    = qs.get("range") == null   ? "NA" : qs.get("range").toString();
+                
+                p = new Property(propertyUri, domain, range);
+                p.setSynsets(WordnetQuery.getSynsetsForAllSynsetTypes(property.getLabel()));
                 this.properties.put(p.hashCode(), p);
             }
             else {
 
-                p = new Property(localName);
-                p.setLabel(label);
-                p.setPrefix(prefix);
-                p.setRdfsDomain("NA");
-                p.setRdfsRange("NA");
+                p = new Property(propertyUri);
+                p.setSynsets(WordnetQuery.getSynsetsForAllSynsetTypes(property.getLabel()));
             }
 
             return p;

@@ -16,7 +16,7 @@ public final class ObjectPropertyBackgroundKnowledge extends AbstractBackgroundK
 		// 0_URI1 ||| 1_LABEL1 ||| 2_LABELS1 ||| 3_PROP ||| 4_URI2 ||| 5_LABEL2 ||| 6_LABELS2 ||| 7_RANGE ||| 8_DOMAIN
 		
 		StringBuilder builder = new StringBuilder();
-		builder.append(subjectUri);
+		builder.append(this.getSubjectUri());
 		builder.append(Constants.BACKGROUND_KNOWLEDGE_VALUE_SEPARATOR);
 		
 		builder.append(subjectLabel);
@@ -25,10 +25,10 @@ public final class ObjectPropertyBackgroundKnowledge extends AbstractBackgroundK
 		builder.append(StringUtils.join(this.subjectSurfaceForms, Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR));
 		builder.append(Constants.BACKGROUND_KNOWLEDGE_VALUE_SEPARATOR);
 		
-		builder.append(propertyUri);
+		builder.append(property.getUri());
 		builder.append(Constants.BACKGROUND_KNOWLEDGE_VALUE_SEPARATOR);
 		
-		builder.append(objectUri);
+		builder.append(this.getObjectUri());
 		builder.append(Constants.BACKGROUND_KNOWLEDGE_VALUE_SEPARATOR);
 		
 		builder.append(objectLabel);
@@ -37,10 +37,10 @@ public final class ObjectPropertyBackgroundKnowledge extends AbstractBackgroundK
 		builder.append(StringUtils.join(this.objectSurfaceForms, Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR));
 		builder.append(Constants.BACKGROUND_KNOWLEDGE_VALUE_SEPARATOR);
 		
-		builder.append(rdfsRange);
+		builder.append(property.getRdfsRange());
 		builder.append(Constants.BACKGROUND_KNOWLEDGE_VALUE_SEPARATOR);
 		
-		builder.append(rdfsDomain);
+		builder.append(property.getRdfsDomain());
 		
 		return builder.toString();
 	}
