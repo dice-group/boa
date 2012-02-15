@@ -39,6 +39,13 @@ public class Property extends Resource {
 		super(uri);
 		
         this.synsets = new HashSet<String>();
+        
+        int lastIndexOfSlashP = uri.lastIndexOf("/");
+        int lastIndexOfSharpP = uri.lastIndexOf("#");
+
+        this.propertyLocalname  = uri.substring(Math.max(lastIndexOfSlashP, lastIndexOfSharpP) + 1);
+        this.propertyPrefix     = uri.replace(propertyLocalname, "");
+        this.label              = StringUtils.join(propertyLocalname.split("(?=\\p{Upper})"), " ").toLowerCase();
 	}
 	
     public Property(String uri, String rdfsRange, String rdfsDomain) {
@@ -47,9 +54,9 @@ public class Property extends Resource {
         int lastIndexOfSlashP = uri.lastIndexOf("/");
         int lastIndexOfSharpP = uri.lastIndexOf("#");
 
-        this.propertyLocalname = uri.substring(Math.max(lastIndexOfSlashP, lastIndexOfSharpP) + 1);
-        this.propertyPrefix = uri.replace(propertyLocalname, "");
-        this.label = StringUtils.join(propertyLocalname.split("(?=\\p{Upper})"), " ").toLowerCase();
+        this.propertyLocalname  = uri.substring(Math.max(lastIndexOfSlashP, lastIndexOfSharpP) + 1);
+        this.propertyPrefix     = uri.replace(propertyLocalname, "");
+        this.label              = StringUtils.join(propertyLocalname.split("(?=\\p{Upper})"), " ").toLowerCase();
 
         if ( !rdfsDomain.equals("NA") ) {
 
