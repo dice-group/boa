@@ -25,6 +25,10 @@ public class SubjectPredicateObjectPattern extends AbstractPattern {
         super(patternString);
     }
 
+    public SubjectPredicateObjectPattern() {
+        super();
+    }
+
     /**
      * @return the NLR with ?D? and ?R?
      */

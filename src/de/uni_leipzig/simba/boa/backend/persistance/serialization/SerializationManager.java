@@ -114,7 +114,7 @@ public class SerializationManager {
 
         for (PatternMapping mapping : patternMappings) {
  
-            this.serializePatternMapping(mapping, patternMappingFolder + mapping.getProperty().getUri() + ".bin");
+            this.serializePatternMapping(mapping, patternMappingFolder + mapping.getProperty().getUri().hashCode() + mapping.getProperty().getPropertyLocalname() + ".bin");
         }
     }
 

@@ -32,15 +32,15 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 		
 		double similarity = 0D;
 		
-		List<String> wordsToCompare;
+		Set<String> wordsToCompare;
 		
-		if ( !pair.getMapping().getProperty().retrieveSynsetsForLabel().isEmpty() ) {
+		if ( !pair.getMapping().getProperty().getSynsets().isEmpty() ) {
 			
-			wordsToCompare = pair.getMapping().getProperty().retrieveSynsetsForLabel();
+			wordsToCompare = pair.getMapping().getProperty().getSynsets();
 		}
 		else {
 			
-			wordsToCompare = Arrays.asList(pair.getMapping().getProperty().getLabel().split(" "));
+			wordsToCompare = new HashSet<String>(Arrays.asList(pair.getMapping().getProperty().getLabel().split(" ")));
 		}
 		
 		// go through all words and synset combination and sum up the similarity

@@ -1,12 +1,16 @@
 package de.uni_leipzig.simba.boa.backend.rdf.entity;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+
+import org.apache.commons.lang3.StringUtils;
 
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 
@@ -19,96 +23,57 @@ public class Property extends Resource {
 	 */
 	private static final long serialVersionUID = 1821596778644210513L;
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
 
-		StringBuilder builder = new StringBuilder();
-		builder.append("Property [rdfsRange=");
-		builder.append(rdfsRange);
-		builder.append(", rdfsDomain=");
-		builder.append(rdfsDomain);
-		builder.append(", uri=");
-		builder.append(uri);
-		builder.append(", label=");
-		builder.append(label);
-		builder.append(", type=");
-		builder.append(type);
-		builder.append(", id=");
-		builder.append(id);
-		builder.append("]");
-		return builder.toString();
-	}
-	
-	private String rdfsRange;
-	private String rdfsDomain;
-	private String synsets;
-	private String prefix;
+	private Set<String> synsets;
 	private PatternMapping patternMapping;
-    private String rangePrefix;
-    private String domainPrefix;
+
+	private String propertyPrefix;
+	private String propertyLocalname;
+	private String propertyLabel;
+	
+	private String rdfsRangePrefix;
+	private String rdfsRangeLocalname;
+    private String rdfsDomainPrefix;
+    private String rdfsDomainLocalname;
 
 	public Property(String uri) {
-
 		super(uri);
-		this.rdfsRange = "";
-        this.rdfsDomain = "";
-        this.synsets = "";
-        this.prefix = "";
-        this.domainPrefix = "";
-        this.rangePrefix = "";
+		
+        this.synsets = new HashSet<String>();
 	}
 	
-	public Property(String uri, String label, String rdfsRange, String rdfsDomain, String synsets) {
+    public Property(String uri, String rdfsRange, String rdfsDomain) {
+        super(uri);
 
-		super(uri, label);
-		this.rdfsRange = rdfsRange;
-		this.rdfsDomain = rdfsDomain;
-		this.domainPrefix = "";
-		this.rangePrefix = "";
-		this.synsets = synsets;
-	}
+        int lastIndexOfSlashP = uri.lastIndexOf("/");
+        int lastIndexOfSharpP = uri.lastIndexOf("#");
+
+        this.propertyLocalname = uri.substring(Math.max(lastIndexOfSlashP, lastIndexOfSharpP) + 1);
+        this.propertyPrefix = uri.replace(propertyLocalname, "");
+        this.propertyLabel = StringUtils.join(propertyLocalname.split("(?=\\p{Upper})"), " ").toLowerCase();
+
+        if ( !rdfsDomain.equals("NA") ) {
+
+            int lastIndexOfSlashD = rdfsDomain.lastIndexOf("/");
+            int lastIndexOfSharpD = rdfsDomain.lastIndexOf("#");
+            this.rdfsDomainLocalname = rdfsDomain.substring(Math.max(lastIndexOfSlashD, lastIndexOfSharpD) + 1);
+            this.rdfsDomainPrefix = rdfsDomain.replace(rdfsDomainLocalname, "");
+        }
+        
+        if ( !rdfsRange.equals("NA") ) {
+
+            int lastIndexOfSlashR = rdfsRange.lastIndexOf("/");
+            int lastIndexOfSharpR = rdfsRange.lastIndexOf("#");
+            this.rdfsRangeLocalname = rdfsRange.substring(Math.max(lastIndexOfSlashR, lastIndexOfSharpR) + 1);
+            this.rdfsRangePrefix = rdfsRange.replace(rdfsRangeLocalname, "");
+        }
+
+        this.synsets = new HashSet<String>();
+    }
 
 	
 	public Property() {
 		super();
-	}
-
-
-	/**
-	 * @return the rdfsRange
-	 */
-	@Basic
-	public String getRdfsRange() {
-	
-		return rdfsRange;
-	}
-	
-	/**
-	 * @param rdfsRange the rdfsRange to set
-	 */
-	public void setRdfsRange(String rdfsRange) {
-	
-		this.rdfsRange = rdfsRange;
-	}
-	
-	/**
-	 * @return the rdfsDomain
-	 */
-	@Basic
-	public String getRdfsDomain() {
-	
-		return rdfsDomain;
-	}
-	
-	/**
-	 * @param rdfsDomain the rdfsDomain to set
-	 */
-	public void setRdfsDomain(String rdfsDomain) {
-	
-		this.rdfsDomain = rdfsDomain;
 	}
 
 	/**
@@ -133,61 +98,56 @@ public class Property extends Resource {
 	 * @return the synsets
 	 */
 	@Column(length=5012)
-	public String getSynsets() {
+	public Set<String> getSynsets() {
 
 		return synsets;
 	}
 	
-	/**
-	 * @return the synsets
-	 */
-	public List<String> retrieveSynsetsForLabel(){
-		
-		return Arrays.asList(this.synsets.split(","));
-	}
+    /**
+     * @return the propertyLabel
+     */
+    public String getPropertyLabel() {
+    
+        return propertyLabel;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public String getPropertyUri() {
+        
+        return propertyPrefix + propertyLocalname;
+    }
 
-
-	/**
+    /**
 	 * @param synsets the synsets to set
 	 */
-	public void setSynsets(String synsets) {
+	public void setSynsets(Set<String> synsets) {
 
 		this.synsets = synsets;
 	}
 
     /**
-     * @return the prefix
+     * @return the rdfsRangePrefix
      */
-    public String getPrefix() {
-
-        return prefix;
+    public String getRdfsRange() {
+        
+        if ( (rdfsRangePrefix + rdfsRangeLocalname).isEmpty() ) return "NA";
+        return rdfsRangePrefix + rdfsRangeLocalname;
     }
 
     /**
-     * @param prefix the prefix to set
+     * @return the rdfsDomainPrefix
      */
-    public void setPrefix(String prefix) {
-
-        this.prefix = prefix;
-    }
-
-    public String getDomainPrefix() {
-
-        return this.domainPrefix;
-    }
+    public String getRdfsDomain() {
     
-    public void setDomainPrefix(String domainPrefix) {
-
-        this.domainPrefix = domainPrefix;
+        if ( (rdfsDomainPrefix + rdfsDomainLocalname).isEmpty() ) return "NA";
+        return rdfsDomainPrefix + rdfsDomainLocalname;
     }
 
-    public String getRangePrefix() {
+    public String getPropertyLocalname() {
 
-        return this.rangePrefix; 
-    }
-
-    public void setRangePrefix(String rangePrefix) {
-
-        this.rangePrefix = rangePrefix;
+        return propertyLocalname;
     }
 }

@@ -43,18 +43,10 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	 */
 	public PatternMapping(){
 		
-		// needed for hibernate
+	    this.property   = new Property();
+        this.patterns   = new HashSet<Pattern>();
 	}
 	
-	/**
-	 * 
-	 */
-	public PatternMapping(String uri, String label, String domain, String range) {
-		
-		this.property	= new Property(uri, label, range, domain, "");
-		this.patterns	= new HashSet<Pattern>();
-	}
-
 	/**
 	 * Creates a new pattern mapping with the specified property as uri
 	 * and an empty list for patterns.

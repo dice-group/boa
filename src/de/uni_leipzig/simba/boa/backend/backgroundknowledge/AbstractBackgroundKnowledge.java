@@ -6,245 +6,221 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 
-
+/**
+ * 
+ * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
+ */
 public abstract class AbstractBackgroundKnowledge implements BackgroundKnowledge {
 
-	protected String subjectUri;
-	protected String subjectLabel;
-	protected Set<String> subjectSurfaceForms  = new HashSet<String>();
-	
-	protected String propertyPrefix;
-	protected String propertyUri;
-	protected String rdfsDomain;
-    protected String rdfsRange;
-    protected String propertyWordnetSynsets;
-	
-	protected String objectUri;
-	protected String objectLabel;
-	protected Set<String> objectSurfaceForms   = new HashSet<String>();
-	
-	public AbstractBackgroundKnowledge() {}
-	
-	
-	public String getPropertyLabel() {
-	    
-	    return StringUtils.join(propertyUri.split("(?=\\p{Upper})"), " ").toLowerCase();
-	}
-	
-	/**
+    protected String subjectLabel;
+    protected String subjectPrefix;
+    protected String subjectLocalname;
+    protected Set<String> subjectSurfaceForms = new HashSet<String>();
+
+    protected Property property;
+    
+    protected String objectLabel;
+    protected String objectPrefix;
+    protected String objectLocalname;
+    protected Set<String> objectSurfaceForms = new HashSet<String>();
+
+    public AbstractBackgroundKnowledge() {
+
+    }
+
+    public String getPropertyLabel() {
+
+        return StringUtils.join((property.getUri()).split("(?=\\p{Upper})"), " ").toLowerCase();
+    }
+
+    /**
      * @return the subjectSurfaceForms
      */
     public Set<String> getSubjectSurfaceForms() {
-    
+
         return subjectSurfaceForms;
     }
 
-    
     /**
-     * @param subjectSurfaceForms the subjectSurfaceForms to set
+     * @param subjectSurfaceForms
+     *            the subjectSurfaceForms to set
      */
     public void setSubjectSurfaceForms(Set<String> subjectSurfaceForms) {
-    
+
         this.subjectSurfaceForms = subjectSurfaceForms;
     }
 
-    
     /**
      * @return the objectSurfaceForms
      */
     public Set<String> getObjectSurfaceForms() {
-    
+
         return objectSurfaceForms;
     }
 
-    
     /**
-     * @param objectSurfaceForms the objectSurfaceForms to set
+     * @param objectSurfaceForms
+     *            the objectSurfaceForms to set
      */
     public void setObjectSurfaceForms(Set<String> objectSurfaceForms) {
-    
+
         this.objectSurfaceForms = objectSurfaceForms;
     }
 
-
-    
     /**
      * @return the subjectUri
      */
     public String getSubjectUri() {
-    
-        return subjectUri;
+
+        return this.subjectPrefix + this.subjectLocalname;
     }
 
-
-    
     /**
-     * @param subjectUri the subjectUri to set
+     * @param subjectUri
+     *            the subjectUri to set
      */
-    public void setSubjectUri(String subjectUri) {
-    
-        this.subjectUri = subjectUri;
+    public void setSubjectPrefixAndLocalname(String subjectUri) {
+
+        int lastIndexOfSlash = subjectUri.lastIndexOf("/");
+        int lastIndexOfSharp = subjectUri.lastIndexOf("#");
+
+        this.subjectPrefix = subjectUri.substring(0, Math.max(lastIndexOfSlash, lastIndexOfSharp) + 1);
+        this.subjectLocalname = subjectUri.substring(Math.max(lastIndexOfSlash, lastIndexOfSharp) + 1);
     }
 
-
-    
     /**
      * @return the subjectLabel
      */
     public String getSubjectLabel() {
-    
+
         return subjectLabel;
     }
 
-
-    
     /**
-     * @param subjectLabel the subjectLabel to set
+     * @param subjectLabel
+     *            the subjectLabel to set
      */
     public void setSubjectLabel(String subjectLabel) {
-    
+
         this.subjectLabel = subjectLabel;
     }
 
-
-    
-    /**
-     * @return the propertyUri
-     */
-    public String getPropertyUri() {
-    
-        return propertyUri;
-    }
-
-
-    
-    /**
-     * @param propertyUri the propertyUri to set
-     */
-    public void setPropertyUri(String propertyUri) {
-    
-        this.propertyUri = propertyUri;
-    }
-
-
-    
     /**
      * @return the objectUri
      */
     public String getObjectUri() {
-    
-        return objectUri;
+
+        return this.objectPrefix + this.objectLocalname;
     }
 
-
-    
     /**
-     * @param objectUri the objectUri to set
+     * 
+     * @param objectUri
      */
-    public void setObjectUri(String objectUri) {
-    
-        this.objectUri = objectUri;
+    public void setObjectPrefixAndLocalname(String objectUri) {
+
+        int lastIndexOfSlash = objectUri.lastIndexOf("/");
+        int lastIndexOfSharp = objectUri.lastIndexOf("#");
+
+        this.objectPrefix      = objectUri.substring(0, Math.max(lastIndexOfSlash, lastIndexOfSharp) + 1);
+        this.objectLocalname   = objectUri.substring(Math.max(lastIndexOfSlash, lastIndexOfSharp) + 1);
     }
 
-
-    
     /**
      * @return the objectLabel
      */
     public String getObjectLabel() {
-    
+
         return objectLabel;
     }
 
-
-    
     /**
-     * @param objectLabel the objectLabel to set
+     * @param objectLabel
+     *            the objectLabel to set
      */
     public void setObjectLabel(String objectLabel) {
-    
+
         this.objectLabel = objectLabel;
     }
 
-
-    
     /**
-     * @return the rdfsDomain
+     * @return the subjectPrefix
      */
-    public String getRdfsDomain() {
-    
-        return rdfsDomain;
+    public String getSubjectPrefix() {
+
+        return subjectPrefix;
     }
 
-
-    
     /**
-     * @param rdfsDomain the rdfsDomain to set
+     * @param subjectPrefix
+     *            the subjectPrefix to set
      */
-    public void setRdfsDomain(String rdfsDomain) {
-    
-        this.rdfsDomain = rdfsDomain;
+    public void setSubjectPrefix(String subjectPrefix) {
+
+        this.subjectPrefix = subjectPrefix;
     }
 
-
-    
     /**
-     * @return the rdfsRange
+     * @return the subjectLocalname
      */
-    public String getRdfsRange() {
-    
-        return rdfsRange;
+    public String getSubjectLocalname() {
+
+        return subjectLocalname;
     }
 
-
-    
     /**
-     * @param rdfsRange the rdfsRange to set
+     * @param subjectLocalname
+     *            the subjectLocalname to set
      */
-    public void setRdfsRange(String rdfsRange) {
-    
-        this.rdfsRange = rdfsRange;
+    public void setSubjectLocalname(String subjectLocalname) {
+
+        this.subjectLocalname = subjectLocalname;
     }
 
-
-    
     /**
-     * @return the propertyWordnetSynsets
+     * @return the objectPrefix
      */
-    public String getPropertyWordnetSynsets() {
-    
-        return propertyWordnetSynsets;
+    public String getObjectPrefix() {
+
+        return objectPrefix;
     }
 
-
-    
     /**
-     * @param propertyWordnetSynsets the propertyWordnetSynsets to set
+     * @param objectPrefix
+     *            the objectPrefix to set
      */
-    public void setPropertyWordnetSynsets(String propertyWordnetSynsets) {
-    
-        this.propertyWordnetSynsets = propertyWordnetSynsets;
+    public void setObjectPrefix(String objectPrefix) {
+
+        this.objectPrefix = objectPrefix;
     }
 
-
-    
     /**
-     * @return the propertyPrefix
+     * @return the objectLocalname
      */
-    public String getPropertyPrefix() {
-    
-        return propertyPrefix;
+    public String getObjectLocalname() {
+
+        return objectLocalname;
     }
 
-
-    
     /**
-     * @param propertyPrefix the propertyPrefix to set
+     * @param objectLocalname
+     *            the objectLocalname to set
      */
-    public void setPropertyPrefix(String propertyPrefix) {
+    public void setObjectLocalname(String objectLocalname) {
+
+        this.objectLocalname = objectLocalname;
+    }
     
-        this.propertyPrefix = propertyPrefix;
+    @Override
+    public Property getProperty() {
+
+        return this.property;
+    }
+
+    @Override
+    public void setProperty(Property property) {
+
+        this.property = property;
     }
 }

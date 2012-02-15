@@ -101,9 +101,12 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	
 	public AbstractPattern(){
 		
-		this.learnedFrom = new HashMap<String,Integer>();
-		this.patternMappings = new ArrayList<PatternMapping>();
-		this.features = new HashMap<Feature,Double>();
+	    this.learnedFrom = new HashMap<String,Integer>();
+        this.patternMappings = new ArrayList<PatternMapping>();
+        this.numberOfOccurrences = 1;
+        this.useForPatternEvaluation = true;
+        this.setFoundInSentences(new HashSet<Integer>());
+        this.features = new HashMap<Feature,Double>();
 	}
 	
 	/**

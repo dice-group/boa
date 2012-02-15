@@ -159,8 +159,16 @@ public interface Pattern {
      */
     public int getLearnedFromPairs();
     
+    /**
+     * 
+     * @return
+     */
     public boolean isDomainFirst();
     
+    /**
+     * 
+     * @return
+     */
     public Map<Feature,Double> getFeatures();
     
     /**
@@ -179,6 +187,17 @@ public interface Pattern {
      */
     public void setFoundInSentences(Set<Integer> foundInSentences);
     
+    /**
+     * 
+     * @param mapping
+     * @return
+     */
     public List<Double> buildNormalizedFeatureVector(PatternMapping mapping);
+
+    /**
+     * 
+     * @param string
+     */
+    public void setNaturalLanguageRepresentation(String string);
     
 }

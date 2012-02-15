@@ -264,11 +264,11 @@ public class DefaultPatternSearcher implements PatternSearcher {
             if (!match.isEmpty() && this.isPatternSuitable(match)) {
 
                 SearchResult result = new SearchResult();
-                result.setProperty(backgroundKnowledge.getPropertyUri());
+                result.setProperty(backgroundKnowledge.getProperty().getUri());
                 result.setSentence(sentenceId);
                 result.setNaturalLanguageRepresentation(nlr);
-                result.setRdfsRange(backgroundKnowledge.getRdfsRange());
-                result.setRdfsDomain(backgroundKnowledge.getRdfsDomain());
+                result.setRdfsRange(backgroundKnowledge.getProperty().getRdfsRange());
+                result.setRdfsDomain(backgroundKnowledge.getProperty().getRdfsDomain());
                 // the subject of the triple is the domain of the property so,
                 // replace every occurrence with ?D?
                 if (nlr.startsWith("?D?")) {

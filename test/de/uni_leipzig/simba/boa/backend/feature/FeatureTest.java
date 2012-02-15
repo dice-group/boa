@@ -1,10 +1,11 @@
-package de.uni_leipzig.simba.boa.backend.test.feature;
+package de.uni_leipzig.simba.boa.backend.feature;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -31,9 +32,10 @@ import org.junit.Test;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.ReverbFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.FeatureEnum;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.impl.SubjectPredicateObjectPattern;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 
@@ -87,7 +89,7 @@ public class FeatureTest {
 		Pattern pm0p0 = new ArrayList<Pattern>(mappings.get(0).getPatterns()).get(0);
 		Pattern pm0p10 = new ArrayList<Pattern>(mappings.get(0).getPatterns()).get(10);
 		Pattern pm9p101 = new ArrayList<Pattern>(mappings.get(9).getPatterns()).get(101);
-System.out.println(pm0p0.getFeatures().get(FeatureEnum.REVERB).doubleValue());
+
 		assertTrue("pm0p0.Reverb > 0", 0 < pm0p0.getFeatures().get(FeatureEnum.TOTAL_OCCURRENCE).doubleValue());
 		assertEquals("pm0p0.TO == 98", 98, (int) pm0p0.getFeatures().get(FeatureEnum.TOTAL_OCCURRENCE).doubleValue());
 		assertEquals("pm0p10-TO == 99", 99, (int) pm0p10.getFeatures().get(FeatureEnum.TOTAL_OCCURRENCE).doubleValue());
@@ -113,20 +115,17 @@ System.out.println(pm0p0.getFeatures().get(FeatureEnum.REVERB).doubleValue());
 		for (int i = 0 ; i < numberOfMappings; i++) {
 			
 			PatternMapping mapping = new PatternMapping();
-			Property property = new Property();
+			Property property = new Property("http://url.com/uri " + i, "http://url.com/range", "http://url.com/domain");
 			property.setLabel("label " + i);
-			property.setSynsets("label " + i + ", label " + (i+1));
-			property.setRdfsDomain("http://url.com/domain");
-			property.setRdfsRange("http://url.com/range");
-			property.setUri("http://url.com/uri " + i);
+			property.setSynsets(new HashSet<String>(Arrays.asList("label " + i + ", label " + (i+1))));
 			mapping.setProperty(property);
 			
 			Set<Pattern> patterns = new HashSet<Pattern>();
 			for (int j = 0; j < numberOfMaxPatterns[i]; j++){
 				
-				Pattern pattern = new Pattern();
+				Pattern pattern = new SubjectPredicateObjectPattern();
 				pattern.setNumberOfOccurrences(1000 / (j + 1));
-				pattern.setLuceneDocIds("$1$2");
+				pattern.setFoundInSentences(new HashSet<Integer>(Arrays.asList(1,2)));
 				
 				if ( j % 3 == 0 ) pattern.setNaturalLanguageRepresentation("?R? was a very good friend of "+j+" ?D?");
 				else pattern.setNaturalLanguageRepresentation(("?D? was a very good friend of "+j+" ?R?"));

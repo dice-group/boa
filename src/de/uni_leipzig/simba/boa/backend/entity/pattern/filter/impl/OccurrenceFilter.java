@@ -16,10 +16,6 @@ import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
  */
 public class OccurrenceFilter implements PatternFilter {
 
-	private static final int NUMBER_OF_OCCURRENCES_THRESHOLD           = NLPediaSettings.getIntegerSetting("number.of.occurrence.threshold");
-	private static final int NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD    = NLPediaSettings.getIntegerSetting("number.of.unique.occurrence.threshold");
-	private static final int NUMBER_OF_LEARNED_PAIRS                   = NLPediaSettings.getIntegerSetting("number.of.learned.pairs");
-	
 //	private final NLPediaLogger logger = new NLPediaLogger(OccurrenceFilter.class);
 	
 	@Override
@@ -36,7 +32,7 @@ public class OccurrenceFilter implements PatternFilter {
 				// discard only patterns which might occur randomly
 				p.setUseForPatternEvaluation(
 						
-						p.getNumberOfOccurrences() >= OccurrenceFilter.NUMBER_OF_OCCURRENCES_THRESHOLD 
+						p.getNumberOfOccurrences() >= NLPediaSettings.getIntegerSetting("number.of.occurrence.threshold") 
 				);
 				
 				int counter = 0;
@@ -47,7 +43,7 @@ public class OccurrenceFilter implements PatternFilter {
 					Map<String,Integer> learnedFrom = p.getLearnedFrom();
 					for (Entry<String,Integer> entry : learnedFrom.entrySet()) {
 						
-						if ( entry.getValue() >= OccurrenceFilter.NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD ) counter++;
+						if ( entry.getValue() >= NLPediaSettings.getIntegerSetting("number.of.unique.occurrence.threshold") ) counter++;
 					}
 					
 					if ( counter < 1 ) p.setUseForPatternEvaluation(false);
@@ -57,7 +53,7 @@ public class OccurrenceFilter implements PatternFilter {
 						// look if there are more than NUMBER_OF_LEARNED_PAIRS pairs the pattern was learned from
 						p.setUseForPatternEvaluation(
 							
-								learnedFrom.size() >= OccurrenceFilter.NUMBER_OF_LEARNED_PAIRS
+								learnedFrom.size() >= NLPediaSettings.getIntegerSetting("number.of.learned.pairs")
 						);
 					}
 				}

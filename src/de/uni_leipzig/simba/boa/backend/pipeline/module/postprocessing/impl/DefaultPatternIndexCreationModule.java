@@ -103,7 +103,7 @@ public class DefaultPatternIndexCreationModule extends AbstractPostProcessingMod
         doc.add(new Field("uri",            mapping.getProperty().getUri(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         doc.add(new Field("nlr-var",        pattern.getNaturalLanguageRepresentation(), Field.Store.YES, Field.Index.ANALYZED));
         doc.add(new Field("nlr-no-var",     pattern.getNaturalLanguageRepresentationWithoutVariables(), Field.Store.YES, Field.Index.ANALYZED));
-        doc.add(new NumericField("score",   Field.Store.YES, true).setDoubleValue(pattern.getScore()));
+        doc.add(new NumericField("boa-score",   Field.Store.YES, true).setDoubleValue(pattern.getScore()));
         
         return doc;
     }

@@ -3,8 +3,10 @@ package de.uni_leipzig.simba.boa.backend.backgroundknowledge;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -33,6 +35,8 @@ public class BackgroundKnowledgeManager {
 	// both used for singleton pattern
 	private static BackgroundKnowledgeManager INSTANCE = null;
 	private BackgroundKnowledgeManager(){}
+	
+	private Map<Integer,Property> properties = new HashMap<Integer,Property>();
 	
 	/**
 	 * needed to remove text in brackets from labels
@@ -109,22 +113,22 @@ public class BackgroundKnowledgeManager {
 		String[] parts = line.split(Constants.BACKGROUND_KNOWLEDGE_VALUE_SEPARATOR_REGEX);
 		
 		// all subject information
-		final String subjectUri   = parts[0].replace(Constants.DBPEDIA_RESOURCE_PREFIX, "");
+		final String subjectUri   = parts[0];
 		final String subjectLabel = parts[1].replaceAll("\\(.+?\\)", "").trim();
 		Set<String> subjectLabels = new HashSet<String>();
 //		String subjectContext     = "";
 		
 		// all object information
-		final String objectUri    = parts[4].replace(Constants.DBPEDIA_RESOURCE_PREFIX, "");
+		final String objectUri    = parts[4];
 		final String objectLabel  = parts[5].replaceAll("\\(.+?\\)", "").trim();
 		Set<String> objectLabels  = new HashSet<String>();
 //		String objectContext	  = "";
 		
 		// all predicate information
-		final String predicate        = parts[3].replace(Constants.DBPEDIA_ONTOLOGY_PREFIX, "");
+		final String predicate        = parts[3];
 		final String predicateType    = isObjectProperty ? Constants.OWL_OBJECT_PROPERTY : Constants.OWL_DATATYPE_PROPERTY;
-		final String range            = parts[7].equals("null") ? null : parts[7].replace(Constants.DBPEDIA_ONTOLOGY_PREFIX, "");
-		final String domain           = parts[8].equals("null") ? null : parts[8].replace(Constants.DBPEDIA_ONTOLOGY_PREFIX, "");
+		final String range            = parts[7].equals("null") ? null : parts[7];
+		final String domain           = parts[8].equals("null") ? null : parts[8];
 		
 		// ################ SUBJECT ############################
 		
@@ -167,38 +171,43 @@ public class BackgroundKnowledgeManager {
 		if ( predicateType.equals(Constants.OWL_OBJECT_PROPERTY) ) {
 			
 			ObjectPropertyBackgroundKnowledge objectBackgroundKnowledge = new ObjectPropertyBackgroundKnowledge();
-            objectBackgroundKnowledge.setSubjectUri(subjectUri);
+            objectBackgroundKnowledge.setSubjectPrefixAndLocalname(subjectUri);
             objectBackgroundKnowledge.setSubjectLabel(subjectLabel);
             objectBackgroundKnowledge.setSubjectSurfaceForms(subjectLabels);
             
-            objectBackgroundKnowledge.setObjectUri(objectUri.replace(Constants.DBPEDIA_RESOURCE_PREFIX, ""));
+            objectBackgroundKnowledge.setObjectPrefixAndLocalname(objectUri);
             objectBackgroundKnowledge.setObjectLabel(objectLabel);
             objectBackgroundKnowledge.setObjectSurfaceForms(objectLabels);
             
-            objectBackgroundKnowledge.setPropertyUri(predicate);
-            objectBackgroundKnowledge.setRdfsRange(range);
-            objectBackgroundKnowledge.setRdfsDomain(domain);
-            objectBackgroundKnowledge.setPropertyWordnetSynsets(
-                    StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(predicate), ","));
+            Property p = this.properties.get(predicate.hashCode());
+            if ( p == null ) {
+                
+                p = new Property(predicate, domain, range);
+                p.setSynsets(WordnetQuery.getSynsetsForAllSynsetTypes(predicate));
+                this.properties.put(predicate.hashCode(), p);
+            }
+            objectBackgroundKnowledge.setProperty(p);
 			
 			return objectBackgroundKnowledge;
 		}
 		else {
 			
 		    DatatypePropertyBackgroundKnowledge datattypeBackgroundKnowledge = new DatatypePropertyBackgroundKnowledge();
-		    datattypeBackgroundKnowledge.setSubjectUri(subjectUri);
+		    datattypeBackgroundKnowledge.setSubjectPrefixAndLocalname(subjectUri);
 		    datattypeBackgroundKnowledge.setSubjectLabel(subjectLabel);
 		    datattypeBackgroundKnowledge.setSubjectSurfaceForms(subjectLabels);
             
-		    datattypeBackgroundKnowledge.setObjectUri(objectUri.replace(Constants.DBPEDIA_RESOURCE_PREFIX, ""));
+		    datattypeBackgroundKnowledge.setObjectPrefixAndLocalname(objectUri);
 		    datattypeBackgroundKnowledge.setObjectLabel(objectLabel);
 		    datattypeBackgroundKnowledge.setObjectSurfaceForms(objectLabels);
             
-		    datattypeBackgroundKnowledge.setPropertyUri(predicate);
-		    datattypeBackgroundKnowledge.setRdfsRange(range);
-		    datattypeBackgroundKnowledge.setRdfsDomain(domain);
-		    datattypeBackgroundKnowledge.setPropertyWordnetSynsets(
-                    StringUtils.join(WordnetQuery.getSynsetsForAllSynsetTypes(predicate), ","));
+		    Property p = this.properties.get(predicate);
+            if ( p == null ) {
+                
+                p = new Property(predicate, domain, range);
+                p.setSynsets(WordnetQuery.getSynsetsForAllSynsetTypes(predicate));
+            }
+            datattypeBackgroundKnowledge.setProperty(p);
 		    
 		    if ( parts.length == 10 ) datattypeBackgroundKnowledge.setObjectDatatype(parts[9]);
             
