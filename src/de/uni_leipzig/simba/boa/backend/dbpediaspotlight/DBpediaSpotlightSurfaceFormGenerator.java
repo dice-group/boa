@@ -147,6 +147,12 @@ public class DBpediaSpotlightSurfaceFormGenerator {
             
             return isGoodSurfaceForm(newLabel) ? newLabel : null;
         }
+        catch (IllegalArgumentException e) {
+            
+            String error = "Could not decode label: " + label + " with URLDecoder.";
+            logger.error(error);
+            return null;
+        }
         catch (UnsupportedEncodingException e) {
             
             e.printStackTrace();
