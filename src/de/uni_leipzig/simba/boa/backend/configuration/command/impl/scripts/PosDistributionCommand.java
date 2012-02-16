@@ -9,8 +9,6 @@ import java.util.Scanner;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 
 
@@ -20,14 +18,14 @@ public class PosDistributionCommand implements Command {
 	public void execute() {
 
 		Map<String,Integer> posDistribution = new HashMap<String,Integer>();
-		PatternDao pDao = (PatternDao) DaoFactory.getInstance().createDAO(PatternDao.class);
+//		PatternDao pDao = (PatternDao) DaoFactory.getInstance().createDAO(PatternDao.class);
 
-		for (Pattern p : pDao.findAllPatterns()) {
-			
-			String pos = p.getPosTaggedString();
-			if (posDistribution.containsKey(pos)) posDistribution.put(pos, posDistribution.get(pos) + 1);
-			else posDistribution.put(pos, 1);
-		}
+//		for (Pattern p : pDao.findAllPatterns()) {
+//			
+//			String pos = p.getPosTaggedString();
+//			if (posDistribution.containsKey(pos)) posDistribution.put(pos, posDistribution.get(pos) + 1);
+//			else posDistribution.put(pos, 1);
+//		}
 		
 		System.out.print("Enter path to file: ");
 		Scanner scanner = new Scanner(System.in);

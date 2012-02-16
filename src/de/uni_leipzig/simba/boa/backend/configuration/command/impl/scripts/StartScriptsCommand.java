@@ -47,12 +47,6 @@ public class StartScriptsCommand implements Command {
 							posDistributionCommand.execute();
 							break;	
 					
-						case 2:
-							
-							Command createQaIndexCommand = new CreateQuestionAnsweringIndexCommand();
-							createQaIndexCommand.execute();
-							break;
-						
 						case 3:
                             
                             Command xxxCommand = new XXX();

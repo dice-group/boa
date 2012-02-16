@@ -11,7 +11,6 @@ import de.uni_leipzig.simba.boa.backend.lucene.LuceneTest;
 import de.uni_leipzig.simba.boa.backend.nlp.StanfordNLPNamedEntityRecognitionTest;
 import de.uni_leipzig.simba.boa.backend.nlp.StanfordNLPPartOfSpeechTaggerTest;
 import de.uni_leipzig.simba.boa.backend.rdf.UriRetrievalTest;
-import de.uni_leipzig.simba.boa.backend.test.SentenceFilterTest;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
