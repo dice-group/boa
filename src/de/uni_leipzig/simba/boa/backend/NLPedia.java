@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
-import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PatternSearchCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.PrintOptionCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.StartQueryCommand;
 import de.uni_leipzig.simba.boa.backend.configuration.command.impl.UnknownOptionCommand;
@@ -54,11 +53,6 @@ public class NLPedia {
 						printOptionCommand.execute();
 						break;
 					
-					case 5: // start looking for patterns in index and write them to the db
-						Command patternSearchCommand = new PatternSearchCommand(null);
-						patternSearchCommand.execute();
-						break;
-						
 					case 7: // start scripts here
 						Command startScriptCommand = new StartScriptsCommand();
 						startScriptCommand.execute();

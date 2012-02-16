@@ -1,7 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.evaluation;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -9,24 +8,13 @@ import java.util.Set;
 
 import junit.framework.JUnit4TestAdapter;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.util.Version;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
-import de.uni_leipzig.simba.boa.backend.evaluation.EvaluationFileLoader;
-import de.uni_leipzig.simba.boa.backend.evaluation.EvaluationFileLoader.ExcludeRdfTypeStatements;
-import de.uni_leipzig.simba.boa.backend.evaluation.EvaluationIndexCreator;
-import de.uni_leipzig.simba.boa.backend.evaluation.PrecisionRecallFMeasure;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;

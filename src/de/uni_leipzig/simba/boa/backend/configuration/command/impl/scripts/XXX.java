@@ -45,8 +45,6 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.pattern.PatternMappingDao;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
@@ -155,7 +153,7 @@ public class XXX implements Command {
 	
 	public void createPatternFeatureDistribution(){
 		
-		PatternMappingDao patternDao = (PatternMappingDao)DaoFactory.getInstance().createDAO(PatternMappingDao.class);
+//		PatternMappingDao patternDao = (PatternMappingDao)DaoFactory.getInstance().createDAO(PatternMappingDao.class);
 		List<Pair> xyz = new ArrayList<Pair>();		
 		List<PatternMapping> patternMappings = new ArrayList<PatternMapping>();
 		for ( PatternMapping pm : patternMappings ){
