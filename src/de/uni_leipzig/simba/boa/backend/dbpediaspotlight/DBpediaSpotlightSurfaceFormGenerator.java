@@ -51,9 +51,9 @@ public class DBpediaSpotlightSurfaceFormGenerator {
         
         Set<String> conceptUris = new HashSet<String>();
         Set<String> badUris = new HashSet<String>();
-        badUris.addAll(NtripleUtil.getSubjectsFromNTriple(DBpediaSpotlightDownloadModule.DBPEDIA_REDIRECTS_FILE, DBpediaSpotlightSurfaceFormModule.DBPEDIA_PREFIX));
+        badUris.addAll(NtripleUtil.getSubjectsFromNTriple(DBpediaSpotlightDownloadModule.DBPEDIA_REDIRECTS_FILE, ""));
         logger.info("Finished reading redirect file for bad uri detection!");
-        badUris.addAll(NtripleUtil.getSubjectsFromNTriple(DBpediaSpotlightDownloadModule.DBPEDIA_DISAMBIGUATIONS_FILE, DBpediaSpotlightSurfaceFormModule.DBPEDIA_PREFIX));
+        badUris.addAll(NtripleUtil.getSubjectsFromNTriple(DBpediaSpotlightDownloadModule.DBPEDIA_DISAMBIGUATIONS_FILE, ""));
         logger.info("Finished reading disambiguations file for bad uri detection!");
         
         // every uri which looks like a good uri and is not in the disambiguations or redirect files is a concept uri
@@ -61,11 +61,12 @@ public class DBpediaSpotlightSurfaceFormGenerator {
         while (n3Parser.hasNext()) {
             
             Node[] node = n3Parser.next();
-            String subject = node[0].toString().replace(DBpediaSpotlightSurfaceFormModule.DBPEDIA_PREFIX, "");
+            String subjectUri = node[0].toString();
             
-            if ( isGoodUri(subject) && !badUris.contains(subject) ) conceptUris.add(subject);
+            String subjectUriWihtoutPrefix = subjectUri.substring(subjectUri.lastIndexOf("/") + 1);
+            
+            if ( isGoodUri(subjectUriWihtoutPrefix) && !badUris.contains(subjectUriWihtoutPrefix) ) conceptUris.add(subjectUri);
         }
-
         logger.info("Concept Uris construction complete! Total of: " + conceptUris.size() + " concept URIs found!");
         return conceptUris;
     }
@@ -91,20 +92,22 @@ public class DBpediaSpotlightSurfaceFormGenerator {
         for ( String uri : conceptUris ) {
             if ( !uri.contains("%") ) {
                 
-                addSurfaceForm(surfaceForms, uri, uri);
+                addSurfaceForm(surfaceForms, uri, uri.substring(uri.lastIndexOf("/") + 1));
             }
         }
         logger.info("Finished adding all conceptUris: " + surfaceForms.size());
         
-        List<String[]> subjectToObject = NtripleUtil.getSubjectAndObjectsFromNTriple(DBpediaSpotlightDownloadModule.DBPEDIA_DISAMBIGUATIONS_FILE, DBpediaSpotlightSurfaceFormModule.DBPEDIA_PREFIX);
-        subjectToObject.addAll(NtripleUtil.getSubjectAndObjectsFromNTriple(DBpediaSpotlightDownloadModule.DBPEDIA_REDIRECTS_FILE, DBpediaSpotlightSurfaceFormModule.DBPEDIA_PREFIX));
+        List<String[]> subjectToObject = NtripleUtil.getSubjectAndObjectsFromNTriple(DBpediaSpotlightDownloadModule.DBPEDIA_DISAMBIGUATIONS_FILE, "");
+        subjectToObject.addAll(NtripleUtil.getSubjectAndObjectsFromNTriple(DBpediaSpotlightDownloadModule.DBPEDIA_REDIRECTS_FILE, ""));
         
         for ( String[] subjectAndObject : subjectToObject ) {
             
-            if ( conceptUris.contains(subjectAndObject[1]) ) {
+            String object = subjectAndObject[1];
+            String subject = subjectAndObject[0];
+            
+            if ( conceptUris.contains(object) ) {
                 
-//                System.out.println("ConceptUris contains obj: " + subjectAndObject[1] + " so add sub: " + subjectAndObject[0] + " to surface forms");
-                addSurfaceForm(surfaceForms, subjectAndObject[1], subjectAndObject[0]);
+                addSurfaceForm(surfaceForms, object, subject.substring(subject.lastIndexOf("/") + 1));
             }
         }
         logger.info("Finished generation of surface forms.");

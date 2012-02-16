@@ -113,12 +113,9 @@ public class SurfaceFormGenerator {
         subjectSurfaceForms.add(" " + objectPropertyBackgroundKnowledge.getSubjectLabel() + " ");
         
         // we found labels for the subject in the surface form file
-        if ( this.urisToLabels.containsKey(subjectUri.replace(Constants.DBPEDIA_RESOURCE_PREFIX, "")) ) {
+        if ( this.urisToLabels.containsKey(subjectUri) ) {
             
-            for (String s : urisToLabels.get(subjectUri.replace(Constants.DBPEDIA_RESOURCE_PREFIX, "")) ) {
-                
-                subjectSurfaceForms.add(s.toLowerCase());
-            }
+            for (String s : urisToLabels.get(subjectUri) ) subjectSurfaceForms.add(s.toLowerCase());
         }
         logger.debug("Found " + subjectSurfaceForms.size() + " at all!");
         subjectSurfaceForms.removeAll(Arrays.asList("", null));
@@ -132,12 +129,9 @@ public class SurfaceFormGenerator {
         objectSurfaceForms.add(" " + objectPropertyBackgroundKnowledge.getObjectLabel() + " ");
         
         // we found labels for the object in the surface form file
-        if ( this.urisToLabels.containsKey(objectUri.replace(Constants.DBPEDIA_RESOURCE_PREFIX, "")) ) {
+        if ( this.urisToLabels.containsKey(objectUri) ) {
             
-            for (String s : urisToLabels.get(objectUri.replace(Constants.DBPEDIA_RESOURCE_PREFIX, ""))) {
-                
-                objectSurfaceForms.add(s.toLowerCase());
-            }
+            for (String s : urisToLabels.get(objectUri)) objectSurfaceForms.add(s.toLowerCase());
         }
         logger.debug("Found " + objectSurfaceForms.size() + " at all");
         
