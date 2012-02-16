@@ -74,14 +74,13 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 
     private IndexedContainer nlrPatternContainer; 
     private PatternMapping currentPatternMapping;
-    private PatternMappingManager patternMappingManager = new PatternMappingManager();
     private List<PatternMapping> mappings;
     
     @Override
     public void init() {
         
         this.mappings = new ArrayList<PatternMapping>();
-        for( PatternMapping mapping : this.patternMappingManager.getPatternMappings()) {
+        for( PatternMapping mapping : PatternMappingManager.getInstance().getPatternMappings()) {
             
             if (mapping.getPatterns().size() > 0 ) this.mappings.add(mapping);
         }
@@ -152,7 +151,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
                 String database = (String) this.tree.getItem(itemId).getItemProperty(DatabaseContainer.DATABASE_ID).getValue();
                 String uri = (String) this.tree.getItem(itemId).getItemProperty(DatabaseContainer.URI).getValue();
                 
-                this.currentPatternMapping = this.patternMappingManager.getPatternMapping(uri, database);
+                this.currentPatternMapping = PatternMappingManager.getInstance().getPatternMapping(uri, database);
                 
                 HorizontalLayout propertyInfos = new HorizontalLayout();
                 propertyInfos.setSizeFull();
