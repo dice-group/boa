@@ -28,9 +28,10 @@ public class TranslateBackgroundKnowledgeModule extends AbstractPreprocessingMod
 
     private final NLPediaLogger logger = new NLPediaLogger(TranslateBackgroundKnowledgeModule.class);
     
-    private final String BACKGROUND_KNOWLEDGE_OBJECT_PATH       = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH;
-    private final String TARGET_LANGUAGE_DBPEDIA_LABELS_FILE    = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
-    private final String TARGET_LANGUAGE_OUTPUT_PATH            = BACKGROUND_KNOWLEDGE_OBJECT_PATH + NLPediaSettings.BOA_LANGUAGE + "/";
+    private final String BACKGROUND_KNOWLEDGE_OBJECT_PATH                   = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH;
+    private final String TARGET_LANGUAGE_DBPEDIA_LABELS_FILE                = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
+    private final String TARGET_LANGUAGE_DBPEDIA_INTERLANGUAGE_LINKS_FILE   = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "interlanguage_links_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
+    private final String TARGET_LANGUAGE_OUTPUT_PATH                        = BACKGROUND_KNOWLEDGE_OBJECT_PATH + NLPediaSettings.BOA_LANGUAGE + "/";
 
     // for the report
     private long translateBackgroundKnowledgeFilesTime;
@@ -47,13 +48,15 @@ public class TranslateBackgroundKnowledgeModule extends AbstractPreprocessingMod
 	@Override
 	public void run() {
 	    
-	 // we start here three threads which download the three files
+	    // we start here three threads which download the three files
         long startTranslateBackgroundKnowledgeFiles = System.currentTimeMillis();
         this.logger.info("Starting to translate background knowledge from 'en' to " + NLPediaSettings.BOA_LANGUAGE + ".");
         
-	    
 	    // read the target label data file, this is basically the translation dictionary
-		Map<String,String> uriToLabelMapping = NtripleUtil.getSubjectAndObjectsMappingFromNTriple(TARGET_LANGUAGE_DBPEDIA_LABELS_FILE, DBpediaSpotlightSurfaceFormModule.DBPEDIA_PREFIX);
+        // e.g. http://de.dbpedia.org/resource/Leipzig -> Leipzig
+		Map<String,String> uriToLabelMapping              = NtripleUtil.getSubjectAndObjectsMappingFromNTriple(TARGET_LANGUAGE_DBPEDIA_LABELS_FILE, "");
+		// e.g. http://dbpedia.org/resource/Leipzig -> http://de.dbpedia.org/resource/Leipzig
+		Map<String,String> languageToEnglishUriMapping    = NtripleUtil.getObjectsAndSubjectsMappingFromNTriple(TARGET_LANGUAGE_DBPEDIA_INTERLANGUAGE_LINKS_FILE, "");
 		
 		// gp through every file in the object background knowledge directory // TODO datatype properties
 		for ( File file : FileUtils.listFiles(new File(BACKGROUND_KNOWLEDGE_OBJECT_PATH), FileFilterUtils.suffixFileFilter(".txt"), null)) {
@@ -68,12 +71,20 @@ public class TranslateBackgroundKnowledgeModule extends AbstractPreprocessingMod
 	            // read the background knowledge 
 	            BackgroundKnowledge bk = BackgroundKnowledgeManager.getInstance().createBackgroundKnowledge(line, true);
 	            
+	            // uris of the background knowledge will always be NOT language specific: http://dbpedia.org/resource/Leipzig
+	            String englishSubjectUri = bk.getSubjectUri();
+	            String foreignSubjectUri = languageToEnglishUriMapping.get(englishSubjectUri);
+	            
+	            String englishObjectUri = bk.getObjectUri();
+                String foreignObjectUri = languageToEnglishUriMapping.get(englishObjectUri);
+	            
 	            // we only include the current english triple if we have translations for subject and object
-	            if (uriToLabelMapping.containsKey(bk.getSubjectUri().replace(Constants.DBPEDIA_RESOURCE_PREFIX, "")) 
-	                    && uriToLabelMapping.containsKey(bk.getObjectUri().replace(Constants.DBPEDIA_RESOURCE_PREFIX, ""))) {
+	            if (uriToLabelMapping.containsKey(foreignSubjectUri) && uriToLabelMapping.containsKey(foreignObjectUri)) {
 
-	                bk.setSubjectLabel(uriToLabelMapping.get(bk.getSubjectUri()));
-	                bk.setObjectLabel(uriToLabelMapping.get(bk.getObjectUri()));
+	                bk.setSubjectPrefixAndLocalname(foreignSubjectUri);
+	                bk.setSubjectLabel(uriToLabelMapping.get(foreignSubjectUri));
+	                bk.setObjectPrefixAndLocalname(foreignObjectUri);
+	                bk.setObjectLabel(uriToLabelMapping.get(foreignObjectUri));
 	                
 	                // first time takes forever because it loads the surface form file	                
 	                if( new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_uri_surface_form.tsv").exists() ) {
@@ -89,7 +100,6 @@ public class TranslateBackgroundKnowledgeModule extends AbstractPreprocessingMod
 	                	bk.setSubjectSurfaceForms(subjectSurfaceForm);
 	                	bk.setObjectSurfaceForms(objectSurfaceForm);
 	                }
-	            
 	                writer.write(bk.toString());
 	            }
 	        }
