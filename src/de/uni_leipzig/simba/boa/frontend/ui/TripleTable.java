@@ -6,9 +6,6 @@ import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Table;
 
 import de.danielgerber.format.OutputFormatter;
-import de.uni_leipzig.simba.boa.backend.dao.DaoFactory;
-import de.uni_leipzig.simba.boa.backend.dao.rdf.TripleDao;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 
 @SuppressWarnings("serial")
@@ -22,23 +19,23 @@ public class TripleTable extends Table {
 	
 	public TripleTable(BoaFrontendApplication app, String uri) {
 
-		BeanItemContainer<Triple> container = new BeanItemContainer<Triple>(Triple.class);
-		container.addNestedContainerProperty("subject.label");
-		container.addNestedContainerProperty("property.label");
-		container.addNestedContainerProperty("object.label");
+//		BeanItemContainer<Triple> container = new BeanItemContainer<Triple>(Triple.class);
+//		container.addNestedContainerProperty("subject.label");
+//		container.addNestedContainerProperty("property.label");
+//		container.addNestedContainerProperty("object.label");
+//		
+//		TripleDao tripleDao = (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
+//		
+//		for ( Triple triple : tripleDao.findNewTriplesForUri(uri)) {
+//			
+//			container.addBean(triple);
+//			System.out.println(triple);
+//		} 
 		
-		TripleDao tripleDao = (TripleDao) DaoFactory.getInstance().createDAO(TripleDao.class);
-		
-		for ( Triple triple : tripleDao.findNewTriplesForUri(uri)) {
-			
-			container.addBean(triple);
-			System.out.println(triple);
-		} 
-		
-		System.out.println(tripleDao.findNewTriplesForUri(uri).size());
+//		System.out.println(tripleDao.findNewTriplesForUri(uri).size());
 		
 		setSizeFull();
-		setContainerDataSource(container);
+//		setContainerDataSource(container);
 		
 		setVisibleColumns(TripleTable.NATURAL_COL_ORDER);
 		setColumnHeaders(TripleTable.COL_HEADERS_ENGLISH);
