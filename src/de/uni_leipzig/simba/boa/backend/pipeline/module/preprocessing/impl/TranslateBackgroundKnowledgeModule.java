@@ -69,19 +69,23 @@ public class TranslateBackgroundKnowledgeModule extends AbstractPreprocessingMod
 	            BackgroundKnowledge bk = BackgroundKnowledgeManager.getInstance().createBackgroundKnowledge(line, true);
 	            
 	            // we only include the current english triple if we have translations for subject and object
-	            if (uriToLabelMapping.containsKey(bk.getSubjectUri()) && uriToLabelMapping.containsKey(bk.getObjectUri())) {
+	            if (uriToLabelMapping.containsKey(bk.getSubjectUri().replace(Constants.DBPEDIA_RESOURCE_PREFIX, "")) 
+	                    && uriToLabelMapping.containsKey(bk.getObjectUri().replace(Constants.DBPEDIA_RESOURCE_PREFIX, ""))) {
 
 	                bk.setSubjectLabel(uriToLabelMapping.get(bk.getSubjectUri()));
 	                bk.setObjectLabel(uriToLabelMapping.get(bk.getObjectUri()));
 	                
 	                // first time takes forever because it loads the surface form file	                
-	                if(new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_uri_surface_form.tsv").exists()){
+	                if( new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_uri_surface_form.tsv").exists() ) {
+	                    
 	                	bk = SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(bk);
-	                }else{
+	                }
+	                else {
+	                    
 	                	HashSet<String> subjectSurfaceForm	= new HashSet<String>();
 	                	HashSet<String> objectSurfaceForm	= new HashSet<String>();
-	                	subjectSurfaceForm.add(bk.getSubjectLabel());
-	                	objectSurfaceForm.add(bk.getObjectLabel());
+	                	subjectSurfaceForm.add(" " + bk.getSubjectLabel().toLowerCase() + " ");
+	                	objectSurfaceForm.add(" " + bk.getObjectLabel().toLowerCase() + " ");
 	                	bk.setSubjectSurfaceForms(subjectSurfaceForm);
 	                	bk.setObjectSurfaceForms(objectSurfaceForm);
 	                }
