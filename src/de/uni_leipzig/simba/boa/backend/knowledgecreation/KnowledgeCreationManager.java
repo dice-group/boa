@@ -83,20 +83,25 @@ public class KnowledgeCreationManager {
     private Set<Triple> calculateConfidence(Collection<Triple> unscoredTriples) {
 
         Set<Triple> scoredTriples = new HashSet<Triple>();
-        for ( Triple triple : unscoredTriples ) {
-            
-            double confidence = 0;
+        
+        double maximum = 0;
+        
+        for ( Triple triple : unscoredTriples )
             for ( Pattern patternLearnedFrom : triple.getLearnedFromPatterns() ) {
                 
-                confidence += patternLearnedFrom.getScore();
+                triple.setScore(triple.getScore() + patternLearnedFrom.getScore());
+                maximum = Math.max(maximum, triple.getScore());
             }
-            // sigmoid function shifted to the right to boost pattern which are learned from more than one pattern
-            triple.setConfidence(1D / (1D + Math.pow(Math.E, - confidence * triple.getLearnedFromPatterns().size() + 1)));
+        
+        for ( Triple triple : unscoredTriples ) {
             
-            if ( triple.getScore() >= NLPediaSettings.getDoubleSetting("triple.score.threshold.create.knowledge") ) {
-                
-                scoredTriples.add(triple);
-            }
+            // sigmoid function shifted to the right to boost pattern which are learned from more than one pattern
+            triple.setScore(1D / (1D + Math.pow(Math.E, - (2 * triple.getLearnedFromPatterns().size() * (triple.getScore() / maximum)) 
+                                                                    + triple.getLearnedFromPatterns().size())));
+            
+            // we only want the triple if its above a threshold
+            if ( triple.getScore() >= NLPediaSettings.getDoubleSetting("triple.score.threshold.create.knowledge") ) 
+              scoredTriples.add(triple);
         }
         return scoredTriples;
     }

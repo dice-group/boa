@@ -146,7 +146,7 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	/**
 	 * @param confidence the confidence to set
 	 */
-	public void setConfidence(double confidence) {
+	public void setScore(double confidence) {
 	
 		this.confidence = confidence;
 	}

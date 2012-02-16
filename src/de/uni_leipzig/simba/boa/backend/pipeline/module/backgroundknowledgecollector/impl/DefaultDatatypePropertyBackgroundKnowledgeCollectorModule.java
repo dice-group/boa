@@ -84,14 +84,14 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 	 */
 	private void queryDatatypeProperties() {
 
-		List<String> datatypePropertyUris = FileUtil.readFileInList(NLPediaSettings.BOA_BASE_DIRECTORY + "backgroundknowledge/datatype_properties_to_query.txt", "UTF-8");
+		List<String> datatypePropertyUris = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "datatype_properties_to_query.txt", "UTF-8");
 		for ( String datatypePropertyUri : datatypePropertyUris ) {
 			
 			this.logger.info("Processing property: " + datatypePropertyUri);
 			String query = createDatatypePropertyQuery(datatypePropertyUri);
-			String filePath	= BACKGROUND_KNOWLEDGE_OUTPUT_PATH + "/datatype/";
 			
-			getKnowledge(query, datatypePropertyUri, filePath + datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/")) + ".txt");
+			getKnowledge(query, datatypePropertyUri, NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_DATATYPE_PROPERTY_PATH
+			        + datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/") + 1) + datatypePropertyUri.hashCode() + ".txt");
 		}
 	}
 

@@ -19,17 +19,13 @@ public class SpecificityFeatureExtractor extends AbstractFeatureExtractor {
 	
 	private NLPediaLogger logger = new NLPediaLogger(SpecificityFeatureExtractor.class);
 	
-	private PatternMappingManager manager;
-
 	@Override
 	public void score(PatternMappingPatternPair pair) {
 
-	    if ( manager == null ) manager = new PatternMappingManager();
-	    
 		long start = new Date().getTime();
 		
-		Double specificity = (double) manager.getPatternMappings().size() / 
-		        (double) manager.findPatternMappingsWithSamePattern(pair.getPattern().getNaturalLanguageRepresentation()); 
+		Double specificity = (double) PatternMappingManager.getInstance().getPatternMappings().size() / 
+		        (double) PatternMappingManager.getInstance().findPatternMappingsWithSamePattern(pair.getPattern().getNaturalLanguageRepresentation()); 
 			
 		specificity = Math.log(specificity) / Math.log(2);
 		specificity = specificity.isInfinite() || specificity.isNaN() ? 0D : specificity; 

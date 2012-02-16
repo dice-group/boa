@@ -4,9 +4,11 @@
 package de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl;
 
 import java.io.File;
+import java.io.IOException;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.AbstractPreprocessingModule;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 
@@ -17,6 +19,8 @@ import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
  */
 public class CreateDataDirectoryStructureModule extends AbstractPreprocessingModule {
 
+    private final NLPediaLogger logger = new NLPediaLogger(CreateDataDirectoryStructureModule.class);
+    
     // for the report
     private long timeCreateDirectoryStructure;
 
@@ -41,6 +45,10 @@ public class CreateDataDirectoryStructureModule extends AbstractPreprocessingMod
         // background knowledge
         if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH).exists()) 
             new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH).mkdir();
+        
+        this.createFile(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "object_properties_to_query.txt");
+        this.createFile(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "datatype_properties_to_query.txt");
+        
         if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH).exists()) 
             new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH).mkdir();
         if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_DATATYPE_PROPERTY_PATH).exists()) 
@@ -95,6 +103,25 @@ public class CreateDataDirectoryStructureModule extends AbstractPreprocessingMod
         // the output/input folder of the evaluation
         if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.EVALUATION_PATH).exists()) 
             new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.EVALUATION_PATH).mkdir();
+    }
+
+    private void createFile(String filename) {
+
+        try {
+             
+            File file = new File(filename);
+            if ( !file.exists() ) {
+                
+                file.createNewFile();
+            }
+        }
+        catch (IOException e) {
+            
+            e.printStackTrace();
+            String error = "Could not create file for filename: " + filename;
+            this.logger.error(error, e);
+            throw new RuntimeException(error, e);
+        }
     }
 
     /* (non-Javadoc)

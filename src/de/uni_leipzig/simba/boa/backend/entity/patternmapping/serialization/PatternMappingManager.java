@@ -23,13 +23,25 @@ import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationM
 public class PatternMappingManager {
 
     private static List<PatternMapping> mappings;
+    private static PatternMappingManager INSTANCE;
     
     private final String PATTERN_MAPPING_FOLDER         = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
     
-    public PatternMappingManager() {
+    private PatternMappingManager() {
         
         mappings = new ArrayList<PatternMapping>(SerializationManager.getInstance().deserializePatternMappings(PATTERN_MAPPING_FOLDER));
     }
+    
+    public static PatternMappingManager getInstance(){
+        
+        if (PatternMappingManager.INSTANCE == null) {
+            
+            PatternMappingManager.INSTANCE = new PatternMappingManager();
+        }
+        
+        return PatternMappingManager.INSTANCE;
+    }
+    
     
     /**
      * 

@@ -82,7 +82,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	 */
 	private void queryObjectProperties() {
 		
-		String backgroundKnowledgeFilename = NLPediaSettings.BOA_BASE_DIRECTORY + "backgroundknowledge/object_properties_to_query.txt";
+		String backgroundKnowledgeFilename = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "object_properties_to_query.txt";
 		List<String> objectPropertyUris = FileUtil.readFileInList(backgroundKnowledgeFilename, "UTF-8");
 		
 		for ( String objectPropertyUri : objectPropertyUris ) {

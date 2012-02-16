@@ -65,9 +65,7 @@ public class XXX implements Command {
     @Override
     public void execute() {
         
-        PatternMappingManager pm = new PatternMappingManager();
-        
-        Set<PatternMapping> mappings = new HashSet<PatternMapping>(pm.getPatternMappings());
+        Set<PatternMapping> mappings = new HashSet<PatternMapping>(PatternMappingManager.getInstance().getPatternMappings());
         FeatureHelper.createLocalMaxima(mappings);
         
         PatternScoreManager patternScoreManager = new PatternScoreManager();
