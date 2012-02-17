@@ -110,7 +110,8 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         }
         else if ( source == this.databasesButton ) {
             
-            panel.addComponent(buildStartPage());
+            mainLayout.removeAllComponents();
+            mainLayout.addComponent(buildStartPage());
         }
         else if ( source == this.downloadsButton ) {
             
