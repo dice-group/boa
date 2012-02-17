@@ -78,8 +78,7 @@ public class SurfaceFormGenerator {
             this.urisToLabels.put(lineParts[0], filteredSurfaceForms);
             this.urisToLabels.put(lineParts[0].replace("http://" + NLPediaSettings.BOA_LANGUAGE + ".", "http://"), filteredSurfaceForms);
         }
-        SurfaceFormGenerator.logger.info("Finished intializing surface forms! Found " + urisToLabels.size() + 
-                " dbpedia spotlight surfaceforms");
+        SurfaceFormGenerator.logger.info("Finished intializing surface forms! Found " + urisToLabels.size() + " dbpedia spotlight surfaceforms");
     }
     
     /**
