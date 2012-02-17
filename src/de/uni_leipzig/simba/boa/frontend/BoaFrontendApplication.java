@@ -1,5 +1,7 @@
 package de.uni_leipzig.simba.boa.frontend;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +27,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
@@ -32,10 +35,12 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.Reindeer;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
@@ -56,7 +61,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     private NLPediaSetup setup = new NLPediaSetup(false);
     private NLPediaLogger logger = new NLPediaLogger(BoaFrontendApplication.class);
 
-    private Button triplesButton = new Button("Triples");
+    private Button triplesButton = new Button("Query");
     private Button sourceButton = new Button("Source");
     private Button downloadsButton = new Button("Downloads");
     private Button databasesButton = new Button("Pattern Library");
@@ -64,9 +69,9 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     private ComboBox patternSearchField = new ComboBox();
     
     private DatabaseNavigationTree tree;
-    private DatabaseNavigationTree tripleTree;
     private PatternTable patternTable;
     
+    private VerticalLayout mainLayout = new VerticalLayout();
     private HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
     
     public static String CURRENT_DATABASE;
@@ -86,7 +91,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         }
         nlrPatternContainer = this.getNaturalLanguagePatternContainer();
         this.tree = new DatabaseNavigationTree(this, mappings);
-        this.tripleTree = new DatabaseNavigationTree(this, mappings);
 
         buildMainLayout();
     }
@@ -94,50 +98,252 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     public void buttonClick(ClickEvent event) {
         
         final Button source = event.getButton();
+        Panel panel = new Panel();
+        panel.setStyleName(Reindeer.PANEL_LIGHT);
+        panel.setSizeFull();
+        mainLayout.removeAllComponents();
+        mainLayout.addComponent(panel);
         
         if (source == this.triplesButton) {
             
-//            TripleTable table = new TripleTable(this, tripleTree.getFirstUri());
-            horizontalSplitPanel.setFirstComponent(tripleTree);
-            
-            VerticalLayout triples = new VerticalLayout();
-            triples.setSizeFull();
-            triples.setMargin(true);
-            triples.addComponent(new Label("Triples"));
-            
-            horizontalSplitPanel.setSecondComponent(triples);
+            panel.addComponent(buildTriplePage());
         }
         else if ( source == this.databasesButton ) {
             
-            horizontalSplitPanel.setSecondComponent(buildStartPage());
+            panel.addComponent(buildStartPage());
         }
         else if ( source == this.downloadsButton ) {
             
-            VerticalLayout downloads = new VerticalLayout();
-            downloads.setSizeFull();
-            downloads.setMargin(true);
-            downloads.addComponent(new Label("Downloads"));
-            
-            horizontalSplitPanel.setSecondComponent(downloads);
+            panel.addComponent(buildDownloadsPage());
         }
         else if ( source == this.sourceButton ) {
             
-            VerticalLayout sourceCode = new VerticalLayout();
-            sourceCode.setSizeFull();
-            sourceCode.setMargin(true);
-            sourceCode.addComponent(new Label("Source Code"));
-            
-            horizontalSplitPanel.setSecondComponent(sourceCode);
+            panel.addComponent(buildSourceCodePage());
         }
         else if ( source == this.publicationsButton ) {
             
-            VerticalLayout sourceCode = new VerticalLayout();
-            sourceCode.setSizeFull();
-            sourceCode.setMargin(true);
-            sourceCode.addComponent(new Label("Publications"));
-            
-            horizontalSplitPanel.setSecondComponent(sourceCode);
+            panel.addComponent(buildPublicationsPage());
         }
+    }
+
+    private Component buildPublicationsPage() {
+
+        VerticalLayout publications = new VerticalLayout();
+        publications.setMargin(true);
+        
+        Label bootstrapping = new Label(
+                "<b><h1><a class='downloadText' href='http://svn.aksw.org/papers/2012/ESWC_BOA-ML-PR/public.pdf'>BOA - Bootstrapping Linked Data:</a></h1></b><br/> " +
+                "Most knowledge sources on the Data Web were extracted from structured " +
+                "or semi-structured data. Thus, they encompass solely a small fraction " +
+                "of the information available on the document-oriented Web. In this " +
+                "paper, we present BOA, an iterative bootstrapping strategy for extracting " +
+                "RDF from unstructured data. The idea behind BOA is to use the Data " +
+                "Web as background knowledge for the extraction of natural language " +
+                "patterns that represent predicates found on the Data Web. These patterns " +
+                "are used to extract instance knowledge from natural language text. " +
+                "This knowledge is finally fed back into the Data Web, therewith closing " +
+                "the loop. We evaluate our approach on two data sets using DBpedia " +
+                "as background knowledge. Our results show that we can extract several " +
+                "thousand new facts in one iteration with very high accuracy. Moreover, " +
+                "we provide the first repository of natural language representations " +
+                "of predicates found on the Data Web.<br/><br/>");
+        bootstrapping.setContentMode(Label.CONTENT_XHTML);
+        Label bootstrappingBibtex = new Label(
+                "<i>@INPROCEEDINGS{Gerber2011, <br/>" +
+                "&nbsp;&nbsp;author = {{Daniel Gerber and Axel-Cyrille Ngonga Ngomo}},<br/>" +
+                "&nbsp;&nbsp;title = {Bootstrapping the Linked Data Web},<br/>" +
+                "&nbsp;&nbsp;booktitle = {1st Workshop on Web Scale Knowledge Extraction @ ISWC 2011},<br/>" +
+                "&nbsp;&nbsp;year = {2011}<br/>" +
+                "}</i>"
+        		);
+        bootstrappingBibtex.setContentMode(Label.CONTENT_XHTML);
+        
+        publications.addComponent(bootstrapping);
+        publications.addComponent(bootstrappingBibtex);
+        
+        Label questionAnswering = new Label(
+                "<b><h1><a class='downloadText' href=''>Template-based question answering over RDF data:</a></h1></b><br/> " +
+                "As an increasing amount of RDF data is published as Linked Data, " +
+                "intuitive ways of accessing this data become more and more important. " +
+                "Question answering approaches have been proposed as a good compromise " +
+                "between intuitiveness and expressivity. Most question answering systems " +
+                "translate questions into triples which are matched against the RDF data " +
+                "to retrieve an answer, typically relying on some similarity metric. However, " +
+                "in many cases, triples do not represent a faithful representation of the semantic " +
+                "structure of the natural language question, with the result that more expressive " +
+                "queries can not be answered. To circumvent this problem, we present a novel " +
+                "approach that relies on a parse of the question to produce a SPARQL template " +
+                "that directly mirrors the internal structure of the question. This template " +
+                "is then instantiated using statistical entity identification and predicate " +
+                "detection. We show that this approach is competitive and discuss cases of " +
+                "questions that can be answered with our approach but not with competing approaches.<br/><br/>");
+        questionAnswering.setContentMode(Label.CONTENT_XHTML);
+        Label questionAnsweringBibtex = new Label(
+                "<i>@INPROCEEDINGS{UNG12,<br/>" +
+                "&nbsp;&nbsp;author = {{Christina Unger, Lorenz Bühmann, Jens Lehmann, Axel-Cyrille Ngonga Ngomo, Daniel Gerber and Philipp Cimiano}},<br/>" +
+                "&nbsp;&nbsp;title = {SPARQL Template Based Question Answering},<br/>" +
+                "&nbsp;&nbsp;booktitle = {Proceedings of the 21st International World Wide Web Conference, WWW2012, Lyon (France), April 16-20, 2012},<br/>" +
+                "&nbsp;&nbsp;year = {2012}<br/>"+
+                "}</i>"
+                );
+        questionAnsweringBibtex.setContentMode(Label.CONTENT_XHTML);
+        
+        publications.addComponent(questionAnswering);
+        publications.addComponent(questionAnsweringBibtex);
+        
+        return publications;
+    }
+
+    private Component buildDownloadsPage() {
+
+        VerticalLayout downloads = new VerticalLayout();
+        downloads.setSizeFull();
+//        downloads.setMargin(true);
+        
+        HorizontalLayout patternIndexDownloads = new HorizontalLayout();
+        
+        Label patternIndexLabel = new Label(
+                "<b><h1>Download the BOA Pattern Index:</h1></b><br/>" +
+                "You can download the Lucene Index of the patterns and pattern mappings displayed in this demo! " +
+                "The schema of this index and how to query the BOA Solr instance is explained <a href='http://code.google.com/p/boa/wiki/PatternIndex'> here</a>.");
+        patternIndexLabel.setContentMode(Label.CONTENT_XHTML);
+
+        Label enDefaultWikiIndex = new Label(
+                "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/enwiki-default.tar.gz\">" +
+                "   <div><img width='100px' src=\"VAADIN/themes/boa/icons/tar.png\"/></div>" +
+                "   <div class=\"downloadText\"><span>enwiki-default.tar.gz</span></div>" + 
+                "</a>"
+                );
+        enDefaultWikiIndex.setContentMode(Label.CONTENT_XHTML);
+        enDefaultWikiIndex.setWidth("150px");
+        
+        Label enDetailsWikiIndex = new Label(
+                "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/enwiki-details.tar.gz\">" +
+                "   <div><img width='100px' src=\"VAADIN/themes/boa/icons/tar.png\"/></div>" +
+                "   <div class=\"downloadText\"><span>enwiki-details.tar.gz</span></div>" + 
+                "</a>"
+                );
+        enDetailsWikiIndex.setContentMode(Label.CONTENT_XHTML);
+        enDetailsWikiIndex.setWidth("150px");
+        
+        Label deDefaultWikiIndex = new Label(
+                "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/dewiki-default.tar.gz\">" +
+                "   <div><img width='100px' src=\"VAADIN/themes/boa/icons/tar.png\"/></div>" +
+                "   <div class=\"downloadText\"><span>dewiki-default.tar.gz</span></div>" + 
+                "</a>"
+                );
+        deDefaultWikiIndex.setContentMode(Label.CONTENT_XHTML);
+        deDefaultWikiIndex.setWidth("150px");
+        
+        Label deDetailsWikiIndex = new Label(
+                "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/dewiki-details.tar.gz\">" +
+                "   <div><img width='100px' src=\"VAADIN/themes/boa/icons/tar.png\"/></div>" +
+                "   <div class=\"downloadText\"><span>dewiki-details.tar.gz</span></div>" + 
+                "</a>"
+                );
+        deDetailsWikiIndex.setContentMode(Label.CONTENT_XHTML);
+        deDetailsWikiIndex.setWidth("150px");
+        
+        patternIndexDownloads.addComponent(enDefaultWikiIndex);
+        patternIndexDownloads.addComponent(enDetailsWikiIndex);
+        patternIndexDownloads.addComponent(deDefaultWikiIndex);
+        patternIndexDownloads.addComponent(deDetailsWikiIndex);
+        patternIndexDownloads.setSpacing(true);
+        patternIndexDownloads.setMargin(true);
+        
+        downloads.addComponent(patternIndexLabel);
+        downloads.addComponent(patternIndexDownloads);
+        
+        // ####################################################
+
+        Label tripleLabel = new Label(
+                "<b><h1>Download the BOA Knowledge:</h1></b><br/>" +
+                "You can download all triples BOA has produced in the first iteration or query it in the 'Query' section!");
+        tripleLabel.setContentMode(Label.CONTENT_XHTML);
+        
+        HorizontalLayout tripleDownloads = new HorizontalLayout();
+        
+        Label enwikiTriple = new Label(
+                "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/enwiki.nt.tar.gz\">" +
+                "   <div><img width='100px' src=\"VAADIN/themes/boa/icons/tar.png\"/></div>" +
+                "   <div class=\"downloadText\"><span>enwiki.nt.tar.gz</span></div>" + 
+                "</a>"
+                );
+        enwikiTriple.setContentMode(Label.CONTENT_XHTML);
+        enwikiTriple.setWidth("150px");
+        
+        Label dewikiIndex = new Label(
+                "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/dewiki.nt.tar.gz\">" +
+                "   <div><img width='100px' src=\"VAADIN/themes/boa/icons/tar.png\"/></div>" +
+                "   <div class=\"downloadText\"><span>dewiki.nt.tar.gz</span></div>" + 
+                "</a>"
+                );
+        dewikiIndex.setContentMode(Label.CONTENT_XHTML);
+        dewikiIndex.setWidth("150px");
+        
+        tripleDownloads.addComponent(enwikiTriple);
+        tripleDownloads.addComponent(dewikiIndex);
+        tripleDownloads.setSpacing(true);
+        tripleDownloads.setMargin(true);
+        
+        downloads.addComponent(tripleLabel);
+        downloads.addComponent(tripleDownloads);
+        
+        return downloads;
+    }
+
+    private Component buildTriplePage() {
+
+        String urlString = "http://live.dbpedia.org/sparql?" +
+                "default-graph-uri=http%3A%2F%2Fboa.aksw.org&" +
+                "qtxt=SELECT%20%3Fcompany1Label%20%3Fcompany2Label%20%0A" +
+                "WHERE%20%7B%20%0A%20%20%20%20%20%3Fcompany1%20%3Chttp%3A%2F%2Fboa.aksw.org%2Fontology%2Fsubsidiary%3E%20%3Fcompany2%20.%20%0A%20%20%20%20%20%3F" +
+                "company1%20rdfs%3Alabel%20%3Fcompany1label%20.%20%0A%20%20%20%20%20%3Fcompany2%20rdfs%3Alabel%20%3Fcompany2Label%20.%20%0A%7D%0ALIMIT%20100%0A";
+        
+        VerticalLayout triples = new VerticalLayout();
+        triples.setSizeFull();
+        triples.setMargin(true);
+        Label preformattedText = new Label(
+                "<b><h1>Query BOA's knowledge base:</h1></b><br/>" +
+                "You can query BOA's knowledge base with SPARQL (see <a href='"+urlString+"'>SPARQL Endpoint</a>) or you can download the generated triples in the 'Downloads' sections.");
+        preformattedText.setContentMode(Label.CONTENT_XHTML);
+        triples.addComponent(preformattedText);
+        
+        try {
+            
+            URL url = new URL(urlString);
+            Embedded browser = new Embedded("", new ExternalResource(url));
+            browser.setType(Embedded.TYPE_BROWSER);
+            browser.setSizeFull();
+            triples.addComponent(browser);
+            triples.setExpandRatio(browser, 2f);
+        }
+        catch (MalformedURLException e) {
+            
+            e.printStackTrace();
+        }
+        
+        return triples;
+    }
+    
+    private Component buildSourceCodePage() {
+
+        String urlString = "http://code.google.com/p/boa";
+        
+        VerticalLayout sourceCode = new VerticalLayout();
+        sourceCode.setWidth("60%");
+        sourceCode.setMargin(true);
+        Label preformattedText = new Label(
+                "<b><h1>Get involved!</h1></b><br/>" +
+                "You can download the BOA framework and all necessarry files from the Google Code project <a class=\"downloadText\" href='"+urlString+"'>page</a>. " +
+                		"Everyone is welcome to join the project (just send me a mail) and/or join the mailing list. If you have any questions just ask " +
+                		"me or have a look at the Wiki in the Google project site.<br/><br/>" +
+                		"You can clone the mercurial repository with the following command: <br/><br/>" +
+                		"<b><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hg clone https://code.google.com/p/boa/</i></b>");
+        preformattedText.setContentMode(Label.CONTENT_XHTML);
+        sourceCode.addComponent(preformattedText);
+        
+        return sourceCode;
     }
 
     public void itemClick(ItemClickEvent event) {
@@ -201,20 +407,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
                 this.horizontalSplitPanel.setSecondComponent(vPanel);
             }
         }
-        else if (event.getSource() == tripleTree) {
-            
-            String itemId = (String) event.getItemId();
-            
-            if (itemId != null) {
-                
-                String uri              = itemId.substring(itemId.indexOf(":") + 1);
-                TripleTable table       = new TripleTable(this, uri);
-                // setze linken teil auf die modelle
-                horizontalSplitPanel.setFirstComponent(tripleTree);
-                // in den rechten teil kommt die erkl�rung
-                horizontalSplitPanel.setSecondComponent(table);
-            }
-        }
         else if (event.getSource() == this.patternTable ) {
             
             Pattern pattern = this.patternTable.getSelectedPattern((Integer) event.getItemId());
@@ -238,18 +430,21 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         layout.setSpacing(true);
         layout.setMargin(true);
         layout.addComponent(topGrid);
-        layout.addComponent(horizontalSplitPanel);
+        layout.addComponent(mainLayout);
+        mainLayout.setHeight("100%");
+        mainLayout.setWidth("95%");
+        mainLayout.addComponent(horizontalSplitPanel);
         
         horizontalSplitPanel.setSplitPosition(215, HorizontalSplitPanel.UNITS_PIXELS);
         horizontalSplitPanel.setFirstComponent(tree);
-        horizontalSplitPanel.setSecondComponent(buildStartPage());
+        buildStartPage();
         horizontalSplitPanel.setWidth("97%");
         horizontalSplitPanel.setLocked(true);
         
         layout.setExpandRatio(topGrid, 1f);
-        layout.setExpandRatio(horizontalSplitPanel, 5f);
+        layout.setExpandRatio(mainLayout, 5f);
         
-        layout.setComponentAlignment(horizontalSplitPanel, Alignment.MIDDLE_CENTER);
+        layout.setComponentAlignment(mainLayout, Alignment.MIDDLE_CENTER);
         layout.setComponentAlignment(topGrid, Alignment.TOP_CENTER);
         
         this.getMainWindow().getContent().addComponent(layout);
@@ -306,6 +501,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         databasesButton.addListener((ClickListener) this);
         sourceButton.addListener((ClickListener) this);
         downloadsButton.addListener((ClickListener) this);
+        publicationsButton.addListener((ClickListener) this);
         patternSearchField.addListener((Property.ValueChangeListener) this);
         
         return topGrid;
@@ -330,7 +526,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         return naturalLanguagePatternContainer;
     }
     
-    private ComponentContainer buildStartPage() {
+    private HorizontalSplitPanel buildStartPage() {
 
         Label preformattedText = new Label(
                 "<b><h1>BOA - a framework for BOostrapping the datA web.</h1></b><br/>" +
@@ -355,7 +551,11 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         
         p.addComponent(preformattedText);
         p.addComponent(e);
-        return p;
+        
+        horizontalSplitPanel.setFirstComponent(tree);
+        horizontalSplitPanel.setSecondComponent(p);
+        
+        return horizontalSplitPanel;
     }
 
     @Override

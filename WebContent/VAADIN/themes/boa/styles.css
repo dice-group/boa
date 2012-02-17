@@ -7,12 +7,6 @@
       padding-left: 4px;
 }
 
-/* .v-tree-node-selected { */
-	
-/* 	 background: #7AB42F repeat-x; */
-/* 	 background-image: none; */
-/* } */
-
 .toolbar .v-button {
       display: block;
       background: transparent;
@@ -147,3 +141,13 @@
     color: rgba(122,180,47,0.9);
 }
 
+.downloadText {
+    
+    color: #547C20;
+    text-decoration: none;
+}
+
+.v-panel {
+	border: 0px;
+	background-clip: none;
+}
