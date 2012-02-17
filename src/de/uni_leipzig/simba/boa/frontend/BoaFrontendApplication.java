@@ -210,7 +210,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 
         Label enDefaultWikiIndex = new Label(
                 "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/enwiki-default.tar.gz\">" +
-                "   <div><img width='100px' src=\"VAADIN/themes/boa/icons/tar.png\"/></div>" +
+                "   <div><img width='100px' src=\"boa/VAADIN/themes/boa/icons/tar.png\"/></div>" +
                 "   <div class=\"downloadText\"><span>enwiki-default.tar.gz</span></div>" + 
                 "</a>"
                 );
@@ -219,7 +219,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         
         Label enDetailsWikiIndex = new Label(
                 "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/enwiki-details.tar.gz\">" +
-                "   <div><img width='100px' src=\"VAADIN/themes/boa/icons/tar.png\"/></div>" +
+                "   <div><img width='100px' src=\"boa/VAADIN/themes/boa/icons/tar.png\"/></div>" +
                 "   <div class=\"downloadText\"><span>enwiki-details.tar.gz</span></div>" + 
                 "</a>"
                 );
@@ -228,7 +228,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         
         Label deDefaultWikiIndex = new Label(
                 "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/dewiki-default.tar.gz\">" +
-                "   <div><img width='100px' src=\"VAADIN/themes/boa/icons/tar.png\"/></div>" +
+                "   <div><img width='100px' src=\"boa/VAADIN/themes/boa/icons/tar.png\"/></div>" +
                 "   <div class=\"downloadText\"><span>dewiki-default.tar.gz</span></div>" + 
                 "</a>"
                 );
@@ -237,7 +237,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         
         Label deDetailsWikiIndex = new Label(
                 "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/dewiki-details.tar.gz\">" +
-                "   <div><img width='100px' src=\"VAADIN/themes/boa/icons/tar.png\"/></div>" +
+                "   <div><img width='100px' src=\"boa/VAADIN/themes/boa/icons/tar.png\"/></div>" +
                 "   <div class=\"downloadText\"><span>dewiki-details.tar.gz</span></div>" + 
                 "</a>"
                 );
@@ -265,7 +265,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         
         Label enwikiTriple = new Label(
                 "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/enwiki.nt.tar.gz\">" +
-                "   <div><img width='100px' src=\"VAADIN/themes/boa/icons/tar.png\"/></div>" +
+                "   <div><img width='100px' src=\"boa/VAADIN/themes/boa/icons/tar.png\"/></div>" +
                 "   <div class=\"downloadText\"><span>enwiki.nt.tar.gz</span></div>" + 
                 "</a>"
                 );
@@ -274,7 +274,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         
         Label dewikiIndex = new Label(
                 "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/dewiki.nt.tar.gz\">" +
-                "   <div><img width='100px' src=\"VAADIN/themes/boa/icons/tar.png\"/></div>" +
+                "   <div><img width='100px' src=\"boa/VAADIN/themes/boa/icons/tar.png\"/></div>" +
                 "   <div class=\"downloadText\"><span>dewiki.nt.tar.gz</span></div>" + 
                 "</a>"
                 );
