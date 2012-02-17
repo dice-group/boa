@@ -76,6 +76,7 @@ public class SurfaceFormGenerator {
                 if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength") ) filteredSurfaceForms.add(" " + surfaceForm + " ");
             }
             this.urisToLabels.put(lineParts[0], filteredSurfaceForms);
+            this.urisToLabels.put(lineParts[0].replace("http://" + NLPediaSettings.BOA_LANGUAGE + ".", "http://"), filteredSurfaceForms);
         }
         SurfaceFormGenerator.logger.info("Finished intializing surface forms! Found " + urisToLabels.size() + 
                 " dbpedia spotlight surfaceforms");
@@ -110,7 +111,7 @@ public class SurfaceFormGenerator {
         String objectUri    = objectPropertyBackgroundKnowledge.getObjectUri();
         
         Set<String> subjectSurfaceForms = new HashSet<String>();
-        subjectSurfaceForms.add(" " + objectPropertyBackgroundKnowledge.getSubjectLabel() + " ");
+        subjectSurfaceForms.add(" " + objectPropertyBackgroundKnowledge.getSubjectLabel().toLowerCase() + " ");
         
         // we found labels for the subject in the surface form file
         if ( this.urisToLabels.containsKey(subjectUri) ) {
@@ -126,7 +127,7 @@ public class SurfaceFormGenerator {
         // ################################################################################
         
         Set<String> objectSurfaceForms = new HashSet<String>();
-        objectSurfaceForms.add(" " + objectPropertyBackgroundKnowledge.getObjectLabel() + " ");
+        objectSurfaceForms.add(" " + objectPropertyBackgroundKnowledge.getObjectLabel().toLowerCase() + " ");
         
         // we found labels for the object in the surface form file
         if ( this.urisToLabels.containsKey(objectUri) ) {

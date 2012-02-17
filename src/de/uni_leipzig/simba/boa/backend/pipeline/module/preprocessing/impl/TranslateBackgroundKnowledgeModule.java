@@ -61,6 +61,8 @@ public class TranslateBackgroundKnowledgeModule extends AbstractPreprocessingMod
 		// gp through every file in the object background knowledge directory // TODO datatype properties
 		for ( File file : FileUtils.listFiles(new File(BACKGROUND_KNOWLEDGE_OBJECT_PATH), FileFilterUtils.suffixFileFilter(".txt"), null)) {
 		    
+		    this.logger.info("Translating background knowledge file: " + file.getAbsolutePath());
+		    
 		    // open the english file and write the output in a file with the same name only in ./$language
 		    BufferedFileReader reader = FileUtil.openReader(file.getAbsolutePath());
 	        BufferedFileWriter writer = FileUtil.openWriter(TARGET_LANGUAGE_OUTPUT_PATH + file.getName(), "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
