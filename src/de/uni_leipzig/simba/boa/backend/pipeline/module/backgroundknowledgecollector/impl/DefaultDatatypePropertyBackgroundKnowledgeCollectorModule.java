@@ -91,7 +91,7 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 			String query = createDatatypePropertyQuery(datatypePropertyUri);
 			
 			getKnowledge(query, datatypePropertyUri, NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_DATATYPE_PROPERTY_PATH
-			        + datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/") + 1) + datatypePropertyUri.hashCode() + ".txt");
+			        + datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/") + 1) + "-"+ datatypePropertyUri.hashCode() + ".txt");
 		}
 	}
 

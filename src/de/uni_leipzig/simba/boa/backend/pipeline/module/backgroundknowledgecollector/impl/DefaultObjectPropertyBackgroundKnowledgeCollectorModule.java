@@ -91,7 +91,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 			String query	= createObjectPropertyQuery(objectPropertyUri);
 			
 			super.getKnowledge(query, objectPropertyUri, NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH 
-			        + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/") + 1) + ".txt");
+			        + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/") + 1) + "-"+ objectPropertyUri.hashCode() + ".txt");
 		}
 	}
 	
