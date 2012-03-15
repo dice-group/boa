@@ -8,9 +8,9 @@
         class="de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings">
         
         <!-- base and data directory need to have a "/" (or "\" for windows) at the end -->
-        <property name="boaBaseDirectory" value="@BOA_BASE_DIRECTORY@"/>
-        <property name="boaDataDirectory" value="@BOA_DATA_DIRECTORY@"/>
-        <property name="boaLanguage" value="@BOA_LANGUAGE@"/>
+        <property name="boaBaseDirectory" value="/Users/gerb/Development/workspaces/java-ws/boa/WebContent/WEB-INF/data/"/>
+        <property name="boaDataDirectory" value="/Users/gerb/Development/workspaces/experimental/en_wiki/"/>
+        <property name="boaLanguage" value="en"/>
         
         <property name="nlpediaSettings">
             <map>
@@ -25,23 +25,24 @@
                 <entry key="ramBufferMaxSizeInMb"                           value="1000"/>
                 
                 <!-- ############### pattern search ############### -->
-                <entry key="maxNumberOfDocuments"                           value="10"/>
-                <entry key="numberOfSearchThreads"                          value="2"/>
-                <entry key="patternSearchThreadPoolSize"                    value="2"/>
+                <entry key="maxNumberOfDocuments"                           value="100"/>
+                <entry key="numberOfSearchThreads"                          value="3"/>
+                <entry key="patternSearchThreadPoolSize"                    value="3"/>
                 <entry key="useRamDirectory"                                value="false"/>
                 <entry key="maxPatternLenght"                               value="10"/>
                 <entry key="minPatternLenght"                               value="1"/>
                 <entry key="surfaceFormMinimumLength"                       value="3"/>
+                <entry key="pos.tagger.model"                               value="training/pos/left3words-wsj-0-18.tagger"/>
+                
+                <!-- ############### confidence measure ############### -->
                 <entry key="number.of.occurrence.threshold"                 value="3"/>
                 <entry key="number.of.unique.occurrence.threshold"          value="3"/>
                 <entry key="number.of.learned.pairs"                        value="3"/>
-                <entry key="pos.tagger.model"                               value="training/pos/left3words-wsj-0-18.tagger"/>
-                
-               <!-- ############### confidence measure ############### -->
-                <entry key="maxNumberOfTypicityConfidenceMeasureDocuments"  value="10"/>
-                <entry key="maxmimumNumberOfTotalOccurrences"               value="100"/>
+                <entry key="maxNumberOfTypicityConfidenceMeasureDocuments"  value="5"/>
+                <entry key="maxmimumNumberOfTotalOccurrences"               value="5"/>
                 <entry key="numberOfFeatureExtractionsThreads"              value="4"/>
                 <entry key="patternFeatureExtractionThreadPoolSize"         value="4"/>
+                <entry key="extractFeatures"                                value="false"/>
                 <entry key="wordnet.index.directory"                        value="training/wordnet/similarity"/>
                 <entry key="wordnet.database.directory"                     value="training/wordnet/database"/>
                 <entry key="reverbTrainingDirectory"                        value="training/reverb/"/>
@@ -69,9 +70,9 @@
                 <entry key="score.threshold.write.plaintext.knowledge"      value="0.3"/>
                 
                 <!-- ############### get background knowledge ############### -->
-                <entry key="dbpediaSparqlEndpoint"                          value="http://dbpedia.org/sparql"/>
+                <entry key="dbpediaSparqlEndpoint"                          value="http://live.dbpedia.org/sparql"/>
                 <entry key="dbpediaDefaultGraph"                            value="http://dbpedia.org"/>
-                <entry key="sparqlQueryLimit"                               value="10"/>
+                <entry key="sparqlQueryLimit"                               value="100"/>
                 <entry key="queryObjectProperties"                          value="true"/>
                 <entry key="queryDatatypeProperties"                        value="true"/>
                 <entry key="backgroundKnowledgeOutputFilePath"              value="backgroundknowledge"/>
@@ -79,9 +80,9 @@
                 
                 <!-- ############### other ############### -->
                 <entry key="question.answering.index"                       value="qa"/>
-                <entry key="patternMappingFolders"                          value="/Users/gerb/Development/workspaces/experimental/en_wiki_exp"/>
+                <entry key="patternMappingFolders"                          value="/Users/gerb/Development/workspaces/experimental/en_wiki"/>
                 <entry key="spotlight.maxSurfaceFormLength"                 value="50"/>
             </map>
-        </property> 
+        </property>
     </bean>
 </beans>
