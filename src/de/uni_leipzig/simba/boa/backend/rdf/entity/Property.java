@@ -131,7 +131,8 @@ public class Property extends Resource {
      */
     public String getRdfsRange() {
         
-        if ( (rdfsRangePrefix + rdfsRangeLocalname).isEmpty() ) return "NA";
+        if ( (rdfsRangePrefix + rdfsRangeLocalname).isEmpty() 
+                || (rdfsRangePrefix == null || rdfsRangeLocalname == null) ) return "NA";
         return rdfsRangePrefix + rdfsRangeLocalname;
     }
 
@@ -140,7 +141,8 @@ public class Property extends Resource {
      */
     public String getRdfsDomain() {
     
-        if ( (rdfsDomainPrefix + rdfsDomainLocalname).isEmpty() ) return "NA";
+        if ( (rdfsDomainPrefix + rdfsDomainLocalname).isEmpty() 
+                || (rdfsDomainPrefix == null || rdfsDomainLocalname == null) ) return "NA";
         return rdfsDomainPrefix + rdfsDomainLocalname;
     }
 
