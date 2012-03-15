@@ -47,7 +47,7 @@ public class PatternWindow extends Window {
 		this.patternMapping = pm;
 		
 		this.setModal(true);
-		this.setWidth("800px");
+		this.setWidth("1000px");
 		this.setHeight("510px");
 		this.setResizable(false);
 		
