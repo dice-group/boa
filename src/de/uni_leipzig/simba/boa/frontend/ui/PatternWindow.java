@@ -154,6 +154,17 @@ public class PatternWindow extends Window {
 		spacer.addComponent(emptyLabel);
 		spacer.setSizeFull();
 		
+		// uri
+        HorizontalLayout hLayout141 = new HorizontalLayout();
+        Label uriLabel = new Label("<b>Uri: </b>", Label.CONTENT_XHTML);
+        Label uri = new Label(String.valueOf(this.patternMapping.getProperty().getUri()));
+        hLayout141.addComponent(uriLabel);
+        hLayout141.addComponent(uri);
+        hLayout141.setComponentAlignment(uriLabel, Alignment.MIDDLE_LEFT);
+        hLayout141.setComponentAlignment(uri, Alignment.MIDDLE_RIGHT);
+        hLayout141.setSpacing(true);
+        hLayout141.setSizeFull();
+		
 		// domain
 		HorizontalLayout hLayout15 = new HorizontalLayout();
 		Label domainLabel = new Label("<b>?D? means: </b>", Label.CONTENT_XHTML);
@@ -191,6 +202,8 @@ public class PatternWindow extends Window {
 		rightVerticalLayout.addComponent(hLayout12);
 		rightVerticalLayout.addComponent(hLayout13);
 		rightVerticalLayout.addComponent(hLayout14);
+		rightVerticalLayout.addComponent(hLayout141);
+		rightVerticalLayout.addComponent(spacer);
 		rightVerticalLayout.addComponent(spacer);
 		rightVerticalLayout.addComponent(hLayout15);
 		rightVerticalLayout.addComponent(hLayout16);
