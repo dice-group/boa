@@ -33,10 +33,10 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 		this.logger.info("Pattern to measure: " + this.patternMappingPatterns.size() + " with " + features.size() + " features!");
 		
 		// reset the feature vector for each pair
-		for (PatternMappingPatternPair pair : this.patternMappingPatterns) {
-		    
-		    pair.getPattern().setFeatures(new HashMap<Feature,Double>());
-		}
+//		for (PatternMappingPatternPair pair : this.patternMappingPatterns) {
+//		    
+//		    pair.getPattern().setFeatures(new HashMap<Feature,Double>());
+//		}
 	}
 	
 	@Override
