@@ -13,6 +13,9 @@
 		<echo message="config				--> Process all .in files and generate config files"/>
 		<echo message="build				--> Compile src files"/>
 		<echo message="build.nlpedia.jar	--> Create the NLPedia jar file"/>
+		<echo message="clean                --> Delete everything in the classes folder "/>
+		<echo message="boa                  --> Start the BOA Pipeline"/>
+		<echo message="war                  --> Create the BOA tomcat war file"/>
 		<echo message=""/>
 	</target>
 
