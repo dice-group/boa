@@ -8,9 +8,9 @@
         class="de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings">
         
         <!-- base and data directory need to have a "/" (or "\" for windows) at the end -->
-        <property name="boaBaseDirectory" value="/Users/gerb/Development/workspaces/java-ws/boa/WebContent/WEB-INF/data/"/>
-        <property name="boaDataDirectory" value="/Users/gerb/Development/workspaces/experimental/en_wiki/"/>
-        <property name="boaLanguage" value="en"/>
+        <property name="boaBaseDirectory" value="@BOA_BASE_DIRECTORY@"/>
+        <property name="boaDataDirectory" value="@BOA_DATA_DIRECTORY@"/>
+        <property name="boaLanguage" value="@BOA_LANGUAGE@"/>
         
         <property name="nlpediaSettings">
             <map>

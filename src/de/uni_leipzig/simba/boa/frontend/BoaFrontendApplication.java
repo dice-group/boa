@@ -2,9 +2,14 @@ package de.uni_leipzig.simba.boa.frontend;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.TreeSet;
 
 import com.vaadin.Application;
@@ -48,6 +53,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.PatternMappingManager;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 import de.uni_leipzig.simba.boa.frontend.data.DatabaseContainer;
 import de.uni_leipzig.simba.boa.frontend.data.PatternContainer;
 import de.uni_leipzig.simba.boa.frontend.ui.DatabaseNavigationTree;
@@ -221,7 +227,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         Label enDetailsWikiIndex = new Label(
                 "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/enwiki-details.tar.gz\">" +
                 "   <div><img width='100px' src=\"boa/VAADIN/themes/boa/icons/tar.png\"/></div>" +
-                "   <div class=\"downloadText\"><span>enwiki-details.tar.gz</span></div>" + 
+                "   <div class=\"downloadText\"><span>enwiki-detail.tar.gz</span></div>" + 
                 "</a>"
                 );
         enDetailsWikiIndex.setContentMode(Label.CONTENT_XHTML);
@@ -239,7 +245,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         Label deDetailsWikiIndex = new Label(
                 "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/dewiki-details.tar.gz\">" +
                 "   <div><img width='100px' src=\"boa/VAADIN/themes/boa/icons/tar.png\"/></div>" +
-                "   <div class=\"downloadText\"><span>dewiki-details.tar.gz</span></div>" + 
+                "   <div class=\"downloadText\"><span>dewiki-detail.tar.gz</span></div>" + 
                 "</a>"
                 );
         deDetailsWikiIndex.setContentMode(Label.CONTENT_XHTML);

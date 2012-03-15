@@ -48,19 +48,19 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 	    Collections.shuffle(featureExtractors);
 	    
 		// go through all features
-		for ( FeatureExtractor feature : featureExtractors ) {
+		for ( FeatureExtractor featureExtractor : featureExtractors ) {
 
-			this.logger.info(feature.getClass().getSimpleName() + " started from " + this.getName() +"!");
+			this.logger.info(featureExtractor.getClass().getSimpleName() + " started from " + this.getName() +"!");
 			long start = System.currentTimeMillis();
 			
 			// do feature score with respect to each pattern mapping
 			for (PatternMappingPatternPair pair : patternMappingPatterns) {
 				
-				this.logger.debug(feature.getClass().getSimpleName() + "/" + this.name + ": " + pair.getMapping().getProperty().getUri() + " / " + pair.getPattern().getNaturalLanguageRepresentation());
-				feature.score(pair);
+				this.logger.debug(featureExtractor.getClass().getSimpleName() + "/" + this.name + ": " + pair.getMapping().getProperty().getUri() + " / " + pair.getPattern().getNaturalLanguageRepresentation());
+				featureExtractor.score(pair);
 				this.progress++;
 			}
-			this.logger.info(feature.getClass().getSimpleName() + " from " + this.getName() + " finished in " + TimeUtil.convertMilliSeconds(System.currentTimeMillis() - start) + "!");
+			this.logger.info(featureExtractor.getClass().getSimpleName() + " from " + this.getName() + " finished in " + TimeUtil.convertMilliSeconds(System.currentTimeMillis() - start) + "!");
 		}
 		
 		return patternMappingPatterns;
