@@ -179,7 +179,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
                 objectUri = solution.get("o").toString();
                 if (objectUri.contains("^^")) objectType    = objectUri.substring(objectUri.lastIndexOf("^^") + 2);
                 if (objectUri.contains("^^")) objectUri     = objectUri.substring(0, objectUri.indexOf("^"));
-                if (objectLabel.endsWith("@" + BOA_LANGUAGE)) objectLabel = objectLabel.replace("@" + BOA_LANGUAGE, "");
+                if (objectLabel.endsWith("@" + BOA_LANGUAGE)) objectLabel = objectLabel.replace("\n","").replace("@" + BOA_LANGUAGE, "");
                 if (objectLabel.isEmpty()) objectLabel = objectUri;
             }
 

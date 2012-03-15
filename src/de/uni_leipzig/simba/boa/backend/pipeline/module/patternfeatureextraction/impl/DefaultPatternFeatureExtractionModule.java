@@ -56,20 +56,23 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 	@Override
 	public void run() {
 
-		// starts the threads which extract the features
-		this.logger.info("Starting feature extraction!");
-		long startFeatureExtraction = System.currentTimeMillis();
-		PatternFeatureExtractionThreadManager.startFeatureExtractionCallables(this.moduleInterchangeObject.getPatternMappings(), TOTAL_NUMBER_OF_FEATURE_EXTRACTION_THREADS);
-		this.patternFeatureExtractionTime = (System.currentTimeMillis() - startFeatureExtraction);
-		this.logger.info("Extaction of pattern features finished in " + TimeUtil.convertMilliSeconds(this.patternFeatureExtractionTime) + "!");
-		
-		// serialize the new pattern mappings 
-        this.logger.info("Starting to save features!");
-        long patternSaveTime = System.currentTimeMillis();
-        SerializationManager.getInstance().serializePatternMappings(this.moduleInterchangeObject.getPatternMappings(), PATTERN_MAPPING_FOLDER);
-        this.patternSaveTime = (System.currentTimeMillis() - patternSaveTime);
-        this.logger.info("Extraction of pattern features finished in " + TimeUtil.convertMilliSeconds(this.patternSaveTime) + "!");
-		
+	    if ( NLPediaSettings.getBooleanSetting("extractFeatures") ) {
+	        
+	        // starts the threads which extract the features
+	        this.logger.info("Starting feature extraction!");
+	        long startFeatureExtraction = System.currentTimeMillis();
+	        PatternFeatureExtractionThreadManager.startFeatureExtractionCallables(this.moduleInterchangeObject.getPatternMappings(), TOTAL_NUMBER_OF_FEATURE_EXTRACTION_THREADS);
+	        this.patternFeatureExtractionTime = (System.currentTimeMillis() - startFeatureExtraction);
+	        this.logger.info("Extaction of pattern features finished in " + TimeUtil.convertMilliSeconds(this.patternFeatureExtractionTime) + "!");
+	        
+	        // serialize the new pattern mappings 
+	        this.logger.info("Starting to save features!");
+	        long patternSaveTime = System.currentTimeMillis();
+	        SerializationManager.getInstance().serializePatternMappings(this.moduleInterchangeObject.getPatternMappings(), PATTERN_MAPPING_FOLDER);
+	        this.patternSaveTime = (System.currentTimeMillis() - patternSaveTime);
+	        this.logger.info("Extraction of pattern features finished in " + TimeUtil.convertMilliSeconds(this.patternSaveTime) + "!");
+	    }
+	    
         // generate update the machine learning training file
         this.logger.info("Starting to generate/update machine learning training file!");
         long networkUpdateTime = System.currentTimeMillis();
