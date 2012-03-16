@@ -225,7 +225,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         enDefaultWikiIndex.setWidth("150px");
         
         Label enDetailsWikiIndex = new Label(
-                "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/enwiki-details.tar.gz\">" +
+                "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/enwiki-detail.tar.gz\">" +
                 "   <div><img width='100px' src=\"boa/VAADIN/themes/boa/icons/tar.png\"/></div>" +
                 "   <div class=\"downloadText\"><span>enwiki-detail.tar.gz</span></div>" + 
                 "</a>"
@@ -243,7 +243,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         deDefaultWikiIndex.setWidth("150px");
         
         Label deDetailsWikiIndex = new Label(
-                "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/dewiki-details.tar.gz\">" +
+                "<a class=\"v-link\" href=\"http://docs.aksw.org/boa/dewiki-detail.tar.gz\">" +
                 "   <div><img width='100px' src=\"boa/VAADIN/themes/boa/icons/tar.png\"/></div>" +
                 "   <div class=\"downloadText\"><span>dewiki-detail.tar.gz</span></div>" + 
                 "</a>"
@@ -525,7 +525,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
             for ( Pattern pattern : mapping.getPatterns() ) {
                 
                 Item item = naturalLanguagePatternContainer.addItem(mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
-                item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation());
+                item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" + mapping.getProperty().getPropertyLocalname() + ")");
                 item.getItemProperty("PATTERN").setValue(pattern);
                 item.getItemProperty("MAPPING").setValue(mapping);
             }
