@@ -47,6 +47,7 @@ import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 
+import de.danielgerber.format.OutputFormatter;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
@@ -525,7 +526,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
             for ( Pattern pattern : mapping.getPatterns() ) {
                 
                 Item item = naturalLanguagePatternContainer.addItem(mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
-                item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" + mapping.getProperty().getPropertyLocalname() + ")");
+                item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" + mapping.getProperty().getPropertyLocalname() + ", " + OutputFormatter.format(pattern.getScore(), "0.000") + ")");
                 item.getItemProperty("PATTERN").setValue(pattern);
                 item.getItemProperty("MAPPING").setValue(mapping);
             }
