@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.command.Command;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 
 
 public class PosDistributionCommand implements Command {

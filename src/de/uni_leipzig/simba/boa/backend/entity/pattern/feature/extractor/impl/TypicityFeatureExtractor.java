@@ -19,7 +19,6 @@ import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
 import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
@@ -128,7 +127,7 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 		
 		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY_CORRECT_DOMAIN_NUMBER"), domainCorrectness >= 0 ? domainCorrectness : 0);
 		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY_CORRECT_RANGE_NUMBER"), rangeCorrectness >= 0 ? rangeCorrectness : 0);
-		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY_SENTENCES"), Math.log(sentences.size() + 1)  >= 0 ? Math.log(sentences.size() + 1) : 0);
+		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY_SENTENCES"), Math.log(sentenceCount + 1)  >= 0 ? Math.log(sentenceCount + 1) : 0);
 		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY"), typicity >= 0 ? typicity : 0 );
 		
 		this.logger.debug("Typicity feature for " + pair.getMapping().getProperty().getLabel() + "/\"" + pattern.getNaturalLanguageRepresentation() + "\"  finished in " + TimeUtil.convertMilliSeconds((new Date().getTime() - start)) + ".");

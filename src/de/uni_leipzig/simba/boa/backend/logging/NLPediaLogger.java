@@ -1,6 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.logging;
 
-import java.io.Serializable;
 
 /**
  * Log file for comfortable logging in one class.

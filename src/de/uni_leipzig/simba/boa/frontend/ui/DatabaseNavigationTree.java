@@ -3,7 +3,6 @@ package de.uni_leipzig.simba.boa.frontend.ui;
 import java.util.Iterator;
 import java.util.List;
 
-import com.vaadin.event.Action;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Tree;

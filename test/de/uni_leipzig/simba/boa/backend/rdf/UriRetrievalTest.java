@@ -10,7 +10,6 @@ import org.junit.Test;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
-import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.DbpediaUriRetrieval;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.MeshupUriRetrieval;
 
 public class UriRetrievalTest {

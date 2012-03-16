@@ -4,7 +4,6 @@
 package de.uni_leipzig.simba.boa.backend.util;
 
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingTool;
 import de.uni_leipzig.simba.boa.backend.tool.BoaTool;
 
 

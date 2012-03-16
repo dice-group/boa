@@ -1,14 +1,11 @@
 package de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import de.danielgerber.file.BufferedFileReader;
 import de.danielgerber.file.BufferedFileWriter;

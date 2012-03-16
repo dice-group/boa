@@ -3,12 +3,10 @@
  */
 package de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.factory;
 
-import java.lang.reflect.Constructor;
 import java.util.List;
 
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry.MachineLearningTrainingFileEntry;
-import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.impl.DefaultMachineLearningTrainingFile;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningToolFactory;
 
