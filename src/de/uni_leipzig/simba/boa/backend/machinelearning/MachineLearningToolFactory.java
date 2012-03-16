@@ -3,13 +3,10 @@
  */
 package de.uni_leipzig.simba.boa.backend.machinelearning;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
-import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry.MachineLearningTrainingFileEntry;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.NeuralNetwork;
 import de.uni_leipzig.simba.boa.backend.util.FactoryUtil;
 
 /**

@@ -1,9 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 
@@ -14,8 +12,24 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 public abstract class AbstractFeatureExtractor implements FeatureExtractor {
 
     protected List<Feature> handeledFeatures = new ArrayList<Feature>();
+    protected boolean activated;
 
+    /**
+     * @return the activated
+     */
+    public boolean isActivated() {
     
+        return activated;
+    }
+
+    /**
+     * @param activated the activated to set
+     */
+    public void setActivated(boolean activated) {
+    
+        this.activated = activated;
+    }
+
     /**
      * @return the handeledFeatures
      */

@@ -4,9 +4,6 @@
 package de.uni_leipzig.simba.boa.backend.pipeline.module.knowledgecreation.impl;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,8 +12,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
-import de.uni_leipzig.simba.boa.backend.concurrent.KnowledgeCreationThreadManager;
-import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.knowledgecreation.KnowledgeCreationManager;

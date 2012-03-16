@@ -1,11 +1,9 @@
 package de.uni_leipzig.simba.boa.backend.search.impl;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -13,8 +11,6 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.ScoreDoc;
 
-import de.uni_leipzig.simba.boa.backend.Constants;
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.impl.KoreanPartOfSpeechTagger;
 

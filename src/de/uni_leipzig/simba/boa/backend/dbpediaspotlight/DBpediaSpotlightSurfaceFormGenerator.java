@@ -21,10 +21,8 @@ import de.danielgerber.file.FileUtil;
 import de.danielgerber.rdf.NtripleUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.DBpediaSpotlightDownloadModule;
-import de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.DBpediaSpotlightSurfaceFormModule;
 import edu.stanford.nlp.util.StringUtils;
 
 

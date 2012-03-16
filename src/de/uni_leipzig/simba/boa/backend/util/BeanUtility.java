@@ -3,7 +3,6 @@ package de.uni_leipzig.simba.boa.backend.util;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.xml.XmlBeanFactory;

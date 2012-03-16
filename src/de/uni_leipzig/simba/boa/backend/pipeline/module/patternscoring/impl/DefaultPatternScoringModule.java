@@ -14,7 +14,6 @@ import de.uni_leipzig.simba.boa.backend.featurescoring.PatternScoreManager;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningTool;
-import de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningToolFactory;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.patternscoring.AbstractPatternScoringModule;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;

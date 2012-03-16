@@ -1,5 +1,7 @@
 package de.uni_leipzig.simba.boa.backend;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import de.uni_leipzig.simba.boa.backend.entity.BackgroundKnowledgeTest;
 import de.uni_leipzig.simba.boa.backend.entity.ContextTest;
 import de.uni_leipzig.simba.boa.backend.entity.PatternFilterTest;
@@ -11,8 +13,6 @@ import de.uni_leipzig.simba.boa.backend.lucene.LuceneTest;
 import de.uni_leipzig.simba.boa.backend.nlp.StanfordNLPNamedEntityRecognitionTest;
 import de.uni_leipzig.simba.boa.backend.nlp.StanfordNLPPartOfSpeechTaggerTest;
 import de.uni_leipzig.simba.boa.backend.rdf.UriRetrievalTest;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 
 public class AllTests {

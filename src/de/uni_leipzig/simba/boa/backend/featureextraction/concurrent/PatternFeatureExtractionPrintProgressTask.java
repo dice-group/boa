@@ -11,9 +11,7 @@ import java.util.concurrent.Callable;
 
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchCallable;
 import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPrintProgressTask;
-import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 
 
 /**

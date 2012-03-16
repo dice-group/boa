@@ -2,8 +2,6 @@ package de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.AbstractBackgroundKnowledge;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import edu.stanford.nlp.util.StringUtils;
 
 

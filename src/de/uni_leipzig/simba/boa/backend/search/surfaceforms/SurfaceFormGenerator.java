@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 
 import weka.core.tokenizers.NGramTokenizer;
-
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;

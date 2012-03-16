@@ -1,5 +1,8 @@
 package de.uni_leipzig.simba.boa.backend.entity;
 
+import junit.framework.JUnit4TestAdapter;
+import junit.framework.TestCase;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,8 +11,6 @@ import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.DatatypePropertyBackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.TestCase;
 
 
 public class BackgroundKnowledgeTest extends TestCase {

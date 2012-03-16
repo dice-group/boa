@@ -49,7 +49,6 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.FeatureEnum;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.PatternMappingManager;
 import de.uni_leipzig.simba.boa.backend.featurescoring.PatternScoreManager;

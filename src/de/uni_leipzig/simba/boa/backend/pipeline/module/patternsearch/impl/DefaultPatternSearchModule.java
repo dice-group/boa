@@ -6,11 +6,9 @@ package de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;

@@ -1,11 +1,8 @@
 package de.uni_leipzig.simba.boa.backend;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 
 /**
  * This class contains common constants used in the NLPedia project.

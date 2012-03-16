@@ -11,6 +11,7 @@
             <map>
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SupportFeatureExtractor">
                     <bean id="SupportFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SupportFeatureExtractor">
+                        <property name="activated" value="true" />
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="SUPPORT_NUMBER_OF_MAX_PAIRS_LEARNED_FROM"/>
@@ -22,6 +23,7 @@
                 
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TypicityFeatureExtractor">
                     <bean id="TypicityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TypicityFeatureExtractor">
+                        <property name="activated" value="true" />
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="TYPICITY_SENTENCES"/>
@@ -35,6 +37,7 @@
                 
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SpecificityFeatureExtractor">
                     <bean id="SpecificityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SpecificityFeatureExtractor">
+                         <property name="activated" value="true" />
                          <property name="handeledFeatures">
                             <list>
                                 <ref bean="SPECIFICITY"/>
@@ -45,6 +48,7 @@
                 
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.StringSimilarityFeatureExtractor">
                     <bean id="StringSimilarityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.StringSimilarityFeatureExtractor">
+                        <property name="activated" value="true" />
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="WORDNET_DISTANCE"/>
@@ -55,6 +59,7 @@
                 
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TfIdfFeatureExtractor">
                     <bean id="TfIdfFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TfIdfFeatureExtractor">
+                        <property name="activated" value="true" />
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="TF_IDF_TFIDF"/>
@@ -67,6 +72,7 @@
                 
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.VerbCountFeatureExtractor">
                     <bean id="VerbCountFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.VerbCountFeatureExtractor">
+                        <property name="activated" value="true" />
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="VERB_COUNT"/>
@@ -75,18 +81,9 @@
                     </bean>
                 </entry>
                 
-                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TotalOccurrenceFeatureExtractor">
-                    <bean id="TotalOccurrenceFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TotalOccurrenceFeatureExtractor">
-                        <property name="handeledFeatures">
-                            <list>
-                                <ref bean="TOTAL_OCCURRENCE"/>
-                            </list>
-                        </property>
-                    </bean>
-                </entry>
-                
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.LengthFeatureExtractor">
                     <bean id="LengthFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.LengthFeatureExtractor" >
+                        <property name="activated" value="true" />
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="TOKEN_COUNT"/>
@@ -97,9 +94,21 @@
                         </property>
                     </bean>
                 </entry>
+                
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TotalOccurrenceFeatureExtractor">
+                    <bean id="TotalOccurrenceFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TotalOccurrenceFeatureExtractor">
+                        <property name="activated" value="true" />
+                        <property name="handeledFeatures">
+                            <list>
+                                <ref bean="TOTAL_OCCURRENCE"/>
+                            </list>
+                        </property>
+                    </bean>
+                </entry>
 
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.ReverbFeatureExtractor">
                     <bean id="ReverbFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.ReverbFeatureExtractor"> 
+                        <property name="activated" value="true" />
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="REVERB"/>
@@ -148,7 +157,7 @@
 <!--        </list> -->
 <!--    </constructor-arg> -->
 <!--    <constructor-arg value="true" />            IsZeroToOneValue - true/false    -->
-<!--    <constructor-arg value="true" />            NormalizeGlobaly - true/false -->
+<!--    <constructor-arg value="true" />            NormalizeGlobally - true/false -->
 <!--    <constructor-arg value="true" />            UseForPatternLearning - true/false -->
 <!-- </bean> -->
     
@@ -165,7 +174,7 @@
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
-        <constructor-arg value="false" />
+        <constructor-arg value="true" />
         <constructor-arg value="true" />
     </bean>
 
@@ -211,7 +220,7 @@
         </constructor-arg>
         <constructor-arg value="false" />
         <constructor-arg value="false" />
-        <constructor-arg value="true" />
+        <constructor-arg value="false" />
     </bean>
 
     <bean id="TYPICITY_CORRECT_RANGE_NUMBER"
@@ -285,7 +294,7 @@
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
-        <constructor-arg value="true" />
+        <constructor-arg value="false" />
         <constructor-arg value="true" />
     </bean>
 

@@ -27,6 +27,9 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 	
 	private final String PATTERN_MAPPING_FOLDER            = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
 	
+	/**
+	 * 
+	 */
 	private void init() {
 	    
 	    for ( PatternMapping mapping : SerializationManager.getInstance().deserializePatternMappings(PATTERN_MAPPING_FOLDER) ) {
@@ -76,6 +79,11 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("TF_IDF_IDF"), 		idfScore			>= 0 ? idfScore : 0);
 	}
 	
+	/**
+	 * 
+	 * @author gerb
+	 *
+	 */
 	private class Token {
 		
 		private int frequency;
@@ -92,6 +100,12 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param documents
+	 * @param distinctStrings
+	 * @return
+	 */
 	private Map<String,Token> createDocumentFrequencyAndFrequencyForTokens(Collection<String> documents, Set<String> distinctStrings) {
 
 		// create the tokens and calculate their (document) frequency

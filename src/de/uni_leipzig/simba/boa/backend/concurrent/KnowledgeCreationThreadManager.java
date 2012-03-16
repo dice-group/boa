@@ -13,16 +13,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.knowledgecreation.cuncurrent.KnowledgeCreationCallable;
 import de.uni_leipzig.simba.boa.backend.knowledgecreation.cuncurrent.KnowledgeCreationPrintProgressTask;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
-import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchCallable;
-import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPrintProgressTask;
-import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 
 /**
