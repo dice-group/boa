@@ -11,6 +11,9 @@
         
         <property name="pipelineModules">
             <list>
+            
+                <!-- Pre-Processing -->
+            
                 <ref bean="CreateDataDirectoryStructureModule"/>
                 <ref bean="DBpediaSpotlightDownloadModule"/>
                 <ref bean="DBpediaSpotlightSurfaceFormModule"/>
@@ -20,6 +23,8 @@
 
 <!--                 <ref bean="WikipediaDownloadModule"/> -->
 <!--                 <ref bean="WikipediaExtractorModule"/> -->
+
+                <!-- Processing -->
 
 <!--                 <ref bean="ObjectPropertyBackgroundKnowledgeCollectorModule"/> -->
 <!--                 <ref bean="DatatypePropertyBackgroundKnowledgeCollectorModule"/> -->
@@ -32,6 +37,9 @@
 
 <!--                 <ref bean="DefaultPatternScoringModule"/>  -->
 <!--                 <ref bean="DefaultKnowledgeCreationModule"/> -->
+
+                <!-- Post-Processing -->
+
 <!--                 <ref bean="DefaultPatternIndexCreationModule"/> -->
 <!--                 <ref bean="DetailedPatternIndexCreationModule"/> -->
 <!--                 <ref bean="NTripleOutputGeneratorModule"/> -->

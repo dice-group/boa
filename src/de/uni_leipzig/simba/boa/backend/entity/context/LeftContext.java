@@ -18,7 +18,7 @@ public class LeftContext extends Context {
 		this.createLeftContext(nerTaggedString, sentence);
 	}
 	
-	@Override
+    @Override
 	public int getSuitableEntityDistance(String entityType) {
 
 		String entityMapping = Context.namedEntityRecognitionMappings.get(entityType);
@@ -94,10 +94,21 @@ public class LeftContext extends Context {
             		"cleanWords:  " + Arrays.toString(cleanWords) + "\n" +
                     "taggedWords: " + Arrays.toString(taggedWords));
         
-        for( int i = 0; i < leftContextString.split(" ").length + this.pattern.split(" ").length - 1 ; i++){
+        for ( int i = 0 ; i < leftContextString.split(" ").length + 1 /* this.pattern.split(" ").length - 1 */ ; i++){
            
         	this.taggedWords.add(taggedWords[i]);
         	this.cleanWords.add(cleanWords[i]);
         }
 	}
+	
+	/* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(cleanWords);
+        return builder.toString();
+    }
 }

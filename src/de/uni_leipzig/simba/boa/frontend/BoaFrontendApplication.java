@@ -1,9 +1,14 @@
 package de.uni_leipzig.simba.boa.frontend;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
 import com.vaadin.Application;
 import com.vaadin.data.Item;
@@ -28,34 +33,52 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
+import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 
+import de.danielgerber.Constants;
 import de.danielgerber.format.OutputFormatter;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.PatternMappingManager;
+import de.uni_leipzig.simba.boa.backend.evaluation.EvaluationIndexCreator;
+import de.uni_leipzig.simba.boa.backend.evaluation.EvaluationManager;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.SentenceBoundaryDisambiguation;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.frontend.data.DatabaseContainer;
 import de.uni_leipzig.simba.boa.frontend.ui.DatabaseNavigationTree;
 import de.uni_leipzig.simba.boa.frontend.ui.PatternTable;
 import de.uni_leipzig.simba.boa.frontend.ui.PatternWindow;
+import de.uni_leipzig.simba.boa.webservice.client.TextToRdfClient;
+import edu.stanford.nlp.util.StringUtils;
 
 @SuppressWarnings("serial")
 public class BoaFrontendApplication extends Application implements ItemClickListener, Button.ClickListener, Property.ValueChangeListener {
 
-    private NLPediaSetup setup = new NLPediaSetup(false);
+    public static final NLPediaSetup setup = new NLPediaSetup(false);
     private NLPediaLogger logger = new NLPediaLogger(BoaFrontendApplication.class);
+    private static final SentenceBoundaryDisambiguation sbd = NaturalLanguageProcessingToolFactory.getInstance().createDefaultSentenceBoundaryDisambiguation();
 
-    private Button triplesButton = new Button("Query");
+    private TextArea input = new TextArea();
+    private TextArea output = new TextArea();
+    
+    private Button triplesButton = new Button("Try");
     private Button sourceButton = new Button("Source");
     private Button downloadsButton = new Button("Downloads");
     private Button databasesButton = new Button("Pattern Library");
     private Button publicationsButton = new Button("Publications");
+    private Button inputToOutputButton = new Button("Extract RDF");
+    
+    private NativeSelect databaseSelect = new NativeSelect("");
     private ComboBox patternSearchField = new ComboBox();
     
     private DatabaseNavigationTree tree;
@@ -69,18 +92,25 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 
     private IndexedContainer nlrPatternContainer; 
     private PatternMapping currentPatternMapping;
-    private List<PatternMapping> mappings;
+    
+    private Map<String, List<PatternMapping>> mappingsInDatabases;
     
     @Override
     public void init() {
         
-        this.mappings = new ArrayList<PatternMapping>();
-        for( PatternMapping mapping : PatternMappingManager.getInstance().getPatternMappings()) {
-            
-            if (mapping.getPatterns().size() > 0 ) this.mappings.add(mapping);
-        }
-        nlrPatternContainer = this.getNaturalLanguagePatternContainer();
-        this.tree = new DatabaseNavigationTree(this, mappings);
+        this.mappingsInDatabases = PatternMappingManager.getInstance().getPatternMappingsInDatabases();
+        this.tree = new DatabaseNavigationTree(this, mappingsInDatabases);
+        this.nlrPatternContainer = this.getNaturalLanguagePatternContainer();
+        this.inputToOutputButton.addListener((ClickListener) this);
+        this.databaseSelect.setNullSelectionAllowed(false);
+        this.databaseSelect.setImmediate(true);
+        
+        List<String> keys = new ArrayList<String>(this.mappingsInDatabases.keySet());
+        
+        for (String databaseKey : keys) 
+            if ( !databaseKey.isEmpty() && databaseKey != null ) databaseSelect.addItem(databaseKey);
+                
+        this.databaseSelect.select(keys.get(0));
 
         buildMainLayout();
     }
@@ -88,6 +118,13 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     public void buttonClick(ClickEvent event) {
         
         final Button source = event.getButton();
+        
+        if ( source == this.inputToOutputButton ) {
+            
+            this.output.setValue(this.extractRdf(this.input.getValue().toString(), this.databaseSelect.getValue().toString()));
+            return;
+        }
+        
         Panel panel = new Panel();
         panel.setStyleName(Reindeer.PANEL_LIGHT);
         panel.setSizeFull();
@@ -285,34 +322,57 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 
     private Component buildTriplePage() {
 
-        String urlString = "http://live.dbpedia.org/sparql?" +
-                "default-graph-uri=http%3A%2F%2Fboa.aksw.org&" +
-                "qtxt=SELECT%20%3Fcompany1Label%20%3Fcompany2Label%20%0A" +
-                "WHERE%20%7B%20%0A%20%20%20%20%20%3Fcompany1%20%3Chttp%3A%2F%2Fboa.aksw.org%2Fontology%2Fsubsidiary%3E%20%3Fcompany2%20.%20%0A%20%20%20%20%20%3F" +
-                "company1%20rdfs%3Alabel%20%3Fcompany1label%20.%20%0A%20%20%20%20%20%3Fcompany2%20rdfs%3Alabel%20%3Fcompany2Label%20.%20%0A%7D%0ALIMIT%20100%0A";
+//        String urlString = "http://live.dbpedia.org/sparql?" +
+//                "default-graph-uri=http%3A%2F%2Fboa.aksw.org&" +
+//                "qtxt=SELECT%20%3Fcompany1Label%20%3Fcompany2Label%20%0A" +
+//                "WHERE%20%7B%20%0A%20%20%20%20%20%3Fcompany1%20%3Chttp%3A%2F%2Fboa.aksw.org%2Fontology%2Fsubsidiary%3E%20%3Fcompany2%20.%20%0A%20%20%20%20%20%3F" +
+//                "company1%20rdfs%3Alabel%20%3Fcompany1label%20.%20%0A%20%20%20%20%20%3Fcompany2%20rdfs%3Alabel%20%3Fcompany2Label%20.%20%0A%7D%0ALIMIT%20100%0A";
+        
+        String urlString = "http://139.18.2.164:8000/test/";
         
         VerticalLayout triples = new VerticalLayout();
         triples.setSizeFull();
         triples.setMargin(true);
         Label preformattedText = new Label(
                 "<b><h1>Query BOA's knowledge base:</h1></b><br/>" +
-                "You can query BOA's knowledge base with SPARQL (see <a href='"+urlString+"'>SPARQL Endpoint</a>) or you can download the generated triples in the 'Downloads' sections.");
+                "You can query BOA's knowledge base with SPARQL <a style='font-size: 1.4em;' href='"+urlString+"'>here</a> or you can download the generated triples in the 'Downloads' sections.<br/><br/>");
         preformattedText.setContentMode(Label.CONTENT_XHTML);
         triples.addComponent(preformattedText);
+
+        Label preformattedTextWebService = new Label(
+                "<b><h1>BOA's text to RDF Web-Service:</h1></b><br/>" +
+                "Input text here and extract RDF or try the WebService! For more information please refer to the <a href='http://code.google.com/p/boa/wiki/WebService' >web service wiki page</a>! <br/><br/>");
+        preformattedTextWebService.setContentMode(Label.CONTENT_XHTML);
+        triples.addComponent(preformattedTextWebService);
         
-        try {
-            
-            URL url = new URL(urlString);
-            Embedded browser = new Embedded("", new ExternalResource(url));
-            browser.setType(Embedded.TYPE_BROWSER);
-            browser.setSizeFull();
-            triples.addComponent(browser);
-            triples.setExpandRatio(browser, 2f);
-        }
-        catch (MalformedURLException e) {
-            
-            e.printStackTrace();
-        }
+        VerticalLayout layout = new VerticalLayout();
+        
+        this.input = new TextArea(null, "The versificator is a fictional device employed by Ingsoc in the novel ``Nineteen Eighty-Four'' by George Orwell.");
+        this.input.setRows(10);
+        this.input.setWidth("100%");
+        this.input.addListener(this);
+        this.input.setImmediate(true);
+        
+        this.output = new TextArea(null, "");
+        this.output.setRows(10);
+        this.output.setWidth("100%");
+        this.output.addListener(this);
+        this.output.setImmediate(true);
+        
+        layout.addComponent(input);
+        
+        HorizontalLayout hlayout = new HorizontalLayout();
+        hlayout.setSizeFull();
+        hlayout.setHeight("50px");
+        hlayout.addComponent(databaseSelect);
+        hlayout.addComponent(inputToOutputButton);
+        hlayout.setComponentAlignment(databaseSelect, Alignment.TOP_CENTER);
+        hlayout.setComponentAlignment(inputToOutputButton, Alignment.MIDDLE_CENTER);
+        
+        layout.addComponent(hlayout);
+        layout.addComponent(output);
+        
+        triples.addComponent(layout);
         
         return triples;
     }
@@ -503,15 +563,27 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         IndexedContainer naturalLanguagePatternContainer = new IndexedContainer();
         naturalLanguagePatternContainer.addContainerProperty("NLR", String.class, "");
         naturalLanguagePatternContainer.addContainerProperty("PATTERN", Pattern.class, "");
+        naturalLanguagePatternContainer.addContainerProperty("DATABASE", String.class, "");
         naturalLanguagePatternContainer.addContainerProperty("MAPPING", PatternMapping.class, "");
 
-        for (PatternMapping mapping : this.mappings ) {
-            for ( Pattern pattern : mapping.getPatterns() ) {
-                
-                Item item = naturalLanguagePatternContainer.addItem(mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
-                item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" + mapping.getProperty().getPropertyLocalname() + ", " + OutputFormatter.format(pattern.getScore(), "0.000") + ")");
-                item.getItemProperty("PATTERN").setValue(pattern);
-                item.getItemProperty("MAPPING").setValue(mapping);
+        for (Map.Entry<String, List<PatternMapping>> database : this.mappingsInDatabases.entrySet() ) {
+            for (PatternMapping mapping : database.getValue() ) {
+                for ( Pattern pattern : mapping.getPatterns() ) {
+                    
+                    Item item = naturalLanguagePatternContainer.addItem(database + " " + mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
+                    
+                    if ( item != null ) {
+                        
+                        item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" 
+                                + database.getKey().substring(database.getKey().lastIndexOf("/") + 1) + ", " 
+                                + mapping.getProperty().getPropertyLocalname() + ", "
+                                + OutputFormatter.format(pattern.getScore(), "0.000") + ")");
+                        item.getItemProperty("PATTERN").setValue(pattern);
+                        item.getItemProperty("DATABASE").setValue(database.getKey());
+                        item.getItemProperty("MAPPING").setValue(mapping);
+                    }
+                    else System.out.println("ITEM NULL");
+                }
             }
         }
         return naturalLanguagePatternContainer;
@@ -552,8 +624,30 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     @Override
     public void valueChange(ValueChangeEvent event) {
 
-        Pattern pattern = (Pattern) nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "PATTERN").getValue();
-        PatternMapping mapping = (PatternMapping) nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "MAPPING").getValue();
-        getMainWindow().addWindow(new PatternWindow(this, pattern, mapping));
+        if ( nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "PATTERN") != null ) {
+            
+            Pattern pattern = (Pattern) nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "PATTERN").getValue();
+            PatternMapping mapping = (PatternMapping) nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "MAPPING").getValue();
+            getMainWindow().addWindow(new PatternWindow(this, pattern, mapping));
+        }
+    }
+    
+    private String extractRdf(String text, String key) {
+        
+        double patternScoreThreshold = 0.0;
+        int contextLookAheadThreshold = 3;
+        boolean dbpediaLinksOnly = false;
+        
+        logger.info("Trying to extract triples with patternThreshold(" + patternScoreThreshold + ") and contextLookAheadThreshold(" + contextLookAheadThreshold + ") for text: " + text);
+        
+        NLPediaSettings.setSetting("pattern.score.threshold.create.knowledge", String.valueOf(patternScoreThreshold));
+        NLPediaSettings.setSetting("contextLookAhead", String.valueOf(contextLookAheadThreshold));
+        NLPediaSettings.setSetting("triple.score.threshold.create.knowledge", "0.0");
+        NLPediaSettings.setSetting("number.of.create.knowledge.threads", "1");
+        NLPediaSettings.setSetting("knowledgeCreationThreadPoolSize", "1");
+
+        TextToRdfClient client = new TextToRdfClient();
+        String result = client.extractTriples(text, patternScoreThreshold, contextLookAheadThreshold, dbpediaLinksOnly);
+        return result == null || result.isEmpty() ? "Could not extract any data!" : result;
     }
 }

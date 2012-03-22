@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.lucene.store.Directory;
+
 import de.uni_leipzig.simba.boa.backend.concurrent.KnowledgeCreationThreadManager;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -19,10 +21,11 @@ public class KnowledgeCreationManager {
 
     /**
      * 
+     * @param index 
      * @param mappings
      * @return
      */
-    public Map<String, List<Triple>> findNewTriples(Set<PatternMapping> mappings) {
+    public Map<String, List<Triple>> findNewTriples(Directory index, Set<PatternMapping> mappings) {
         
         // create the input for the search threads  
         Set<PatternMappingPatternPair> pairs = new HashSet<PatternMappingPatternPair>();
@@ -34,7 +37,7 @@ public class KnowledgeCreationManager {
                     pairs.add(new PatternMappingPatternPair(mapping, pattern));
             }
         }
-        return KnowledgeCreationThreadManager.startKnowledgeCreationCallables(pairs, NLPediaSettings.getIntegerSetting("number.of.create.knowledge.threads"));
+        return KnowledgeCreationThreadManager.startKnowledgeCreationCallables(index, pairs, NLPediaSettings.getIntegerSetting("number.of.create.knowledge.threads"));
     }
     
     /**

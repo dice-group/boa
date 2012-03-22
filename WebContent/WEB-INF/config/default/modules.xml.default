@@ -117,12 +117,7 @@
         <property name="moduleSettings">
             <set>
                 <value>sparqlQueryLimit</value>
-                <value>dbpediaDefaultGraph</value>
                 <value>dbpediaSparqlEndpoint</value>
-                <value>backgroundKnowledgeOutputFilePath</value>
-                <value>queryObjectProperties</value>
-                <value>queryDatatypeProperties</value>
-                <value>surfaceFormsTSV</value>
             </set>
         </property>
     </bean>
@@ -141,12 +136,7 @@
         <property name="moduleSettings">
             <set>
                 <value>sparqlQueryLimit</value>
-                <value>dbpediaDefaultGraph</value>
                 <value>dbpediaSparqlEndpoint</value>
-                <value>backgroundKnowledgeOutputFilePath</value>
-                <value>queryObjectProperties</value>
-                <value>queryDatatypeProperties</value>
-                <value>surfaceFormsTSV</value>
             </set>
         </property>
     </bean>

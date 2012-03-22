@@ -56,7 +56,7 @@ public class DefaultKnowledgeCreationModule extends AbstractKnowledgeCreationMod
 
         this.logger.info("Starting to find new triples!");
         long startNewTripleSearch = System.currentTimeMillis();
-        Map<String, List<Triple>> newKnowledge = knowledgeManager.findNewTriples(this.moduleInterchangeObject.getPatternMappings());
+        Map<String, List<Triple>> newKnowledge = knowledgeManager.findNewTriples(null, this.moduleInterchangeObject.getPatternMappings());
         this.newTripleSearchTime = System.currentTimeMillis() - startNewTripleSearch;
         this.logger.info("Finding new triples took " + TimeUtil.convertMilliSeconds(newTripleSearchTime) + ".");
         
@@ -72,21 +72,6 @@ public class DefaultKnowledgeCreationModule extends AbstractKnowledgeCreationMod
             String filename = KNOWLEDGE_CREATION_BINARY_OUTPUT_PATH + entry.getKey().substring(entry.getKey().lastIndexOf("/") + 1) + ".bin";
             SerializationManager.getInstance().serializeTriples(entry.getValue(), filename);
             this.tripleCount += entry.getValue().size();
-            
-            // Debugging reasons! TODO remove
-            System.out.println(entry.getKey());
-            for (Triple t : entry.getValue()) {
-                
-                System.out.println(t.getScore() + " " + t);
-                for (String sentence : t.getLearnedFromSentences()) {
-                    
-                    System.out.println("\t" + sentence);
-                }
-                for (Pattern pattern : t.getLearnedFromPatterns()) {
-                    
-                    System.out.println("\t" + pattern.getNaturalLanguageRepresentation());
-                }
-            }
         }
         this.moduleInterchangeObject.setNewKnowledge(mergedTriples);
         this.savingTriplesTime = System.currentTimeMillis() - startSavingTriples;
@@ -137,5 +122,4 @@ public class DefaultKnowledgeCreationModule extends AbstractKnowledgeCreationMod
             this.moduleInterchangeObject.getNewKnowledge().put(file.getName().replace(".bin", ""), triples);
         }
     }
-
 }

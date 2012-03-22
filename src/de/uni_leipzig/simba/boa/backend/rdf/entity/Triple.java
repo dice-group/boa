@@ -273,4 +273,9 @@ public class Triple extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 
 		this.learnedFromSentences.add(sentence);
 	}
+
+    public String toN3() {
+
+        return "<" + subject.uri + "> <" + property.uri + "> <" + object.uri + "> .";
+    }
 }

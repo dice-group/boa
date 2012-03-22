@@ -86,10 +86,21 @@ public class RightContext extends Context {
                     "cleanWords:  " + Arrays.toString(cleanWords) + "\n" +
                     "taggedWords: " + Arrays.toString(taggedWords));
         
-        for(int i = leftContextString.split(" ").length + 1; i < cleanWords.length; i++){
+        for ( int i = leftContextString.split(" ").length + this.pattern.split(" ").length - 1 ; i < cleanWords.length ; i++){
         	
         	this.cleanWords.add(cleanWords[i]);
         	this.taggedWords.add(taggedWords[i]);
         }
 	}
+	
+	/* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(cleanWords);
+        return builder.toString();
+    }
 }

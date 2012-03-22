@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
@@ -452,36 +453,44 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 		List<Double> featureValues = new ArrayList<Double>();
 
 		// we do only want all activated features
-	    for ( Feature feature : FeatureFactory.getInstance().getHandeldFeatures() ) {
+	    for ( FeatureExtractor featureExtractor : FeatureFactory.getInstance().getFeatureExtractorMap().values() ) {
 	        
-            if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) ) {
-                
-                // exclude everything which is not activated
-                if ( feature.isUseForPatternLearning() ) {
-                    
-                    // non zero to one values have to be normalized
-                    if ( !feature.isZeroToOneValue() ) {
-                        
-                        Double maximum = 0D;
-                        // take every mapping into account to find the maximum value
-                        if ( feature.isNormalizeGlobaly() ) {
+	        if ( featureExtractor.isActivated() ) {
+	            
+	            for ( Feature feature : featureExtractor.getHandeledFeatures() ) {
+	                
+	                if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) ) {
+	                    
+	                    // exclude everything which is not activated
+	                    if ( feature.isUseForPatternLearning() ) {
+	                        
+	                        // non zero to one values have to be normalized
+	                        if ( !feature.isZeroToOneValue() ) {
+	                            
+	                            Double maximum = 0D;
+	                            // take every mapping into account to find the maximum value
+	                            if ( feature.isNormalizeGlobaly() ) {
 
-                            maximum = FeatureHelper.getGlobalMaximum(feature);
-                        }
-                        // only use the current mapping to find the maximum
-                        else {
-                            
-                            maximum = FeatureHelper.getLocalMaximum(mapping, feature);
-                        }
-                        featureValues.add(this.features.get(feature) / maximum);
-                    }
-                    // we dont need to normalize a 0-1 value
-                    else {
-                        
-                        featureValues.add(this.features.get(feature));
-                    }
-                }
-            }
+	                                maximum = FeatureHelper.getGlobalMaximum(feature);
+	                            }
+	                            // only use the current mapping to find the maximum
+	                            else {
+	                                
+	                                maximum = FeatureHelper.getLocalMaximum(mapping, feature);
+	                            }
+	                            Double featureValue =  this.features.get(feature) / maximum;
+	                            featureValue = featureValue.isNaN() || featureValue.isInfinite() ? 0D : featureValue;
+	                            featureValues.add(featureValue);
+	                        }
+	                        // we dont need to normalize a 0-1 value
+	                        else {
+	                            
+	                            featureValues.add(this.features.get(feature));
+	                        }
+	                    }
+	                }
+	            }
+	        }
 	    }
 		return featureValues;
 	}

@@ -20,6 +20,8 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.postprocessing.AbstractPostProcessingModule;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.comparator.TripleScoreComparator;
@@ -58,6 +60,8 @@ public class PlainTextTripleOutputGeneratorModule extends AbstractPostProcessing
         this.logger.info("Starting to write plain text triple output files");
         long startWritePlainTextOutputFiles = System.currentTimeMillis();
         
+        NamedEntityRecognition ner = NaturalLanguageProcessingToolFactory.getInstance().createDefaultNamedEntityRecognition();
+        
         // for each mapping we write one file in the rdf/nt directory 
         for (Map.Entry<String, Set<Triple>> uriToTriplesMapping : this.moduleInterchangeObject.getNewKnowledge().entrySet() ) {
             
@@ -79,18 +83,21 @@ public class PlainTextTripleOutputGeneratorModule extends AbstractPostProcessing
                 // only if triple score is higher then x
                 if ( triple.getScore() > TRIPLE_SCORE_THRESHOLD ) {
                     
-                    writer.write(triple.getScore() + ": <" + triple.getSubject().getUri() + "> <" + triple.getProperty().getUri() + "> <" + triple.getObject().getUri() + "> . ");
+                    writer.write(String.valueOf(triple.getScore()));
+                    writer.write("\t<" + triple.getSubject().getUri() + "> <" + triple.getProperty().getUri() + "> <" + triple.getObject().getUri() + "> . ");
+                    writer.write("\t " + triple.getSubject().getLabel() + "\t" + triple.getObject().getLabel()); 
                     writer.write("---");
                     int i = 1;
                     for ( Pattern pattern : triple.getLearnedFromPatterns() ) {
                         
-                        writer.write("\t" + i + ". " + pattern.getNaturalLanguageRepresentation());
+                        writer.write("\t" + i++ + ". " + pattern.getNaturalLanguageRepresentation());
                     }
                     writer.write("---");
                     i = 1;
                     for ( String sentence : triple.getLearnedFromSentences() ) {
                         
                         writer.write("\t" + i + ". " + sentence);
+                        writer.write("\t" + i++ + ". " + ner.getAnnotatedString(sentence));
                     }
                     writer.write(Constants.NEW_LINE_SEPARATOR);
                 }

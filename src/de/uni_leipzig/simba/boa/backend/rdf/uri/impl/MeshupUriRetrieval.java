@@ -19,7 +19,7 @@ public class MeshupUriRetrieval implements UriRetrieval {
 		
 		try {
 			SparqlLookup sl = new SparqlLookup("", "", "");
-			uri = sl.lookup(label.replace("``", ""), "", "");
+			uri = sl.lookup(label.replace("``", "").replace("''", ""), "", "");
 		}
 		catch ( NullPointerException npe) {
 			
@@ -44,6 +44,6 @@ public class MeshupUriRetrieval implements UriRetrieval {
 
 		MeshupUriRetrieval mur = new MeshupUriRetrieval();
 		System.out.println(mur.getUri("Bosnia"));
-		System.out.println(mur.getUri("Bosniaasdasdasddd"));
+		System.out.println(mur.getUri("A. Aliverdiev"));
 	}
 }

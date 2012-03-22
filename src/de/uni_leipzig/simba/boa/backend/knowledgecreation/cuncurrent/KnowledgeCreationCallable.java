@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.lucene.store.Directory;
+
 import de.uni_leipzig.simba.boa.backend.concurrent.BoaCallable;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -41,10 +43,15 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
     private PatternSearcher patternSearcher;
     private NamedEntityRecognition nerTagger;
 
-    public KnowledgeCreationCallable(List<PatternMappingPatternPair> patternMappingPatternPairSubList) {
+    public KnowledgeCreationCallable(Directory index, List<PatternMappingPatternPair> patternMappingPatternPairSubList) {
 
         this.patternMappingPatternPairs = patternMappingPatternPairSubList;
-        this.patternSearcher            = PatternSearcherFactory.getInstance().createDefaultPatternSearcher();
+        
+        // in case we run the evaluation we have a different index not the default one
+        PatternSearcher patternSearcher = PatternSearcherFactory.getInstance().createDefaultPatternSearcher();
+        if ( index != null ) patternSearcher.setIndex(index);
+        
+        this.patternSearcher            = patternSearcher;
         this.nerTagger                  = NaturalLanguageProcessingToolFactory.getInstance().createDefaultNamedEntityRecognition();
         
         this.logger.info("PatternMapping-Pattern-Pairs to create knowledge for: " + this.patternMappingPatternPairs.size() + "!");
@@ -74,6 +81,7 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
             }
             this.progress++;
         }
+        this.logger.info(this.name + " finished!");
         return results;
     }
     
@@ -120,6 +128,26 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
                         String subjectLabel = leftContext.getSuitableEntity(domainUri);
                         String objectLabel = rightContext.getSuitableEntity(rangeUri);
                         
+                        if ( sentence.equals("The E. Clarke and Julie Arnold House is a Frank Lloyd Wright designed Usonian home in Columbus , Wisconsin .") ) {
+                            
+                            System.out.println(pattern.getNaturalLanguageRepresentation());
+                            System.out.println("LeftContextDistance: " + leftContext.getSuitableEntityDistance(domainUri));
+                            System.out.println("RightContextDistance: " + rightContext.getSuitableEntityDistance(rangeUri));
+                            
+                            System.out.println("DOMAIN: " + domainUri);
+                            System.out.println("RANGE: " + rangeUri);
+                            System.out.println("LC: " + leftContext);
+                            System.out.println("RC: " + rightContext);
+                            
+                            System.out.println(sentence);
+                            System.out.println(nerTaggedSentence);
+                            
+                            System.out.println("SL: " + subjectLabel);
+                            System.out.println("OL: " + objectLabel);
+                            System.out.println("---------------------");
+                            System.out.println();
+                        }
+                        
                         UriRetrieval uriRetrieval = new MeshupUriRetrieval();
                         String subjectUri = uriRetrieval.getUri(subjectLabel);
                         String objectUri = uriRetrieval.getUri(objectLabel);
@@ -130,6 +158,8 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
                         Triple triple = new Triple(subject, mapping.getProperty(), object);
                         triple.addLearnedFromPattern(pattern);
                         triple.addLearnedFromSentences(sentence);
+                        
+                        System.out.println(triple);
                         
                         return triple;
                     }
@@ -146,6 +176,12 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
                         String objectLabel = leftContext.getSuitableEntity(rangeUri);
                         String subjectLabel = rightContext.getSuitableEntity(domainUri);
                         
+//                        System.out.println(sentence);
+//                        System.out.println(nerTaggedSentence);
+//                        System.out.println(subjectLabel);
+//                        System.out.println(objectLabel);
+//                        System.out.println("?R? -> ?D?");
+                        
                         UriRetrieval uriRetrieval = new MeshupUriRetrieval();
                         String objectUri = uriRetrieval.getUri(objectLabel);
                         String subjectUri = uriRetrieval.getUri(subjectLabel);
@@ -156,6 +192,8 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
                         Triple triple = new Triple(subject, mapping.getProperty(), object);
                         triple.addLearnedFromPattern(pattern);
                         triple.addLearnedFromSentences(sentence);
+                        
+                        System.out.println(triple);
                         
                         return triple;
                     }
