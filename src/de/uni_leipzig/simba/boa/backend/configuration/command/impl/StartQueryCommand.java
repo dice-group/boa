@@ -31,6 +31,12 @@ public class StartQueryCommand implements Command {
 
 	NLPediaLogger logger = new NLPediaLogger(StartQueryCommand.class);
 	
+	public static void main(String[] args) {
+
+	    StartQueryCommand s = new StartQueryCommand();
+	    s.execute();
+    }
+	
 	@Override
 	public void execute() {
 
@@ -40,7 +46,7 @@ public class StartQueryCommand implements Command {
 			
 			Scanner scanner = new Scanner(new BufferedInputStream(System.in), "UTF-8");
 			String keyphrase = scanner.nextLine();
-			String indexPath = "/Users/gerb/Development/workspaces/experimental/en_wiki_exp/index";
+			String indexPath = "/Users/gerb/Development/workspaces/experimental/en_wiki/index/corpus";
 			
 			List<String> sentences = new ArrayList<String>(this.getExactMatchSentences(indexPath, keyphrase, 1000));
 			for (String sentence : sentences) {

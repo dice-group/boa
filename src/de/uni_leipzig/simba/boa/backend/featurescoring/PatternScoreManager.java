@@ -13,6 +13,7 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
@@ -51,10 +52,12 @@ public class PatternScoreManager {
         List<String> featureNames                                   = new ArrayList<String>();
         
         // get the feature names but only those which are activated for the current language
-        for ( Feature feature : FeatureFactory.getInstance().getHandeldFeatures() )
-            if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) )
-                if ( feature.isUseForPatternLearning() ) 
-                    featureNames.add(feature.getName());
+        for ( FeatureExtractor featureExtractor : FeatureFactory.getInstance().getFeatureExtractorMap().values() )
+            if ( featureExtractor.isActivated() )
+                for ( Feature feature : featureExtractor.getHandeledFeatures() )
+                    if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) )
+                        if ( feature.isUseForPatternLearning() ) 
+                            featureNames.add(feature.getName());
         
         this.logger.info("Finished generation of feature names");
 
@@ -85,13 +88,15 @@ public class PatternScoreManager {
      */
     public MachineLearningTrainingFile updateNetworkTrainingFile(Set<PatternMapping> patternMappings, MachineLearningTrainingFile neuronalNetworkTrainingFile) {
         
-        List<String> featureNames                                   = new ArrayList<String>();
+        List<String> featureNames = new ArrayList<String>();
         
         // get the feature names but only those which are activated for the current language
-        for ( Feature feature : FeatureFactory.getInstance().getHandeldFeatures() )
-            if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) )
-                if ( feature.isUseForPatternLearning() ) 
-                    featureNames.add(feature.getName());
+        for ( FeatureExtractor featureExtractor : FeatureFactory.getInstance().getFeatureExtractorMap().values() )
+            if ( featureExtractor.isActivated() )
+                for ( Feature feature : featureExtractor.getHandeledFeatures() )
+                    if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) )
+                        if ( feature.isUseForPatternLearning() ) 
+                            featureNames.add(feature.getName());
                 
         neuronalNetworkTrainingFile.setFeatureNames(featureNames);
         

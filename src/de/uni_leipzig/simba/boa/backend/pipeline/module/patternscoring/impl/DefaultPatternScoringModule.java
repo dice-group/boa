@@ -70,16 +70,9 @@ public class DefaultPatternScoringModule extends AbstractPatternScoringModule {
                 this.logger.debug(pattern.getNaturalLanguageRepresentation() + ": " +score);
             }
             // update the pattern mapping "database"
-            SerializationManager.getInstance().serializePatternMapping(mapping, PATTERN_MAPPING_FOLDER + mapping.getProperty().getLabel() + ".bin");
+            SerializationManager.getInstance().serializePatternMapping(mapping, PATTERN_MAPPING_FOLDER + mapping.getProperty().getPropertyLocalname() + "--" + mapping.getProperty().getUri().hashCode() + ".bin");
         }
         this.scoringTime = System.currentTimeMillis() - start;
-        
-        // only for test pruposes TODO remove
-        for ( PatternMapping mapping : this.moduleInterchangeObject.getPatternMappings()) {
-            for (Pattern pattern :mapping.getPatterns()) {
-                System.out.println(pattern);
-            }
-        }
     }
 
     /* (non-Javadoc)

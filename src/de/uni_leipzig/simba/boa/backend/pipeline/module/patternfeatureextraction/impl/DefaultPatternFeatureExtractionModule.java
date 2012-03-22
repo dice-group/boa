@@ -5,12 +5,14 @@ package de.uni_leipzig.simba.boa.backend.pipeline.module.patternfeatureextractio
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternFeatureExtractionThreadManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
@@ -120,7 +122,6 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
     @Override
 	public String getReport() {
 
-		// TODO Auto-generated method stub
 		return "Pattern FeatureExtractor Extraction finished in " + TimeUtil.convertMilliSeconds(patternFeatureExtractionTime) + ". Updated pattern mappings successfully.";
 	}
 
@@ -141,25 +142,27 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 				this.moduleInterchangeObject.getPatternMappings();
 		
 		// look if all patterns have extracted features
-		boolean patternsScored = true;
-		Set<Feature> features = FeatureFactory.getInstance().getHandeldFeatures();
-		
-		for ( PatternMapping mapping : mappings ) {
-			
-			// we can stop after we found one pattern which is not scored
-			if ( !patternsScored ) break;
-			for (Pattern pattern : mapping.getPatterns()) {
-				
-			    // check if each pattern has more values for every feature
-			    for ( Feature feature : features ) {
-			        
-			        // we can stop if we found one pattern without a key/value pair
-			        patternsScored &= pattern.getFeatures().containsKey(feature);
-	                if ( !patternsScored ) break;
-			    }
-			}
+        boolean patternsScored = true;
+		for ( FeatureExtractor featureExtractor : FeatureFactory.getInstance().getFeatureExtractorMap().values() ) {
+		    if ( featureExtractor.isActivated() ) {
+		        
+		        for ( PatternMapping mapping : mappings ) {
+		            
+		            // we can stop after we found one pattern which is not scored
+		            if ( !patternsScored ) break;
+		            for (Pattern pattern : mapping.getPatterns()) {
+		                
+		                // check if each pattern has more values for every feature
+		                for ( Feature feature : featureExtractor.getHandeledFeatures() ) {
+		                    
+		                    // we can stop if we found one pattern without a key/value pair
+		                    patternsScored &= pattern.getFeatures().containsKey(feature);
+		                    if ( !patternsScored ) break;
+		                }
+		            }
+		        }
+		    }
 		}
-				
 		return patternsScored;
 	}
 
@@ -185,6 +188,14 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
         else {
             
             this.logger.error("Machine learning traing file does not exist: " + MACHINE_LEARNING_TRAINING_FILE + ".");
+            
+            // create a file if possible
+            if ( this.moduleInterchangeObject.getPatternMappings() != null ) {
+                
+                FeatureHelper.createLocalMaxima(this.moduleInterchangeObject.getPatternMappings());
+                MachineLearningTrainingFile file = patternScoreManager.createNeuronalNetworkTrainingFile(this.moduleInterchangeObject.getPatternMappings());
+                patternScoreManager.writeNetworkTrainingFile(file, MACHINE_LEARNING_TRAINING_FILE);
+            }
         }
 	}
 }

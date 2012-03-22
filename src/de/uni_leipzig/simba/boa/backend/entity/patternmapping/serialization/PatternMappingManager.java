@@ -3,9 +3,15 @@
  */
 package de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
@@ -83,5 +89,41 @@ public class PatternMappingManager {
                 }
                 
         return numberOfSamePatterns;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public Map<String, List<PatternMapping>> getPatternMappingsInDatabases() {
+
+        Map<String, List<PatternMapping>> mappingsInDatabases = new LinkedHashMap<String, List<PatternMapping>>();
+        
+        for ( String database : NLPediaSettings.getSetting("patternMappingDatabases").split(";")) {
+            
+            System.out.println(database);
+            
+            String path = database.endsWith("/") ? database + Constants.PATTERN_MAPPINGS_PATH : database + "/" + Constants.PATTERN_MAPPINGS_PATH; 
+            
+            for (PatternMapping mapping : SerializationManager.getInstance().deserializePatternMappings(path) ) {
+                
+                // only add pattern mappings with more than 0 patterns to the view
+                if (mapping.getPatterns().size() > 0 ) {
+                    
+                    if ( mappingsInDatabases.containsKey(database) ) {
+                        
+                        mappingsInDatabases.get(database).add(mapping);
+                    }
+                    // the first mapping in a new folder 
+                    else {
+                        
+                        List<PatternMapping> mappings = new ArrayList<PatternMapping>();
+                        mappings.add(mapping);
+                        mappingsInDatabases.put(database, mappings);
+                    }
+                }
+            }
+        }
+        return mappingsInDatabases;
     }        
 }

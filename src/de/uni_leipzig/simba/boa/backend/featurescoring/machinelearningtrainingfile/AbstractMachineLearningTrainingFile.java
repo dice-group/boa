@@ -54,7 +54,6 @@ public abstract class AbstractMachineLearningTrainingFile implements MachineLear
         
         // one entry corresponds to one line
         for (MachineLearningTrainingFileEntry entry : this.annotatedEntries) {
-            
             // first the features tab separated
             for (Double featureValue : entry.getFeatures()) builder.append(OutputFormatter.format((featureValue), "0.00000")).append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
             // the part which need to be edited by a human, values to enter are either 1 or 0

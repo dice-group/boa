@@ -46,7 +46,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
     protected PartOfSpeechTagger posTagger;
 
     private final Analyzer analyzer;
-    protected final IndexSearcher indexSearcher;
+    protected IndexSearcher indexSearcher;
 
     private final QueryParser parser;
     private ScoreDoc[] hits;
@@ -79,6 +79,12 @@ public class DefaultPatternSearcher implements PatternSearcher {
         this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
 
         this.hits = null;
+    }
+    
+    @Override
+    public void setIndex(Directory index) {
+
+        this.indexSearcher = LuceneIndexHelper.openIndexSearcher(index, true);
     }
     
     /**

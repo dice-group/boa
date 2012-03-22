@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.concurrent;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,6 +13,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import org.apache.lucene.store.Directory;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.knowledgecreation.cuncurrent.KnowledgeCreationCallable;
@@ -31,11 +34,12 @@ public class KnowledgeCreationThreadManager {
 
     /**
      * 
+     * @param index 
      * @param patterns
      * @param numberOfTotalSearchThreads
      * @return
      */
-    public static Map<String,List<Triple>> startKnowledgeCreationCallables(Set<PatternMappingPatternPair> patterns, int numberOfTotalSearchThreads) {
+    public static Map<String,List<Triple>> startKnowledgeCreationCallables(Directory index, Set<PatternMappingPatternPair> patterns, int numberOfTotalSearchThreads) {
 
         Map<String,List<Triple>> results = new HashMap<String,List<Triple>>();
         
@@ -55,7 +59,7 @@ public class KnowledgeCreationThreadManager {
             // distribute the pattern/pattern mapping pairs equally
             for (List<PatternMappingPatternPair> patternMappingPatternPairSubList : patternMappingPatternSubLists ) {
                 
-                KnowledgeCreationCallable psc = new KnowledgeCreationCallable(patternMappingPatternPairSubList);
+                KnowledgeCreationCallable psc = new KnowledgeCreationCallable(index, patternMappingPatternPairSubList);
                 psc.setName("KnowledgeCreationCallable-" + i++);
                 todo.add(psc);
                 logger.info("Create thread for " + patternMappingPatternPairSubList.size() + " patterns.");
@@ -70,6 +74,7 @@ public class KnowledgeCreationThreadManager {
             
             // all threads have finished so we can shut down the progess printing
             timer.cancel();
+            index.close();
             
             // collect all the results
             for (Future<Collection<Map<String,List<Triple>>>> future : answers) {
@@ -103,6 +108,13 @@ public class KnowledgeCreationThreadManager {
             
             e.printStackTrace();
             String error = "Threads got interrupted!";
+            logger.error(error, e);
+            throw new RuntimeException(error, e);
+        }
+        catch (IOException e) {
+            
+            e.printStackTrace();
+            String error = "Could not close index!";
             logger.error(error, e);
             throw new RuntimeException(error, e);
         }

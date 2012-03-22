@@ -2,8 +2,10 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
@@ -89,13 +91,14 @@ public class FeatureFactory {
 	 */
 	public Map<String,FeatureExtractor> getFeatureExtractorMap() {
 
-		Map<String,FeatureExtractor> map = new HashMap<String,FeatureExtractor>();
+		Map<String,FeatureExtractor> map = new TreeMap<String,FeatureExtractor>();
 		for ( Map.Entry<String,FeatureExtractor> entry : featureExtractorMap.entrySet() ) {
 			
 			try {
 				
 			    FeatureExtractor fe = entry.getValue().getClass().newInstance();
 			    fe.setHandeledFeatures(entry.getValue().getHandeledFeatures());
+			    fe.setActivated(entry.getValue().isActivated());
 			    
 				map.put(entry.getKey(), fe);
 			}

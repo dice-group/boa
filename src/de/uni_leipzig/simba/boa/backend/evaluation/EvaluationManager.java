@@ -23,7 +23,7 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
 public class EvaluationManager {
 
-    private KnowledgeCreationManager knowledgeCreationManager = new KnowledgeCreationManager();
+    private static KnowledgeCreationManager knowledgeCreationManager = new KnowledgeCreationManager();
     
     /**
      * 
@@ -31,13 +31,13 @@ public class EvaluationManager {
      * @param mappings
      * @return
      */
-    public Set<Triple> loadBoaResults(Directory index, Set<PatternMapping> mappings) {
+    public static Set<Triple> loadBoaResults(Directory index, Set<PatternMapping> mappings) {
 
         // results set
         Set<Triple> createdTriples = new HashSet<Triple>();
         
         // let the manager create the triples and then collect them in the result set
-        Map<String,Set<Triple>> urisToTriples = knowledgeCreationManager.mergeAndScoreTriples(knowledgeCreationManager.findNewTriples(mappings));
+        Map<String,Set<Triple>> urisToTriples = knowledgeCreationManager.mergeAndScoreTriples(knowledgeCreationManager.findNewTriples(index, mappings));
         for (Map.Entry<String, Set<Triple>> entry : urisToTriples.entrySet() ) {
             
             createdTriples.addAll(entry.getValue());
@@ -49,7 +49,7 @@ public class EvaluationManager {
      * 
      * @return
      */
-    public Map<Triple,String> loadEvaluationSentences() {
+    public static Map<Triple,String> loadEvaluationSentences() {
 
         List<String> evaluationFiles = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.EVALUATION_PATH + "Evaluation_3_Upmeier.txt", "UTF-8");
         evaluationFiles.addAll(FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.EVALUATION_PATH + "Evaluation_3_Haack.txt", "UTF-8"));

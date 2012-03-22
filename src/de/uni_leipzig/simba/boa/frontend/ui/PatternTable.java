@@ -32,8 +32,8 @@ public class PatternTable extends Table {
 		
 		this.addContainerProperty("Score",                            Double.class, null);
 		this.addContainerProperty("Occurrence",                       Integer.class, null);
-		this.addContainerProperty("Generalized",                      String.class, null);
 		this.addContainerProperty("Natural Language Representation",  String.class, null);
+		this.addContainerProperty("Generalized",                      String.class, null);
 		this.addContainerProperty("Part Of Speech",                   String.class, null);
 		for ( Feature feature : featureList ) {
 		    
@@ -49,8 +49,8 @@ public class PatternTable extends Table {
             List<Object> entries = new ArrayList<Object>();
             entries.add(pattern.getScore());
             entries.add(pattern.getNumberOfOccurrences());
-            entries.add(pattern.getGeneralizedPattern());
             entries.add(pattern.getNaturalLanguageRepresentation());
+            entries.add(pattern.getGeneralizedPattern());
             entries.add(pattern.getPosTaggedString());
             
             for (Feature feature : featureList) entries.add(pattern.getFeatures().get(feature));

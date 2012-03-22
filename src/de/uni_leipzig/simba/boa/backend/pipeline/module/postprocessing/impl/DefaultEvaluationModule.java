@@ -42,9 +42,9 @@ public class DefaultEvaluationModule extends AbstractPostProcessingModule {
     private NLPediaLogger logger = new NLPediaLogger(DefaultEvaluationModule.class);
     
     private long evaluationTime;
-    private Double maxPrecision;
-    private Double maxRecall;
-    private Double maxFmeasure;
+    private Double maxPrecision = 0D;
+    private Double maxRecall    = 0D;
+    private Double maxFmeasure  = 0D;
 
     /* (non-Javadoc)
      * @see de.uni_leipzig.simba.boa.backend.pipeline.module.PipelineModule#getName()
@@ -70,9 +70,7 @@ public class DefaultEvaluationModule extends AbstractPostProcessingModule {
 
     private void runEvaluation() {
 
-        EvaluationManager evalManager = new EvaluationManager();
-        
-        Map<Triple,String> triplesToSentences = evalManager.loadEvaluationSentences();
+        Map<Triple,String> triplesToSentences = EvaluationManager.loadEvaluationSentences();
         Directory index = EvaluationIndexCreator.createGoldStandardIndex(new HashSet<String>(triplesToSentences.values()));
         List<EvaluationResult> results = new ArrayList<EvaluationResult>();
         
@@ -90,8 +88,10 @@ public class DefaultEvaluationModule extends AbstractPostProcessingModule {
                     
                     NLPediaSettings.setSetting("triple.score.threshold.create.knowledge", String.valueOf(tripleScoreThreshold));
                     
-                    Set<Triple> testData                            = evalManager.loadBoaResults(index, this.moduleInterchangeObject.getPatternMappings());
+                    Set<Triple> testData                            = EvaluationManager.loadBoaResults(index, this.moduleInterchangeObject.getPatternMappings());
                     PrecisionRecallFMeasure precisionRecallFMeasure = new PrecisionRecallFMeasure(triplesToSentences.keySet(), testData);
+                    
+                    System.out.println("PST: " + patternScoreThreshold + " CLA: " + contextLookAhead + " TST: " + tripleScoreThreshold);
                     
                     double precision    = precisionRecallFMeasure.getPrecision();
                     double recall       = precisionRecallFMeasure.getRecall();

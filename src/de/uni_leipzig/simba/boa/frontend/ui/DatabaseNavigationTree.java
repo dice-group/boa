@@ -1,12 +1,15 @@
 package de.uni_leipzig.simba.boa.frontend.ui;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Tree;
 
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 import de.uni_leipzig.simba.boa.frontend.data.DatabaseContainer;
@@ -14,9 +17,9 @@ import de.uni_leipzig.simba.boa.frontend.data.DatabaseContainer;
 @SuppressWarnings("serial")
 public class DatabaseNavigationTree extends Tree {
 	
-	public DatabaseNavigationTree(BoaFrontendApplication app, List<PatternMapping> mappings) {
+	public DatabaseNavigationTree(BoaFrontendApplication app, Map<String, List<PatternMapping>> databases) {
 		
-		this.setContainerDataSource(new DatabaseContainer(mappings));
+		this.setContainerDataSource(new DatabaseContainer(databases));
 //		this.setContainerDataSource(DatabaseContainer.getTestDatabaseContainer());
 		
 		this.addListener((ItemClickListener) app);
@@ -27,7 +30,7 @@ public class DatabaseNavigationTree extends Tree {
         // Cause valueChange immediately when the user selects
 		this.setImmediate(true);
 		
-		this.expandItem(DatabaseContainer.DATABASE_IDS[0]);
+		this.expandItem(NLPediaSettings.getSetting("patternMappingDatabases").split(";")[0]);
 
 		// Set tree to show the 'uri_name' property as caption for items
         this.setItemCaptionPropertyId(DatabaseContainer.DISPLAY_NAME);
@@ -42,14 +45,14 @@ public class DatabaseNavigationTree extends Tree {
 //		setSizeFull();
 	}
 	
-	public String getFirstUri(){
-		
-		Iterator i = this.items.getItemIds().iterator();
-		while (i.hasNext() ) {
-			
-			String uri = (String) i.next();
-			if (uri.contains(":") ) return uri.substring(uri.indexOf(":") + 1 );
-		}
-		return "NOTHING";
-	}
+//	public String getFirstUri(){
+//		
+//		Iterator i = this.items.getItemIds().iterator();
+//		while (i.hasNext() ) {
+//			
+//			String uri = (String) i.next();
+//			if (uri.contains(":") ) return uri.substring(uri.indexOf(":") + 1 );
+//		}
+//		return "NOTHING";
+//	}
 }
