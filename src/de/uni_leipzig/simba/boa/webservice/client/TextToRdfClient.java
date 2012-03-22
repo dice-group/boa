@@ -32,6 +32,6 @@ public class TextToRdfClient {
     
     private static URI getBaseURI() {
         
-        return UriBuilder.fromUri("http://localhost:8080/boa/").build();
+        return UriBuilder.fromUri("http://139.18.2.164:8080/boa/").build();
     }
 }
