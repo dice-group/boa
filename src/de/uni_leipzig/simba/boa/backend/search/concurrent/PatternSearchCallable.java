@@ -35,7 +35,7 @@ public class PatternSearchCallable extends BoaCallable<SearchResult>{
 
 	    // initialize the pattern searcher at thread execution
 	    // otherwise we would have X non running threads with an opened index
-	    this.patternSearcher = PatternSearcherFactory.getInstance().createDefaultPatternSearcher();
+	    this.patternSearcher = PatternSearcherFactory.getInstance().createDefaultPatternSearcher(null);
 		
 		for ( BackgroundKnowledge backgroundKnowledge : this.backgroundKnowledgeList ) {
 			
