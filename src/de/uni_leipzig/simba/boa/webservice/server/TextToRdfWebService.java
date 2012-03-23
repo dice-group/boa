@@ -58,9 +58,9 @@ public class TextToRdfWebService {
             if ( !dbpediaLinksOnly ) {
                 
                 results.add("<" + triple.getSubject().getUri() + "> <http://www.w3.org/2000/01/rdf-schema#label> \"" + triple.getSubject().getLabel() + "\"@en ." );
-                results.add("<" + triple.getObject().getUri() + "> <http://www.w3.org/2000/01/rdf-schema#label> \"" + triple.getObject().getLabel() + "\"@en ." );
-                
                 results.add("<" + triple.getSubject().getUri() + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <" + triple.getProperty().getRdfsDomain() + "> ." );
+                
+                results.add("<" + triple.getObject().getUri() + "> <http://www.w3.org/2000/01/rdf-schema#label> \"" + triple.getObject().getLabel() + "\"@en ." );
                 results.add("<" + triple.getObject().getUri() + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <" + triple.getProperty().getRdfsRange() + "> ." );
             }
         }

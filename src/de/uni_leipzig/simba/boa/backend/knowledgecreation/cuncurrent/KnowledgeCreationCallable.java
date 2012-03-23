@@ -48,10 +48,7 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
         this.patternMappingPatternPairs = patternMappingPatternPairSubList;
         
         // in case we run the evaluation we have a different index not the default one
-        PatternSearcher patternSearcher = PatternSearcherFactory.getInstance().createDefaultPatternSearcher();
-        if ( index != null ) patternSearcher.setIndex(index);
-        
-        this.patternSearcher            = patternSearcher;
+        this.patternSearcher            = PatternSearcherFactory.getInstance().createDefaultPatternSearcher(index);
         this.nerTagger                  = NaturalLanguageProcessingToolFactory.getInstance().createDefaultNamedEntityRecognition();
         
         this.logger.info("PatternMapping-Pattern-Pairs to create knowledge for: " + this.patternMappingPatternPairs.size() + "!");

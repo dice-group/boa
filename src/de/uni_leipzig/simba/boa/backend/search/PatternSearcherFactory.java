@@ -5,6 +5,8 @@ package de.uni_leipzig.simba.boa.backend.search;
 
 import java.util.List;
 
+import org.apache.lucene.store.Directory;
+
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 
 
@@ -42,7 +44,7 @@ public class PatternSearcherFactory {
      * @return the default pattern searcher
      */
     @SuppressWarnings("unchecked")
-    public PatternSearcher createDefaultPatternSearcher() {
+    private PatternSearcher createDefaultPatternSearcher() {
 
         try {
 
@@ -53,6 +55,29 @@ public class PatternSearcherFactory {
 
             e.printStackTrace();
             String error = "Could not load default pattern searcher " + defaultPatternSearcher;
+            this.logger.error(error, e);
+            throw new RuntimeException(error, e);
+        }
+    }
+    
+    /**
+     * 
+     * @param index
+     * @return
+     */
+    public PatternSearcher createDefaultPatternSearcher(Directory index) {
+        
+        try {
+            
+            if ( index == null ) return this.createDefaultPatternSearcher();
+            
+            Class<? extends PatternSearcher> searcherClass = (Class<? extends PatternSearcher>) Class.forName(defaultPatternSearcher);
+            return searcherClass.getDeclaredConstructor(Directory.class).newInstance(index);
+        }
+        catch (Exception e) {
+            
+            e.printStackTrace();
+            String error = "Could not load Default Pattern Searcher with predefined index: " + index;
             this.logger.error(error, e);
             throw new RuntimeException(error, e);
         }
