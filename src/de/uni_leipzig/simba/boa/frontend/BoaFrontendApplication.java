@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.vaadin.Application;
 import com.vaadin.data.Item;
@@ -66,7 +67,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 
     public static final NLPediaSetup setup = new NLPediaSetup(false);
     private NLPediaLogger logger = new NLPediaLogger(BoaFrontendApplication.class);
-    private static final SentenceBoundaryDisambiguation sbd = NaturalLanguageProcessingToolFactory.getInstance().createDefaultSentenceBoundaryDisambiguation();
 
     private TextArea input = new TextArea();
     private TextArea output = new TextArea();
@@ -93,14 +93,18 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     private IndexedContainer nlrPatternContainer; 
     private PatternMapping currentPatternMapping;
     
-    private Map<String, List<PatternMapping>> mappingsInDatabases;
+    private Map<String, Set<PatternMapping>> mappingsInDatabases;
     
     @Override
     public void init() {
         
+        long start = System.currentTimeMillis();
         this.mappingsInDatabases = PatternMappingManager.getInstance().getPatternMappingsInDatabases();
+        System.out.println(System.currentTimeMillis() - start + "ms to load all mappings");
         this.tree = new DatabaseNavigationTree(this, mappingsInDatabases);
+        System.out.println(System.currentTimeMillis() - start + "ms to build tree");
         this.nlrPatternContainer = this.getNaturalLanguagePatternContainer();
+        System.out.println(System.currentTimeMillis() - start + "ms to load auto suggest");
         this.inputToOutputButton.addListener((ClickListener) this);
         this.databaseSelect.setNullSelectionAllowed(false);
         this.databaseSelect.setImmediate(true);
@@ -111,8 +115,12 @@ public class BoaFrontendApplication extends Application implements ItemClickList
             if ( !databaseKey.isEmpty() && databaseKey != null ) databaseSelect.addItem(databaseKey);
                 
         this.databaseSelect.select(keys.get(0));
+                
+        System.out.println(System.currentTimeMillis() - start + "ms database select");
 
         buildMainLayout();
+        
+        System.out.println(System.currentTimeMillis() - start + "ms to main layout");
     }
     
     public void buttonClick(ClickEvent event) {
@@ -566,26 +574,29 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         naturalLanguagePatternContainer.addContainerProperty("DATABASE", String.class, "");
         naturalLanguagePatternContainer.addContainerProperty("MAPPING", PatternMapping.class, "");
 
-        for (Map.Entry<String, List<PatternMapping>> database : this.mappingsInDatabases.entrySet() ) {
-            for (PatternMapping mapping : database.getValue() ) {
-                for ( Pattern pattern : mapping.getPatterns() ) {
-                    
-                    Item item = naturalLanguagePatternContainer.addItem(database + " " + mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
-                    
-                    if ( item != null ) {
-                        
-                        item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" 
-                                + database.getKey().substring(database.getKey().lastIndexOf("/") + 1) + ", " 
-                                + mapping.getProperty().getPropertyLocalname() + ", "
-                                + OutputFormatter.format(pattern.getScore(), "0.000") + ")");
-                        item.getItemProperty("PATTERN").setValue(pattern);
-                        item.getItemProperty("DATABASE").setValue(database.getKey());
-                        item.getItemProperty("MAPPING").setValue(mapping);
-                    }
-                    else System.out.println("ITEM NULL");
-                }
-            }
-        }
+//        for (Map.Entry<String, Set<PatternMapping>> database : this.mappingsInDatabases.entrySet() ) {
+//            System.out.println(database.getKey());
+//            for (PatternMapping mapping : database.getValue() ) {
+//                System.out.println(mapping.getProperty().getUri());
+//                for ( Pattern pattern : mapping.getPatterns() ) {
+//                    System.out.println(pattern.getNaturalLanguageRepresentation());
+//                    
+//                    Item item = naturalLanguagePatternContainer.addItem(database + " " + mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
+//                    
+//                    if ( item != null ) {
+//                        
+//                        item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" 
+//                                + database.getKey().substring(database.getKey().lastIndexOf("/") + 1) + ", " 
+//                                + mapping.getProperty().getPropertyLocalname() + ", "
+//                                + OutputFormatter.format(pattern.getScore(), "0.000") + ")");
+//                        item.getItemProperty("PATTERN").setValue(pattern);
+//                        item.getItemProperty("DATABASE").setValue(database.getKey());
+//                        item.getItemProperty("MAPPING").setValue(mapping);
+//                    }
+//                    else System.out.println("ITEM NULL");
+//                }
+//            }
+//        }
         return naturalLanguagePatternContainer;
     }
     

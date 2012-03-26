@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.AbstractSelect;
@@ -17,7 +18,7 @@ import de.uni_leipzig.simba.boa.frontend.data.DatabaseContainer;
 @SuppressWarnings("serial")
 public class DatabaseNavigationTree extends Tree {
 	
-	public DatabaseNavigationTree(BoaFrontendApplication app, Map<String, List<PatternMapping>> databases) {
+	public DatabaseNavigationTree(BoaFrontendApplication app, Map<String, Set<PatternMapping>> databases) {
 		
 		this.setContainerDataSource(new DatabaseContainer(databases));
 //		this.setContainerDataSource(DatabaseContainer.getTestDatabaseContainer());
