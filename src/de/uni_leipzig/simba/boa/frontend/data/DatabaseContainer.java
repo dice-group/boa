@@ -3,6 +3,7 @@ package de.uni_leipzig.simba.boa.frontend.data;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.HierarchicalContainer;
@@ -20,7 +21,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 	public static final Object SORT_STRING            = "sort-property";
 	public static final Object PATTERN_MAPPING_ID	  = "pm_id";
 	
-	public DatabaseContainer(Map<String, List<PatternMapping>> databases) {
+	public DatabaseContainer(Map<String, Set<PatternMapping>> databases) {
 		
 		Item item = null;
 		

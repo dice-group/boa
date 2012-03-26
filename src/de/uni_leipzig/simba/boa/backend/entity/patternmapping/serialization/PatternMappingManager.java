@@ -6,9 +6,11 @@ package de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
@@ -95,34 +97,42 @@ public class PatternMappingManager {
      * 
      * @return
      */
-    public Map<String, List<PatternMapping>> getPatternMappingsInDatabases() {
+    public Map<String, Set<PatternMapping>> getPatternMappingsInDatabases() {
 
-        Map<String, List<PatternMapping>> mappingsInDatabases = new LinkedHashMap<String, List<PatternMapping>>();
+        Map<String, Set<PatternMapping>> mappingsInDatabases = new LinkedHashMap<String, Set<PatternMapping>>();
         
         for ( String database : NLPediaSettings.getSetting("patternMappingDatabases").split(";")) {
             
-            System.out.println(database);
-            
             String path = database.endsWith("/") ? database + Constants.PATTERN_MAPPINGS_PATH : database + "/" + Constants.PATTERN_MAPPINGS_PATH; 
+            database = database.replaceAll("/$", "");
             
-            for (PatternMapping mapping : SerializationManager.getInstance().deserializePatternMappings(path) ) {
+            if ( database.equals(NLPediaSettings.BOA_DATA_DIRECTORY) ) {
                 
-                // only add pattern mappings with more than 0 patterns to the view
-                if (mapping.getPatterns().size() > 0 ) {
-                    
-                    if ( mappingsInDatabases.containsKey(database) ) {
-                        
-                        mappingsInDatabases.get(database).add(mapping);
-                    }
-                    // the first mapping in a new folder 
-                    else {
-                        
-                        List<PatternMapping> mappings = new ArrayList<PatternMapping>();
-                        mappings.add(mapping);
-                        mappingsInDatabases.put(database, mappings);
-                    }
-                }
+                mappingsInDatabases.put(database, new HashSet<PatternMapping>(mappings));
             }
+            else {
+
+                mappingsInDatabases.put(database, SerializationManager.getInstance().deserializePatternMappings(path));
+            }
+            
+//            for (PatternMapping mapping : SerializationManager.getInstance().deserializePatternMappings(path) ) {
+//                
+//                // only add pattern mappings with more than 0 patterns to the view
+//                if (mapping.getPatterns().size() > 0 ) {
+//                    
+//                    if ( mappingsInDatabases.containsKey(database) ) {
+//                        
+//                        mappingsInDatabases.get(database).add(mapping);
+//                    }
+//                    // the first mapping in a new folder 
+//                    else {
+//                        
+//                        List<PatternMapping> mappings = new ArrayList<PatternMapping>();
+//                        mappings.add(mapping);
+//                        mappingsInDatabases.put(database, mappings);
+//                    }
+//                }
+//            }
         }
         return mappingsInDatabases;
     }        
