@@ -17,6 +17,7 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 
 
@@ -26,6 +27,7 @@ import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationM
  */
 public class PatternMappingManager {
 
+    private final NLPediaLogger logger = new NLPediaLogger(PatternMappingManager.class);
     private static List<PatternMapping> mappings;
     private static PatternMappingManager INSTANCE;
     
@@ -103,16 +105,18 @@ public class PatternMappingManager {
         
         for ( String database : NLPediaSettings.getSetting("patternMappingDatabases").split(";")) {
             
+            this.logger.info("Reading mappings from database: " + database);
+            
             String path = database.endsWith("/") ? database + Constants.PATTERN_MAPPINGS_PATH : database + "/" + Constants.PATTERN_MAPPINGS_PATH; 
-            database = database.replaceAll("/$", "");
+            database = database.endsWith("/") ? database : database + "/";
             
             if ( database.equals(NLPediaSettings.BOA_DATA_DIRECTORY) ) {
                 
-                mappingsInDatabases.put(database, new HashSet<PatternMapping>(mappings));
+                mappingsInDatabases.put(database.replaceAll("/$", ""), new HashSet<PatternMapping>(mappings));
             }
             else {
 
-                mappingsInDatabases.put(database, SerializationManager.getInstance().deserializePatternMappings(path));
+                mappingsInDatabases.put(database.replaceAll("/$", ""), SerializationManager.getInstance().deserializePatternMappings(path));
             }
             
 //            for (PatternMapping mapping : SerializationManager.getInstance().deserializePatternMappings(path) ) {

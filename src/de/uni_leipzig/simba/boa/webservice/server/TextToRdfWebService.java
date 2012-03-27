@@ -1,16 +1,14 @@
 package de.uni_leipzig.simba.boa.webservice.server;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-
-import org.apache.lucene.store.Directory;
 
 import de.danielgerber.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -20,7 +18,6 @@ import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.Patt
 import de.uni_leipzig.simba.boa.backend.evaluation.EvaluationIndexCreator;
 import de.uni_leipzig.simba.boa.backend.evaluation.EvaluationManager;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.SentenceBoundaryDisambiguation;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
@@ -50,7 +47,7 @@ public class TextToRdfWebService {
         NLPediaSettings.setSetting("number.of.create.knowledge.threads", "1");
         NLPediaSettings.setSetting("knowledgeCreationThreadPoolSize", "1");
 
-        List<String> results = new ArrayList<String>();
+        Set<String> results = new TreeSet<String>();
         
         for (Triple triple : EvaluationManager.loadBoaResults(EvaluationIndexCreator.createGoldStandardIndex(new HashSet<String>(sbd.getSentences(text))), new HashSet<PatternMapping>(mappings))) {
             
