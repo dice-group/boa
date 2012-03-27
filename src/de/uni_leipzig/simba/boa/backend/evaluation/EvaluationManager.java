@@ -40,6 +40,7 @@ public class EvaluationManager {
         Map<String,Set<Triple>> urisToTriples = knowledgeCreationManager.mergeAndScoreTriples(knowledgeCreationManager.findNewTriples(index, mappings));
         for (Map.Entry<String, Set<Triple>> entry : urisToTriples.entrySet() ) {
             
+            System.out.println("NEW: " + entry.getValue());
             createdTriples.addAll(entry.getValue());
         }
         return createdTriples;

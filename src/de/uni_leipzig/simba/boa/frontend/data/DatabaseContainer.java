@@ -28,6 +28,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 		this.addContainerProperty(URI, String.class, null);
 		this.addContainerProperty(DATABASE_ID, String.class, null);
 		this.addContainerProperty(DISPLAY_NAME, String.class, null);
+		this.addContainerProperty(SORT_STRING, String.class, null);
 		this.addContainerProperty(PATTERN_MAPPING_ID, String.class, null);
 		
 		for ( String database : databases.keySet() ) {
@@ -44,6 +45,7 @@ public class DatabaseContainer extends HierarchicalContainer{
 				item = this.addItem(itemID);
 				item.getItemProperty(DISPLAY_NAME).setValue(mapping.getProperty().getUri().replace("http://dbpedia.org/ontology/", "dbpedia-owl:"));
 				item.getItemProperty(URI).setValue(mapping.getProperty().getUri());
+				item.getItemProperty(SORT_STRING).setValue(mapping.getProperty().getUri());
 				item.getItemProperty(DATABASE_ID).setValue(database + "/patternmappings/");
 //				item.getItemProperty(PATTERN_MAPPING_ID).setValue(mapping.getId());
 				

@@ -74,32 +74,33 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
                 // there will never be a left argument if the sentence begins with the pattern
                 if (sentence.toLowerCase().startsWith(pair.getPattern().getNaturalLanguageRepresentationWithoutVariables().toLowerCase())) continue;
 
-                this.addTriple(results, createTriple(pair.getMapping(), pair.getPattern(), sentence, nerTagger.getAnnotatedString(sentence)));
+                Triple triple = createTriple(pair.getMapping(), pair.getPattern(), sentence, nerTagger.getAnnotatedString(sentence));
+                if ( triple != null ) this.addTriple(results, triple);
             }
             this.progress++;
         }
-        this.logger.info(this.name + " finished!");
+        int tripleCount = 0;
+        for ( List<Triple> triples : results.get(0).values()) tripleCount += triples.size();
+        this.logger.info(this.name + " finished with " + tripleCount + " triples!");
+                
         return results;
     }
     
     private void addTriple(List<Map<String, List<Triple>>> results, Triple triple) {
 
-        if ( triple != null ) {
+        // the results will always have only one entry, so if we 
+        // already have a mapping between uri and triples, then add it 
+        if ( results.get(0).containsKey(triple.getProperty().getUri()) ) {
             
-            // the results will always have only one entry, so if we 
-            // already have a mapping between uri and triples, then add it 
-            if ( results.get(0).containsKey(triple.getProperty().getUri()) ) {
-                
-                results.get(0).get(triple.getProperty().getUri()).add(triple);
-            }
-            else {
-                
-                // we dont have a mapping so we need to create one and add the triple
-                List<Triple> tripleList = new ArrayList<Triple>();
-                tripleList.add(triple);
-                // put the mapping in the global results
-                results.get(0).put(triple.getProperty().getUri(), tripleList);
-            }
+            results.get(0).get(triple.getProperty().getUri()).add(triple);
+        }
+        else {
+            
+            // we dont have a mapping so we need to create one and add the triple
+            List<Triple> tripleList = new ArrayList<Triple>();
+            tripleList.add(triple);
+            // put the mapping in the global results
+            results.get(0).put(triple.getProperty().getUri(), tripleList);
         }
     }
 
@@ -124,26 +125,6 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
                         
                         String subjectLabel = leftContext.getSuitableEntity(domainUri);
                         String objectLabel = rightContext.getSuitableEntity(rangeUri);
-                        
-                        if ( sentence.equals("The E. Clarke and Julie Arnold House is a Frank Lloyd Wright designed Usonian home in Columbus , Wisconsin .") ) {
-                            
-                            System.out.println(pattern.getNaturalLanguageRepresentation());
-                            System.out.println("LeftContextDistance: " + leftContext.getSuitableEntityDistance(domainUri));
-                            System.out.println("RightContextDistance: " + rightContext.getSuitableEntityDistance(rangeUri));
-                            
-                            System.out.println("DOMAIN: " + domainUri);
-                            System.out.println("RANGE: " + rangeUri);
-                            System.out.println("LC: " + leftContext);
-                            System.out.println("RC: " + rightContext);
-                            
-                            System.out.println(sentence);
-                            System.out.println(nerTaggedSentence);
-                            
-                            System.out.println("SL: " + subjectLabel);
-                            System.out.println("OL: " + objectLabel);
-                            System.out.println("---------------------");
-                            System.out.println();
-                        }
                         
                         UriRetrieval uriRetrieval = new MeshupUriRetrieval();
                         String subjectUri = uriRetrieval.getUri(subjectLabel);
@@ -172,12 +153,6 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
                         
                         String objectLabel = leftContext.getSuitableEntity(rangeUri);
                         String subjectLabel = rightContext.getSuitableEntity(domainUri);
-                        
-//                        System.out.println(sentence);
-//                        System.out.println(nerTaggedSentence);
-//                        System.out.println(subjectLabel);
-//                        System.out.println(objectLabel);
-//                        System.out.println("?R? -> ?D?");
                         
                         UriRetrieval uriRetrieval = new MeshupUriRetrieval();
                         String objectUri = uriRetrieval.getUri(objectLabel);

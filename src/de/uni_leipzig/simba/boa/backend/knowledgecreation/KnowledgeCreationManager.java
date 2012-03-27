@@ -57,7 +57,11 @@ public class KnowledgeCreationManager {
             String propertyUri = entry.getKey();
             List<Triple> triples = entry.getValue();
             
+            int i = 0 ;
+            
             for ( Triple triple : triples ) {
+                
+                System.out.println(i++ + ": " + triple);
                 
                 // we have seen this triple before, so merge it
                 if ( mergedTriples.containsKey(triple.hashCode()) ) {
@@ -97,10 +101,13 @@ public class KnowledgeCreationManager {
             }
         
         for ( Triple triple : unscoredTriples ) {
-            
+
             // sigmoid function shifted to the right to boost pattern which are learned from more than one pattern
-            triple.setScore(1D / (1D + Math.pow(Math.E, - (2 * triple.getLearnedFromPatterns().size() * (triple.getScore() / maximum)) 
-                                                                    + triple.getLearnedFromPatterns().size())));
+            Double score = 1D / (1D + Math.pow(Math.E, - (2 * triple.getLearnedFromPatterns().size() * (triple.getScore() / maximum)) 
+                    + triple.getLearnedFromPatterns().size()));
+            
+            if ( score.isNaN() ) triple.setScore(0D);
+            else triple.setScore(score);
             
             // we only want the triple if its above a threshold
             if ( triple.getScore() >= NLPediaSettings.getDoubleSetting("triple.score.threshold.create.knowledge") ) 

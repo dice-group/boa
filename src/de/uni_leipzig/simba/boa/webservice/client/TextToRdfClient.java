@@ -7,6 +7,8 @@ import javax.ws.rs.core.UriBuilder;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+
 /**
  * 
  * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
@@ -16,7 +18,7 @@ public class TextToRdfClient {
     public static void main(String[] args) {
 
         TextToRdfClient client = new TextToRdfClient();
-        System.out.println(client.extractTriples("Émile Zola's novel Germinal takes its name from the calendar.", 0.0, 3, false));
+        System.out.println(client.extractTriples("At the awards ceremony, ``The Simpsons'' creator Matt Groening is shown in the audience.", 0.0, 3, false));
     }
     
     public String extractTriples(String text, double patternScoreThreshold, int contextLookAheadThreshold, boolean dbpediaLinksOnly) {
@@ -32,7 +34,6 @@ public class TextToRdfClient {
     
     private static URI getBaseURI() {
         
-//        return UriBuilder.fromUri("http://localhost:8080/boa/").build();
-        return UriBuilder.fromUri("http://139.18.2.164:8080/boa/").build();
+        return UriBuilder.fromUri(NLPediaSettings.getSetting("ipAndPort")).build();
     }
 }

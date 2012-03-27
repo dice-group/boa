@@ -96,9 +96,7 @@ public class SerializationManager {
 		
 		for (File mapping : FileUtils.listFiles(new File(folder), FileFilterUtils.suffixFileFilter(".bin"), null) ) {
 		
-		    long start = System.currentTimeMillis();
 			mappings.add(deserializePatternMapping(mapping.getAbsolutePath()));
-			System.out.println(System.currentTimeMillis() - start + "ms to process: " + mapping.getAbsolutePath());
 		}
 		
 		return mappings;
