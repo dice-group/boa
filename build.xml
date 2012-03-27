@@ -93,6 +93,7 @@
 				<include name="jersey-servlet-1.12.jar"/>
 				<include name="asm-3.1.jar"/>
 				<include name="jena-2.6.4.jar"/>
+				<include name="arq-2.8.1.jar"/>
 				<include name="stanford-corenlp-2011-06-19.jar"/>
 				<include name="LookupService.jar"/>
 				<include name="slf4j-api-1.5.6.jar"/>
