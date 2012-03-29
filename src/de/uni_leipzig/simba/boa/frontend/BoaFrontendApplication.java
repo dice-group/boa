@@ -574,29 +574,26 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         naturalLanguagePatternContainer.addContainerProperty("DATABASE", String.class, "");
         naturalLanguagePatternContainer.addContainerProperty("MAPPING", PatternMapping.class, "");
 
-//        for (Map.Entry<String, Set<PatternMapping>> database : this.mappingsInDatabases.entrySet() ) {
-//            System.out.println(database.getKey());
-//            for (PatternMapping mapping : database.getValue() ) {
-//                System.out.println(mapping.getProperty().getUri());
-//                for ( Pattern pattern : mapping.getPatterns() ) {
-//                    System.out.println(pattern.getNaturalLanguageRepresentation());
-//                    
-//                    Item item = naturalLanguagePatternContainer.addItem(database + " " + mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
-//                    
-//                    if ( item != null ) {
-//                        
-//                        item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" 
-//                                + database.getKey().substring(database.getKey().lastIndexOf("/") + 1) + ", " 
-//                                + mapping.getProperty().getPropertyLocalname() + ", "
-//                                + OutputFormatter.format(pattern.getScore(), "0.000") + ")");
-//                        item.getItemProperty("PATTERN").setValue(pattern);
-//                        item.getItemProperty("DATABASE").setValue(database.getKey());
-//                        item.getItemProperty("MAPPING").setValue(mapping);
-//                    }
-//                    else System.out.println("ITEM NULL");
-//                }
-//            }
-//        }
+        for (Map.Entry<String, Set<PatternMapping>> database : this.mappingsInDatabases.entrySet() ) {
+            for (PatternMapping mapping : database.getValue() ) {
+                for ( Pattern pattern : mapping.getPatterns() ) {
+                    
+                    Item item = naturalLanguagePatternContainer.addItem(database + " " + mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
+                    
+                    if ( item != null ) {
+                        
+                        item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" 
+                                + database.getKey().substring(database.getKey().lastIndexOf("/") + 1) + ", " 
+                                + mapping.getProperty().getPropertyLocalname() + ", "
+                                + OutputFormatter.format(pattern.getScore(), "0.000") + ")");
+                        item.getItemProperty("PATTERN").setValue(pattern);
+                        item.getItemProperty("DATABASE").setValue(database.getKey());
+                        item.getItemProperty("MAPPING").setValue(mapping);
+                    }
+                    else System.out.println("ITEM NULL");
+                }
+            }
+        }
         return naturalLanguagePatternContainer;
     }
     
