@@ -58,7 +58,7 @@ public class PatternTable extends Table {
             this.addItem(entries.toArray(), i++);
         }
         
-        setSortContainerPropertyId("Score");
+        setSortContainerPropertyId("SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM");
         setSortAscending(false);
         sort();
         setColumnReorderingAllowed(true);
