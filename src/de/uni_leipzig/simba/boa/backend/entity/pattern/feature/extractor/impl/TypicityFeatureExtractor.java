@@ -25,6 +25,7 @@ import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguag
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.impl.StanfordNLPNamedEntityRecognition;
 import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
+import de.uni_leipzig.simba.boa.backend.util.NaturalLanguageProcessingUtil;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
@@ -75,7 +76,7 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 	    Pattern pattern = pair.getPattern();
 	    
 		boolean beginsWithDomain = pattern.isDomainFirst();
-		String patternWithOutVariables = this.segmentString(pattern.getNaturalLanguageRepresentationWithoutVariables());
+		String patternWithOutVariables = NaturalLanguageProcessingUtil.segmentString(pattern.getNaturalLanguageRepresentationWithoutVariables());
 		
 		final List<String> sentences = new ArrayList<String>(patternSearcher.getExactMatchSentences(patternWithOutVariables, maxNumberOfEvaluationSentences));
 		List<String> sentencesToEvaluate = sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0, this.maxNumberOfEvaluationSentences) : sentences;
@@ -91,13 +92,12 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 			if ( foundString.toLowerCase().startsWith(patternWithOutVariables.toLowerCase())) continue;
 			
 			String nerTagged = this.ner.getAnnotatedString(this.replaceBrackets(foundString));
-			String segmentedPattern = this.segmentString(patternWithOutVariables);
 			
-			if ( nerTagged != null && foundString != null && segmentedPattern != null &&
-					nerTagged.length() > 0 && foundString.length() > 0 && segmentedPattern.length() > 0 ) {
+			if ( nerTagged != null && foundString != null && patternWithOutVariables != null &&
+					nerTagged.length() > 0 && foundString.length() > 0 && patternWithOutVariables.length() > 0 ) {
 				
-				Context leftContext     = this.createContext(LeftContext.class, nerTagged, foundString, segmentedPattern);
-				Context rightContext    = this.createContext(RightContext.class, nerTagged, foundString, segmentedPattern);
+				Context leftContext     = this.createContext(LeftContext.class, nerTagged, foundString, patternWithOutVariables);
+				Context rightContext    = this.createContext(RightContext.class, nerTagged, foundString, patternWithOutVariables);
 				
 				// there are sentence which can not be parsed
 				if ( leftContext == null || rightContext == null ) {
@@ -185,36 +185,5 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 			}
 		}
 		return foundString;
-	}
-	
-	/**
-	 * TODO export to library
-	 * 
-	 * @param sentence
-	 * @return
-	 */
-	private String segmentString(String sentence) {
-		
-		try {
-			
-			this.stringReader = new StringReader(sentence);
-			this.preprocessor = new DocumentPreprocessor(stringReader,  DocumentPreprocessor.DocType.Plain);
-			
-			Iterator<List<HasWord>> iter = this.preprocessor.iterator();
-			while ( iter.hasNext() ) {
-				
-				stringBuilder = new StringBuilder();
-				
-				for ( HasWord word : iter.next() ) {
-					stringBuilder.append(word.toString() + " ");
-				}
-				return stringBuilder.toString().trim();
-			}
-		}
-		catch (ArrayIndexOutOfBoundsException aioobe) {
-			
-			logger.debug("Could not segment string...", aioobe);
-		}
-		return "";
 	}
 }

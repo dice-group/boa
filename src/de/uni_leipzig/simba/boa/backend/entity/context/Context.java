@@ -13,6 +13,7 @@ public abstract class Context {
     protected List<String> cleanWords;
     protected List<String> taggedWords;
     protected String pattern;
+    protected String sentence;
     
     protected NamedEntityRecognition ner;
     

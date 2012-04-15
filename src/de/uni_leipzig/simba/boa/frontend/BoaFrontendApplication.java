@@ -90,7 +90,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     public static String CURRENT_DATABASE;
     public static String CURRENT_INDEX_DIR = "";
 
-    private IndexedContainer nlrPatternContainer; 
+    private static IndexedContainer nlrPatternContainer; 
     private PatternMapping currentPatternMapping;
     
     private Map<String, Set<PatternMapping>> mappingsInDatabases;
@@ -103,7 +103,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         System.out.println(System.currentTimeMillis() - start + "ms to load all mappings");
         this.tree = new DatabaseNavigationTree(this, mappingsInDatabases);
         System.out.println(System.currentTimeMillis() - start + "ms to build tree");
-        this.nlrPatternContainer = this.getNaturalLanguagePatternContainer();
+        nlrPatternContainer = this.getNaturalLanguagePatternContainer();
         System.out.println(System.currentTimeMillis() - start + "ms to load auto suggest");
         this.inputToOutputButton.addListener((ClickListener) this);
         this.databaseSelect.setNullSelectionAllowed(false);
@@ -574,26 +574,26 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         naturalLanguagePatternContainer.addContainerProperty("DATABASE", String.class, "");
         naturalLanguagePatternContainer.addContainerProperty("MAPPING", PatternMapping.class, "");
 
-        for (Map.Entry<String, Set<PatternMapping>> database : this.mappingsInDatabases.entrySet() ) {
-            for (PatternMapping mapping : database.getValue() ) {
-                for ( Pattern pattern : mapping.getPatterns() ) {
-                    
-                    Item item = naturalLanguagePatternContainer.addItem(database + " " + mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
-                    
-                    if ( item != null ) {
-                        
-                        item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" 
-                                + database.getKey().substring(database.getKey().lastIndexOf("/") + 1) + ", " 
-                                + mapping.getProperty().getPropertyLocalname() + ", "
-                                + OutputFormatter.format(pattern.getScore(), "0.000") + ")");
-                        item.getItemProperty("PATTERN").setValue(pattern);
-                        item.getItemProperty("DATABASE").setValue(database.getKey());
-                        item.getItemProperty("MAPPING").setValue(mapping);
-                    }
-                    else System.out.println("ITEM NULL");
-                }
-            }
-        }
+//        for (Map.Entry<String, Set<PatternMapping>> database : this.mappingsInDatabases.entrySet() ) {
+//            for (PatternMapping mapping : database.getValue() ) {
+//                for ( Pattern pattern : mapping.getPatterns() ) {
+//                    
+//                    Item item = naturalLanguagePatternContainer.addItem(database + " " + mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
+//                    
+//                    if ( item != null ) {
+//                        
+//                        item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" 
+//                                + database.getKey().substring(database.getKey().lastIndexOf("/") + 1) + ", " 
+//                                + mapping.getProperty().getPropertyLocalname() + ", "
+//                                + OutputFormatter.format(pattern.getScore(), "0.000") + ")");
+//                        item.getItemProperty("PATTERN").setValue(pattern);
+//                        item.getItemProperty("DATABASE").setValue(database.getKey());
+//                        item.getItemProperty("MAPPING").setValue(mapping);
+//                    }
+//                    else System.out.println("ITEM NULL");
+//                }
+//            }
+//        }
         return naturalLanguagePatternContainer;
     }
     

@@ -3,6 +3,7 @@ package de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeecht
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import kr.ac.kaist.swrc.jhannanum.hannanum.Workflow;
@@ -139,6 +140,13 @@ public class KoreanPartOfSpeechTagger  implements PartOfSpeechTagger{
 		}
 		return ret;
 	}
+
+    @Override
+    public List<String> getNounPhrases(String sentence) {
+
+        // TODO Auto-generated method stub
+        return null;
+    }
 	
 //	/**
 //	 * all input strings get trimmed

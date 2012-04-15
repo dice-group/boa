@@ -66,6 +66,7 @@
                 <entry key="triple.score.threshold.create.knowledge"        value="0"/>
                 <entry key="score.threshold.write.nt.knowledge"             value="0.3"/>
                 <entry key="score.threshold.write.plaintext.knowledge"      value="0.3"/>
+                <entry key="useProperNounPhraseExtraction"                  value="true"/>
                 
                 <!-- ############### get background knowledge ############### -->
                 <entry key="dbpediaSparqlEndpoint"                          value="http://live.dbpedia.org/sparql"/>
@@ -74,6 +75,7 @@
                 <!-- ############### other ############### -->
                 <entry key="patternMappingDatabases"                        value="/Users/gerb/Development/workspaces/experimental/en_wiki;/Users/gerb/Development/workspaces/experimental/de_wiki"/>
                 <entry key="spotlight.maxSurfaceFormLength"                 value="50"/>
+                <entry key="ipAndPort"                                      value="http://localhost:8080/boa/"/>
             </map>
         </property>
     </bean>

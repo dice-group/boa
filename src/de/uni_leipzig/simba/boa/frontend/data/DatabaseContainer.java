@@ -43,10 +43,10 @@ public class DatabaseContainer extends HierarchicalContainer{
 				String itemID = database + ":" + mapping.getProperty().getUri();
 				
 				item = this.addItem(itemID);
-				item.getItemProperty(DISPLAY_NAME).setValue(mapping.getProperty().getUri().replace("http://dbpedia.org/ontology/", "dbpedia-owl:"));
+				item.getItemProperty(DISPLAY_NAME).setValue(mapping.getProperty().getUri().replace("http://dbpedia.org/property/", "dbpedia-prop:").replace("http://dbpedia.org/ontology/", "dbpedia-owl:"));
 				item.getItemProperty(URI).setValue(mapping.getProperty().getUri());
 				item.getItemProperty(SORT_STRING).setValue(mapping.getProperty().getUri());
-				item.getItemProperty(DATABASE_ID).setValue(database + "/patternmappings/");
+				item.getItemProperty(DATABASE_ID).setValue(database);
 //				item.getItemProperty(PATTERN_MAPPING_ID).setValue(mapping.getId());
 				
 				// add the parent of the newly added item (URI) and prohibit children

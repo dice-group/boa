@@ -13,6 +13,7 @@ public class RightContext extends Context {
 
 		this.cleanWords = new ArrayList<String>();
 		this.taggedWords = new ArrayList<String>();
+		this.sentence     = sentence;
 		this.setPattern(patternWithOutVariables);
 		this.createRightContext(nerTaggedString, sentence);
 	}

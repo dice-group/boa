@@ -3,15 +3,9 @@
  */
 package de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -28,14 +22,17 @@ import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationM
 public class PatternMappingManager {
 
     private final NLPediaLogger logger = new NLPediaLogger(PatternMappingManager.class);
-    private static List<PatternMapping> mappings;
+    private static Map<String, Set<PatternMapping>> mappingsInDatabases = new LinkedHashMap<String, Set<PatternMapping>>();
     private static PatternMappingManager INSTANCE;
     
-    private final String PATTERN_MAPPING_FOLDER         = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
+    private final String PATTERN_MAPPING_FOLDER = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
+    private final String DEFAULT_DATABASE       = NLPediaSettings.BOA_DATA_DIRECTORY.replaceAll("/$", "");
     
     private PatternMappingManager() {
         
-        mappings = new ArrayList<PatternMapping>(SerializationManager.getInstance().deserializePatternMappings(PATTERN_MAPPING_FOLDER));
+        mappingsInDatabases.put(
+                DEFAULT_DATABASE, 
+                SerializationManager.getInstance().deserializePatternMappings(PATTERN_MAPPING_FOLDER));
     }
     
     public static PatternMappingManager getInstance(){
@@ -54,9 +51,9 @@ public class PatternMappingManager {
      * @param filepath
      * @return
      */
-    public List<PatternMapping> getPatternMappings() {
+    public Set<PatternMapping> getPatternMappings() {
         
-        return mappings;
+        return mappingsInDatabases.get(DEFAULT_DATABASE);
     }
 
     /**
@@ -67,7 +64,10 @@ public class PatternMappingManager {
      */
     public PatternMapping getPatternMapping(String uri, String database) {
 
-        for  (PatternMapping mapping : mappings ) {
+        System.out.println(PatternMappingManager.mappingsInDatabases.keySet());
+        System.out.println(database);
+        
+        for  (PatternMapping mapping : PatternMappingManager.mappingsInDatabases.get(database) ) {
             
             if ( mapping.getProperty().getUri().equals(uri) ) return mapping; 
         }
@@ -84,7 +84,7 @@ public class PatternMappingManager {
 
         int numberOfSamePatterns = 0;
         
-        for ( PatternMapping mapping : mappings )
+        for ( PatternMapping mapping : mappingsInDatabases.get(DEFAULT_DATABASE) )
             for (Pattern pattern : mapping.getPatterns())
                 if ( pattern.getNaturalLanguageRepresentation().equalsIgnoreCase(naturalLanguageRepresentation) ) {
                     
@@ -101,8 +101,6 @@ public class PatternMappingManager {
      */
     public Map<String, Set<PatternMapping>> getPatternMappingsInDatabases() {
 
-        Map<String, Set<PatternMapping>> mappingsInDatabases = new LinkedHashMap<String, Set<PatternMapping>>();
-        
         for ( String database : NLPediaSettings.getSetting("patternMappingDatabases").split(";")) {
             
             this.logger.info("Reading mappings from database: " + database);
@@ -112,7 +110,8 @@ public class PatternMappingManager {
             
             if ( database.equals(NLPediaSettings.BOA_DATA_DIRECTORY) ) {
                 
-                mappingsInDatabases.put(database.replaceAll("/$", ""), new HashSet<PatternMapping>(mappings));
+//                because of the construtor the default database is already in the map, so we dont need to do anything
+//                mappingsInDatabases.put(database.replaceAll("/$", ""), new HashSet<PatternMapping>(mappings));
             }
             else {
 

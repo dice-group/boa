@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import cern.colt.Arrays;
+
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -81,5 +83,37 @@ public final class StanfordNLPPartOfSpeechTagger implements PartOfSpeechTagger {
 			tags.add(s.substring(s.lastIndexOf(Constants.PART_OF_SPEECH_TAG_DELIMITER) + 1));
 		}
 		return StringUtils.join(tags, " ");
+	}
+	
+	/**
+	 * 
+	 * @param sentence
+	 * @return
+	 */
+	public List<String> getNounPhrases(String sentence) {
+
+	    String[] taggedSentence    = this.getAnnotatedString(sentence).split(" ");
+	    List<String> nounPhrases   = new ArrayList<String>();
+	    
+	    List<String> currentNounPhrase = new ArrayList<String>();
+	    System.out.println(this.getAnnotatedString(sentence));
+	    for ( String taggedWord : taggedSentence) {
+	        
+	        // do we have a proper noun in singular or plural
+            if ( taggedWord.matches(".+_NNPS?") ) {
+                
+                currentNounPhrase.add(taggedWord.substring(0, taggedWord.indexOf("_")));
+            }
+            else {
+                
+                if ( !currentNounPhrase.isEmpty() ) {
+                    
+                    nounPhrases.add(StringUtils.join(currentNounPhrase, " "));
+                    currentNounPhrase = new ArrayList<String>();
+                }
+            }
+	    }
+	    System.out.println(nounPhrases);
+	    return nounPhrases;
 	}
 }
