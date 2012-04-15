@@ -96,7 +96,11 @@ public class SerializationManager {
 		
 		for (File mapping : FileUtils.listFiles(new File(folder), FileFilterUtils.suffixFileFilter(".bin"), null) ) {
 		
-			mappings.add(deserializePatternMapping(mapping.getAbsolutePath()));
+		    PatternMapping patternMapping = deserializePatternMapping(mapping.getAbsolutePath());
+		    if ( patternMapping.getPatterns().size() > 0 ) {
+
+		        mappings.add(patternMapping);
+		    }
 		}
 		
 		return mappings;

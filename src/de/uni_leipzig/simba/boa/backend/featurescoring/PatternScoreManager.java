@@ -1,5 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.featurescoring;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -104,14 +105,15 @@ public class PatternScoreManager {
             for (Pattern pattern : mapping.getPatterns()) {
                 
                 MachineLearningTrainingFileEntry entry = neuronalNetworkTrainingFile.getEntry(mapping.getProperty().getUri(), pattern.getNaturalLanguageRepresentation());
+                List<Double> features = pattern.buildNormalizedFeatureVector(mapping);
                 
                 if ( entry != null )                  
-                    entry.setFeatures(pattern.buildNormalizedFeatureVector(mapping));
+                    entry.setFeatures(features);
                 else 
                     neuronalNetworkTrainingFile.addEntry(MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFileEntry(
                                                             mapping.getProperty().getUri(),
                                                             pattern.getNaturalLanguageRepresentation(),
-                                                            pattern.buildNormalizedFeatureVector(mapping),
+                                                            features,
                                                             null));
                     
             }

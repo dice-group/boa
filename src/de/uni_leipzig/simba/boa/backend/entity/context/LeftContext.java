@@ -12,8 +12,9 @@ public class LeftContext extends Context {
 
 	public LeftContext(String nerTaggedString, String sentence, String patternWithOutVariables) throws IllegalArgumentException, StringIndexOutOfBoundsException {
 
-		this.cleanWords = new ArrayList<String>();
-		this.taggedWords = new ArrayList<String>();
+		this.cleanWords   = new ArrayList<String>();
+		this.taggedWords  = new ArrayList<String>();
+		this.sentence     = sentence;
 		this.setPattern(patternWithOutVariables);
 		this.createLeftContext(nerTaggedString, sentence);
 	}

@@ -29,7 +29,7 @@ public class TextToRdfWebService {
     private static final NLPediaSetup setup = new NLPediaSetup(false);
     private static final NLPediaLogger logger = new NLPediaLogger(TextToRdfWebService.class); 
     private static final SentenceBoundaryDisambiguation sbd = NaturalLanguageProcessingToolFactory.getInstance().createDefaultSentenceBoundaryDisambiguation();
-    private static final List<PatternMapping> mappings = PatternMappingManager.getInstance().getPatternMappings();
+    private static final Set<PatternMapping> mappings = PatternMappingManager.getInstance().getPatternMappings();
     
     @GET
     @Produces("text/n3")
@@ -49,7 +49,7 @@ public class TextToRdfWebService {
 
         Set<String> results = new TreeSet<String>();
         
-        for (Triple triple : EvaluationManager.loadBoaResults(EvaluationIndexCreator.createGoldStandardIndex(new HashSet<String>(sbd.getSentences(text))), new HashSet<PatternMapping>(mappings))) {
+        for (Triple triple : EvaluationManager.loadBoaResults(EvaluationIndexCreator.createGoldStandardIndex(new HashSet<String>(sbd.getSentences(text))), mappings)) {
             
             results.add(triple.toN3());
             if ( !dbpediaLinksOnly ) {

@@ -2,7 +2,10 @@ package de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.impl;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLData;
@@ -22,8 +25,13 @@ import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
 import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.featurescoring.PatternScoreManager;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry.MachineLearningTrainingFileEntry;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -32,6 +40,8 @@ import de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.NeuralNetw
 
 public class EncogNeuralNetwork implements NeuralNetwork {
 
+    private static NLPediaSetup setup = new NLPediaSetup(true);
+    
     private final NLPediaLogger logger               = new NLPediaLogger(EncogNeuralNetwork.class);
     
     private BasicNetwork network;
@@ -41,10 +51,10 @@ public class EncogNeuralNetwork implements NeuralNetwork {
     private double maxHiddenToInputRatio             = NLPediaSettings.getIntegerSetting("neuronal.network.hidden.layer.ratio");
     private int maxEpochs                            = NLPediaSettings.getIntegerSetting("neuronal.network.maxEpochs");
     
-    private static final int N_FOLD_CROSS_VALIDATION = NLPediaSettings.getIntegerSetting("neuronal.network.n.fold.cross.validation");
+    private static int N_FOLD_CROSS_VALIDATION       = NLPediaSettings.getIntegerSetting("neuronal.network.n.fold.cross.validation");
     private static final String NETWORK_DIRECTORY    = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.NEURAL_NETWORK_PATH;
-    private static final String EVAL_OUTPUT_FILE     = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
-    private static final String NETWORK_FILE         = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
+    private static String EVAL_OUTPUT_FILE           = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
+    private static String NETWORK_FILE               = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
     
     private MachineLearningTrainingFile trainingFile = null;
     
@@ -56,6 +66,23 @@ public class EncogNeuralNetwork implements NeuralNetwork {
         
         this.trainingFile = trainingFile;
         this.loadModel();
+    }
+    
+    public static void main(String[] args) {
+    
+        final String MACHINE_LEARNING_TRAINING_FILE = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.NEURAL_NETWORK_PATH + "network_learn.txt";
+        
+        PatternScoreManager pcm = new PatternScoreManager();
+        MachineLearningTrainingFile trainFile = pcm.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8");
+        
+        for ( Integer i : Arrays.asList(/*2,3,4,5,6,7,8,9,*/10)) {
+            
+            System.out.println(i + "-fold Cross-Validation");
+            N_FOLD_CROSS_VALIDATION    = i;
+            EVAL_OUTPUT_FILE           = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
+            NETWORK_FILE               = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
+            EncogNeuralNetwork network = new EncogNeuralNetwork(trainFile);
+        }
     }
     
     @Override
@@ -204,20 +231,65 @@ public class EncogNeuralNetwork implements NeuralNetwork {
         for (int i = 0; i < n; i++) {
             data[i] = new BasicMLDataSet();
         }
+        
+        List<Integer> disabledColumns = new ArrayList<Integer>();
+        int j = 0;
+        for ( FeatureExtractor featureExtractor : FeatureFactory.getInstance().getFeatureExtractorMap().values() )
+            for ( Feature feature: featureExtractor.getHandeledFeatures() ) {
+                
+                if (trainFile.getFeatureNames().contains(feature.getName())) {
+                    
+                    if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) ) {
+                        
+                        if ( !feature.isUseForPatternLearning() ) {
+                            
+                            logger.warn("Feature " + j + ": " + feature.getName() + " not activated!");
+                            if (trainFile.getFeatureNames().contains(feature.getName())) disabledColumns.add(j);
+                        }
+                        else logger.info("Feature " + j + ": " + feature.getName() + " activated!");
+                    }
+                    else {
+
+                        logger.warn("Feature " + feature.getName() + " not for language " + NLPediaSettings.getSystemLanguage() + " not activated!");
+                    }
+                    j++;
+                }
+                else {
+                    
+                    logger.error("Feature: " + feature.getName() + " not in train file!");
+                }
+            }
+        logger.info("Not using columns: " + disabledColumns);
+        
         int counter = 0;
         for ( MachineLearningTrainingFileEntry line : trainFile.getAnnotatedEntries() ) {
             
+//            System.out.println("line.getFeatures().size(): " + line.getFeatures().size());
+//            System.out.println("disabledColumns.size(): " + disabledColumns.size());
+//            System.out.println("line.getFeatures().size() - disabledColumns.size(): " + (line.getFeatures().size() - disabledColumns.size() - 1));
+//            System.out.println(disabledColumns);
+            
             // create a new entry data-set and add all the features to it
-            MLData entry = new BasicMLData(line.getFeatures().size());
-            for (int i = 0; i < line.getFeatures().size(); i++) 
-                entry.add(i, line.getFeatures().get(i));
+            MLData entry = new BasicMLData(line.getFeatures().size() - disabledColumns.size());
+            
+//            System.out.println("entry.size(): " + entry.size());
+            for (Integer i = 0, m = 0; i < line.getFeatures().size(); i++) {
+                
+//                System.out.println(i + " " + !disabledColumns.contains(i));
+                if ( !disabledColumns.contains(i) ) {
+
+//                    System.out.println("USE: "+i+"  " + line.getFeatures().get(i));
+                    entry.add(m++, line.getFeatures().get(i));
+                }
+//                else System.out.println("DONT USE");
+            }
             
             // maps each entry data-set to the manually annotated value
             BasicMLData ideal = new BasicMLData(1);
             ideal.add(0, line.getAnnotation() ? 1D : 0D);
-            data[counter % n].add(entry, ideal);
-            counter++;
+            data[counter++ % n].add(entry, ideal);
         }
+        
         return data;
     }
 

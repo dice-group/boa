@@ -15,12 +15,13 @@ import de.uni_leipzig.simba.boa.backend.wordnet.similarity.WordNotFoundException
 
 public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 
-	private SimilarityAssessor similarityAssessor = new SimilarityAssessor();
+	private SimilarityAssessor similarityAssessor = null;
 	private NLPediaLogger logger = new NLPediaLogger(StringSimilarityFeatureExtractor.class);
 	
 	@Override
 	public void score(PatternMappingPatternPair pair) {
 
+	    if ( this.similarityAssessor == null ) this.similarityAssessor = new SimilarityAssessor();
 		// we calculate the qgram distance between the NLR and the label of the property
 			
 		// get the NLR and remove all stopwords

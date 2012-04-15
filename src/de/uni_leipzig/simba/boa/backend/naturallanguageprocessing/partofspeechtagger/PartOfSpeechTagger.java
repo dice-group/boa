@@ -3,6 +3,8 @@
  */
 package de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger;
 
+import java.util.List;
+
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingTool;
 
 
@@ -25,4 +27,11 @@ public interface PartOfSpeechTagger extends NaturalLanguageProcessingTool {
 	 * @return
 	 */
 	public String getAnnotations(String string);
+	
+	/**
+	 * 
+	 * @param sentence
+	 * @return
+	 */
+	public List<String> getNounPhrases(String sentence);
 }
