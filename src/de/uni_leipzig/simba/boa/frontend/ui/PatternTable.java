@@ -30,7 +30,7 @@ public class PatternTable extends Table {
 		List<Feature> featureList = new ArrayList<Feature>(patterns.get(0).getFeatures().keySet());
 		Collections.sort(featureList, new FeatureNameComparator());
 		
-		this.addContainerProperty("Score",                            Double.class, null);
+//		this.addContainerProperty("Score",                            Double.class, null);
 		this.addContainerProperty("Occurrence",                       Integer.class, null);
 		this.addContainerProperty("Natural Language Representation",  String.class, null);
 		this.addContainerProperty("Generalized",                      String.class, null);
@@ -47,7 +47,7 @@ public class PatternTable extends Table {
         for (Pattern pattern : patterns) {
             
             List<Object> entries = new ArrayList<Object>();
-            entries.add(pattern.getScore());
+//            entries.add(pattern.getScore());
             entries.add(pattern.getNumberOfOccurrences());
             entries.add(pattern.getNaturalLanguageRepresentation());
             entries.add(pattern.getGeneralizedPattern());
@@ -58,7 +58,7 @@ public class PatternTable extends Table {
             this.addItem(entries.toArray(), i++);
         }
         
-        setSortContainerPropertyId("SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM");
+        setSortContainerPropertyId(WordUtils.capitalize("SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM".replace("_", " ").toLowerCase()));
         setSortAscending(false);
         sort();
         setColumnReorderingAllowed(true);
