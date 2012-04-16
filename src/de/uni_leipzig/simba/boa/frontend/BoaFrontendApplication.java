@@ -55,6 +55,7 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.SentenceBoundaryDisambiguation;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
+import de.uni_leipzig.simba.boa.frontend.data.AutosuggestionsManager;
 import de.uni_leipzig.simba.boa.frontend.data.DatabaseContainer;
 import de.uni_leipzig.simba.boa.frontend.ui.DatabaseNavigationTree;
 import de.uni_leipzig.simba.boa.frontend.ui.PatternTable;
@@ -103,7 +104,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         System.out.println(System.currentTimeMillis() - start + "ms to load all mappings");
         this.tree = new DatabaseNavigationTree(this, mappingsInDatabases);
         System.out.println(System.currentTimeMillis() - start + "ms to build tree");
-        nlrPatternContainer = this.getNaturalLanguagePatternContainer();
+        nlrPatternContainer = AutosuggestionsManager.getInstance().getNaturalLanguagePatternContainer(mappingsInDatabases);
         System.out.println(System.currentTimeMillis() - start + "ms to load auto suggest");
         this.inputToOutputButton.addListener((ClickListener) this);
         this.databaseSelect.setNullSelectionAllowed(false);
@@ -566,37 +567,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         patternSearchField.addListener((Property.ValueChangeListener) this);
         
         return topGrid;
-    }
-    
-    public IndexedContainer getNaturalLanguagePatternContainer() {
-        
-        IndexedContainer naturalLanguagePatternContainer = new IndexedContainer();
-        naturalLanguagePatternContainer.addContainerProperty("NLR", String.class, "");
-        naturalLanguagePatternContainer.addContainerProperty("PATTERN", String.class, "");
-        naturalLanguagePatternContainer.addContainerProperty("DATABASE", String.class, "");
-        naturalLanguagePatternContainer.addContainerProperty("MAPPING", String.class, "");
-
-        for (Map.Entry<String, Set<PatternMapping>> database : this.mappingsInDatabases.entrySet() ) {
-            for (PatternMapping mapping : database.getValue() ) {
-                for ( Pattern pattern : mapping.getPatterns() ) {
-                    
-                    Item item = naturalLanguagePatternContainer.addItem(database + " " + mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
-                    
-                    if ( item != null ) {
-                        
-                        item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" 
-                                + database.getKey().substring(database.getKey().lastIndexOf("/") + 1) + ", " 
-                                + mapping.getProperty().getPropertyLocalname() + ", "
-                                + OutputFormatter.format(pattern.getScore(), "0.000") + ")");
-                        item.getItemProperty("PATTERN").setValue(pattern.getNaturalLanguageRepresentation());
-                        item.getItemProperty("DATABASE").setValue(database.getKey());
-                        item.getItemProperty("MAPPING").setValue(mapping.getProperty().getUri());
-                    }
-                    else System.out.println("ITEM NULL");
-                }
-            }
-        }
-        return naturalLanguagePatternContainer;
     }
     
     private HorizontalSplitPanel buildStartPage() {
