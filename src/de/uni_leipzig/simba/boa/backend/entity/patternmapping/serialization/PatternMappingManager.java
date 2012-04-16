@@ -45,7 +45,6 @@ public class PatternMappingManager {
         return PatternMappingManager.INSTANCE;
     }
     
-    
     /**
      * 
      * @param filepath
