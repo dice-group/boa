@@ -98,12 +98,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     @Override
     public void init() {
         
-        Window main = new Window("Boa Frontend");
-        main.setContent(new VerticalLayout());
-        this.setMainWindow(main);
-        this.getMainWindow().showNotification("Please be patient ...");
-        this.setTheme("boa");
-        
         long start = System.currentTimeMillis();
         this.mappingsInDatabases = PatternMappingManager.getInstance().getPatternMappingsInDatabases();
         System.out.println(System.currentTimeMillis() - start + "ms to load all mappings");
@@ -482,6 +476,12 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     
     private void buildMainLayout() {
         
+        Window main = new Window("Boa Frontend");
+        main.setContent(new VerticalLayout());
+        this.setMainWindow(main);
+//        this.getMainWindow().showNotification("Please be patient ...");
+        this.setTheme("boa");
+        
         VerticalLayout layout = new VerticalLayout();
         layout.setWidth("90%");
         layout.setHeight("90%");
@@ -572,9 +572,9 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         
         IndexedContainer naturalLanguagePatternContainer = new IndexedContainer();
         naturalLanguagePatternContainer.addContainerProperty("NLR", String.class, "");
-        naturalLanguagePatternContainer.addContainerProperty("PATTERN", Pattern.class, "");
+        naturalLanguagePatternContainer.addContainerProperty("PATTERN", String.class, "");
         naturalLanguagePatternContainer.addContainerProperty("DATABASE", String.class, "");
-        naturalLanguagePatternContainer.addContainerProperty("MAPPING", PatternMapping.class, "");
+        naturalLanguagePatternContainer.addContainerProperty("MAPPING", String.class, "");
 
         for (Map.Entry<String, Set<PatternMapping>> database : this.mappingsInDatabases.entrySet() ) {
             for (PatternMapping mapping : database.getValue() ) {
@@ -588,9 +588,9 @@ public class BoaFrontendApplication extends Application implements ItemClickList
                                 + database.getKey().substring(database.getKey().lastIndexOf("/") + 1) + ", " 
                                 + mapping.getProperty().getPropertyLocalname() + ", "
                                 + OutputFormatter.format(pattern.getScore(), "0.000") + ")");
-                        item.getItemProperty("PATTERN").setValue(pattern);
+                        item.getItemProperty("PATTERN").setValue(pattern.getNaturalLanguageRepresentation());
                         item.getItemProperty("DATABASE").setValue(database.getKey());
-                        item.getItemProperty("MAPPING").setValue(mapping);
+                        item.getItemProperty("MAPPING").setValue(mapping.getProperty().getUri());
                     }
                     else System.out.println("ITEM NULL");
                 }
@@ -636,9 +636,24 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 
         if ( nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "PATTERN") != null ) {
             
-            Pattern pattern = (Pattern) nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "PATTERN").getValue();
-            PatternMapping mapping = (PatternMapping) nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "MAPPING").getValue();
-            getMainWindow().addWindow(new PatternWindow(this, pattern, mapping));
+            String nlr          = (String) nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "PATTERN").getValue();
+            String propertyUri  = (String) nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "MAPPING").getValue();
+            String database     = (String) nlrPatternContainer.getContainerProperty(event.getProperty().toString(), "DATABASE").getValue();
+            
+            for (PatternMapping mapping : this.mappingsInDatabases.get(database)) {
+                
+                if ( mapping.getProperty().getUri().equals(propertyUri) ) {
+                    
+                    for ( Pattern pattern : mapping.getPatterns() ) {
+                        
+                        if ( pattern.getNaturalLanguageRepresentation().equals(nlr) ) {
+                            
+                            getMainWindow().addWindow(new PatternWindow(this, pattern, mapping));
+                            return;
+                        }
+                    }
+                }
+            }
         }
     }
     
