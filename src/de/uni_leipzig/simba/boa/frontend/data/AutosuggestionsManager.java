@@ -21,7 +21,7 @@ import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 public class AutosuggestionsManager {
 
     private static AutosuggestionsManager INSTANCE = null;
-    private static IndexedContainer naturalLanguagePatternContainer = new IndexedContainer();
+    private static IndexedContainer naturalLanguagePatternContainer = null;
     
     private AutosuggestionsManager() {}
     
@@ -36,31 +36,36 @@ public class AutosuggestionsManager {
     
     public IndexedContainer getNaturalLanguagePatternContainer(Map<String, Set<PatternMapping>> mappingsInDatabases) {
         
-        naturalLanguagePatternContainer.addContainerProperty("NLR", String.class, "");
-        naturalLanguagePatternContainer.addContainerProperty("PATTERN", String.class, "");
-        naturalLanguagePatternContainer.addContainerProperty("DATABASE", String.class, "");
-        naturalLanguagePatternContainer.addContainerProperty("MAPPING", String.class, "");
+        if ( naturalLanguagePatternContainer == null ) {
+            
+            naturalLanguagePatternContainer = new IndexedContainer();
+            naturalLanguagePatternContainer.addContainerProperty("NLR", String.class, "");
+            naturalLanguagePatternContainer.addContainerProperty("PATTERN", String.class, "");
+            naturalLanguagePatternContainer.addContainerProperty("DATABASE", String.class, "");
+            naturalLanguagePatternContainer.addContainerProperty("MAPPING", String.class, "");
 
-        for (Map.Entry<String, Set<PatternMapping>> database : mappingsInDatabases.entrySet() ) {
-            for (PatternMapping mapping : database.getValue() ) {
-                for ( Pattern pattern : mapping.getPatterns() ) {
-                    
-                    Item item = naturalLanguagePatternContainer.addItem(database + " " + mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
-                    
-                    if ( item != null ) {
+            for (Map.Entry<String, Set<PatternMapping>> database : mappingsInDatabases.entrySet() ) {
+                for (PatternMapping mapping : database.getValue() ) {
+                    for ( Pattern pattern : mapping.getPatterns() ) {
                         
-                        item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" 
-                                + database.getKey().substring(database.getKey().lastIndexOf("/") + 1) + ", " 
-                                + mapping.getProperty().getPropertyLocalname() + ", "
-                                + OutputFormatter.format(pattern.getScore(), "0.000") + ")");
-                        item.getItemProperty("PATTERN").setValue(pattern.getNaturalLanguageRepresentation());
-                        item.getItemProperty("DATABASE").setValue(database.getKey());
-                        item.getItemProperty("MAPPING").setValue(mapping.getProperty().getUri());
+                        Item item = naturalLanguagePatternContainer.addItem(database + " " + mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
+                        
+                        if ( item != null ) {
+                            
+                            item.getItemProperty("NLR").setValue(pattern.getNaturalLanguageRepresentation() + " (" 
+                                    + database.getKey().substring(database.getKey().lastIndexOf("/") + 1) + ", " 
+                                    + mapping.getProperty().getPropertyLocalname() + ", "
+                                    + OutputFormatter.format(pattern.getScore(), "0.000") + ")");
+                            item.getItemProperty("PATTERN").setValue(pattern.getNaturalLanguageRepresentation());
+                            item.getItemProperty("DATABASE").setValue(database.getKey());
+                            item.getItemProperty("MAPPING").setValue(mapping.getProperty().getUri());
+                        }
+                        else System.out.println("ITEM NULL");
                     }
-                    else System.out.println("ITEM NULL");
                 }
             }
         }
+        
         return naturalLanguagePatternContainer;
     }
 }
