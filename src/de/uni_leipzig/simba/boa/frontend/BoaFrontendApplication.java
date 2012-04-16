@@ -71,7 +71,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     private TextArea input = new TextArea();
     private TextArea output = new TextArea();
     
-    private Button triplesButton = new Button("Try");
+//    private Button triplesButton = new Button("Try");
     private Button sourceButton = new Button("Source");
     private Button downloadsButton = new Button("Downloads");
     private Button databasesButton = new Button("Pattern Library");
@@ -97,6 +97,8 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     
     @Override
     public void init() {
+        
+        this.getMainWindow().showNotification("Please be patient ...");
         
         long start = System.currentTimeMillis();
         this.mappingsInDatabases = PatternMappingManager.getInstance().getPatternMappingsInDatabases();
@@ -139,11 +141,12 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         mainLayout.removeAllComponents();
         mainLayout.addComponent(panel);
         
-        if (source == this.triplesButton) {
-            
-            panel.addComponent(buildTriplePage());
-        }
-        else if ( source == this.databasesButton ) {
+//        if (source == this.triplesButton) {
+//            
+//            panel.addComponent(buildTriplePage());
+//        }
+//        else 
+            if ( source == this.databasesButton ) {
             
             mainLayout.removeAllComponents();
             mainLayout.addComponent(buildStartPage());
@@ -521,12 +524,12 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         buttons.setWidth("100%");
         buttons.setSpacing(false);
         buttons.addComponent(databasesButton);
-        buttons.addComponent(triplesButton);
+//        buttons.addComponent(triplesButton);
         buttons.addComponent(sourceButton);
         buttons.addComponent(downloadsButton);
         buttons.addComponent(publicationsButton);
         buttons.setComponentAlignment(databasesButton, Alignment.MIDDLE_LEFT);
-        buttons.setComponentAlignment(triplesButton, Alignment.MIDDLE_LEFT);
+//        buttons.setComponentAlignment(triplesButton, Alignment.MIDDLE_LEFT);
         buttons.setComponentAlignment(sourceButton, Alignment.MIDDLE_LEFT);
         buttons.setComponentAlignment(downloadsButton, Alignment.MIDDLE_LEFT);
         buttons.setComponentAlignment(publicationsButton, Alignment.MIDDLE_LEFT);
@@ -556,7 +559,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         topGrid.setSizeFull();
         topGrid.setComponentAlignment(buttons, Alignment.MIDDLE_LEFT);
         
-        triplesButton.addListener((ClickListener) this);
+//        triplesButton.addListener((ClickListener) this);
         databasesButton.addListener((ClickListener) this);
         sourceButton.addListener((ClickListener) this);
         downloadsButton.addListener((ClickListener) this);
