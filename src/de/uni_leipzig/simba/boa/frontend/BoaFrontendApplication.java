@@ -98,6 +98,12 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     @Override
     public void init() {
         
+        Window main = new Window("Boa Frontend");
+        main.setContent(new VerticalLayout());
+        this.setMainWindow(main);
+        this.getMainWindow().showNotification("Please be patient ...");
+        this.setTheme("boa");
+        
         long start = System.currentTimeMillis();
         this.mappingsInDatabases = PatternMappingManager.getInstance().getPatternMappingsInDatabases();
         System.out.println(System.currentTimeMillis() - start + "ms to load all mappings");
@@ -475,12 +481,6 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     }
     
     private void buildMainLayout() {
-        
-        Window main = new Window("Boa Frontend");
-        main.setContent(new VerticalLayout());
-        this.setMainWindow(main);
-        this.getMainWindow().showNotification("Please be patient ...");
-        this.setTheme("boa");
         
         VerticalLayout layout = new VerticalLayout();
         layout.setWidth("90%");
