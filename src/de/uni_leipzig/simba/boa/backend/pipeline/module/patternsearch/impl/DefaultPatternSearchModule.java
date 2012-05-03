@@ -113,7 +113,8 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                     
                     pattern = new SubjectPredicateObjectPattern(patternString);
                     pattern.setPosTaggedString(posTagged);
-                    pattern.addLearnedFrom(label1 + "-;-" + label2);
+                    pattern.addLearnedFrom(label1 + "-;-" + label2); 
+//                    pattern.addLearnedFrom(pattern.isDomainFirst() ? label1 + "-;-" + label2 : label2 + "-;-" + label1); 
                     pattern.addPatternMapping(currentMapping);
                     pattern.getFoundInSentences().add(sentence);
                     

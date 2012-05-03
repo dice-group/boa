@@ -10,6 +10,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
 
 import com.vaadin.Application;
 import com.vaadin.data.Item;
@@ -44,6 +45,7 @@ import com.vaadin.ui.themes.Reindeer;
 
 import de.danielgerber.Constants;
 import de.danielgerber.format.OutputFormatter;
+import de.uni_leipzig.simba.boa.backend.concurrent.PrintJvmMemoryTimerTask;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
@@ -72,7 +74,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     private TextArea input = new TextArea();
     private TextArea output = new TextArea();
     
-//    private Button triplesButton = new Button("Try");
+    private Button triplesButton = new Button("Try");
     private Button sourceButton = new Button("Source");
     private Button downloadsButton = new Button("Downloads");
     private Button databasesButton = new Button("Pattern Library");
@@ -90,6 +92,12 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     
     public static String CURRENT_DATABASE;
     public static String CURRENT_INDEX_DIR = "";
+    
+    static {
+        
+        Timer timer = new Timer();
+        timer.schedule(new PrintJvmMemoryTimerTask(), 0, 10000);
+    }
 
     private static IndexedContainer nlrPatternContainer; 
     private PatternMapping currentPatternMapping;
@@ -99,13 +107,9 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     @Override
     public void init() {
         
-        long start = System.currentTimeMillis();
         this.mappingsInDatabases = PatternMappingManager.getInstance().getPatternMappingsInDatabases();
-        System.out.println(System.currentTimeMillis() - start + "ms to load all mappings");
         this.tree = new DatabaseNavigationTree(this, mappingsInDatabases);
-        System.out.println(System.currentTimeMillis() - start + "ms to build tree");
         nlrPatternContainer = AutosuggestionsManager.getInstance().getNaturalLanguagePatternContainer(mappingsInDatabases);
-        System.out.println(System.currentTimeMillis() - start + "ms to load auto suggest");
         this.inputToOutputButton.addListener((ClickListener) this);
         this.databaseSelect.setNullSelectionAllowed(false);
         this.databaseSelect.setImmediate(true);
@@ -116,12 +120,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
             if ( !databaseKey.isEmpty() && databaseKey != null ) databaseSelect.addItem(databaseKey);
                 
         this.databaseSelect.select(keys.get(0));
-                
-        System.out.println(System.currentTimeMillis() - start + "ms database select");
-
         buildMainLayout();
-        
-        System.out.println(System.currentTimeMillis() - start + "ms to main layout");
     }
     
     public void buttonClick(ClickEvent event) {
@@ -140,11 +139,11 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         mainLayout.removeAllComponents();
         mainLayout.addComponent(panel);
         
-//        if (source == this.triplesButton) {
-//            
-//            panel.addComponent(buildTriplePage());
-//        }
-//        else 
+        if (source == this.triplesButton) {
+            
+            panel.addComponent(buildTriplePage());
+        }
+        else 
             if ( source == this.databasesButton ) {
             
             mainLayout.removeAllComponents();
@@ -338,7 +337,8 @@ public class BoaFrontendApplication extends Application implements ItemClickList
 //                "WHERE%20%7B%20%0A%20%20%20%20%20%3Fcompany1%20%3Chttp%3A%2F%2Fboa.aksw.org%2Fontology%2Fsubsidiary%3E%20%3Fcompany2%20.%20%0A%20%20%20%20%20%3F" +
 //                "company1%20rdfs%3Alabel%20%3Fcompany1label%20.%20%0A%20%20%20%20%20%3Fcompany2%20rdfs%3Alabel%20%3Fcompany2Label%20.%20%0A%7D%0ALIMIT%20100%0A";
         
-        String urlString = "http://139.18.2.164:8000/test/";
+//        String urlString = "http://139.18.2.164:8000/test/";
+        String urlString = "http://139.18.2.164/sparqlfront";
         
         VerticalLayout triples = new VerticalLayout();
         triples.setSizeFull();
@@ -422,6 +422,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
                 
                 HorizontalLayout propertyInfos = new HorizontalLayout();
                 propertyInfos.setSizeFull();
+                propertyInfos.setMargin(false);
                 
                 GridLayout uriAndLabel = new GridLayout(2,2);
                 uriAndLabel.setSizeFull();
@@ -429,7 +430,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
                 uriAndLabel.setMargin(true);
                 
                 Label uriLabel = new Label("URI:");
-                Link uriLink = new Link(this.currentPatternMapping.getProperty().getUri(), new ExternalResource("http://dbpedia.org/ontology/" + this.currentPatternMapping.getProperty().getUri()));
+                Link uriLink = new Link(this.currentPatternMapping.getProperty().getUri().replace("http://dbpedia.org/ontology/", "dbpedia-owl:"), new ExternalResource(this.currentPatternMapping.getProperty().getUri()));
                 uriAndLabel.addComponent(uriLabel, 0, 0);
                 uriAndLabel.addComponent(uriLink, 1, 0);
                 
@@ -444,23 +445,30 @@ public class BoaFrontendApplication extends Application implements ItemClickList
                 domainAndRange.setMargin(true);
                 
                 Label rdfsDomainLabel = new Label("rdfs:domain (?D?)");
-                String domain = this.currentPatternMapping.getProperty().getRdfsDomain() == null ? "not defined" : this.currentPatternMapping.getProperty().getRdfsDomain();
-                Link rdfsDomainLink = new Link(domain, new ExternalResource(domain));
+                String domain = this.currentPatternMapping.getProperty().getRdfsDomain() == null ? "not defined" : this.currentPatternMapping.getProperty().getRdfsDomain().replace("http://dbpedia.org/ontology/", "dbpedia-owl:");
+                Link rdfsDomainLink = new Link(domain, new ExternalResource(this.currentPatternMapping.getProperty().getRdfsDomain()));
                 domainAndRange.addComponent(rdfsDomainLabel, 0, 0);
                 domainAndRange.addComponent(rdfsDomainLink, 1, 0);
+                domainAndRange.setComponentAlignment(rdfsDomainLabel, Alignment.MIDDLE_LEFT);
+                domainAndRange.setComponentAlignment(rdfsDomainLink, Alignment.MIDDLE_LEFT);
 
                 Label rdfsRangeLabel = new Label("rdfs:range (?R?)");
-                String range = this.currentPatternMapping.getProperty().getRdfsRange() == null ? "not defined" : this.currentPatternMapping.getProperty().getRdfsRange();
-                Link rdfsRangeLink = new Link(range, new ExternalResource(range));
+                String range = this.currentPatternMapping.getProperty().getRdfsRange() == null ? "not defined" : this.currentPatternMapping.getProperty().getRdfsRange().replace("http://dbpedia.org/ontology/", "dbpedia-owl:");
+                Link rdfsRangeLink = new Link(range, new ExternalResource(this.currentPatternMapping.getProperty().getRdfsRange()));
                 domainAndRange.addComponent(rdfsRangeLabel, 0, 1);
                 domainAndRange.addComponent(rdfsRangeLink, 1, 1);
+                domainAndRange.setComponentAlignment(rdfsRangeLabel, Alignment.MIDDLE_LEFT);
+                domainAndRange.setComponentAlignment(rdfsRangeLink, Alignment.MIDDLE_LEFT);
+                domainAndRange.setColumnExpandRatio(2, 4);
                 
                 propertyInfos.addComponent(uriAndLabel);
+                propertyInfos.setComponentAlignment(uriAndLabel, Alignment.MIDDLE_LEFT);
                 propertyInfos.addComponent(domainAndRange);
+                propertyInfos.setComponentAlignment(domainAndRange, Alignment.MIDDLE_LEFT);
                 
                 VerticalSplitPanel vPanel = new VerticalSplitPanel();
                 vPanel.setFirstComponent(propertyInfos);
-                vPanel.setSplitPosition(20);
+                vPanel.setSplitPosition(21);
                 vPanel.setLocked(true);
                 
                 this.patternTable = new PatternTable(this, new ArrayList<Pattern>(this.currentPatternMapping.getPatterns()));
@@ -497,7 +505,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         mainLayout.setWidth("95%");
         mainLayout.addComponent(horizontalSplitPanel);
         
-        horizontalSplitPanel.setSplitPosition(215, HorizontalSplitPanel.UNITS_PIXELS);
+        horizontalSplitPanel.setSplitPosition(235, HorizontalSplitPanel.UNITS_PIXELS);
         horizontalSplitPanel.setFirstComponent(tree);
         buildStartPage();
         horizontalSplitPanel.setWidth("97%");
@@ -524,12 +532,12 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         buttons.setWidth("100%");
         buttons.setSpacing(false);
         buttons.addComponent(databasesButton);
-//        buttons.addComponent(triplesButton);
+        buttons.addComponent(triplesButton);
         buttons.addComponent(sourceButton);
         buttons.addComponent(downloadsButton);
         buttons.addComponent(publicationsButton);
         buttons.setComponentAlignment(databasesButton, Alignment.MIDDLE_LEFT);
-//        buttons.setComponentAlignment(triplesButton, Alignment.MIDDLE_LEFT);
+        buttons.setComponentAlignment(triplesButton, Alignment.MIDDLE_LEFT);
         buttons.setComponentAlignment(sourceButton, Alignment.MIDDLE_LEFT);
         buttons.setComponentAlignment(downloadsButton, Alignment.MIDDLE_LEFT);
         buttons.setComponentAlignment(publicationsButton, Alignment.MIDDLE_LEFT);
@@ -559,7 +567,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         topGrid.setSizeFull();
         topGrid.setComponentAlignment(buttons, Alignment.MIDDLE_LEFT);
         
-//        triplesButton.addListener((ClickListener) this);
+        triplesButton.addListener((ClickListener) this);
         databasesButton.addListener((ClickListener) this);
         sourceButton.addListener((ClickListener) this);
         downloadsButton.addListener((ClickListener) this);

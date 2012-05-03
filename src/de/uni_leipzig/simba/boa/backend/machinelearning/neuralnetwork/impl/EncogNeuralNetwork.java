@@ -57,14 +57,16 @@ public class EncogNeuralNetwork implements NeuralNetwork {
     private static String NETWORK_FILE               = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
     
     private MachineLearningTrainingFile trainingFile = null;
+    private MachineLearningTrainingFile testFile = null;
     
     /**
      * Default constructor
      * 
      */
-    public EncogNeuralNetwork(MachineLearningTrainingFile trainingFile) {
+    public EncogNeuralNetwork(MachineLearningTrainingFile trainingFile, MachineLearningTrainingFile testFile) {
         
         this.trainingFile = trainingFile;
+        this.testFile = testFile;
         this.loadModel();
     }
     
@@ -74,6 +76,7 @@ public class EncogNeuralNetwork implements NeuralNetwork {
         
         PatternScoreManager pcm = new PatternScoreManager();
         MachineLearningTrainingFile trainFile = pcm.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8");
+        MachineLearningTrainingFile testFile = pcm.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8");
         
         for ( Integer i : Arrays.asList(/*2,3,4,5,6,7,8,9,*/10)) {
             
@@ -81,8 +84,9 @@ public class EncogNeuralNetwork implements NeuralNetwork {
             N_FOLD_CROSS_VALIDATION    = i;
             EVAL_OUTPUT_FILE           = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
             NETWORK_FILE               = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
-            EncogNeuralNetwork network = new EncogNeuralNetwork(trainFile);
+            EncogNeuralNetwork network = new EncogNeuralNetwork(trainFile, testFile);
         }
+        System.exit(0);
     }
     
     @Override
@@ -101,7 +105,7 @@ public class EncogNeuralNetwork implements NeuralNetwork {
                 // there is no network file available but annotated data, so we can train the network
                 if ( this.trainingFile != null && this.trainingFile.getAnnotatedEntries().size() > 0 ) {
                     
-                    train(this.trainingFile, new File(EVAL_OUTPUT_FILE), new File(NETWORK_FILE), N_FOLD_CROSS_VALIDATION);
+                    train(this.trainingFile, this.testFile, new File(EVAL_OUTPUT_FILE), new File(NETWORK_FILE), N_FOLD_CROSS_VALIDATION);
                     network = getNetwork(NETWORK_FILE);
                 }
                 else this.logger.error("Could not read network file from location : " + NETWORK_FILE);
@@ -122,9 +126,10 @@ public class EncogNeuralNetwork implements NeuralNetwork {
      * @param n
      *            n for n-fold
      */
-    public void train(MachineLearningTrainingFile trainFile, File outputFile, File networkFile, int n) {
+    public void train(MachineLearningTrainingFile trainFile, MachineLearningTrainingFile testFile, File outputFile, File networkFile, int n) {
        
         MLDataSet[] allData = getData(trainFile, n);
+        MLDataSet[] testData = getData(trainFile, 1);
 
         int repetitions = 1;
         double bestAccuracy, accuracy;
@@ -158,11 +163,11 @@ public class EncogNeuralNetwork implements NeuralNetwork {
                 avgAcc = 0;
                 for (int i = 0; i < n; i++) {
                     MLDataSet trainingData = merge(allData, i, n);
-                    MLDataSet testData = allData[i];
+                    MLDataSet devTestData = allData[i];
                     output.append(i + "\t" + hidden + "\t" + format.format(error));
 
                     for (int rep = 0; rep < repetitions; rep++) {
-                        accuracy = trainAndEvaluate(trainingData, testData, inputSize, hidden, 1, error);
+                        accuracy = trainAndEvaluate(trainingData, devTestData, inputSize, hidden, 1, error);
                         if (accuracy > bestAccuracy) {
                             try {
                                 SerializeObject.save(networkFile, network);
@@ -185,6 +190,7 @@ public class EncogNeuralNetwork implements NeuralNetwork {
         // write the eval file
         BufferedFileWriter writer = FileUtil.openWriter(outputFile.getAbsolutePath(), "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
         writer.write(summary.toString().replace(".", ",") + "\n");
+        writer.write("Best accuracy for " + N_FOLD_CROSS_VALIDATION + "-fold CV: " + bestAccuracy);
         writer.write(output.toString().replace(".", ","));
         writer.close();
     }

@@ -3,7 +3,6 @@
  */
 package de.uni_leipzig.simba.boa.backend.machinelearning;
 
-import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
