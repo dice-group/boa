@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="PatternFilterFactory"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilterFactory"
+        factory-method="getInstance" singleton="true">
+
+        <property name="patternFilterMap">
+            <map>
+                <!-- INSERT THE EVALUATORS IN THE ORDER YOU WANT THEM TO RUN -->
+                <!-- You can save serious amounts of time if you order them correctly -->
+                <!-- for example: check most common probable mistakes first like patterns 
+                    which only contain stopwords -->
+                <!-- more CPU consuming evaluation then needs only to be run for fewer 
+                    patterns -->
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.filter.impl.OccurrenceFilter">
+                    <bean id="OccurrenceFilter" class="de.uni_leipzig.simba.boa.backend.entity.pattern.filter.impl.OccurrenceFilter" />
+                </entry>
+            </map>
+        </property>
+    </bean>
+</beans>
