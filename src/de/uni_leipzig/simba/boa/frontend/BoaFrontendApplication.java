@@ -96,7 +96,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     static {
         
         Timer timer = new Timer();
-        timer.schedule(new PrintJvmMemoryTimerTask(), 0, 10000);
+        timer.schedule(new PrintJvmMemoryTimerTask(), 0, 30000);
     }
 
     private static IndexedContainer nlrPatternContainer; 
@@ -580,7 +580,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     private HorizontalSplitPanel buildStartPage() {
 
         Label preformattedText = new Label(
-                "<b><h1>BOA - a framework for BOostrapping the datA web.</h1></b><br/>" +
+                "<b><h1>BOA - a framework for BOotstrapping the datA web.</h1></b><br/>" +
                 "The idea behind BOA is to use the Data Web as background knowledge for the extraction of " +
                 "natural language patterns that represent predicates found on the Data Web. These patterns " +
                 "are used to extract instance knowledge from natural language text. This knowledge is " +
@@ -650,7 +650,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
         NLPediaSettings.setSetting("knowledgeCreationThreadPoolSize", "1");
 
         TextToRdfClient client = new TextToRdfClient();
-        String result = client.extractTriples(text, patternScoreThreshold, contextLookAheadThreshold, dbpediaLinksOnly);
+        String result = client.extractTriples(text, "", patternScoreThreshold, contextLookAheadThreshold, dbpediaLinksOnly);
         return result == null || result.isEmpty() ? "Could not extract any data!" : result;
     }
 }

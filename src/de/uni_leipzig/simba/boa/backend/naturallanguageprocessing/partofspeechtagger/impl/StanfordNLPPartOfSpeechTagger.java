@@ -96,7 +96,7 @@ public final class StanfordNLPPartOfSpeechTagger implements PartOfSpeechTagger {
 	    List<String> nounPhrases   = new ArrayList<String>();
 	    
 	    List<String> currentNounPhrase = new ArrayList<String>();
-	    System.out.println(this.getAnnotatedString(sentence));
+	    
 	    for ( String taggedWord : taggedSentence) {
 	        
 	        // do we have a proper noun in singular or plural
@@ -113,7 +113,7 @@ public final class StanfordNLPPartOfSpeechTagger implements PartOfSpeechTagger {
                 }
             }
 	    }
-	    System.out.println(nounPhrases);
+	    
 	    return nounPhrases;
 	}
 }
