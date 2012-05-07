@@ -16,7 +16,10 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
-
+/**
+ * 
+ * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
+ */
 public class KnowledgeCreationManager {
 
     /**
@@ -57,11 +60,7 @@ public class KnowledgeCreationManager {
             String propertyUri = entry.getKey();
             List<Triple> triples = entry.getValue();
             
-            int i = 0 ;
-            
             for ( Triple triple : triples ) {
-                
-                System.out.println(i++ + ": " + triple);
                 
                 // we have seen this triple before, so merge it
                 if ( mergedTriples.containsKey(triple.hashCode()) ) {

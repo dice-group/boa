@@ -53,9 +53,9 @@ public class TripleGenerator {
     public Triple createTriple(PatternMapping mapping, Pattern pattern, String sentence) {
      
         if ( NLPediaSettings.getBooleanSetting("useProperNounPhraseExtraction") ) 
-            return this.createTripleWithNamedEntityRecognition(mapping, pattern, sentence);
-        else 
             return this.createTripleWithPartOfSpeechTagging(mapping, pattern, sentence);
+        else 
+            return this.createTripleWithNamedEntityRecognition(mapping, pattern, sentence);
     }
 
     /**
@@ -65,11 +65,10 @@ public class TripleGenerator {
      * @param sentence
      * @return
      */
+    // TODO refactor so that there are two triple generators one with POS extraction and one with NER extraction
     private Triple createTripleWithPartOfSpeechTagging(PatternMapping mapping, Pattern pattern, String sentence) {
 
         String posTaggedSentence    = this.posTagger.getAnnotatedString(sentence);
-        
-        System.out.println(this.posTagger.getNounPhrases(sentence));
         
         Context leftContext     = new ProperNounPhraseLeftContext(posTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables(), this.posTagger.getNounPhrases(sentence));
         Context rightContext    = new ProperNounPhraseRightContext(posTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables(), this.posTagger.getNounPhrases(sentence));
@@ -80,19 +79,23 @@ public class TripleGenerator {
     public static void main(String[] args) {
 
         NLPediaSetup s = new NLPediaSetup(true); 
-        String sentence3 = "The versificator is a fictional device employed by Ingsoc in the novel `` Nineteen Eighty-Four '' by George Orwell .";
+        String sentence3 = "Death Proof is a film written and directed by Quentin Tarantino .";
         String sentence2 = "The title is a play on James Joyce 's semi-autobiographical novel `` A Portrait of the Artist as a Young Man '' .";
-        String sentence1 = "The title is a play on James Joyce 's semi-autobiographical novel A Portrait of the Artist as a Young Man .";
         
         Pattern pattern = new SubjectPredicateObjectPattern("?R? 's semi-autobiographical novel `` A ?D?");
-        Property property = new Property("uri", "range", "domain");
+        Pattern pattern1 = new SubjectPredicateObjectPattern("?D? written and directed by ?R?");
+        Property property = new Property("author", "range", "domain");
+        Property property1 = new Property("director", "range", "domain");
         PatternMapping mapping = new PatternMapping();
+        PatternMapping mapping1 = new PatternMapping();
         mapping.setProperty(property);
         mapping.addPattern(pattern);
+        mapping1.setProperty(property1);
+        mapping1.addPattern(pattern1);
         
         TripleGenerator tg = new TripleGenerator();
-        System.out.println(tg.createTripleWithPartOfSpeechTagging(mapping, pattern, sentence1));
         System.out.println(tg.createTripleWithPartOfSpeechTagging(mapping, pattern, sentence2));
+        System.out.println(tg.createTripleWithPartOfSpeechTagging(mapping1, pattern1, sentence3));
     }
 
     /**
@@ -102,6 +105,7 @@ public class TripleGenerator {
      * @param sentence
      * @return
      */
+    // TODO refactor so that there are two triple generators one with POS extraction and one with NER extraction
     private Triple createTripleWithNamedEntityRecognition(PatternMapping mapping, Pattern pattern, String sentence) {
 
         String nerTaggedSentence    = this.nerTagger.getAnnotatedString(sentence);
@@ -151,8 +155,6 @@ public class TripleGenerator {
                         triple.addLearnedFromPattern(pattern);
                         triple.addLearnedFromSentences(sentence);
                         
-                        System.out.println(triple);
-                        
                         return triple;
                     }
                 }
@@ -178,8 +180,6 @@ public class TripleGenerator {
                         Triple triple = new Triple(subject, mapping.getProperty(), object);
                         triple.addLearnedFromPattern(pattern);
                         triple.addLearnedFromSentences(sentence);
-                        
-                        System.out.println(triple);
                         
                         return triple;
                     }
