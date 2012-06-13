@@ -31,7 +31,7 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 	
 	private final NLPediaLogger logger 			= new NLPediaLogger(DefaultDatatypePropertyBackgroundKnowledgeCollectorModule.class);
 	
-	private final int SPARQL_QUERY_LIMIT					= new Integer(NLPediaSettings.getSetting("sparqlQueryLimit"));
+	protected final int SPARQL_QUERY_LIMIT					= new Integer(NLPediaSettings.getSetting("sparqlQueryLimit"));
 	private final String BOA_LANGUAGE						= NLPediaSettings.BOA_LANGUAGE;
 
 	// for the report
