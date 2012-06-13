@@ -9,6 +9,14 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.AbstractPreprocessingModule;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.googleNewsCrawler.pageParserThreads.CrawlerDirector;
 
+/**
+ * This module produces documents in wiki pedia structure to a specific theme.<br>
+ * The documents are crawled from google news. As input a specific theme and a lot of example subjects are needed.
+ * These subjects come from a sparql endpoint. Therefore only the subject classes are needed. The words will then extracted from the
+ * ontology and then used as input for the queries on google news. 
+ * 
+ * @author Tony Mey
+ */
 public class CrawlTextFromGoogleNews extends AbstractPreprocessingModule {
 
 	private NLPediaLogger logger = new NLPediaLogger(
@@ -54,8 +62,7 @@ public class CrawlTextFromGoogleNews extends AbstractPreprocessingModule {
 
 	@Override
 	public boolean isDataAlreadyAvailable() {
-		// TODO Auto-generated method stub
-		return false;
+		return new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.RAW_DATA_PATH+File.separator+"googeNews"+theme+".txt").exists();		
 	}
 
 	@Override
@@ -67,6 +74,11 @@ public class CrawlTextFromGoogleNews extends AbstractPreprocessingModule {
 		return language;
 	}
 
+	/**
+	 * the language must be a short name that google knows and can use in: <br>
+	 * http://www.google.com/search?hl=" + language + "&tbm=nws"
+	 * @param language something like en or de
+	 */
 	public void setLanguage(String language) {
 		this.language = language;
 	}
@@ -75,14 +87,24 @@ public class CrawlTextFromGoogleNews extends AbstractPreprocessingModule {
 		return endpoint;
 	}
 
+	/**
+	 * an possible sparql endpoint where the crawler can receive input in form of subjects/objects <br>
+	 * for example: http://dbtune.org/jamendo/sparql/
+	 * @param endpoint
+	 */
 	public void setEndpoint(String endpoint) {
 		this.endpoint = endpoint;
 	}
-
+	
 	public List<String> getClasses() {
 		return classes;
 	}
 
+	/**
+	 * set the classes that should be accepted at the sparql endpoint. There instances will be used for crawling. <br>
+	 * for example: http://purl.org/ontology/mo/MusicArtist
+	 * @param classes
+	 */
 	public void setClasses(List<String> classes) {
 		this.classes = classes;
 	}
@@ -91,6 +113,10 @@ public class CrawlTextFromGoogleNews extends AbstractPreprocessingModule {
 		return relation;
 	}
 
+	/**
+	 * relation with the name of the subject like "label" or in music ontology http://xmlns.com/foaf/0.1/name
+	 * @param relation
+	 */
 	public void setRelation(String relation) {
 		this.relation = relation;
 	}
@@ -99,6 +125,10 @@ public class CrawlTextFromGoogleNews extends AbstractPreprocessingModule {
 		return limitPerQuery;
 	}
 
+	/**
+	 * number of answers for each sparql query
+	 * @param limitPerQuery
+	 */
 	public void setLimitPerQuery(int limitPerQuery) {
 		this.limitPerQuery = limitPerQuery;
 	}
@@ -107,16 +137,11 @@ public class CrawlTextFromGoogleNews extends AbstractPreprocessingModule {
 		return theme;
 	}
 
+	/**
+	 * theme of the crawling like "music" will be used for all search queries on google news
+	 * @param theme
+	 */
 	public void setTheme(String theme) {
 		this.theme = theme;
 	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
