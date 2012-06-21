@@ -87,8 +87,9 @@ public class BigTextExtractor {
 			nodeMap.put(parent,nodeMap.get(parent)+1);
 		}
 		
+		// hier test für minimale anzahl an sätze
 		for(DomNode n:list){
-			if(nodeMap.get(n.getParentNode())>2)
+			if(nodeMap.get(n.getParentNode())>0)
 //				results.add(n.getTextContent());
 				results.add(n.asText());
 		}
