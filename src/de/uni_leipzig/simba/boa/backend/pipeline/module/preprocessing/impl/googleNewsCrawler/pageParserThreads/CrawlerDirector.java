@@ -145,9 +145,12 @@ public class CrawlerDirector {
 	 */
 	public static void main(String[] args) throws IOException {
 
-		String[] subjects = FileWithSubjectsReader
-				.readSubjectsFromFile("artists.txt");
+//		String[] subjects = FileWithSubjectsReader
+//				.readSubjectsFromFile("artists.txt");
 
+		String[] subjects = FileWithSubjectsReader
+				.readSubjectsFromFile("D:\\myTemp\\labels.txt").toArray(new String[0]);
+		
 		CrawlerDirector cd = new CrawlerDirector("en", "output.txt",
 				"urlstore.txt", false);
 		cd.startCrawler("Music", subjects);
