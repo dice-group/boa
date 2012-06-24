@@ -35,8 +35,10 @@ public class PubMedExtractorModule extends AbstractPreprocessingModule {
 		for (String file : new File(DOWNLOAD_DIRECTORY).list()) {
 			logger.info("Processing {}", file);
 			try {
-				Process process = new ProcessBuilder("tar", "-xvzf", file, "-C",
-						EXTRACT_DIRECTORY).start();
+			ProcessBuilder processBuilder = new ProcessBuilder("tar", "-xvzf", DOWNLOAD_DIRECTORY+"/"+file, "-C",
+						EXTRACT_DIRECTORY);
+			processBuilder.directory(new File(DOWNLOAD_DIRECTORY));
+			processBuilder.start();
 			} catch (IOException e) {
 				logger .error(e.getMessage(),e);
 			}
