@@ -2,6 +2,7 @@ package de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +33,9 @@ public class PubMedExtractorModule extends AbstractPreprocessingModule {
 			new File(EXTRACT_DIRECTORY).mkdirs();
 		}
 		for (String file : new File(DOWNLOAD_DIRECTORY).list()) {
+			logger.info("Processing {}", file);
 			try {
-				new ProcessBuilder("tar", "-xvzf", file, "-C",
+				Process process = new ProcessBuilder("tar", "-xvzf", file, "-C",
 						EXTRACT_DIRECTORY).start();
 			} catch (IOException e) {
 				logger .error(e.getMessage(),e);
