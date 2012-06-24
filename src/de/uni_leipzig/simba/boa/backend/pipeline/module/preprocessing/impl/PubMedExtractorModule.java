@@ -28,6 +28,7 @@ public class PubMedExtractorModule extends AbstractPreprocessingModule {
 	public void run() {
 		long begin =System.nanoTime();
 		if(! new File(EXTRACT_DIRECTORY).exists()){
+			logger.info("Create directory: {}",EXTRACT_DIRECTORY);
 			new File(EXTRACT_DIRECTORY).mkdirs();
 		}
 		for (String file : new File(DOWNLOAD_DIRECTORY).list()) {
