@@ -13,7 +13,7 @@ import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 public class PubMedDownloadModule extends AbstractPreprocessingModule{
 
 	private final static String DOWNLOAD_DIRECTORY=NLPediaSettings.BOA_DATA_DIRECTORY+"pubmed/download/";
-	private final static String BASE_URL="ftp.ncbi.nlm.nih.gov/pub/pmc/";
+	private final static String BASE_URL="ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/";
 	private final static String[] FILENAMES = {"articles.A-B.tar.gz","articles.C-H.tar.gz","articles.I-N.tar.gz","articles.O-Z.tar.gz"};
 	private static final Logger logger=LoggerFactory.getLogger(PubMedDownloadModule.class);
 	private long totalTime;
@@ -63,4 +63,9 @@ public class PubMedDownloadModule extends AbstractPreprocessingModule{
 		//nothing to do here
 	}
 
+	public static void main(String...args){
+		PubMedDownloadModule d = new PubMedDownloadModule();
+		d.run();
+	}
+	
 }
