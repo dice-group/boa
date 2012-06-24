@@ -54,7 +54,11 @@ public class PubMedExtractorModule extends AbstractPreprocessingModule {
 
 	@Override
 	public boolean isDataAlreadyAvailable() {
-		return (new File(EXTRACT_DIRECTORY).list().length>0);
+		if(! new File(EXTRACT_DIRECTORY).exists()){
+			return false;
+		} else {
+			return (new File(EXTRACT_DIRECTORY).listFiles().length>0);
+		}
 	}
 
 	@Override
