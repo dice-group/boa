@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="MachineLearningToolFactory" class="de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningToolFactory"
+        factory-method="getInstance" singleton="true">
+
+        <property name="defaultMachineLearningTool"
+            value="de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.impl.EncogNeuralNetwork" />
+
+        <property name="machineLearningTools">
+            <list>
+                <value>de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.impl.EncogNeuralNetwork</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="MachineLearningTrainingFileFactory"
+        class="de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.factory.MachineLearningTrainingFileFactory"
+        factory-method="getInstance" singleton="true">
+
+        <property name="defaultMachineLearningTrainingFileEntryClass"
+            value="de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.impl.DefaultMachineLearningTrainingFileEntry"/>
+        
+        <property name="defaultMachineLearningTrainingFileClass" 
+            value="de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.impl.DefaultMachineLearningTrainingFile"/>
+    </bean>
+    
+</beans>

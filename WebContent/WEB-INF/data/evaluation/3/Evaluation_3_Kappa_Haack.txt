@@ -1,0 +1,774 @@
+﻿################################ http://dbpedia.org/ontology/birthPlace #################################
+
+
+1.[María Amalia Lacroze de Fortabat] [Buenos Aires]		[http://dbpedia.org/resource/Mar%C3%ADa_Amalia_Lacroze_de_Fortabat,http://dbpedia.org/resource/Buenos_Aires]
+[o] María Amalia Lacroze de Fortabat was born in 1921 to a prominent Argentine family ; a grandfather , Federico Lacroze , developed Buenos Aires ' first tramway line , in the 1880s .
+
+
+2.[Macnelly Torres] [Barranquilla]		[http://dbpedia.org/resource/Macnelly_Torres,http://dbpedia.org/resource/Barranquilla]
+[x] Macnelly Torres -LRB- born November 1 , 1984 in Barranquilla -RRB- is a Colombian footballer who currently plays for Colo-Colo and for the Colombia national football team best known for his very accurate through passes .
+
+
+3.[Renuka Menon] [India]		[http://dbpedia.org/resource/Renuka_Menon,http://dbpedia.org/resource/India]
+[o] Shiva -LRB- Bharath -RRB- enters into St. Peters college in Bangalore and meets Pooja -LRB- Renuka Menon -RRB- , who was born and brought up in the US and has come to India to stay with her grandparents while completing her college education .
+
+
+4.[Alfredo Palacios] [Buenos Aires]		[http://dbpedia.org/resource/Alfredo_Palacios,http://dbpedia.org/resource/Buenos_Aires]
+[o] In 1904 , Alfredo Palacios , a member of Juan B. Justo 's Socialist Party -LRB- founded in 1896 -RRB- , became the first Socialist deputee of Argentina , as a representant of the workers ' neighborhood La Boca of Buenos Aires .
+
+
+5.[Marcelo Macedo Ferreira] [Petrópolis]		[http://dbpedia.org/resource/Marcelo_Macedo_Ferreira,http://dbpedia.org/resource/Petr%C3%B3polis]
+[x] Ipatinga -LRB- Loan -RRB- Marcelo Macedo Ferreira or simply Marcelo -LRB- born February 1 , 1983 in Petrópolis -RRB- , is a Brazilian attacking midfielder .
+
+
+6.[Dominic Adiyiah] [Ghana]		[http://dbpedia.org/resource/Dominic_Adiyiah,http://dbpedia.org/resource/Ghana]
+[o] Following a goal-mouth scramble in the final minute of extra time , a goal-bound header from Dominic Adiyiah was intentionally handballed off the Uruguay goal line by Luis Suárez , causing the referee to award Ghana a penalty and show Suárez a red card .
+
+
+7.[Conrado Nalé Roxlo] [Buenos Aires]		[http://dbpedia.org/resource/Conrado_Nal%C3%A9_Roxlo,http://dbpedia.org/resource/Buenos_Aires]
+[x] Conrado Nalé Roxlo -LRB- February 15 , 1898-July 2 , 1971 -RRB- was an Argentine writer , journalist and humorist , born and died in Buenos Aires .
+
+
+8.[Ranty Martins Soleye] [Lagos]		[http://dbpedia.org/resource/Ranty_Martins_Soleye,http://dbpedia.org/resource/Lagos]
+[x] Ranty Martins Soleye -LRB- born 5 September 1986 in Lagos -RRB- is a Nigerian football striker who currently plays for Dempo SC .
+
+
+9.[Ibrahim Dossey] [Accra]		[http://dbpedia.org/resource/Ibrahim_Dossey,http://dbpedia.org/resource/Accra]
+[x] Total caps -LRB- goals -RRB- = -LCB- 0 -RCB- 48 -LCB- 0 -RCB- -LCB- 0 -RCB- -LRB- 0 -RRB- Ibrahim Dossey -LRB- 24 November 1972 in Accra -- 9 December 2008 in Bucharest -RRB- was a Ghanaian football goalkeeper .
+
+
+10.[Dewald Potgieter] [Port Elizabeth]		[http://dbpedia.org/resource/Dewald_Potgieter,http://dbpedia.org/resource/Port_Elizabeth]
+[x] Dewald Potgieter -LRB- b. 24 July , 1986 in Port Elizabeth , South Africa -RRB- is a professional South African rugby union rugby player .
+
+
+11.[Danilo Lim] [Philippines]		[http://dbpedia.org/resource/Danilo_Lim,http://dbpedia.org/resource/Philippines]
+[x] Danilo Lim was born on June 2 , 1955 , on Solano , Nueva Vizcaya , Philippines .
+
+
+12.[Drian Francisco] [Philippines]		[http://dbpedia.org/resource/Drian_Francisco,http://dbpedia.org/resource/Philippines]
+[x] Adrian Francisco -LRB- born November 10 , 1982 in Sablayan , Occidental Mindoro , Philippines -RRB- , more commonly known as Drian Francisco , is a Filipino professional boxer .
+
+
+13.[Tevita Vaikona] [Tonga]		[http://dbpedia.org/resource/Tevita_Vaikona,http://dbpedia.org/resource/Tonga]
+[x] Tevita Vaikona -LRB- born Sunday 18 August 1974 in Tonga -RRB- is a professional rugby footballer , a powerful winger who enjoyed massive success in rugby league and picked up many honors before switching codes to rugby union where he was also hugely successful .
+
+
+14.[Iheanyi Uwaezuoke] [Lagos]		[http://dbpedia.org/resource/Iheanyi_Uwaezuoke,http://dbpedia.org/resource/Lagos]
+[x] Iheanyi Uwaezuoke -LRB- pronounced e-HaN-yee ' ` uh-WAH-ee-ZOO-o-KAY -RRB- -LRB- born July 24 , 1973 in Lagos , Nigeria -RRB- is a former American football wide receiver for the San Francisco 49ers , the Miami Dolphins , the Detroit Lions , and the Carolina Panthers of the National Football League .
+
+
+15.[Carlos Condell] [Chile]		[http://dbpedia.org/resource/Carlos_Condell,http://dbpedia.org/resource/Chile]
+[x] Carlos Condell was born August 14 , 1843 in Valparaíso , Chile .
+
+
+16.[Elías Viñoles] [Buenos Aires]		[http://dbpedia.org/resource/El%C3%ADas_Vi%C3%B1oles,http://dbpedia.org/resource/Buenos_Aires]
+[x] Raúl Elías Viñoles -LRB- born October 21 , 1988 , in Buenos Aires , Argentina -RRB- is a Clarin Awarded Argentine actor .
+
+
+17.[Mari Alkatiri] [Dili]		[http://dbpedia.org/resource/Mari_Alkatiri,http://dbpedia.org/resource/Dili]
+[o] After violence spread to other areas of Dili , Prime Minister Mari Alkatiri requested that the F-FDTL help restore order .
+
+
+18.[Christopher W.S. Ross] [Quito]		[http://dbpedia.org/resource/Christopher_W.S._Ross,http://dbpedia.org/resource/Quito]
+[x] Out of the box may also refer to : Christopher W.S. Ross -LRB- born March 3 , 1943 in Quito , Ecuador -RRB- is a United States State Department official and former United States Ambassador to Algeria and Syria .
+
+
+19.[David Kotei] [Ghana]		[http://dbpedia.org/resource/David_Kotei,http://dbpedia.org/resource/Ghana]
+[x] David Kotei -LRB- also spelled ` Kotey ' -RRB- born on December 7 , 1950 in Accra , Ghana , was a world featherweight boxing champion between 1975 and 1976 and was also the first Ghanaian professional boxer to win a world title .
+
+
+20.[Bright Allotey] [Accra]		[http://dbpedia.org/resource/Bright_Allotey,http://dbpedia.org/resource/Accra]
+[x] Bright Allotey -LRB- born 14 September 1991 in Accra -RRB- is a Ghanaian international footballer who plays as a defender for Great Olympics .
+
+
+
+
+
+################################ http://dbpedia.org/ontology/starring #################################
+
+
+1.[The Clock] [Judy Garland]		[http://dbpedia.org/resource/The_Clock_%28film%29,http://dbpedia.org/resource/Judy_Garland]
+[x] He played a milk cart driver who gives lessons in marriage to Judy Garland and Robert Walker in the 1945 film , The Clock , while Lucille played his wife .
+
+
+2.[All at No 20] [Maureen Lipman]		[http://dbpedia.org/resource/All_at_No_20,http://dbpedia.org/resource/Maureen_Lipman]
+[o] He wrote the first series of the Thames TV sitcom All At No 20 for Maureen Lipman , and created and wrote two series of the love triangle sitcom Square Deal for LWT .
+
+
+3.[A Change of Seasons] [Shirley MacLaine]		[http://dbpedia.org/resource/A_Change_of_Seasons_%28film%29,http://dbpedia.org/resource/Shirley_MacLaine]
+[x] Together with A Change of Seasons , the film was one of two 1980 20th Century Fox releases starring Shirley Maclaine that dealt with the subject of marital infidelity .
+
+
+4.[The Thief of Paris] [Jean-Paul Belmondo]		[http://dbpedia.org/resource/The_Thief_of_Paris,http://dbpedia.org/resource/Jean-Paul_Belmondo]
+[x] Wallonia commonly refers to : Wallonia may also refer to : The Thief of Paris -LRB- Le voleur -RRB- is a 1967 French film directed by Louis Malle and starring Jean-Paul Belmondo as a professional thief -LRB- Georges Randal -RRB- at the turn of the century in Paris .
+
+
+5.[The Killer] [Chow Yun-fat]		[http://dbpedia.org/resource/The_Killer_%281989_film%29,http://dbpedia.org/resource/Chow_Yun-fat]
+[o] Subsequent collaborations with Woo included the role of Ken in A Better Tomorrow 2 in 1987 , police officer Danny Lee 's murdered partner in The Killer in 1989 , and the strict adoptive father of Chow Yun-fat , Leslie Cheung and Cherie Chung in Once a Thief in 1991 .
+
+
+6.[Letter from an Unknown Woman] [Joan Fontaine]		[http://dbpedia.org/resource/Letter_from_an_Unknown_Woman_%281948_film%29,http://dbpedia.org/resource/Joan_Fontaine]
+[x] In 1948 appeared in Letter from an Unknown Woman starring Joan Fontaine .
+
+
+7.[Better Halves] [Oliver Hardy]		[http://dbpedia.org/resource/Better_Halves_%28film%29,http://dbpedia.org/resource/Oliver_Hardy]
+[x] Better Halves is a 1916 film featuring Oliver Hardy .
+
+
+8.[One Hour with You] [Maurice Chevalier]		[http://dbpedia.org/resource/One_Hour_with_You,http://dbpedia.org/resource/Maurice_Chevalier]
+[x] Cukor was then assigned to One Hour With You -LRB- 1932 -RRB- , an operetta with Maurice Chevalier and Jeanette MacDonald , when original director Ernst Lubitsch opted to concentrate on producing the film instead .
+
+
+9.[Sensitive Skin] [Joanna Lumley]		[http://dbpedia.org/resource/Sensitive_Skin_%28TV_series%29,http://dbpedia.org/resource/Joanna_Lumley]
+[x] She appeared as Lizzie in Babycow Production 's Sensitive Skin in 2005 and 2007 alongside Joanna Lumley .
+
+
+10.[Ski Party] [Dwayne Hickman]		[http://dbpedia.org/resource/Ski_Party,http://dbpedia.org/resource/Dwayne_Hickman]
+[x] The 1965 movie Ski Party -LRB- with Dwayne Hickman , Yvonne Craig , Lesley Gore and James Brown -RRB- is also notable for employing many of the same actors and schticks , only transplanted to a ski resort in the Sawtooth National Forest .
+
+
+11.[Blue Velvet] [Kyle MacLachlan]		[http://dbpedia.org/resource/Blue_Velvet_%28film%29,http://dbpedia.org/resource/Kyle_MacLachlan]
+[x] Developing from ideas that Lynch had had since 1973 , the resulting film , Blue Velvet , was set in the fictional town of Lumberton , USA , and revolves around a college student named Jeffrey Beaumont -LRB- Kyle MacLachlan -RRB- , who finds a severed ear in a field .
+
+
+12.[Mr. Skeffington] [Claude Rains]		[http://dbpedia.org/resource/Mr._Skeffington,http://dbpedia.org/resource/Claude_Rains]
+[x] Before that he was filmed in his best-known screen role in Mr. Skeffington -LRB- 1944 -RRB- as Fanny Trellis ' brother Trippy , whose theft to pay off his gambling debts forces her to marry the eponymous lead character played by Claude Rains .
+
+
+13.[Trail of the Pink Panther] [Joanna Lumley]		[http://dbpedia.org/resource/Trail_of_the_Pink_Panther,http://dbpedia.org/resource/Joanna_Lumley]
+[x] In Trail of the Pink Panther , Joanna Lumley had been a TV investigative reporter .
+
+
+14.[Seven Men from Now] [Randolph Scott]		[http://dbpedia.org/resource/Seven_Men_from_Now,http://dbpedia.org/resource/Randolph_Scott]
+[o] Its best-known non-Wayne production was the highly acclaimed Seven Men From Now -LRB- 1956 -RRB- which started the classic collaboration between director Budd Boetticher and star Randolph Scott .
+
+
+15.[For Me and My Gal] [Judy Garland]		[http://dbpedia.org/resource/For_Me_and_My_Gal_%28film%29,http://dbpedia.org/resource/Judy_Garland]
+[x] For Me and My Gal marked the first real `` adult '' role for the nineteen-year-old Judy Garland , who had played juvenile parts until then , many of them opposite Mickey Rooney .
+
+
+16.[Cradle 2 the Grave] [DMX]		[http://dbpedia.org/resource/Cradle_2_the_Grave,http://dbpedia.org/resource/DMX_%28rapper%29]
+[x] Grease continued his work as a composer in on the 2003 box-office hit Cradle 2 the Grave , starring Jet Li , DMX , Gabrielle Union , and Anthony Anderson , as well as 2004 's Never Die Alone .
+
+
+17.[The Man Who Fell to Earth] [David Bowie]		[http://dbpedia.org/resource/The_Man_Who_Fell_to_Earth_%28film%29,http://dbpedia.org/resource/David_Bowie]
+[o] Albert Nelson is an American-born actor who appeared in the 1976 David Bowie film The Man Who Fell to Earth as well the horror movie The Prophecy .
+
+
+18.[Kisses for My President] [Fred MacMurray]		[http://dbpedia.org/resource/Kisses_for_My_President,http://dbpedia.org/resource/Fred_MacMurray]
+[x] Bernhardt produced and directed his last Hollywood picture Kisses for My President -LRB- 1964 -RRB- about the nation 's first female Chief Executive starring Polly Bergen and Fred MacMurray .
+
+
+19.[The River] [David Essex]		[http://dbpedia.org/resource/The_River_%28TV_series%29,http://dbpedia.org/resource/David_Essex]
+[x] He also appeared as deputy lock keeper Tom Pike in the 1989 BBC TV comedy The River with David Essex .
+
+
+20.[Return to Oz] [Fairuza Balk]		[http://dbpedia.org/resource/Return_to_Oz,http://dbpedia.org/resource/Fairuza_Balk]
+[x] Elements from Ozma of Oz and the previous novel , The Marvelous Land of Oz , were incorporated into the 1985 film Return to Oz , featuring Fairuza Balk as Dorothy .
+
+
+
+
+
+################################ http://dbpedia.org/ontology/isPartOf #################################
+
+
+1.[Mavčiče] [Kranj]		[http://dbpedia.org/resource/Mav%C4%8Di%C4%8De,http://dbpedia.org/resource/Kranj]
+[x] Mavčiče is a village on the right bank of the River Sava in the Kranj Municipality in the Upper Carniola region of Slovenia .
+
+
+2.[Al Naslah] [Ras al-Khaimah]		[http://dbpedia.org/resource/Al_Naslah,http://dbpedia.org/resource/Ras_al-Khaimah]
+[x] ` Al Naslah is the name of a settlement in Ras al-Khaimah .
+
+
+3.[Ruhr] [North Rhine-Westphalia]		[http://dbpedia.org/resource/Ruhr,http://dbpedia.org/resource/North_Rhine-Westphalia]
+[o] FC Mülheim is a German association football club based in Mülheim an der Ruhr , North Rhine-Westphalia .
+
+
+4.[Jimbaran] [Bali]		[http://dbpedia.org/resource/Jimbaran,http://dbpedia.org/resource/Bali]
+[o] Bombs exploded at two sites in Jimbaran Beach Resort and in Kuta 30 km -LRB- 19 miles -RRB- away , both in south Bali .
+
+
+5.[Srednje Bitnje] [Kranj]		[http://dbpedia.org/resource/Srednje_Bitnje,http://dbpedia.org/resource/Kranj]
+[x] Srednje Bitnje is a village south of Kranj in the Upper Carniola region of Slovenia .
+
+
+6.[Menggatal] [Sabah]		[http://dbpedia.org/resource/Menggatal,http://dbpedia.org/resource/Sabah]
+[x] A building was planned to be built in Menggatal , Sabah , but the school lost the land the new building was to build on due to the lost of the ruling party Barisan Nasional to the Parti Bersatu Sabah in the 1985 Sabah state election .
+
+
+7.[Bukovci] [Busovača]		[http://dbpedia.org/resource/Bukovci,http://dbpedia.org/resource/Busova%C4%8Da]
+[x] Bukovci is a village in the municipality of Busovača , Bosnia and Herzegovina .
+
+
+8.[Camp Androscoggin] [Maine]		[http://dbpedia.org/resource/Camp_Androscoggin,http://dbpedia.org/resource/Maine]
+[x] Camp Androscoggin is an all-boys sports camp in Wayne , Maine .
+
+
+9.[Zuuk] [Epe]		[http://dbpedia.org/resource/Zuuk,http://dbpedia.org/resource/Epe]
+[x] Zuuk is a hamlet in the Netherlands , south of Zwolle , in the province of Gelderland in the municipality of Epe .
+
+
+10.[University Circle] [Ohio]		[http://dbpedia.org/resource/University_Circle,http://dbpedia.org/resource/Ohio]
+[x] Chris Ronayne -LRB- born 1968 -RRB- is the President of University Circle Inc. in Cleveland , Ohio , a community development corporation responsible for the growth of the University Circle with a focus on health care , education , and arts & culture .
+
+
+11.[Province of Frosinone] [Lazio]		[http://dbpedia.org/resource/Province_of_Frosinone,http://dbpedia.org/resource/Lazio]
+[x] Atina is a town and comune in the province of Frosinone , Lazio region of central Italy .
+
+
+12.[Scarborough , Maine] [Maine]		[http://dbpedia.org/resource/Scarborough_%28CDP%29,_Maine,http://dbpedia.org/resource/Maine]
+[x] Hannaford is an American supermarket chain based in Scarborough , Maine .
+
+
+13.[Łosice County] [Masovian Voivodeship]		[http://dbpedia.org/resource/%C5%81osice_County,http://dbpedia.org/resource/Masovian_Voivodeship]
+[x] Gmina Olszanka is a rural gmina -LRB- administrative district -RRB- in Łosice County , Masovian Voivodeship , in east-central Poland .
+
+
+14.[Mlače] [Slovenske Konjice]		[http://dbpedia.org/resource/Mla%C4%8De,http://dbpedia.org/resource/Slovenske_Konjice]
+[x] Mlače is a settlement on the left bank of the river Dravinja to the east of Loče in the Slovenske Konjice municipality in eastern Slovenia .
+
+
+15.[Galantiči] [Koper]		[http://dbpedia.org/resource/Galanti%C4%8Di,http://dbpedia.org/resource/Koper]
+[x] Galantiči is a small settlement south of Kubed in the Koper Municipality in the Littoral region of Slovenia .
+
+
+16.[Yinas] [Ras al-Khaimah]		[http://dbpedia.org/resource/Yinas,http://dbpedia.org/resource/Ras_al-Khaimah]
+[x] There were two secondary state highways in Washington numbered 1F : Yinas is the name of a settlement in Ras al-Khaimah .
+
+
+17.[Cerej] [Koper]		[http://dbpedia.org/resource/Cerej,http://dbpedia.org/resource/Koper]
+[x] Cerej -LRB- Cerei -RRB- is a settlement next to Hrvatini in the Koper Municipality in the Littoral region of Slovenia , right on the border with Italy .
+
+
+18.[Cleveland] [Ohio]		[http://dbpedia.org/resource/Cleveland,http://dbpedia.org/resource/Ohio]
+[x] Banks lives in Cleveland , Ohio .
+
+
+19.[Brunswick , Maine] [Maine]		[http://dbpedia.org/resource/Brunswick_%28CDP%29,_Maine,http://dbpedia.org/resource/Maine]
+[x] At the time she was living in Brunswick , Maine .
+
+
+20.[Konstancin-Jeziorna] [Masovian Voivodeship]		[http://dbpedia.org/resource/Konstancin-Jeziorna,http://dbpedia.org/resource/Masovian_Voivodeship]
+[x] Borowina a -LRB- English : mud -RRB- is a village in the administrative district of Gmina Konstancin-Jeziorna , within Piaseczno County , Masovian Voivodeship , in east-central Poland .
+
+
+
+
+
+################################ http://dbpedia.org/ontology/occupation #################################
+
+
+1.[Lionel Abelanski] [Actor]		[http://dbpedia.org/resource/Lionel_Abelanski,http://dbpedia.org/resource/Actor]
+[x] Lionel Abelanski -LRB- born October 22 , 1964 -RRB- is a French actor .
+
+
+2.[Cotter Smith] [Actor]		[http://dbpedia.org/resource/Cotter_Smith,http://dbpedia.org/resource/Actor]
+[x] Actor Cotter Smith portrays McGuire in the one-man show .
+
+
+3.[Song Seung-heon] [Actor]		[http://dbpedia.org/resource/Song_Seung-heon,http://dbpedia.org/resource/Actor]
+[x] Le Mesnil-Simon can refer to : Song Seung-heon -LRB- 송승헌 ; born October 5 , 1976 -RRB- is a South Korean model and actor .
+
+
+4.[Kulbhushan Kharbanda] [Actor]		[http://dbpedia.org/resource/Kulbhushan_Kharbanda,http://dbpedia.org/resource/Actor]
+[x] Famous actor Kulbhushan Kharbanda acted in the play .
+
+
+5.[William Garwood] [Actor]		[http://dbpedia.org/resource/William_Garwood,http://dbpedia.org/resource/Actor]
+[x] Aoki made her film debut in the Majestic film studios release The Oath of Tsuru San in 1913 opposite actor William Garwood .
+
+
+6.[Silambarasan Rajendar] [Actor]		[http://dbpedia.org/resource/Silambarasan_Rajendar,http://dbpedia.org/resource/Actor]
+[o] In November 2009 , Varalaxmi Sarathkumar , daughter of actor Sarath Kumar , who will debut in Podaa Podi alongside Silambarasan Rajendar , was reportedly roped in for the role .
+
+
+7.[Hari Rhodes] [Actor]		[http://dbpedia.org/resource/Hari_Rhodes,http://dbpedia.org/resource/Actor]
+[x] Hari Rhodes -LRB- April 10 , 1932 -- January 15 , 1992 -RRB- was an American author and actor whose career spanned three decades beginning around 1960 .
+
+
+8.[Olivia Olson] [Actor]		[http://dbpedia.org/resource/Olivia_Olson,http://dbpedia.org/resource/Actor]
+[o] Martin Olson 's brother , Thomas Olson , is a well-known comic film and stage actor , and his daughter , Olivia Olson , is a singer-songwriter , who starred and sang in the British comedy film Love Actually and plays Vanessa on Disney 's Phineas and Ferb .
+
+
+9.[Ramsay Gilderdale] [Actor]		[http://dbpedia.org/resource/Ramsay_Gilderdale,http://dbpedia.org/resource/Actor]
+[x] Ramsay Gilderdale -LRB- born 5 August 1962 -RRB- is an English actor , who played Guy of Gisbourne in BBC comedy Maid Marian and Her Merry Men .
+
+
+10.[William A. Wellman] [Actor]		[http://dbpedia.org/resource/William_A._Wellman,http://dbpedia.org/resource/Actor]
+[o] It was also nominated for Best Picture , Best Director -LRB- William A. Wellman -RRB- , Best Film Editing -LRB- John D. Dunning -RRB- , and Best Actor in a Supporting Role -LRB- James Whitmore -RRB- .
+
+
+11.[Jonathan Adams] [Actor]		[http://dbpedia.org/resource/Jonathan_Adams_%28American_actor%29,http://dbpedia.org/resource/Actor]
+[x] Jonathan Adams -LRB- 14 February 1931 -- 13 June 2005 -RRB- was an English actor , born in Northampton , England .
+
+
+12.[Bree Sharp] [Actor]		[http://dbpedia.org/resource/Bree_Sharp,http://dbpedia.org/resource/Actor]
+[o] `` David Duchovny '' is a song recorded by Bree Sharp about the titular actor .
+
+
+13.[Shweta Tiwari] [Actor]		[http://dbpedia.org/resource/Shweta_Tiwari,http://dbpedia.org/resource/Actor]
+[x] Raja Chaudhary is a Bhojpuri film actor and producer , known more famously as a participant of Bigg Boss 2 , the Indian version of the British reality TV show Big Brother , and also as the estranged husband of television actress Shweta Tiwari .
+
+
+14.[Adam Gregory] [Actor]		[http://dbpedia.org/resource/Adam_Gregory,http://dbpedia.org/resource/Actor]
+[x] Adam Gregory -LRB- born July 12 , 1985 in Edmonton , Alberta -RRB- is a country music singer and actor .
+
+
+15.[Valentina Cervi] [Actor]		[http://dbpedia.org/resource/Valentina_Cervi,http://dbpedia.org/resource/Actor]
+[o] The 1997 film Artemisia , directed by Agnès Merlet and starring Valentina Cervi , the role of Agostino Tassi is played by Serbian actor Miki Manojlovic .
+
+
+16.[Chad Ferrin] [Actor]		[http://dbpedia.org/resource/Chad_Ferrin,http://dbpedia.org/resource/Actor]
+[x] Chad Ferrin -LRB- born March 23 , 1973 in Edina , Minnesota -RRB- is a low-budget horror director , actor , and screenwriter .
+
+
+17.[Bent Vejlby] [Actor]		[http://dbpedia.org/resource/Bent_Vejlby,http://dbpedia.org/resource/Actor]
+[x] Bent Vejlby -LRB- born 20 March 1924 -RRB- is a Danish film actor and school teacher .
+
+
+18.[Fess Parker] [Actor]		[http://dbpedia.org/resource/Fess_Parker,http://dbpedia.org/resource/Actor]
+[x] Actor Fess Parker , best known for his 1950s portrayals of Davy Crockett for Walt Disney .
+
+
+19.[Nicholas Courtney] [Actor]		[http://dbpedia.org/resource/Nicholas_Courtney,http://dbpedia.org/resource/Actor]
+[x] He has also recently appeared on BBC 7 in the role of Professor Edward Dunning opposite fellow Doctor Who actor Nicholas Courtney in The Scarifyers audio series , from Cosmic Hobo Productions .
+
+
+20.[Piyush Mishra] [Actor]		[http://dbpedia.org/resource/Piyush_Mishra,http://dbpedia.org/resource/Actor]
+[x] After his graduation from NSD in 1986 , Piyush Mishra started his career as a theater actor in Delhi , and in 1990 , helped start the theater group Act One , with founder-director NK Sharma and stage actors like Manoj Bajpai , Gajraj Rao and Ashish Vidyarthi .
+
+
+
+
+
+################################ http://dbpedia.org/ontology/deathPlace #################################
+
+
+1.[Eleftherios Venizelos] [Paris]		[http://dbpedia.org/resource/Eleftherios_Venizelos,http://dbpedia.org/resource/Paris]
+[o] Hence , during the discussions of the Paris Peace Conference as Boghos Nubar Pasha claimed to pursue good relations with the Armenians , Eleftherios Venizelos persisted on preserving affirmative contacts with the Greeks .
+
+
+2.[William Gordon] [Leeds]		[http://dbpedia.org/resource/William_Gordon_%28Bishop_of_Leeds%29,http://dbpedia.org/resource/Leeds]
+[o] On June 7 , 1911 , Cowgill was appointed as 3rd Bishop of Leeds , where he succeeded William Gordon who has died in office .
+
+
+3.[Izzat Darwaza] [Syria]		[http://dbpedia.org/resource/Izzat_Darwaza,http://dbpedia.org/resource/Syria]
+[o] He joined the Istiqlal -LRB- Independence -RRB- Party -- which promoted Arab nationalism and had counterparts in Syria and Iraq -- along with Izzat Darwaza and Awni Abd al-Hadi when it was founded in 1932 .
+
+
+4.[Horst Kaubisch] [Lebus]		[http://dbpedia.org/resource/Horst_Kaubisch,http://dbpedia.org/resource/Lebus]
+[o] Horst Kaubisch was killed on 12 February 1945 , after being hit by Soviet flak near Lebus .
+
+
+5.[Arnold de Lantins] [Rome]		[http://dbpedia.org/resource/Arnold_de_Lantins,http://dbpedia.org/resource/Rome]
+[o] In the mid 1420s he visited Rome , moving there in 1431 , where he was employed in the papal chapel as a singer and probably as a composer as well ; he was in the choir at the same time as composers Arnold de Lantins and Guillaume Dufay .
+
+
+6.[Saint Fina] [San Gimignano]		[http://dbpedia.org/resource/Saint_Fina,http://dbpedia.org/resource/San_Gimignano]
+[o] For this reason the people of San Gimignano call them `` The Saint Fina violets '' from San Gimignano 's people .
+
+
+7.[Tallulah Bankhead] [New York City]		[http://dbpedia.org/resource/Tallulah_Bankhead,http://dbpedia.org/resource/New_York_City]
+[o] Among them were New York City Mayor Fiorello La Guardia , columnist Franklin Pierce Adams , actor-director George M. Cohan , playwright-director George S. Kaufman , New York World editor Herbert Bayard Swope , columnist Walter Winchell and actress Tallulah Bankhead .
+
+
+8.[Francisco Xavier de Luna Pizarro] [Peru]		[http://dbpedia.org/resource/Francisco_Xavier_de_Luna_Pizarro,http://dbpedia.org/resource/Peru]
+[o] Francisco Xavier de Luna Pizarro -LRB- November 3 , 1780 -- February 2 , 1855 -RRB- , a Peruvian priest and politician , was briefly Interim President of Peru twice in 1822 and 1833 .
+
+
+9.[Pieter Gallis] [Hoorn]		[http://dbpedia.org/resource/Pieter_Gallis,http://dbpedia.org/resource/Hoorn]
+[x] Pieter Gallis -LRB- 1633 , Enkhuizen -- 1697 , Hoorn -RRB- , was a Dutch Golden Age painter .
+
+
+10.[Pope Alexander VI] [Rome]		[http://dbpedia.org/resource/Pope_Alexander_VI,http://dbpedia.org/resource/Rome]
+[o] After some other battle deeds , Prospero , who had joined Cardinal Giuliano della Rovere 's party , was imprisoned in Castel Sant ` Angelo -LRB- Rome -RRB- by Pope Alexander VI .
+
+
+11.[Manuel Tinio] [Philippines]		[http://dbpedia.org/resource/Manuel_Tinio,http://dbpedia.org/resource/Philippines]
+[o] Lewis Gleeck wrote of Manuel Tinio as `` the supreme example of caciquism in the Philippines '' and cited the case of one of Tinio 's most prominent political leaders who had shot and killed a man in front of many witnesses .
+
+
+12.[Joseph De Piro] [Malta]		[http://dbpedia.org/resource/Joseph_De_Piro,http://dbpedia.org/resource/Malta]
+[o] St. Paul 's Missionary College -LRB- abbreviated SPMC -RRB- is a secondary school in Malta founded by Joseph De Piro .
+
+
+13.[Madhav Sadashiv Golwalkar] [India]		[http://dbpedia.org/resource/Madhav_Sadashiv_Golwalkar,http://dbpedia.org/resource/India]
+[o] Madhav Sadashiv Golwalkar -LRB- माधव सदाशिव गोळवलकर -RRB- -LRB- February 19 , 1906 - June 5 , 1973 -RRB- , popularly known as Pujyaniya Guruji , was the second `` Sarsanghchalak '' -LRB- supreme chief -RRB- of the Rashtriya Swayamsevak Sangh a social and cultural organization of India .
+
+
+14.[Jorge Alessandri] [Chile]		[http://dbpedia.org/resource/Jorge_Alessandri,http://dbpedia.org/resource/Chile]
+[o] Among his descendants there are two presidents of Chile , Arturo Alessandri -LRB- 1920 -- 1925 and 1932 -- 1938 -RRB- and Jorge Alessandri -LRB- 1958 -- 1964 -RRB- .
+
+
+15.[Dirk Crabeth] [Gouda]		[http://dbpedia.org/resource/Dirk_Crabeth,http://dbpedia.org/resource/Gouda]
+[o] He also made drawings on parchment of the famous stained glass windows by the brothers Dirk Crabeth and Wouter Crabeth I of the Janskerk -LRB- Gouda -RRB- .
+
+
+16.[Fernando Belaúnde Terry] [Lima]		[http://dbpedia.org/resource/Fernando_Bela%C3%BAnde_Terry,http://dbpedia.org/resource/Lima]
+[o] In 1981 , the government of Fernando Belaúnde Terry merged the three Sanitation Companies of Lima , Arequipa , and Trujillo and the DGOS in a single state holding company , the National Service of Water and Sewage Supply -LRB- SENAPA -RRB- .
+
+
+17.[Odilon Redon] [Paris]		[http://dbpedia.org/resource/Odilon_Redon,http://dbpedia.org/resource/Paris]
+[o] He frequented the Paris salons , where he met celebrities such as Henri Fantin-Latour , Odilon Redon , and Vincent d'Indy .
+
+
+18.[Francis Solanus] [Peru]		[http://dbpedia.org/resource/Francis_Solanus,http://dbpedia.org/resource/Peru]
+[o] In 1588 -- 89 St. Francis Solanus crossed the Chaco wilderness from Peru and stopped at Asunción , but gave no attention to the Guaraní .
+
+
+19.[Silvio Amadio] [Rome]		[http://dbpedia.org/resource/Silvio_Amadio,http://dbpedia.org/resource/Rome]
+[o] Assassination in Rome -LRB- Assassinio made in Italy -RRB- is a 1965 Italian thriller film of the giallo genre directed by Silvio Amadio .
+
+
+20.[Valentín Alsina] [Buenos Aires]		[http://dbpedia.org/resource/Valent%C3%ADn_Alsina,http://dbpedia.org/resource/Buenos_Aires]
+[o] Governor Valentín Alsina was forced by his own allies to left office given his instransigent position towards the reintegration of Buenos Aires to the Confederation .
+
+
+
+
+
+################################ http://dbpedia.org/ontology/formerTeam #################################
+
+
+1.[Jason Arnott] [New Jersey Devils]		[http://dbpedia.org/resource/Jason_Arnott,http://dbpedia.org/resource/New_Jersey_Devils]
+[o] Edmonton started off the season pretty slow , and on January 4 , when they had a record of 11 -- 22 -- 9 , the Oilers would trade Jason Arnott and Bryan Muir to the New Jersey Devils in exchange for Bill Guerin and Valeri Zelepukin .
+
+
+2.[Lee Vickers] [Washington Redskins]		[http://dbpedia.org/resource/Lee_Vickers,http://dbpedia.org/resource/Washington_Redskins]
+[o] Lee Vickers , alumni , plays for the Washington Redskins .
+
+
+3.[Matt Niskanen] [Dallas Stars]		[http://dbpedia.org/resource/Matt_Niskanen,http://dbpedia.org/resource/Dallas_Stars]
+[o] Cote was suspended for three games after he delivered a high head shot to Dallas Stars defenceman Matt Niskanen late in the third period on December 1 , 2007 .
+
+
+4.[Raghib Ismail] [Toronto Argonauts]		[http://dbpedia.org/resource/Raghib_Ismail,http://dbpedia.org/resource/Toronto_Argonauts]
+[o] Maryland was the first overall pick in the 1991 NFL Draft , by the Dallas Cowboys , after the initial No. 1 prospect Raghib Ismail decided to sign with the Toronto Argonauts .
+
+
+5.[Dwain Anderson] [Cleveland Indians]		[http://dbpedia.org/resource/Dwain_Anderson,http://dbpedia.org/resource/Cleveland_Indians]
+[x] In 1974 he was traded to the Cleveland Indians for Dwain Anderson , but never played a Major League game for the Indians .
+
+
+6.[Rick Auerbach] [Seattle Mariners]		[http://dbpedia.org/resource/Rick_Auerbach,http://dbpedia.org/resource/Seattle_Mariners]
+[o] After three seasons in Texas , Zisk was traded to the Seattle Mariners with Brian Allard , Rick Auerbach , Ken Clay , Steve Finch and Jerry Don Gleaton for Larry Cox , Rick Honeycutt , Willie Horton , Mario Mendoza and Leon Roberts .
+
+
+7.[Bruce Smith] [Washington Redskins]		[http://dbpedia.org/resource/Bruce_Smith_%28defensive_end%29,http://dbpedia.org/resource/Washington_Redskins]
+[o] After five seasons with the Cowboys , new Washington Redskins owner Daniel Snyder pursued Sanders along with other high priced free agents Mark Carrier and Bruce Smith .
+
+
+8.[Reggie Leach] [Philadelphia Flyers]		[http://dbpedia.org/resource/Reggie_Leach,http://dbpedia.org/resource/Philadelphia_Flyers]
+[o] Kurri 's 19 goals in the 1985 post-season -LRB- 18 games played -RRB- tied an NHL record set by the Philadelphia Flyers ' Reggie Leach in the 1976 playoffs -LRB- 16 games played -RRB- .
+
+
+9.[Stéphane Quintal] [National Hockey League]		[http://dbpedia.org/resource/St%C3%A9phane_Quintal,http://dbpedia.org/resource/National_Hockey_League]
+[o] It features appearances by National Hockey League players Mike Ricci , Sean Avery , Vincent Lecavalier , Philippe Sauvé , Stéphane Quintal , Ian Laperrière and Pascal Dupuis .
+
+
+10.[Ricky Nattiel] [Denver Broncos]		[http://dbpedia.org/resource/Ricky_Nattiel,http://dbpedia.org/resource/Denver_Broncos]
+[x] Nattiel is the cousin of Ricky Nattiel , former standout wide receiver for the Florida Gators and the NFL 's Denver Broncos .
+
+
+11.[Lynn McGlothen] [Boston Red Sox]		[http://dbpedia.org/resource/Lynn_McGlothen,http://dbpedia.org/resource/Boston_Red_Sox]
+[x] Following his only season in the Cardinals organization , he was traded with Reggie Cleveland and Diego Segui to the Boston Red Sox for Lynn McGlothen , John Curtis and Mike Garman .
+
+
+12.[Jeff Niemann] [Tampa Bay Rays]		[http://dbpedia.org/resource/Jeff_Niemann,http://dbpedia.org/resource/Tampa_Bay_Rays]
+[o] One of his close friends and fellow teammates was Tampa Bay Rays starting pitcher Jeff Niemann .
+
+
+13.[Tom Ashworth] [Seattle Seahawks]		[http://dbpedia.org/resource/Tom_Ashworth,http://dbpedia.org/resource/Seattle_Seahawks]
+[o] Other free agency departures were André Davis -LRB- Buffalo Bills -RRB- , Christian Fauria -LRB- Washington Redskins -RRB- , Matt Chatham -LRB- New York Jets -RRB- , Tim Dwight -LRB- New York Jets -RRB- , Tom Ashworth -LRB- Seattle Seahawks -RRB- , and Michael Stone -LRB- Houston Texans -RRB- .
+
+
+14.[Lorne Chabot] [Montreal Canadiens]		[http://dbpedia.org/resource/Lorne_Chabot,http://dbpedia.org/resource/Montreal_Canadiens]
+[o] A major trade was a swap of goaltenders as Lorne Chabot was traded to the Montreal Canadiens for George Hainsworth .
+
+
+15.[Granny Hamner] [Philadelphia Phillies]		[http://dbpedia.org/resource/Granny_Hamner,http://dbpedia.org/resource/Philadelphia_Phillies]
+[o] His highlight of the season came on July 18 , when he pitched a three-hit shutout against the Philadelphia Phillies and Jim Konstanty , silencing a powerful lineup that included Richie Ashburn , Eddie Waitkus , Del Ennis , Stan Lopata , Willie Jones and Granny Hamner .
+
+
+16.[Glen Gorbous] [Cincinnati Reds]		[http://dbpedia.org/resource/Glen_Gorbous,http://dbpedia.org/resource/Cincinnati_Reds]
+[x] `` In 1957 , former Cincinnati Reds and Philadelphia Phillies outfielder Glen Gorbous , a native of Drumheller , Alberta set the current world record for longest throw of a baseball at 445 feet , 10 inches -LRB- 135.89 m -RRB- in Omaha , Nebraska .
+
+
+17.[Hank Bassen] [Pittsburgh Penguins]		[http://dbpedia.org/resource/Hank_Bassen,http://dbpedia.org/resource/Pittsburgh_Penguins]
+[o] On October 11 , 1967 , Jean Beliveau scored his 400th career goal on goaltender Hank Bassen of the Pittsburgh Penguins .
+
+
+18.[Enrique Romo] [Pittsburgh Pirates]		[http://dbpedia.org/resource/Enrique_Romo,http://dbpedia.org/resource/Pittsburgh_Pirates]
+[o] On December 5 , 1978 , the Mariners traded McMillan , along with Enrique Romo , and Rick Jones to the Pittsburgh Pirates in exchange for Odell Jones , Rafael Vásquez , and Mario Mendoza .
+
+
+19.[Jan Hlaváč] [New York Rangers]		[http://dbpedia.org/resource/Jan_Hlav%C3%A1%C4%8D,http://dbpedia.org/resource/New_York_Rangers]
+[o] Dvořák ended up on the New York Rangers , and the following season -LRB- 2000 -- 01 -RRB- , he scored a career-high 30 goals and 67 points playing on a line with fellow Czechs Petr Nedvěd and Jan Hlaváč .
+
+
+20.[Julius Hodge] [Milwaukee Bucks]		[http://dbpedia.org/resource/Julius_Hodge,http://dbpedia.org/resource/Milwaukee_Bucks]
+[o] On January 11 , 2007 , Earl Boykins , Julius Hodge and cash considerations were traded to the Milwaukee Bucks , in exchange for point guard Steve Blake .
+
+
+
+
+
+################################ http://dbpedia.org/ontology/previousWork #################################
+
+
+1.[The Singing] [The Crow]		[http://dbpedia.org/resource/The_Singing,http://dbpedia.org/resource/The_Crow_%28novel%29]
+[o] `` As a child , Tom began to echo the sounds around him , repeating accurately the crow of a rooster or the singing of a bird .
+
+
+2.[Year of the Gentleman] [Because of You]		[http://dbpedia.org/resource/Year_of_the_Gentleman,http://dbpedia.org/resource/Because_of_You_%28Ne-Yo_album%29]
+[x] The song became `` one of the most-played songs on urban radio stations across the U.S. '' Ne-Yo has released three studio albums : In My Own Words -LRB- 2006 -RRB- , Because of You -LRB- 2007 -RRB- , and Year of the Gentleman -LRB- 2008 -RRB- .
+
+
+3.[Watermark] [Left and Leaving]		[http://dbpedia.org/resource/Watermark_%28EP%29,http://dbpedia.org/resource/Left_and_Leaving]
+[o] Being relatively short for an EP , the disc does include the music video for the single `` Watermark '' -LRB- taken from 2000 's Left and Leaving -RRB- .
+
+
+4.[Live in Reykjavik] [Live in Glasgow]		[http://dbpedia.org/resource/Live_in_Reykjavik,http://dbpedia.org/resource/Live_in_Glasgow_%28Psychic_TV_album%29]
+[x] No. : TOPY 026 Last album = Live in Glasgow This album = Live in Reykjavik Next album = Live in Suisse Live in Reykjavik , released in 1987 by English group Psychic TV this record was edited through Genesis P-Orridge 's own record label , Temple Records .
+
+
+5.[10 Minutes] [Amazing]		[http://dbpedia.org/resource/10_Minutes_%28song%29,http://dbpedia.org/resource/Amazing_%28Inna_song%29]
+[o] Inna performed `` Sun is Up '' for the first time at the Romanian Music Awards 2010 , in Craiova , in a medley with `` Señorita '' , `` 10 Minutes '' and `` Amazing '' .
+
+
+6.[Main Gate] [2000]		[http://dbpedia.org/resource/Main_Gate_%28Casiopea_album%29,http://dbpedia.org/resource/2000]
+[o] Accordingly 2000 Marathas entered the fort through the main gate .
+
+
+7.[Beautiful People] [Champion]		[http://dbpedia.org/resource/Beautiful_People_%28Chris_Brown_song%29,http://dbpedia.org/resource/Champion_%28Chipmunk_song%29]
+[o] The team of Rhino and Christian Cage apparently disbanded with Cage going to main events and Rhino along with then TNA Women 's Champion Taylor Wilde starting a feud with The Beautiful People and Cute Kip shortly after Hard Justice .
+
+
+8.[Heart] [Dancing]		[http://dbpedia.org/resource/Heart_%28Elisa_album%29,http://dbpedia.org/resource/Dancing_%28album%29]
+[o] Around 400 people were afflicted with dancing mania and danced constantly for weeks , most of them eventually dying from heart attack , stroke or exhaustion .
+
+
+9.[Foghat] [Foghat]		[http://dbpedia.org/resource/Foghat_%281973_album%29,http://dbpedia.org/resource/Foghat_%281972_album%29]
+[o] Cartwright replaced original Foghat guitarist Rod Price in 1981 .
+
+
+10.[Cool Kids] [Kix]		[http://dbpedia.org/resource/Cool_Kids,http://dbpedia.org/resource/Kix_%28album%29]
+[o] Cool Kids is the second album released on Atlantic Records in 1983 by the glam metal band KIX .
+
+
+11.[The Process] [Last Rights]		[http://dbpedia.org/resource/The_Process_%28Skinny_Puppy_album%29,http://dbpedia.org/resource/Last_Rights_%28album%29]
+[o] Back and Forth Series 7 is an album of outtakes from Last Rights and The Process , released through cEvin Key 's Subconscious Communications in 2007 .
+
+
+12.[Genesis] [Three Sides Live]		[http://dbpedia.org/resource/Genesis_%28Genesis_album%29,http://dbpedia.org/resource/Three_Sides_Live]
+[o] Bruford also spent six months touring with Genesis in 1976 , recordings from which appeared on the Genesis live albums Seconds Out and Three Sides Live , as well as the theatrical release of Genesis : In Concert .
+
+
+13.[My Kinda Party] [Wide Open]		[http://dbpedia.org/resource/My_Kinda_Party,http://dbpedia.org/resource/Wide_Open_%28Jason_Aldean_album%29]
+[o] His discography comprises four studio albums -LRB- Jason Aldean , Relentless , Wide Open , and My Kinda Party -RRB- , and eleven singles .
+
+
+14.[True Stories] [Little Creatures]		[http://dbpedia.org/resource/True_Stories_%28Talking_Heads_album%29,http://dbpedia.org/resource/Little_Creatures_%28album%29]
+[o] The sound of Little Creatures and True Stories was much more American pop-rock , while Naked showed heavy African influence with polyrhythmic styles like those seen on Remain in Light .
+
+
+15.[Blonde on Blonde] [Highway 61 Revisited]		[http://dbpedia.org/resource/Blonde_on_Blonde,http://dbpedia.org/resource/Highway_61_Revisited]
+[o] Dylan 's new style of writing moved away from the urban sensibility and extended narratives that had characterized his most recent albums , Highway 61 Revisited and Blonde On Blonde , toward songs that were more intimate and which drew on many styles of traditional American music .
+
+
+16.[Enchanter] [Battleaxe]		[http://dbpedia.org/resource/Enchanter_%28novel%29,http://dbpedia.org/resource/Battleaxe_%28novel%29]
+[o] Of The Axis Trilogy Enchanter and StarMan won the 1996 Aurealis Fantasy division award and Battleaxe was nominated for the 1995 award .
+
+
+17.[Treasures] [Something Special]		[http://dbpedia.org/resource/Treasures_%28Dolly_Parton_album%29,http://dbpedia.org/resource/Something_Special_%28Dolly_Parton_album%29]
+[o] Gerstein later edited two Gemstone softcover books that were official tie-ins to the Walt Disney Treasures DVD collections : Disney Comics : 75 Years of Innovation -LRB- 2006 -RRB- and Uncle Scrooge : A Little Something Special -LRB- 2008 -RRB- .
+
+
+18.[Wings] [Mystery]		[http://dbpedia.org/resource/Wings_%28Live_song%29,http://dbpedia.org/resource/Mystery_%28Live_song%29]
+[o] Capcom allowed the Rockman team to continue , with the prerequisites of completing the port of Legendary Wings for the NES and Professional Baseball Murder Mystery as well .
+
+
+19.[Letting Go] [Lo-Pro]		[http://dbpedia.org/resource/Letting_Go_%28EP%29,http://dbpedia.org/resource/Lo-Pro_%28album%29]
+[o] By mid-2009 , he began working with Lo-Pro again to finish up , and tour in support of , their two releases , the Letting Go EP and The Beautiful Sounds of Revenge .
+
+
+20.[Streetlife Serenade] [Piano Man]		[http://dbpedia.org/resource/Streetlife_Serenade,http://dbpedia.org/resource/Piano_Man_%28album%29]
+[o] Also of note was his contribution to the John Cale album , Paris 1919 , and Billy Joel 's Piano Man and Streetlife Serenade albums .
+
+
+
+
+
+################################ http://dbpedia.org/ontology/subsequentWork #################################
+
+
+1.[Clementine] [I Am What I Am]		[http://dbpedia.org/resource/Clementine_%28Mark_Owen_song%29,http://dbpedia.org/resource/I_Am_What_I_Am_%28Mark_Owen_song%29]
+[o] Three singles were released from the album : `` Child '' , `` Clementine '' and `` I Am What I Am '' .
+
+
+2.[The Whole Story] [The Sensual World]		[http://dbpedia.org/resource/The_Whole_Story,http://dbpedia.org/resource/The_Sensual_World]
+[o] EMI has released a few collections of her videos , including The Single File , Hair of the Hound , The Whole Story , and The Sensual World , as well as an abridged concert video of her 1979 tour Live at Hammersmith Odeon .
+
+
+3.[High] [Lost in Space]		[http://dbpedia.org/resource/High_%28Lighthouse_Family_song%29,http://dbpedia.org/resource/Lost_in_Space_%28Lighthouse_Family_song%29]
+[o] At that same week , `` High '' was ten places higher than `` Lost in Space '' at # 29 .
+
+
+4.[4x4] [1983]		[http://dbpedia.org/resource/4x4_%28Casiopea_album%29,http://dbpedia.org/resource/1983]
+[o] The AWD -LRB- 4x4 -RRB- Eagle carried the 151 as standard equipment for 1981 , and carried it midway through the 1983 model year .
+
+
+5.[New York] [Caught Up]		[http://dbpedia.org/resource/New_York_%28Ja_Rule_song%29,http://dbpedia.org/resource/Caught_Up_%28Ja_Rule_song%29]
+[o] Albert worked as an actor in New York until the blacklisting caught up with him , he then turned to working as a temporary typist .
+
+
+6.[My Way] [Bedtime]		[http://dbpedia.org/resource/My_Way_%28Usher_song%29,http://dbpedia.org/resource/Bedtime_%28song%29]
+[o] `` Bedtime '' is the fourth and final single from Usher 's 1997 album My Way .
+
+
+7.[Seven Letters] [Alpha and Omega]		[http://dbpedia.org/resource/Seven_Letters_%28Tonus_Peregrinus_album%29,http://dbpedia.org/resource/Alpha_and_Omega_%28Tonus_Peregrinus_album%29]
+[o] TP -LRB- as they are also known -RRB- has recorded a number of CDs for Naxos , their first winning the Cannes Classical Award -LRB- Arvo Pärt 's Passio -RRB- , and two albums of Antony Pitts 's music for Hyperion - Seven Letters and Alpha and Omega .
+
+
+8.[Voyage] [Fly Away]		[http://dbpedia.org/resource/Voyage_%28Voyage_album%29,http://dbpedia.org/resource/Fly_Away_%28Voyage_album%29]
+[o] Fly Away is a 1978 album by the disco group , Voyage .
+
+
+9.[The First Chapter] [Children]		[http://dbpedia.org/resource/The_First_Chapter_%28album%29,http://dbpedia.org/resource/Children_%28The_Mission_album%29]
+[o] Bleak and somber imagery dominates throughout the first chapter , instilling images of poverty , despair and desolation affecting the children as well as their families .
+
+
+10.[Bigger & Blacker] [Never Scared]		[http://dbpedia.org/resource/Bigger_&_Blacker,http://dbpedia.org/resource/Never_Scared]
+[x] Rock later had two more HBO comedy specials : Bigger & Blacker in 1999 , and Never Scared in 2004 .
+
+
+11.[Friday Night Lights] [Friday Night Lights]		[http://dbpedia.org/resource/Friday_Night_Lights_%28film_soundtrack%29,http://dbpedia.org/resource/Friday_Night_Lights_%28television_soundtrack%29]
+[o] Articles related to the television series Friday Night Lights .
+
+
+12.[Argybargy] [East Side Story]		[http://dbpedia.org/resource/Argybargy,http://dbpedia.org/resource/East_Side_Story_%28Squeeze_album%29]
+[o] He played on the albums Argybargy and East Side Story , generally considered to be the band 's best by critics , as well as the darker and less acclaimed Sweets from a Stranger .
+
+
+13.[117] [Ride On]		[http://dbpedia.org/resource/117_%28album%29,http://dbpedia.org/resource/Ride_On_%28Izzy_Stradlin_album%29]
+[o] Izzy Stradlin and the JuJu Hounds records include JuJu Hounds , 117 degrees , Smoke , River , Ride On , On Down The Road , Live In Dublin and Pressure Drop .
+
+
+14.[Perfect Insanity] [Indestructible]		[http://dbpedia.org/resource/Perfect_Insanity,http://dbpedia.org/resource/Indestructible_%28Disturbed_song%29]
+[x] Disturbed released their previously free song `` Perfect Insanity '' on iTunes Store as a second single on May 6 , 2008 , and the album Indestructible become available for pre-order for the release date on June 3 , 2008 .
+
+
+15.[News of the World] [David Watts]		[http://dbpedia.org/resource/News_of_the_World_%28song%29,http://dbpedia.org/resource/David_Watts_%28song%29]
+[o] Foxton also took lead vocals on a few tracks , most notably the singles `` David Watts '' -LRB- a cover of a Kinks track -RRB- and `` News of the World '' , which was his own composition .
+
+
+16.[Alpha Scorpio] [Andra]		[http://dbpedia.org/resource/Alpha_Scorpio,http://dbpedia.org/resource/Andra]
+[x] There was also Alpha Scorpio and this led to Andra .
+
+
+17.[Behind the Front] [Bridging the Gap]		[http://dbpedia.org/resource/Behind_the_Front,http://dbpedia.org/resource/Bridging_the_Gap_%28Black_Eyed_Peas_album%29]
+[o] Kim became known as the Peas ' stand out vocalist and quickly assimilated into the roots of their progressive family tree -LCB- Clarify date = January 2011 -RCB- , contributing to numerous tracks on both Behind the Front and Bridging the Gap .
+
+
+18.[No Matter What] [Day After Day]		[http://dbpedia.org/resource/No_Matter_What_%28Badfinger_song%29,http://dbpedia.org/resource/Day_After_Day_%28song%29]
+[o] Badfinger enjoyed more major successes in the early 1970s with singles such as `` No Matter What , '' `` Day After Day , '' and `` Baby Blue '' .
+
+
+19.[Forever] [Dreamer]		[http://dbpedia.org/resource/Forever_%28Chris_Brown_song%29,http://dbpedia.org/resource/Dreamer_%28Chris_Brown_song%29]
+[o] In 2010 , the song was sampled for the song `` Stay Forever '' by Twin Cities-based Hip Hop Artist Mike Dreams ' , the finale track to his debut album Dreamer 's Poetry .
+
+
+20.[Appleseed] [Float]		[http://dbpedia.org/resource/Appleseed_%28EP%29,http://dbpedia.org/resource/Float_%28Aesop_Rock_album%29]
+[x] In this category belong only those articles that are about noble titles that were bestowed by : Appleseed is an EP by American hip hop artist Aesop Rock , the second of two self-released efforts preceding his Mush debut , Float -LRB- 2000 -RRB- .
+
+
+
+
+
+################################ http://dbpedia.org/ontology/hometown #################################
+
+
+1.[Yeah Yeah Yeahs] [New York City]		[http://dbpedia.org/resource/Yeah_Yeah_Yeahs,http://dbpedia.org/resource/New_York_City]
+[o] After working on a number of solo electronic projects and low-budget independent bands in the 90s , he moved to New York City in 2002 and began working with local artists such as TV On The Radio , Yeah Yeah Yeahs , and Liars .
+
+
+2.[The Sisters of Mercy] [Leeds]		[http://dbpedia.org/resource/The_Sisters_of_Mercy,http://dbpedia.org/resource/Leeds]
+[x] Merciful Release is a record label started by Andrew Eldritch , frontman with Leeds outfit The Sisters of Mercy .
+
+
+3.[Roddy Bottum] [San Francisco]		[http://dbpedia.org/resource/Roddy_Bottum,http://dbpedia.org/resource/San_Francisco]
+[o] Roddy Bottum -LRB- born Roswell Christopher Bottum III , 1 July 1963 in Los Angeles , California -RRB- , is an American musician , best known as the keyboardist for the San Francisco rock band Faith No More .
+
+
+4.[Euphoria] [Delhi]		[http://dbpedia.org/resource/Euphoria_%28Indian_band%29,http://dbpedia.org/resource/Delhi]
+[x] Euphoria -LRB- युफ़ोरिया -RRB- , is an Indian rock band from the city of Delhi , India .
+
+
+5.[Salil Chowdhury] [India]		[http://dbpedia.org/resource/Salil_Chowdhury,http://dbpedia.org/resource/India]
+[o] He is also the Trustee in South India for the Salil Chowdhury Foundation of Music , which is formed in the memory of Salil Chowdhury , one of the greatest Indian composers of popular music .
+
+
+6.[The Wallflowers] [Los Angeles]		[http://dbpedia.org/resource/The_Wallflowers,http://dbpedia.org/resource/Los_Angeles]
+[o] In 1990 Yanowitz moved to Los Angeles and became one of the founding members and original drummer of the Wallflowers .
+
+
+7.[Bomb Factory] [Tokyo]		[http://dbpedia.org/resource/Bomb_Factory_%28band%29,http://dbpedia.org/resource/Tokyo]
+[x] Mickey Thomas may refer to : Bomb Factory -LRB- ボム ・ ファクトリー -RRB- is a musical group from Tokyo , Japan with styles influenced by 70 's and 80 's hardcore punk , hard rock , and heavy metal music .
+
+
+8.[Ulhas Kashalkar] [India]		[http://dbpedia.org/resource/Ulhas_Kashalkar,http://dbpedia.org/resource/India]
+[o] Ulhas Kashalkar initially worked as a program executive at the Thane station of All India Radio .
+
+
+9.[Earshot] [Los Angeles]		[http://dbpedia.org/resource/Earshot,http://dbpedia.org/resource/Los_Angeles]
+[x] It was following the second gun battle when Bob Smith decided to leave for XERB , another border blaster located across the border in Tijuana , but within earshot of Los Angeles , California .
+
+
+10.[André Fleury] [Paris]		[http://dbpedia.org/resource/Andr%C3%A9_Fleury_%28organist%29,http://dbpedia.org/resource/Paris]
+[o] He continued his organ studies with André Fleury and Paul Delafosse , whom Cochereau succeeded as titular organist at St. Roch in Paris in 1942 .
+
+
+11.[Declino] [Italy]		[http://dbpedia.org/resource/Declino,http://dbpedia.org/resource/Italy]
+[x] Declino was a hardcore punk band based in Turin , Italy during the early 80 's .
+
+
+12.[Sea Hags] [San Francisco]		[http://dbpedia.org/resource/Sea_Hags,http://dbpedia.org/resource/San_Francisco]
+[x] `` Sea Hags was an American glam metal band from San Francisco , California .
+
+
+13.[Hellion] [Los Angeles]		[http://dbpedia.org/resource/Hellion_%28band%29,http://dbpedia.org/resource/Los_Angeles]
+[x] After winning the field day competition with the rest of the Hellions and the academic year ended , Hellion -LRB- Julian Keller -RRB- had invited the Hellion Squad to his home in Los Angeles for summer vacation .
+
+
+14.[Notorious MSG] [New York City]		[http://dbpedia.org/resource/Notorious_MSG,http://dbpedia.org/resource/New_York_City]
+[o] Notorious MSG is a performing trio of Chinese rappers founded in Chinatown , New York City who sing about their rise to fame and fortune and survival on the streets .
+
+
+15.[Tsubasa Imai] [Japan]		[http://dbpedia.org/resource/Tsubasa_Imai,http://dbpedia.org/resource/Japan]
+[o] Tsubasa Imai was born in Fujisawa , Kanagawa , Japan , on October 17 , 1981 .
+
+
+16.[When] [Oslo]		[http://dbpedia.org/resource/When_%28band%29,http://dbpedia.org/resource/Oslo]
+[o] Disha started to sing when she was seven in Oslo .
+
+
+17.[Yellow Magic Orchestra] [Japan]		[http://dbpedia.org/resource/Yellow_Magic_Orchestra,http://dbpedia.org/resource/Japan]
+[x] Band principal Philip Oakey takes issue with this description and will point out in interviews that the band has never stopped recording and performing since its formation in 1977 The band had collaborated with Japan 's Yellow Magic Orchestra prior to signing with EastWest .
+
+
+18.[Czech Philharmonic] [Czech Republic]		[http://dbpedia.org/resource/Czech_Philharmonic,http://dbpedia.org/resource/Czech_Republic]
+[o] He has been engaged in the Czech Republic at the Prague National Theater and National Theater in Brno , and he has worked as assistant conductor to Sir Charles Mackerras with the Czech Philharmonic on recordings of Leoš Janáček 's Kata Kabanova and Dvorak 's Rusalka .
+
+
+19.[The Plimsouls] [Los Angeles]		[http://dbpedia.org/resource/The_Plimsouls,http://dbpedia.org/resource/Los_Angeles]
+[o] Died Pretty recorded their third album , Every Brilliant Eye , in Los Angeles with Jeff Eyrich -LRB- The Gun Club , The Plimsouls -RRB- producing , it was released on Blue Mosque in April 1990 .
+
+
+20.[Zappa Plays Zappa] [Los Angeles]		[http://dbpedia.org/resource/Zappa_Plays_Zappa,http://dbpedia.org/resource/Los_Angeles]
+[o] When not touring with Zappa Plays Zappa Kime performs in a Monday night jam session in Los Angeles , CA at The Baked Potato jazz club .
+
+
+
+
+

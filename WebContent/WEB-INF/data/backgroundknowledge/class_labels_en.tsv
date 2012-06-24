@@ -1,0 +1,319 @@
+Company	company
+Animal	animal
+Athlete	athlete
+AustralianRulesFootballPlayer	Australian rules football player
+Person	person
+Governor	governor
+Software	software
+Single	single
+AdministrativeRegion	administrative region
+Building	building
+Royalty	royalty
+AutoRacingLeague	auto racing league
+ChristianBishop	Christian Bishop
+Cleric	cleric
+Weapon	weapon
+Device	device
+Asteroid	asteroid
+Cyclist	cyclist
+Species	species
+Tunnel	tunnel
+AnatomicalStructure	anatomical structure
+Stream	stream
+Station	station
+Aircraft	aircraft
+Fungus	fungus
+Election	Election
+Mammal	mammal
+Surname	surname
+Criminal	criminal
+Project	project
+Website	website
+Mountain	mountain
+Bridge	bridge
+AustralianFootballLeague	australian football league
+LacrosseLeague	lacrosse league
+ClubMoss	club moss
+EducationalInstitution	educational institution
+Artist	artist
+Monument	monument
+Disease	disease
+Painting	Painting
+InlineHockeyLeague	inline hockey league
+Musical	musical
+FieldHockeyLeague	field hockey league
+Artery	artery
+Senator	senator
+Currency	currency
+BadmintonPlayer	badminton player
+Activity	activity
+Language	language
+Rocket	rocket
+MountainPass	mountain pass
+Airline	airline
+MusicalWork	musical work
+Olympics	olympics
+Library	library
+Priest	priest
+Theatre	theatre
+Village	village
+YearInSpaceflight	year in spaceflight
+Deputy	deputy
+Planet	planet
+Colour	colour
+PrimeMinister	prime minister
+SkiArea	ski area
+PeriodicalLiterature	periodical literature
+College	college
+Museum	museum
+Stadium	stadium
+Mollusca	mollusca
+Cardinal	cardinal
+Bacteria	bacteria
+GridironFootballPlayer	gridiron football player
+Reptile	reptile
+NationalCollegiateAthleticAssociationAthlete	national collegiate athletic association athlete
+Insect	insect
+Holiday	holiday
+EthnicGroup	ethnic group
+Database	Database
+PersonFunction	person function
+School	school
+Monarch	monarch
+ComicsCreator	comics creator
+Comedian	comedian
+CanadianFootballTeam	canadian football team
+Ideology	ideology
+Writer	writer
+Valley	valley
+Ginkgo	ginkgo
+Hospital	hospital
+Muscle	muscle
+Island	island
+Airport	airport
+LawFirm	law firm
+Magazine	magazine
+Country	country
+WomensTennisAssociationTournament	Women's Tennis Association tournament
+Wrestler	wrestler
+Conifer	conifer
+FormulaOneRacer	Formula One racer
+Protein	protein
+Arachnid	arachnid
+Archaea	archaea
+Beverage	beverage
+MilitaryConflict	military conflict
+CyclingLeague	cycling league
+TelevisionShow	television show
+Crustacean	crustacean
+LegalCase	Legal Case
+Chancellor	chancellor
+Politician	politician
+BasketballPlayer	basketball player
+MountainRange	mountain range
+TradeUnion	trade union
+VideoGame	video game
+MixedMartialArtsEvent	mixed martial arts event
+SportsEvent	sports event
+Spacecraft	spacecraft
+SoftballLeague	softball league
+PopulatedPlace	populated place
+Astronaut	astronaut
+PolishKing	king of Poland
+PoloLeague	polo league
+WineRegion	wine region
+Lighthouse	lighthouse
+Celebrity	celebrity
+Lieutenant	lieutenant
+SoccerClub	soccer club
+SportsTeam	sports team
+Instrument	Instrument
+RoadTunnel	road tunnel
+GreenAlga	green alga
+RouteOfTransportation	route of transportation
+Embryology	embryology
+ComicsCharacter	comics character
+Eukaryote	eukaryote
+Continent	continent
+Scientist	scientist
+HockeyTeam	hockey team
+AmericanFootballLeague	american football league
+WorldHeritageSite	World Heritage Site
+FloweringPlant	flowering plant
+MilitaryUnit	military unit
+Journalist	journalist
+Convention	convention
+Settlement	municipality
+EurovisionSongContestEntry	Eurovision song contest entry
+GivenName	first name
+Architect	architect
+ChessPlayer	chess player
+Skyscraper	skyscraper
+GolfLeague	golf league
+Amphibian	amphibian
+Restaurant	restaurant
+WrittenWork	written work
+GolfPlayer	golf player
+GrandPrix	Grand Prix
+Sculpture	Sculpture
+VoiceActor	voice actor
+Congressman	congressman
+MusicGenre	music genre
+ProtectedArea	protected area
+bibo:Book	book
+SnookerWorldRanking	snooker world ranking
+Ambassador	ambassador
+PoliticalParty	political party
+MusicalArtist	musical artist
+AmericanFootballPlayer	american football player
+Newspaper	newspaper
+SoccerManager	soccer manager
+SupremeCourtOfTheUnitedStatesCase	Supreme Court of the United States case
+Automobile	automobile
+BiologicalDatabase	Biological database
+CollegeCoach	college coach
+SoccerPlayer	soccer player
+President	president
+SoccerLeague	soccer league
+AdultActor	adult actor
+MotorcycleRacingLeague	motorcycle racing league
+Locomotive	locomotive
+VideogamesLeague	videogames league
+Gnetophytes	Gnetophytes
+Cricketer	cricketer
+MusicFestival	music festival
+LaunchPad	launch pad
+University	university
+BasketballLeague	basketball league
+Cycad	cycad
+Plant	plant
+NaturalPlace	natural place
+CricketLeague	cricket league
+SportsLeague	sports league
+MeanOfTransportation	mean of transportation
+MixedMartialArtsLeague	mixed martial arts league
+BritishRoyalty	British royalty
+Place	place
+MemberOfParliament	member of parliament
+Lake	lake
+Race	race
+Mayor	mayor
+VicePrimeMinister	vice prime minister
+ChemicalSubstance	chemical substance
+FictionalCharacter	fictional character
+River	river
+Moss	moss
+RadioControlledRacingLeague	radio-controlled racing league
+Event	event
+Name	name
+Arena	arena
+ResearchProject	research project
+Lymph	lymph
+Work	work
+Cave	cave
+WrestlingEvent	wrestling event
+BroadcastNetwork	broadcast network
+Pope	pope
+PaintballLeague	paintball league
+SpaceStation	space station
+VicePresident	vice president
+Grape	grape
+ShoppingMall	shopping mall
+City	city
+Bone	bone
+Song	song
+Award	award
+Ship	ship
+Judge	judge
+SpaceMission	space mission
+Atoll	atoll
+Drug	drug
+Actor	actor
+Legislature	legislature
+Game	game
+Book	book
+PokerPlayer	poker player
+Saint	saint
+Bird	bird
+VolleyballLeague	volleyball league
+Album	album
+Play	play
+Food	Food
+Model	model
+Hotel	hotel
+Nerve	nerve
+Sport	Αθλήματα
+Canal	canal
+BasketballTeam	basketball team
+Film	film
+Vein	vein
+NascarDriver	nascar driver
+FigureSkater	figure skater
+Gene	gene
+IceHockeyLeague	ice hockey league
+SiteOfSpecialScientificInterest	Site of Special Scientific Interest
+Non-ProfitOrganisation	non-profit organisation
+VolleyballPlayer	volleyball player
+PlayboyPlaymate	Playboy Playmate
+Road	road
+RadioStation	radio station
+Philosopher	philosopher
+Fern	fern
+Boxer	boxer
+WaterwayTunnel	waterway tunnel
+Fish	fish
+Band	Band
+Brain	brain
+Sales	sales
+SpeedwayLeague	speedway league
+PowerStation	power station
+Town	town
+GovernmentType	Government Type
+SpeedwayTeam	speedway team
+Park	park
+SpaceShuttle	space shuttle
+FilmFestival	film festival
+IceHockeyPlayer	ice hockey player
+CurlingLeague	curling league
+LunarCrater	lunar crater
+Broadcaster	broadcaster
+Organisation	organisation
+OfficeHolder	office holder
+ArchitecturalStructure	architectural structure
+HistoricPlace	historic place
+BodyOfWater	body of water
+RugbyLeague	rugby league
+TelevisionStation	television station
+BaseballPlayer	baseball player
+Infrastructure	infrastructure
+TennisLeague	tennis league
+BoxingLeague	boxing league
+ChemicalCompound	chemical compound
+BaseballLeague	baseball league
+GaelicGamesPlayer	Gaelic games player
+AmericanFootballTeam	american football team
+GeopoliticalOrganisation	geopolitical organisation
+HistoricBuilding	historic building
+OlympicResult	olympic result
+MartialArtist	martial artist
+ChemicalElement	chemical element
+RailwayTunnel	railway tunnel
+RailwayLine	railway line
+HandballLeague	handball league
+RugbyPlayer	rugby player
+ProgrammingLanguage	programming language
+BowlingLeague	bowling league
+CanadianFootballLeague	canadian football league
+RecordLabel	record label
+SnookerChamp	snooker world champion
+SnookerPlayer	snooker player
+GovernmentAgency	government agency
+CanadianFootballPlayer	canadian football player
+AcademicJournal	academic journal
+TennisPlayer	tennis player
+RoadJunction	road junction
+TelevisionEpisode	television episode
+FootballMatch	football match
+PublicTransitSystem	public transit system
+AutomobileEngine	automobile engine
+MilitaryPerson	military person

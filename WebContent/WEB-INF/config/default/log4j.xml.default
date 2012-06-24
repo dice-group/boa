@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- syslog is set to be a DailyRollingFileAppender -->
+ 	<appender name="sysLog" class="org.apache.log4j.DailyRollingFileAppender">
+
+		<!-- set the log file for sysLog -->
+		<param name="file" value="@log.dir@/nlpedia.log" />
+		
+		<!-- set the level of sysLog -->
+		<param name="threshold" value="info" />
+		
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+
+		<!-- sysLog uses PatternLayout -->
+		<layout class="org.apache.log4j.PatternLayout"> 
+			<param name="ConversionPattern" value="%d %-5p %c{1} %x - %m%n" /> 
+		</layout>
+
+	</appender>
+	
+	<appender name="debugLog" class="org.apache.log4j.DailyRollingFileAppender">
+		
+		<!-- set the log file for debugLog -->
+		<param name="file" value="@log.dir@/nlpedia.debug.log" />
+		
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+
+		<!-- debugLog uses PatternLayout -->
+		<layout class="org.apache.log4j.PatternLayout"> 
+			<param name="ConversionPattern" value="%d %-5p %c{1} %x - %m%n" /> 
+		</layout>
+
+		<!-- log only debug messages -->
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="debug" />
+			<param name="LevelMax" value="debug" />
+		</filter>
+
+	</appender>
+	
+	<!-- set hibernate log level to warn -->
+	<logger name="org.hibernate">
+		<level value="warn" /> 
+	</logger>
+
+	<!-- set org.apache log level to warn (includes: velocity, tomcat, catalina, dom4j) -->
+	<logger name="org.apache">
+		<level value="warn" />
+	</logger>
+	
+	<!-- set spring framework log level to warn -->
+	<logger name="org.springframework">
+		<level value="warn" />
+	</logger>
+	
+    <root> 
+        <priority value="@log.priority@" />
+        <appender-ref ref="sysLog" />
+        <appender-ref ref="debugLog" /> 
+    </root>
+
+</log4j:configuration>
