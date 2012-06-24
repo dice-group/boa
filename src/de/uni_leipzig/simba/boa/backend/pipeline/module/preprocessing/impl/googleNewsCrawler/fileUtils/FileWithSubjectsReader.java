@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileWithSubjectsReader {
 
@@ -14,7 +15,7 @@ public class FileWithSubjectsReader {
 	}
 
 	
-	public static String[] readSubjectsFromFile(String file){
+	public static List<String> readSubjectsFromFile(String file){
 		ArrayList<String> subjects= new ArrayList<String>();
 		
 		BufferedReader bf=null;
@@ -25,7 +26,7 @@ public class FileWithSubjectsReader {
 			String line;
 			while((line=bf.readLine())!=null){
 				if(!line.trim().isEmpty()){
-					subjects.add(line.trim());
+					subjects.add(line.trim().replace("\"", ""));
 				}
 			}
 			
@@ -43,7 +44,7 @@ public class FileWithSubjectsReader {
 				}
 		}
 		
-		return subjects.toArray(new String[0]);
+		return subjects;
 	}
 	
 	/**

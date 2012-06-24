@@ -105,6 +105,10 @@
 			<property name="overrideData" value="true" />
 			<property name="language" value="en" />
 			<property name="endpoint" value="http://dbtune.org/jamendo/sparql/" />
+			
+			<!-- input file will be prefered, directory must be in boaOut-directory  -->
+			<!-- <property name="inputFile" value="\labels.txt" /> -->
+			
 			<property name="classes">
 				<list>
 				<value>http://purl.org/ontology/mo/MusicArtist</value>

@@ -21,6 +21,8 @@ public class GoogleNewsParser {
 
 	private String language;
 
+	public int statusCode=0;
+	
 	/**
 	 * 
 	 * @param language
@@ -33,10 +35,10 @@ public class GoogleNewsParser {
 		BrowserVersion browser = BrowserVersion.FIREFOX_3_6;
 		browser.setBrowserLanguage(language);
 		webClient = new WebClient(browser);
-		webClient.setJavaScriptEnabled(false);
+		webClient.setJavaScriptEnabled(false);		
 		webClient.setThrowExceptionOnFailingStatusCode(true);
 		webClient.setThrowExceptionOnScriptError(true);
-		webClient.setCssEnabled(false);
+		webClient.setCssEnabled(false);//139.18.252.25
 
 	}
 
@@ -47,9 +49,22 @@ public class GoogleNewsParser {
 			options = "";
 		
 		String url = "http://www.google.com/search?hl=" + language + "&tbm=nws";
+//		for (String object : searchWords) {
+//			url += "&q=" + object;
+//		}
+		
+		url += "&q=";
+		boolean first=true;
 		for (String object : searchWords) {
-			url += "&q=" + object;
+			if(first)
+			{
+				url += object;
+				first=false;
+			}
+			else
+				url += "+" + object;
 		}
+		
 		url+=options;
 		
 		System.out.println(url);
@@ -98,7 +113,8 @@ public class GoogleNewsParser {
 	 */
 	public String[] getGoogleNewsUrls(String thema, String subject,
 			String options) {
-
+		
+		this.statusCode=0;
 		String url = null;
 
 		if (subject != null && !subject.isEmpty())
@@ -111,12 +127,13 @@ public class GoogleNewsParser {
 		HtmlPage page = null;
 		try {
 			page = webClient.getPage(url);
-
+//			System.out.println(page.asText());
 		} catch (FailingHttpStatusCodeException e) {
 			System.out.println(e);
+			statusCode = e.getStatusCode();
 			return new String[0];
 		} catch (MalformedURLException e) {
-			System.out.println(e);
+			System.out.println(e);			
 			return new String[0];
 		} catch (IOException e) {
 			System.out.println(e);
@@ -187,7 +204,7 @@ public class GoogleNewsParser {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		GoogleNewsParser gnp = new GoogleNewsParser("en");
+		GoogleNewsParser gnp = new GoogleNewsParser("us");
 
 		String[] result = gnp.getGoogleNewsUrls("Music", "",null, 2);
 
