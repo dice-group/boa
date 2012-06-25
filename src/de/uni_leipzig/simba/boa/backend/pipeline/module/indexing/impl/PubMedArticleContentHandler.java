@@ -87,9 +87,10 @@ public class PubMedArticleContentHandler extends DefaultWikiIndexingModule imple
 
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
-		if (qName.equals("body")) {
+		
+		if (qName!=null&&qName.equals("body")) {
 			builder = new StringBuilder();
-		} else if (qName.equals("article-id")
+		} else if (attributes!=null && qName.equals("article-id")
 				&& attributes.getValue("pub-id-type").equals("pmid")) {
 			pmid=true;
 		}
