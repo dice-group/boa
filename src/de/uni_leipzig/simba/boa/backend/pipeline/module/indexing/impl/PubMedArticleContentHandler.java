@@ -90,13 +90,15 @@ public class PubMedArticleContentHandler extends DefaultWikiIndexingModule
 
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
-		if (qName == null)
+		try {
+			if (qName.equals("body")) {
+				builder = new StringBuilder();
+			} else if (attributes != null && qName.equals("article-id")
+					&& attributes.getValue("pub-id-type").equals("pmid")) {
+				pmid = true;
+			}
+		} catch (NullPointerException e) {
 			return;
-		if (qName.equals("body")) {
-			builder = new StringBuilder();
-		} else if (attributes != null && qName.equals("article-id")
-				&& attributes.getValue("pub-id-type").equals("pmid")) {
-			pmid = true;
 		}
 
 	}
