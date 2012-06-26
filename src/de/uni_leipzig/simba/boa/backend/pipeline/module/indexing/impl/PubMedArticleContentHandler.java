@@ -11,7 +11,8 @@ import org.xml.sax.SAXException;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.SentenceBoundaryDisambiguation;
 
-public class PubMedArticleContentHandler extends DefaultWikiIndexingModule implements ContentHandler {
+public class PubMedArticleContentHandler extends DefaultWikiIndexingModule
+		implements ContentHandler {
 
 	private String currentValue;
 	private StringBuilder builder = new StringBuilder();
@@ -24,7 +25,7 @@ public class PubMedArticleContentHandler extends DefaultWikiIndexingModule imple
 
 	public PubMedArticleContentHandler(IndexWriter writer) {
 		this.writer = writer;
-		documents=new ArrayList<IndexDocument>();
+		documents = new ArrayList<IndexDocument>();
 	}
 
 	public void characters(char[] ch, int start, int length)
@@ -42,14 +43,16 @@ public class PubMedArticleContentHandler extends DefaultWikiIndexingModule imple
 
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
+		if (qName == null)
+			return;
 		if (qName.equals("body")) {
 			documents.add(document);
 		} else if (qName.equals("p")) {
 			document.text.append("\n");
 		} else if (qName.equals("title")) {
 			document.text.append("\n");
-		} else if(qName.equals("article-id")&& pmid){
-			document.uri=currentValue;
+		} else if (qName.equals("article-id") && pmid) {
+			document.uri = currentValue;
 		}
 
 	}
@@ -58,7 +61,7 @@ public class PubMedArticleContentHandler extends DefaultWikiIndexingModule imple
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public void ignorableWhitespace(char[] arg0, int arg1, int arg2)
 			throws SAXException {
 		// TODO Auto-generated method stub
@@ -87,12 +90,13 @@ public class PubMedArticleContentHandler extends DefaultWikiIndexingModule imple
 
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
-		
-		if (qName!=null&&qName.equals("body")) {
+		if (qName == null)
+			return;
+		if (qName.equals("body")) {
 			builder = new StringBuilder();
-		} else if (attributes!=null && qName.equals("article-id")
+		} else if (attributes != null && qName.equals("article-id")
 				&& attributes.getValue("pub-id-type").equals("pmid")) {
-			pmid=true;
+			pmid = true;
 		}
 
 	}
