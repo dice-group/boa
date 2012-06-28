@@ -31,7 +31,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	
 	private final NLPediaLogger logger		= new NLPediaLogger(DefaultObjectPropertyBackgroundKnowledgeCollectorModule.class);
 	
-	private final int SPARQL_QUERY_LIMIT	= new Integer(NLPediaSettings.getSetting("sparqlQueryLimit"));
+	protected final int SPARQL_QUERY_LIMIT	= new Integer(NLPediaSettings.getSetting("sparqlQueryLimit"));
 	private final String BOA_LANGUAGE		= NLPediaSettings.BOA_LANGUAGE;
 
 	// for the report
@@ -54,7 +54,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 		
 		this.logger.info("Starting pattern search!");
         long startLoadingBackgroundKnowledge = System.currentTimeMillis();
-        queryObjectProperties();
+        this.queryObjectProperties();
         this.loadKnowledgeTime = (System.currentTimeMillis() - startLoadingBackgroundKnowledge);
         this.logger.info("Loading object background knowledge finished in " + TimeUtil.convertMilliSeconds(loadKnowledgeTime));
 	}
@@ -80,7 +80,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	 * "backgroundKnowledgeOutputFilePath" + "/object/". The properties in the file have to be in one property
 	 * per line format with no spaces.
 	 */
-	private void queryObjectProperties() {
+	protected void queryObjectProperties() {
 		
 		String backgroundKnowledgeFilename = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "object_properties_to_query.txt";
 		List<String> objectPropertyUris = FileUtil.readFileInList(backgroundKnowledgeFilename, "UTF-8");
@@ -102,7 +102,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	 * @param propertyUri - the object property uri to query
 	 * @return a SPARQL query
 	 */
-	private String createObjectPropertyQuery(String property) {
+	protected String createObjectPropertyQuery(String property) {
 
 		return 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +

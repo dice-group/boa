@@ -42,8 +42,8 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 
     private final NLPediaLogger logger = new NLPediaLogger(AbstractDefaultBackgroundKnowledgeCollectorModule.class);
 
-    private final String SPARQL_ENDPOINT_URI = NLPediaSettings.getSetting("dbpediaSparqlEndpoint");
-    private final String DBPEDIA_DEFAULT_GRAPH = "http://dbpedia.org";
+    protected final String SPARQL_ENDPOINT_URI = NLPediaSettings.getSetting("dbpediaSparqlEndpoint");
+    protected final String DBPEDIA_DEFAULT_GRAPH = NLPediaSettings.getSetting("sparqlDefaultGraph");
     private final int SPARQL_QUERY_LIMIT = NLPediaSettings.getIntegerSetting("sparqlQueryLimit");
     protected final String BACKGROUND_KNOWLEDGE_OUTPUT_PATH = NLPediaSettings.BOA_DATA_DIRECTORY + de.uni_leipzig.simba.boa.backend.Constants.BACKGROUND_KNOWLEDGE_PATH;
     protected final String BOA_LANGUAGE = NLPediaSettings.BOA_LANGUAGE;
@@ -114,12 +114,11 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
                 // this is an object property, only object properties can have
                 // labels
                 if (query.contains("?o rdfs:label ?ol")) {
-
                     property.setType("http://www.w3.org/2002/07/owl#ObjectProperty");
                     handleObjectPropertyQuery(property, fileName, resultSetList);
                 }
                 else {
-
+                	
                     property.setType("http://www.w3.org/2002/07/owl#DatatypeProperty");
                     handleDatatypePropertyQuery(property, fileName, resultSetList);
                 }
@@ -210,7 +209,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
      * @param resultSets
      *            - the resultset returned from the SPARQL endpoint
      */
-    private void handleObjectPropertyQuery(Property property, String fileName, List<QuerySolution> resultSets) {
+    protected void handleObjectPropertyQuery(Property property, String fileName, List<QuerySolution> resultSets) {
 
         BufferedFileWriter writer = FileUtil.openWriter(fileName, Constants.UTF_8_ENCODING, WRITER_WRITE_MODE.APPEND);
 
@@ -255,7 +254,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
      *            - the property Uri to query
      * @return a new Property
      */
-    private Property queryPropertyData(String propertyUri) {
+    protected Property queryPropertyData(String propertyUri) {
 
         Property property = new Property(propertyUri);
         if (this.properties.containsKey(property.hashCode())) {
@@ -307,7 +306,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
      *            - the query only for logging purposes
      * @return a resultset for the given query
      */
-    private ResultSet getResults(QueryEngineHTTP qexec, String query) {
+    protected ResultSet getResults(QueryEngineHTTP qexec, String query) {
 
         ResultSet results = null;
 
