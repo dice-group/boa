@@ -69,6 +69,9 @@ public class PubMedIndexGenerator extends AbstractPreprocessingModule {
 
 	private void parseFiles() {
 		for (File file : PUBMED_DIR.listFiles()) {
+			if(file.getName().contains("Korean")){
+				continue;
+			}
 			for (File article : file.listFiles(new FilenameFilter() {
 
 				public boolean accept(File file, String name) {
