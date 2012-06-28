@@ -47,12 +47,14 @@ public class DrugBankObjectProperty extends
      * @param fileName
      *            - the file to where to write the knowledge
      */
+	@Override
     protected void getKnowledge(String query, String propertyUri, String fileName) {
 
         logger.info("Querying started for property: " + propertyUri);
         long start = System.currentTimeMillis();
 
-        Property property = this.queryPropertyData(propertyUri);
+//        Property property = this.queryPropertyData(propertyUri);
+        Property property = new Property("http://example.org/interact");
         int offset = 0;
 
         // query as long as we get resultsets back
@@ -103,6 +105,7 @@ public class DrugBankObjectProperty extends
      * @param resultSets
      *            - the resultset returned from the SPARQL endpoint
      */
+    @Override
     protected void handleObjectPropertyQuery(Property property, String fileName, List<QuerySolution> resultSets) {
 
         BufferedFileWriter writer = FileUtil.openWriter(fileName, de.danielgerber.Constants.UTF_8_ENCODING, WRITER_WRITE_MODE.APPEND);
@@ -146,6 +149,7 @@ public class DrugBankObjectProperty extends
 	 * "backgroundKnowledgeOutputFilePath" + "/object/". The properties in the file have to be in one property
 	 * per line format with no spaces.
 	 */
+    @Override
 	protected void queryObjectProperties() {
 		
 		String backgroundKnowledgeFilename = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "object_properties_to_query.txt";
