@@ -92,7 +92,7 @@ public class MusicOntologyObjectPropertyBackgroundGeneratorCollectorModule
 		logger.info("Querying started for property: " + propertyUri);
 		long start = System.currentTimeMillis();
 
-		Property property = this.queryPropertyData(propertyUri);
+		Property property = new Property(propertyUri);
 		int offset = 0;
 
 		// query as long as we get resultsets back

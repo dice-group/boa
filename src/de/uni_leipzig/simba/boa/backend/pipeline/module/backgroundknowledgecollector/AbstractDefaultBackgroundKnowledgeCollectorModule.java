@@ -302,7 +302,8 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends
 			return property;
 		} else {
 
-			String propertyQuery = "SELECT distinct ?domain ?range "
+			String propertyQuery = 
+					"SELECT distinct ?domain ?range "
 					+ "WHERE { " + "  <" + propertyUri
 					+ ">  rdfs:domain ?domain . " + "  <" + propertyUri
 					+ ">  rdfs:range ?range . " + "}";
@@ -360,13 +361,9 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends
 
 			results = qexec.execSelect();
 		} catch (Exception e) {
-			try {
 				results = getResults(qexec, query);
 				System.out.println("Retrying query: " + query);
 				logger.warn("Need to retry query: " + query, e);
-			} catch (Exception e1) {
-				logger.error(e1.getMessage());
-			}
 		}
 
 		return results;

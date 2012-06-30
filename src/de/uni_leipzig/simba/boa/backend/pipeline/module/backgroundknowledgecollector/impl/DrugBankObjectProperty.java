@@ -23,13 +23,13 @@ public class DrugBankObjectProperty extends
 
 	
 	protected String createObjectPropertyQuery(String property){
-	return	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
-			"PREFIX drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/>"+
-			"SELECT ?s ?sl <http://example.org/interact> ?o ?ol WHERE {"+
-			"?s rdfs:label ?sl ."+
-			"?di drugbank:interactionDrug1 ?s ."+
-			"?di drugbank:interactionDrug2 ?o ."+
-			"?o rdfs:label ?ol . }";
+	return	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+			"PREFIX drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> "+
+			"SELECT ?s ?sl ?o ?ol WHERE { "+
+			"?s rdfs:label ?sl . "+
+			"?di drugbank:interactionDrug1 ?s . "+
+			"?di drugbank:interactionDrug2 ?o . "+
+			"?o rdfs:label ?ol . } ";
 	}
 	
 	 /**
@@ -61,7 +61,7 @@ public class DrugBankObjectProperty extends
         while (true) {
 
             QueryEngineHTTP qexec = new QueryEngineHTTP(SPARQL_ENDPOINT_URI, query.replaceAll("&OFFSET", String.valueOf(offset)));
-            qexec.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
+//            qexec.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
 
             this.logger.info("Starting to query for : " + query.replaceAll("&OFFSET", String.valueOf(offset)));
 
@@ -152,17 +152,14 @@ public class DrugBankObjectProperty extends
     @Override
 	protected void queryObjectProperties() {
 		
-		String backgroundKnowledgeFilename = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "object_properties_to_query.txt";
-		List<String> objectPropertyUris = FileUtil.readFileInList(backgroundKnowledgeFilename, "UTF-8");
-		
-		for ( String objectPropertyUri : objectPropertyUris ) {
+    		String objectPropertyUri="http://example.org/interact";
 			
 			this.logger.info("Processing property: " + objectPropertyUri);
 			String query	= createObjectPropertyQuery(objectPropertyUri);
 			
 			this.getKnowledge(query, objectPropertyUri, NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH 
 			        + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/") + 1) + "-"+ objectPropertyUri.hashCode() + ".txt");
-		}
+		
 	}
 
 
