@@ -86,9 +86,9 @@ public class DrugBankObjectProperty extends
 					// this is an object property, only object properties can
 					// have
 					// labels
-
+					
 					property.setType("http://www.w3.org/2002/07/owl#ObjectProperty");
-					handleObjectPropertyQuery(property, fileName, resultSetList);
+					this.handleObjectPropertyQuery(property, fileName, resultSetList);
 
 				} else { // end of query for current property
 
@@ -126,9 +126,8 @@ public class DrugBankObjectProperty extends
 				WRITER_WRITE_MODE.APPEND);
 
 		for (QuerySolution solution : resultSets) {
-
 			// make sure the resultset contains the wanted fields
-			if (solution.get("s") != null && solution.get("callret-2") != null
+			if (solution.get("s") != null 
 					&& solution.get("o") != null && solution.get("ol") != null) {
 
 				String subjectLabel = solution.get("sl").toString();
@@ -159,7 +158,6 @@ public class DrugBankObjectProperty extends
 
 				// BackgroundKnowledge backgroundKnowledge =
 				// SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(objectBackgroundKnowledge);
-
 				writer.write(objectBackgroundKnowledge.toString());
 				this.backgroundKnowledge.add(objectBackgroundKnowledge);
 			}
