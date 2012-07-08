@@ -38,7 +38,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     
     private final NLPediaLogger logger                  = new NLPediaLogger(DefaultPatternSearchModule.class);
     private final int TOTAL_NUMBER_OF_SEARCH_THREADS    = NLPediaSettings.getIntegerSetting("numberOfSearchThreads");
-    protected final String PATTERN_MAPPING_FOLDER         = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.PATTERN_MAPPINGS_PATH;
+    protected final String PATTERN_MAPPING_FOLDER       = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.PATTERN_MAPPINGS_PATH;
     
     // caches for various objects
     protected Map<Integer,PatternMapping> mappings        = new HashMap<Integer,PatternMapping>();
@@ -48,7 +48,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     // for the report
     private long patternSearchTime      = 0;
     private long patternCreationTime    = 0;
-    protected long patternMappingCount    = 0;
+    protected long patternMappingCount  = 0;
     private long patternCount           = 0;
 
     /* (non-Javadoc)

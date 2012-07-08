@@ -20,6 +20,13 @@ public interface MachineLearningTrainingFile {
     public abstract String toString();
     
     /**
+     * returns this file in arff (weka) format
+     * 
+     * @return
+     */
+    public abstract String toArff();
+    
+    /**
      * 
      * @param uri
      * @param naturalLanguageRepresentation

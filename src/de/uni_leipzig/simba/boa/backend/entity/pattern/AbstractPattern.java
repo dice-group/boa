@@ -398,7 +398,6 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	 * 
 	 * @return
 	 */
-	@Transient
 	public int getLearnedFromPairs() {
 		
 		return this.getLearnedFrom().size(); 
@@ -407,7 +406,6 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	/**
 	 * @return true if the pattern starts with ?D?
 	 */
-	@Transient
 	public boolean isDomainFirst() {
 		
 		return this.naturalLanguageRepresentation.startsWith("?D?") ? true : false;
@@ -416,8 +414,6 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	/**
 	 * @return the features
 	 */
-	@ElementCollection(fetch = FetchType.EAGER)
-	@JoinTable(name="pattern_features")
 	public Map<Feature,Double> getFeatures() {
 
 		return features;

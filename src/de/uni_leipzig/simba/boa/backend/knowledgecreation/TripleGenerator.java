@@ -148,6 +148,9 @@ public class TripleGenerator {
                         String subjectUri   = uriRetrieval.getUri(subjectLabel);
                         String objectUri    = uriRetrieval.getUri(objectLabel);
                         
+                        // this is necessary, because we would generate triples with the same object & subject
+                        if ( subjectUri.equals(objectUri) ) return null;
+                        
                         Resource subject    = new Resource(subjectUri, subjectLabel, domainUri);
                         Resource object     = new Resource(objectUri, objectLabel, rangeUri);
                         
@@ -173,6 +176,9 @@ public class TripleGenerator {
                         UriRetrieval uriRetrieval = new MeshupUriRetrieval();
                         String objectUri = uriRetrieval.getUri(objectLabel);
                         String subjectUri = uriRetrieval.getUri(subjectLabel);
+                        
+                        // this is necessary, because we would generate triples with the same object & subject
+                        if ( subjectUri.equals(objectUri) ) return null;
                         
                         Resource subject    = new Resource(subjectUri, subjectLabel, domainUri);
                         Resource object     = new Resource(objectUri, objectLabel, rangeUri);

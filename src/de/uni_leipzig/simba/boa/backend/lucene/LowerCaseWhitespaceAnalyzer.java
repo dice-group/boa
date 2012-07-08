@@ -11,7 +11,14 @@ import org.apache.lucene.analysis.WhitespaceTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.util.Version;
 
-
+/**
+ * This class is used to make sure that the text to be indexed is converted 
+ * into lowercase, where the actual case can still be recovered. Also we 
+ * preserve all stop words and punctuation character to be able to make 
+ * excat matches!
+ * 
+ * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
+ */
 public final class LowerCaseWhitespaceAnalyzer extends Analyzer {
 
 	@Override

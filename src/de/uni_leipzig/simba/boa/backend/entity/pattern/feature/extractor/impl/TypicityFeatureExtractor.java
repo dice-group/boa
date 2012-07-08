@@ -50,13 +50,6 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 		BRACKETS.put("-RQB-", "}");
 	}
 	
-	// used for sentence segmentation
-	private Reader stringReader;
-	private DocumentPreprocessor preprocessor;
-	private StringBuilder stringBuilder;
-	
-	public TypicityFeatureExtractor() {}
-	
 	/* (non-Javadoc)
 	 * @see simba.nlpedia.entity.pattern.evaluation.PatternEvaluator#evaluatePattern(simba.nlpedia.entity.pattern.PatternMapping)
 	 */

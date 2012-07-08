@@ -23,7 +23,8 @@ public class Boa {
         
         // this logs the jvm heap usage 
         Timer timer = new Timer();
-        timer.schedule(new PrintJvmMemoryTimerTask(), 10000, 30000);
+        PrintJvmMemoryTimerTask memoryTimer = new PrintJvmMemoryTimerTask();
+        timer.schedule(memoryTimer, 10000, 30000);
         
         Pipeline pipeline = new Pipeline();
         pipeline.run();

@@ -48,7 +48,8 @@
                 <entry key="reverbTrainingDirectory"                        value="training/reverb/"/>
                 <entry key="namendEntityRecognizerClassifier"               value="training/classifier/conll.closed.iob2.crf.ser.gz"/>
 
-                <!-- ############### neuronal network ############### -->
+                <!-- ############### machine learning ############### -->
+                <entry key="classifier.file.name"                           value="logistic.model"/>
                 <entry key="neuronal.network.n.fold.cross.validation"       value="10"/>
                 <entry key="neuronal.network.max.error"                     value="0.1"/>
                 <entry key="neuronal.network.error.decrement"               value="0.05"/>
@@ -69,13 +70,15 @@
                 <entry key="useProperNounPhraseExtraction"                  value="true"/>
                 
                 <!-- ############### get background knowledge ############### -->
-                <entry key="dbpediaSparqlEndpoint"                          value="http://live.dbpedia.org/sparql"/>
+                <entry key="dbpediaSparqlEndpoint"                          value="http://localhost:8890/sparql"/>
                 <entry key="sparqlQueryLimit"                               value="100"/>
+                <entry key="importGraph"                                    value="http://en.dbpedia.org/20120601/"/>
                 
                 <!-- ############### other ############### -->
                 <entry key="patternMappingDatabases"                        value="/Users/gerb/Development/workspaces/experimental/en_wiki;/Users/gerb/Development/workspaces/experimental/de_wiki"/>
                 <entry key="spotlight.maxSurfaceFormLength"                 value="50"/>
                 <entry key="ipAndPort"                                      value="http://localhost:8080/boa/"/>
+                <entry key="importGraph"                                    value="http://en.dbpedia.org/20120601/"/>
             </map>
         </property>
     </bean>
