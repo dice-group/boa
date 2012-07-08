@@ -26,7 +26,7 @@ public class MeanSquaredErrorFeatureSelection {
 
     private static final NLPediaSetup setup                         = new NLPediaSetup(true);
     private static final PatternScoreManager patternScoreManager    = new PatternScoreManager();
-    private static final String MACHINE_LEARNING_TRAINING_FILE      = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.NEURAL_NETWORK_PATH + "network_learn.txt";
+    private static final String MACHINE_LEARNING_TRAINING_FILE      = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.MACHINE_LEARNING_PATH + "network_learn.txt";
     
     /**
      * @param args

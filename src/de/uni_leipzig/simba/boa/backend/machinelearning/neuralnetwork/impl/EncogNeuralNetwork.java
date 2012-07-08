@@ -52,7 +52,7 @@ public class EncogNeuralNetwork implements NeuralNetwork {
     private int maxEpochs                            = NLPediaSettings.getIntegerSetting("neuronal.network.maxEpochs");
     
     private static int N_FOLD_CROSS_VALIDATION       = NLPediaSettings.getIntegerSetting("neuronal.network.n.fold.cross.validation");
-    private static final String NETWORK_DIRECTORY    = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.NEURAL_NETWORK_PATH;
+    private static final String NETWORK_DIRECTORY    = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.MACHINE_LEARNING_PATH;
     private static String EVAL_OUTPUT_FILE           = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network_evaluation.txt";
     private static String NETWORK_FILE               = NETWORK_DIRECTORY + N_FOLD_CROSS_VALIDATION + "FCV_network";
     
@@ -72,7 +72,7 @@ public class EncogNeuralNetwork implements NeuralNetwork {
     
     public static void main(String[] args) {
     
-        final String MACHINE_LEARNING_TRAINING_FILE = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.NEURAL_NETWORK_PATH + "network_learn.txt";
+        final String MACHINE_LEARNING_TRAINING_FILE = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.MACHINE_LEARNING_PATH + "boa_ml.txt";
         
         PatternScoreManager pcm = new PatternScoreManager();
         MachineLearningTrainingFile trainFile = pcm.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8");

@@ -98,6 +98,21 @@
             <set></set>
         </property>
     </bean>
+    
+    <bean id="DBpediaImportModule"  
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.DBpediaImportModule">
+
+        <property name="overrideData" value="false" />
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.DBpediaSpotlightSurfaceFormModule</value>
+            </set>
+        </property>
+        <property name="moduleSettings">
+            <set></set>
+        </property>
+    </bean>
 
 	<bean id="CrawlTextFromGoogleNews"
 			class="de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.googleNewsCrawler.CrawlTextFromGoogleNews">
@@ -314,13 +329,7 @@
 
         <property name="moduleSettings">
             <set>
-              <value>neuronal.network.n.fold.cross.validation</value>
-              <value>neural.network.network.directory</value>
-              <value>neuronal.network.maxEpochs</value>
-              <value>neuronal.network.hidden.layer.ratio</value>
-              <value>neuronal.network.min.error</value>
-              <value>neuronal.network.error.decrement</value>
-              <value>neuronal.network.max.error</value>
+              <value>classifier.file.name</value>
             </set>
         </property>
     </bean>

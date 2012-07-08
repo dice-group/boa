@@ -38,7 +38,8 @@ public class DBpediaSpotlightSurfaceFormModule extends AbstractPreprocessingModu
         long startDBpediaSpotlightSurfaceFormGenerationFiles = System.currentTimeMillis();
         this.logger.info("Starting to generate surface form file.");
         
-        DBpediaSpotlightSurfaceFormGenerator.createSurfaceForms();
+        DBpediaSpotlightSurfaceFormGenerator surfaceFormGenerator= new DBpediaSpotlightSurfaceFormGenerator();
+        surfaceFormGenerator.createSurfaceForms();
         
         this.dBpediaSpotlightSurfaceFormGenerationFilesTime = System.currentTimeMillis() - startDBpediaSpotlightSurfaceFormGenerationFiles;
         this.logger.info("Finished surface form generation in " + TimeUtil.convertMilliSeconds(this.dBpediaSpotlightSurfaceFormGenerationFilesTime));
@@ -79,5 +80,4 @@ public class DBpediaSpotlightSurfaceFormModule extends AbstractPreprocessingModu
 
         // nothing to do here
     }
-
 }

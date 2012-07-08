@@ -68,7 +68,7 @@ public class XXX implements Command {
         FeatureHelper.createLocalMaxima(mappings);
         
         PatternScoreManager patternScoreManager = new PatternScoreManager();
-        String MACHINE_LEARNING_TRAINING_FILE   = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.NEURAL_NETWORK_PATH + "network_learn.txt";
+        String MACHINE_LEARNING_TRAINING_FILE   = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.MACHINE_LEARNING_PATH + "network_learn.txt";
         
         MachineLearningTrainingFile file = patternScoreManager.createNeuronalNetworkTrainingFile(mappings);
         patternScoreManager.writeNetworkTrainingFile(file, MACHINE_LEARNING_TRAINING_FILE);
