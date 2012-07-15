@@ -3,6 +3,7 @@
  */
 package de.uni_leipzig.simba.boa.frontend.data;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -48,7 +49,8 @@ public class AutosuggestionsManager {
                 for (PatternMapping mapping : database.getValue() ) {
                     for ( Pattern pattern : mapping.getPatterns() ) {
                         
-                        Item item = naturalLanguagePatternContainer.addItem(database + " " + mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
+//                        Item item = naturalLanguagePatternContainer.addItem(database + " " + mapping.getProperty().getUri() + " " + pattern.getNaturalLanguageRepresentation());
+                        Item item = naturalLanguagePatternContainer.getItem(naturalLanguagePatternContainer.addItem());
                         
                         if ( item != null ) {
                             

@@ -28,12 +28,13 @@ public interface MachineLearningTool extends BoaTool {
     /**
      * 
      * @param learnFile
+     * @param testFile
      * @param evalFile
      * @param networkFile
      * @param nFoldCrossValidation
      * @return
      */
-    public void train(MachineLearningTrainingFile trainFile, File evalFile, File networkFile, int nFoldCrossValidation);
+    public void train(MachineLearningTrainingFile trainFile, MachineLearningTrainingFile testFile, File evalFile, File networkFile, int nFoldCrossValidation);
 
     /**
      * Loads the serialized model from the default position. If no such model exist

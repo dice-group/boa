@@ -75,12 +75,12 @@ public class MachineLearningToolFactory {
     /**
      * @return the default machine learning tool
      */
-    public MachineLearningTool createDefaultMachineLearningTool(MachineLearningTrainingFile file) {
+    public MachineLearningTool createDefaultMachineLearningTool(MachineLearningTrainingFile trainingFile, MachineLearningTrainingFile testFile) {
 
         try {
             
             return (MachineLearningTool) Class.forName(this.defaultMachineLearningTool).
-                    getDeclaredConstructor(MachineLearningTrainingFile.class).newInstance(file);
+                    getDeclaredConstructor(MachineLearningTrainingFile.class, MachineLearningTrainingFile.class).newInstance(trainingFile, testFile);
         }
         catch (Exception e) {
 

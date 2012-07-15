@@ -36,10 +36,12 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 
 	private final String PATTERN_MAPPING_FOLDER						= NLPediaSettings.BOA_DATA_DIRECTORY + Constants.PATTERN_MAPPINGS_PATH;
 	private final int TOTAL_NUMBER_OF_FEATURE_EXTRACTION_THREADS	= NLPediaSettings.getIntegerSetting("numberOfFeatureExtractionsThreads");
-	private final String MACHINE_LEARNING_TRAINING_FILE             = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.NEURAL_NETWORK_PATH + "network_learn.txt";
+	public final static String WEKA_MACHINE_LEARNING_TRAINING_FILE  = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.MACHINE_LEARNING_TRAINING_PATH + "boa_weka.arff";
+	public final static String MACHINE_LEARNING_TRAINING_FILE       = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.MACHINE_LEARNING_TRAINING_PATH + "boa_ml.txt";
 	
     private final PatternScoreManager patternScoreManager = new PatternScoreManager();
     private MachineLearningTrainingFile trainFile;
+    private MachineLearningTrainingFile testFile;
 	
 	// for the report
 	private long patternFeatureExtractionTime;
@@ -85,9 +87,11 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
         long networkRetrainingTime = System.currentTimeMillis();
         // only train the file if we have annotated patterns in the network learn file
         this.trainFile = patternScoreManager.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8");
+        this.testFile = null;//patternScoreManager.readNetworkTrainingFile(MACHINE_LEARNING_TEST_FILE, "UTF-8");
+        
         if ( trainFile.getAnnotatedEntries().size() > 0 ) {
             
-            MachineLearningTool mlTool = MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool(trainFile);
+            MachineLearningTool mlTool = MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool(trainFile, testFile);
             this.moduleInterchangeObject.setMachineLearningTool(mlTool);
         }
         machineLearningReTrainingTime = System.currentTimeMillis() - networkRetrainingTime;
@@ -128,7 +132,7 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 	@Override
 	public void updateModuleInterchangeObject() {
 
-	    MachineLearningTool mlTool = MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool(trainFile);
+	    MachineLearningTool mlTool = MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool(trainFile, testFile);
         this.moduleInterchangeObject.setMachineLearningTool(mlTool);
 	}
 
@@ -181,7 +185,7 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
             MachineLearningTrainingFile trainFile = patternScoreManager.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8");
             
             if ( this.moduleInterchangeObject.getMachineLearningTool() == null ) 
-                this.moduleInterchangeObject.setMachineLearningTool(MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool(trainFile));
+                this.moduleInterchangeObject.setMachineLearningTool(MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool(trainFile, testFile));
 
             else logger.warn("Machine learning object already exist. This should not be possible in the first iteration!");
         }
