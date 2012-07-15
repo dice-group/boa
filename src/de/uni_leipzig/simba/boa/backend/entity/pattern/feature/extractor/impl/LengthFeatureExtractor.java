@@ -9,7 +9,6 @@ public class LengthFeatureExtractor extends AbstractFeatureExtractor {
 
 	@Override
 	public void score(PatternMappingPatternPair pair) {
-
 		String patternWithoutVariables = pair.getPattern().getNaturalLanguageRepresentationWithoutVariables();
 		String[] patternParts = patternWithoutVariables.split(" ");
 		

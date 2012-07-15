@@ -1,6 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.entity.context;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -26,13 +27,25 @@ public abstract class Context {
      * @return true if sentence contains the entity 
      */
     public boolean containsSuitableEntity(String entityType) {
-        
-        for ( String word : this.taggedWords ) {
-            
-            if ( word.contains(Constants.NAMED_ENTITY_TAG_DELIMITER + Context.namedEntityRecognitionMappings.get(entityType)) 
-                || word.contains(Constants.NAMED_ENTITY_TAG_DELIMITER + Context.namedEntityRecognitionMappings.get(entityType)) ) 
-                return true;
-        }
+
+		String entityMapping = Context.namedEntityRecognitionMappings.get(entityType);
+		
+		for (String word: this.taggedWords) {
+			if (entityMapping == null) {
+				for (String tag : Context.namedEntityRecognitionTags)
+					if (word.contains(Constants.NAMED_ENTITY_TAG_DELIMITER + tag))
+						return true;
+			}
+			else if (word.contains(Constants.NAMED_ENTITY_TAG_DELIMITER + entityMapping))
+				return true;
+		}
+
+//        for ( String word : this.taggedWords ) {
+//            
+//            if ( word.contains(Constants.NAMED_ENTITY_TAG_DELIMITER + Context.namedEntityRecognitionMappings.get(entityType)) 
+//                || word.contains(Constants.NAMED_ENTITY_TAG_DELIMITER + Context.namedEntityRecognitionMappings.get(entityType)) ) 
+//                return true;
+//        }
         return false;
     }
     
@@ -129,8 +142,13 @@ public abstract class Context {
     }
     
     
+	public static final HashSet<String> namedEntityRecognitionTags = new HashSet<String>();
     public static final Map<String,String> namedEntityRecognitionMappings = new HashMap<String,String>();
     static {
+		namedEntityRecognitionTags.add(Constants.NAMED_ENTITY_TAG_PLACE);
+		namedEntityRecognitionTags.add(Constants.NAMED_ENTITY_TAG_PERSON);
+		namedEntityRecognitionTags.add(Constants.NAMED_ENTITY_TAG_ORGANIZATION);
+		namedEntityRecognitionTags.add(Constants.NAMED_ENTITY_TAG_MISCELLANEOUS);
     
         namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/AdministrativeRegion",                  Constants.NAMED_ENTITY_TAG_PLACE);
         namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Airport",                               Constants.NAMED_ENTITY_TAG_PLACE);

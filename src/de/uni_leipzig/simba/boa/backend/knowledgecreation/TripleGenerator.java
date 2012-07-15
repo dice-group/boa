@@ -22,6 +22,7 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.MeshupUriRetrieval;
+import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.ClassesUriRetrieval;
 
 
 /**
@@ -34,13 +35,18 @@ public class TripleGenerator {
     
     private NamedEntityRecognition nerTagger;
     private PartOfSpeechTagger posTagger;
+	private ClassesUriRetrieval classesUriRetrieval;
     
     public TripleGenerator() {
         
         if ( NLPediaSettings.getBooleanSetting("useProperNounPhraseExtraction") )
-            this.posTagger  = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
-        else 
             this.nerTagger  = NaturalLanguageProcessingToolFactory.getInstance().createDefaultNamedEntityRecognition();
+        else 
+            this.posTagger  = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
+
+		// @author Maciej Janicki
+		if (NLPediaSettings.getBooleanSetting("rdfTypeKnowledgeGeneration"))
+			this.classesUriRetrieval = new ClassesUriRetrieval();
     }
     
     /**
@@ -69,12 +75,16 @@ public class TripleGenerator {
 
         String posTaggedSentence    = this.posTagger.getAnnotatedString(sentence);
         
-        System.out.println(this.posTagger.getNounPhrases(sentence));
+        System.out.println("Noun Phrases: " + this.posTagger.getNounPhrases(sentence));
         
-        Context leftContext     = new ProperNounPhraseLeftContext(posTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables(), this.posTagger.getNounPhrases(sentence));
-        Context rightContext    = new ProperNounPhraseRightContext(posTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables(), this.posTagger.getNounPhrases(sentence));
-
-        return this.extractTriple(leftContext, rightContext, sentence, posTaggedSentence, mapping, pattern);
+		try {
+			Context leftContext     = new ProperNounPhraseLeftContext(posTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables(), this.posTagger.getNounPhrases(sentence));
+			Context rightContext    = new ProperNounPhraseRightContext(posTaggedSentence, sentence, pattern.getNaturalLanguageRepresentationWithoutVariables(), this.posTagger.getNounPhrases(sentence));
+        	return this.extractTriple(leftContext, rightContext, sentence, posTaggedSentence, mapping, pattern);
+		} catch (StringIndexOutOfBoundsException ex) {	// @author Maciej Janicki
+            this.logger.debug("Could not create context for string " + sentence + ". TAGGED: " + posTaggedSentence + " pattern: " + pattern.getNaturalLanguageRepresentationWithoutVariables(), ex);
+			return null;
+		}
     }
     
     public static void main(String[] args) {
@@ -129,20 +139,32 @@ public class TripleGenerator {
             boolean beginsWithDomain = pattern.getNaturalLanguageRepresentation().startsWith("?D?") ? true : false;
             String domainUri         = mapping.getProperty().getRdfsDomain();
             String rangeUri          = mapping.getProperty().getRdfsRange();
+
+			System.out.println(pattern.getNaturalLanguageRepresentation());
+			System.out.println(taggedSentence);
     
             if (beginsWithDomain) {
     
                 if (leftContext.containsSuitableEntity(domainUri) && rightContext.containsSuitableEntity(rangeUri)) {
     
                     if ( leftContext.getSuitableEntityDistance(domainUri) <= NLPediaSettings.getIntegerSetting("contextLookAhead") 
-                            && rightContext.getSuitableEntityDistance(rangeUri) <= NLPediaSettings.getIntegerSetting("contextLookAhead") ) {
+                            	&& rightContext.getSuitableEntityDistance(rangeUri) <= NLPediaSettings.getIntegerSetting("contextLookAhead") ) {
                         
                         String subjectLabel = leftContext.getSuitableEntity(domainUri);
                         String objectLabel = rightContext.getSuitableEntity(rangeUri);
                         
                         UriRetrieval uriRetrieval = new MeshupUriRetrieval();
                         String subjectUri   = uriRetrieval.getUri(subjectLabel);
-                        String objectUri    = uriRetrieval.getUri(objectLabel);
+                        //String objectUri    = uriRetrieval.getUri(objectLabel);
+						// @author Maciej Janicki
+						String objectUri = null;
+						if (NLPediaSettings.getBooleanSetting("rdfTypeKnowledgeGeneration")) {
+							objectUri	= this.classesUriRetrieval.getUri(objectLabel);
+						} else {
+                        	objectUri    = uriRetrieval.getUri(objectLabel);
+						}
+						if (objectUri == null)
+							return null;
                         
                         Resource subject    = new Resource(subjectUri, subjectLabel, domainUri);
                         Resource object     = new Resource(objectUri, objectLabel, rangeUri);
@@ -169,7 +191,16 @@ public class TripleGenerator {
                         String subjectLabel = rightContext.getSuitableEntity(domainUri);
                         
                         UriRetrieval uriRetrieval = new MeshupUriRetrieval();
-                        String objectUri = uriRetrieval.getUri(objectLabel);
+                        //String objectUri = uriRetrieval.getUri(objectLabel);
+						// @author Maciej Janicki
+						String objectUri = null;
+						if (NLPediaSettings.getBooleanSetting("rdfTypeKnowledgeGeneration")) {
+							objectUri	= this.classesUriRetrieval.getUri(objectLabel);
+						} else {
+                        	objectUri    = uriRetrieval.getUri(objectLabel);
+						}
+						if (objectUri == null)
+							return null;
                         String subjectUri = uriRetrieval.getUri(subjectLabel);
                         
                         Resource subject    = new Resource(subjectUri, subjectLabel, domainUri);

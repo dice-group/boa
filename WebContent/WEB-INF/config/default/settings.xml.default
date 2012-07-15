@@ -33,6 +33,7 @@
                 <entry key="minPatternLenght"                               value="1"/>
                 <entry key="surfaceFormMinimumLength"                       value="3"/>
                 <entry key="pos.tagger.model"                               value="training/pos/left3words-wsj-0-18.tagger"/>
+				<entry key="removeStopWordsFromPatterns"					value="true"/>
                 
                 <!-- ############### confidence measure ############### -->
                 <entry key="number.of.occurrence.threshold"                 value="3"/>
@@ -73,6 +74,8 @@
                 <entry key="sparqlQueryLimit"                               value="100"/>
                 
                 <!-- ############### other ############### -->
+				
+				<entry key="rdfTypeKnowledgeGeneration"						value="false"/>
                 <entry key="patternMappingDatabases"                        value="/Users/gerb/Development/workspaces/experimental/en_wiki;/Users/gerb/Development/workspaces/experimental/de_wiki"/>
                 <entry key="spotlight.maxSurfaceFormLength"                 value="50"/>
                 <entry key="ipAndPort"                                      value="http://localhost:8080/boa/"/>

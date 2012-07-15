@@ -77,6 +77,23 @@ public class SurfaceFormGenerator {
             this.urisToLabels.put(lineParts[0], filteredSurfaceForms);
             this.urisToLabels.put(lineParts[0].replace("http://" + NLPediaSettings.BOA_LANGUAGE + ".", "http://"), filteredSurfaceForms);
         }
+
+		// @author Maciej Janicki -- add classes surface forms from WordNet expansion
+		List<String> classesSurfaceForms = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "classes_surface_forms.tsv", "UTF-8");
+        for ( String line : classesSurfaceForms ) {
+            
+            String[] lineParts = line.split("\t");
+            String[] surfaceFormsPart = Arrays.copyOfRange(lineParts, 1, lineParts.length);
+            Set<String> filteredSurfaceForms = new HashSet<String>();
+            
+            for ( String surfaceForm : surfaceFormsPart) {
+                
+                if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength") ) filteredSurfaceForms.add(" " + surfaceForm + " ");
+            }
+            this.urisToLabels.put(lineParts[0], filteredSurfaceForms);
+            this.urisToLabels.put(lineParts[0].replace("http://" + NLPediaSettings.BOA_LANGUAGE + ".", "http://"), filteredSurfaceForms);
+        }
+
         SurfaceFormGenerator.logger.info("Finished intializing surface forms! Found " + urisToLabels.size() + " dbpedia spotlight surfaceforms");
     }
     

@@ -3,7 +3,9 @@
  */
 package de.uni_leipzig.simba.boa.backend.pipeline.interchangeobject;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -98,4 +100,14 @@ public interface ModuleInterchangeObject {
      * @return
      */
     public abstract Map<String, Set<Triple>> getNewKnowledge();
+
+	/**
+	 * @author Maciej Janicki <macjan@o2.pl>
+	 */
+	public abstract void setClassesSurfaceForms(HashMap<String, ArrayList<String>> surfaceForms);
+
+	/**
+	 * @author Maciej Janicki <macjan@o2.pl>
+	 */
+	public abstract HashMap<String, ArrayList<String>> getClassesSurfaceForms();
 }

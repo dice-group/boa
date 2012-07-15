@@ -23,7 +23,7 @@ public class PatternComparatorGenerator {
 
             @Override
             public int compare(Pattern pattern1, Pattern pattern2) {
-                
+
                 double x = pattern1.getFeatures().get(feature) - pattern2.getFeatures().get(feature);
                 if ( x < 0 ) return -1;
                 if ( x == 0 ) return 0;

@@ -74,7 +74,8 @@ public class KnowledgeCreationThreadManager {
             
             // all threads have finished so we can shut down the progess printing
             timer.cancel();
-            index.close();
+			if (index != null)
+            	index.close();
             
             // collect all the results
             for (Future<Collection<Map<String,List<Triple>>>> future : answers) {

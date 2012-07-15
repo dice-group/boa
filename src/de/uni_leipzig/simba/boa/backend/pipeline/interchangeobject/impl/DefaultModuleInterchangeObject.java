@@ -3,6 +3,7 @@
  */
 package de.uni_leipzig.simba.boa.backend.pipeline.interchangeobject.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +32,7 @@ public class DefaultModuleInterchangeObject implements ModuleInterchangeObject {
     private Directory index;
     private MachineLearningTool machineLearningTool;
     private Map<String,Set<Triple>> triples;
+	private HashMap<String, ArrayList<String>> classesSurfaceForms; // @author Maciej Janicki <macjan@o2.pl>
 	
 	public DefaultModuleInterchangeObject(){
 		
@@ -118,4 +120,14 @@ public class DefaultModuleInterchangeObject implements ModuleInterchangeObject {
 
         return this.triples;
     }
+
+	@Override
+	public void setClassesSurfaceForms(HashMap<String, ArrayList<String>> surfaceForms) {
+		this.classesSurfaceForms = surfaceForms;
+	}
+
+	@Override
+	public HashMap<String, ArrayList<String>> getClassesSurfaceForms() {
+		return this.classesSurfaceForms;
+	}
 }

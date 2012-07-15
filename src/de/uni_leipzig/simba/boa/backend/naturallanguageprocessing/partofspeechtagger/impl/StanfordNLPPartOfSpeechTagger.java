@@ -100,7 +100,7 @@ public final class StanfordNLPPartOfSpeechTagger implements PartOfSpeechTagger {
 	    for ( String taggedWord : taggedSentence) {
 	        
 	        // do we have a proper noun in singular or plural
-            if ( taggedWord.matches(".+_NNPS?") ) {
+            if ( taggedWord.matches(".+_NNP?S?") ) {
                 
                 currentNounPhrase.add(taggedWord.substring(0, taggedWord.indexOf("_")));
             }

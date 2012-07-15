@@ -89,7 +89,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
         long start = System.currentTimeMillis();
 
         Property property = this.queryPropertyData(propertyUri);
-        int offset = 0;
+        int offset = 744000;
 
         // query as long as we get resultsets back
         while (true) {

@@ -25,7 +25,6 @@ public class FeatureHelper {
 	 * @return
 	 */
 	private static Double calculateLocalMaximum(PatternMapping mapping, Feature feature){
-		
 		return Collections.max(mapping.getPatterns(), PatternComparatorGenerator.getPatternFeatureComparator(feature)).getFeatures().get(feature);
 	}
 	

@@ -30,6 +30,7 @@ public class ProperNounPhraseRightContext extends RightContext {
         // there can't be a suitable entity if there are no entites
         if ( nounPhrases.size() == 0 ) return false;
         int lastIndexOfPatternInSentence = this.sentence.indexOf(this.pattern);
+		int lastPatternEnding = this.sentence.indexOf(this.pattern) + this.pattern.length();
         
         for (String nounPhrase : this.nounPhrases ) {
             
@@ -38,6 +39,10 @@ public class ProperNounPhraseRightContext extends RightContext {
                 
                 continue; // all other noun phrases will be even further right to the pattern
             }
+			// the noun phrase lies entirely inside the pattern
+			else if ( this.sentence.indexOf(nounPhrase) + nounPhrase.length() < lastPatternEnding ) {
+				continue;
+			}
             else {
                
                 // we found one entity left of the pattern, so that's it
