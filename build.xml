@@ -219,6 +219,17 @@
 			<replacefilter token="@BOA_BASE_DIRECTORY@"  value="${app.data.dir}"/>
 		</replace>
 		<echo message="Generated config files are available at ${config.dir}." />
+		
+		<!-- we dont want to start BOA twice -->
+		<antcall target="create.data.dir"/>
 	</target>
 
+	<!-- create the directory structure to avoid needing to start BOA twice -->
+	<target name="create.data.dir" depends="build">
+	    
+		<echo message="Generating the BOA directory structure in ${data.dir}!" />
+        <java fork="true" failonerror="yes" classname="de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule">
+            <classpath refid="master-classpath"/>
+        </java>
+	</target>
 </project>

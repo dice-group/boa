@@ -203,6 +203,9 @@ public class TripleGenerator {
 							return null;
                         String subjectUri = uriRetrieval.getUri(subjectLabel);
                         
+                        // this is necessary, because we would generate triples with the same object & subject
+                        if ( subjectUri.equals(objectUri) ) return null;
+                        
                         Resource subject    = new Resource(subjectUri, subjectLabel, domainUri);
                         Resource object     = new Resource(objectUri, objectLabel, rangeUri);
     

@@ -42,14 +42,14 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 
     private final NLPediaLogger logger = new NLPediaLogger(AbstractDefaultBackgroundKnowledgeCollectorModule.class);
 
-    private final String SPARQL_ENDPOINT_URI = NLPediaSettings.getSetting("dbpediaSparqlEndpoint");
-    private final String DBPEDIA_DEFAULT_GRAPH = "http://dbpedia.org";
-    private final int SPARQL_QUERY_LIMIT = NLPediaSettings.getIntegerSetting("sparqlQueryLimit");
+    protected final String SPARQL_ENDPOINT_URI              = NLPediaSettings.getSetting("dbpediaSparqlEndpoint");
+    protected final String DBPEDIA_DEFAULT_GRAPH            = NLPediaSettings.getSetting("importGraph");
+    private final int SPARQL_QUERY_LIMIT                    = NLPediaSettings.getIntegerSetting("sparqlQueryLimit");
     protected final String BACKGROUND_KNOWLEDGE_OUTPUT_PATH = NLPediaSettings.BOA_DATA_DIRECTORY + de.uni_leipzig.simba.boa.backend.Constants.BACKGROUND_KNOWLEDGE_PATH;
-    protected final String BOA_LANGUAGE = NLPediaSettings.BOA_LANGUAGE;
+    protected final String BOA_LANGUAGE                     = NLPediaSettings.BOA_LANGUAGE;
 
-    protected Set<BackgroundKnowledge> backgroundKnowledge = new HashSet<BackgroundKnowledge>();
-    protected Map<Integer, Property> properties = new HashMap<Integer, Property>();
+    protected Set<BackgroundKnowledge> backgroundKnowledge  = new HashSet<BackgroundKnowledge>();
+    protected Map<Integer, Property> properties             = new HashMap<Integer, Property>();
 
     @Override
     public String getName() {
@@ -104,8 +104,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
             // query current query, collect results and increment the offset
             // afterwards
             ResultSet rs = getResults(qexec, query);
-            while (rs.hasNext())
-                resultSetList.add(rs.next());
+            while (rs.hasNext()) resultSetList.add(rs.next());
             offset = offset + SPARQL_QUERY_LIMIT;
 
             // SPARQL query returned results
@@ -114,7 +113,6 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
                 // this is an object property, only object properties can have
                 // labels
                 if (query.contains("?o rdfs:label ?ol")) {
-
                     property.setType("http://www.w3.org/2002/07/owl#ObjectProperty");
                     handleObjectPropertyQuery(property, fileName, resultSetList);
                 }
@@ -167,16 +165,21 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 
                 objectUri = solution.get("o").toString();
                 objectLabel = solution.get("oLabel").toString();
-                if (objectLabel.contains("@" + BOA_LANGUAGE)) objectLabel = objectLabel.substring(0, objectLabel.lastIndexOf("@"));
+                if (objectLabel.contains("@" + BOA_LANGUAGE))
+                    objectLabel = objectLabel.substring(0, objectLabel.lastIndexOf("@"));
             }
             else {
 
                 // we dont have any uri for datatypes so just use the label
                 objectUri = solution.get("o").toString();
-                if (objectUri.contains("^^")) objectType    = objectUri.substring(objectUri.lastIndexOf("^^") + 2);
-                if (objectUri.contains("^^")) objectUri     = objectUri.substring(0, objectUri.indexOf("^"));
-                if (objectLabel.endsWith("@" + BOA_LANGUAGE)) objectLabel = objectLabel.replace("\n","").replace("@" + BOA_LANGUAGE, "");
-                if (objectLabel.isEmpty()) objectLabel = objectUri;
+                if (objectUri.contains("^^"))
+                    objectType = objectUri.substring(objectUri.lastIndexOf("^^") + 2);
+                if (objectUri.contains("^^"))
+                    objectUri = objectUri.substring(0, objectUri.indexOf("^"));
+                if (objectLabel.endsWith("@" + BOA_LANGUAGE))
+                    objectLabel = objectLabel.replace("\n", "").replace("@" + BOA_LANGUAGE, "");
+                if (objectLabel.isEmpty())
+                    objectLabel = objectUri;
             }
 
             DatatypePropertyBackgroundKnowledge datatypeBackgroundKnowledge = new DatatypePropertyBackgroundKnowledge();
@@ -186,7 +189,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
             datatypeBackgroundKnowledge.setObjectPrefixAndLocalname(objectUri);
             datatypeBackgroundKnowledge.setObjectLabel(objectLabel.replaceAll("\\(.+?\\)", "").trim());
             datatypeBackgroundKnowledge.setObjectDatatype(objectType);
-            
+
             datatypeBackgroundKnowledge.setProperty(property);
 
             BackgroundKnowledge backgroundKnowledge = SurfaceFormGenerator.getInstance().createSurfaceFormsForBackgroundKnowledge(datatypeBackgroundKnowledge);
@@ -210,7 +213,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
      * @param resultSets
      *            - the resultset returned from the SPARQL endpoint
      */
-    private void handleObjectPropertyQuery(Property property, String fileName, List<QuerySolution> resultSets) {
+    protected void handleObjectPropertyQuery(Property property, String fileName, List<QuerySolution> resultSets) {
 
         BufferedFileWriter writer = FileUtil.openWriter(fileName, Constants.UTF_8_ENCODING, WRITER_WRITE_MODE.APPEND);
 
@@ -226,8 +229,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
                 if (objectLabel.contains("@")) objectLabel = objectLabel.substring(0, objectLabel.lastIndexOf("@"));
                 if (subjectLabel.contains("@")) subjectLabel = subjectLabel.substring(0, subjectLabel.lastIndexOf("@"));
 
-                // create new background knowledge and generate the surface
-                // forms
+                // create new background knowledge and generate the surface forms
                 ObjectPropertyBackgroundKnowledge objectBackgroundKnowledge = new ObjectPropertyBackgroundKnowledge();
                 objectBackgroundKnowledge.setSubjectPrefixAndLocalname(solution.get("s").toString());
                 objectBackgroundKnowledge.setSubjectLabel(subjectLabel.replaceAll("\\(.+?\\)", "").trim());
@@ -255,7 +257,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
      *            - the property Uri to query
      * @return a new Property
      */
-    private Property queryPropertyData(String propertyUri) {
+    protected Property queryPropertyData(String propertyUri) {
 
         Property property = new Property(propertyUri);
         if (this.properties.containsKey(property.hashCode())) {
@@ -279,9 +281,9 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 
                 QuerySolution qs = results.next();
 
-                String domain   = qs.get("domain") == null  ? "NA" : qs.get("domain").toString();
-                String range    = qs.get("range") == null   ? "NA" : qs.get("range").toString();
-                
+                String domain = qs.get("domain") == null ? "NA" : qs.get("domain").toString();
+                String range = qs.get("range") == null ? "NA" : qs.get("range").toString();
+
                 p = new Property(propertyUri, domain, range);
                 p.setSynsets(WordnetQuery.getSynsetsForAllSynsetTypes(p.getLabel()));
                 this.properties.put(p.hashCode(), p);
@@ -307,7 +309,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
      *            - the query only for logging purposes
      * @return a resultset for the given query
      */
-    private ResultSet getResults(QueryEngineHTTP qexec, String query) {
+    protected ResultSet getResults(QueryEngineHTTP qexec, String query) {
 
         ResultSet results = null;
 
@@ -316,7 +318,6 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
             results = qexec.execSelect();
         }
         catch (Exception e) {
-
             results = getResults(qexec, query);
             System.out.println("Retrying query: " + query);
             logger.warn("Need to retry query: " + query, e);

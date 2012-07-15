@@ -7,11 +7,12 @@
         factory-method="getInstance" singleton="true">
 
         <property name="defaultMachineLearningTool"
-            value="de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.impl.EncogNeuralNetwork" />
+            value="de.uni_leipzig.simba.boa.backend.machinelearning.generic.impl.WekaMachineLearning" />
 
         <property name="machineLearningTools">
             <list>
                 <value>de.uni_leipzig.simba.boa.backend.machinelearning.neuralnetwork.impl.EncogNeuralNetwork</value>
+                <value>de.uni_leipzig.simba.boa.backend.machinelearning.generic.impl.WekaMachineLearning</value>
             </list>
         </property>
     </bean>

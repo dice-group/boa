@@ -236,7 +236,9 @@ public class PatternWindow extends Window {
 		for (Entry<String, Integer> entry : this.pattern.getLearnedFrom().entrySet() ) {
 			
 		    String[] parts = entry.getKey().split("-;-");
-		    table.addItem(new Object[] {parts[0], parts[1], entry.getValue()}, new Integer(i++));
+		    table.addItem(new Object[] {
+		            this.pattern.isDomainFirst() ? parts[0] : parts[1], 
+		            this.pattern.isDomainFirst() ? parts[1] : parts[0], entry.getValue()}, new Integer(i++));
 		    total += entry.getValue();
 		}
 		

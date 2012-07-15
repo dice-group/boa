@@ -16,7 +16,10 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 
-
+/**
+ * 
+ * @author Daniel Gerber <dgerber@informatik.uni-leipzig.de>
+ */
 public class KnowledgeCreationManager {
 
     /**
@@ -57,11 +60,7 @@ public class KnowledgeCreationManager {
             String propertyUri = entry.getKey();
             List<Triple> triples = entry.getValue();
             
-            int i = 0 ;
-            
             for ( Triple triple : triples ) {
-                
-                System.out.println(i++ + ": " + triple);
                 
                 // we have seen this triple before, so merge it
                 if ( mergedTriples.containsKey(triple.hashCode()) ) {
@@ -103,6 +102,7 @@ public class KnowledgeCreationManager {
         for ( Triple triple : unscoredTriples ) {
 
             // sigmoid function shifted to the right to boost pattern which are learned from more than one pattern
+            // x (the triple score) needs to be between 0 and 1 in order to only get values between 0 and 1
             Double score = 1D / (1D + Math.pow(Math.E, - (2 * triple.getLearnedFromPatterns().size() * (triple.getScore() / maximum)) 
                     + triple.getLearnedFromPatterns().size()));
             

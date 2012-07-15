@@ -63,9 +63,6 @@ public class PatternMappingManager {
      */
     public PatternMapping getPatternMapping(String uri, String database) {
 
-        System.out.println(PatternMappingManager.mappingsInDatabases.keySet());
-        System.out.println(database);
-        
         for  (PatternMapping mapping : PatternMappingManager.mappingsInDatabases.get(database) ) {
             
             if ( mapping.getProperty().getUri().equals(uri) ) return mapping; 

@@ -26,4 +26,10 @@ public class DefaultMachineLearningTrainingFile extends AbstractMachineLearningT
     
     // used for spring
     public DefaultMachineLearningTrainingFile() {}
+
+    @Override
+    public String toArff() {
+
+        return "";
+    }
 }

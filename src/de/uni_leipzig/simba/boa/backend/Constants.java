@@ -32,7 +32,17 @@ public class Constants {
     /**
      * 
      */
-    public static final String NEURAL_NETWORK_PATH = "neuralnetwork/";
+    public static final String MACHINE_LEARNING_PATH = "machinelearning/";
+    
+    /**
+     * 
+     */
+    public static final String MACHINE_LEARNING_TRAINING_PATH = "machinelearning/training/";
+    
+    /**
+     * 
+     */
+    public static final String MACHINE_LEARNING_CLASSIFIER_PATH = "machinelearning/classifier/";
     
     /**
      * 
@@ -170,7 +180,8 @@ public class Constants {
 	 */
 	public static final Set<String> STOP_WORDS = new HashSet<String>();
 	static {
-		Collections.addAll(STOP_WORDS, ":", " ", "``", "''", ",", "-", "i", "a", "about", "an", "and", "are", "as", "at", "be", "but", "by", "com", "for", "from", "how", "in", "is", "it", "of", "on", "or", "that", "the",
+		Collections.addAll(STOP_WORDS, ":", " ", "``", "''", ",", "'", "-LRB-", "-RRB-", ".", "-", "--", "i", "a", "about", "an", "and", "are", "as", "at", "be", "but", "by", "com", "for", "from", 
+		        "how", "in", "is", "it", "of", "on", "or", "that", "the", "The", 
 				"this", "to", "what", "when", "where", "who", "will", "with", "the", "www", "before", ",", "after", ";", "like", "and", "such", "-LRB-", "-RRB-", "-lrb-", "-rrb-", "aber", "als",
 				"am", "an", "auch", "auf", "aus", "bei", "bin", "bis", "bist", "da", "dadurch", "daher", "darum", "das", "daß", "dass", "dein", "deine", "dem", "den", "der", "des", "dessen",
 				"deshalb", "die", "dies", "dieser", "dieses", "doch", "dort", "du", "durch", "ein", "eine", "einem", "einen", "einer", "eines", "er", "es", "euer", "eure", "für", "hatte", "hatten",

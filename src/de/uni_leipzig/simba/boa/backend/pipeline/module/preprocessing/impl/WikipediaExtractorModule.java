@@ -47,7 +47,7 @@ public class WikipediaExtractorModule extends AbstractPreprocessingModule {
     public void run() {
 
         long startWikipediaExtractionTime = System.currentTimeMillis();
-        this.logger.info("Starting to extract wikidepdia dump");
+        this.logger.info("Starting to extract wikipedia dump");
         
         String wikipediaDumpPath    = NLPediaSettings.BOA_DATA_DIRECTORY + "wikipedia/" + NLPediaSettings.BOA_LANGUAGE + "wiki-latest-pages-articles.xml.bz2";
         String extractorInputPath   = NLPediaSettings.BOA_DATA_DIRECTORY + "wikipedia/" + NLPediaSettings.BOA_LANGUAGE + "wiki-latest-pages-articles.xml";
@@ -125,5 +125,4 @@ public class WikipediaExtractorModule extends AbstractPreprocessingModule {
 
         // nothing to do here
     }
-
 }

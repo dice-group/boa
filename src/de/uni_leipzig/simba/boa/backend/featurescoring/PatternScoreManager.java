@@ -1,6 +1,12 @@
 package de.uni_leipzig.simba.boa.backend.featurescoring;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,6 +28,7 @@ import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfi
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry.MachineLearningTrainingFileEntry;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.factory.MachineLearningTrainingFileFactory;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.pipeline.module.patternfeatureextraction.impl.DefaultPatternFeatureExtractionModule;
 
 /**
  * 
@@ -35,10 +42,11 @@ public class PatternScoreManager {
      * 
      * @param filepath
      */
-    public void writeNetworkTrainingFile(MachineLearningTrainingFile networkTrainingFile, String filepath) {
+    public void writeNetworkTrainingFile(MachineLearningTrainingFile machineLearningFile, String filepath) {
 
+        // save regular boa version
         BufferedFileWriter writer = FileUtil.openWriter(filepath, "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
-        writer.writeLineNoNewLine(networkTrainingFile.toString());
+        writer.writeLineNoNewLine(machineLearningFile.toString());
         writer.close();
     }
     
@@ -148,8 +156,8 @@ public class PatternScoreManager {
             
             Boolean manual = null;
             if ( lineParts[lineParts.length - 3].equals("MANUAL") ) manual = null;
-            if ( lineParts[lineParts.length - 3].equals("0") ) manual = false;
-            if ( lineParts[lineParts.length - 3].equals("1") ) manual = true;
+            if ( lineParts[lineParts.length - 3].equals("false") ) manual = false;
+            if ( lineParts[lineParts.length - 3].equals("true") ) manual = true;
             
             String patternMappingUri = lineParts[lineParts.length - 2];
             String naturalLanguageRepresentation = lineParts[lineParts.length - 1];
