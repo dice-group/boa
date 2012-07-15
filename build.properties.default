@@ -1,0 +1,16 @@
+### log properties
+# INFO for production use, DEBUG only for developing
+log.priority = DEBUG
+
+### language settings, de - ko - en - ...
+boa.language    = en
+
+### set directories
+base.dir        = /Users/gerb/Development/workspaces/java-ws/boa
+data.dir        = /Users/gerb/Development/workspaces/experimental/en_wiki_exp/
+app.data.dir    = ${base.dir}/WebContent/WEB-INF/data/
+src.dir         = ${base.dir}/src
+config.dir      = ${base.dir}/WebContent/WEB-INF/config
+log.dir         = ${base.dir}/WebContent/WEB-INF/log
+build.dir       = ${base.dir}/build
+Xmx             = 2G
