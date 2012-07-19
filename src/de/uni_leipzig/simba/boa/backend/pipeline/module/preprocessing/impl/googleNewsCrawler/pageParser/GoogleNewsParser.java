@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
@@ -16,6 +17,8 @@ import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class GoogleNewsParser {
+
+	protected static final int GOOGLEPOLITENESSTIMEBETWEENPAGE = 1000;
 
 	private WebClient webClient;
 
@@ -48,7 +51,7 @@ public class GoogleNewsParser {
 		if (options == null)
 			options = "";
 		
-		String url = "http://www.google.com/search?hl=" + language + "&tbm=nws";
+		String url = "http://news.google.com/search?hl=" + language + "&tbm=nws";
 //		for (String object : searchWords) {
 //			url += "&q=" + object;
 //		}
@@ -82,8 +85,15 @@ public class GoogleNewsParser {
 		
 		ArrayList<String> googleUrls = new ArrayList<String>();
 
-		for (int i = 0; i < nrOfPages; i++) {
-			String[] urlPuffer = this.getGoogleNewsUrls(thema, subject, options+ "&start="+(i*10));
+		String[] urlPuffer = this.getGoogleNewsUrls(thema, subject, options);
+		Collections.addAll(googleUrls, urlPuffer);
+		
+		for (int i = 1; i < nrOfPages; i++) {
+			try {
+				TimeUnit.MILLISECONDS.sleep(GOOGLEPOLITENESSTIMEBETWEENPAGE);
+			} catch (InterruptedException e) {				
+			}
+			urlPuffer = this.getGoogleNewsUrls(thema, subject, options+ "&start="+(i*10));
 			Collections.addAll(googleUrls, urlPuffer);
 		}
 

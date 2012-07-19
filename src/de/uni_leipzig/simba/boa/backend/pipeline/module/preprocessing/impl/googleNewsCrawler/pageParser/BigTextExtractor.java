@@ -102,7 +102,9 @@ public class BigTextExtractor {
 	 */
 	public static void main(String[] args) {
 		BigTextExtractor bte= new BigTextExtractor("en");
-		System.out.println(bte.extractBigText("http://latimesblogs.latimes.com/music_blog/2012/05/music-apps-the-new-face-of-music-retail-narm-2012.html"));
+		
+			System.out.println(bte.extractBigText("http://www.mtv.com/news/articles/1675969/madonna-album-deal-interscope.jhtml"));
+//		System.out.println(bte.extractBigText("http://latimesblogs.latimes.com/music_blog/2012/05/music-apps-the-new-face-of-music-retail-narm-2012.html"));
 //		System.out.println(bte.extractBigText("http://www.philly.com/philly/entertainment/music/20120503_New_old_music_from_a__lsquo_vocal_string_quartet_rsquo_.html"));
 
 	}
