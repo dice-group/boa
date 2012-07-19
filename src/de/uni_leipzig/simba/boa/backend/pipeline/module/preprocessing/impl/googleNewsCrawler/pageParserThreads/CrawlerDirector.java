@@ -24,7 +24,7 @@ public class CrawlerDirector {
 	private Queue<String> uriStack = new LinkedList<String>();
 	private URLStore urlStore=null;
 
-	private final int nrOfCrawler = 6;
+	private final int nrOfCrawler = 1;//6;
 	private String language;
 
 	public CrawlerDirector(String language, String outPutFile,

@@ -3,11 +3,15 @@ package de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.goog
 import java.util.concurrent.TimeUnit;
 
 import de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.googleNewsCrawler.pageParser.GoogleNewsParser;
+import de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.googleNewsCrawler.pageParser.MTVNewsParser;
 
 public class GoogleNewsThread extends Thread {
 
-	protected static final int GOOGLENEWSTOLERANCETIME = 3500;// 3500;
+	protected static final int GOOGLENEWSTOLERANCETIME = 3000;// 3500;
 	private GoogleNewsParser gnParser;
+	
+	private MTVNewsParser mtvParser;
+	
 	private String theme;
 	private String[] subjects;
 	private CrawlerDirector crawlerDirector;
@@ -19,6 +23,8 @@ public class GoogleNewsThread extends Thread {
 			String[] subjects, String language) {
 		this.gnParser = new GoogleNewsParser(language);
 
+		this.mtvParser= new MTVNewsParser(language);
+		
 		this.theme = theme;
 		this.subjects = subjects;
 		this.crawlerDirector = crawlerDirector;		
@@ -36,9 +42,11 @@ public class GoogleNewsThread extends Thread {
 
 			// retry if google news block because I ask to often
 			while (allright == false) {
-				urls = gnParser.getGoogleNewsUrls(theme, subject, null,
-						numberOfGoogleAnswerPages);
+//				urls = gnParser.getGoogleNewsUrls(theme, subject, null,
+//						numberOfGoogleAnswerPages);
 
+				urls= mtvParser.getNewsUrls(theme, subject);
+				
 				// google news is blocking me
 				if (gnParser.statusCode == 503) {
 					System.out
