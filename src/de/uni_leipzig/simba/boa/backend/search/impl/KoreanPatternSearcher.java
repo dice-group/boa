@@ -283,7 +283,7 @@ public class KoreanPatternSearcher extends DefaultPatternSearcher{
 	}
 	
 	@Override
-	protected String getCorrectCaseNLR(String lowerCase, String normalCase, String pattern) {
+	protected String getCorrectCaseNLR(String lowerCase, String normalCase, String pattern, Set<String> allLabels) {
 		return pattern;
 	}
 	

@@ -25,6 +25,7 @@ import org.apache.lucene.util.Version;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.lucene.LowerCaseWhitespaceAnalyzer;
 import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
@@ -39,6 +40,8 @@ import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
  */
 public class DefaultPatternSearcher implements PatternSearcher {
 
+    static NLPediaSetup setup = new NLPediaSetup(true);
+    
     protected final static int MAX_PATTERN_CHUNK_LENGTH  = NLPediaSettings.getIntegerSetting("maxPatternLenght");
     private final static int MIN_PATTERN_CHUNK_LENGTH  = NLPediaSettings.getIntegerSetting("minPatternLenght");
     private final static int MAX_NUMBER_OF_DOCUMENTS   = NLPediaSettings.getIntegerSetting("maxNumberOfDocuments");
@@ -150,6 +153,10 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
         Set<String> firstLabels =  backgroundKnowledge.getSubjectSurfaceForms();
         Set<String> secondLabels = backgroundKnowledge.getObjectSurfaceForms();
+        
+        // combine the list to make processing a little easier
+        Set<String> allLabels = new HashSet<String>(firstLabels);
+        allLabels.addAll(secondLabels);
 
         this.logger.debug(firstLabels.toString());
         this.logger.debug(secondLabels.toString());
@@ -183,7 +190,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
                     
                     if (!currentMatches.isEmpty()) {
                         
-                        this.addSearchResults(results, currentMatches, firstLabel, secondLabel, backgroundKnowledge, sentence, sentenceId);
+                        this.addSearchResults(results, currentMatches, firstLabel, secondLabel, backgroundKnowledge, sentence, sentenceId, allLabels);
                     }
                 }
             }
@@ -193,6 +200,11 @@ public class DefaultPatternSearcher implements PatternSearcher {
         return results;
     }
     
+    /**
+     * 
+     * @param hits
+     * @return
+     */
     protected Set<String> getSentencesFromIndex(ScoreDoc[] hits) {
         
         Set<String> sentences = new HashSet<String>();
@@ -205,6 +217,13 @@ public class DefaultPatternSearcher implements PatternSearcher {
         return sentences;
     }
 
+    /**
+     * 
+     * @param sentence
+     * @param firstLabel
+     * @param secondLabel
+     * @return
+     */
     protected List<String> findMatchedText(final String sentence, final String firstLabel, final String secondLabel){
         
         final String sentenceLowerCase    = sentence.toLowerCase();
@@ -228,6 +247,12 @@ public class DefaultPatternSearcher implements PatternSearcher {
         return currentMatches;
     }
     
+    /**
+     * 
+     * @param q
+     * @param maxNumberOfDocuments
+     * @return
+     */
     private ScoreDoc[] searchIndexWithoutFilter(Query q, int maxNumberOfDocuments) {
 
         try {
@@ -248,15 +273,16 @@ public class DefaultPatternSearcher implements PatternSearcher {
     
      * @param results 
      * @param currentMatches
+     * @param allLabels 
      * @param triple
      * @param hit
      * @param isSubject
      */
-    private void addSearchResults(List<SearchResult> results, List<String> currentMatches, String subjectLabel, String objectLabel, BackgroundKnowledge backgroundKnowledge, String sentenceNormalCase, Integer sentenceId) {
+    private void addSearchResults(List<SearchResult> results, List<String> currentMatches, String subjectLabel, String objectLabel, BackgroundKnowledge backgroundKnowledge, String sentenceNormalCase, Integer sentenceId, Set<String> allLabels) {
 
         for (String match : currentMatches) {
 
-            String nlr = this.getCorrectCaseNLR(sentenceNormalCase.toLowerCase(), sentenceNormalCase, match);
+            String nlr = this.getCorrectCaseNLR(sentenceNormalCase.toLowerCase(), sentenceNormalCase, match, allLabels);
 
             // but only for those who are suitable
             if (!match.isEmpty() && this.isPatternSuitable(match)) {
@@ -283,24 +309,43 @@ public class DefaultPatternSearcher implements PatternSearcher {
         }
     }
 
-    protected String getCorrectCaseNLR(String lowerCase, String normalCase, String pattern) {
+    protected String getCorrectCaseNLR(String lowerCase, String normalCase, String pattern, Set<String> allLabels) {
 
         String firstVariable = pattern.substring(0, 3);
         String secondVariable = pattern.substring(pattern.length() - 3, pattern.length());
 
         // remove ?D? and ?R?
         pattern = pattern.substring(0, pattern.length() - 3).substring(3).trim();
-        // get the start of the pattern and got until its end
+        // get the start of the pattern and go until its end
         int start = lowerCase.indexOf(pattern);
         int end = start + pattern.length();
-        return firstVariable + " " + normalCase.substring(start, end) + " " + secondVariable;
-    }
 
+        String nlr = normalCase.substring(start, end);
+        
+        // sometimes the surface form is part of the pattern, so we need to cut this out
+        for ( String label : allLabels ) { label = label.toLowerCase();
+            for (String part : label.split(" ") ) {
+                
+                    // starts with the part of the label
+                    // remove the label
+                    if ( nlr.regionMatches(true, 0, part, 0, part.length()) )
+                        nlr = nlr.substring(part.length());
+                    
+                    // ends with the part
+                    if ( nlr.matches("(?i).*" + part))
+                        nlr = nlr.replaceAll("(?i)" + part + "$", "");
+            }
+        }
+        return firstVariable + " " + nlr.trim() + " " + secondVariable;
+    }
+    
     public static void main(String[] args) throws ParseException {
 
-        HashSet<String> list = new HashSet<String>();
-        list.add("THIS");
-        System.out.println(StringUtils.join(list, " OR "));
+        String sentence = "This is a Sentence with Sentence litter pattern inside of it!";
+        Set<String> allLabels = new HashSet<String>();
+        allLabels.add("Sentence");
+//        allLabels.add("A");
+//        System.out.println(getCorrectCaseNLR(sentence.toLowerCase(), sentence, "?D?" + " Sentence with Sentence".toLowerCase() + "?R?", allLabels));
     }
     
     private static Set<String> escapeList(Set<String> tokens) {
