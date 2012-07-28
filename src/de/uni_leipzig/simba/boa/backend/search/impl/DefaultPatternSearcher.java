@@ -304,7 +304,8 @@ public class DefaultPatternSearcher implements PatternSearcher {
                     result.setFirstLabel(objectLabel);
                     result.setSecondLabel(subjectLabel);
                 }
-                result.setPosTags(this.posTagger.getAnnotations(result.getNaturalLanguageRepresentationWithoutVariables()));
+//                result.setPosTags(this.posTagger.getAnnotations(result.getNaturalLanguageRepresentationWithoutVariables()));
+                result.setPosTags("");
                 results.add(result);
             }
         }
