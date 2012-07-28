@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
@@ -332,8 +333,8 @@ public class DefaultPatternSearcher implements PatternSearcher {
                         nlr = nlr.substring(part.length());
                     
                     // ends with the part
-                    if ( nlr.matches("(?i).*" + part))
-                        nlr = nlr.replaceAll("(?i)" + part + "$", "");
+                    if ( nlr.matches("(?i).*" + Pattern.quote(part)))
+                        nlr = nlr.replaceAll("(?i)" + Pattern.quote(part) + "$", "");
             }
         }
         return firstVariable + " " + nlr.trim() + " " + secondVariable;
