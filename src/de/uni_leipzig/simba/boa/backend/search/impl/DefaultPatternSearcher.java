@@ -51,9 +51,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
     private final Analyzer analyzer;
     protected IndexSearcher indexSearcher;
-
     private final QueryParser parser;
-    private ScoreDoc[] hits;
     
     private final NLPediaLogger logger = new NLPediaLogger(DefaultPatternSearcher.class);
 
@@ -81,8 +79,6 @@ public class DefaultPatternSearcher implements PatternSearcher {
         // create index searcher in read only mode
         this.indexSearcher = LuceneIndexHelper.openIndexSearcher(indexDir, true);
         this.parser = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
-
-        this.hits = null;
     }
     
     @Override
@@ -147,9 +143,6 @@ public class DefaultPatternSearcher implements PatternSearcher {
      */
     public Collection<SearchResult> queryBackgroundKnowledge(BackgroundKnowledge backgroundKnowledge) {
 
-        // initialize very late
-        if ( this.posTagger == null ) this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
-        
         List<SearchResult> results = new ArrayList<SearchResult>();
 
         Set<String> firstLabels =  backgroundKnowledge.getSubjectSurfaceForms();
@@ -158,9 +151,6 @@ public class DefaultPatternSearcher implements PatternSearcher {
         // combine the list to make processing a little easier
         Set<String> allLabels = new HashSet<String>(firstLabels);
         allLabels.addAll(secondLabels);
-
-        this.logger.debug(firstLabels.toString());
-        this.logger.debug(secondLabels.toString());
         
         if ( firstLabels.size() == 0 || secondLabels.size() == 0 ) { 
             
@@ -173,26 +163,18 @@ public class DefaultPatternSearcher implements PatternSearcher {
                                     " AND " +
                                   "sentence:(" + StringUtils.join(escapeList(secondLabels), " OR ") + ")");
         
-        hits = this.searchIndexWithoutFilter(q, MAX_NUMBER_OF_DOCUMENTS);
-        
-        Set<String> sentences = this.getSentencesFromIndex(hits);
-
         // go through all sentences and surface form combinations 
-        for ( String sentence : sentences ) {
+        for ( ScoreDoc doc : this.searchIndexWithoutFilter(q, MAX_NUMBER_OF_DOCUMENTS) ) {
             
-            int splitPosition   = sentence.indexOf(" ");
-            Integer sentenceId  = Integer.valueOf(sentence.substring(0, splitPosition));
-            sentence            = sentence.substring(splitPosition + 1);
+            String sentence     = this.getSentenceFromIndex(doc);
             
             for (String firstLabel : firstLabels) {
                 for (String secondLabel : secondLabels) {
                     
                     List<String> currentMatches = findMatchedText(sentence, firstLabel, secondLabel);
                     
-                    if (!currentMatches.isEmpty()) {
-                        
-                        this.addSearchResults(results, currentMatches, firstLabel, secondLabel, backgroundKnowledge, sentence, sentenceId, allLabels);
-                    }
+                    if (!currentMatches.isEmpty()) 
+                        this.addSearchResults(results, currentMatches, firstLabel, secondLabel, backgroundKnowledge, sentence, doc.doc, allLabels);
                 }
             }
         }
@@ -216,6 +198,16 @@ public class DefaultPatternSearcher implements PatternSearcher {
             sentences.add(hits[n].doc + " " + LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hits[n].doc, "sentence"));
         }
         return sentences;
+    }
+    
+    /**
+     * 
+     * @param hit
+     * @return
+     */
+    protected String getSentenceFromIndex(ScoreDoc hit) {
+        
+        return hit.doc + " " + LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hit.doc, "sentence");
     }
 
     /**
@@ -304,7 +296,6 @@ public class DefaultPatternSearcher implements PatternSearcher {
                     result.setFirstLabel(objectLabel);
                     result.setSecondLabel(subjectLabel);
                 }
-//                result.setPosTags(this.posTagger.getAnnotations(result.getNaturalLanguageRepresentationWithoutVariables()));
                 result.setPosTags("");
                 results.add(result);
             }
@@ -373,7 +364,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
         if ((!naturalLanguageRepresentation.startsWith("?D?") && !naturalLanguageRepresentation.startsWith("?R?"))
                 || (!naturalLanguageRepresentation.endsWith("?D?") && !naturalLanguageRepresentation.endsWith("?R?")))
             return false;
-
+        
         // patterns need to have only one domain and only one range
         if (StringUtils.countMatches(naturalLanguageRepresentation, "?D?") != 1 || StringUtils.countMatches(naturalLanguageRepresentation, "?R?") != 1)
             return false;
@@ -382,10 +373,10 @@ public class DefaultPatternSearcher implements PatternSearcher {
         // smaller/equal then max chunk size
         // true or correct if the number of stop-words in the pattern is not
         // equal to the number of tokens
-        Set<String> naturalLanguageRepresentationChunks = new HashSet<String>(Arrays.asList(patternWithoutVariables.toLowerCase().split(" ")));
-        if (naturalLanguageRepresentationChunks.size() >= MAX_PATTERN_CHUNK_LENGTH || naturalLanguageRepresentationChunks.size() <= MIN_PATTERN_CHUNK_LENGTH)
+        Set<String> naturalLanguageRepresentationChunks = new HashSet<String>(Arrays.asList(patternWithoutVariables.toLowerCase().trim().split(" ")));
+        if (naturalLanguageRepresentationChunks.size() > MAX_PATTERN_CHUNK_LENGTH || naturalLanguageRepresentationChunks.size() < MIN_PATTERN_CHUNK_LENGTH || patternWithoutVariables.trim().isEmpty())
             return false;
-
+        
         // patterns containing only stop-words can't be used, because they are
         // way to general
 		// @author Maciej Janicki -- this feature can be switched on/off in settings
@@ -394,12 +385,12 @@ public class DefaultPatternSearcher implements PatternSearcher {
 			if (naturalLanguageRepresentationChunks.size() == 0)
 				return false;
 		}
-
+		
         // patterns shall not start with "and" or "and ," because this is the
         // conjunction of sentences and does not carry meaning
         if (patternWithoutVariables.startsWith("and ") || patternWithoutVariables.startsWith("and,") || patternWithoutVariables.startsWith("and ,"))
             return false;
-
+        
         return true;
     }
 
@@ -439,7 +430,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
     public Set<String> getExactMatchSentencesForLabels(String label1, String label2, int maxNumberOfDocuments) {
         
         Query query = this.parseQuery("+sentence:\"" + QueryParser.escape(label1) + "\" && +sentence:\"" + QueryParser.escape(label2) + "\"");
-        hits = this.searchIndex(query, null, maxNumberOfDocuments);
+        ScoreDoc[] hits = this.searchIndex(query, null, maxNumberOfDocuments);
         TreeSet<String> list = new TreeSet<String>();
         
         // reverse order because longer sentences come last, longer sentences
