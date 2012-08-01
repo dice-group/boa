@@ -164,9 +164,9 @@ public class DefaultPatternSearcher implements PatternSearcher {
                                   "sentence:(" + StringUtils.join(escapeList(secondLabels), " OR ") + ")");
         
         // go through all sentences and surface form combinations 
-        for ( ScoreDoc doc : this.searchIndexWithoutFilter(q, MAX_NUMBER_OF_DOCUMENTS) ) {
+        for ( ScoreDoc hit : this.searchIndexWithoutFilter(q, MAX_NUMBER_OF_DOCUMENTS) ) {
             
-            String sentence     = this.getSentenceFromIndex(doc);
+            String sentence     = this.getSentenceFromIndex(hit);
             
             for (String firstLabel : firstLabels) {
                 for (String secondLabel : secondLabels) {
@@ -174,7 +174,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
                     List<String> currentMatches = findMatchedText(sentence, firstLabel, secondLabel);
                     
                     if (!currentMatches.isEmpty()) 
-                        this.addSearchResults(results, currentMatches, firstLabel, secondLabel, backgroundKnowledge, sentence, doc.doc, allLabels);
+                        this.addSearchResults(results, currentMatches, firstLabel, secondLabel, backgroundKnowledge, sentence, hit.doc, allLabels);
                 }
             }
         }
@@ -207,7 +207,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
      */
     protected String getSentenceFromIndex(ScoreDoc hit) {
         
-        return hit.doc + " " + LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hit.doc, "sentence");
+        return LuceneIndexHelper.getFieldValueByDocId(this.indexSearcher, hit.doc, "sentence");
     }
 
     /**
