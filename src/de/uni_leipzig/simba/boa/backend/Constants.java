@@ -97,6 +97,11 @@ public class Constants {
     /**
      * 
      */
+    public static final String SEARCH_RESULT_PATH = "raw/searchresult/";
+    
+    /**
+     * 
+     */
     public static final String RDF_DATA_PATH = "rdf/";
     
     /**

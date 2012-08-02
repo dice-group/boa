@@ -4,6 +4,7 @@
 package de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 
+import de.danielgerber.file.BufferedFileReader;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternSearchThreadManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -39,6 +41,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     private final NLPediaLogger logger                  = new NLPediaLogger(DefaultPatternSearchModule.class);
     private final int TOTAL_NUMBER_OF_SEARCH_THREADS    = NLPediaSettings.getIntegerSetting("numberOfSearchThreads");
     protected final String PATTERN_MAPPING_FOLDER       = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.PATTERN_MAPPINGS_PATH;
+    protected final String SEARCH_RESULT_FOLDER         = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH;
     
     // caches for various objects
     protected Map<Integer,PatternMapping> mappings        = new HashMap<Integer,PatternMapping>();
@@ -82,51 +85,65 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     }
     
     protected void createPatternMappings(List<SearchResult> results) {
-        
+
         // get the cache from the interchange object
         this.properties = this.moduleInterchangeObject.getProperties();
+
+        results = new ArrayList<SearchResult>();
+
+        // collect all search results from the written files
+        for (File file : FileUtils.listFiles(new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH), FileFilterUtils.suffixFileFilter(".sr"), null)) {
+
+            BufferedFileReader reader = new BufferedFileReader(file.getAbsolutePath(), "UTF-8");
+            String line = "";
+
+            // every line in each file is a serialized search result
+            while ((line = reader.readLine()) != null)
+                results.add(new SearchResult(line));
+
+            reader.close();
+        }
         
-        // sort the patterns first by property and then by their natural language representation
+        // sort the patterns first by property and then by their natural
+        // language representation
         Collections.sort(results, new SearchResultComparator());
-        
-        String currentProperty = "";
+
+        Property currentProperty = null;
         PatternMapping currentMapping = null;
-        
-        for ( SearchResult searchResult : results) {
-        	
-            
-            String propertyUri      = searchResult.getProperty();
+
+        // collect all search results from the written files
+        for (SearchResult searchResult : results) {
+
+            Property property       = searchResult.getProperty();
             String patternString    = searchResult.getNaturalLanguageRepresentation();
             String label1           = searchResult.getFirstLabel();
             String label2           = searchResult.getSecondLabel();
-            String posTagged        = searchResult.getPosTags();
-            Integer sentence        = searchResult.getSentence();
+            Integer sentenceID        = searchResult.getSentence();
       
             // next line is for the same property
-            if ( propertyUri.equals(currentProperty) ) {
+            if ( property.equals(currentProperty) ) {
                 
                 // add the patterns to the list with the hash-code of the natural language representation
-                Pattern pattern = patterns.get(propertyUri.hashCode()).get(patternString.hashCode()); //(patternString.hashCode());
+                Pattern pattern = patterns.get(property.hashCode()).get(patternString.hashCode()); //(patternString.hashCode());
                 
                 // pattern was not found, create a new pattern 
                 if ( pattern == null ) {
                     
                     pattern = new SubjectPredicateObjectPattern(patternString);
-                    pattern.setPosTaggedString(posTagged);
                     pattern.addLearnedFrom(label1 + "-;-" + label2); 
 //                    pattern.addLearnedFrom(pattern.isDomainFirst() ? label1 + "-;-" + label2 : label2 + "-;-" + label1); 
                     pattern.addPatternMapping(currentMapping);
-                    pattern.getFoundInSentences().add(sentence);
+                    pattern.getFoundInSentences().add(sentenceID);
                     
-                    if ( patterns.get(propertyUri.hashCode()) != null ) {
+                    if ( patterns.get(property.hashCode()) != null ) {
                         
-                        patterns.get(propertyUri.hashCode()).put(patternString.hashCode(), pattern);
+                        patterns.get(property.hashCode()).put(patternString.hashCode(), pattern);
                     }
                     else {
                         
                         Map<Integer,Pattern> patternMap = new HashMap<Integer,Pattern>();
                         patternMap.put(patternString.hashCode(), pattern);
-                        patterns.put(propertyUri.hashCode(), patternMap);
+                        patterns.put(property.hashCode(), patternMap);
                     }
                     // add the current pattern to the current mapping
                     currentMapping.addPattern(pattern);
@@ -134,10 +151,16 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                 // pattern already created, just add new values
                 else {
                     
-                    pattern.increaseNumberOfOccurrences();
-                    pattern.addLearnedFrom(label1 + "-;-" + label2);
-                    pattern.getFoundInSentences().add(sentence);
-                    pattern.addPatternMapping(currentMapping);
+                    // due to the surface forms we find the same pattern multiple times in
+                    // one sentence, so we need to skip this pattern if we found it in the 
+                    // same sentence already
+                    if ( !pattern.getFoundInSentences().contains(sentenceID) ) {
+
+                        pattern.increaseNumberOfOccurrences();
+                        pattern.addLearnedFrom(label1 + "-;-" + label2);
+                        pattern.getFoundInSentences().add(sentenceID);
+                        pattern.addPatternMapping(currentMapping);
+                    }
                 }
             }
             // next line contains pattern for other property
@@ -145,8 +168,8 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
             else {
                 
                 // create it to use the proper hash function, the properties map has a COMPLETE list of all properties
-                Property p = properties.get(propertyUri.hashCode());
-                currentMapping = mappings.get(propertyUri.hashCode());
+                Property p = properties.get(property.hashCode());
+                currentMapping = mappings.get(property.hashCode());
                 
                 if ( currentMapping == null ) {
                     
@@ -155,31 +178,31 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                 }
                 
                 Pattern pattern = new SubjectPredicateObjectPattern(patternString);
-                pattern.setPosTaggedString(posTagged);
                 pattern.addLearnedFrom(label1 + "-;-" + label2);
                 pattern.addPatternMapping(currentMapping);
-                pattern.getFoundInSentences().add(sentence);
+                pattern.getFoundInSentences().add(sentenceID);
                 
                 currentMapping.addPattern(pattern);
                 
-                if ( patterns.get(propertyUri.hashCode()) != null ) {
+                if ( patterns.get(property.hashCode()) != null ) {
                     
-                    patterns.get(propertyUri.hashCode()).put(patternString.hashCode(), pattern);
+                    patterns.get(property.hashCode()).put(patternString.hashCode(), pattern);
                 }
                 else {
                     
                     Map<Integer,Pattern> patternMap = new HashMap<Integer,Pattern>();
                     patternMap.put(patternString.hashCode(), pattern);
-                    patterns.put(propertyUri.hashCode(), patternMap);
+                    patterns.put(property.hashCode(), patternMap);
                 }
-                mappings.put(propertyUri.hashCode(), currentMapping);
+                mappings.put(property.hashCode(), currentMapping);
             }
-            currentProperty = propertyUri;
+            currentProperty = property;
         }
-        
-        // filter the patterns which do not abide certain thresholds, mostly occurrence thresholds
+
+        // filter the patterns which do not abide certain thresholds, mostly
+        // occurrence thresholds
         this.filterPatterns(mappings.values());
-        
+
         // save the mappings
         SerializationManager.getInstance().serializePatternMappings(mappings.values(), PATTERN_MAPPING_FOLDER);
     }

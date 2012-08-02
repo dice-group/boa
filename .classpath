@@ -45,7 +45,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/stanford-corenlp-2011-06-19.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/stanford-corenlp-models-2011-06-19.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/utk.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/utk.jar" sourcepath="/utk"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/weka-3-6-4.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xercesImpl-2.7.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xom.jar"/>

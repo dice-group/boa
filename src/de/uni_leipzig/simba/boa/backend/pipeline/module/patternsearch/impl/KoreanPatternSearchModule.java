@@ -23,24 +23,23 @@ public class KoreanPatternSearchModule extends DefaultPatternSearchModule{
         // sort the patterns first by property and then by their natural language representation
         Collections.sort(results, new SearchResultComparator());
         
-        String currentProperty = "";
+        Property currentProperty = null;
         PatternMapping currentMapping = null;
         
         for ( SearchResult searchResult : results) {
         	
             
-            String propertyUri      = searchResult.getProperty();
+            Property property    = searchResult.getProperty();
             String patternString    = searchResult.getNaturalLanguageRepresentation();
             String label1           = searchResult.getFirstLabel();
             String label2           = searchResult.getSecondLabel();
-            String posTagged        = searchResult.getPosTags();
             Integer sentence        = searchResult.getSentence();
       
             // next line is for the same property
-            if ( propertyUri.equals(currentProperty) ) {
+            if ( property.equals(currentProperty) ) {
                 
                 // add the patterns to the list with the hash-code of the natural language representation
-                Pattern pattern = patterns.get(propertyUri.hashCode()).get(patternString.hashCode()); //(patternString.hashCode());
+                Pattern pattern = patterns.get(property.hashCode()).get(patternString.hashCode()); //(patternString.hashCode());
                 
                 // pattern was not found, create a new pattern 
                 if ( pattern == null ) {
@@ -49,20 +48,19 @@ public class KoreanPatternSearchModule extends DefaultPatternSearchModule{
                     }else{
                     	pattern = new SubjectPredicateObjectPattern(patternString);
                     }
-                    pattern.setPosTaggedString(posTagged);
                     pattern.addLearnedFrom(label1 + "-;-" + label2);
                     pattern.addPatternMapping(currentMapping);
                     pattern.getFoundInSentences().add(sentence);
                     
-                    if ( patterns.get(propertyUri.hashCode()) != null ) {
+                    if ( patterns.get(property.hashCode()) != null ) {
                         
-                        patterns.get(propertyUri.hashCode()).put(patternString.hashCode(), pattern);
+                        patterns.get(property.hashCode()).put(patternString.hashCode(), pattern);
                     }
                     else {
                         
                         Map<Integer,Pattern> patternMap = new HashMap<Integer,Pattern>();
                         patternMap.put(patternString.hashCode(), pattern);
-                        patterns.put(propertyUri.hashCode(), patternMap);
+                        patterns.put(property.hashCode(), patternMap);
                     }
                     // add the current pattern to the current mapping
                     currentMapping.addPattern(pattern);
@@ -81,8 +79,8 @@ public class KoreanPatternSearchModule extends DefaultPatternSearchModule{
             else {
                 
                 // create it to use the proper hash function, the properties map has a COMPLETE list of all properties
-                Property p = properties.get(propertyUri.hashCode());
-                currentMapping = mappings.get(propertyUri.hashCode());
+                Property p = properties.get(property.hashCode());
+                currentMapping = mappings.get(property.hashCode());
                 
                 if ( currentMapping == null ) {
                     
@@ -96,26 +94,25 @@ public class KoreanPatternSearchModule extends DefaultPatternSearchModule{
                 }else{
                 	pattern = new SubjectPredicateObjectPattern(patternString);
                 }
-                pattern.setPosTaggedString(posTagged);
                 pattern.addLearnedFrom(label1 + "-;-" + label2);
                 pattern.addPatternMapping(currentMapping);
                 pattern.getFoundInSentences().add(sentence);
                 
                 currentMapping.addPattern(pattern);
                 
-                if ( patterns.get(propertyUri.hashCode()) != null ) {
+                if ( patterns.get(property.hashCode()) != null ) {
                     
-                    patterns.get(propertyUri.hashCode()).put(patternString.hashCode(), pattern);
+                    patterns.get(property.hashCode()).put(patternString.hashCode(), pattern);
                 }
                 else {
                     
                     Map<Integer,Pattern> patternMap = new HashMap<Integer,Pattern>();
                     patternMap.put(patternString.hashCode(), pattern);
-                    patterns.put(propertyUri.hashCode(), patternMap);
+                    patterns.put(property.hashCode(), patternMap);
                 }
-                mappings.put(propertyUri.hashCode(), currentMapping);
+                mappings.put(property.hashCode(), currentMapping);
             }
-            currentProperty = propertyUri;
+            currentProperty = property;
         }
         
 //        for (Map.Entry<Integer, PatternMapping> hashToMappings : this.mappings.entrySet()){

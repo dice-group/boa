@@ -63,9 +63,8 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
         this.moduleInterchangeObject.getBackgroundKnowledge().addAll(this.backgroundKnowledge);
         for (BackgroundKnowledge bk : this.backgroundKnowledge) {
 
-            this.moduleInterchangeObject.getProperties().put(bk.getProperty().getUri().hashCode(), bk.getProperty());
+            this.moduleInterchangeObject.getProperties().put(bk.getProperty().hashCode(), bk.getProperty());
         }
-
     }
 
     /**
@@ -89,7 +88,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
         long start = System.currentTimeMillis();
 
         Property property = this.queryPropertyData(propertyUri);
-        int offset = 744000;
+        int offset = 0;
 
         // query as long as we get resultsets back
         while (true) {

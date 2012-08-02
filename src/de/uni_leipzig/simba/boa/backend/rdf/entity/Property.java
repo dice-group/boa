@@ -1,6 +1,8 @@
 package de.uni_leipzig.simba.boa.backend.rdf.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -26,11 +28,12 @@ public class Property extends Resource {
 
 	private String propertyPrefix;
 	private String propertyLocalname;
-	
-	private String rdfsRangePrefix;
+    private String rdfsRangePrefix;
 	private String rdfsRangeLocalname;
     private String rdfsDomainPrefix;
     private String rdfsDomainLocalname;
+    
+    private String toStringSplitCharacters = "][";
 
 	public Property(String uri) {
 		super(uri);
@@ -75,7 +78,21 @@ public class Property extends Resource {
     }
 
 	
-	public Property() {
+	/* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+
+        List<String> toString = new ArrayList<String>(); 
+        toString.add(this.getUri());
+        toString.add(this.getRdfsRange());
+        toString.add(this.getRdfsDomain());
+                
+        return StringUtils.join(toString, toStringSplitCharacters);
+    }
+
+    public Property() {
 		super();
 	}
 
@@ -146,5 +163,76 @@ public class Property extends Resource {
     public String getPropertyLocalname() {
 
         return propertyLocalname;
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((propertyLocalname == null) ? 0 : propertyLocalname.hashCode());
+        result = prime * result + ((propertyPrefix == null) ? 0 : propertyPrefix.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Property other = (Property) obj;
+        if (propertyLocalname == null) {
+            if (other.propertyLocalname != null)
+                return false;
+        }
+        else
+            if (!propertyLocalname.equals(other.propertyLocalname))
+                return false;
+        if (propertyPrefix == null) {
+            if (other.propertyPrefix != null)
+                return false;
+        }
+        else
+            if (!propertyPrefix.equals(other.propertyPrefix))
+                return false;
+        if (rdfsDomainLocalname == null) {
+            if (other.rdfsDomainLocalname != null)
+                return false;
+        }
+        else
+            if (!rdfsDomainLocalname.equals(other.rdfsDomainLocalname))
+                return false;
+        if (rdfsDomainPrefix == null) {
+            if (other.rdfsDomainPrefix != null)
+                return false;
+        }
+        else
+            if (!rdfsDomainPrefix.equals(other.rdfsDomainPrefix))
+                return false;
+        if (rdfsRangeLocalname == null) {
+            if (other.rdfsRangeLocalname != null)
+                return false;
+        }
+        else
+            if (!rdfsRangeLocalname.equals(other.rdfsRangeLocalname))
+                return false;
+        if (rdfsRangePrefix == null) {
+            if (other.rdfsRangePrefix != null)
+                return false;
+        }
+        else
+            if (!rdfsRangePrefix.equals(other.rdfsRangePrefix))
+                return false;
+        return true;
     }
 }

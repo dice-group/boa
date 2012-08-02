@@ -57,11 +57,16 @@ public class PatternWindow extends Window {
         VerticalLayout l3 = new VerticalLayout();
         l3.setMargin(true);
         l3.addComponent(new Label(this.buildTab3Content(), Label.CONTENT_XHTML));
+        
+        VerticalLayout l4 = new VerticalLayout();
+        l4.setMargin(true);
+        l4.addComponent(new Label(this.buildTab4Content(), Label.CONTENT_XHTML));
 		
 		TabSheet tabSheet = new TabSheet();
 		tabSheet.addTab(buildTab1Content(), "General");
 		tabSheet.addTab(l2, "Learned from");
-		tabSheet.addTab(l3, "Query index");
+		tabSheet.addTab(l3, "Sentences");
+		tabSheet.addTab(l4, "Query index");
 		
 		this.addComponent(tabSheet);
 	}
@@ -250,7 +255,56 @@ public class PatternWindow extends Window {
 		return table;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	private String buildTab3Content(){
+	    
+	    List<String> sentences = PatternUtil.getLuceneDocuments(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH, new ArrayList<Integer>(this.pattern.getFoundInSentences()));
+        
+        StringBuilder builder = new StringBuilder();
+        builder.append("<h2>Sentences in which the pattern: \""+ this.pattern.getNaturalLanguageRepresentation()+"\" was found:</h2>");
+        
+        Iterator<String> iter = sentences.iterator(); 
+        int i = 0;
+        while ( iter.hasNext() && i++ < 10 ) {
+
+            String sentence = iter.next();
+            String sentenceLowerCase = sentence.toLowerCase();
+            
+            String longestSubject = "";
+            String longestObject  = "";
+            
+            for (String pair : this.pattern.getLearnedFrom().keySet()) {
+                
+                String[] pairParts = pair.split(java.util.regex.Pattern.quote("-;-"));
+                if ( pairParts[0].length() > longestSubject.length() && sentenceLowerCase.contains(pairParts[0])) longestSubject = pairParts[0];
+                if ( pairParts[1].length() > longestSubject.length() && sentenceLowerCase.contains(pairParts[1])) longestObject  = pairParts[1];
+            }
+            
+            // we need to find the correct string normal case sentence, otherwise we would 
+            // replace the normal case entities with lowercase entities
+            int subjectStart = sentence.toLowerCase().indexOf(longestSubject);
+            sentence = sentence.replace(sentence.substring(subjectStart, subjectStart + longestSubject.length()), "<span style=\"color: #EB1A1A;\">" + sentence.substring(subjectStart, subjectStart + longestSubject.length()) +"</span>");
+            
+            int objectStart  = sentence.toLowerCase().indexOf(longestObject);
+            sentence = sentence.replace(sentence.substring(objectStart, objectStart + longestObject.length()), "  <span style=\"color: #EB1A1A;\">" + sentence.substring(objectStart, objectStart + longestObject.length()) +"</span>");
+            
+            sentence = sentence.replaceAll("(?i)" + this.pattern.getNaturalLanguageRepresentationWithoutVariables(), 
+                    "<span style=\"color: #61A30B;\">"+this.pattern.getNaturalLanguageRepresentationWithoutVariables()+"</span>");
+            
+            builder.append("<b>("+i + ")</b> " + sentence + "<br/>");
+            if (iter.hasNext()) builder.append("<hr/>");
+        }
+        return builder.toString();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private String buildTab4Content(){
 		
 		Set<String> sentences = PatternUtil.exactQueryIndex(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH, this.pattern, 10);
 	    
