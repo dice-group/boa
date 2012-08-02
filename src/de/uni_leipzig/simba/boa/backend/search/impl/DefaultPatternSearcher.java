@@ -174,7 +174,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
                     List<String> currentMatches = findMatchedText(sentence, firstLabel, secondLabel);
                     
                     if (!currentMatches.isEmpty()) 
-                        this.addSearchResults(results, currentMatches, firstLabel, secondLabel, backgroundKnowledge, sentence, hit.doc, allLabels);
+                        this.addSearchResults(results, currentMatches, firstLabel.trim(), secondLabel.trim(), backgroundKnowledge, sentence, hit.doc, allLabels);
                 }
             }
         }
@@ -271,7 +271,8 @@ public class DefaultPatternSearcher implements PatternSearcher {
      * @param hit
      * @param isSubject
      */
-    private void addSearchResults(List<SearchResult> results, List<String> currentMatches, String subjectLabel, String objectLabel, BackgroundKnowledge backgroundKnowledge, String sentenceNormalCase, Integer sentenceId, Set<String> allLabels) {
+    private void addSearchResults(List<SearchResult> results, List<String> currentMatches, String subjectLabel, 
+            String objectLabel, BackgroundKnowledge backgroundKnowledge, String sentenceNormalCase, Integer sentenceId, Set<String> allLabels) {
 
         for (String match : currentMatches) {
 
@@ -281,11 +282,9 @@ public class DefaultPatternSearcher implements PatternSearcher {
             if (!match.isEmpty() && this.isPatternSuitable(match)) {
 
                 SearchResult result = new SearchResult();
-                result.setProperty(backgroundKnowledge.getProperty().getUri());
+                result.setProperty(backgroundKnowledge.getProperty());
                 result.setSentence(sentenceId);
                 result.setNaturalLanguageRepresentation(nlr);
-                result.setRdfsRange(backgroundKnowledge.getProperty().getRdfsRange());
-                result.setRdfsDomain(backgroundKnowledge.getProperty().getRdfsDomain());
                 // the subject of the triple is the domain of the property so,
                 // replace every occurrence with ?D?
                 if (nlr.startsWith("?D?")) {
@@ -296,7 +295,6 @@ public class DefaultPatternSearcher implements PatternSearcher {
                     result.setFirstLabel(objectLabel);
                     result.setSecondLabel(subjectLabel);
                 }
-                result.setPosTags("");
                 results.add(result);
             }
         }
@@ -334,11 +332,9 @@ public class DefaultPatternSearcher implements PatternSearcher {
     
     public static void main(String[] args) throws ParseException {
 
-        String sentence = "This is a Sentence with Sentence litter pattern inside of it!";
-        Set<String> allLabels = new HashSet<String>();
-        allLabels.add("Sentence");
-//        allLabels.add("A");
-//        System.out.println(getCorrectCaseNLR(sentence.toLowerCase(), sentence, "?D?" + " Sentence with Sentence".toLowerCase() + "?R?", allLabels));
+        DefaultPatternSearcher searcher = new DefaultPatternSearcher();
+        System.out.println(searcher.getSentencesByID(7949442));
+        
     }
     
     private static Set<String> escapeList(Set<String> tokens) {

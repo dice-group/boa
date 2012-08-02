@@ -1,11 +1,17 @@
 package de.uni_leipzig.simba.boa.backend.search.concurrent;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import de.danielgerber.file.BufferedFileWriter;
+import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.concurrent.BoaCallable;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcherFactory;
@@ -23,6 +29,7 @@ public class PatternSearchCallable extends BoaCallable<SearchResult>{
 	private List<BackgroundKnowledge> backgroundKnowledgeList;
 	private PatternSearcher patternSearcher;
 	private List<SearchResult> results;
+	private int foundSoFar = 0;
 	
 	public PatternSearchCallable(List<BackgroundKnowledge> backgroundKnowledge) {
 		
@@ -36,15 +43,22 @@ public class PatternSearchCallable extends BoaCallable<SearchResult>{
 	    // initialize the pattern searcher at thread execution
 	    // otherwise we would have X non running threads with an opened index
 	    this.patternSearcher = PatternSearcherFactory.getInstance().createDefaultPatternSearcher(null);
+	    BufferedFileWriter writer = 
+	            new BufferedFileWriter(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH + this.name + ".sr", "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
 		
 		for ( BackgroundKnowledge backgroundKnowledge : this.backgroundKnowledgeList ) {
 			
 			if ( !backgroundKnowledge.getSubjectLabel().equals(backgroundKnowledge.getObjectLabel()) ) {
 				
-				results.addAll(patternSearcher.queryBackgroundKnowledge(backgroundKnowledge));
+				for (SearchResult result : patternSearcher.queryBackgroundKnowledge(backgroundKnowledge) ) {
+				    
+				    writer.write(result.toString());
+                    foundSoFar++;
+				}
 				progress++;
 			}
 		}
+		writer.close();
 		this.patternSearcher.close();
 		return results;
 	}
@@ -58,13 +72,12 @@ public class PatternSearchCallable extends BoaCallable<SearchResult>{
     @Override
     public int getNumberTotal() {
 
-        // TODO Auto-generated method stub
         return this.backgroundKnowledgeList.size();
     }
 
     @Override
     public int getNumberOfResultsSoFar() {
 
-        return this.results.size();
+        return this.foundSoFar;
     }
 }

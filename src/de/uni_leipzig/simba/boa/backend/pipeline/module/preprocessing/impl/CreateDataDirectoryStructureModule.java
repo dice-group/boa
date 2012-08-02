@@ -93,6 +93,10 @@ public class CreateDataDirectoryStructureModule extends AbstractPreprocessingMod
         if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.RAW_DATA_PATH).exists()) 
             new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.RAW_DATA_PATH).mkdir();
         
+        // where the search results are stored
+        if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH).exists()) 
+            new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH).mkdir();
+        
         // rdf output
         if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.RDF_DATA_PATH).exists()) 
             new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.RDF_DATA_PATH).mkdir();

@@ -1,5 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.concurrent;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -11,6 +13,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.apache.commons.io.FileUtils;
+
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -64,6 +69,10 @@ public class PatternSearchThreadManager {
             Timer timer = new Timer();
             timer.schedule(new PatternSearchPrintProgressTask(todo), 0, 30000);
             
+            // delete every file which is in the search result path and create the directory again
+            FileUtils.deleteDirectory(new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH));
+            new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH).mkdir();
+            
             // invoke all waits until all threads are finished
             List<Future<Collection<SearchResult>>> answers = executorService.invokeAll(todo);
             
@@ -89,6 +98,10 @@ public class PatternSearchThreadManager {
             String error = "Threads got interrupted!";
             logger.error(error, e);
             throw new RuntimeException(error, e);
+        }
+        catch (IOException e) {
+
+            e.printStackTrace();
         }
         
         return results;
