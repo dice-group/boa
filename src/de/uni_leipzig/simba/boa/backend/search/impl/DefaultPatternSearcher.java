@@ -41,7 +41,7 @@ import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
  */
 public class DefaultPatternSearcher implements PatternSearcher {
 
-    static NLPediaSetup setup = new NLPediaSetup(true);
+    static NLPediaSetup s = new NLPediaSetup(true);
     
     protected final static int MAX_PATTERN_CHUNK_LENGTH  = NLPediaSettings.getIntegerSetting("maxPatternLenght");
     private final static int MIN_PATTERN_CHUNK_LENGTH  = NLPediaSettings.getIntegerSetting("minPatternLenght");
@@ -279,7 +279,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
             String nlr = this.getCorrectCaseNLR(sentenceNormalCase.toLowerCase(), sentenceNormalCase, match, allLabels);
 
             // but only for those who are suitable
-            if (!match.isEmpty() && this.isPatternSuitable(match)) {
+            if (!match.isEmpty() && this.isPatternSuitable(nlr)) {
 
                 SearchResult result = new SearchResult();
                 result.setProperty(backgroundKnowledge.getProperty().getUri());
@@ -333,7 +333,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
     public static void main(String[] args) throws ParseException {
 
         DefaultPatternSearcher searcher = new DefaultPatternSearcher();
-        System.out.println(searcher.getSentencesByID(7949442));
+        System.out.println(searcher.getSentencesByID(10072592));
         
     }
     

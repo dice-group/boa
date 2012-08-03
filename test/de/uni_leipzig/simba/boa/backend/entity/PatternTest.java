@@ -89,6 +89,7 @@ public class PatternTest {
         badPatterns.add("?D? 's ?R?"); // no words
         badPatterns.add("?R? 's ?D?"); // no words
         badPatterns.add("?R?  ?D?"); // no words
+        badPatterns.add("?R?    ?D?"); // no words
         
         for (String badPattern : badPatterns ) 
             assertFalse(searcher.isPatternSuitable(badPattern));       
