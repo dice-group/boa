@@ -23,23 +23,23 @@ public class KoreanPatternSearchModule extends DefaultPatternSearchModule{
         // sort the patterns first by property and then by their natural language representation
         Collections.sort(results, new SearchResultComparator());
         
-        Property currentProperty = null;
+        String currentProperty = null;
         PatternMapping currentMapping = null;
         
         for ( SearchResult searchResult : results) {
         	
             
-            Property property    = searchResult.getProperty();
+            String propertyUri      = searchResult.getProperty();
             String patternString    = searchResult.getNaturalLanguageRepresentation();
             String label1           = searchResult.getFirstLabel();
             String label2           = searchResult.getSecondLabel();
             Integer sentence        = searchResult.getSentence();
       
             // next line is for the same property
-            if ( property.equals(currentProperty) ) {
+            if ( propertyUri.equals(currentProperty) ) {
                 
                 // add the patterns to the list with the hash-code of the natural language representation
-                Pattern pattern = patterns.get(property.hashCode()).get(patternString.hashCode()); //(patternString.hashCode());
+                Pattern pattern = patterns.get(propertyUri.hashCode()).get(patternString.hashCode()); //(patternString.hashCode());
                 
                 // pattern was not found, create a new pattern 
                 if ( pattern == null ) {
@@ -52,15 +52,15 @@ public class KoreanPatternSearchModule extends DefaultPatternSearchModule{
                     pattern.addPatternMapping(currentMapping);
                     pattern.getFoundInSentences().add(sentence);
                     
-                    if ( patterns.get(property.hashCode()) != null ) {
+                    if ( patterns.get(propertyUri.hashCode()) != null ) {
                         
-                        patterns.get(property.hashCode()).put(patternString.hashCode(), pattern);
+                        patterns.get(propertyUri.hashCode()).put(patternString.hashCode(), pattern);
                     }
                     else {
                         
                         Map<Integer,Pattern> patternMap = new HashMap<Integer,Pattern>();
                         patternMap.put(patternString.hashCode(), pattern);
-                        patterns.put(property.hashCode(), patternMap);
+                        patterns.put(propertyUri.hashCode(), patternMap);
                     }
                     // add the current pattern to the current mapping
                     currentMapping.addPattern(pattern);
@@ -79,8 +79,8 @@ public class KoreanPatternSearchModule extends DefaultPatternSearchModule{
             else {
                 
                 // create it to use the proper hash function, the properties map has a COMPLETE list of all properties
-                Property p = properties.get(property.hashCode());
-                currentMapping = mappings.get(property.hashCode());
+                Property p = properties.get(propertyUri.hashCode());
+                currentMapping = mappings.get(propertyUri.hashCode());
                 
                 if ( currentMapping == null ) {
                     
@@ -100,19 +100,19 @@ public class KoreanPatternSearchModule extends DefaultPatternSearchModule{
                 
                 currentMapping.addPattern(pattern);
                 
-                if ( patterns.get(property.hashCode()) != null ) {
+                if ( patterns.get(propertyUri.hashCode()) != null ) {
                     
-                    patterns.get(property.hashCode()).put(patternString.hashCode(), pattern);
+                    patterns.get(propertyUri.hashCode()).put(patternString.hashCode(), pattern);
                 }
                 else {
                     
                     Map<Integer,Pattern> patternMap = new HashMap<Integer,Pattern>();
                     patternMap.put(patternString.hashCode(), pattern);
-                    patterns.put(property.hashCode(), patternMap);
+                    patterns.put(propertyUri.hashCode(), patternMap);
                 }
-                mappings.put(property.hashCode(), currentMapping);
+                mappings.put(propertyUri.hashCode(), currentMapping);
             }
-            currentProperty = property;
+            currentProperty = propertyUri;
         }
         
 //        for (Map.Entry<Integer, PatternMapping> hashToMappings : this.mappings.entrySet()){

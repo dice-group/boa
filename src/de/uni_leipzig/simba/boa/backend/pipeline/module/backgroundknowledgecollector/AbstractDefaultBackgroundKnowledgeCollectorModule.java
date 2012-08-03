@@ -63,7 +63,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
         this.moduleInterchangeObject.getBackgroundKnowledge().addAll(this.backgroundKnowledge);
         for (BackgroundKnowledge bk : this.backgroundKnowledge) {
 
-            this.moduleInterchangeObject.getProperties().put(bk.getProperty().hashCode(), bk.getProperty());
+            this.moduleInterchangeObject.getProperties().put(bk.getProperty().getUri().hashCode(), bk.getProperty());
         }
     }
 

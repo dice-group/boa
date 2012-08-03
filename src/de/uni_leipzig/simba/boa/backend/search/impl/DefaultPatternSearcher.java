@@ -282,7 +282,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
             if (!match.isEmpty() && this.isPatternSuitable(match)) {
 
                 SearchResult result = new SearchResult();
-                result.setProperty(backgroundKnowledge.getProperty());
+                result.setProperty(backgroundKnowledge.getProperty().getUri());
                 result.setSentence(sentenceId);
                 result.setNaturalLanguageRepresentation(nlr);
                 // the subject of the triple is the domain of the property so,
