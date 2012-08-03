@@ -12,7 +12,7 @@ import edu.stanford.nlp.util.StringUtils;
 
 public class SearchResult {
 
-	private Property property;
+	private String propertyUri;
 	private String naturalLanguageRepresentation;
 	private String firstLabel;
 	private String secondLabel;
@@ -25,27 +25,27 @@ public class SearchResult {
     public SearchResult(String stringFromToString) {
 	    
 	    String[] searchResult               = stringFromToString.split(Pattern.quote(toStringSplitCharacters));
-	    this.property                       = new Property(searchResult[0], searchResult[1], searchResult[2]);
-        this.naturalLanguageRepresentation  = searchResult[3];
-        this.firstLabel                     = searchResult[4];
-        this.secondLabel                    = searchResult[5];
-        this.sentenceId                     = Integer.valueOf(searchResult[6]);
+	    this.propertyUri                    = searchResult[0];
+        this.naturalLanguageRepresentation  = searchResult[1];
+        this.firstLabel                     = searchResult[2];
+        this.secondLabel                    = searchResult[3];
+        this.sentenceId                     = Integer.valueOf(searchResult[4]);
 	}
 	
 	/**
-	 * @return the property
+	 * @return the propertyUri
 	 */
-	public Property getProperty() {
+	public String getProperty() {
 	
-		return property;
+		return propertyUri;
 	}
 	
 	/**
-	 * @param property the property to set
+	 * @param propertyUri the propertyUri to set
 	 */
-	public void setProperty(Property property) {
+	public void setProperty(String property) {
 	
-		this.property = property;
+		this.propertyUri = property;
 	}
 	
 	/**
@@ -124,7 +124,7 @@ public class SearchResult {
     public String toString() {
         
         List<String> toString = new ArrayList<String>(); 
-        toString.add(this.property.toString());
+        toString.add(this.propertyUri);
         toString.add(this.naturalLanguageRepresentation);
         toString.add(this.firstLabel);
         toString.add(this.secondLabel);
@@ -143,7 +143,7 @@ public class SearchResult {
         int result = 1;
         result = prime * result + ((firstLabel == null) ? 0 : firstLabel.hashCode());
         result = prime * result + ((naturalLanguageRepresentation == null) ? 0 : naturalLanguageRepresentation.hashCode());
-        result = prime * result + ((property == null) ? 0 : property.hashCode());
+        result = prime * result + ((propertyUri == null) ? 0 : propertyUri.hashCode());
         result = prime * result + ((secondLabel == null) ? 0 : secondLabel.hashCode());
         result = prime * result + ((sentenceId == null) ? 0 : sentenceId.hashCode());
         return result;
@@ -176,12 +176,12 @@ public class SearchResult {
         else
             if (!naturalLanguageRepresentation.equals(other.naturalLanguageRepresentation))
                 return false;
-        if (property == null) {
-            if (other.property != null)
+        if (propertyUri == null) {
+            if (other.propertyUri != null)
                 return false;
         }
         else
-            if (!property.equals(other.property))
+            if (!propertyUri.equals(other.propertyUri))
                 return false;
         if (secondLabel == null) {
             if (other.secondLabel != null)

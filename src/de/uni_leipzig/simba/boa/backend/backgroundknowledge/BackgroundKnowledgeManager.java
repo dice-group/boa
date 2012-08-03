@@ -31,12 +31,8 @@ public class BackgroundKnowledgeManager {
 	private static BackgroundKnowledgeManager INSTANCE = null;
 	private BackgroundKnowledgeManager(){}
 	
+	private Map<String,Set<String>> urisToSurfaceForms = new HashMap<String,Set<String>>();
 	private Map<Integer,Property> properties = new HashMap<Integer,Property>();
-	
-	/**
-	 * needed to remove text in brackets from labels
-	 */
-	private Pattern pattern = Pattern.compile("\\(.+?\\)");
 	
 	/**
 	 * @return BackgroundKnowledgeManager singleton
@@ -110,13 +106,13 @@ public class BackgroundKnowledgeManager {
 		// all subject information
 		final String subjectUri   = parts[0];
 		final String subjectLabel = parts[1].replaceAll("\\(.+?\\)", "").trim();
-		Set<String> subjectLabels = new HashSet<String>();
+		Set<String> subjectLabels = null;
 //		String subjectContext     = "";
 		
 		// all object information
 		final String objectUri    = parts[4];
 		final String objectLabel  = parts[5].replaceAll("\\(.+?\\)", "").trim();
-		Set<String> objectLabels  = new HashSet<String>();
+		Set<String> objectLabels  = null;
 //		String objectContext	  = "";
 		
 		// all predicate information
@@ -127,38 +123,56 @@ public class BackgroundKnowledgeManager {
 		
 		// ################ SUBJECT ############################
 		
-		// context like person: heist_(artist)
-//	    Matcher matcher = pattern.matcher(parts[1]);
-//	    while (matcher.find()) { subjectContext = matcher.group(); }
 		// labels from wikipedia surface forms
-		for (String part : parts[2].toLowerCase().split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
+		if ( !this.urisToSurfaceForms.containsKey(subjectUri) ) {
 		    
-		    final String surfaceForm = part.trim();
-		    if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength")) {
-                
-		        subjectLabels.add(" " + surfaceForm + " ");
-            }
+		    // since we dont want to create new sets for every uri
+		    subjectLabels = new HashSet<String>();
+		
+    		for (String part : parts[2].toLowerCase().split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
+    		    
+    		    final String surfaceForm = part.trim();
+    		    if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength")) {
+                    
+    		        subjectLabels.add(" " + surfaceForm + " ");
+                }
+    		}
+    		subjectLabels.add(" " +  subjectLabel + " ");
+    		subjectLabels.removeAll(Arrays.asList("", null));
+    		
+    		this.urisToSurfaceForms.put(subjectUri, subjectLabels);
 		}
-		subjectLabels.add(" " +  subjectLabel + " ");
-		subjectLabels.removeAll(Arrays.asList("", null));
-		// rdf:type of the subject
+		else {
+		    
+		    subjectLabels = this.urisToSurfaceForms.get(subjectUri);
+		}
 		
 		// ################ OBJECT ############################
 		
-		// context like person: heist_(artist)
-//	    matcher			= pattern.matcher(parts[5]);
-//	    while (matcher.find()) { objectContext = matcher.group(); }
-		// labels from wikipedia surface forms
-	    for (String part : parts[6].toLowerCase().split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
-	        
-	        final String surfaceForm = part.trim();
-	        if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength")) {
+		if ( !this.urisToSurfaceForms.containsKey(objectUri) ) {
+		
+		    // since we dont want to create new sets for every uri
+            objectLabels = new HashSet<String>();
+		    
+		    // labels from wikipedia surface forms
+	        for (String part : parts[6].toLowerCase().split(Constants.BACKGROUND_KNOWLEDGE_SURFACE_FORM_SEPARATOR))  {
 	            
-	            objectLabels.add(" " + surfaceForm + " ");
+	            final String surfaceForm = part.trim();
+	            if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength")) {
+	                
+	                objectLabels.add(" " + surfaceForm + " ");
+	            }
 	        }
-	    }
-	    objectLabels.add(" " + objectLabel + " ");
-	    objectLabels.removeAll(Arrays.asList("", null));
+	        objectLabels.add(" " + objectLabel + " ");
+	        objectLabels.removeAll(Arrays.asList("", null));
+	        
+	        this.urisToSurfaceForms.put(objectUri, objectLabels);
+		}
+		else {
+		    
+		    objectLabels = this.urisToSurfaceForms.get(objectUri);
+		}
+		
 		
 		// ################ resources: subject, property, object ############################
 		
