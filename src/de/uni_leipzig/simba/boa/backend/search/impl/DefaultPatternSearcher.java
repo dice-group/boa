@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
@@ -30,7 +32,6 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.lucene.LowerCaseWhitespaceAnalyzer;
 import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
-import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
@@ -163,6 +164,8 @@ public class DefaultPatternSearcher implements PatternSearcher {
                                     " AND " +
                                   "sentence:(" + StringUtils.join(escapeList(secondLabels), " OR ") + ")");
         
+        Map<Integer,Set<String>> luceneDocIdsToPatterns = new HashMap<Integer,Set<String>>();
+        
         // go through all sentences and surface form combinations 
         for ( ScoreDoc hit : this.searchIndexWithoutFilter(q, MAX_NUMBER_OF_DOCUMENTS) ) {
             
@@ -174,7 +177,8 @@ public class DefaultPatternSearcher implements PatternSearcher {
                     List<String> currentMatches = findMatchedText(sentence, firstLabel, secondLabel);
                     
                     if (!currentMatches.isEmpty()) 
-                        this.addSearchResults(results, currentMatches, firstLabel.trim(), secondLabel.trim(), backgroundKnowledge, sentence, hit.doc, allLabels);
+                        this.addSearchResults(results, currentMatches, firstLabel.trim(), 
+                                secondLabel.trim(), backgroundKnowledge, sentence, hit.doc, allLabels, luceneDocIdsToPatterns);
                 }
             }
         }
@@ -272,30 +276,41 @@ public class DefaultPatternSearcher implements PatternSearcher {
      * @param isSubject
      */
     private void addSearchResults(List<SearchResult> results, List<String> currentMatches, String subjectLabel, 
-            String objectLabel, BackgroundKnowledge backgroundKnowledge, String sentenceNormalCase, Integer sentenceId, Set<String> allLabels) {
+            String objectLabel, BackgroundKnowledge backgroundKnowledge, String sentenceNormalCase, 
+            Integer sentenceId, Set<String> allLabels, Map<Integer, Set<String>> luceneDocIdsToPatterns) {
 
         for (String match : currentMatches) {
 
             String nlr = this.getCorrectCaseNLR(sentenceNormalCase.toLowerCase(), sentenceNormalCase, match, allLabels);
+            
+            // we already have the pattern for the same sentence in the list
+            if ( luceneDocIdsToPatterns.containsKey(sentenceId) && luceneDocIdsToPatterns.get(sentenceId).contains(nlr) ) 
+                continue;
+            
+            else {
+                
+                // but only for those who are suitable
+                if ( !match.isEmpty() && this.isPatternSuitable(nlr) ) {
 
-            // but only for those who are suitable
-            if (!match.isEmpty() && this.isPatternSuitable(nlr)) {
-
-                SearchResult result = new SearchResult();
-                result.setProperty(backgroundKnowledge.getProperty().getUri());
-                result.setSentence(sentenceId);
-                result.setNaturalLanguageRepresentation(nlr);
-                // the subject of the triple is the domain of the property so,
-                // replace every occurrence with ?D?
-                if (nlr.startsWith("?D?")) {
-                    result.setFirstLabel(subjectLabel);
-                    result.setSecondLabel(objectLabel);
+                    SearchResult result = new SearchResult();
+                    result.setProperty(backgroundKnowledge.getProperty().getUri());
+                    result.setSentence(sentenceId);
+                    result.setNaturalLanguageRepresentation(nlr);
+                    // the subject of the triple is the domain of the property so,
+                    // replace every occurrence with ?D?
+                    if (nlr.startsWith("?D?")) {
+                        result.setFirstLabel(subjectLabel);
+                        result.setSecondLabel(objectLabel);
+                    }
+                    else {
+                        result.setFirstLabel(objectLabel);
+                        result.setSecondLabel(subjectLabel);
+                    }
+                    results.add(result);
+                    
+                    if ( luceneDocIdsToPatterns.containsKey(sentenceId) ) luceneDocIdsToPatterns.get(sentenceId).add(nlr);
+                    else luceneDocIdsToPatterns.put(sentenceId, new HashSet<String>(Arrays.asList(nlr)));
                 }
-                else {
-                    result.setFirstLabel(objectLabel);
-                    result.setSecondLabel(subjectLabel);
-                }
-                results.add(result);
             }
         }
     }
@@ -333,7 +348,8 @@ public class DefaultPatternSearcher implements PatternSearcher {
     public static void main(String[] args) throws ParseException {
 
         DefaultPatternSearcher searcher = new DefaultPatternSearcher();
-        System.out.println(searcher.getSentencesByID(10072592));
+        System.out.println(searcher.getSentencesByID(18542980));
+        System.out.println(searcher.getSentencesByID(17183639));
         
     }
     
