@@ -53,6 +53,7 @@ public class PatternSearchCallable extends BoaCallable<SearchResult>{
 				for (SearchResult result : patternSearcher.queryBackgroundKnowledge(backgroundKnowledge) ) {
 				    
 				    writer.write(result.toString());
+				    writer.flush();
                     foundSoFar++;
 				}
 				progress++;

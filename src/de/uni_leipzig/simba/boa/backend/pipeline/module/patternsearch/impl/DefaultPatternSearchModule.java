@@ -95,6 +95,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         // collect all search results from the written files
         for (File file : FileUtils.listFiles(new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH), FileFilterUtils.suffixFileFilter(".sr"), null)) {
 
+            logger.info("Reading search results from file: " + file.getName());
             BufferedFileReader reader = new BufferedFileReader(file.getAbsolutePath(), "UTF-8");
             String line = "";
 
