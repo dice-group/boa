@@ -117,5 +117,14 @@ public class PatternTest {
 	    
 	    System.out.println(method.invoke(searcher, lowerCase, normalCase, pattern, allLabels));
 	    assertEquals("?D? received the ?R?", method.invoke(searcher, lowerCase, normalCase, pattern, allLabels));
+	    
+	    normalCase = "For this action Robert Sink awarded both men the Bronze Star .";
+	    lowerCase = normalCase.toLowerCase();
+	    pattern = "?D? awarded both men the ?R?";
+	    allLabels = new HashSet<String>();
+	    allLabels.addAll(Arrays.asList("robert f. sink","sink","robert sink","robert frederick sink","bronze star medals","bronze star medal","bronze stars","bronze star award","bronze star","bronze star with combat v","bronze star with v device"));
+	    
+	    System.out.println(method.invoke(searcher, lowerCase, normalCase, pattern, allLabels));
+        assertEquals("?D? awarded both men the ?R?", method.invoke(searcher, lowerCase, normalCase, pattern, allLabels));
 	}
 }

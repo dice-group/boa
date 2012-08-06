@@ -91,6 +91,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         this.properties = this.moduleInterchangeObject.getProperties();
 
         results = new ArrayList<SearchResult>();
+        Map<Integer,String> alreadyKnowString = new HashMap<Integer,String>();
 
         // collect all search results from the written files
         for (File file : FileUtils.listFiles(new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH), FileFilterUtils.suffixFileFilter(".sr"), null)) {
@@ -100,9 +101,24 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
             String line = "";
 
             // every line in each file is a serialized search result
-            while ((line = reader.readLine()) != null)
-                results.add(new SearchResult(line));
-
+            while ((line = reader.readLine()) != null) {
+                
+                String[] lineParts                  = line.split(java.util.regex.Pattern.quote("]["));
+                
+                // we need to do this none-sense to avoid create 32mio different property uris and so on 
+                // this should dramatically reduce the memory usage while processing the search results
+                for (String part : lineParts )
+                    if ( !alreadyKnowString.containsKey(part.hashCode()) ) alreadyKnowString.put(part.hashCode(), part);
+                
+                SearchResult searchResult = new SearchResult();
+                searchResult.setProperty(alreadyKnowString.get(lineParts[0].hashCode()));
+                searchResult.setNaturalLanguageRepresentation(alreadyKnowString.get(lineParts[1].hashCode()));
+                searchResult.setFirstLabel(alreadyKnowString.get(lineParts[2].hashCode()));
+                searchResult.setSecondLabel(alreadyKnowString.get(lineParts[3].hashCode()));
+                searchResult.setSentence(Integer.valueOf(alreadyKnowString.get(lineParts[4].hashCode())));
+                
+                results.add(searchResult);
+            }
             reader.close();
         }
         

@@ -31,6 +31,17 @@ public class SearchResult {
         this.secondLabel                    = searchResult[3];
         this.sentenceId                     = Integer.valueOf(searchResult[4]);
 	}
+    
+    public static void main(String[] args) {
+
+        String test1 = "http://dbpedia.org/ontology/influencedBy][?R? directed by ?D?][film][harold][18754932";
+        String test2 = "http://dbpedia.org/ontology/influencedBy][?R? directed by ?D?][film][harold][18754932";
+        
+        System.out.println(test1.split(Pattern.quote("]["))[0]);
+        System.out.println(test2.split(Pattern.quote("]["))[0]);
+        System.out.println(test1.split(Pattern.quote("]["))[0] == test2.split(Pattern.quote("]["))[0]);
+        System.out.println(test1.split(Pattern.quote("]["))[0].equals(test2.split(Pattern.quote("]["))[0]));
+    }
 	
 	/**
 	 * @return the propertyUri

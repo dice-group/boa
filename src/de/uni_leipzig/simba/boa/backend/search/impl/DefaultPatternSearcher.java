@@ -286,7 +286,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
             // we already have the pattern for the same sentence in the list
             if ( luceneDocIdsToPatterns.containsKey(sentenceId) && luceneDocIdsToPatterns.get(sentenceId).contains(nlr) ) 
                 continue;
-            
+            // the pattern was not found so far in this sentence
             else {
                 
                 // but only for those who are suitable
@@ -333,13 +333,13 @@ public class DefaultPatternSearcher implements PatternSearcher {
             for (String part : label.split(" ") ) {
                 
                     // starts with the part of the label
-                    // remove the label
-                    if ( nlr.regionMatches(true, 0, part, 0, part.length()) )
+                    // remove the label and only match complete words (" " ensures that a word ends)
+                    if ( nlr.regionMatches(true, 0, part + " ", 0, part.length() + 1) )
                         nlr = nlr.substring(part.length());
                     
                     // ends with the part
-                    if ( nlr.matches("(?i).*" + Pattern.quote(part)))
-                        nlr = nlr.replaceAll("(?i)" + Pattern.quote(part) + "$", "");
+                    if ( nlr.matches("(?i).*" + Pattern.quote(" " + part)))
+                        nlr = nlr.replaceAll("(?i)" + Pattern.quote(" " + part) + "$", "");
             }
         }
         return firstVariable + " " + nlr.trim() + " " + secondVariable;
@@ -348,9 +348,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
     public static void main(String[] args) throws ParseException {
 
         DefaultPatternSearcher searcher = new DefaultPatternSearcher();
-        System.out.println(searcher.getSentencesByID(18542980));
-        System.out.println(searcher.getSentencesByID(17183639));
-        
+        System.out.println(searcher.getSentencesByID(25608892));
     }
     
     private static Set<String> escapeList(Set<String> tokens) {
