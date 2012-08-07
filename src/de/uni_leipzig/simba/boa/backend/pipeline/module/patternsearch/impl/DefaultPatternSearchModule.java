@@ -5,6 +5,7 @@ package de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -107,7 +108,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                 
                 // we need to do this none-sense to avoid create 32mio different property uris and so on 
                 // this should dramatically reduce the memory usage while processing the search results
-                for (String part : lineParts )
+                for (String part : Arrays.copyOfRange(lineParts, 0, 4) )
                     if ( !alreadyKnowString.containsKey(part.hashCode()) ) alreadyKnowString.put(part.hashCode(), part);
                 
                     try {
@@ -117,7 +118,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                         searchResult.setNaturalLanguageRepresentation(alreadyKnowString.get(lineParts[1].hashCode()));
                         searchResult.setFirstLabel(alreadyKnowString.get(lineParts[2].hashCode()));
                         searchResult.setSecondLabel(alreadyKnowString.get(lineParts[3].hashCode()));
-                        searchResult.setSentence(Integer.valueOf(alreadyKnowString.get(lineParts[4].hashCode())));
+                        searchResult.setSentence(Integer.valueOf(lineParts[4]));
                         
                         results.add(searchResult);
                     }
