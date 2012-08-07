@@ -71,18 +71,18 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     public void run() {
         
         // first part is to find the patterns
-        this.logger.info("Starting pattern search!");
-        long startSearch = System.currentTimeMillis();
-        List<SearchResult> results = PatternSearchThreadManager.startPatternSearchCallables(this.moduleInterchangeObject.getBackgroundKnowledge(), TOTAL_NUMBER_OF_SEARCH_THREADS);
-        this.patternSearchTime = (System.currentTimeMillis() - startSearch);
-        this.logger.info("All threads finished in " + TimeUtil.convertMilliSeconds(patternSearchTime) + "! There are " + results.size() + " strings in the result list");
+//        this.logger.info("Starting pattern search!");
+//        long startSearch = System.currentTimeMillis();
+//        List<SearchResult> results = PatternSearchThreadManager.startPatternSearchCallables(this.moduleInterchangeObject.getBackgroundKnowledge(), TOTAL_NUMBER_OF_SEARCH_THREADS);
+//        this.patternSearchTime = (System.currentTimeMillis() - startSearch);
+//        this.logger.info("All threads finished in " + TimeUtil.convertMilliSeconds(patternSearchTime) + "! There are " + results.size() + " strings in the result list");
         
         // second part is to sort and save them
-        this.logger.info("Starting pattern generation and saving!");
-        startSearch = System.currentTimeMillis();
-        this.createPatternMappings(results);
-        this.patternCreationTime = (System.currentTimeMillis() - startSearch);
-        this.logger.info("Pattern generation and serialization took " + TimeUtil.convertMilliSeconds(patternCreationTime) + "! There are " + this.patternMappingCount + " pattern mappings and " + this.patternCount + " patterns.");
+//        this.logger.info("Starting pattern generation and saving!");
+//        startSearch = System.currentTimeMillis();
+        this.createPatternMappings(null);
+//        this.patternCreationTime = (System.currentTimeMillis() - startSearch);
+//        this.logger.info("Pattern generation and serialization took " + TimeUtil.convertMilliSeconds(patternCreationTime) + "! There are " + this.patternMappingCount + " pattern mappings and " + this.patternCount + " patterns.");
     }
     
     protected void createPatternMappings(List<SearchResult> results) {
@@ -110,14 +110,22 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                 for (String part : lineParts )
                     if ( !alreadyKnowString.containsKey(part.hashCode()) ) alreadyKnowString.put(part.hashCode(), part);
                 
-                SearchResult searchResult = new SearchResult();
-                searchResult.setProperty(alreadyKnowString.get(lineParts[0].hashCode()));
-                searchResult.setNaturalLanguageRepresentation(alreadyKnowString.get(lineParts[1].hashCode()));
-                searchResult.setFirstLabel(alreadyKnowString.get(lineParts[2].hashCode()));
-                searchResult.setSecondLabel(alreadyKnowString.get(lineParts[3].hashCode()));
-                searchResult.setSentence(Integer.valueOf(alreadyKnowString.get(lineParts[4].hashCode())));
-                
-                results.add(searchResult);
+                    try {
+            
+                        SearchResult searchResult = new SearchResult();
+                        searchResult.setProperty(alreadyKnowString.get(lineParts[0].hashCode()));
+                        searchResult.setNaturalLanguageRepresentation(alreadyKnowString.get(lineParts[1].hashCode()));
+                        searchResult.setFirstLabel(alreadyKnowString.get(lineParts[2].hashCode()));
+                        searchResult.setSecondLabel(alreadyKnowString.get(lineParts[3].hashCode()));
+                        searchResult.setSentence(Integer.valueOf(alreadyKnowString.get(lineParts[4].hashCode())));
+                        
+                        results.add(searchResult);
+                    }
+                    catch (Exception e ) {
+                        
+                        e.printStackTrace();
+                        logger.error("Line: " + line, e);
+                    }
             }
             reader.close();
         }
