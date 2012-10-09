@@ -137,7 +137,14 @@
       font-size: 85%;
 }
 
+.v-link {
+
+	float: left;
+	padding: 10px;
+}
+
 .v-link a:link span {
+	
     color: rgba(122,180,47,0.9);
 }
 
