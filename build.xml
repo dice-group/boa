@@ -70,7 +70,11 @@
 		<delete file="${build.dir}/boa.war"/>
 		<war destfile="${build.dir}/boa.war" webxml="WebContent/WEB-INF/web.xml">
 			<fileset dir="WebContent">
-				<exclude name="WEB-INF/data/**"/>
+				<exclude name="WEB-INF/data/backgroundknowledge/**"/>
+				<exclude name="WEB-INF/data/dbpedia/**"/>
+				<exclude name="WEB-INF/data/evaluation/**"/>
+			    <exclude name="WEB-INF/data/scripts/**"/>
+			    <exclude name="WEB-INF/data/training/**"/>
 				<exclude name="WEB-INF/lib/**"/>
 				<exclude name="WEB-INF/img/**"/>
 				<exclude name="WEB-INF/log/**"/>
