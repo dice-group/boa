@@ -58,7 +58,7 @@ public class PatternTable extends Table {
             this.addItem(entries.toArray(), i++);
         }
         
-//        setSortContainerPropertyId(WordUtils.capitalize("SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM".replace("_", " ").toLowerCase()));
+        setSortContainerPropertyId(WordUtils.capitalize("SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM".replace("_", " ").toLowerCase()));
         setSortContainerPropertyId("Score");
         setSortAscending(false);
         sort();
