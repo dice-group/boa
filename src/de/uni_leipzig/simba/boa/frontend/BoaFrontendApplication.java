@@ -461,29 +461,21 @@ public class BoaFrontendApplication extends Application implements ItemClickList
     
     private HorizontalSplitPanel buildStartPage() {
 
-        Label preformattedText = new Label(
-                "<b><h1>BOA - a framework for BOotstrapping the datA web.</h1></b><br/>" +
-                "The idea behind BOA is to use the Data Web as background knowledge for the extraction of " +
-                "natural language patterns that represent predicates found on the Data Web. These patterns " +
-                "are used to extract instance knowledge from natural language text. This knowledge is " +
-                "finally fed back into the Data Web, therewith closing the loop. <br/><br/>" +
-                "This is a first GUI version of BOA:\n" +
-                "<ol><li>Select a corpus on the left side</li>" +
-                "<li>Select a property in the tree</li>" +
-                "<li>View the patterns</li>" +
-                "<li>Click on a pattern to see the details!</li></ol>" +
-                "<b>The BOA Architecture:</b>");
-        preformattedText.setContentMode(Label.CONTENT_XHTML);
+        Label frontpageHtml = null;
+        
+        try {
+            
+            frontpageHtml = new Label(FileUtils.readFileToString(new File(NLPediaSettings.BOA_BASE_DIRECTORY + "gui/frontpage.html")));
+            frontpageHtml.setContentMode(Label.CONTENT_XHTML);
+        }
+        catch (IOException e) {
+            
+            e.printStackTrace();
+        }
         
         VerticalLayout p =  new VerticalLayout();
         p.setMargin(true);
-        
-        Embedded e = new Embedded("", new ThemeResource("images/BOA_Architecture.png"));
-        e.setWidth("700px");
-        e.setHeight("424px");
-        
-        p.addComponent(preformattedText);
-        p.addComponent(e);
+        p.addComponent(frontpageHtml);
         
         horizontalSplitPanel.setFirstComponent(tree);
         horizontalSplitPanel.setSecondComponent(p);

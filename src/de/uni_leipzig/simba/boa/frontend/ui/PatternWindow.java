@@ -264,7 +264,7 @@ public class PatternWindow extends Window {
 	    List<String> sentences = PatternUtil.getLuceneDocuments(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH, new ArrayList<Integer>(this.pattern.getFoundInSentences()));
         
         StringBuilder builder = new StringBuilder();
-        builder.append("<h2>Sentences in which the pattern: \""+ this.pattern.getNaturalLanguageRepresentation()+"\" was found:</h2>");
+        builder.append("<h2>Sentences which lead to pattern: \""+ this.pattern.getNaturalLanguageRepresentation()+"\":</h2>");
         
         Iterator<String> iter = sentences.iterator(); 
         int i = 0;
@@ -283,16 +283,31 @@ public class PatternWindow extends Window {
                 if ( pairParts[1].length() > longestSubject.length() && sentenceLowerCase.contains(pairParts[1])) longestObject  = pairParts[1];
             }
             
+            System.out.println(i + "-normal: " + sentence);
+            
             // we need to find the correct string normal case sentence, otherwise we would 
             // replace the normal case entities with lowercase entities
             int subjectStart = sentence.toLowerCase().indexOf(longestSubject);
-            sentence = sentence.replace(sentence.substring(subjectStart, subjectStart + longestSubject.length()), "<span style=\"color: #EB1A1A;\">" + sentence.substring(subjectStart, subjectStart + longestSubject.length()) +"</span>");
+//            sentence = sentence.replace(
+//                    sentence.substring(subjectStart, subjectStart + longestSubject.length()),
+//                    "<span style=\"color: #EB1A1A;\">" + sentence.substring(subjectStart, subjectStart + longestSubject.length()) +"</span>");
+            
+            System.out.println(i + "-subject: " + sentence);
             
             int objectStart  = sentence.toLowerCase().indexOf(longestObject);
-            sentence = sentence.replace(sentence.substring(objectStart, objectStart + longestObject.length()), "  <span style=\"color: #EB1A1A;\">" + sentence.substring(objectStart, objectStart + longestObject.length()) +"</span>");
+//            sentence = sentence.replace(
+//                    sentence.substring(objectStart, objectStart + longestObject.length()), 
+//                    "<span style=\"color: #EB1A1A;\">" + sentence.substring(objectStart, objectStart + longestObject.length()) +"</span>");
             
-            sentence = sentence.replaceAll("(?i)" + this.pattern.getNaturalLanguageRepresentationWithoutVariables(), 
-                    "<span style=\"color: #61A30B;\">"+this.pattern.getNaturalLanguageRepresentationWithoutVariables()+"</span>");
+            System.out.println(i + "-object: " + sentence);   
+            
+//            sentence = sentence.replaceAll("(?i)" + this.pattern.getNaturalLanguageRepresentationWithoutVariables(), 
+//                    "<span style=\"color: #61A30B;\">"+this.pattern.getNaturalLanguageRepresentationWithoutVariables()+"</span>");
+            
+            sentence = sentence.replace(this.pattern.getNaturalLanguageRepresentationWithoutVariables(), 
+                  "<span style=\"color: #61A30B;\">"+this.pattern.getNaturalLanguageRepresentationWithoutVariables()+"</span>");
+            
+            System.out.println(i + "-pattern: " + sentence);
             
             builder.append("<b>("+i + ")</b> " + sentence + "<br/>");
             if (iter.hasNext()) builder.append("<hr/>");
