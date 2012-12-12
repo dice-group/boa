@@ -130,10 +130,12 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
             }
             reader.close();
         }
+        logger.info("Reading of search results finished!");
         
         // sort the patterns first by property and then by their natural
         // language representation
         Collections.sort(results, new SearchResultComparator());
+        logger.info("Sorting of search results finished!");
 
         String currentProperty = null;
         PatternMapping currentMapping = null;
@@ -230,6 +232,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 //            iterator.remove(); // TODO can we call this since it shifts the collection for every pattern
             searchResult = null; // probably better to just null it instead delete it from the collection
         }
+        logger.info("Pattern mapping creation finished!");
 
         // filter the patterns which do not abide certain thresholds, mostly
         // occurrence thresholds
@@ -237,6 +240,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 
         // save the mappings
         SerializationManager.getInstance().serializePatternMappings(mappings.values(), PATTERN_MAPPING_FOLDER);
+        logger.info("Pattern mapping saving finished!");
     }
 
     /**

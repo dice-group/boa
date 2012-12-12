@@ -11,12 +11,15 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFac
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.SimilarityAssessor;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.WordNotFoundException;
+import edu.stanford.nlp.process.Morphology;
 
 
 public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 
 	private SimilarityAssessor similarityAssessor = null;
 	private NLPediaLogger logger = new NLPediaLogger(StringSimilarityFeatureExtractor.class);
+	
+	private Morphology lemmatizer = new Morphology();
 	
 	@Override
 	public void score(PatternMappingPatternPair pair) {

@@ -126,5 +126,9 @@ public class PatternTest {
 	    
 	    System.out.println(method.invoke(searcher, lowerCase, normalCase, pattern, allLabels));
         assertEquals("?D? awarded both men the ?R?", method.invoke(searcher, lowerCase, normalCase, pattern, allLabels));
+        
+        normalCase = "http://dbpedia.org/ontology/country][?D? Clinton was elected president ?R?][bill][united states][1273489";
+        
+        
 	}
 }
