@@ -53,3 +53,13 @@ syntax: regexp
 ^WebContent/WEB-INF/config/settings\.xml$
 syntax: regexp
 ^WebContent/WEB-INF/config/patternsearcher\.xml$
+syntax: glob
+.settings/org.eclipse.core.resources.prefs
+WebContent/WEB-INF/data/backgroundknowledge/datatype_properties.txt
+WebContent/WEB-INF/data/backgroundknowledge/datatype_properties_qald.txt
+WebContent/WEB-INF/data/backgroundknowledge/datatype_properties_to_query.txt
+WebContent/WEB-INF/data/backgroundknowledge/object_properties_ko.txt
+WebContent/WEB-INF/data/backgroundknowledge/object_properties_qald.txt
+WebContent/WEB-INF/data/backgroundknowledge/object_properties_to_query.txt
+WebContent/WEB-INF/data/training/pos/left3words-distsim-wsj-0-18.tagger
+WebContent/WEB-INF/data/training/pos/left3words-distsim-wsj-0-18.tagger.props
