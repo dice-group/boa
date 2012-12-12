@@ -40,9 +40,9 @@ public class DBpediaSpotlightSurfaceFormGenerator {
     private static List<String> LOWERCASE_STOPWORDS         = null;
     private static final List<String> STOPWORDS             = FileUtil.readFileInList(NLPediaSettings.BOA_BASE_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + NLPediaSettings.BOA_LANGUAGE + "/stopwords.txt", "UTF-8");
 
-    public static final String DBPEDIA_REDIRECTS_FILE       = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "redirects_en.nt";
-    public static final String DBPEDIA_LABELS_FILE          = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "labels_en.nt";
-    public static final String DBPEDIA_DISAMBIGUATIONS_FILE = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "disambiguations_en.nt";
+    public static final String DBPEDIA_REDIRECTS_FILE       = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "redirects_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
+    public static final String DBPEDIA_LABELS_FILE          = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
+    public static final String DBPEDIA_DISAMBIGUATIONS_FILE = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "disambiguations_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
 
     /**
      * 

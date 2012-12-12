@@ -110,7 +110,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 			"SELECT ?s ?sl <"+property+"> ?o ?ol " +
 			"WHERE {" +
 			 "	?s rdfs:label ?sl . " + 
-			 "  ?s "+property+" ?o . " +
+			 "  ?s <"+property+"> ?o . " +
 			 "  ?o rdfs:label ?ol . " +
 			 "	FILTER (   lang(?sl)= \""+BOA_LANGUAGE+"\"  &&  lang(?ol)= \""+BOA_LANGUAGE+"\"  ) " +
 			 "} " +

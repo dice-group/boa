@@ -9,9 +9,12 @@ import java.util.Set;
 import junit.framework.JUnit4TestAdapter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.util.Version;
 import org.junit.After;
@@ -48,6 +51,28 @@ public class LuceneTest {
     public void cleanUpStreams() {
 
         this.setup.destroy();
+    }
+    
+    @Test
+    public void testQuerySentence() throws IOException, ParseException {
+
+        IndexSearcher searcher = LuceneIndexHelper.getIndexSearcher(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH);
+        QueryParser qp = new QueryParser(Version.LUCENE_34, "sentence", new LowerCaseWhitespaceAnalyzer());
+        
+//        Query query = new TermQuery(new Term("sentence", "clinton was elected president"));
+        ScoreDoc[] docs = searcher.search(qp.parse("sentence:\"Clinton was elected president\""), 100).scoreDocs;
+        Set<String> sentences = new HashSet<String>();
+        for (int i = 0; i < docs.length; i++) {
+            
+            String sentence = LuceneIndexHelper.getFieldValueByDocId(searcher, docs[i].doc, "sentence");
+            if ( sentence.contains("Clinton was elected president") )
+                sentences.add(sentence);
+        }
+        
+//        "http://dbpedia.org/ontology/country][?D? Clinton was elected president ?R?][bill][united states][1273489"
+        
+        for (String sentence : sentences) 
+            System.out.println(sentence);
     }
     
     @Test
