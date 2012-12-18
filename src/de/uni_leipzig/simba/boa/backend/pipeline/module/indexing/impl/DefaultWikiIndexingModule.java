@@ -113,6 +113,8 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 		BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<Runnable>(Runtime.getRuntime().availableProcessors());
 	    RejectedExecutionHandler rejectedExecutionHandler = new ThreadPoolExecutor.CallerRunsPolicy();
 	    ExecutorService executorService = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().availableProcessors(), 0L, TimeUnit.MILLISECONDS, blockingQueue, rejectedExecutionHandler);
+	    
+	    System.out.println("Available Processors: " + Runtime.getRuntime().availableProcessors());
 
 		// go through all files which are not hidden in the raw sentence directory
 		for (File file : FileUtils.listFiles(new File(RAW_DATA_DIRECTORY), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE)) {
