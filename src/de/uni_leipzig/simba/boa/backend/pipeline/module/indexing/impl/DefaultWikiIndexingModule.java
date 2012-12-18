@@ -5,7 +5,17 @@ package de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.HiddenFileFilter;
@@ -27,6 +37,7 @@ import de.uni_leipzig.simba.boa.backend.lucene.LowerCaseWhitespaceAnalyzer;
 import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
 import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper.LuceneIndexType;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.SentenceBoundaryDisambiguation;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.AbstractPipelineModule;
 
@@ -42,6 +53,8 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	private final String INDEX_DIRECTORY	= NLPediaSettings.BOA_DATA_DIRECTORY + "index/corpus/";
 	private final int RAM_BUFFER_MAX_SIZE	= NLPediaSettings.getIntegerSetting("ramBufferMaxSizeInMb");
 	private final boolean OVERWRITE_INDEX	= this.overrideData;
+	
+	private BlockingQueue<IndexingThread> queue = new LinkedBlockingQueue<IndexingThread>(Runtime.getRuntime().availableProcessors());
 	
 	// remember how many files get indexed
 	private int indexDocumentCount = 0;
@@ -91,14 +104,15 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	 */
 	public void run() {
 		
-		// load the sentence boundary dismabiguation
-		SentenceBoundaryDisambiguation sbd = NaturalLanguageProcessingToolFactory.getInstance().createDefaultSentenceBoundaryDisambiguation();
-
 		// create the index writer configuration and create a new index writer
 		IndexWriterConfig indexWriterConfig = new IndexWriterConfig(Version.LUCENE_34, new LowerCaseWhitespaceAnalyzer());
 		indexWriterConfig.setRAMBufferSizeMB(RAM_BUFFER_MAX_SIZE);
 		indexWriterConfig.setOpenMode(OVERWRITE_INDEX || !LuceneIndexHelper.isIndexExisting(INDEX_DIRECTORY) ? OpenMode.CREATE : OpenMode.APPEND);
 		IndexWriter writer = LuceneIndexHelper.createIndex(INDEX_DIRECTORY, indexWriterConfig, LuceneIndexType.DIRECTORY_INDEX);
+
+		BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<Runnable>(Runtime.getRuntime().availableProcessors());
+	    RejectedExecutionHandler rejectedExecutionHandler = new ThreadPoolExecutor.CallerRunsPolicy();
+	    ExecutorService executorService = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().availableProcessors(), 0L, TimeUnit.MILLISECONDS, blockingQueue, rejectedExecutionHandler);
 
 		// go through all files which are not hidden in the raw sentence directory
 		for (File file : FileUtils.listFiles(new File(RAW_DATA_DIRECTORY), HiddenFileFilter.VISIBLE, TrueFileFilter.INSTANCE)) {
@@ -108,7 +122,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 			BufferedFileReader br = FileUtil.openReader(file.getAbsolutePath(), Constants.UTF_8_ENCODING);
 			List<IndexDocument> documents = new ArrayList<IndexDocument>();
 
-			IndexDocument document = new IndexDocument(sbd);
+			IndexDocument document = new IndexDocument();
 			
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -120,66 +134,156 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 					if (line.startsWith("</doc>")) {
 
 						documents.add(document); // document finished 
-						document = new IndexDocument(sbd);
+						document = new IndexDocument();
 					}
 					else document.text.append(line); // line belongs to current document
 				}
 				// since we don't want to have all wikipedia entries we collect 10000 docs and then start again
-				if (documents.size() == 10000) {
+				if (documents.size() == 1000) {
 					
-					indexDocumentCount += 10000;
-					this.logger.debug("\tIndexed " + indexDocumentCount);
-					indexDocuments(writer, documents);
+					this.logger.debug("\tStarting IndexingThread");
+					System.out.println("blockingQueue-Size: " + blockingQueue.size());
+					executorService.submit(new IndexingThread(writer, documents));
 					documents = new ArrayList<IndexDocument>();
 				}
 			}
 			// index the remaining x documents
 			if ( documents.size() > 0 ) { 
-				
-				indexDocuments(writer, documents);
+
+				executorService.submit(new IndexingThread(writer, documents));
 				indexDocumentCount += documents.size();
 			}
 		}
 		LuceneIndexHelper.closeIndexWriter(writer);
 	}
 
-	/**
-	 * Writes all sentences of all sentences in the given list to the Lucene index.
-	 * 
-	 * @param writer - the writer to write the sentences
-	 * @param documents - all documents to be processed
-	 */
-	protected void indexDocuments(IndexWriter writer, List<IndexDocument> documents) {
+	private class IndexingThread implements Runnable {
+
+		private List<IndexDocument> documents;
+		private IndexWriter writer;
 		
-	    // go through every document
-		for (IndexDocument doc : documents)
-			// get every sentence from this document
-			for (String sentence : doc.getSentences() )
-				// add it to the index
-			    LuceneIndexHelper.indexDocument(writer, this.createLuceneDocument(doc.uri, sentence));
+		protected SentenceBoundaryDisambiguation sentenceBoundaryDisambiguation = NaturalLanguageProcessingToolFactory.getInstance().createDefaultSentenceBoundaryDisambiguation();
+		protected NamedEntityRecognition nerTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultNamedEntityRecognition();
+
+		public IndexingThread(IndexWriter writer, List<IndexDocument> documents) {
+			
+			this.documents	= documents;
+			this.writer		= writer;
+		}
+
+		@Override
+		public void run() {
+			
+			// go through every document
+			for (IndexDocument doc : this.documents)
+				// get every sentence from this document
+				for (String sentence : sentenceBoundaryDisambiguation.getSentences(Jsoup.parse(doc.text.toString()).text()) ) {
+
+					String taggedSentence = nerTagger.getAnnotatedString(sentence);
+					
+					// add it to the index
+				    LuceneIndexHelper.indexDocument(writer, 
+				    		createLuceneDocument(
+				    				doc.uri, 
+				    				sentence, 
+				    				taggedSentence, 
+				    				new HashSet<String>(getEntities(this.mergeTagsInSentences(taggedSentence)))));
+				}
+			
+			indexDocumentCount += 1000;			
+			logger.info("Finished indexing of " + indexDocumentCount + " documents!");
+		}
+		
+	    /**
+	     * 
+	     * @param mergedTaggedSentence
+	     * @return
+	     */
+	    private List<String> getEntities(List<String> mergedTaggedSentence){
+	        
+	        List<String> entities = new ArrayList<String>();
+	        for (String entity :  mergedTaggedSentence) {
+
+                if (entity.endsWith("_PERSON") ) entities.add(entity.replace("_PERSON", ""));
+                if (entity.endsWith("_MISC")) entities.add(entity.replace("_MISC", ""));
+                if (entity.endsWith("_PLACE")) entities.add(entity.replace("_PLACE", ""));
+                if (entity.endsWith("_ORGANIZATION")) entities.add(entity.replace("_ORGANIZATION", ""));
+	        }
+	        
+	        return entities;
+	    }
+	    
+	    /**
+	     * 
+	     */
+	    public List<String> mergeTagsInSentences(String nerTaggedSentence) {
+
+	        List<String> tokens = new ArrayList<String>();
+	        String lastToken = "";
+	        String lastTag = "";
+	        String currentTag = "";
+	        String newToken = "";
+	        
+	        for (String currentToken : nerTaggedSentence.split(" ")) {
+
+	            currentTag = currentToken.substring(currentToken.lastIndexOf("_") + 1);
+
+	            // we need to check for the previous token's tag
+	            if (!currentToken.endsWith("_OTHER")) {
+
+	                // we need to merge the cell
+	                if (currentTag.equals(lastTag)) {
+
+	                    newToken = lastToken.substring(0, lastToken.lastIndexOf("_")) + " " + currentToken;
+	                    tokens.set(tokens.size() - 1, newToken);
+	                }
+	                // different tag found so just add it
+	                else
+	                    tokens.add(currentToken);
+	            }
+	            else {
+
+	                // add the current token
+	                tokens.add(currentToken);
+	            }
+	            // update for next iteration
+	            lastToken = tokens.get(tokens.size() - 1);
+	            lastTag = currentTag;
+	        }
+	        return tokens;
+	    }
+		
+		/**
+		 * Indexes a document as follow:
+		 * 
+		 * - uri: Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO
+		 * - sentence: Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO
+		 * 
+		 * the field name are "uri" and "sentence".
+		 * 
+		 * @param uri - the uri of the wiki entry
+		 * @param sentence - a single sentence from the wiki entry
+		 * @return a Lucene Document
+		 */
+		protected Document createLuceneDocument(String uri, String sentence, String taggedSentence, Set<String> entities) {
+
+			System.out.println(uri);
+			System.out.println(sentence);
+			System.out.println(taggedSentence);
+			System.out.println(entities);
+			
+			Document luceneDocument = new Document();
+			luceneDocument.add(new Field("uri", uri, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO));
+			luceneDocument.add(new Field("sentence", sentence, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
+			luceneDocument.add(new Field("ner", taggedSentence, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
+			
+			for ( String entity : entities )
+                luceneDocument.add(new Field("entity", entity, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO));
+                
+			return luceneDocument;
+		}
 	}
 	
-	/**
-	 * Indexes a document as follow:
-	 * 
-	 * - uri: Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO
-	 * - sentence: Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO
-	 * 
-	 * the field name are "uri" and "sentence".
-	 * 
-	 * @param uri - the uri of the wiki entry
-	 * @param sentence - a single sentence from the wiki entry
-	 * @return a Lucene Document
-	 */
-	protected Document createLuceneDocument(String uri, String sentence) {
-
-		Document luceneDocument = new Document();
-		luceneDocument.add(new Field("uri", uri, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
-		luceneDocument.add(new Field("sentence", sentence, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
-		return luceneDocument;
-	}
-	
-
 	/**
 	 * Only used internally to represent a single wikipedia entry.
 	 * One entry consists of a uri and text.
@@ -190,24 +294,5 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 
 		protected String uri = "";
 		protected StringBuffer text = new StringBuffer();
-		protected SentenceBoundaryDisambiguation sentenceBoundaryDisambiguation;
-
-		/**
-		 * Creates a new wiki-entry like document
-		 * 
-		 * @param sentenceBoundaryDisambiguation
-		 */
-		public IndexDocument(SentenceBoundaryDisambiguation sentenceBoundaryDisambiguation){
-			
-			this.sentenceBoundaryDisambiguation = sentenceBoundaryDisambiguation;
-		}
-		
-		/**
-		 * @return a list of all cleaned (no html, a's) sentences in the this documents text   
-		 */
-		public List<String> getSentences() {
-			
-			return this.sentenceBoundaryDisambiguation.getSentences(Jsoup.parse(this.text.toString()).text());
-		}
 	}
 }

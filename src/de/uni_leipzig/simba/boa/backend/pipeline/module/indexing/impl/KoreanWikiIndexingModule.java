@@ -1,6 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.lucene.document.Document;
@@ -29,7 +30,6 @@ public class KoreanWikiIndexingModule extends DefaultWikiIndexingModule {
 	 * @param writer - the writer to write the sentences
 	 * @param documents - all documents to be processed
 	 */
-	@Override
 	protected void indexDocuments(IndexWriter writer, List<IndexDocument> documents) {
 		
 		try {
@@ -37,7 +37,7 @@ public class KoreanWikiIndexingModule extends DefaultWikiIndexingModule {
 			// go through every document
 			for (IndexDocument doc : documents)
 				// get every sentence from this document
-				for (String sentence : doc.getSentences() ){
+				for (String sentence : new ArrayList<String>() /*doc.getSentences() TODO*/ ){
 					// add it to the index					
 					String JosaSeparatedSentence	= kjt.getJosaSeparatedSentence(sentence);
 					writer.addDocument(this.createLuceneDocument(doc.uri, sentence, JosaSeparatedSentence));
