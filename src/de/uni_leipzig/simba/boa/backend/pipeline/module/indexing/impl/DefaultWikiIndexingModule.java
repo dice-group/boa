@@ -267,11 +267,6 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 		 */
 		protected Document createLuceneDocument(String uri, String sentence, String taggedSentence, Set<String> entities) {
 
-			System.out.println(uri);
-			System.out.println(sentence);
-			System.out.println(taggedSentence);
-			System.out.println(entities);
-			
 			Document luceneDocument = new Document();
 			luceneDocument.add(new Field("uri", uri, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO));
 			luceneDocument.add(new Field("sentence", sentence, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
