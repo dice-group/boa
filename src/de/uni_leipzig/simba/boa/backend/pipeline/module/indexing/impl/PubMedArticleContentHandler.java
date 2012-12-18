@@ -41,6 +41,12 @@ public class PubMedArticleContentHandler extends DefaultWikiIndexingModule
 		}
 	}
 
+	private void indexDocuments(IndexWriter writer2,
+			ArrayList<IndexDocument> documents2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		if (qName == null)
@@ -85,7 +91,7 @@ public class PubMedArticleContentHandler extends DefaultWikiIndexingModule
 	}
 
 	public void startDocument() throws SAXException {
-		document = new IndexDocument(sbd);
+		document = new IndexDocument();
 	}
 
 	public void startElement(String uri, String localName, String qName,
