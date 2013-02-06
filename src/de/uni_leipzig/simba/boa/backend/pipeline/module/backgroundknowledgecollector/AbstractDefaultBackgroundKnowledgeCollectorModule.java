@@ -265,12 +265,18 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
         }
         else {
 
-            String propertyQuery = "SELECT distinct ?domain ?range " + "WHERE { " + "  <" + propertyUri + ">  rdfs:domain ?domain . " + "  <" + propertyUri + ">  rdfs:range ?range . " + "}";
+            String propertyQuery =  "SELECT distinct ?domain ?range " + 
+            						"WHERE { OPTIONAL { " + "  <" + propertyUri + ">  rdfs:domain ?domain } .  " +
+            								"OPTIONAL { " + "  <" + propertyUri + ">  rdfs:range ?range } . " + "}";
 
             this.logger.info("Querying: " + propertyQuery);
 
-            QueryEngineHTTP qexecProperty = new QueryEngineHTTP(SPARQL_ENDPOINT_URI, propertyQuery);
-            qexecProperty.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
+//            QueryEngineHTTP qexecProperty = new QueryEngineHTTP(SPARQL_ENDPOINT_URI, propertyQuery);
+//            qexecProperty.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
+            
+            // this wont work offline :/
+            QueryEngineHTTP qexecProperty = new QueryEngineHTTP("http://dbpedia.org/sparql", propertyQuery);
+            qexecProperty.addDefaultGraph("http://dbpedia.org");
 
             ResultSet results = qexecProperty.execSelect();
 
@@ -279,10 +285,10 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
             if (results.hasNext()) {
 
                 QuerySolution qs = results.next();
-
+                
                 String domain = qs.get("domain") == null ? "NA" : qs.get("domain").toString();
                 String range = qs.get("range") == null ? "NA" : qs.get("range").toString();
-
+                
                 p = new Property(propertyUri, domain, range);
                 p.setSynsets(WordnetQuery.getSynsetsForAllSynsetTypes(p.getLabel()));
                 this.properties.put(p.hashCode(), p);
