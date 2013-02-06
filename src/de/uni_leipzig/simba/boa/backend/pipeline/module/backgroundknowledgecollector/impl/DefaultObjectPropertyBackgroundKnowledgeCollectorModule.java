@@ -52,7 +52,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	@Override
 	public void run() {
 		
-		this.logger.info("Starting pattern search!");
+		this.logger.info("Starting to query object property background knowledge!");
         long startLoadingBackgroundKnowledge = System.currentTimeMillis();
         this.queryObjectProperties();
         this.loadKnowledgeTime = (System.currentTimeMillis() - startLoadingBackgroundKnowledge);

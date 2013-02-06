@@ -156,6 +156,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 				indexDocumentCount += documents.size();
 			}
 		}
+		executorService.shutdown();
 		LuceneIndexHelper.closeIndexWriter(writer);
 	}
 

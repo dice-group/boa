@@ -60,7 +60,7 @@ public class SurfaceFormGenerator {
         
         SurfaceFormGenerator.logger.info("Intializing surface forms...");
         
-        List<String> surfaceForms    = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_uri_surface_form.tsv", "UTF-8");
+        List<String> surfaceForms    = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_surface_forms.tsv", "UTF-8");
         this.urisToLabels = new HashMap<String,Set<String>>(); 
         
         // initialize the surface forms from dbpedia spotlight 
@@ -79,19 +79,22 @@ public class SurfaceFormGenerator {
         }
 
 		// @author Maciej Janicki -- add classes surface forms from WordNet expansion
-		List<String> classesSurfaceForms = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "classes_surface_forms.tsv", "UTF-8");
-        for ( String line : classesSurfaceForms ) {
-            
-            String[] lineParts = line.split("\t");
-            String[] surfaceFormsPart = Arrays.copyOfRange(lineParts, 1, lineParts.length);
-            Set<String> filteredSurfaceForms = new HashSet<String>();
-            
-            for ( String surfaceForm : surfaceFormsPart) {
+        if ( NLPediaSettings.getBooleanSetting("rdfTypeKnowledgeGeneration") ) {
+
+        	List<String> classesSurfaceForms = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "classes_surface_forms.tsv", "UTF-8");
+            for ( String line : classesSurfaceForms ) {
                 
-                if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength") ) filteredSurfaceForms.add(" " + surfaceForm + " ");
+                String[] lineParts = line.split("\t");
+                String[] surfaceFormsPart = Arrays.copyOfRange(lineParts, 1, lineParts.length);
+                Set<String> filteredSurfaceForms = new HashSet<String>();
+                
+                for ( String surfaceForm : surfaceFormsPart) {
+                    
+                    if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength") ) filteredSurfaceForms.add(" " + surfaceForm + " ");
+                }
+                this.urisToLabels.put(lineParts[0], filteredSurfaceForms);
+                this.urisToLabels.put(lineParts[0].replace("http://" + NLPediaSettings.BOA_LANGUAGE + ".", "http://"), filteredSurfaceForms);
             }
-            this.urisToLabels.put(lineParts[0], filteredSurfaceForms);
-            this.urisToLabels.put(lineParts[0].replace("http://" + NLPediaSettings.BOA_LANGUAGE + ".", "http://"), filteredSurfaceForms);
         }
 
         SurfaceFormGenerator.logger.info("Finished intializing surface forms! Found " + urisToLabels.size() + " dbpedia spotlight surfaceforms");
@@ -163,6 +166,7 @@ public class SurfaceFormGenerator {
      */
     private BackgroundKnowledge createSurfaceFormsForDatatypeProperty(DatatypePropertyBackgroundKnowledge backgroundKnowledge) {
 
+    	// we dont really now what objects this triples has... so we try to treat it as an object property
         BackgroundKnowledge dbk =  this.createSurfaceFormsForObjectProperty(backgroundKnowledge);
         
         if ( !((DatatypePropertyBackgroundKnowledge) dbk).getObjectDatatype().equals("NA")
