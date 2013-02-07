@@ -5,6 +5,11 @@ package de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Locale;
+
+import org.apache.commons.lang.StringUtils;
 
 import de.danielgerber.file.BufferedFileWriter;
 import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
@@ -73,7 +78,7 @@ public class WikiXmlJWikipediaExtractorModule extends AbstractPreprocessingModul
             	
 	            public void process(WikiPage page) {
 	            	
-	            	writer.write("<doc id=\""+ (id++) +"\" url=\""+page.getID()+"\">");
+	            	writer.write("<doc id=\""+ (id++) +"\" url=\"http://dbpedia.org/resource/"+wikiEncode(page.getTitle())+"\">");
 	            	writer.write(page.getText());
 	            	writer.write("</doc>");
 	            }
@@ -104,6 +109,38 @@ public class WikiXmlJWikipediaExtractorModule extends AbstractPreprocessingModul
 		}
         this.wikipediaExtractionTime = System.currentTimeMillis() - startWikipediaExtractionTime;
         this.logger.info("Finished extracting wikipedia dump in " + TimeUtil.convertMilliSeconds(this.wikipediaExtractionTime) + ".");
+    }
+    
+    private String wikiEncode(String title) {
+    	
+        // replace spaces by underscores.
+        // Note: MediaWiki apparently replaces only spaces by underscores, not other whitespace. 
+        String encoded = title.replace(' ', '_');
+        
+        // normalize duplicate underscores
+        encoded = encoded.replaceAll("_+", "_");
+        
+        // trim underscores from start 
+        encoded = encoded.replaceAll("^_", "");
+        
+        // trim underscores from end 
+        encoded = encoded.replaceAll("_$", "");
+
+        encoded = StringUtils.capitalize(encoded);
+
+        // URL-encode everything but ':' '/' '&' and ',' - just like MediaWiki
+        try {
+			encoded = URLEncoder.encode(encoded, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        encoded = encoded.replace("%3A", ":");
+        encoded = encoded.replace("%2F", "/");
+        encoded = encoded.replace("%26", "&");
+        encoded = encoded.replace("%2C", ",");
+
+        return encoded;
     }
 
     /* (non-Javadoc)
