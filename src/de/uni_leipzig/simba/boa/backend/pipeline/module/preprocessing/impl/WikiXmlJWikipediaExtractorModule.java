@@ -115,7 +115,7 @@ public class WikiXmlJWikipediaExtractorModule extends AbstractPreprocessingModul
     	
         // replace spaces by underscores.
         // Note: MediaWiki apparently replaces only spaces by underscores, not other whitespace. 
-        String encoded = title.replace(' ', '_');
+        String encoded = title.trim().replace(' ', '_');
         
         // normalize duplicate underscores
         encoded = encoded.replaceAll("_+", "_");
