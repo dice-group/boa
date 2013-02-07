@@ -190,6 +190,7 @@
 			<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/LBJ2.jar"/>
 			<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/JHanNanum_0.8.2.jar"/>
 			<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/nxparser-1.1.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="${base.dir}/WebContent/WEB-INF/lib/wikixmlj-r43.jar"/>
 		</jar>
 	</target>
 	<!-- ==================== configure jawa ==================== -->
