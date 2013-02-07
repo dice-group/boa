@@ -34,6 +34,20 @@
         </property>
     </bean>
     
+    <bean id="WikiXmlJWikipediaExtractorModule"
+        class="de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.WikiXmlJWikipediaExtractorModule">
+
+        <property name="overrideData" value="false" />
+        <property name="moduleDependencies">
+            <set>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
+                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.WikipediaDownloadModule</value>
+            </set>
+        </property>
+        <property name="moduleSettings">
+            <set></set>
+        </property>
+    </bean>
     
     <bean id="WikipediaExtractorModule"
         class="de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.WikipediaExtractorModule">
