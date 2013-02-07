@@ -79,10 +79,23 @@ public class WikiXmlJWikipediaExtractorModule extends AbstractPreprocessingModul
 	            public void process(WikiPage page) {
 	            	
 	            	writer.write("<doc id=\""+ (id++) +"\" url=\"http://dbpedia.org/resource/"+wikiEncode(page.getTitle())+"\">");
-	            	if (page.getInfoBox() != null) writer.write(page.getText().replace(page.getInfoBox().dumpRaw(), ""));
-	            	else writer.write(page.getText());
+	            	writer.write(removeInfoBox(page));
 	            	writer.write("</doc>");
 	            }
+
+				private String removeInfoBox(WikiPage page) {
+					
+					String text = page.getText();
+					while ( text.contains("{|") ) {
+						
+						int startIndex = text.indexOf("{|");
+						int endIndex = text.indexOf("|}", startIndex);
+						
+						text = text.replace(text.substring(startIndex, endIndex), "");
+					}
+					
+					return text;
+				}
             });
             
             wxsp.parse();
