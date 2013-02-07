@@ -79,7 +79,7 @@ public class WikiXmlJWikipediaExtractorModule extends AbstractPreprocessingModul
 	            public void process(WikiPage page) {
 	            	
 	            	writer.write("<doc id=\""+ (id++) +"\" url=\"http://dbpedia.org/resource/"+wikiEncode(page.getTitle())+"\">");
-	            	writer.write(page.getText());
+	            	writer.write(page.getText().replace(page.getInfoBox().dumpRaw(), ""));
 	            	writer.write("</doc>");
 	            }
             });
