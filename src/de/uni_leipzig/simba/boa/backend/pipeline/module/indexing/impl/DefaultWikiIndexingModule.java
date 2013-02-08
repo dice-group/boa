@@ -110,9 +110,9 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 		indexWriterConfig.setOpenMode(OVERWRITE_INDEX || !LuceneIndexHelper.isIndexExisting(INDEX_DIRECTORY) ? OpenMode.CREATE : OpenMode.APPEND);
 		IndexWriter writer = LuceneIndexHelper.createIndex(INDEX_DIRECTORY, indexWriterConfig, LuceneIndexType.DIRECTORY_INDEX);
 
-		BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<Runnable>(Runtime.getRuntime().availableProcessors());
+		BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<Runnable>(Runtime.getRuntime().availableProcessors() / 2);
 	    RejectedExecutionHandler rejectedExecutionHandler = new ThreadPoolExecutor.CallerRunsPolicy();
-	    ExecutorService executorService = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().availableProcessors(), 0L, TimeUnit.MILLISECONDS, blockingQueue, rejectedExecutionHandler);
+	    ExecutorService executorService = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() / 2, Runtime.getRuntime().availableProcessors() / 2, 0L, TimeUnit.MILLISECONDS, blockingQueue, rejectedExecutionHandler);
 	    
 	    System.out.println("Available Processors: " + Runtime.getRuntime().availableProcessors());
 
@@ -141,7 +141,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 					else document.text.append(line); // line belongs to current document
 				}
 				// since we don't want to have all wikipedia entries we collect 10000 docs and then start again
-				if (documents.size() == 5000) {
+				if (documents.size() == 1000) {
 					
 					this.logger.debug("Starting IndexingThread");
 					this.logger.debug("BlockingQueue-Size: " + blockingQueue.size());
