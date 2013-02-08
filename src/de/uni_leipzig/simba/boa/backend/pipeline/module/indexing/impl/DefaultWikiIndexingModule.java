@@ -141,7 +141,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 					else document.text.append(line); // line belongs to current document
 				}
 				// since we don't want to have all wikipedia entries we collect 10000 docs and then start again
-				if (documents.size() == 100) {
+				if (documents.size() == 5000) {
 					
 					this.logger.debug("Starting IndexingThread");
 					this.logger.debug("BlockingQueue-Size: " + blockingQueue.size());
