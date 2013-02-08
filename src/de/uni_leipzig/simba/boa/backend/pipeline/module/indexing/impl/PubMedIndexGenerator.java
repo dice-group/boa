@@ -39,7 +39,7 @@ public class PubMedIndexGenerator extends AbstractPreprocessingModule {
 	public void initParser(IndexWriter writer) {
 		try {
 			xmlReader = XMLReaderFactory.createXMLReader();
-			xmlReader.setEntityResolver(new DummyEntityResolver());
+			xmlReader.setEntityResolver(null);
 			xmlReader
 					.setContentHandler(new PubMedArticleContentHandler(writer));
 		} catch (SAXException e) {

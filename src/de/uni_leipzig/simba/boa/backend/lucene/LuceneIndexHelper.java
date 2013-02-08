@@ -223,8 +223,6 @@ public class LuceneIndexHelper {
 
         try {
             
-            // close the index and do a full optimize
-            writer.optimize();
             writer.close();
         }
         catch (CorruptIndexException e) {

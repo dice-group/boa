@@ -150,8 +150,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 
             // get the subject and its label with the language tag
             String subjectLabel = solution.get("sl").toString();
-            if (subjectLabel.contains("@"))
-                subjectLabel = subjectLabel.substring(0, subjectLabel.lastIndexOf("@"));
+            if (subjectLabel.contains("@")) subjectLabel = subjectLabel.substring(0, subjectLabel.lastIndexOf("@"));
 
             // object stuff
             String objectUri = "";
@@ -160,25 +159,18 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 
             // get the object, which might be a literal or a resource
             // if we have found a label the object is a resource
-            if (solution.get("oLabel") != null) {
-
-                objectUri = solution.get("o").toString();
-                objectLabel = solution.get("oLabel").toString();
-                if (objectLabel.contains("@" + BOA_LANGUAGE))
-                    objectLabel = objectLabel.substring(0, objectLabel.lastIndexOf("@"));
+            if ( solution.get("o").isResource() ) {
+            
+            	objectUri = solution.get("o").asResource().getURI();
+            	if ( solution.get("oLabel") == null ) continue; // uri without label is useless
+                objectLabel = solution.get("oLabel").asLiteral().getString();
             }
             else {
 
                 // we dont have any uri for datatypes so just use the label
-                objectUri = solution.get("o").toString();
-                if (objectUri.contains("^^"))
-                    objectType = objectUri.substring(objectUri.lastIndexOf("^^") + 2);
-                if (objectUri.contains("^^"))
-                    objectUri = objectUri.substring(0, objectUri.indexOf("^"));
-                if (objectLabel.endsWith("@" + BOA_LANGUAGE))
-                    objectLabel = objectLabel.replace("\n", "").replace("@" + BOA_LANGUAGE, "");
-                if (objectLabel.isEmpty())
-                    objectLabel = objectUri;
+                objectUri = solution.get("o").asLiteral().getString().replace("\n", "");
+                objectLabel = objectUri;
+                objectType = solution.get("o").asLiteral().getDatatypeURI();
             }
 
             DatatypePropertyBackgroundKnowledge datatypeBackgroundKnowledge = new DatatypePropertyBackgroundKnowledge();
@@ -302,6 +294,19 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
             return p;
         }
     }
+    
+    public static void main(String[] args) {
+		
+    	String query = "select count(*) from <http://boa.dbpedia.org> where {?s ?p ?o } limit 1";
+    	
+    	QueryEngineHTTP qexecProperty = new QueryEngineHTTP("http://[2001:638:902:2010:0:168:35:138]:8890/sparql", query);
+        
+        ResultSet s = qexecProperty.execSelect();
+        while ( s.hasNext()) {
+        	
+        	System.out.println(s.next());
+        }
+	}
 
     /**
      * This method is only used to catch the 503 HttpExceptions thrown by the

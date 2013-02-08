@@ -325,29 +325,37 @@ public class SurfaceFormGenerator {
         // some non-negative integers contain decimals and other stuff, so remove it
         if ( parseCandidate.contains(".") ) parseCandidate = parseCandidate.replaceAll("\\.[0-9]+$", "");
         
-        // try to parse it
-        Integer i = Integer.valueOf(parseCandidate);
-        
         Set<String> variations = new HashSet<String>();
-            
-        if ( i == 1 ) variations.add("first");
-        if ( i == 2 ) variations.add("second");
-        if ( i == 3 ) variations.add("third");
-        if ( i == 4 ) variations.add("fourth");
-        if ( i == 5 ) variations.add("fifth");
-        variations.add(getOrdinalFor(i));
-        variations.add(i.toString());
-        if ( i >= 0 ) variations.add(EnglishNumberToWords.convert(Long.valueOf(i)));
-        if ( i < 0 ) variations.add("-" + EnglishNumberToWords.convert(Math.abs(Long.valueOf(i))));
-        if ( i < 0 ) variations.add("- " + EnglishNumberToWords.convert(Math.abs(Long.valueOf(i))));
-        variations.add(String.valueOf(((i/5)*5))); // rounded down to next 5: 104 -> 100
-        variations.add(String.valueOf(((i/10)*10))); // rounded down to next 10
-        if ( i > 100 ) variations.add(String.valueOf(((i/100)*100))); // rounded down to next 100
-        if ( i > 1000 )variations.add(String.valueOf(((i/1000)*1000))); // rounded down to next 1000
-        if ( i > 1000000 ) variations.add(String.format("%.1f", i / 1000000.0));
-        if ( i > 1000000 ) variations.add(String.format("%.0f", i / 1000000.0));
-        if ( i > 1000000000 ) variations.add(String.format("%.1f", i / 1000000000.0));
-        if ( i > 1000000000 ) variations.add(String.format("%.0f", i / 1000000000.0));
+        
+        // try to parse it
+        try {
+        	
+        	Integer i = Integer.valueOf(parseCandidate);
+        	
+            if ( i == 1 ) variations.add("first");
+            if ( i == 2 ) variations.add("second");
+            if ( i == 3 ) variations.add("third");
+            if ( i == 4 ) variations.add("fourth");
+            if ( i == 5 ) variations.add("fifth");
+            variations.add(getOrdinalFor(i));
+            variations.add(i.toString());
+            if ( i >= 0 ) variations.add(EnglishNumberToWords.convert(Long.valueOf(i)));
+            if ( i < 0 ) variations.add("-" + EnglishNumberToWords.convert(Math.abs(Long.valueOf(i))));
+            if ( i < 0 ) variations.add("- " + EnglishNumberToWords.convert(Math.abs(Long.valueOf(i))));
+            variations.add(String.valueOf(((i/5)*5))); // rounded down to next 5: 104 -> 100
+            variations.add(String.valueOf(((i/10)*10))); // rounded down to next 10
+            if ( i > 100 ) variations.add(String.valueOf(((i/100)*100))); // rounded down to next 100
+            if ( i > 1000 )variations.add(String.valueOf(((i/1000)*1000))); // rounded down to next 1000
+            if ( i > 1000000 ) variations.add(String.format("%.1f", i / 1000000.0));
+            if ( i > 1000000 ) variations.add(String.format("%.0f", i / 1000000.0));
+            if ( i > 1000000000 ) variations.add(String.format("%.1f", i / 1000000000.0));
+            if ( i > 1000000000 ) variations.add(String.format("%.0f", i / 1000000000.0));
+        }
+        // in case we hit a double tagged as int, we can try to treat it as an double
+        catch ( NumberFormatException nfe ) {
+        	
+        	return handleDouble(parseCandidate);
+        }
         
         return variations;
     }
