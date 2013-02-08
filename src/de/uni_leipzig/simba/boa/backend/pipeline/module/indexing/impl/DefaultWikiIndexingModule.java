@@ -105,7 +105,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	public void run() {
 		
 		// create the index writer configuration and create a new index writer
-		IndexWriterConfig indexWriterConfig = new IndexWriterConfig(Version.LUCENE_34, new LowerCaseWhitespaceAnalyzer());
+		IndexWriterConfig indexWriterConfig = new IndexWriterConfig(Version.LUCENE_36, new LowerCaseWhitespaceAnalyzer());
 		indexWriterConfig.setRAMBufferSizeMB(RAM_BUFFER_MAX_SIZE);
 		indexWriterConfig.setOpenMode(OVERWRITE_INDEX || !LuceneIndexHelper.isIndexExisting(INDEX_DIRECTORY) ? OpenMode.CREATE : OpenMode.APPEND);
 		IndexWriter writer = LuceneIndexHelper.createIndex(INDEX_DIRECTORY, indexWriterConfig, LuceneIndexType.DIRECTORY_INDEX);
@@ -141,10 +141,10 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 					else document.text.append(line); // line belongs to current document
 				}
 				// since we don't want to have all wikipedia entries we collect 10000 docs and then start again
-				if (documents.size() == 1000) {
+				if (documents.size() == 100) {
 					
-					this.logger.debug("\tStarting IndexingThread");
-					System.out.println("blockingQueue-Size: " + blockingQueue.size());
+					this.logger.debug("Starting IndexingThread");
+					this.logger.debug("BlockingQueue-Size: " + blockingQueue.size());
 					executorService.submit(new IndexingThread(writer, documents));
 					documents = new ArrayList<IndexDocument>();
 				}
@@ -193,7 +193,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 				    				new HashSet<String>(getEntities(this.mergeTagsInSentences(taggedSentence)))));
 				}
 			
-			indexDocumentCount += 1000;			
+			indexDocumentCount += this.documents.size();			
 			logger.info("Finished indexing of " + indexDocumentCount + " documents!");
 		}
 		

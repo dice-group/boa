@@ -52,7 +52,8 @@ public final class DatatypePropertyBackgroundKnowledge extends AbstractBackgroun
     
     public void setObjectDatatype(String datatype) {
         
-        this.objectDatatype = datatype;
+    	if ( datatype != null )
+    		this.objectDatatype = datatype;
     }
     
     public String getObjectDatatype() {
