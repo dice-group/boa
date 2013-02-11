@@ -267,8 +267,8 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 //            qexecProperty.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
             
             // this wont work offline :/
-            QueryEngineHTTP qexecProperty = new QueryEngineHTTP("http://dbpedia.org/sparql", propertyQuery);
-            qexecProperty.addDefaultGraph("http://dbpedia.org");
+            QueryEngineHTTP qexecProperty = new QueryEngineHTTP("http://[2001:638:902:2010:0:168:35:138]/sparql", propertyQuery);
+            qexecProperty.addDefaultGraph("http://boa.dbpedia.org");
 
             ResultSet results = qexecProperty.execSelect();
 
