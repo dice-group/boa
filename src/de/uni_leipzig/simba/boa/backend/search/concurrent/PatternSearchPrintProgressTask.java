@@ -45,7 +45,9 @@ public class PatternSearchPrintProgressTask extends TimerTask {
                         + patternSearchThread.getNumberTotal() + ")");
             }
         }
-        this.logger.info(Integer.valueOf(format.format(((double) totalProgress / totalNumber) * 100)) + "% (" + totalProgress + "/" + totalNumber + ")");
+        Double i = ((double) totalProgress / totalNumber) * 100;
+        if ( i.isInfinite() || i.isNaN() ) i = 0D;
+        this.logger.info(Integer.valueOf(format.format(i)) + "% (" + totalProgress + "/" + totalNumber + ")");
         this.logger.info("########################################");
     }
 }
