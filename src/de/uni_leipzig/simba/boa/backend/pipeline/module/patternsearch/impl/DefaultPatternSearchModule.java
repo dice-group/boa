@@ -72,26 +72,26 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     public void run() {
         
         // first part is to find the patterns
-//        this.logger.info("Starting pattern search!");
-//        long startSearch = System.currentTimeMillis();
-//        List<SearchResult> results = PatternSearchThreadManager.startPatternSearchCallables(this.moduleInterchangeObject.getBackgroundKnowledge(), TOTAL_NUMBER_OF_SEARCH_THREADS);
-//        this.patternSearchTime = (System.currentTimeMillis() - startSearch);
-//        this.logger.info("All threads finished in " + TimeUtil.convertMilliSeconds(patternSearchTime) + "! There are " + results.size() + " strings in the result list");
+        this.logger.info("Starting pattern search!");
+        long startSearch = System.currentTimeMillis();
+        PatternSearchThreadManager.startPatternSearchCallables(this.moduleInterchangeObject.getBackgroundKnowledge(), TOTAL_NUMBER_OF_SEARCH_THREADS);
+        this.patternSearchTime = (System.currentTimeMillis() - startSearch);
+        this.logger.info("All threads finished in " + TimeUtil.convertMilliSeconds(patternSearchTime) + "!");
         
         // second part is to sort and save them
-//        this.logger.info("Starting pattern generation and saving!");
-//        startSearch = System.currentTimeMillis();
-        this.createPatternMappings(null);
-//        this.patternCreationTime = (System.currentTimeMillis() - startSearch);
-//        this.logger.info("Pattern generation and serialization took " + TimeUtil.convertMilliSeconds(patternCreationTime) + "! There are " + this.patternMappingCount + " pattern mappings and " + this.patternCount + " patterns.");
+        this.logger.info("Starting pattern generation and saving!");
+        startSearch = System.currentTimeMillis();
+        this.createPatternMappings();
+        this.patternCreationTime = (System.currentTimeMillis() - startSearch);
+        this.logger.info("Pattern generation and serialization took " + TimeUtil.convertMilliSeconds(patternCreationTime) + "! There are " + this.patternMappingCount + " pattern mappings and " + this.patternCount + " patterns.");
     }
     
-    protected void createPatternMappings(List<SearchResult> results) {
+    protected void createPatternMappings() {
 
         // get the cache from the interchange object
         this.properties = this.moduleInterchangeObject.getProperties();
 
-        results = new ArrayList<SearchResult>();
+        List<SearchResult> results = new ArrayList<SearchResult>();
         Map<Integer,String> alreadyKnowString = new HashMap<Integer,String>();
 
         // collect all search results from the written files

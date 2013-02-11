@@ -299,7 +299,8 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
 		
     	String query = "select count(*) from <http://boa.dbpedia.org> where {?s ?p ?o } limit 1";
     	
-    	QueryEngineHTTP qexecProperty = new QueryEngineHTTP("http://[2001:638:902:2010:0:168:35:138]:8890/sparql", query);
+    	QueryEngineHTTP qexecProperty = new QueryEngineHTTP("http://[2001:638:902:2010:0:168:35:138]/sparql", query);
+        qexecProperty.addDefaultGraph("http://dbpedia.org");
         
         ResultSet s = qexecProperty.execSelect();
         while ( s.hasNext()) {
