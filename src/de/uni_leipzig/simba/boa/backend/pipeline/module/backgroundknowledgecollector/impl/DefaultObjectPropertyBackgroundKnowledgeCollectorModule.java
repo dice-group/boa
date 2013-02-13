@@ -113,7 +113,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 			 "	?s rdfs:label ?sl . " + 
 			 "  ?s <"+property+"> ?o . " +
 			 "  ?o rdfs:label ?ol . " +
-			 "	FILTER (   lang(?sl)= \""+BOA_LANGUAGE+"\"  &&  lang(?ol)= \""+BOA_LANGUAGE+"\"  ) " +
+			 "	FILTER (   lang(?sl)= \""+BOA_LANGUAGE+"\"  &&  lang(?ol)= \""+BOA_LANGUAGE+"\"  ) " + //"	FILTER (   lang(?sl)= \"en\"  &&  lang(?ol)= \"en\"  ) " +// 
 			 "} " +
 			 "LIMIT " + SPARQL_QUERY_LIMIT + " " +
 			 "OFFSET &OFFSET";

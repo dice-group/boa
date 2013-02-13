@@ -1,8 +1,10 @@
 package de.uni_leipzig.simba.boa.backend.search.surfaceforms;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -60,7 +62,13 @@ public class SurfaceFormGenerator {
         
         SurfaceFormGenerator.logger.info("Intializing surface forms...");
         
-        List<String> surfaceForms    = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_surface_forms.tsv", "UTF-8");
+        List<String> surfaceForms = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_surface_forms.tsv", "UTF-8");
+        
+//        // we dont have backup for english
+//        List<String> backup = new ArrayList<String>();
+//        if ( new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_surface_forms_backup.tsv").exists() )
+//        	backup = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_surface_forms_backup.tsv", "UTF-8");
+        
         this.urisToLabels = new HashMap<String,Set<String>>(); 
         
         // initialize the surface forms from dbpedia spotlight 
@@ -77,25 +85,41 @@ public class SurfaceFormGenerator {
             this.urisToLabels.put(lineParts[0], filteredSurfaceForms);
             this.urisToLabels.put(lineParts[0].replace("http://" + NLPediaSettings.BOA_LANGUAGE + ".", "http://"), filteredSurfaceForms);
         }
+        
+//        for ( String line : backup ) {
+//        	
+//        	String[] lineParts = line.split("\t");
+//            String[] surfaceFormsPart = Arrays.copyOfRange(lineParts, 1, lineParts.length);
+//            Set<String> filteredSurfaceForms = new HashSet<String>();
+//            
+//            for ( String surfaceForm : surfaceFormsPart) {
+//                
+//                if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength") ) filteredSurfaceForms.add(" " + surfaceForm + " ");
+//            }
+//            String uri = lineParts[0].replace("http://" + NLPediaSettings.BOA_LANGUAGE + ".", "http://");
+//            
+//            if ( this.urisToLabels.containsKey(uri) ) 
+//            	this.urisToLabels.get(uri).addAll(filteredSurfaceForms);
+//        }
 
 		// @author Maciej Janicki -- add classes surface forms from WordNet expansion
-        if ( NLPediaSettings.getBooleanSetting("rdfTypeKnowledgeGeneration") ) {
-
-        	List<String> classesSurfaceForms = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "classes_surface_forms.tsv", "UTF-8");
-            for ( String line : classesSurfaceForms ) {
-                
-                String[] lineParts = line.split("\t");
-                String[] surfaceFormsPart = Arrays.copyOfRange(lineParts, 1, lineParts.length);
-                Set<String> filteredSurfaceForms = new HashSet<String>();
-                
-                for ( String surfaceForm : surfaceFormsPart) {
-                    
-                    if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength") ) filteredSurfaceForms.add(" " + surfaceForm + " ");
-                }
-                this.urisToLabels.put(lineParts[0], filteredSurfaceForms);
-                this.urisToLabels.put(lineParts[0].replace("http://" + NLPediaSettings.BOA_LANGUAGE + ".", "http://"), filteredSurfaceForms);
-            }
-        }
+//        if ( NLPediaSettings.getBooleanSetting("rdfTypeKnowledgeGeneration") ) {
+//
+//        	List<String> classesSurfaceForms = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "classes_surface_forms.tsv", "UTF-8");
+//            for ( String line : classesSurfaceForms ) {
+//                
+//                String[] lineParts = line.split("\t");
+//                String[] surfaceFormsPart = Arrays.copyOfRange(lineParts, 1, lineParts.length);
+//                Set<String> filteredSurfaceForms = new HashSet<String>();
+//                
+//                for ( String surfaceForm : surfaceFormsPart) {
+//                    
+//                    if ( surfaceForm.length() >= NLPediaSettings.getIntegerSetting("surfaceFormMinimumLength") ) filteredSurfaceForms.add(" " + surfaceForm + " ");
+//                }
+//                this.urisToLabels.put(lineParts[0], filteredSurfaceForms);
+//                this.urisToLabels.put(lineParts[0].replace("http://" + NLPediaSettings.BOA_LANGUAGE + ".", "http://"), filteredSurfaceForms);
+//            }
+//        }
 
         SurfaceFormGenerator.logger.info("Finished intializing surface forms! Found " + urisToLabels.size() + " dbpedia spotlight surfaceforms");
     }

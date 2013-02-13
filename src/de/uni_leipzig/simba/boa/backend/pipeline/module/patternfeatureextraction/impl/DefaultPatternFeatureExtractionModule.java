@@ -75,33 +75,36 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 	        this.logger.info("Extraction of pattern features finished in " + TimeUtil.convertMilliSeconds(this.patternSaveTime) + "!");
 	    }
 	    
-        // generate update the machine learning training file
-        this.logger.info("Starting to generate/update machine learning training file!");
-        long networkUpdateTime = System.currentTimeMillis();
-        this.createOrUpdateMachineLearningTrainingFile();
-        machineLearningTrainingTime = System.currentTimeMillis() - networkUpdateTime;
-        this.logger.info("The update of the machine learning training file took " + TimeUtil.convertMilliSeconds(this.machineLearningTrainingTime) + "!");
-        
-        // retrain the machine learning tool
-        this.logger.info("Starting to retrain the neural network based on the extracted features!");
-        long networkRetrainingTime = System.currentTimeMillis();
-        // only train the file if we have annotated patterns in the network learn file
-        this.trainFile = patternScoreManager.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8");
-        this.testFile = null;//patternScoreManager.readNetworkTrainingFile(MACHINE_LEARNING_TEST_FILE, "UTF-8");
-        
-        if ( trainFile.getAnnotatedEntries().size() > 0 ) {
+        if ( this.createOrUpdateMachineLearningTrainingFile() ) {
+        	
+        	// generate update the machine learning training file
+            this.logger.info("Starting to generate/update machine learning training file!");
+            long networkUpdateTime = System.currentTimeMillis();
+
+        	machineLearningTrainingTime = System.currentTimeMillis() - networkUpdateTime;
+            this.logger.info("The update of the machine learning training file took " + TimeUtil.convertMilliSeconds(this.machineLearningTrainingTime) + "!");
             
-            MachineLearningTool mlTool = MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool(trainFile, testFile);
-            this.moduleInterchangeObject.setMachineLearningTool(mlTool);
+            // retrain the machine learning tool
+            this.logger.info("Starting to retrain the neural network based on the extracted features!");
+            long networkRetrainingTime = System.currentTimeMillis();
+            // only train the file if we have annotated patterns in the network learn file
+            this.trainFile = patternScoreManager.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8");
+            this.testFile = null;//patternScoreManager.readNetworkTrainingFile(MACHINE_LEARNING_TEST_FILE, "UTF-8");
+            
+            if ( trainFile.getAnnotatedEntries().size() > 0 && new File(WEKA_MACHINE_LEARNING_TRAINING_FILE).exists() ) {
+                
+                MachineLearningTool mlTool = MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool(trainFile, testFile);
+                this.moduleInterchangeObject.setMachineLearningTool(mlTool);
+            }
+            machineLearningReTrainingTime = System.currentTimeMillis() - networkRetrainingTime;
+            this.logger.info("Retraining of the neural network finished after " + TimeUtil.convertMilliSeconds(this.machineLearningReTrainingTime) + "!");
         }
-        machineLearningReTrainingTime = System.currentTimeMillis() - networkRetrainingTime;
-        this.logger.info("Retraining of the neural network finished after " + TimeUtil.convertMilliSeconds(this.machineLearningReTrainingTime) + "!");
 	}
 
 	/**
-	 * 
+	 * returns true, if a file was updated
 	 */
-	private void createOrUpdateMachineLearningTrainingFile() {
+	private boolean createOrUpdateMachineLearningTrainingFile() {
 
 	    // create the maximas beforehand, so we can use them as a cache
 	    FeatureHelper.createLocalMaxima(this.moduleInterchangeObject.getPatternMappings());
@@ -121,6 +124,8 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 	        this.logger.info("Finished creation of new network train file");
 	    }
 	    patternScoreManager.writeNetworkTrainingFile(file, MACHINE_LEARNING_TRAINING_FILE);
+	    
+	    return new File(MACHINE_LEARNING_TRAINING_FILE).exists() ? true : false;
     }
 
     @Override
@@ -132,12 +137,12 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 	@Override
 	public void updateModuleInterchangeObject() {
 
-	    MachineLearningTool mlTool = MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool(trainFile, testFile);
-        this.moduleInterchangeObject.setMachineLearningTool(mlTool);
 	}
 
 	@Override
 	public boolean isDataAlreadyAvailable() {
+		
+		if ( NLPediaSettings.getBooleanSetting("extractFeatures") ) return false; 
 		
 		// get from disk or from cache
 		Set<PatternMapping> mappings = new HashSet<PatternMapping>(); 

@@ -111,7 +111,7 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 			"WHERE {" +
 			 "	?s rdfs:label ?sl . " +
 			 "  ?s <" + propertyUri + "> ?o . " +
-			 "	FILTER (   lang(?sl)= \""+BOA_LANGUAGE+"\" ) . " + 
+			 "	FILTER (   lang(?sl)= \""+BOA_LANGUAGE+"\" ) . " +//"	FILTER (   lang(?sl)= \"en\" ) . " + // 
 			 "  OPTIONAL {" +
 			 "     ?o rdfs:label ?oLabel . " +
 			 "  } " +

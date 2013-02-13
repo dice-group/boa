@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,6 +33,7 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.lucene.LowerCaseWhitespaceAnalyzer;
 import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
@@ -433,6 +435,21 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
             // get the indexed string and put it in the result
             list.add(this.getIndexDocument(hits[i], "sentence"));
+        }
+        return list;
+    }
+    
+    public Map<String,String> getExactMatchSentencesTagged(String keyphrase, int maxNumberOfDocuments) {
+
+        ScoreDoc[] hits = this.searchIndexWithoutFilter(this.parseQuery("+sentence:\"" + QueryParser.escape(keyphrase) + "\""), maxNumberOfDocuments);
+        Map<String,String> list = new LinkedHashMap<String,String>();
+
+        // reverse order because longer sentences come last, longer sentences
+        // most likely contain less it,he,she
+        for (int i = hits.length - 1; i >= 0; i--) {
+
+            // get the indexed string and put it in the result
+            list.put(this.getIndexDocument(hits[i], "sentence"), this.getIndexDocument(hits[i], "ner"));
         }
         return list;
     }

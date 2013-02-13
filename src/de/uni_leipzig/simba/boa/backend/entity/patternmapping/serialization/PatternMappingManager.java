@@ -3,7 +3,9 @@
  */
 package de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -76,19 +78,19 @@ public class PatternMappingManager {
      * @param naturalLanguageRepresentation
      * @return
      */
-    public int findPatternMappingsWithSamePattern(String naturalLanguageRepresentation) {
+    public List<Pattern> findPatternMappingsWithSamePattern(String naturalLanguageRepresentation) {
 
-        int numberOfSamePatterns = 0;
-        
+    	List<Pattern> patterns = new ArrayList<Pattern>();
+    	
         for ( PatternMapping mapping : mappingsInDatabases.get(DEFAULT_DATABASE) )
             for (Pattern pattern : mapping.getPatterns())
                 if ( pattern.getNaturalLanguageRepresentation().equalsIgnoreCase(naturalLanguageRepresentation) ) {
                     
-                    numberOfSamePatterns++;
+                    patterns.add(pattern);
                     break; // there will be only one pattern per pattern mapping with the same natural language representation, so go to next pattern mapping
                 }
                 
-        return numberOfSamePatterns;
+        return patterns;
     }
 
     /**

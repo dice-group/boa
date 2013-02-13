@@ -40,6 +40,6 @@ public class TotalOccurrenceFeatureExtractor extends AbstractFeatureExtractor {
 
 		int totalOccurrences = searcher.getTotalHits(pattern.getNaturalLanguageRepresentationWithoutVariables());
 		
-		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TOTAL_OCCURRENCE"), Double.valueOf(totalOccurrences));
+		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TOTAL_OCCURRENCE"), Math.log(Double.valueOf(totalOccurrences) + 1));
 	}
 }

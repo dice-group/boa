@@ -26,9 +26,12 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilterFacto
 import de.uni_leipzig.simba.boa.backend.entity.pattern.impl.SubjectPredicateObjectPattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.AbstractPatternSearchModule;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
+import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 import de.uni_leipzig.simba.boa.backend.search.result.comparator.SearchResultComparator;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
@@ -55,6 +58,8 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     private long patternCreationTime    = 0;
     protected long patternMappingCount  = 0;
     private long patternCount           = 0;
+	private PartOfSpeechTagger posTagger;
+	private DefaultPatternSearcher patternSearcher = new DefaultPatternSearcher();
 
     /* (non-Javadoc)
      * @see de.uni_leipzig.simba.boa.backend.pipeline.module.PipelineModule#getName()
@@ -71,16 +76,20 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     @Override
     public void run() {
         
-        // first part is to find the patterns
-        this.logger.info("Starting pattern search!");
-        long startSearch = System.currentTimeMillis();
-        PatternSearchThreadManager.startPatternSearchCallables(this.moduleInterchangeObject.getBackgroundKnowledge(), TOTAL_NUMBER_OF_SEARCH_THREADS);
-        this.patternSearchTime = (System.currentTimeMillis() - startSearch);
-        this.logger.info("All threads finished in " + TimeUtil.convertMilliSeconds(patternSearchTime) + "!");
+    	// we have found the patterns already, no need to query lucene again and just parse the seralized patterns
+    	if ( !NLPediaSettings.getBooleanSetting("useSerializedPatternsForSearch") ) {
+
+    		// first part is to find the patterns
+            this.logger.info("Starting pattern search!");
+            long startSearch = System.currentTimeMillis();
+            PatternSearchThreadManager.startPatternSearchCallables(this.moduleInterchangeObject.getBackgroundKnowledge(), TOTAL_NUMBER_OF_SEARCH_THREADS);
+            this.patternSearchTime = (System.currentTimeMillis() - startSearch);
+            this.logger.info("All threads finished in " + TimeUtil.convertMilliSeconds(patternSearchTime) + "!");
+    	}
         
         // second part is to sort and save them
         this.logger.info("Starting pattern generation and saving!");
-        startSearch = System.currentTimeMillis();
+        long startSearch = System.currentTimeMillis();
         this.createPatternMappings();
         this.patternCreationTime = (System.currentTimeMillis() - startSearch);
         this.logger.info("Pattern generation and serialization took " + TimeUtil.convertMilliSeconds(patternCreationTime) + "! There are " + this.patternMappingCount + " pattern mappings and " + this.patternCount + " patterns.");
@@ -93,7 +102,9 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 
         List<SearchResult> results = new ArrayList<SearchResult>();
         Map<Integer,String> alreadyKnowString = new HashMap<Integer,String>();
-
+        
+        if ( this.posTagger == null ) this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
+        
         // collect all search results from the written files
         for (File file : FileUtils.listFiles(new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH), FileFilterUtils.suffixFileFilter(".sr"), null)) {
 
@@ -166,6 +177,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 //                    pattern.addLearnedFrom(pattern.isDomainFirst() ? label1 + "-;-" + label2 : label2 + "-;-" + label1); 
                     pattern.addPatternMapping(currentMapping);
                     pattern.getFoundInSentences().add(sentenceID);
+                    pattern.setPosTaggedString(this.getPartOfSpeechTags(pattern, sentenceID));
                     
                     if ( patterns.get(propertyUri.hashCode()) != null ) {
                         
@@ -213,6 +225,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                 pattern.addLearnedFrom(label1 + "-;-" + label2);
                 pattern.addPatternMapping(currentMapping);
                 pattern.getFoundInSentences().add(sentenceID);
+                pattern.setPosTaggedString(this.getPartOfSpeechTags(pattern, sentenceID));
                 
                 currentMapping.addPattern(pattern);
                 
@@ -243,7 +256,38 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         logger.info("Pattern mapping saving finished!");
     }
 
-    /**
+    private String getPartOfSpeechTags(Pattern pattern, int sentenceId) {
+
+    	String[] taggedSplit = this.posTagger.getAnnotatedString(this.patternSearcher.getSentencesByID(sentenceId)).split(" ");
+    	String[] patternSplit = pattern.getNaturalLanguageRepresentationWithoutVariables().split(" ");
+    	int  patternSplitIndex = 0;    	
+    	
+    	String patternPosTags = "";
+    	
+    	for (int i = 0; i < taggedSplit.length ; i++) {
+    		
+    		if ( taggedSplit[i].startsWith(patternSplit[patternSplitIndex] + "_")) {
+    			
+    			// first or any token except the last
+    			if (patternSplitIndex >= 0 && patternSplitIndex < patternSplit.length - 1) {
+    				
+    				patternPosTags += taggedSplit[i].substring(taggedSplit[i].indexOf("_") + 1) + " ";
+    				patternSplitIndex++;
+        			continue;
+    			}
+    			// last token of pattern
+    			else {
+    				
+    				patternPosTags += taggedSplit[i].substring(taggedSplit[i].indexOf("_") + 1);
+    				break;
+    			}
+    		}
+    	}
+    	
+    	return patternPosTags;
+	}
+    
+	/**
      * 
      * @param patternMappings
      */
@@ -259,7 +303,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
             // and check each pattern mapping
             for ( PatternMapping patternMapping : patternMappings ) {
             
-                this.logger.debug("Starting to filter pattern mapping: " + patternMapping.getProperty().getUri() + " with filter: " + patternEvaluator.getClass().getSimpleName());
+//                this.logger.debug("Starting to filter pattern mapping: " + patternMapping.getProperty().getUri() + " with filter: " + patternEvaluator.getClass().getSimpleName());
                 patternEvaluator.filterPattern(patternMapping);
             }
             

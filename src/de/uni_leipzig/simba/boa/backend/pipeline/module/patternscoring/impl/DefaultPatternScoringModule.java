@@ -14,6 +14,7 @@ import de.uni_leipzig.simba.boa.backend.featurescoring.PatternScoreManager;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningTool;
+import de.uni_leipzig.simba.boa.backend.machinelearning.MachineLearningToolFactory;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.patternscoring.AbstractPatternScoringModule;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
@@ -29,6 +30,9 @@ public class DefaultPatternScoringModule extends AbstractPatternScoringModule {
     private final String MACHINE_LEARNING_TRAINING_FILE     = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.MACHINE_LEARNING_TRAINING_PATH + "boa_ml.txt";
     
     private final NLPediaLogger logger                      = new NLPediaLogger(DefaultPatternScoringModule.class);
+    
+    private MachineLearningTrainingFile trainFile;
+    private final PatternScoreManager patternScoreManager = new PatternScoreManager();
     
     // for the report
     private long scoringTime = 0;
@@ -49,9 +53,10 @@ public class DefaultPatternScoringModule extends AbstractPatternScoringModule {
     public void run() {
 
         long start = System.currentTimeMillis();
-
+        
         // get ML from interchange object make sure there is a neural network read from disk
-        final MachineLearningTool machineLearningTool   = this.moduleInterchangeObject.getMachineLearningTool();
+        final MachineLearningTool machineLearningTool   = MachineLearningToolFactory.getInstance().createDefaultMachineLearningTool(
+        		patternScoreManager.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8"), null);
         machineLearningTool.loadModel();
         // fill the cache
         FeatureHelper.createLocalMaxima(this.moduleInterchangeObject.getPatternMappings());

@@ -56,7 +56,7 @@ public abstract class AbstractMachineLearningTrainingFile implements MachineLear
         // one entry corresponds to one line
         for (MachineLearningTrainingFileEntry entry : this.annotatedEntries) {
             // first the features tab separated
-            for (Double featureValue : entry.getFeatures()) builder.append(OutputFormatter.format((featureValue), "0.00000")).append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
+            for (Double featureValue : entry.getFeatures()) builder.append(OutputFormatter.format((featureValue), "0.00000").replace(",", ".")).append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
             // the part which need to be edited by a human, values to enter are either true or false
             // this is also used to indicate the a pattern should be used for learning the machine learning tool (if not MANUAL then use it for learning)
             builder.append(entry.getAnnotation() == null ? "MANUAL" : entry.getAnnotation() ? "true" : "false").append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
@@ -69,7 +69,7 @@ public abstract class AbstractMachineLearningTrainingFile implements MachineLear
         for (MachineLearningTrainingFileEntry entry : this.notAnnotatedEntries) {
             
             // first the features tab separated
-            for (Double featureValue : entry.getFeatures()) builder.append(OutputFormatter.format((featureValue), "0.00000")).append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
+            for (Double featureValue : entry.getFeatures()) builder.append(OutputFormatter.format((featureValue), "0.00000").replace(",", ".")).append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
             // the part which need to be edited by a human, values to enter are either true or false
             // this is also used to indicate the a pattern should be used for learning the machine learning tool (if not MANUAL then use it for learning)
             builder.append(entry.getAnnotation() == null ? "MANUAL" : entry.getAnnotation() ? "true" : "false").append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
