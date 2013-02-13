@@ -259,7 +259,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     private String getPartOfSpeechTags(Pattern pattern, int sentenceId) {
 
     	String[] taggedSplit = this.posTagger.getAnnotatedString(this.patternSearcher.getSentencesByID(sentenceId)).split(" ");
-    	String[] patternSplit = pattern.getNaturalLanguageRepresentationWithoutVariables().split(" ");
+    	String[] patternSplit = pattern.getNaturalLanguageRepresentation().replace("?D?", "").replace("?R?", "").trim().split(" ");
     	int  patternSplitIndex = 0;    	
     	
     	String patternPosTags = "";
