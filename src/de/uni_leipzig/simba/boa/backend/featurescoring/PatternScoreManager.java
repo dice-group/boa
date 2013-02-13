@@ -160,7 +160,7 @@ public class PatternScoreManager {
             if ( lineParts[lineParts.length - 3].equals("true") ) manual = true;
             
             String patternMappingUri = lineParts[lineParts.length - 2];
-            String naturalLanguageRepresentation = lineParts[lineParts.length - 1];
+            String naturalLanguageRepresentation = lineParts[lineParts.length - 1].replaceAll("^\"", "").replaceAll("\"$", "");
             
             entries.add(MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFileEntry(
                     patternMappingUri,

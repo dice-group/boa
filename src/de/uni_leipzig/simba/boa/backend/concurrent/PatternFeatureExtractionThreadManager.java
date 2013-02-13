@@ -5,6 +5,7 @@ package de.uni_leipzig.simba.boa.backend.concurrent;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,15 +39,17 @@ public class PatternFeatureExtractionThreadManager {
         List<PatternMappingPatternPair> results = new ArrayList<PatternMappingPatternPair>();
         
         // prepare pairs so that they can be better distributed to extraction threads 
-        Set<PatternMappingPatternPair> patternMappingPattern = new HashSet<PatternMappingPatternPair>();
+        List<PatternMappingPatternPair> patternMappingPattern = new ArrayList<PatternMappingPatternPair>();
         for ( PatternMapping mapping : patternMappings ) 
             for ( Pattern pattern : mapping.getPatterns() )
                 patternMappingPattern.add(new PatternMappingPatternPair(mapping, pattern));
+        
+        Collections.shuffle(patternMappingPattern);
                     
         try {
             
             // devide them into numberOfTotalFeatureExtractionThreads sublists to better distribute them to threads
-            List<List<PatternMappingPatternPair>> featureExtractionPairsSubLists = ListUtil.split(new ArrayList<PatternMappingPatternPair>(patternMappingPattern), (patternMappingPattern.size() / numberOfTotalFeatureExtractionThreads) + 1);
+            List<List<PatternMappingPatternPair>> featureExtractionPairsSubLists = ListUtil.split(patternMappingPattern, (patternMappingPattern.size() / numberOfTotalFeatureExtractionThreads) + 1);
 
             // create a thread pool and service for n threads/callable 
             ExecutorService executorService = Executors.newFixedThreadPool(PATTERN_FEATURE_EXTRACTION_THREAD_POOL_SIZE);

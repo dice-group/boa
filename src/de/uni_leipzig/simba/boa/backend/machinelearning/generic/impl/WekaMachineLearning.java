@@ -60,7 +60,7 @@ public class WekaMachineLearning implements GenericTool {
             this.instances.setClassIndex(this.instances.numAttributes() - 3);
             this.loadModel();
         }
-        catch (IOException e) {
+        catch (Exception e) {
 
             logger.error("Could not load stucture definition from weka learning file!", e);
             throw new RuntimeException("Could not load stucture definition from weka learning file!", e);

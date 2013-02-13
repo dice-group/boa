@@ -37,7 +37,6 @@ import edu.stanford.nlp.process.DocumentPreprocessor;
 public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 
 	private final NLPediaLogger logger					= new NLPediaLogger(TypicityFeatureExtractor.class);
-	private NamedEntityRecognition ner;
 	private final int maxNumberOfEvaluationSentences 	= NLPediaSettings.getIntegerSetting("maxNumberOfTypicityConfidenceMeasureDocuments");
 	
 	private DefaultPatternSearcher patternSearcher;
@@ -62,8 +61,6 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 		String rangeUri		= pair.getMapping().getProperty().getRdfsRange();
 		
 		// load the named entity tool and the pattern searcher as late as possible
-		if ( this.ner == null ) this.ner = NaturalLanguageProcessingToolFactory.getInstance().
-			createNamedEntityRecognition(StanfordNLPNamedEntityRecognition.class);
 		if ( this.patternSearcher == null ) this.patternSearcher = new DefaultPatternSearcher();
 
 	    Pattern pattern = pair.getPattern();
@@ -71,26 +68,26 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 		boolean beginsWithDomain = pattern.isDomainFirst();
 		String patternWithOutVariables = NaturalLanguageProcessingUtil.segmentString(pattern.getNaturalLanguageRepresentationWithoutVariables());
 		
-		final List<String> sentences = new ArrayList<String>(patternSearcher.getExactMatchSentences(patternWithOutVariables, maxNumberOfEvaluationSentences));
-		List<String> sentencesToEvaluate = sentences.size() >= this.maxNumberOfEvaluationSentences ? sentences.subList(0, this.maxNumberOfEvaluationSentences) : sentences;
+		Map<String,String> sentences = patternSearcher.getExactMatchSentencesTagged(patternWithOutVariables, maxNumberOfEvaluationSentences);
 		
 		double correctDomain  = 0;
 		double correctRange   = 0;
 		int sentenceCount     = sentences.size();
 		
 		// go through all sentences which were found in the index containing the pattern
-		for (String foundString : sentencesToEvaluate) {
+		for (Map.Entry<String,String> entry : sentences.entrySet()) {
 			
 		    // left of the pattern can't be any named entity
-			if ( foundString.toLowerCase().startsWith(patternWithOutVariables.toLowerCase())) continue;
+			if ( entry.getKey().toLowerCase().startsWith(patternWithOutVariables.toLowerCase())) continue;
 			
-			String nerTagged = this.ner.getAnnotatedString(this.replaceBrackets(foundString));
+			String nerTagged = this.replaceBrackets(entry.getValue());
+			String sentence	 = entry.getKey();
 			
-			if ( nerTagged != null && foundString != null && patternWithOutVariables != null &&
-					nerTagged.length() > 0 && foundString.length() > 0 && patternWithOutVariables.length() > 0 ) {
+			if ( nerTagged != null && sentence != null && patternWithOutVariables != null &&
+					nerTagged.length() > 0 && sentence.length() > 0 && patternWithOutVariables.length() > 0 ) {
 				
-				Context leftContext     = this.createContext(LeftContext.class, nerTagged, foundString, patternWithOutVariables);
-				Context rightContext    = this.createContext(RightContext.class, nerTagged, foundString, patternWithOutVariables);
+				Context leftContext     = this.createContext(LeftContext.class, nerTagged, sentence, patternWithOutVariables);
+				Context rightContext    = this.createContext(RightContext.class, nerTagged, sentence, patternWithOutVariables);
 				
 				// there are sentence which can not be parsed
 				if ( leftContext == null || rightContext == null ) {

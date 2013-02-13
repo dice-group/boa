@@ -184,27 +184,27 @@ public class XXX implements Command {
 			features.add(new HashMap<Feature,List<Double>>());
 			
 			for (Pair pair : subLists.get(i)) {
-				for (Feature f : FeatureFactory.getInstance().getFeatureMap().values()) {
-					
-						if ( features.get(i).containsKey(f) ) {
-
-							if ( pair.pattern.getFeatures().get(f) != null ) {
-								
-								double ff = this.normalizeFeature(f, pair.mapping, pair.pattern.getFeatures().get(f));
-								features.get(i).get(f).add(ff);
-							}
-						}
-						else {
-							
-							if ( pair.pattern.getFeatures().get(f) != null ) {
-								
-								List<Double> d = new ArrayList<Double>();
-								double ff = this.normalizeFeature(f, pair.mapping, pair.pattern.getFeatures().get(f));
-								d.add(ff);
-								features.get(i).put(f, d);
-							}
-						}
-				}
+//				for (Feature f : FeatureFactory.getInstance().getFeatureMap().values()) {
+//					
+//						if ( features.get(i).containsKey(f) ) {
+//
+//							if ( pair.pattern.getFeatures().get(f) != null ) {
+//								
+//								double ff = this.normalizeFeature(f, pair.mapping, pair.pattern.getFeatures().get(f));
+//								features.get(i).get(f).add(ff);
+//							}
+//						}
+//						else {
+//							
+//							if ( pair.pattern.getFeatures().get(f) != null ) {
+//								
+//								List<Double> d = new ArrayList<Double>();
+//								double ff = this.normalizeFeature(f, pair.mapping, pair.pattern.getFeatures().get(f));
+//								d.add(ff);
+//								features.get(i).put(f, d);
+//							}
+//						}
+//				}
 			}
 //			System.out.println(features.get(i));
 		}

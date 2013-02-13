@@ -28,7 +28,6 @@ public class FeatureFactory {
 	 * Ordered list for all confidence measures
 	 */
 	private Map<String,FeatureExtractor> featureExtractorMap = new HashMap<String,FeatureExtractor>();
-	private Map<String,Feature> featureMap = new HashMap<String,Feature>();
 	private static Set<Feature> handeledfeatures;
 	
 	/**
@@ -116,29 +115,17 @@ public class FeatureFactory {
 	}
 
     /**
-     * @return the featureMap
-     */
-    public Map<String,Feature> getFeatureMap() {
-
-        return featureMap;
-    }
-
-    /**
-     * @param featureMap the featureMap to set
-     */
-    public void setFeatureMap(Map<String,Feature> featureMap) {
-
-        this.featureMap = featureMap;
-    }
-
-    /**
      * 
      * @param key
      * @return
      */
     public Feature getFeature(String key) {
 
-        return this.featureMap.get(key);
+    	for (FeatureExtractor extractor : featureExtractorMap.values()) 
+            for ( Feature feature : extractor.getHandeledFeatures() ) 
+            	if ( feature.toString().equals(key) ) return feature;
+    	
+    	throw new RuntimeException("Feature \""+key+"\" not found!");
     }
 
     /**

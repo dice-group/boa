@@ -15,13 +15,7 @@
         <property name="nlpediaSettings">
             <map>
         
-                <!-- ############### eval stuff ############### -->
-                <entry key="eval.output.file"                               value="evaluation/Evaluation.txt"/>
-                <entry key="top.n.eval.triples"                             value="100"/>
-            
                 <!-- ############### index stuff ############### -->
-                <entry key="rawSentenceDirectory"                           value="raw" />
-                <entry key="indexSentenceDirectory"                         value="index"/>
                 <entry key="ramBufferMaxSizeInMb"                           value="1000"/>
                 
                 <!-- ############### pattern search ############### -->
@@ -29,6 +23,7 @@
                 <entry key="numberOfSearchThreads"                          value="3"/>
                 <entry key="patternSearchThreadPoolSize"                    value="3"/>
                 <entry key="useRamDirectory"                                value="false"/>
+                <entry key="useSerializedPatternsForSearch"                 value="true"/>
                 <entry key="maxPatternLenght"                               value="10"/>
                 <entry key="minPatternLenght"                               value="1"/>
                 <entry key="surfaceFormMinimumLength"                       value="3"/>

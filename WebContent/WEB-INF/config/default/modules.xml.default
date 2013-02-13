@@ -217,8 +217,6 @@
         <property name="moduleSettings">
             <set>
                 <value>ramBufferMaxSizeInMb</value>
-                <value>indexSentenceDirectory</value>
-                <value>rawSentenceDirectory</value>
             </set>
         </property>
     </bean>
@@ -238,8 +236,6 @@
             <set>
                 <value>overwriteIndex</value>
                 <value>ramBufferMaxSizeInMb</value>
-                <value>indexSentenceDirectory</value>
-                <value>rawSentenceDirectory</value>
             </set>
         </property>
     </bean>
@@ -261,7 +257,6 @@
 
         <property name="moduleSettings">
             <set>
-                <value>indexSentenceDirectory</value>
                 <value>maxNumberOfDocuments</value>
                 <value>numberOfSearchThreads</value>
                 <value>patternSearchThreadPoolSize</value>
@@ -283,7 +278,6 @@
 
         <property name="moduleSettings">
             <set>
-                <value>indexSentenceDirectory</value>
                 <value>maxNumberOfDocuments</value>
                 <value>numberOfSearchThreads</value>
                 <value>patternSearchThreadPoolSize</value>

@@ -186,7 +186,7 @@ public class Constants {
 	public static final Set<String> STOP_WORDS = new HashSet<String>();
 	static {
 		Collections.addAll(STOP_WORDS, ":", " ", "``", "''", ",", "'", "'s", "-LRB-", "-RRB-", ".", "-", "--", "i", "a", "about", "an", "and", "are", "as", "at", "be", "but", "by", "com", "for", "from", 
-		        "how", "in", "is", "it", "of", "on", "or", "that", "the", "The", 
+		        "how", "in", "is", "it", "of", "on", "or", "that", "the", "The", "was", "were", 
 				"this", "to", "what", "when", "where", "who", "will", "with", "the", "www", "before", ",", "after", ";", "like", "and", "such", "-LRB-", "-RRB-", "-lrb-", "-rrb-", "aber", "als",
 				"am", "an", "auch", "auf", "aus", "bei", "bin", "bis", "bist", "da", "dadurch", "daher", "darum", "das", "daß", "dass", "dein", "deine", "dem", "den", "der", "des", "dessen",
 				"deshalb", "die", "dies", "dieser", "dieses", "doch", "dort", "du", "durch", "ein", "eine", "einem", "einen", "einer", "eines", "er", "es", "euer", "eure", "für", "hatte", "hatten",
