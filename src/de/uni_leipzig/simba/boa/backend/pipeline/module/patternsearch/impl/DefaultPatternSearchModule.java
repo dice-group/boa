@@ -177,7 +177,6 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 //                    pattern.addLearnedFrom(pattern.isDomainFirst() ? label1 + "-;-" + label2 : label2 + "-;-" + label1); 
                     pattern.addPatternMapping(currentMapping);
                     pattern.getFoundInSentences().add(sentenceID);
-                    pattern.setPosTaggedString(this.getPartOfSpeechTags(pattern, sentenceID));
                     
                     if ( patterns.get(propertyUri.hashCode()) != null ) {
                         
@@ -225,7 +224,6 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                 pattern.addLearnedFrom(label1 + "-;-" + label2);
                 pattern.addPatternMapping(currentMapping);
                 pattern.getFoundInSentences().add(sentenceID);
-                pattern.setPosTaggedString(this.getPartOfSpeechTags(pattern, sentenceID));
                 
                 currentMapping.addPattern(pattern);
                 
@@ -250,13 +248,29 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         // filter the patterns which do not abide certain thresholds, mostly
         // occurrence thresholds
         this.filterPatterns(mappings.values());
+        
+        // we need to do this after we have filtered them, otherwise it would be too much
+        this.createPartOfSpeechTags(mappings.values());
 
         // save the mappings
         SerializationManager.getInstance().serializePatternMappings(mappings.values(), PATTERN_MAPPING_FOLDER);
         logger.info("Pattern mapping saving finished!");
     }
 
-    private String getPartOfSpeechTags(Pattern pattern, int sentenceId) {
+    /**
+     * 
+     * @param mappings
+     */
+    private void createPartOfSpeechTags(Collection<PatternMapping> mappings) {
+    	
+    	for ( PatternMapping mapping : mappings ) {
+    		for ( Pattern pattern : mapping.getPatterns() ) {
+    			pattern.setPosTaggedString(getPartOfSpeechTags(pattern, pattern.getFoundInSentences().iterator().next()));
+    		}
+    	}
+	}
+
+	private String getPartOfSpeechTags(Pattern pattern, int sentenceId) {
 
     	String[] taggedSplit = this.posTagger.getAnnotatedString(this.patternSearcher.getSentencesByID(sentenceId)).split(" ");
     	String[] patternSplit = pattern.getNaturalLanguageRepresentation().replace("?D?", "").replace("?R?", "").trim().split(" ");
