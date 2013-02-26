@@ -283,37 +283,44 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
         for (String match : currentMatches) {
 
-            String nlr = this.getCorrectCaseNLR(sentenceNormalCase.toLowerCase(), sentenceNormalCase, match, allLabels);
-            
-            // we already have the pattern for the same sentence in the list
-            if ( luceneDocIdsToPatterns.containsKey(sentenceId) && luceneDocIdsToPatterns.get(sentenceId).contains(nlr) ) 
-                continue;
-            // the pattern was not found so far in this sentence
-            else {
+        	try {
+        		
+        		String nlr = this.getCorrectCaseNLR(sentenceNormalCase.toLowerCase(), sentenceNormalCase, match, allLabels);
                 
-                // but only for those who are suitable
-                if ( !match.isEmpty() && this.isPatternSuitable(nlr) ) {
-
-                    SearchResult result = new SearchResult();
-                    result.setProperty(backgroundKnowledge.getProperty().getUri());
-                    result.setSentence(sentenceId);
-                    result.setNaturalLanguageRepresentation(nlr);
-                    // the subject of the triple is the domain of the property so,
-                    // replace every occurrence with ?D?
-                    if (nlr.startsWith("?D?")) {
-                        result.setFirstLabel(subjectLabel);
-                        result.setSecondLabel(objectLabel);
-                    }
-                    else {
-                        result.setFirstLabel(objectLabel);
-                        result.setSecondLabel(subjectLabel);
-                    }
-                    results.add(result);
+                // we already have the pattern for the same sentence in the list
+                if ( luceneDocIdsToPatterns.containsKey(sentenceId) && luceneDocIdsToPatterns.get(sentenceId).contains(nlr) ) 
+                    continue;
+                // the pattern was not found so far in this sentence
+                else {
                     
-                    if ( luceneDocIdsToPatterns.containsKey(sentenceId) ) luceneDocIdsToPatterns.get(sentenceId).add(nlr);
-                    else luceneDocIdsToPatterns.put(sentenceId, new HashSet<String>(Arrays.asList(nlr)));
+                    // but only for those who are suitable
+                    if ( !match.isEmpty() && this.isPatternSuitable(nlr) ) {
+
+                        SearchResult result = new SearchResult();
+                        result.setProperty(backgroundKnowledge.getProperty().getUri());
+                        result.setSentence(sentenceId);
+                        result.setNaturalLanguageRepresentation(nlr);
+                        // the subject of the triple is the domain of the property so,
+                        // replace every occurrence with ?D?
+                        if (nlr.startsWith("?D?")) {
+                            result.setFirstLabel(subjectLabel);
+                            result.setSecondLabel(objectLabel);
+                        }
+                        else {
+                            result.setFirstLabel(objectLabel);
+                            result.setSecondLabel(subjectLabel);
+                        }
+                        results.add(result);
+                        
+                        if ( luceneDocIdsToPatterns.containsKey(sentenceId) ) luceneDocIdsToPatterns.get(sentenceId).add(nlr);
+                        else luceneDocIdsToPatterns.put(sentenceId, new HashSet<String>(Arrays.asList(nlr)));
+                    }
                 }
-            }
+        	}
+        	catch ( ArrayIndexOutOfBoundsException aioobe) {
+        		
+        		logger.warn("Could not get correct case NLR for: \""  + match + "\" in sentence: " + sentenceNormalCase);
+        	}
         }
     }
 
