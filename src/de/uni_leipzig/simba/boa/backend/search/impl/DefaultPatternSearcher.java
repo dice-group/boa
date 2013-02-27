@@ -317,7 +317,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
                     }
                 }
         	}
-        	catch ( ArrayIndexOutOfBoundsException aioobe) {
+        	catch ( StringIndexOutOfBoundsException aioobe) {
         		
         		logger.warn("Could not get correct case NLR for: \""  + match + "\" in sentence: " + sentenceNormalCase);
         	}
