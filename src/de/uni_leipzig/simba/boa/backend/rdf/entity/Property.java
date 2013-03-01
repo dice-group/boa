@@ -26,12 +26,12 @@ public class Property extends Resource {
 	private Set<String> synsets;
 	private PatternMapping patternMapping;
 
-	private String propertyPrefix;
-	private String propertyLocalname;
-    private String rdfsRangePrefix;
-	private String rdfsRangeLocalname;
-    private String rdfsDomainPrefix;
-    private String rdfsDomainLocalname;
+	private String propertyPrefix = "";
+	private String propertyLocalname = "";
+    private String rdfsRangePrefix = "";
+	private String rdfsRangeLocalname = "";
+    private String rdfsDomainPrefix = "";
+    private String rdfsDomainLocalname = "";
     
     private String toStringSplitCharacters = "][";
 
