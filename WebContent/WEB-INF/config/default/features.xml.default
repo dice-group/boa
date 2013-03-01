@@ -117,6 +117,23 @@
                         </property>
                     </bean>
                 </entry>
+                
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SemanticalFeatureExtractor">
+                    <bean id="SemanticFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SemanticalFeatureExtractor"> 
+                        <property name="activated" value="true" />
+                        <property name="handeledFeatures">
+                            <list>
+                                <ref bean="POSSESSIVE"/>
+                                <ref bean="POS_REGEX_1"/>
+                                <ref bean="POS_REGEX_2"/>
+                                <ref bean="POS_REGEX_3"/>
+                                <ref bean="SINGLE_NOUN"/>
+                                <ref bean="GOOD_PLACE_DOMAIN"/>
+                                <ref bean="GOOD_PLACE_RANGE"/>
+                            </list>
+                        </property>
+                    </bean>
+                </entry>
             </map>
         </property>
     </bean>
@@ -422,6 +439,101 @@
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <!-- ########################################################################## -->
+    <!-- ########################################################################## -->
+    
+    <bean id="POSSESSIVE"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="POSSESSIVE" />
+        <constructor-arg>
+            <list>
+                <value>en</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="true" />
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <bean id="POS_REGEX_1"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="POS_REGEX_1" />
+        <constructor-arg>
+            <list>
+                <value>en</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="true" />
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <bean id="POS_REGEX_2"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="POS_REGEX_2" />
+        <constructor-arg>
+            <list>
+                <value>en</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="true" />
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <bean id="POS_REGEX_3"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="POS_REGEX_3" />
+        <constructor-arg>
+            <list>
+                <value>en</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="true" />
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <bean id="SINGLE_NOUN"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="SINGLE_NOUN" />
+        <constructor-arg>
+            <list>
+                <value>en</value>
+                <value>de</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="true" />
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <bean id="GOOD_PLACE_DOMAIN"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="GOOD_PLACE_DOMAIN" />
+        <constructor-arg>
+            <list>
+                <value>en</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="true" />
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <bean id="GOOD_PLACE_RANGE"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="GOOD_PLACE_RANGE" />
+        <constructor-arg>
+            <list>
+                <value>en</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="true" />
         <constructor-arg value="false" />
         <constructor-arg value="true" />
     </bean>
