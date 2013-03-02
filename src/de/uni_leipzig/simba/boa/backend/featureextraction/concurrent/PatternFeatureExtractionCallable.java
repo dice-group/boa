@@ -9,6 +9,8 @@ import java.util.Map;
 import de.uni_leipzig.simba.boa.backend.concurrent.BoaCallable;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TotalOccurrenceFeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TypicityFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
@@ -68,6 +70,9 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 		        
 		        this.logger.info(featureExtractor.getClass().getSimpleName() + " is deactivated and will not be started!");
 		    }
+		    
+		    if ( featureExtractor instanceof TotalOccurrenceFeatureExtractor ) ((TotalOccurrenceFeatureExtractor) featureExtractor).close();
+		    if ( featureExtractor instanceof TypicityFeatureExtractor ) ((TypicityFeatureExtractor) featureExtractor).close();
 		}
 		
 		return patternMappingPatterns;

@@ -176,4 +176,9 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 		}
 		return foundString;
 	}
+
+	public void close() {
+		
+		this.patternSearcher.close();
+	}
 }
