@@ -64,15 +64,17 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 	                featureExtractor.score(pair);
 	                this.progress++;
 	            }
+	            // this features require a pattern searcher, which needs to be closed
+			    // and we can only do it after the extractor has finished because otherwise we would close it after every pattern
+			    if ( featureExtractor instanceof TotalOccurrenceFeatureExtractor ) ((TotalOccurrenceFeatureExtractor) featureExtractor).close();
+			    if ( featureExtractor instanceof TypicityFeatureExtractor ) ((TypicityFeatureExtractor) featureExtractor).close();
+	            
 	            this.logger.info(featureExtractor.getClass().getSimpleName() + " from " + this.getName() + " finished in " + TimeUtil.convertMilliSeconds(System.currentTimeMillis() - start) + "!");
 		    }
 		    else {
 		        
 		        this.logger.info(featureExtractor.getClass().getSimpleName() + " is deactivated and will not be started!");
 		    }
-		    
-		    if ( featureExtractor instanceof TotalOccurrenceFeatureExtractor ) ((TotalOccurrenceFeatureExtractor) featureExtractor).close();
-		    if ( featureExtractor instanceof TypicityFeatureExtractor ) ((TypicityFeatureExtractor) featureExtractor).close();
 		}
 		
 		return patternMappingPatterns;
