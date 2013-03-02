@@ -46,12 +46,30 @@ public class SemanticFeatureExtractor extends AbstractFeatureExtractor {
 		
 		String nlrWithVariables = pair.getPattern().getNaturalLanguageRepresentationWithoutVariables().trim();
 		
+		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("GOOD_PLACE_DOMAIN"), 0D);
+		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("GOOD_PLACE_RANGE"),  0D);
+		
 		// look at the last word if the domain or range is a place
 		boolean isGoodLocation = nlrWithVariables.endsWith(" in") || nlrWithVariables.endsWith(" to") || nlrWithVariables.endsWith(" from") || nlrWithVariables.endsWith(" at");
-		boolean isGoodLocationDomain =  isGoodLocation && Context.namedEntityRecognitionMappings.get(m.getProperty().getRdfsDomain()).equals(Constants.NAMED_ENTITY_TAG_PLACE);
-		boolean isGoodLocationRange	 =  isGoodLocation && Context.namedEntityRecognitionMappings.get(m.getProperty().getRdfsRange()).equals(Constants.NAMED_ENTITY_TAG_PLACE);
- 		
-		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("GOOD_PLACE_DOMAIN"), isGoodLocationDomain ? 1D : 0D);
-		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("GOOD_PLACE_RANGE"),  isGoodLocationRange  ? 1D : 0D);
+		
+		try {
+
+			boolean isGoodLocationDomain =  isGoodLocation && Context.namedEntityRecognitionMappings.get(m.getProperty().getRdfsDomain()).equals(Constants.NAMED_ENTITY_TAG_PLACE);
+			pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("GOOD_PLACE_DOMAIN"), isGoodLocationDomain ? 1D : 0D);
+		}
+		catch ( NullPointerException npe ){
+			
+			npe.printStackTrace();
+		}
+		
+		try {
+
+			boolean isGoodLocationRange	 =  isGoodLocation && Context.namedEntityRecognitionMappings.get(m.getProperty().getRdfsRange()).equals(Constants.NAMED_ENTITY_TAG_PLACE);
+			pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("GOOD_PLACE_RANGE"),  isGoodLocationRange  ? 1D : 0D);
+		}
+		catch ( NullPointerException npe ){
+			
+			npe.printStackTrace();
+		}
 	}
 }
