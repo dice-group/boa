@@ -51,15 +51,9 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 	    
 	    if ( this.documents.size() == 0 ) this.init();
 		
-	    long start = System.nanoTime();
 		Set<String> distinctStringsForSingleDocument = new HashSet<String>(createDistinctStrings(pair.getMapping()));
-		System.out.println("1: " + (System.nanoTime() - start));
-		
-		start = System.nanoTime();
 		Map<String,Token> tokensInSingleDocument = createDocumentFrequencyAndFrequencyForTokens(distinctStringsForSingleDocument);
-		System.out.println("2: " + (System.nanoTime() - start));
 		
-		start = System.nanoTime();
 		double idfScore = 0;
 		double tfScore = 0;
 		for (String s : pair.getPattern().getNaturalLanguageRepresentationWithoutVariables().split(" ") ) {
@@ -81,8 +75,6 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 			    }
 			}
 		}
-		System.out.println("3: " + (System.nanoTime() - start));
-		
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("TF_IDF_TFIDF"), 	tfScore*idfScore	>= 0 ? tfScore*idfScore : 0);
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("TF_IDF_TF"), 		tfScore				>= 0 ? tfScore : 0);
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("TF_IDF_IDF"), 		idfScore			>= 0 ? idfScore : 0);

@@ -87,9 +87,11 @@ public class PatternFeatureExtractionThreadManager {
         catch (ExecutionException e) {
             
             e.printStackTrace();
+            System.out.println("----");
+            e.getCause().printStackTrace();
             String error = "Could not execute callables!";
             logger.error(error, e);
-            throw new RuntimeException(error, e);
+            logger.error(error, e.getCause());
         }
         catch (InterruptedException e) {
             
