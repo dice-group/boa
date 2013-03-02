@@ -26,6 +26,9 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 	private Map<PatternMapping,String> documents = new HashMap<PatternMapping,String>();
 	
 	private final String PATTERN_MAPPING_FOLDER            = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
+	private Map<String,Set<String>> mappingToText = new HashMap<String, Set<String>>();
+	
+	private Map<Set<String>,Map<String,Token>> cache = new HashMap<Set<String>, Map<String,Token>>();
 	
 	/**
 	 * 
@@ -48,11 +51,15 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 	    
 	    if ( this.documents.size() == 0 ) this.init();
 		
-		Set<String> distinctStringsForSingleDocument = new HashSet<String>();
-		distinctStringsForSingleDocument.addAll(createDistinctStrings(pair.getMapping()));
+	    long start = System.nanoTime();
+		Set<String> distinctStringsForSingleDocument = new HashSet<String>(createDistinctStrings(pair.getMapping()));
+		System.out.println("1: " + (System.nanoTime() - start));
 		
-		Map<String,Token> tokensInSingleDocument = createDocumentFrequencyAndFrequencyForTokens(documents.values(), distinctStringsForSingleDocument);
+		start = System.nanoTime();
+		Map<String,Token> tokensInSingleDocument = createDocumentFrequencyAndFrequencyForTokens(distinctStringsForSingleDocument);
+		System.out.println("2: " + (System.nanoTime() - start));
 		
+		start = System.nanoTime();
 		double idfScore = 0;
 		double tfScore = 0;
 		for (String s : pair.getPattern().getNaturalLanguageRepresentationWithoutVariables().split(" ") ) {
@@ -74,6 +81,8 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 			    }
 			}
 		}
+		System.out.println("3: " + (System.nanoTime() - start));
+		
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("TF_IDF_TFIDF"), 	tfScore*idfScore	>= 0 ? tfScore*idfScore : 0);
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("TF_IDF_TF"), 		tfScore				>= 0 ? tfScore : 0);
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("TF_IDF_IDF"), 		idfScore			>= 0 ? idfScore : 0);
@@ -106,33 +115,48 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 	 * @param distinctStrings
 	 * @return
 	 */
-	private Map<String,Token> createDocumentFrequencyAndFrequencyForTokens(Collection<String> documents, Set<String> distinctStrings) {
+	private Map<String,Token> createDocumentFrequencyAndFrequencyForTokens(Set<String> distinctStrings) {
 
-		// create the tokens and calculate their (document) frequency
-		Map<String,Token> tokens = new HashMap<String,Token>();
-		for (String term : distinctStrings ) {
+		if ( !cache.containsKey(distinctStrings) ) {
 			
-			Token tok = new Token();
-			for (String document : documents) {
+			// create the tokens and calculate their (document) frequency
+			Map<String,Token> tokens = new HashMap<String,Token>();
+			for (String term : distinctStrings ) {
 				
-				tok.frequency += StringUtils.countMatches(document, term);
-				if ( document.contains(term) ) tok.documentFrequency++;
+				Token tok = new Token();
+				for (String document : documents.values()) {
+					
+					tok.frequency += StringUtils.countMatches(document, term);
+					if ( document.contains(term) ) tok.documentFrequency++;
+				}
+				tokens.put(term, tok);
 			}
-			tokens.put(term, tok);
+			cache.put(distinctStrings, tokens);
 		}
-		return tokens;
+		
+		return cache.get(distinctStrings);
 	}
 	
+	/**
+	 * 
+	 * @param mapping
+	 * @return
+	 */
 	private Set<String> createDistinctStrings(PatternMapping mapping) {
 		
-		// we build a long string, by concatenating all patterns
-		StringBuilder patternText = new StringBuilder(); 
-		for (Pattern p : mapping.getPatterns()) {
+		if ( !this.mappingToText.containsKey(mapping.getProperty().getUri()) ) {
 			
-			patternText.append(p.getNaturalLanguageRepresentationWithoutVariables() + " ");
+			// we build a long string, by concatenating all patterns
+			StringBuilder patternText = new StringBuilder(); 
+			for (Pattern p : mapping.getPatterns()) {
+				
+				patternText.append(p.getNaturalLanguageRepresentationWithoutVariables() + " ");
+			}
+			Set<String> tokens = new HashSet<String>(Arrays.asList(patternText.toString().split(" ")));
+			tokens.removeAll(Constants.STOP_WORDS);
+			this.mappingToText.put(mapping.getProperty().getUri(), tokens);
 		}
-		Set<String> tokens = new HashSet<String>(Arrays.asList(patternText.toString().split(" ")));
-		tokens.removeAll(Constants.STOP_WORDS);
-		return tokens;
+		
+		return this.mappingToText.get(mapping.getProperty().getUri());
 	}
 }
