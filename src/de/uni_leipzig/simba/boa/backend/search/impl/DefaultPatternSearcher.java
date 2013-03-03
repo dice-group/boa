@@ -576,4 +576,34 @@ public class DefaultPatternSearcher implements PatternSearcher {
             throw new RuntimeException(error, e);
         }
     }
+    
+    public Set<String> getFieldValueByIds(Set<Integer> ids, String fieldname) {
+
+        Set<String> sentences = new HashSet<String>();
+        for (Integer id : ids) {
+
+            sentences.add(getFieldValueByDocId(this.indexSearcher, id, fieldname));
+        }
+        return sentences;
+    }
+    
+    public String getFieldValueByDocId(IndexSearcher searcher, Integer id, String fieldName) {
+
+        try {
+
+            return searcher.doc(id).get(fieldName);
+        }
+        catch (CorruptIndexException e) {
+            
+            e.printStackTrace();
+            String error = "Could not get document with id: " + id + " from index.";
+            throw new RuntimeException(error, e);
+        }
+        catch (IOException e) {
+            
+            e.printStackTrace();
+            String error = "Could not get document with id: " + id + " from index.";
+            throw new RuntimeException(error, e);
+        }
+    }
 }

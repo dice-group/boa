@@ -64,9 +64,7 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 		if ( this.patternSearcher == null ) this.patternSearcher = new DefaultPatternSearcher();
 
 	    Pattern pattern = pair.getPattern();
-	    
-		boolean beginsWithDomain = pattern.isDomainFirst();
-		String patternWithOutVariables = NaturalLanguageProcessingUtil.segmentString(pattern.getNaturalLanguageRepresentationWithoutVariables());
+		String patternWithOutVariables = pattern.getNaturalLanguageRepresentationWithoutVariables();
 		
 		Map<String,String> sentences = patternSearcher.getExactMatchSentencesTagged(patternWithOutVariables, maxNumberOfEvaluationSentences);
 		
@@ -80,7 +78,7 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 		    // left of the pattern can't be any named entity
 			if ( entry.getKey().toLowerCase().startsWith(patternWithOutVariables.toLowerCase())) continue;
 			
-			String nerTagged = this.replaceBrackets(entry.getValue());
+			String nerTagged = entry.getValue();
 			String sentence	 = entry.getKey();
 			
 			if ( nerTagged != null && sentence != null && patternWithOutVariables != null &&
@@ -97,7 +95,7 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 				}
 				
 				// to the left of the pattern is the domain resource, to the right the range resource
-				if ( beginsWithDomain ) {
+				if ( pattern.isDomainFirst() ) {
 					
 					if ( leftContext.containsSuitableEntity(domainUri) ) correctDomain++;
 					if ( rightContext.containsSuitableEntity(rangeUri) ) correctRange++; 

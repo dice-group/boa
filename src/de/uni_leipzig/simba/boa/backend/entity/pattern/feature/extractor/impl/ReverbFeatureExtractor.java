@@ -17,6 +17,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.Abstrac
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
+import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 import edu.washington.cs.knowitall.extractor.ReVerbExtractor;
 import edu.washington.cs.knowitall.extractor.conf.ConfidenceFunctionException;
 import edu.washington.cs.knowitall.extractor.conf.ReVerbConfFunction;
@@ -40,6 +41,7 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
     private int maxNumberOfEvaluationSentences  = 100;
     private IndexSearcher searcher;
     private boolean initialized = false;
+    DefaultPatternSearcher s = new DefaultPatternSearcher();
 
 	@Override
 	public void score(PatternMappingPatternPair pair) {
@@ -49,7 +51,7 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 		Set<Double> scores    = new HashSet<Double>();
 		Set<String> relations = new HashSet<String>();
 		
-		List<String> sentences = new ArrayList<String>(LuceneIndexHelper.getFieldValueByIds(this.searcher, pair.getPattern().getFoundInSentences(), "sentence"));
+		List<String> sentences = new ArrayList<String>(s.getFieldValueByIds(pair.getPattern().getFoundInSentences(), "sentence"));
 		sentences = sentences.size() >= this.maxNumberOfEvaluationSentences  ? sentences.subList(0, this.maxNumberOfEvaluationSentences) : sentences;
 		
 		// for all sentences we found the pattern in
@@ -95,6 +97,11 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 		// update the pattern
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("REVERB"), score >= 0 ? score : 0); // -1 is not useful for confidence
 		pair.getPattern().setGeneralizedPattern(StringUtil.getLongestSubstring(relations));
+	}
+	
+	public void close() {
+		
+		this.s.close();
 	}
 
     private void init() {

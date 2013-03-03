@@ -9,6 +9,7 @@ import java.util.Map;
 import de.uni_leipzig.simba.boa.backend.concurrent.BoaCallable;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.ReverbFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TotalOccurrenceFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TypicityFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
@@ -76,6 +77,7 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 			    // and we can only do it after the extractor has finished because otherwise we would close it after every pattern
 			    if ( featureExtractor instanceof TotalOccurrenceFeatureExtractor ) ((TotalOccurrenceFeatureExtractor) featureExtractor).close();
 			    if ( featureExtractor instanceof TypicityFeatureExtractor ) ((TypicityFeatureExtractor) featureExtractor).close();
+			    if ( featureExtractor instanceof ReverbFeatureExtractor ) ((ReverbFeatureExtractor) featureExtractor).close();
 	            
 	            this.logger.info(featureExtractor.getClass().getSimpleName() + " from " + this.getName() + " finished in " + TimeUtil.convertMilliSeconds(System.currentTimeMillis() - start) + "!");
 		    }
