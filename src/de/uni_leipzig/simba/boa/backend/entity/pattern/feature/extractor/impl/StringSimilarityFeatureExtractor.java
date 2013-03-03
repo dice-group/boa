@@ -1,5 +1,8 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,6 +16,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFac
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.SimilarityAssessor;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.WordNotFoundException;
+import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.ling.WordTag;
 import edu.stanford.nlp.process.Morphology;
 
@@ -60,11 +64,18 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 					// no need to calculate sim for stop words
 					if ( Constants.STOP_WORDS.contains(tokens.get(i)) ) continue;
 					
-					String token = this.lemmatizer.lemmatize(new WordTag(tokens.get(i), posTags[i])).lemma();
+					// remove the annoying output from the command line :(
+					PrintStream standardErrorStream = System.err;
+		            System.setErr(new PrintStream(new ByteArrayOutputStream()));
+
+		            String token = this.lemmatizer.lemmatize(new WordTag(tokens.get(i), posTags[i])).lemma();
 					String wordFormLemmaNoun = this.lemmatizer.lemmatize(new WordTag(wordForm, "NN")).lemma();
 					String wordFormLemmaVerbGerund = this.lemmatizer.lemmatize(new WordTag(wordForm, "VBG")).lemma();
 					String wordFormLemmaVerbSingular = this.lemmatizer.lemmatize(new WordTag(wordForm, "VBZ")).lemma();
-					
+		            
+		            // revert to original standard error stream
+		            System.setErr(standardErrorStream);
+
 					double simNoun = 0D, simGer = 0D, simSing = 0;
 					
 					try {
@@ -91,11 +102,6 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 					}
 				}
 			}
-		}
-		else {
-			
-//			System.out.println(tokens);
-//			System.out.println(Arrays.toString(posTags));
 		}
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("WORDNET_DISTANCE"), similarity >= 0 ? similarity : 0);
 	}
