@@ -94,8 +94,8 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 		}
 		else {
 			
-			System.out.println(tokens);
-			System.out.println(Arrays.toString(posTags));
+//			System.out.println(tokens);
+//			System.out.println(Arrays.toString(posTags));
 		}
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("WORDNET_DISTANCE"), similarity >= 0 ? similarity : 0);
 	}
