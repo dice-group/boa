@@ -61,7 +61,15 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 	            for (PatternMappingPatternPair pair : patternMappingPatterns) {
 	                
 	                this.logger.debug(featureExtractor.getClass().getSimpleName() + "/" + this.name + ": " + pair.getMapping().getProperty().getUri() + " / " + pair.getPattern().getNaturalLanguageRepresentation());
-	                featureExtractor.score(pair);
+	                try {
+	                	
+	                	featureExtractor.score(pair);
+	                }
+	                catch ( Exception e) {
+	                	
+	                	System.out.println("Error for mapping " + pair.getMapping().getProperty().getUri() + " & " + pair.getPattern().getNaturalLanguageRepresentation());
+	                	e.printStackTrace();
+	                }
 	                this.progress++;
 	            }
 	            // this features require a pattern searcher, which needs to be closed
