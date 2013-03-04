@@ -38,10 +38,9 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 	private OpenNlpSentenceChunker chunker;
 	
 	private NLPediaLogger logger                = new NLPediaLogger(ReverbFeatureExtractor.class);
-    private int maxNumberOfEvaluationSentences  = 50;
-    private IndexSearcher searcher;
+    private int maxNumberOfEvaluationSentences  = 10;
     private boolean initialized = false;
-    DefaultPatternSearcher s = new DefaultPatternSearcher();
+    DefaultPatternSearcher patternSearcher = new DefaultPatternSearcher();
 
 	@Override
 	public void score(PatternMappingPatternPair pair) {
@@ -51,11 +50,8 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 		Set<Double> scores    = new HashSet<Double>();
 		Set<String> relations = new HashSet<String>();
 		
-		List<String> sentences = new ArrayList<String>(s.getFieldValueByIds(pair.getPattern().getFoundInSentences(), "sentence"));
-		sentences = sentences.size() >= this.maxNumberOfEvaluationSentences  ? sentences.subList(0, this.maxNumberOfEvaluationSentences) : sentences;
-		
 		// for all sentences we found the pattern in
-		for (String sentence : sentences) {
+		for (String sentence : patternSearcher.getSentencesWithLimit(pair.getPattern().getFoundInSentences(), maxNumberOfEvaluationSentences)) {
 			
 			try {
 			
@@ -101,14 +97,13 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 	
 	public void close() {
 		
-		this.s.close();
+		this.patternSearcher.close();
 	}
 
     private void init() {
 
         try {
             
-            searcher    = LuceneIndexHelper.getIndexSearcher(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH);
             extractor   = new ReVerbExtractor();
             scoreFunc   = new ReVerbConfFunction();
             chunker     = new OpenNlpSentenceChunker();
