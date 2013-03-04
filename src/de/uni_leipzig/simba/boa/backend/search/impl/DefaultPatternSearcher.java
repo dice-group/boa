@@ -606,4 +606,15 @@ public class DefaultPatternSearcher implements PatternSearcher {
             throw new RuntimeException(error, e);
         }
     }
+
+	public Collection<? extends String> getSentencesWithLimit(Set<Integer> foundInSentences, int maxNumberOfEvaluationSentences) {
+		
+		Set<String> sentences = new HashSet<String>();
+        for (Integer id : foundInSentences) {
+
+            sentences.add(getFieldValueByDocId(this.indexSearcher, id, "sentence"));
+            if ( sentences.size() >= maxNumberOfEvaluationSentences) break;
+        }
+        return sentences;
+	}
 }
