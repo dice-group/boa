@@ -16,6 +16,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.PatternMappingManager;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 
@@ -24,10 +25,7 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 
 	private NLPediaLogger logger = new NLPediaLogger(TfIdfFeatureExtractor.class);
 	private Map<PatternMapping,String> documents = new HashMap<PatternMapping,String>();
-	
-	private final String PATTERN_MAPPING_FOLDER            = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
 	private Map<String,Set<String>> mappingToText = new HashMap<String, Set<String>>();
-	
 	private Map<Set<String>,Map<String,Token>> cache = new HashMap<Set<String>, Map<String,Token>>();
 	
 	/**
@@ -35,7 +33,7 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 	 */
 	private void init() {
 	    
-	    for ( PatternMapping mapping : SerializationManager.getInstance().deserializePatternMappings(PATTERN_MAPPING_FOLDER) ) {
+	    for ( PatternMapping mapping : PatternMappingManager.getInstance().getPatternMappings() ) {
             
             StringBuffer buffer = new StringBuffer();
             for ( Pattern p : mapping.getPatterns() ) {
