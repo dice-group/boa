@@ -113,10 +113,11 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 	    
 	    if ( new File(MACHINE_LEARNING_TRAINING_FILE).exists() ) {
 	        
-	        this.logger.info("Updating network train file!");
+	        this.logger.info("Updating ml train file!");
 	        file = patternScoreManager.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8");
+	        this.logger.info("Finished reading old ml train file!");
 	        file = patternScoreManager.updateNetworkTrainingFile(this.moduleInterchangeObject.getPatternMappings(), file);
-	        this.logger.info("Finished updating network train file!");
+	        this.logger.info("Finished updating ml train file!");
 	    }
 	    else {
 	        
