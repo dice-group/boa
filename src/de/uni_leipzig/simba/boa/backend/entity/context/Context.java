@@ -150,6 +150,8 @@ public abstract class Context {
 		namedEntityRecognitionTags.add(Constants.NAMED_ENTITY_TAG_ORGANIZATION);
 		namedEntityRecognitionTags.add(Constants.NAMED_ENTITY_TAG_MISCELLANEOUS);
     
+		namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Agent",                  				Constants.NAMED_ENTITY_TAG_ORGANIZATION);
+		
         namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/AdministrativeRegion",                  Constants.NAMED_ENTITY_TAG_PLACE);
         namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Airport",                               Constants.NAMED_ENTITY_TAG_PLACE);
         namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/ArchitecturalStructure",                Constants.NAMED_ENTITY_TAG_PLACE);
