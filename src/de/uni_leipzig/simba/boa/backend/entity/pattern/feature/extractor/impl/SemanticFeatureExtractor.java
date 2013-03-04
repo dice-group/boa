@@ -52,19 +52,30 @@ public class SemanticFeatureExtractor extends AbstractFeatureExtractor {
 		// look at the last word if the domain or range is a place
 		boolean isGoodLocation = nlrWithVariables.endsWith(" in") || nlrWithVariables.endsWith(" to") || nlrWithVariables.endsWith(" from") || nlrWithVariables.endsWith(" at");
 		
-		if ( m.getProperty() != null ) {
-			
-			if ( m.getProperty().getRdfsDomain() != null ) {
+		try {
+
+			if ( m.getProperty() != null ) {
 				
-				boolean isGoodLocationDomain =  isGoodLocation && Context.namedEntityRecognitionMappings.get(m.getProperty().getRdfsDomain()).equals(Constants.NAMED_ENTITY_TAG_PLACE);
-				pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("GOOD_PLACE_DOMAIN"), isGoodLocationDomain ? 1D : 0D);
-			}
-			
-			if ( m.getProperty().getRdfsRange() != null ) {
+				if ( m.getProperty().getRdfsDomain() != null ) {
+					
+					boolean isGoodLocationDomain =  isGoodLocation && Context.namedEntityRecognitionMappings.get(m.getProperty().getRdfsDomain()).equals(Constants.NAMED_ENTITY_TAG_PLACE);
+					pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("GOOD_PLACE_DOMAIN"), isGoodLocationDomain ? 1D : 0D);
+				}
 				
-				boolean isGoodLocationRange	 =  isGoodLocation && Context.namedEntityRecognitionMappings.get(m.getProperty().getRdfsRange()).equals(Constants.NAMED_ENTITY_TAG_PLACE);
-				pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("GOOD_PLACE_RANGE"),  isGoodLocationRange  ? 1D : 0D);
+				if ( m.getProperty().getRdfsRange() != null ) {
+					
+					boolean isGoodLocationRange	 =  isGoodLocation && Context.namedEntityRecognitionMappings.get(m.getProperty().getRdfsRange()).equals(Constants.NAMED_ENTITY_TAG_PLACE);
+					pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("GOOD_PLACE_RANGE"),  isGoodLocationRange  ? 1D : 0D);
+				}
 			}
+		}
+		catch ( java.lang.NullPointerException npe) {
+			
+			System.out.println("Property-URI    : " + m.getProperty().getUri());
+			System.out.println("Property-Domain : " + m.getProperty().getRdfsDomain());
+			System.out.println("Property-Range  : " + m.getProperty().getRdfsRange());
+			System.out.println("Domain-Mapping  : " + Context.namedEntityRecognitionMappings.get(m.getProperty().getRdfsDomain()));
+			System.out.println("Range-Mapping   : " + Context.namedEntityRecognitionMappings.get(m.getProperty().getRdfsRange()));
 		}
 	}
 }
