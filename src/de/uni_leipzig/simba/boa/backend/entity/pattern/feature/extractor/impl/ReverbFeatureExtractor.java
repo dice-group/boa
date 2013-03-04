@@ -38,7 +38,7 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 	private OpenNlpSentenceChunker chunker;
 	
 	private NLPediaLogger logger                = new NLPediaLogger(ReverbFeatureExtractor.class);
-    private int maxNumberOfEvaluationSentences  = 10;
+    private int maxNumberOfEvaluationSentences  = NLPediaSettings.getIntegerSetting("reverbTrainingSentences");
     private boolean initialized = false;
     DefaultPatternSearcher patternSearcher = new DefaultPatternSearcher();
 
