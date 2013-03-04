@@ -33,7 +33,7 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 	 */
 	private void init() {
 	    
-	    for ( PatternMapping mapping : PatternMappingManager.getInstance().getPatternMappings() ) {
+	    for ( PatternMapping mapping : this.mappings ) {
             
             StringBuffer buffer = new StringBuffer();
             for ( Pattern p : mapping.getPatterns() ) {

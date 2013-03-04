@@ -69,27 +69,6 @@ public final class PatternMappingManager {
 
     /**
      * 
-     * @param database
-     * @param naturalLanguageRepresentation
-     * @return
-     */
-    public List<Pattern> findPatternMappingsWithSamePattern(String naturalLanguageRepresentation) {
-
-    	List<Pattern> patterns = new ArrayList<Pattern>();
-    	
-        for ( PatternMapping mapping : mappingsInDatabases.get(DEFAULT_DATABASE) )
-            for (Pattern pattern : mapping.getPatterns())
-                if ( pattern.getNaturalLanguageRepresentation().equalsIgnoreCase(naturalLanguageRepresentation) ) {
-                    
-                    patterns.add(pattern);
-                    break; // there will be only one pattern per pattern mapping with the same natural language representation, so go to next pattern mapping
-                }
-                
-        return patterns;
-    }
-
-    /**
-     * 
      * @return
      */
     public Map<String, Set<PatternMapping>> getPatternMappingsInDatabases() {
