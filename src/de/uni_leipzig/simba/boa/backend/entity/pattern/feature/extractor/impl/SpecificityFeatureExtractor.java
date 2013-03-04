@@ -26,11 +26,8 @@ public class SpecificityFeatureExtractor extends AbstractFeatureExtractor {
 
 		long start = new Date().getTime();
 		
-		int occurrences = 0;
-		List<Pattern> patterns = this.findPatternMappingsWithSamePattern(pair.getPattern().getNaturalLanguageRepresentation());
-		for ( Pattern p : patterns) occurrences += p.getNumberOfOccurrences();
-		
-		Double specificity = (double) this.mappings.size() / (double) patterns.size() ; 
+		int occurrences = findPatternMappingsWithSamePattern(pair.getPattern().getNaturalLanguageRepresentation());
+		Double specificity = (double) this.mappings.size() / (double) occurrences ; 
 			
 		specificity = Math.log(specificity) / Math.log(2);
 		specificity = specificity.isInfinite() || specificity.isNaN() ? 0D : specificity; 
@@ -46,18 +43,18 @@ public class SpecificityFeatureExtractor extends AbstractFeatureExtractor {
      * @param naturalLanguageRepresentation
      * @return
      */
-    public List<Pattern> findPatternMappingsWithSamePattern(String naturalLanguageRepresentation) {
+    public int findPatternMappingsWithSamePattern(String naturalLanguageRepresentation) {
 
-    	List<Pattern> patterns = new ArrayList<Pattern>();
+    	int occurrence = 0;
     	
         for ( PatternMapping mapping : this.mappings )
             for (Pattern pattern : mapping.getPatterns())
                 if ( pattern.getNaturalLanguageRepresentation().equalsIgnoreCase(naturalLanguageRepresentation) ) {
                     
-                    patterns.add(pattern);
+                    occurrence += pattern.getNumberOfOccurrences();
                     break; // there will be only one pattern per pattern mapping with the same natural language representation, so go to next pattern mapping
                 }
                 
-        return patterns;
+        return occurrence;
     }
 }
