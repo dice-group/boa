@@ -35,8 +35,6 @@ public final class PatternMappingManager {
         mappingsInDatabases.put(
                 DEFAULT_DATABASE, 
                 SerializationManager.getInstance().deserializePatternMappings(PATTERN_MAPPING_FOLDER));
-        
-        System.out.println("Number of mappings in default database: " + mappingsInDatabases.get(DEFAULT_DATABASE));
     }
     
     public static PatternMappingManager getInstance(){
