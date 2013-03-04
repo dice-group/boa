@@ -92,10 +92,10 @@ public class PatternScoreManager {
     /**
      * 
      * @param patternMappings
-     * @param neuronalNetworkTrainingFile
+     * @param mlTrainingFile
      * @return
      */
-    public MachineLearningTrainingFile updateNetworkTrainingFile(Set<PatternMapping> patternMappings, MachineLearningTrainingFile neuronalNetworkTrainingFile) {
+    public MachineLearningTrainingFile updateNetworkTrainingFile(Set<PatternMapping> patternMappings, MachineLearningTrainingFile mlTrainingFile) {
         
         List<String> featureNames = new ArrayList<String>();
         
@@ -107,18 +107,18 @@ public class PatternScoreManager {
                         if ( feature.isUseForPatternLearning() ) 
                             featureNames.add(feature.getName());
                 
-        neuronalNetworkTrainingFile.setFeatureNames(featureNames);
+        mlTrainingFile.setFeatureNames(featureNames);
         
         for (PatternMapping mapping : patternMappings) {
             for (Pattern pattern : mapping.getPatterns()) {
                 
-                MachineLearningTrainingFileEntry entry = neuronalNetworkTrainingFile.getEntry(mapping.getProperty().getUri(), pattern.getNaturalLanguageRepresentation());
+                MachineLearningTrainingFileEntry entry = mlTrainingFile.getEntry(mapping.getProperty().getUri(), pattern.getNaturalLanguageRepresentation());
                 List<Double> features = pattern.buildNormalizedFeatureVector(mapping);
                 
                 if ( entry != null )                  
                     entry.setFeatures(features);
                 else 
-                    neuronalNetworkTrainingFile.addEntry(MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFileEntry(
+                    mlTrainingFile.addEntry(MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFileEntry(
                                                             mapping.getProperty().getUri(),
                                                             pattern.getNaturalLanguageRepresentation(),
                                                             features,
@@ -126,9 +126,9 @@ public class PatternScoreManager {
                     
             }
             // only shuffle the new & not annotated entries 
-            Collections.shuffle(neuronalNetworkTrainingFile.getNotAnnotatedEntries());
+            Collections.shuffle(mlTrainingFile.getNotAnnotatedEntries());
         }
-        return neuronalNetworkTrainingFile;
+        return mlTrainingFile;
     }
     
     /**
