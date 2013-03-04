@@ -40,14 +40,6 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 	private final int maxNumberOfEvaluationSentences 	= NLPediaSettings.getIntegerSetting("maxNumberOfTypicityConfidenceMeasureDocuments");
 	
 	private DefaultPatternSearcher patternSearcher;
-	private static final Map<String,String> BRACKETS = new HashMap<String,String>();
-	static {
-		
-		BRACKETS.put("-LRB-", "(");
-		BRACKETS.put("-RRB-", ")");
-		BRACKETS.put("-LQB-", "{");
-		BRACKETS.put("-RQB-", "}");
-	}
 	
 	/* (non-Javadoc)
 	 * @see simba.nlpedia.entity.pattern.evaluation.PatternEvaluator#evaluatePattern(simba.nlpedia.entity.pattern.PatternMapping)
@@ -159,25 +151,6 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 	    }
 	    return context;
     }
-
-    /**
-	 * Replaces the abbreviations from Lucene with regular brackets.
-	 * This is done to improve POS-Tag quality.
-	 * 
-	 * @param foundString
-	 * @return
-	 */
-	private String replaceBrackets(String foundString) {
-
-		for (Map.Entry<String, String> bracket : TypicityFeatureExtractor.BRACKETS.entrySet()) {
-			
-			if ( foundString.contains(bracket.getKey())) {
-	
-				foundString = foundString.replace(bracket.getKey(), bracket.getValue());
-			}
-		}
-		return foundString;
-	}
 
 	public void close() {
 		

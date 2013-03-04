@@ -37,7 +37,6 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 		// get the NLR and remove all stopwords
 		String naturalLanguageRepresentation = pair.getPattern().getNaturalLanguageRepresentationWithoutVariables();
 		List<String> tokens = new ArrayList<String>(Arrays.asList(naturalLanguageRepresentation.split(" ")));
-//		tokens.removeAll(Constants.STOP_WORDS);
 		
 		double similarity = 0D;
 		

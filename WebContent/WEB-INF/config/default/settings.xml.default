@@ -35,6 +35,7 @@
                 <entry key="number.of.unique.occurrence.threshold"          value="3"/>
                 <entry key="number.of.learned.pairs"                        value="3"/>
                 <entry key="maxNumberOfTypicityConfidenceMeasureDocuments"  value="5"/>
+                <entry key="reverbTrainingSentences" 						value="3"/>
                 <entry key="maxmimumNumberOfTotalOccurrences"               value="5"/>
                 <entry key="numberOfFeatureExtractionsThreads"              value="4"/>
                 <entry key="patternFeatureExtractionThreadPoolSize"         value="4"/>
