@@ -62,7 +62,7 @@ public class PatternFeatureExtractionThreadManager {
             // one thread per sublist of pattern mapping & pattern but only n threads get executed at the same time
             for (List<PatternMappingPatternPair> featureExtractionPairsSubList : featureExtractionPairsSubLists ) {
                 
-                PatternFeatureExtractionCallable pfec = new PatternFeatureExtractionCallable(featureExtractionPairsSubList);
+                PatternFeatureExtractionCallable pfec = new PatternFeatureExtractionCallable(patternMappings, featureExtractionPairsSubList);
                 pfec.setName("PatternFeatureExtractionCallable-" + i++);
                 todo.add(pfec);
                 logger.info("Create thread for " + featureExtractionPairsSubList.size() + " pairs of patterns & pattern mappings.");

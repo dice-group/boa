@@ -1,9 +1,11 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor;
 
 import java.util.List;
+import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 
 /**
  * 
@@ -40,4 +42,16 @@ public interface FeatureExtractor {
      * @param activated
      */
     public void setActivated(boolean activated);
+
+    /**
+     * 
+     * @param patternMappings
+     */
+	public void setPatternMappings(Set<PatternMapping> patternMappings);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Set<PatternMapping> getPatternMappings();
 }

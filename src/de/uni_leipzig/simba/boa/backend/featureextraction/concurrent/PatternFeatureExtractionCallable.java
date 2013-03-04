@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.concurrent.BoaCallable;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
@@ -13,6 +14,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.Re
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TotalOccurrenceFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TypicityFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 
@@ -27,10 +29,12 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
     int numberOfActivatedFeatureExtractors = 0;
     private List<PatternMappingPatternPair> patternMappingPatterns = null;
 	private Map<String,FeatureExtractor> featureExtractorsMapping = FeatureFactory.getInstance().getFeatureExtractorMap();
+	private Set<PatternMapping> patternMappings;
 	
-	public PatternFeatureExtractionCallable(List<PatternMappingPatternPair> featureExtractionPairsSubList) {
+	public PatternFeatureExtractionCallable(Set<PatternMapping> patternMappings, List<PatternMappingPatternPair> featureExtractionPairsSubList) {
 	    
 		this.patternMappingPatterns = featureExtractionPairsSubList;
+		this.patternMappings = patternMappings;
 		this.logger.info("Pattern to measure: " + this.patternMappingPatterns.size() + " with " + featureExtractorsMapping.size() + " featureExtractorsMapping!");
 		
         for ( FeatureExtractor fe : featureExtractorsMapping.values() ) if (fe.isActivated()) numberOfActivatedFeatureExtractors++;
@@ -54,6 +58,8 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 		for ( FeatureExtractor featureExtractor : featureExtractors ) {
 		    
 		    if ( featureExtractor.isActivated() ) {
+		    	
+		    	featureExtractor.setPatternMappings(this.patternMappings);
 		        
 		        this.logger.info(featureExtractor.getClass().getSimpleName() + " started from " + this.getName() +"!");
 	            long start = System.currentTimeMillis();

@@ -17,6 +17,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFac
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHelper;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.PatternMappingManager;
 import de.uni_leipzig.simba.boa.backend.featurescoring.PatternScoreManager;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.MachineLearningTrainingFile;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -147,7 +148,7 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 		// get from disk or from cache
 		Set<PatternMapping> mappings = new HashSet<PatternMapping>(); 
 		mappings = this.moduleInterchangeObject.getPatternMappings() == null ?
-				SerializationManager.getInstance().deserializePatternMappings(PATTERN_MAPPING_FOLDER) : 
+				PatternMappingManager.getInstance().getPatternMappings() : 
 				this.moduleInterchangeObject.getPatternMappings();
 		
 		// look if all patterns have extracted features
@@ -180,8 +181,7 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 
 		// add the patterns to the interchange module only if they are not already their
 		if ( this.moduleInterchangeObject.getPatternMappings() == null )
-			this.moduleInterchangeObject.getPatternMappings().addAll(
-					SerializationManager.getInstance().deserializePatternMappings(PATTERN_MAPPING_FOLDER));
+			this.moduleInterchangeObject.getPatternMappings().addAll(PatternMappingManager.getInstance().getPatternMappings());
 		
 		// load the machine learning in case we did not run the run method of the feature extraction
         // this happens when we annotated data and restart the system
