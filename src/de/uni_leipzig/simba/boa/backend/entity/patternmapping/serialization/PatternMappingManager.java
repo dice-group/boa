@@ -21,11 +21,11 @@ import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationM
  * @author gerb
  *
  */
-public class PatternMappingManager {
+public final class PatternMappingManager {
 
     private final NLPediaLogger logger = new NLPediaLogger(PatternMappingManager.class);
     private static Map<String, Set<PatternMapping>> mappingsInDatabases = new LinkedHashMap<String, Set<PatternMapping>>();
-    private static PatternMappingManager INSTANCE;
+    private static final PatternMappingManager INSTANCE = new PatternMappingManager();
     
     private final String PATTERN_MAPPING_FOLDER = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
     private final String DEFAULT_DATABASE       = NLPediaSettings.BOA_DATA_DIRECTORY.replaceAll("/$", "");
@@ -35,14 +35,11 @@ public class PatternMappingManager {
         mappingsInDatabases.put(
                 DEFAULT_DATABASE, 
                 SerializationManager.getInstance().deserializePatternMappings(PATTERN_MAPPING_FOLDER));
+        
+        System.out.println("Number of mappings in default database: " + mappingsInDatabases.get(DEFAULT_DATABASE));
     }
     
     public static PatternMappingManager getInstance(){
-        
-        if (PatternMappingManager.INSTANCE == null) {
-            
-            PatternMappingManager.INSTANCE = new PatternMappingManager();
-        }
         
         return PatternMappingManager.INSTANCE;
     }
