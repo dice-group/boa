@@ -99,7 +99,7 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
     @Override
     public int getNumberTotal() {
 
-        return this.patternMappingPatterns.size() * featureExtractorsMapping.values().size();
+        return this.patternMappingPatterns.size() * numberOfActivatedFeatureExtractors;
     }
 
     @Override
