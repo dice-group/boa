@@ -375,7 +375,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
         String patternWithoutVariables = naturalLanguageRepresentation.substring(0, naturalLanguageRepresentation.length() - 3).substring(3).trim();
 
         // patterns are only allowed to have 256 characters
-        if (naturalLanguageRepresentation.length() > 256 || naturalLanguageRepresentation.isEmpty())
+        if (patternWithoutVariables.trim().length() < 2 || naturalLanguageRepresentation.length() > 256 || naturalLanguageRepresentation.isEmpty())
             return false;
 
         // pattern need to start with either ?D? or ?R? and have to end with ?D?
