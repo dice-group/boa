@@ -46,7 +46,8 @@
                 <entry key="namendEntityRecognizerClassifier"               value="training/classifier/conll.closed.iob2.crf.ser.gz"/>
 
                 <!-- ############### machine learning ############### -->
-                <entry key="classifier.file.name"                           value="logistic.model"/>
+                <entry key="classifier.file.name"                           value="smo.model"/>
+                <entry key="scorePatterns"		                            value="true"/>
                 <entry key="neuronal.network.n.fold.cross.validation"       value="10"/>
                 <entry key="neuronal.network.max.error"                     value="0.1"/>
                 <entry key="neuronal.network.error.decrement"               value="0.05"/>

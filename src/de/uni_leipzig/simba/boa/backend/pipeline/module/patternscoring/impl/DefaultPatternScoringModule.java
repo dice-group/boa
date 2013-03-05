@@ -104,6 +104,8 @@ public class DefaultPatternScoringModule extends AbstractPatternScoringModule {
     @Override
     public boolean isDataAlreadyAvailable() {
         
+    	if ( NLPediaSettings.getBooleanSetting("scorePatterns") ) return false;
+    	
         if ( !new File(MACHINE_LEARNING_TRAINING_FILE).exists() )
             throw new RuntimeException("No training examples for pattern scoring available! Tag them first");
         

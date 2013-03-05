@@ -83,8 +83,8 @@ public class WekaMachineLearning implements GenericTool {
             instance.setValue(this.instances.attribute(index++), featureValue);
                 
         try {
-            
-            return this.classifier.distributionForInstance(instance)[1];
+        	
+            return this.classifier.classifyInstance(instance);
         }
         catch (Exception e) {
             
