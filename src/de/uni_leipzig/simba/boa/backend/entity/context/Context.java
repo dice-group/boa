@@ -477,6 +477,9 @@ public abstract class Context {
         namedEntityRecognitionMappings.put("http://dbpedia.org/ontology/Play",    Constants.NAMED_ENTITY_TAG_MISCELLANEOUS);
         
         namedEntityRecognitionMappings.put("http://www.w3.org/2001/XMLSchema#date", "DATE");
+        namedEntityRecognitionMappings.put("http://www.w3.org/2001/XMLSchema#double", "NUMBER");
+        namedEntityRecognitionMappings.put("http://www.w3.org/2001/XMLSchema#nonNegativeInteger", "NUMBER");
+        
         namedEntityRecognitionMappings.put("NA", "UNKNOWN");
     }
 }
