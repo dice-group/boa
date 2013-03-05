@@ -50,4 +50,14 @@ public interface MachineLearningTrainingFileEntry {
      * @param naturalLanguageRepresentation the naturalLanguageRepresentation to set
      */
     public abstract void setNaturalLanguageRepresentation(String naturalLanguageRepresentation);
+    
+    /**
+     * @return the naturalLanguageRepresentation
+     */
+    public abstract String getNaturalLanguageRepresentationPartOfSpeech();
+    
+    /**
+     * @param naturalLanguageRepresentation the naturalLanguageRepresentation to set
+     */
+    public abstract void setNaturalLanguageRepresentationPartOfSpeech(String pos);
 }

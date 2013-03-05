@@ -40,13 +40,13 @@ public class MachineLearningTrainingFileFactory {
         return MachineLearningTrainingFileFactory.INSTANCE;
     }
     
-    public MachineLearningTrainingFileEntry getDefaultMachineLearningTrainingFileEntry(String mappingUri, String pattern, List<Double> features, Boolean annotated) {
+    public MachineLearningTrainingFileEntry getDefaultMachineLearningTrainingFileEntry(String mappingUri, String pattern, List<Double> features, String pos, Boolean annotated) {
         
         try {
             
             return ((Class<? extends MachineLearningTrainingFileEntry>) this.defaultMachineLearningTrainingFileEntryClass).
-                    getDeclaredConstructor(mappingUri.getClass(), pattern.getClass(), List.class, Boolean.class).
-                    newInstance(mappingUri, pattern, features, annotated);
+                    getDeclaredConstructor(mappingUri.getClass(), pattern.getClass(), List.class, String.class, Boolean.class).
+                    newInstance(mappingUri, pattern, features, pos, annotated);
         }
         catch (Exception e) {
             

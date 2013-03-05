@@ -128,6 +128,7 @@
                                 <ref bean="POS_REGEX_2"/>
                                 <ref bean="POS_REGEX_3"/>
                                 <ref bean="SINGLE_NOUN"/>
+                                <ref bean="NNP_COUNT"/>
                                 <ref bean="GOOD_PLACE_DOMAIN"/>
                                 <ref bean="GOOD_PLACE_RANGE"/>
                             </list>
@@ -495,6 +496,20 @@
         </constructor-arg>
         <constructor-arg value="true" />
         <constructor-arg value="false" />
+        <constructor-arg value="true" />
+    </bean>
+    
+        
+    <bean id="NNP_COUNT"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="NNP_COUNT" />
+        <constructor-arg>
+            <list>
+                <value>en</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
         <constructor-arg value="true" />
     </bean>
     

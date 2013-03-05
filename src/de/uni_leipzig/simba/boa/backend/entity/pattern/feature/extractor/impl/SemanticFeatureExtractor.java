@@ -3,6 +3,8 @@
  */
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
+import org.apache.commons.lang3.StringUtils;
+
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
@@ -43,6 +45,9 @@ public class SemanticFeatureExtractor extends AbstractFeatureExtractor {
 		// only word contained in p is NP (ORGANIZATION reporter PERSON)
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("SINGLE_NOUN"), 
 				pos.equals("NN") ? 1D : 0D);
+		
+		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("NNP_COUNT"), 
+				(double) StringUtils.countMatches(pos, "NNP"));
 		
 		String nlrWithVariables = pair.getPattern().getNaturalLanguageRepresentationWithoutVariables().trim();
 		
