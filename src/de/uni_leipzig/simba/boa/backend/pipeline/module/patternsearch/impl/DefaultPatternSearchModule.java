@@ -369,5 +369,9 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
             PatternMapping mapping = SerializationManager.getInstance().deserializePatternMapping(mappingFile.getAbsolutePath());
             this.mappings.put(mapping.getProperty().getUri().hashCode(), mapping);
         }
+        
+        // since we have the mappings already there, we don't need the background knowledge anymore
+        // so we can save up the RAM
+        this.moduleInterchangeObject.setBackgroundKnowledge(null);
     }
 }
