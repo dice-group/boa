@@ -79,6 +79,7 @@ public class PatternScoreManager {
                                                                                             mapping.getProperty().getUri(),
                                                                                             pattern.getNaturalLanguageRepresentation(),
                                                                                             pattern.buildNormalizedFeatureVector(mapping),
+                                                                                            pattern.getPosTaggedString(),
                                                                                             null));
             }
             // shuffle rather more then less
@@ -115,13 +116,17 @@ public class PatternScoreManager {
                 MachineLearningTrainingFileEntry entry = mlTrainingFile.getEntry(mapping.getProperty().getUri(), pattern.getNaturalLanguageRepresentation());
                 List<Double> features = pattern.buildNormalizedFeatureVector(mapping);
                 
-                if ( entry != null )                  
-                    entry.setFeatures(features);
+                if ( entry != null ) {
+                	
+                	entry.setFeatures(features);
+                	entry.setNaturalLanguageRepresentationPartOfSpeech(pattern.getPosTaggedString());
+                }
                 else 
                     mlTrainingFile.addEntry(MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFileEntry(
                                                             mapping.getProperty().getUri(),
                                                             pattern.getNaturalLanguageRepresentation(),
                                                             features,
+                                                            pattern.getPosTaggedString(),
                                                             null));
                     
             }
@@ -152,7 +157,7 @@ public class PatternScoreManager {
             String[] lineParts = line.split(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
             
             List<Double> featureValues = new ArrayList<Double>();
-            for (String feature : Arrays.asList(lineParts).subList(0, lineParts.length - 3)) featureValues.add(Double.valueOf(feature));
+            for (String feature : Arrays.asList(lineParts).subList(0, lineParts.length - 4)) featureValues.add(Double.valueOf(feature));
             
             Boolean manual = null;
             if ( lineParts[lineParts.length - 3].equals("MANUAL") ) manual = null;
@@ -166,6 +171,7 @@ public class PatternScoreManager {
                     patternMappingUri,
                     naturalLanguageRepresentation,
                     featureValues,
+                    lineParts[lineParts.length - 4],
                     manual));
         }
         return MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFile(featureNames, entries);

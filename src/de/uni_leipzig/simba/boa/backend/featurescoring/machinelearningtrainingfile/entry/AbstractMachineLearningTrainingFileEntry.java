@@ -15,16 +15,18 @@ public abstract class AbstractMachineLearningTrainingFileEntry implements Machin
     protected Boolean annotation;
     protected String patternMappingUri;
     protected String naturalLanguageRepresentation;
+    protected String nlrPOS;
     
     // used for spring
     public AbstractMachineLearningTrainingFileEntry() {}
     
-    public AbstractMachineLearningTrainingFileEntry(String patternMappingUri, String naturalLanguageRepresentation, List<Double> featureVector, Boolean annotation) {
+    public AbstractMachineLearningTrainingFileEntry(String patternMappingUri, String naturalLanguageRepresentation, List<Double> featureVector, String pos, Boolean annotation) {
 
         this.patternMappingUri              = patternMappingUri;
         this.naturalLanguageRepresentation  = naturalLanguageRepresentation;
         this.annotation                     = annotation;
         this.features                       = featureVector;
+        this.nlrPOS							= pos;
     }
     
     /**
@@ -93,5 +95,20 @@ public abstract class AbstractMachineLearningTrainingFileEntry implements Machin
     public void setNaturalLanguageRepresentation(String naturalLanguageRepresentation) {
     
         this.naturalLanguageRepresentation = naturalLanguageRepresentation;
+    }
+    
+    /**
+     * @return the naturalLanguageRepresentation
+     */
+    public String getNaturalLanguageRepresentationPartOfSpeech(){
+    	return this.nlrPOS;
+    }
+    
+    /**
+     * @param naturalLanguageRepresentation the naturalLanguageRepresentation to set
+     */
+    public void setNaturalLanguageRepresentationPartOfSpeech(String pos){
+    	
+    	this.nlrPOS = pos;
     }
 }

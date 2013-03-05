@@ -51,12 +51,14 @@ public abstract class AbstractMachineLearningTrainingFile implements MachineLear
         StringBuilder builder = new StringBuilder();
         
         builder.append(StringUtils.join(this.featureNames, Constants.FEATURE_FILE_COLUMN_SEPARATOR) + Constants.FEATURE_FILE_COLUMN_SEPARATOR +
-                "CLAZZ" + Constants.FEATURE_FILE_COLUMN_SEPARATOR + "RELATION" + Constants.FEATURE_FILE_COLUMN_SEPARATOR + "PATTERN" + Constants.NEW_LINE_SEPARATOR);
+                "CLAZZ" + Constants.FEATURE_FILE_COLUMN_SEPARATOR + "POS" + Constants.FEATURE_FILE_COLUMN_SEPARATOR + "RELATION" + Constants.FEATURE_FILE_COLUMN_SEPARATOR + "PATTERN" + Constants.NEW_LINE_SEPARATOR);
         
         // one entry corresponds to one line
         for (MachineLearningTrainingFileEntry entry : this.annotatedEntries) {
             // first the features tab separated
             for (Double featureValue : entry.getFeatures()) builder.append(OutputFormatter.format((featureValue), "0.00000").replace(",", ".")).append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
+            // add the pos tags
+            builder.append("\"" + entry.getNaturalLanguageRepresentationPartOfSpeech() + "\"").append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
             // the part which need to be edited by a human, values to enter are either true or false
             // this is also used to indicate the a pattern should be used for learning the machine learning tool (if not MANUAL then use it for learning)
             builder.append(entry.getAnnotation() == null ? "MANUAL" : entry.getAnnotation() ? "true" : "false").append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
@@ -70,6 +72,8 @@ public abstract class AbstractMachineLearningTrainingFile implements MachineLear
             
             // first the features tab separated
             for (Double featureValue : entry.getFeatures()) builder.append(OutputFormatter.format((featureValue), "0.00000").replace(",", ".")).append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
+            // add the pos tags
+            builder.append("\"" + entry.getNaturalLanguageRepresentationPartOfSpeech() + "\"").append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
             // the part which need to be edited by a human, values to enter are either true or false
             // this is also used to indicate the a pattern should be used for learning the machine learning tool (if not MANUAL then use it for learning)
             builder.append(entry.getAnnotation() == null ? "MANUAL" : entry.getAnnotation() ? "true" : "false").append(Constants.FEATURE_FILE_COLUMN_SEPARATOR);
