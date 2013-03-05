@@ -3,6 +3,7 @@ package de.uni_leipzig.simba.boa.backend.machinelearning;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import org.jsoup.helper.StringUtil;
 
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
+import de.danielgerber.file.BufferedFileReader;
 import de.danielgerber.file.BufferedFileWriter;
 import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
 import de.danielgerber.file.FileUtil;
@@ -26,6 +28,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureHel
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.PatternMappingManager;
+import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 import edu.stanford.nlp.util.StringUtils;
 
 
@@ -33,41 +36,70 @@ public class GoodNaturalLanguagePatternAnnotation {
 
     private static final NLPediaSetup setup   = new NLPediaSetup(true);
     private static final DecimalFormat format = new DecimalFormat("0.0000");
+	private static int numberOfPatterns = 7;
     
+	public static void main(String[] args) {
+		
+		BufferedFileReader reader = new BufferedFileReader("/Users/gerb/eval.txt", "UTF-8");
+		BufferedFileWriter writer = FileUtil.openWriter("/Users/gerb/boa_ml.txt", "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
+		String line = "";
+		while ((line =reader.readLine()) != null) {
+			
+			if ( line.matches("^[A-Z]+.*") ) {
+				
+				writer.write(line + "\tCLAZZ\tRELATION\tPATTERN");
+				continue;
+			}
+			
+			String[] asd = line.split("\t");
+			for ( int i = 0; i < asd.length ; i++) {
+				
+				if ( i <= 22) asd[i] = asd[i].replace(",", ".");
+				if ( i == 25) asd[i] = "\""+asd[i]+"\"";
+			}
+			writer.write(StringUtils.join(asd, "\t"));
+		}
+		reader.close();
+		writer.close();
+	}
+	
+	
     /**
      * @param args
      * @throws InterruptedException 
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main1(String[] args) throws InterruptedException {
 
         BufferedFileWriter writer = FileUtil.openWriter("/Users/gerb/eval.txt", "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
         writer.write(writeFeatureNames());
 
-//        FeatureHelper.createLocalMaxima(PatternMappingManager.getInstance().getPatternMappings());
+        FeatureHelper.createLocalMaxima(PatternMappingManager.getInstance().getPatternMappings());
         List<String> lines = new ArrayList<String>();
         for (String propertyUri : top50Properties ) {
         	
-        	QueryEngineHTTP qexec = new QueryEngineHTTP("http://dbpedia.org/sparql", "ASK { <"+propertyUri+"> a owl:DatatypeProperty } ");
-            qexec.addDefaultGraph("http://dbpedia.org");
+            PatternMapping mapping = getMapping(propertyUri);
+            List<Pattern> pattern = new ArrayList<Pattern>();
             
-            if ( qexec.execAsk() ) System.out.println(propertyUri);
-            
-            
-            Thread.sleep(1000);
-//            PatternMapping mapping = getMapping(propertyUri);
-//            
-//            if ( mapping != null ) {
-//               
-//                List<Pattern> patterns = filterPatterns(new ArrayList<Pattern>(mapping.getPatterns()));
-//                if ( patterns.size() < 10 ) System.out.println(mapping.getProperty().getUri() + " has only " + patterns.size() + " patterns!");
-//
-//                for ( Pattern p : patterns )
-//                    lines.add(createLine(mapping, p));
-//            }
-//            else {
-//                
-//                System.out.println("No mapping for " + propertyUri + " found!" );
-//            }
+            if ( mapping != null ) {
+               
+                List<Pattern> patterns = sortPatterns(new ArrayList<Pattern>(mapping.getPatterns()));
+                List<List<Pattern>> patternLists = ListUtil.split(patterns, patterns.size() >= 10 ? (patterns.size() / 10) + 1 : 100);
+                
+        		if ( patternLists.size() == 1 ) pattern.addAll(getRandomEntry(numberOfPatterns, patternLists.get(0)));
+        		else {
+        			
+        			pattern.addAll(getRandomEntry(numberOfPatterns, patternLists.get(0)));
+//            		pattern.addAll(getRandomEntry(numberOfPatterns, patternLists.get((patternLists.size() - 1) / 2)));
+//            		pattern.addAll(getRandomEntry(numberOfPatterns, patternLists.get(patternLists.size() - 1)));
+        		}
+        		
+                for ( Pattern p : pattern )
+                    lines.add(createLine(mapping, p));
+            }
+            else {
+                
+                System.out.println("No mapping for " + propertyUri + " found!" );
+            }
         }
         Collections.shuffle(lines);
         for ( String line : lines ) writer.write(line);
@@ -75,7 +107,13 @@ public class GoodNaturalLanguagePatternAnnotation {
         writer.close();
     }
     
-    private static String writeFeatureNames() {
+    private static List<Pattern> getRandomEntry(int numberOfPatterns, List<Pattern> list) {
+    	
+//    	Collections.shuffle(list);
+		return list.size() >= numberOfPatterns ? list.subList(0, numberOfPatterns) : list;
+	}
+
+	private static String writeFeatureNames() {
 
         List<String> features = new ArrayList<String>();
         for ( FeatureExtractor featureExtractor : FeatureFactory.getInstance().getFeatureExtractorMap().values() )
@@ -92,10 +130,10 @@ public class GoodNaturalLanguagePatternAnnotation {
     private static String createLine(PatternMapping mapping, Pattern pattern) {
         
         List<String> line = new ArrayList<String>();
-        for ( Double feature : pattern.buildNormalizedFeatureVector(mapping)) line.add(format.format(feature));
+        for ( Double feature : pattern.buildNormalizedFeatureVector(mapping)) line.add(format.format(feature).replace("", "."));
         line.add("MANUAL");
         line.add(mapping.getProperty().getUri());
-        line.add(pattern.getNaturalLanguageRepresentation());
+        line.add("'" + pattern.getNaturalLanguageRepresentation() + "'");
         
         return StringUtils.join(line, "\t"); 
     }
@@ -105,12 +143,9 @@ public class GoodNaturalLanguagePatternAnnotation {
      * @param patterns
      * @return
      */
-    private static List<Pattern> filterPatterns(List<Pattern> patterns) {
+    private static List<Pattern> sortPatterns(List<Pattern> patterns) {
 
-        List<Pattern> results = new ArrayList<Pattern>();
-       
         final String feature = "SUPPORT_NUMBER_OF_PAIRS_LEARNED_FROM";
-//        final String feature = "TOTAL_OCCURRENCE";
         Collections.sort(patterns, new Comparator<Pattern>() {
 
             @Override
@@ -123,13 +158,7 @@ public class GoodNaturalLanguagePatternAnnotation {
             }
         });
         
-        for ( Pattern pattern : patterns) {
-            
-            if ( isSuitable(pattern) ) results.add(pattern);
-            if ( results.size() > 10 ) break;
-        }
-        
-        return results;
+        return patterns;
     }
 
     /**

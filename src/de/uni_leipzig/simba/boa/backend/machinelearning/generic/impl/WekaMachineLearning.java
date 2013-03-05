@@ -57,6 +57,8 @@ public class WekaMachineLearning implements GenericTool {
             ArffLoader loader = new ArffLoader();
             loader.setFile(new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.MACHINE_LEARNING_TRAINING_PATH + "boa_weka.arff"));
             this.instances = loader.getStructure();
+            this.instances.deleteAttributeAt(this.instances.numAttributes() -1); // we need to delete those two
+            this.instances.deleteAttributeAt(this.instances.numAttributes() -1); // because we dont need them and weka is confused
             this.instances.setClassIndex(this.instances.numAttributes() - 3);
             this.loadModel();
         }
@@ -80,9 +82,6 @@ public class WekaMachineLearning implements GenericTool {
         for (Double featureValue : pattern.buildNormalizedFeatureVector(mapping) ) 
             instance.setValue(this.instances.attribute(index++), featureValue);
                 
-        instance.setValue(this.instances.numAttributes() - 2, mapping.getProperty().getUri());
-        instance.setValue(this.instances.numAttributes() - 1, pattern.getNaturalLanguageRepresentation());
-        
         try {
             
             return this.classifier.distributionForInstance(instance)[1];
