@@ -22,19 +22,26 @@ public class DBpediaSpotlightDownloadModule extends AbstractPreprocessingModule 
 
     private NLPediaLogger logger = new NLPediaLogger(DBpediaSpotlightDownloadModule.class);
     
-    public static final String DBPEDIA_LABELS_FILE                  = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
-    public static final String DBPEDIA_LABELS_FILE_URL              = "http://downloads.dbpedia.org/3.8/" + NLPediaSettings.BOA_LANGUAGE + "/labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
-    public static final String DBPEDIA_LABELS_FILE_BZ2              = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
+    public static final String DUMP_PATH							= NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH;
+    public static final String LANGUAGE								= NLPediaSettings.BOA_LANGUAGE;
+    
+    public static final String DBPEDIA_LABELS_FILE                  = DUMP_PATH + "labels_" + LANGUAGE + ".nt";
+    public static final String DBPEDIA_LABELS_FILE_URL              = "http://downloads.dbpedia.org/3.8/" + LANGUAGE + "/labels_" + LANGUAGE + ".nt.bz2";
+    public static final String DBPEDIA_LABELS_FILE_BZ2              = DUMP_PATH + "labels_" + LANGUAGE + ".nt.bz2";
 
-    public static final String DBPEDIA_REDIRECTS_FILE               = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "redirects_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
-    public static final String DBPEDIA_REDIRECTS_FILE_URL           = "http://downloads.dbpedia.org/3.8/" + NLPediaSettings.BOA_LANGUAGE + "/redirects_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
-    public static final String DBPEDIA_REDIRECTS_FILE_BZ2           = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "redirects_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
+    public static final String DBPEDIA_REDIRECTS_FILE               = DUMP_PATH + "redirects_" + LANGUAGE + ".nt";
+    public static final String DBPEDIA_REDIRECTS_FILE_URL           = "http://downloads.dbpedia.org/3.8/" + LANGUAGE + "/redirects_" + LANGUAGE + ".nt.bz2";
+    public static final String DBPEDIA_REDIRECTS_FILE_BZ2           = DUMP_PATH + "redirects_" + LANGUAGE + ".nt.bz2";
     
-    public static final String DBPEDIA_DISAMBIGUATIONS_FILE         = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "disambiguations_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
-    public static final String DBPEDIA_DISAMBIGUATIONS_FILE_URL     = "http://downloads.dbpedia.org/3.8/" + NLPediaSettings.BOA_LANGUAGE + "/disambiguations_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
-    public static final String DBPEDIA_DISAMBIGUATIONS_FILE_BZ2     = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "disambiguations_" + NLPediaSettings.BOA_LANGUAGE + ".nt.bz2";
+    public static final String DBPEDIA_DISAMBIGUATIONS_FILE         = DUMP_PATH + "disambiguations_" + LANGUAGE + ".nt";
+    public static final String DBPEDIA_DISAMBIGUATIONS_FILE_URL     = "http://downloads.dbpedia.org/3.8/" + LANGUAGE + "/disambiguations_" + LANGUAGE + ".nt.bz2";
+    public static final String DBPEDIA_DISAMBIGUATIONS_FILE_BZ2     = DUMP_PATH + "disambiguations_" + LANGUAGE + ".nt.bz2";
     
-    private long downloadDBpediaSpotlightFilesTime = 0;
+    public static final String DBPEDIA_INTERLANGUAGE_LINKS_FILE     = DUMP_PATH + "interlanguage_links_" + LANGUAGE + ".ttl";
+    public static final String DBPEDIA_INTERLANGUAGE_LINKS_FILE_URL = "http://downloads.dbpedia.org/3.8/" + LANGUAGE + "/interlanguage_links_" + LANGUAGE + ".ttl.bz2";
+    public static final String DBPEDIA_INTERLANGUAGE_LINKS_FILE_BZ2 = DUMP_PATH + "interlanguage_links_" + LANGUAGE + ".ttl.bz2";
+    
+    private long downloadDBpediaSpotlightFilesTime = 0; 
 
     /* (non-Javadoc)
      * @see de.uni_leipzig.simba.boa.backend.pipeline.module.PipelineModule#getName()
@@ -55,11 +62,12 @@ public class DBpediaSpotlightDownloadModule extends AbstractPreprocessingModule 
         long startDownloadDBpediaSpotlightFiles = System.currentTimeMillis();
         this.logger.info("Starting to download dbpedia spotlight files.");
         
-        Thread labels           = this.startDownloadThread(DBPEDIA_LABELS_FILE_URL,           DBPEDIA_LABELS_FILE_BZ2);
-        Thread redirects        = this.startDownloadThread(DBPEDIA_REDIRECTS_FILE_URL,        DBPEDIA_REDIRECTS_FILE_BZ2);
-        Thread disambiguations  = this.startDownloadThread(DBPEDIA_DISAMBIGUATIONS_FILE_URL,  DBPEDIA_DISAMBIGUATIONS_FILE_BZ2);
+        Thread labels           	= this.startDownloadThread(DBPEDIA_LABELS_FILE_URL,           		DBPEDIA_LABELS_FILE_BZ2);
+        Thread redirects        	= this.startDownloadThread(DBPEDIA_REDIRECTS_FILE_URL,        		DBPEDIA_REDIRECTS_FILE_BZ2);
+        Thread disambiguations  	= this.startDownloadThread(DBPEDIA_DISAMBIGUATIONS_FILE_URL,  		DBPEDIA_DISAMBIGUATIONS_FILE_BZ2);
+        Thread interlanguageLinks	= this.startDownloadThread(DBPEDIA_INTERLANGUAGE_LINKS_FILE_URL,  	DBPEDIA_INTERLANGUAGE_LINKS_FILE_BZ2);
         
-        this.waitForThreads(labels, redirects, disambiguations);
+        this.waitForThreads(labels, redirects, disambiguations, interlanguageLinks);
         this.unzip();
         
         this.downloadDBpediaSpotlightFilesTime = System.currentTimeMillis() - startDownloadDBpediaSpotlightFiles;
@@ -74,16 +82,20 @@ public class DBpediaSpotlightDownloadModule extends AbstractPreprocessingModule 
         try {
             
             Process unzip = Runtime.getRuntime().exec("bunzip2 " + DBPEDIA_LABELS_FILE_BZ2);
-            if ( unzip.waitFor() != 0 ) throw new RuntimeException("bunzip2 of wikipedia dump failed!");
+            if ( unzip.waitFor() != 0 ) throw new RuntimeException("bunzip2 of labels file failed!");
             this.logger.info("Unzipping of labels file finished!");
             
             unzip = Runtime.getRuntime().exec("bunzip2 " + DBPEDIA_REDIRECTS_FILE_BZ2);
-            if ( unzip.waitFor() != 0 ) throw new RuntimeException("bunzip2 of wikipedia dump failed!");
+            if ( unzip.waitFor() != 0 ) throw new RuntimeException("bunzip2 of redirect file ailed!");
             this.logger.info("Unzipping of redirects file finished!");
             
             unzip = Runtime.getRuntime().exec("bunzip2 " + DBPEDIA_DISAMBIGUATIONS_FILE_BZ2);
-            if ( unzip.waitFor() != 0 ) throw new RuntimeException("bunzip2 of wikipedia dump failed!");
+            if ( unzip.waitFor() != 0 ) throw new RuntimeException("bunzip2 of dismabiguations file failed!");
             this.logger.info("Unzipping of dismabiguations file finished!");
+            
+            unzip = Runtime.getRuntime().exec("bunzip2 " + DBPEDIA_INTERLANGUAGE_LINKS_FILE_BZ2);
+            if ( unzip.waitFor() != 0 ) throw new RuntimeException("bunzip2 of interlanguage links failed!");
+            this.logger.info("Unzipping of interlanguage links file finished!");
         }
         catch (IOException e) {
             
@@ -107,13 +119,14 @@ public class DBpediaSpotlightDownloadModule extends AbstractPreprocessingModule 
      * @param redirects
      * @param disambiguations
      */
-    private void waitForThreads(Thread labels, Thread redirects, Thread disambiguations) {
+    private void waitForThreads(Thread labels, Thread redirects, Thread disambiguations, Thread links) {
 
         try {
             
             labels.join();
             redirects.join();
             disambiguations.join();
+            links.join();
         }
         catch (InterruptedException e) {
             
@@ -177,9 +190,11 @@ public class DBpediaSpotlightDownloadModule extends AbstractPreprocessingModule 
     @Override
     public boolean isDataAlreadyAvailable() {
 
-        return (new File(DBPEDIA_DISAMBIGUATIONS_FILE_BZ2).exists() && new File(DBPEDIA_REDIRECTS_FILE_BZ2).exists() && new File(DBPEDIA_LABELS_FILE_BZ2).exists()) 
+        return (new File(DBPEDIA_DISAMBIGUATIONS_FILE_BZ2).exists() && new File(DBPEDIA_REDIRECTS_FILE_BZ2).exists() 
+        			&& new File(DBPEDIA_LABELS_FILE_BZ2).exists() && new File(DBPEDIA_INTERLANGUAGE_LINKS_FILE_BZ2).exists()) 
                 ||
-               (new File(DBPEDIA_DISAMBIGUATIONS_FILE).exists() && new File(DBPEDIA_REDIRECTS_FILE).exists() && new File(DBPEDIA_LABELS_FILE).exists());
+               (new File(DBPEDIA_DISAMBIGUATIONS_FILE).exists() && new File(DBPEDIA_REDIRECTS_FILE).exists() 
+            		   && new File(DBPEDIA_LABELS_FILE).exists() && new File(DBPEDIA_INTERLANGUAGE_LINKS_FILE).exists());
     }
 
     /* (non-Javadoc)
