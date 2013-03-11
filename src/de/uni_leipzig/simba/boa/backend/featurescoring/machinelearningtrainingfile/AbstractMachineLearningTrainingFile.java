@@ -51,7 +51,7 @@ public abstract class AbstractMachineLearningTrainingFile implements MachineLear
         StringBuilder builder = new StringBuilder();
         
         builder.append(StringUtils.join(this.featureNames, Constants.FEATURE_FILE_COLUMN_SEPARATOR) + Constants.FEATURE_FILE_COLUMN_SEPARATOR +
-                "CLAZZ" + Constants.FEATURE_FILE_COLUMN_SEPARATOR + "POS" + Constants.FEATURE_FILE_COLUMN_SEPARATOR + "RELATION" + Constants.FEATURE_FILE_COLUMN_SEPARATOR + "PATTERN" + Constants.NEW_LINE_SEPARATOR);
+                "POS" + Constants.FEATURE_FILE_COLUMN_SEPARATOR + "CLAZZ" + Constants.FEATURE_FILE_COLUMN_SEPARATOR + "RELATION" + Constants.FEATURE_FILE_COLUMN_SEPARATOR + "PATTERN" + Constants.NEW_LINE_SEPARATOR);
         
         // one entry corresponds to one line
         for (MachineLearningTrainingFileEntry entry : this.annotatedEntries) {
