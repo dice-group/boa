@@ -62,7 +62,6 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
         // create index searcher in read only mode
         this.analyzer         = new LowerCaseWhitespaceAnalyzer();
-        this.indexSearcher    = LuceneIndexHelper.getIndexSearcher(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH);
         this.parser           = new QueryParser(Version.LUCENE_34, "sentence", this.analyzer);
     }
     
@@ -90,6 +89,14 @@ public class DefaultPatternSearcher implements PatternSearcher {
         this.indexSearcher = LuceneIndexHelper.openIndexSearcher(index, true);
     }
     
+    public void init(){
+    	
+    	if ( this.indexSearcher == null ) {
+    		
+    		this.indexSearcher    = LuceneIndexHelper.getIndexSearcher(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH);
+    	}
+    }
+    
     /**
      * Returns the sentence index by the given id.
      * 
@@ -100,6 +107,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
         try {
 
+        	init();
             return this.indexSearcher.doc(id).get("sentence");
         }
         catch (CorruptIndexException e) {
@@ -146,6 +154,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
      */
     public Collection<SearchResult> queryBackgroundKnowledge(BackgroundKnowledge backgroundKnowledge) {
 
+    	init();
         List<SearchResult> results = new ArrayList<SearchResult>();
 
         Set<String> firstLabels =  backgroundKnowledge.getSubjectSurfaceForms();
@@ -255,7 +264,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
     private ScoreDoc[] searchIndexWithoutFilter(Query q, int maxNumberOfDocuments) {
 
         try {
-            
+            init();
             return indexSearcher.search(q, maxNumberOfDocuments).scoreDocs;
         }
         catch (IOException e) {
