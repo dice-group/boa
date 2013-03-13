@@ -14,8 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.github.gerbsen.file.FileUtil;
+
 import weka.core.tokenizers.NGramTokenizer;
-import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.DatatypePropertyBackgroundKnowledge;
@@ -62,7 +63,7 @@ public class SurfaceFormGenerator {
         
         SurfaceFormGenerator.logger.info("Intializing surface forms...");
         
-        List<String> surfaceForms = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_surface_forms.tsv", "UTF-8");
+        List<String> surfaceForms = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_surface_forms.tsv", "UTF-8", "#");
         
 //        // we dont have backup for english
 //        List<String> backup = new ArrayList<String>();

@@ -8,8 +8,9 @@ import java.util.Set;
 
 import org.apache.lucene.search.IndexSearcher;
 
-import de.danielgerber.math.MathUtil;
-import de.danielgerber.string.StringUtil;
+import com.github.gerbsen.math.MathUtil;
+import com.github.gerbsen.string.StringUtil;
+
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;

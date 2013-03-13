@@ -3,6 +3,7 @@ package de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecoll
 import java.io.File;
 import java.util.List;
 
+import com.github.gerbsen.file.FileUtil;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
@@ -10,7 +11,6 @@ import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 
-import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledgeManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -79,7 +79,7 @@ public class EntityTypeBackgroundKnowledgeCollectorModule extends AbstractDefaul
 	private void queryObjectProperties() {
 		
 		String backgroundKnowledgeFilename = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "object_properties_to_query.txt";
-		List<String> objectPropertyUris = FileUtil.readFileInList(backgroundKnowledgeFilename, "UTF-8");
+		List<String> objectPropertyUris = FileUtil.readFileInList(backgroundKnowledgeFilename, "UTF-8", "#");
 		
 		for ( String objectPropertyUri : objectPropertyUris ) {
 			

@@ -8,11 +8,11 @@ import java.util.Map;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import com.github.gerbsen.format.OutputFormatter;
 import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Table;
 
-import de.danielgerber.format.OutputFormatter;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.comparator.FeatureNameComparator;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;

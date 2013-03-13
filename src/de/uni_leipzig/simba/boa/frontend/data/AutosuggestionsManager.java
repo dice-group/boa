@@ -7,10 +7,10 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
+import com.github.gerbsen.format.OutputFormatter;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 
-import de.danielgerber.format.OutputFormatter;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 

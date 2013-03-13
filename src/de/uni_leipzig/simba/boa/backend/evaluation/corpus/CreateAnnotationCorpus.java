@@ -11,13 +11,13 @@ import java.util.Map;
 
 import org.apache.lucene.queryParser.ParseException;
 
+import com.github.gerbsen.file.BufferedFileWriter;
+import com.github.gerbsen.file.BufferedFileWriter.WRITER_WRITE_MODE;
+import com.github.gerbsen.file.FileUtil;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
-import de.danielgerber.file.BufferedFileWriter;
-import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
-import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
@@ -43,7 +43,7 @@ public class CreateAnnotationCorpus {
 		String annotatorOneFile	= NLPediaSettings.BOA_BASE_DIRECTORY + "evaluation/eval_a1_v0.2.txt";
 		String annotatorTwoFile	= NLPediaSettings.BOA_BASE_DIRECTORY + "evaluation/eval_a2_v0.2.txt";
 		
-		List<String> propertiesToQuery = FileUtil.readFileInList(propertiesFilename, "UTF-8");
+		List<String> propertiesToQuery = FileUtil.readFileInList(propertiesFilename, "UTF-8", "#");
 		
 		DefaultPatternSearcher patternSearcher = new DefaultPatternSearcher();
 		

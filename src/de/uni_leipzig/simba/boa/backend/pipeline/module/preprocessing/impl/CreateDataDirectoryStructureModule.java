@@ -84,6 +84,8 @@ public class CreateDataDirectoryStructureModule extends AbstractPreprocessingMod
             new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_DEFAULT_PATTERN_PATH).mkdir();
         if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_DETAIL_PATTERN_PATH).exists()) 
             new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_DETAIL_PATTERN_PATH).mkdir();
+        if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_RESOURCES_PATH).exists()) 
+            new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_RESOURCES_PATH).mkdir();
         
         // pattern mappings
         if ( !new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.PATTERN_MAPPINGS_PATH).exists()) 

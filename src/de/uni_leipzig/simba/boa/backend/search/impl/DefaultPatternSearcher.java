@@ -408,11 +408,11 @@ public class DefaultPatternSearcher implements PatternSearcher {
         // patterns containing only stop-words can't be used, because they are
         // way to general
 		// @author Maciej Janicki -- this feature can be switched on/off in settings
-		if (NLPediaSettings.getBooleanSetting("removeStopWordsFromPatterns")) {
+//		if (NLPediaSettings.getBooleanSetting("removeStopWordsFromPatterns")) {
 			naturalLanguageRepresentationChunks.removeAll(Constants.STOP_WORDS);
 			if (naturalLanguageRepresentationChunks.size() == 0)
 				return false;
-		}
+//		}
 		
         // patterns shall not start with "and" or "and ," because this is the
         // conjunction of sentences and does not carry meaning

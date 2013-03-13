@@ -11,7 +11,8 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.store.Directory;
 
-import de.danielgerber.file.FileUtil;
+import com.github.gerbsen.file.FileUtil;
+
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
@@ -52,8 +53,8 @@ public class EvaluationManager {
      */
     public static Map<Triple,String> loadEvaluationSentences() {
 
-        List<String> evaluationFiles = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.EVALUATION_PATH + "Evaluation_3_Upmeier.txt", "UTF-8");
-        evaluationFiles.addAll(FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.EVALUATION_PATH + "Evaluation_3_Haack.txt", "UTF-8"));
+        List<String> evaluationFiles = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.EVALUATION_PATH + "Evaluation_3_Upmeier.txt", "UTF-8", "#");
+        evaluationFiles.addAll(FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.EVALUATION_PATH + "Evaluation_3_Haack.txt", "UTF-8", "#"));
         
         // clean this list of sentences
         List<String> cleanedEvaluationFiles = new ArrayList<String>();

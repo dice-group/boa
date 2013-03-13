@@ -5,13 +5,13 @@ import java.util.List;
 
 import cern.colt.Arrays;
 
+import com.github.gerbsen.file.BufferedFileWriter;
+import com.github.gerbsen.file.BufferedFileWriter.WRITER_WRITE_MODE;
+import com.github.gerbsen.file.FileUtil;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
-import de.danielgerber.file.BufferedFileWriter;
-import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
-import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.ObjectPropertyBackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -41,7 +41,7 @@ public class MusicOntologyObjectPropertyBackgroundGeneratorCollectorModule
 		logger.info("path: " + backgroundKnowledgeFilename);
 		
 		List<String> objectPropertyUris = FileUtil.readFileInList(
-				backgroundKnowledgeFilename, "UTF-8");
+				backgroundKnowledgeFilename, "UTF-8", "#");
 
 		this.logger
 				.info("objectpropertyuris: " + objectPropertyUris.toString());
@@ -146,7 +146,7 @@ public class MusicOntologyObjectPropertyBackgroundGeneratorCollectorModule
      */
     protected void handleObjectPropertyQuery(Property property, String fileName, List<QuerySolution> resultSets) {
 
-        BufferedFileWriter writer = FileUtil.openWriter(fileName, de.danielgerber.Constants.UTF_8_ENCODING, WRITER_WRITE_MODE.APPEND);
+        BufferedFileWriter writer = FileUtil.openWriter(fileName, "UTF-8", WRITER_WRITE_MODE.APPEND);
 
         for (QuerySolution solution : resultSets) {
 

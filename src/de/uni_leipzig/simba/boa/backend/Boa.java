@@ -19,7 +19,7 @@ public class Boa {
         
         // Initialize logging, settings, factories etc., needs to be FIRST call!!
         NLPediaSetup setup = new NLPediaSetup(false);
-        NLPediaLogger logger = new NLPediaLogger(NLPedia.class);
+        NLPediaLogger logger = new NLPediaLogger(Boa.class);
         
         // this logs the jvm heap usage 
         Timer timer = new Timer();

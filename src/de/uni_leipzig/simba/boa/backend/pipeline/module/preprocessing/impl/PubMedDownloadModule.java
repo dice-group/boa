@@ -5,7 +5,8 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.danielgerber.www.FileDownloader;
+import com.github.gerbsen.www.FileDownloader;
+
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.AbstractPreprocessingModule;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
