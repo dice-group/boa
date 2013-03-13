@@ -8,7 +8,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import de.danielgerber.format.OutputFormatter;
+import com.github.gerbsen.format.OutputFormatter;
+
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry.MachineLearningTrainingFileEntry;
 

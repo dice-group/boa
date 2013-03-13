@@ -13,9 +13,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import de.danielgerber.file.BufferedFileWriter;
-import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
-import de.danielgerber.file.FileUtil;
+import com.github.gerbsen.file.BufferedFileWriter;
+import com.github.gerbsen.file.BufferedFileWriter.WRITER_WRITE_MODE;
+import com.github.gerbsen.file.FileUtil;
+
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
@@ -147,7 +148,7 @@ public class PatternScoreManager {
         List<MachineLearningTrainingFileEntry> entries = new ArrayList<MachineLearningTrainingFileEntry>();
         
         // we need to skip the first line because it contains the feature names and no entries
-        List<String> lines = FileUtil.readFileInList(filepath, encoding);
+        List<String> lines = FileUtil.readFileInList(filepath, encoding, "#");
         List<String> featureNames = Arrays.asList(lines.get(0).split("\t"));
         
         for (String line : lines.subList(1, lines.size())) {

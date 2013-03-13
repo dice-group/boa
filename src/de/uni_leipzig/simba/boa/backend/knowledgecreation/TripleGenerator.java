@@ -3,6 +3,10 @@
  */
 package de.uni_leipzig.simba.boa.backend.knowledgecreation;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
@@ -21,6 +25,7 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
+import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.FeatureBasedDisambiguation;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.MeshupUriRetrieval;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.ClassesUriRetrieval;
 
@@ -36,6 +41,7 @@ public class TripleGenerator {
     private NamedEntityRecognition nerTagger;
     private PartOfSpeechTagger posTagger;
 	private ClassesUriRetrieval classesUriRetrieval;
+	FeatureBasedDisambiguation disambiguation = new FeatureBasedDisambiguation();
     
     public TripleGenerator() {
         
@@ -140,9 +146,6 @@ public class TripleGenerator {
             String domainUri         = mapping.getProperty().getRdfsDomain();
             String rangeUri          = mapping.getProperty().getRdfsRange();
 
-			System.out.println(pattern.getNaturalLanguageRepresentation());
-			System.out.println(taggedSentence);
-    
             if (beginsWithDomain) {
     
                 if (leftContext.containsSuitableEntity(domainUri) && rightContext.containsSuitableEntity(rangeUri)) {
@@ -153,18 +156,11 @@ public class TripleGenerator {
                         String subjectLabel = leftContext.getSuitableEntity(domainUri);
                         String objectLabel = rightContext.getSuitableEntity(rangeUri);
                         
-                        UriRetrieval uriRetrieval = new MeshupUriRetrieval();
-                        String subjectUri   = uriRetrieval.getUri(subjectLabel);
-                        //String objectUri    = uriRetrieval.getUri(objectLabel);
-						// @author Maciej Janicki
-						String objectUri = null;
-						if (NLPediaSettings.getBooleanSetting("rdfTypeKnowledgeGeneration")) {
-							objectUri	= this.classesUriRetrieval.getUri(objectLabel);
-						} else {
-                        	objectUri    = uriRetrieval.getUri(objectLabel);
-						}
-						if (objectUri == null)
-							return null;
+                        String subjectUri   = this.disambiguation.getUri(subjectLabel, objectLabel, getEntities(mergeTagsInSentences(taggedSentence)));
+                        String objectUri    = this.disambiguation.getUri(objectLabel, subjectLabel);
+                        
+                        if ( subjectUri.equals(Constants.NON_GOOD_URL_FOUND) 
+                        		|| objectUri.equals(Constants.NON_GOOD_URL_FOUND) ) return null;
                         
                         Resource subject    = new Resource(subjectUri, subjectLabel, domainUri);
                         Resource object     = new Resource(objectUri, objectLabel, rangeUri);
@@ -172,8 +168,6 @@ public class TripleGenerator {
                         Triple triple = new Triple(subject, mapping.getProperty(), object);
                         triple.addLearnedFromPattern(pattern);
                         triple.addLearnedFromSentences(sentence);
-                        
-                        System.out.println(triple);
                         
                         return triple;
                     }
@@ -189,19 +183,12 @@ public class TripleGenerator {
                         
                         String objectLabel = leftContext.getSuitableEntity(rangeUri);
                         String subjectLabel = rightContext.getSuitableEntity(domainUri);
+
+                        String subjectUri   = this.disambiguation.getUri(subjectLabel, objectLabel);
+                        String objectUri    = this.disambiguation.getUri(objectLabel, subjectLabel);
                         
-                        UriRetrieval uriRetrieval = new MeshupUriRetrieval();
-                        //String objectUri = uriRetrieval.getUri(objectLabel);
-						// @author Maciej Janicki
-						String objectUri = null;
-						if (NLPediaSettings.getBooleanSetting("rdfTypeKnowledgeGeneration")) {
-							objectUri	= this.classesUriRetrieval.getUri(objectLabel);
-						} else {
-                        	objectUri    = uriRetrieval.getUri(objectLabel);
-						}
-						if (objectUri == null)
-							return null;
-                        String subjectUri = uriRetrieval.getUri(subjectLabel);
+                        if ( subjectUri.equals(Constants.NON_GOOD_URL_FOUND) 
+                        		|| objectUri.equals(Constants.NON_GOOD_URL_FOUND) ) return null;
                         
                         // this is necessary, because we would generate triples with the same object & subject
                         if ( subjectUri.equals(objectUri) ) return null;
@@ -212,8 +199,6 @@ public class TripleGenerator {
                         Triple triple = new Triple(subject, mapping.getProperty(), object);
                         triple.addLearnedFromPattern(pattern);
                         triple.addLearnedFromSentences(sentence);
-                        
-                        System.out.println(triple);
                         
                         return triple;
                     }
@@ -228,4 +213,87 @@ public class TripleGenerator {
         // we could not extract a triple
         return null;
     }
+    
+    /**
+     * 
+     * @param mergedTaggedSentence
+     * @return
+     */
+    private List<String> getEntities(List<String> mergedTaggedSentence){
+        
+        List<String> entities = new ArrayList<String>();
+        for (String entity :  mergedTaggedSentence) {
+
+            if (entity.endsWith("_PERSON") ) entities.add(entity.replace("_PERSON", ""));
+            if (entity.endsWith("_MISC")) entities.add(entity.replace("_MISC", ""));
+            if (entity.endsWith("_PLACE")) entities.add(entity.replace("_PLACE", ""));
+            if (entity.endsWith("_ORGANIZATION")) entities.add(entity.replace("_ORGANIZATION", ""));
+            if (entity.endsWith("_NNP")) entities.add(entity.replace("_NNP", ""));
+        }
+        
+        return entities;
+    }
+    
+    /**
+     * 
+     */
+    public List<String> mergeTagsInSentences(String nerTaggedSentence) {
+
+        List<String> tokens = new ArrayList<String>();
+        String lastToken = "";
+        String lastTag = "";
+        String currentTag = "";
+        String newToken = "";
+        
+        for (String currentToken : nerTaggedSentence.split(" ")) {
+
+            currentTag = currentToken.substring(currentToken.lastIndexOf("_") + 1);
+
+            // we need to check for the previous token's tag
+            if (!currentToken.endsWith("_OTHER")) {
+
+                // we need to merge the cell
+                if (currentTag.equals(lastTag)) {
+
+                    newToken = lastToken.substring(0, lastToken.lastIndexOf("_")) + " " + currentToken;
+                    tokens.set(tokens.size() - 1, newToken);
+                }
+                // different tag found so just add it
+                else
+                    tokens.add(currentToken);
+            }
+            else {
+
+                // add the current token
+                tokens.add(currentToken);
+            }
+            // update for next iteration
+            lastToken = tokens.get(tokens.size() - 1);
+            lastTag = currentTag;
+        }
+        return tokens;
+    }
 }
+
+
+////String objectUri    = uriRetrieval.getUri(objectLabel);
+//// @author Maciej Janicki
+//String objectUri = null;
+//if (NLPediaSettings.getBooleanSetting("rdfTypeKnowledgeGeneration")) {
+//	objectUri	= this.classesUriRetrieval.getUri(objectLabel);
+//} else {
+//	objectUri    = uriRetrieval.getUri(objectLabel);
+//}
+//if (objectUri == null)
+//	return null;
+
+////String objectUri = uriRetrieval.getUri(objectLabel);
+//// @author Maciej Janicki
+//String objectUri = null;
+//if (NLPediaSettings.getBooleanSetting("rdfTypeKnowledgeGeneration")) {
+//	objectUri	= this.classesUriRetrieval.getUri(objectLabel);
+//} else {
+//	objectUri    = uriRetrieval.getUri(objectLabel);
+//}
+//if (objectUri == null)
+//	return null;

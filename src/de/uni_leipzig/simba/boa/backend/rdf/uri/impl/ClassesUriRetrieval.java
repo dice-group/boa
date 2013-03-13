@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.danielgerber.file.FileUtil;
-import de.danielgerber.file.BufferedFileReader;
+import com.github.gerbsen.file.BufferedFileReader;
+import com.github.gerbsen.file.FileUtil;
+
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.danielgerber.file.BufferedFileReader;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
 
 /**

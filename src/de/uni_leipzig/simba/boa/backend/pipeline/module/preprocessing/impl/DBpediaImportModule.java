@@ -19,9 +19,10 @@ import org.apache.commons.io.FileUtils;
 import org.semanticweb.yars.nx.Node;
 import org.semanticweb.yars.nx.parser.NxParser;
 
-import de.danielgerber.file.BufferedFileWriter;
-import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
-import de.danielgerber.rdf.NtripleUtil;
+import com.github.gerbsen.file.BufferedFileWriter;
+import com.github.gerbsen.file.BufferedFileWriter.WRITER_WRITE_MODE;
+import com.github.gerbsen.rdf.NtripleUtil;
+
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;

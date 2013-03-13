@@ -46,8 +46,6 @@ import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 
-import de.danielgerber.Constants;
-import de.danielgerber.format.OutputFormatter;
 import de.uni_leipzig.simba.boa.backend.concurrent.PrintJvmMemoryTimerTask;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;

@@ -21,6 +21,17 @@ public class Constants {
      */
     public static final String DBPEDIA_ONTOLOGY_PREFIX = "http://dbpedia.org/ontology/";
     
+    /* ##################################################################################### */
+    
+    public static final String DBPEDIA_LUCENE_FIELD_SURFACE_FORM 			= "surfaceForms";
+    public static final String DBPEDIA_LUCENE_FIELD_DISAMBIGUATION_SCORE 	= "disambiguationScore";
+    public static final String DBPEDIA_LUCENE_FIELD_URI 					= "uri";
+    
+    /* ##################################################################################### */
+    
+    public static final String BOA_LUCENE_FIELD_ENTITY						= "entity";
+    public static final String BOA_LUCENE_FIELD_URI							= "uri";
+    
     /* ##################################################################################### */ 
     
     
@@ -73,6 +84,11 @@ public class Constants {
      * 
      */
     public static final String INDEX_PATTERN_PATH = "index/pattern/";
+    
+    /**
+     * 
+     */
+	public static final String INDEX_RESOURCES_PATH = "index/resources/";
     
     /**
      * 
@@ -275,4 +291,14 @@ public class Constants {
 	 * 
 	 */
 	public static final String TURTLE = "TURTLE";
+
+	/**
+	 * 
+	 */
+	public static final String BOA_PREFIX = "http://boa.aksw.org/resource/";
+
+	/**
+	 * 
+	 */
+	public static final String NON_GOOD_URL_FOUND = "not found";
 }

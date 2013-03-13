@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import de.danielgerber.file.BufferedFileWriter;
-import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
+import com.github.gerbsen.encoding.Encoder.Encoding;
+import com.github.gerbsen.file.BufferedFileWriter;
+import com.github.gerbsen.file.BufferedFileWriter.WRITER_MODE;
+import com.github.gerbsen.file.BufferedFileWriter.WRITER_WRITE_MODE;
+
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.concurrent.BoaCallable;
@@ -44,7 +47,7 @@ public class PatternSearchCallable extends BoaCallable<SearchResult>{
 	    // otherwise we would have X non running threads with an opened index
 	    this.patternSearcher = PatternSearcherFactory.getInstance().createDefaultPatternSearcher(null);
 	    BufferedFileWriter writer = 
-	            new BufferedFileWriter(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH + this.name + ".sr", "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
+	            new BufferedFileWriter(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH + this.name + ".sr", Encoding.UTF_8, WRITER_WRITE_MODE.OVERRIDE);
 		
 		for ( BackgroundKnowledge backgroundKnowledge : this.backgroundKnowledgeList ) {
 			

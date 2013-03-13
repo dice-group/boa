@@ -12,12 +12,12 @@ import java.util.Set;
 
 import org.jsoup.helper.StringUtil;
 
+import com.github.gerbsen.file.BufferedFileReader;
+import com.github.gerbsen.file.BufferedFileWriter;
+import com.github.gerbsen.file.BufferedFileWriter.WRITER_WRITE_MODE;
+import com.github.gerbsen.file.FileUtil;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
-import de.danielgerber.file.BufferedFileReader;
-import de.danielgerber.file.BufferedFileWriter;
-import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
-import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;

@@ -28,9 +28,9 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.util.Version;
 import org.jsoup.Jsoup;
 
-import de.danielgerber.Constants;
-import de.danielgerber.file.BufferedFileReader;
-import de.danielgerber.file.FileUtil;
+import com.github.gerbsen.file.BufferedFileReader;
+import com.github.gerbsen.file.FileUtil;
+
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.lucene.LowerCaseWhitespaceAnalyzer;
@@ -121,7 +121,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 			
 			this.logger.info("Indexing file " + file + " (" + (double) file.length() / (1024 * 1024) + " MB)");
 
-			BufferedFileReader br = FileUtil.openReader(file.getAbsolutePath(), Constants.UTF_8_ENCODING);
+			BufferedFileReader br = FileUtil.openReader(file.getAbsolutePath(), "UTF-8");
 			List<IndexDocument> documents = new ArrayList<IndexDocument>();
 
 			IndexDocument document = new IndexDocument();

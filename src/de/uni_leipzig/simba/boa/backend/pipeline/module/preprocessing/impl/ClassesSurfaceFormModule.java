@@ -8,15 +8,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.github.gerbsen.encoding.Encoder.Encoding;
+import com.github.gerbsen.file.BufferedFileReader;
+import com.github.gerbsen.file.BufferedFileWriter;
+import com.github.gerbsen.file.BufferedFileWriter.WRITER_WRITE_MODE;
+import com.github.gerbsen.file.FileUtil;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
-
-import de.danielgerber.Constants;
-import de.danielgerber.file.BufferedFileReader;
-import de.danielgerber.file.BufferedFileWriter;
-import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
-import de.danielgerber.file.FileUtil;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -144,7 +143,7 @@ public class ClassesSurfaceFormModule extends AbstractPreprocessingModule {
 	}
 
 	private void writeResults(String fileName) {
-		BufferedFileWriter writer = FileUtil.openWriter(fileName, Constants.UTF_8_ENCODING, WRITER_WRITE_MODE.APPEND);
+		BufferedFileWriter writer = FileUtil.openWriter(fileName, "UTF-8", WRITER_WRITE_MODE.APPEND);
 
 		for (String uri : this.surfaceForms.keySet()) {
 			StringBuilder line = new StringBuilder();

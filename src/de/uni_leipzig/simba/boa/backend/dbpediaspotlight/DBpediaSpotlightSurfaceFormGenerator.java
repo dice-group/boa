@@ -20,10 +20,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.semanticweb.yars.nx.Node;
 import org.semanticweb.yars.nx.parser.NxParser;
 
-import de.danielgerber.file.BufferedFileWriter;
-import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
-import de.danielgerber.file.FileUtil;
-import de.danielgerber.rdf.NtripleUtil;
+import com.github.gerbsen.file.BufferedFileWriter;
+import com.github.gerbsen.file.BufferedFileWriter.WRITER_WRITE_MODE;
+import com.github.gerbsen.file.FileUtil;
+import com.github.gerbsen.rdf.NtripleUtil;
+
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -40,7 +41,7 @@ public class DBpediaSpotlightSurfaceFormGenerator {
     public static String SURFACE_FORMS_FILE           		= NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + NLPediaSettings.BOA_LANGUAGE + "_surface_forms.tsv";
 
     private static List<String> LOWERCASE_STOPWORDS         = null;
-    private static final List<String> STOPWORDS             = FileUtil.readFileInList(NLPediaSettings.BOA_BASE_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + NLPediaSettings.BOA_LANGUAGE + "/stopwords.txt", "UTF-8");
+    private static final List<String> STOPWORDS             = FileUtil.readFileInList(NLPediaSettings.BOA_BASE_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + NLPediaSettings.BOA_LANGUAGE + "/stopwords.txt", "UTF-8", "#");
 
     public static final String DBPEDIA_REDIRECTS_FILE       = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "redirects_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
     public static final String DBPEDIA_LABELS_FILE          = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.DBPEDIA_DUMP_PATH + "labels_" + NLPediaSettings.BOA_LANGUAGE + ".nt";
@@ -269,7 +270,7 @@ public class DBpediaSpotlightSurfaceFormGenerator {
         
         SURFACE_FORMS_FILE = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + language + "_surface_forms.tsv";
         
-        List<String> surfaceForms    = FileUtil.readFileInList(SURFACE_FORMS_FILE, "UTF-8");
+        List<String> surfaceForms    = FileUtil.readFileInList(SURFACE_FORMS_FILE, "UTF-8", "#");
         Map<String,Set<String>> urisToLabels = new HashMap<String,Set<String>>(); 
         
         // initialize the surface forms from dbpedia spotlight 

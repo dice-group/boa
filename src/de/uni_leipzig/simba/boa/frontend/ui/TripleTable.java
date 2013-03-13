@@ -1,10 +1,10 @@
 package de.uni_leipzig.simba.boa.frontend.ui;
 
+import com.github.gerbsen.format.OutputFormatter;
 import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Table;
 
-import de.danielgerber.format.OutputFormatter;
 import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 
 @SuppressWarnings("serial")

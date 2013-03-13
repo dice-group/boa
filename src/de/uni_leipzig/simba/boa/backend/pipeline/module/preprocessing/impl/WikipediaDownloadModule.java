@@ -5,7 +5,8 @@ package de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl;
 
 import java.io.File;
 
-import de.danielgerber.www.FileDownloader;
+import com.github.gerbsen.www.FileDownloader;
+
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.AbstractPreprocessingModule;

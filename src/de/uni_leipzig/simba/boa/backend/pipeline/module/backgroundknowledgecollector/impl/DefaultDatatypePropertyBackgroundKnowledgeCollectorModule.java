@@ -9,7 +9,8 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 
-import de.danielgerber.file.FileUtil;
+import com.github.gerbsen.file.FileUtil;
+
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledgeManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
@@ -82,7 +83,7 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 	 */
 	private void queryDatatypeProperties() {
 
-		List<String> datatypePropertyUris = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "datatype_properties_to_query.txt", "UTF-8");
+		List<String> datatypePropertyUris = FileUtil.readFileInList(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "datatype_properties_to_query.txt", "UTF-8", "#");
 		for ( String datatypePropertyUri : datatypePropertyUris ) {
 			
 			this.logger.info("Processing property: " + datatypePropertyUri);

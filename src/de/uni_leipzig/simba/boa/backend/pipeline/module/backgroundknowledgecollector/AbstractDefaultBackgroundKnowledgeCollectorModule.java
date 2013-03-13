@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.github.gerbsen.Constants;
+import com.github.gerbsen.file.BufferedFileWriter;
+import com.github.gerbsen.file.BufferedFileWriter.WRITER_WRITE_MODE;
+import com.github.gerbsen.file.FileUtil;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
-import de.danielgerber.Constants;
-import de.danielgerber.file.BufferedFileWriter;
-import de.danielgerber.file.BufferedFileWriter.WRITER_WRITE_MODE;
-import de.danielgerber.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.DatatypePropertyBackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.ObjectPropertyBackgroundKnowledge;
@@ -297,7 +297,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
     
     public static void main(String[] args) {
     	
-    	List<String> uris = FileUtil.readFileInList("/Users/gerb/Development/workspaces/experimental/boa/qa/en/backgroundknowledge/object_properties_to_query.txt", "UTF-8");
+    	List<String> uris = FileUtil.readFileInList("/Users/gerb/Development/workspaces/experimental/boa/qa/en/backgroundknowledge/object_properties_to_query.txt", "UTF-8", "#");
 		
     	for ( String uri : uris ) {
 
