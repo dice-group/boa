@@ -69,6 +69,7 @@ public class KnowledgeCreationCallable extends BoaCallable<Map<String, List<Trip
             }
             this.progress++;
         }
+        tripleGenerator.close();
         int tripleCount = 0;
         for ( List<Triple> triples : results.get(0).values()) tripleCount += triples.size();
         this.logger.info(this.name + " finished with " + tripleCount + " triples!");

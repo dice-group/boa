@@ -55,6 +55,11 @@ public class TripleGenerator {
 			this.classesUriRetrieval = new ClassesUriRetrieval();
     }
     
+    public void close(){
+    	
+    	this.disambiguation.close();
+    }
+    
     /**
      * 
      * @param mapping
@@ -156,8 +161,10 @@ public class TripleGenerator {
                         String subjectLabel = leftContext.getSuitableEntity(domainUri);
                         String objectLabel = rightContext.getSuitableEntity(rangeUri);
                         
-                        String subjectUri   = this.disambiguation.getUri(subjectLabel, objectLabel, getEntities(mergeTagsInSentences(taggedSentence)));
-                        String objectUri    = this.disambiguation.getUri(objectLabel, subjectLabel);
+                        List<String> entities = getEntities(mergeTagsInSentences(taggedSentence));
+                        
+                        String subjectUri   = this.disambiguation.getUri(subjectLabel, objectLabel, entities);
+                        String objectUri    = this.disambiguation.getUri(objectLabel, subjectLabel, entities);
                         
                         if ( subjectUri.equals(Constants.NON_GOOD_URL_FOUND) 
                         		|| objectUri.equals(Constants.NON_GOOD_URL_FOUND) ) return null;
