@@ -63,7 +63,7 @@ public final class StanfordNLPPartOfSpeechTagger implements PartOfSpeechTagger {
 			String posTag	= taggedWord.substring(lastIndex + 1);
 			String token	= taggedWord.substring(0, lastIndex);
 			
-			sentence.add(token + Constants.PART_OF_SPEECH_TAG_DELIMITER + PartOfSpeechTagNormalizer.PART_OF_SPEECH_TAG_MAPPINGS.get(posTag));
+			sentence.add(token + Constants.PART_OF_SPEECH_TAG_DELIMITER + posTag);
 			
 			if ( PartOfSpeechTagNormalizer.PART_OF_SPEECH_TAG_MAPPINGS.get(posTag) == null )
 				System.err.println("No tag mapping for tag: \"" + posTag + "\" found");
