@@ -551,6 +551,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
             
             Query query = this.parseQuery("+sentence:\"" + QueryParser.escape(pattern) + "\"");
             TotalHitCountCollector thcc = new TotalHitCountCollector();
+            if ( indexSearcher == null) this.init();
             indexSearcher.search(query, thcc);
             
             return thcc.getTotalHits();
