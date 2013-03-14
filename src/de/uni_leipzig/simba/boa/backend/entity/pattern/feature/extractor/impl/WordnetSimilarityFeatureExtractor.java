@@ -21,10 +21,10 @@ import edu.stanford.nlp.ling.WordTag;
 import edu.stanford.nlp.process.Morphology;
 
 
-public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
+public class WordnetSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 
 	private SimilarityAssessor similarityAssessor = null;
-	private NLPediaLogger logger = new NLPediaLogger(StringSimilarityFeatureExtractor.class);
+	private NLPediaLogger logger = new NLPediaLogger(WordnetSimilarityFeatureExtractor.class);
 	
 	private Morphology lemmatizer = new Morphology();
 	
