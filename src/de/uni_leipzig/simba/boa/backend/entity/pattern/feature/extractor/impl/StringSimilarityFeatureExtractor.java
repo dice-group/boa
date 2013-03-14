@@ -62,13 +62,15 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
         qexecProperty.addDefaultGraph("http://dbpedia.org");
 
         ResultSet results = qexecProperty.execSelect();
+        String label = "";
         while ( results.hasNext() ) {
         	
         	QuerySolution solution = results.nextSolution();
-        	return solution.getLiteral("label").getLexicalForm();
+        	label = solution.getLiteral("label").getLexicalForm();
         }
-		
-		return "";
+        
+        qexecProperty.close();
+		return label;
 	}
 	
 	public static void main(String[] args) {
