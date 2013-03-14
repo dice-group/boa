@@ -53,10 +53,12 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("LEVENSHTEIN"), similarity >= 0 ? similarity : 0);
 	}
 
-	private String getLabelForUri(String uri) {
+	private static String getLabelForUri(String uri) {
 		
 		String query = String.format("SELECT ?label " +
-				"{ <%s> rdfs:label ?label . FILTER(lang(?label) = '%s' }", uri, NLPediaSettings.BOA_LANGUAGE); 
+				"{ <%s> rdfs:label ?label . FILTER(lang(?label) = '%s') }", uri, "de"); 
+		
+		System.out.println(query);
 		
 		QueryEngineHTTP qexecProperty = new QueryEngineHTTP("http://live.dbpedia.org/sparql", query);
         qexecProperty.addDefaultGraph("http://dbpedia.org");
@@ -75,6 +77,6 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 	
 	public static void main(String[] args) {
 		
-//		getLabelForUri("http://dbpedia.org/ontology/capital");
+		getLabelForUri("http://dbpedia.org/ontology/capital");
 	}
 }
