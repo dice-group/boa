@@ -47,8 +47,8 @@
                     </bean>
                 </entry>
                 
-                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.StringSimilarityFeatureExtractor">
-                    <bean id="StringSimilarityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.StringSimilarityFeatureExtractor">
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.WordnetSimilarityFeatureExtractor">
+                    <bean id="WordnetSimilarityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.WordnetSimilarityFeatureExtractor">
                         <property name="activated" value="true" />
                         <property name="handeledFeatures">
                             <list>
@@ -131,6 +131,17 @@
                                 <ref bean="NNP_COUNT"/>
                                 <ref bean="GOOD_PLACE_DOMAIN"/>
                                 <ref bean="GOOD_PLACE_RANGE"/>
+                            </list>
+                        </property>
+                    </bean>
+                </entry>
+                
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.StringSimilarityFeatureExtractor">
+                    <bean id="StringSimilarityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.StringSimilarityFeatureExtractor"> 
+                        <property name="activated" value="true" />
+                        <property name="handeledFeatures">
+                            <list>
+                                <ref bean="LEVENSHTEIN"/>
                             </list>
                         </property>
                     </bean>
@@ -546,6 +557,23 @@
         <constructor-arg>
             <list>
                 <value>en</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="true" />
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <!-- ########################################################################## -->
+    <!-- ########################################################################## -->
+    
+    <bean id="LEVENSHTEIN"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="LEVENSHTEIN" />
+        <constructor-arg>
+            <list>
+                <value>en</value>
+                <value>de</value>
             </list>
         </constructor-arg>
         <constructor-arg value="true" />

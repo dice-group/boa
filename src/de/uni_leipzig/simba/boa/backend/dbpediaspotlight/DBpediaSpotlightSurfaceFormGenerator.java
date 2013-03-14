@@ -110,7 +110,6 @@ public class DBpediaSpotlightSurfaceFormGenerator {
 
 	        	// load the english ones in RAM
 	        	Map<String,Set<String>> enSurfaceForms = this.initializeSurfaceFormsFromFile("en");
-	        	System.out.println("NUmber:  " +enSurfaceForms.size());
 				
 	        	// go through each link and add the english labels if we have a mapping
 	        	for ( String[] subjectAndObject : NtripleUtil.getSubjectAndObjectsFromNTriple(DBPEDIA_INTERLANGUAGE_LINKS, "") )
