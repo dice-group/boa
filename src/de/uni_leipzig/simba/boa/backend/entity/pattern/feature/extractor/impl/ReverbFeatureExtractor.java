@@ -99,7 +99,7 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 	
 	public void close() {
 		
-		this.patternSearcher.close();
+		if ( this.patternSearcher != null ) this.patternSearcher.close();
 	}
 
     private void init() {
