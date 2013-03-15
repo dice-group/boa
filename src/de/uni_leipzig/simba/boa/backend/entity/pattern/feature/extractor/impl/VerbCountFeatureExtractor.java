@@ -12,8 +12,6 @@ public class VerbCountFeatureExtractor extends AbstractFeatureExtractor {
 	@Override
 	public void score(PatternMappingPatternPair pair) {
 
-		pair.getPattern().getFeatures().put(
-		        FeatureFactory.getInstance().getFeature("VERB_COUNT"), 
-		        Double.valueOf(StringUtils.countMatches(pair.getPattern().getPosTaggedString(), "V")));
+		
 	}
 }

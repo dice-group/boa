@@ -46,6 +46,7 @@ public class ReverbFeatureExtractor extends AbstractFeatureExtractor {
 	@Override
 	public void score(PatternMappingPatternPair pair) {
 	    
+		if ( !NLPediaSettings.BOA_LANGUAGE.equals("en") ) return;
 	    if ( !this.initialized ) this.init();
 	    
 		Set<Double> scores    = new HashSet<Double>();
