@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.comparator.PatternComparatorGenerator;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
@@ -74,22 +75,25 @@ public class FeatureHelper {
 	        if ( featureExtractor.isActivated() ) {
 	            
 	            for ( Feature feature : featureExtractor.getHandeledFeatures() ) {
+	            	
+	            	if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) ) {
 	                
-	                Map<PatternMapping,Double> maximas = new HashMap<PatternMapping,Double>();
-	                
-	                // calculate the local maximum of the current feature for all pattern mappings 
-	                for ( PatternMapping mapping : mappings ) {
-	                    
-	                    // empty patterns wont have a maximum
-	                    if ( mapping.getPatterns().size() > 0 ) {
-	                        
-	                        logger.info("Starting to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
-	                        maximas.put(mapping, calculateLocalMaximum(mapping, feature));
-	                        logger.info("Finished to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
-	                    }
-	                }
-	                        
-	                FeatureHelper.localFeatureMaxima.put(feature, maximas);
+		                Map<PatternMapping,Double> maximas = new HashMap<PatternMapping,Double>();
+		                
+		                // calculate the local maximum of the current feature for all pattern mappings 
+		                for ( PatternMapping mapping : mappings ) {
+		                    
+		                    // empty patterns wont have a maximum
+		                    if ( mapping.getPatterns().size() > 0 ) {
+		                        
+		                        logger.info("Starting to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
+		                        maximas.put(mapping, calculateLocalMaximum(mapping, feature));
+		                        logger.info("Finished to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
+		                    }
+		                }
+		                        
+		                FeatureHelper.localFeatureMaxima.put(feature, maximas);
+	            	}
 	            }
 	        }
 	    }

@@ -41,12 +41,7 @@ public abstract class AbstractFeatureExtractor implements FeatureExtractor {
      */
     public List<Feature> getHandeledFeatures() {
     	
-    	List<Feature> features = new ArrayList<Feature>();
-    	for ( Feature f : this.handeledFeatures ) 
-    		if ( f.getSupportedLanguages().contains(Language.getLanguage(NLPediaSettings.BOA_LANGUAGE)))
-    			features.add(f);
-    	
-        return features;
+        return this.handeledFeatures;
     }
 
     /**
