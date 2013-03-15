@@ -16,8 +16,12 @@ import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.impl.SubjectPredicateObjectPattern;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 
 
 public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
@@ -34,7 +38,7 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 		// get the uri from cache so that we don't need to query every time 
 		String uri = pair.getMapping().getProperty().getUri();
 		if ( !this.uriToLabel.containsKey(uri) ) 
-			this.uriToLabel.put(uri, this.getLabelForUri(uri));
+			this.uriToLabel.put(uri, getLabelForUri(uri));
 		
 		double similarity = -1D;
 		
@@ -49,16 +53,14 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 				similarity = Math.max(similarity, metric.getSimilarity(part, token));
 			}
 		}
-		
+		System.out.println(similarity);
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("LEVENSHTEIN"), similarity >= 0 ? similarity : 0);
 	}
 
 	private static String getLabelForUri(String uri) {
 		
 		String query = String.format("SELECT ?label " +
-				"{ <%s> rdfs:label ?label . FILTER(lang(?label) = '%s') }", uri, "de"); 
-		
-		System.out.println(query);
+				"{ <%s> rdfs:label ?label . FILTER(lang(?label) = '%s') }", uri, NLPediaSettings.BOA_LANGUAGE); 
 		
 		QueryEngineHTTP qexecProperty = new QueryEngineHTTP("http://live.dbpedia.org/sparql", query);
         qexecProperty.addDefaultGraph("http://dbpedia.org");
@@ -77,6 +79,13 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 	
 	public static void main(String[] args) {
 		
-		getLabelForUri("http://dbpedia.org/ontology/capital");
+		PatternMapping map = new PatternMapping();
+		map.setProperty(new Property("http://dbpedia.org/ontology/capital"));
+		
+		Pattern p = new SubjectPredicateObjectPattern();
+		p.setNaturalLanguageRepresentation("?D? ist eine Hauptstadt in ?D?");
+		
+		StringSimilarityFeatureExtractor sf = new StringSimilarityFeatureExtractor();
+		sf.score(new PatternMappingPatternPair(map, p));
 	}
 }
