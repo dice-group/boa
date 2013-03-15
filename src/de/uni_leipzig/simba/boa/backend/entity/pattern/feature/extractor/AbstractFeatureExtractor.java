@@ -5,7 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Language;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 
 /**
@@ -38,8 +40,13 @@ public abstract class AbstractFeatureExtractor implements FeatureExtractor {
      * @return the handeledFeatures
      */
     public List<Feature> getHandeledFeatures() {
-    
-        return handeledFeatures;
+    	
+    	List<Feature> features = new ArrayList<Feature>();
+    	for ( Feature f : this.handeledFeatures ) 
+    		if ( f.getSupportedLanguages().contains(Language.getLanguage(NLPediaSettings.BOA_LANGUAGE)))
+    			features.add(f);
+    	
+        return features;
     }
 
     /**
