@@ -429,7 +429,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
         try {
             
-            this.indexSearcher.close();
+        	if ( this.indexSearcher != null ) this.indexSearcher.close();
         }
         catch (IOException e) {
             
