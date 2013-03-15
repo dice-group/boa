@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
@@ -17,10 +18,36 @@ import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
  * @author gerb
  *
  */
-public class SemanticFeatureExtractor extends AbstractFeatureExtractor {
+public class PartOfSpeechFeatureExtractor extends AbstractFeatureExtractor {
 
 	@Override
 	public void score(PatternMappingPatternPair pair) {
+		
+		if ( NLPediaSettings.BOA_LANGUAGE.equals("en") ) this.processEnglishPair(pair);
+		else if ( NLPediaSettings.BOA_LANGUAGE.equals("de") ) this.processGermanPair(pair);
+	}
+
+	private void processGermanPair(PatternMappingPatternPair pair) {
+		
+		PatternMapping m = pair.getMapping();
+		String nlr = pair.getPattern().getNaturalLanguageRepresentation();
+		String pos = pair.getPattern().getPosTaggedString();
+		
+		// meins, deiner
+		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("PPOSAT_COUNT"), (double) StringUtils.countMatches(pos, "PPOSAT"));
+		// mein [Buch], deine [Mutter]
+		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("PPOSS_COUNT"), (double) StringUtils.countMatches(pos, "PPOSS"));
+		// Tisch, Herr, [das] Reisen
+		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("NN_COUNT"), (double) StringUtils.countMatches(pos, "NN"));
+		// Hans, Hamburg, HSV
+		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("NE_COUNT"), (double) StringUtils.countMatches(pos, "NE"));
+		
+		// number of verbs
+		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("VERB_COUNT"), 
+		        Double.valueOf(StringUtils.countMatches(pos.replace("PWAV", "").replace("PAV", "").replace("ADV", ""), "V")));
+	}
+
+	private void processEnglishPair(PatternMappingPatternPair pair) {
 		
 		PatternMapping m = pair.getMapping();
 		String nlr = pair.getPattern().getNaturalLanguageRepresentation();
@@ -46,8 +73,14 @@ public class SemanticFeatureExtractor extends AbstractFeatureExtractor {
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("SINGLE_NOUN"), 
 				pos.equals("NN") ? 1D : 0D);
 		
+		// number of nouns
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("NNP_COUNT"), 
 				(double) StringUtils.countMatches(pos, "NNP"));
+		
+		// number of verbs
+		pair.getPattern().getFeatures().put(
+		        FeatureFactory.getInstance().getFeature("VERB_COUNT"), 
+		        Double.valueOf(StringUtils.countMatches(pos, "V")));
 		
 		String nlrWithVariables = pair.getPattern().getNaturalLanguageRepresentationWithoutVariables().trim();
 		

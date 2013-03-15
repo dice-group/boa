@@ -103,7 +103,7 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 	
 		double domainCorrectness = (double) correctDomain / (double) sentenceCount;
 		double rangeCorrectness = (double) correctRange / (double) sentenceCount;
-		double typicity = ((domainCorrectness + rangeCorrectness) / 2) * Math.log(sentences.size() + 1);
+		double typicity = ((domainCorrectness + rangeCorrectness) / 2) * Math.log(sentenceCount + 1);
 		
 		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY_CORRECT_DOMAIN_NUMBER"), domainCorrectness >= 0 ? domainCorrectness : 0);
 		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY_CORRECT_RANGE_NUMBER"), rangeCorrectness >= 0 ? rangeCorrectness : 0);

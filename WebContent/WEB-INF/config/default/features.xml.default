@@ -71,17 +71,6 @@
                     </bean>
                 </entry>
                 
-                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.VerbCountFeatureExtractor">
-                    <bean id="VerbCountFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.VerbCountFeatureExtractor">
-                        <property name="activated" value="true" />
-                        <property name="handeledFeatures">
-                            <list>
-                                <ref bean="VERB_COUNT"/>
-                            </list>
-                        </property>
-                    </bean>
-                </entry>
-                
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.LengthFeatureExtractor">
                     <bean id="LengthFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.LengthFeatureExtractor" >
                         <property name="activated" value="true" />
@@ -91,6 +80,8 @@
                                 <ref bean="CHARACTER_COUNT"/>
                                 <ref bean="AVERAGE_TOKEN_LENGHT"/>
                                 <ref bean="UPPERCASE_LETTER_COUNT"/>
+                                <ref bean="NON_ALPHA_SPACE_COUNT"/>
+                                <ref bean="DIGIT_COUNT"/>
                             </list>
                         </property>
                     </bean>
@@ -118,8 +109,8 @@
                     </bean>
                 </entry>
                 
-                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SemanticalFeatureExtractor">
-                    <bean id="SemanticFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SemanticalFeatureExtractor"> 
+                <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.PartOfSpeechFeatureExtractor">
+                    <bean id="PartOfSpeechFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.PartOfSpeechFeatureExtractor"> 
                         <property name="activated" value="true" />
                         <property name="handeledFeatures">
                             <list>
@@ -131,6 +122,11 @@
                                 <ref bean="NNP_COUNT"/>
                                 <ref bean="GOOD_PLACE_DOMAIN"/>
                                 <ref bean="GOOD_PLACE_RANGE"/>
+                                <ref bean="VERB_COUNT"/>
+                                <ref bean="NE_COUNT"/>
+                                <ref bean="NN_COUNT"/>
+                                <ref bean="PPOSS_COUNT"/>
+                                <ref bean="PPOSAT_COUNT"/>
                             </list>
                         </property>
                     </bean>
@@ -392,6 +388,34 @@
         <constructor-arg value="true" />
         <constructor-arg value="true" />
     </bean>
+    
+    <bean id="DIGIT_COUNT"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="DIGIT_COUNT" />
+        <constructor-arg>
+            <list>
+                <value>de</value>
+                <value>en</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <bean id="NON_ALPHA_SPACE_COUNT"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="NON_ALPHA_SPACE_COUNT" />
+        <constructor-arg>
+            <list>
+                <value>de</value>
+                <value>en</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+        <constructor-arg value="true" />
+    </bean>
 
     <!-- ########################################################################## -->
     <!-- ########################################################################## -->
@@ -561,6 +585,58 @@
         </constructor-arg>
         <constructor-arg value="true" />
         <constructor-arg value="false" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <bean id="NE_COUNT"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="NE_COUNT" />
+        <constructor-arg>
+            <list>
+                <value>de</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <bean id="NN_COUNT"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="NN_COUNT" />
+        <constructor-arg>
+            <list>
+                <value>de</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <bean id="PPOSS_COUNT"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="PPOSS_COUNT" />
+        <constructor-arg>
+            <list>
+                <value>de</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <bean id="PPOSAT_COUNT"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="PPOSAT_COUNT" />
+        <constructor-arg>
+            <list>
+                <value>de</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
         <constructor-arg value="true" />
     </bean>
     

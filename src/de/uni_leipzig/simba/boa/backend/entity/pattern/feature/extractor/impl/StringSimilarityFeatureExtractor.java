@@ -53,7 +53,6 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 				similarity = Math.max(similarity, metric.getSimilarity(part, token));
 			}
 		}
-		System.out.println(similarity);
 		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("LEVENSHTEIN"), similarity >= 0 ? similarity : 0);
 	}
 
