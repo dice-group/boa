@@ -554,7 +554,6 @@
         <constructor-arg>
             <list>
                 <value>en</value>
-                <value>de</value>
             </list>
         </constructor-arg>
         <constructor-arg value="true" />
