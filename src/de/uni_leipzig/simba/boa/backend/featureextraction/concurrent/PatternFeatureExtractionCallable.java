@@ -74,7 +74,7 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 	                }
 	                catch ( Exception e) {
 	                	
-	                	System.out.println("Error for mapping " + pair.getMapping().getProperty().getUri() + " & " + pair.getPattern().getNaturalLanguageRepresentation());
+	                	System.out.println("Error for mapping in " + featureExtractor.getClass().getSimpleName() + ":\t"  + pair.getMapping().getProperty().getUri() + " & " + pair.getPattern().getNaturalLanguageRepresentation());
 	                	e.printStackTrace();
 	                }
 	                this.progress++;
