@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.HiddenFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
@@ -184,6 +185,10 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 				// get every sentence from this document
 				for (String sentence : sentenceBoundaryDisambiguation.getSentences(Jsoup.parse(doc.text.toString()).text()) ) {
 
+					// there are a lot of very short sentences
+					// there are mostly due to sbd errors :(
+					if ( StringUtils.countMatches(sentence, " ") < 5 ) continue;
+					
 					String nerSentence = nerTagger.getAnnotatedString(sentence);
 					String posTagged = posTagger.getAnnotatedString(sentence);
 					
