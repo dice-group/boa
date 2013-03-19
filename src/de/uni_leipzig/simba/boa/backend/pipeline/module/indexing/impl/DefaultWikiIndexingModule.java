@@ -38,6 +38,7 @@ import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper;
 import de.uni_leipzig.simba.boa.backend.lucene.LuceneIndexHelper.LuceneIndexType;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
+import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.SentenceBoundaryDisambiguation;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.AbstractPipelineModule;
 
@@ -167,6 +168,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 		
 		protected SentenceBoundaryDisambiguation sentenceBoundaryDisambiguation = NaturalLanguageProcessingToolFactory.getInstance().createDefaultSentenceBoundaryDisambiguation();
 		protected NamedEntityRecognition nerTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultNamedEntityRecognition();
+		protected PartOfSpeechTagger posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
 
 		public IndexingThread(IndexWriter writer, List<IndexDocument> documents) {
 			
@@ -182,15 +184,17 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 				// get every sentence from this document
 				for (String sentence : sentenceBoundaryDisambiguation.getSentences(Jsoup.parse(doc.text.toString()).text()) ) {
 
-					String taggedSentence = nerTagger.getAnnotatedString(sentence);
+					String nerSentence = nerTagger.getAnnotatedString(sentence);
+					String posTagged = posTagger.getAnnotatedString(sentence);
 					
 					// add it to the index
 				    LuceneIndexHelper.indexDocument(writer, 
 				    		createLuceneDocument(
 				    				doc.uri, 
 				    				sentence, 
-				    				taggedSentence, 
-				    				new HashSet<String>(getEntities(this.mergeTagsInSentences(taggedSentence)))));
+				    				nerSentence,
+				    				posTagged,
+				    				new HashSet<String>(getEntities(this.mergeTagsInSentences(nerSentence)))));
 				}
 			
 			indexDocumentCount += this.documents.size();			
@@ -266,14 +270,16 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 		 * 
 		 * @param uri - the uri of the wiki entry
 		 * @param sentence - a single sentence from the wiki entry
+		 * @param posTagged 
 		 * @return a Lucene Document
 		 */
-		protected Document createLuceneDocument(String uri, String sentence, String taggedSentence, Set<String> entities) {
+		protected Document createLuceneDocument(String uri, String sentence, String nerSentence, String posTagged, Set<String> entities) {
 
 			Document luceneDocument = new Document();
 			luceneDocument.add(new Field("uri", uri, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO));
 			luceneDocument.add(new Field("sentence", sentence, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
-			luceneDocument.add(new Field("ner", taggedSentence, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
+			luceneDocument.add(new Field("ner", nerSentence, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
+			luceneDocument.add(new Field("pos", posTagged, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO));
 			
 			for ( String entity : entities )
                 luceneDocument.add(new Field("entity", entity, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO));
