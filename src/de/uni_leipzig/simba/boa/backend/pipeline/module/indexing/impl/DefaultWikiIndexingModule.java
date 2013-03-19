@@ -202,6 +202,12 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 				    				new HashSet<String>(getEntities(this.mergeTagsInSentences(nerSentence)))));
 				}
 			
+			// set those null so that they dont take up all RAM, since the 
+			// reference to this thread lives on until all indexing is finished
+			this.posTagger = null;
+			this.nerTagger = null;
+			this.documents = null;
+			
 			indexDocumentCount += this.documents.size();			
 			logger.info("Finished indexing of " + indexDocumentCount + " documents!");
 		}
