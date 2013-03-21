@@ -619,6 +619,7 @@ public class DefaultPatternSearcher implements PatternSearcher {
 
 	public Collection<? extends String> getSentencesWithLimit(Set<Integer> foundInSentences, int maxNumberOfEvaluationSentences) {
 		
+		if ( this.indexSearcher == null ) this.init();
 		Set<String> sentences = new HashSet<String>();
         for (Integer id : foundInSentences) {
 
