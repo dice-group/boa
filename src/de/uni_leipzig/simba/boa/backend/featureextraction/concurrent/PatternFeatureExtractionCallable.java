@@ -1,6 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.featureextraction.concurrent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -74,7 +75,7 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 	                }
 	                catch ( Exception e) {
 	                	
-	                	System.out.println("Error for mapping in " + featureExtractor.getClass().getSimpleName() + ":\t"  + pair.getMapping().getProperty().getUri() + " & " + pair.getPattern().getNaturalLanguageRepresentation());
+	                	System.out.println("Error for mapping in " + featureExtractor.getClass().getSimpleName() + ":\t"  + pair.getMapping().getProperty().getUri() + " & " + pair.getPattern().getNaturalLanguageRepresentation() + "\n" + e.getMessage() + " "+ Arrays.toString(e.getStackTrace()));
 	                	logger.error("Error for mapping in " + featureExtractor.getClass().getSimpleName() + ":\t"  + pair.getMapping().getProperty().getUri() + " & " + pair.getPattern().getNaturalLanguageRepresentation(), e);
 	                }
 	                this.progress++;
