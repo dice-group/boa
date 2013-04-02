@@ -165,10 +165,17 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 		                
 		                // check if each pattern has more values for every feature
 		                for ( Feature feature : featureExtractor.getHandeledFeatures() ) {
-		                    
-		                    // we can stop if we found one pattern without a key/value pair
-		                    patternsScored &= pattern.getFeatures().containsKey(feature);
-		                    if ( !patternsScored ) break;
+		                	
+		                	if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) ) {
+			                    
+			                    // exclude everything which is not activated
+			                    if ( feature.isUseForPatternLearning() ) {
+			                    	
+			                    	// we can stop if we found one pattern without a key/value pair
+				                    patternsScored &= pattern.getFeatures().containsKey(feature);
+				                    if ( !patternsScored ) break;
+			                    }
+		                	}
 		                }
 		            }
 		        }

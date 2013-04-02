@@ -86,9 +86,9 @@ public class FeatureHelper {
 		                    // empty patterns wont have a maximum
 		                    if ( mapping.getPatterns().size() > 0 ) {
 		                        
-		                        logger.info("Starting to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
+		                        logger.debug("Starting to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
 		                        maximas.put(mapping, calculateLocalMaximum(mapping, feature));
-		                        logger.info("Finished to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
+		                        logger.debug("Finished to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
 		                    }
 		                }
 		                        
