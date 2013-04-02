@@ -90,6 +90,7 @@ public class WekaMachineLearning implements GenericTool {
             logger.error("Could not classify instance: " + instance + " uri:" + mapping.getProperty().getUri() + " pattern: " + pattern.getNaturalLanguageRepresentation(), e);
 //            throw new RuntimeException("Could not classify instance: " + instance, e);
         }
+        return 0D;
     }
 
     /* (non-Javadoc)
