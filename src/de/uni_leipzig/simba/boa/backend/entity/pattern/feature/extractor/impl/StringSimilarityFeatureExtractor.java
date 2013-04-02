@@ -61,7 +61,7 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 		String query = String.format("SELECT ?label " +
 				"{ <%s> rdfs:label ?label . FILTER(lang(?label) = '%s') }", uri, NLPediaSettings.BOA_LANGUAGE); 
 		
-		QueryEngineHTTP qexecProperty = new QueryEngineHTTP("http://live.dbpedia.org/sparql", query);
+		QueryEngineHTTP qexecProperty = new QueryEngineHTTP("http://dbpedia.org/sparql", query);
         qexecProperty.addDefaultGraph("http://dbpedia.org");
 
         ResultSet results = qexecProperty.execSelect();
