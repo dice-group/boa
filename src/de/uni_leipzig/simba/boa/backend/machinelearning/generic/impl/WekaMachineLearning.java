@@ -58,7 +58,11 @@ public class WekaMachineLearning implements GenericTool {
             this.instances = loader.getStructure();
             this.instances.deleteAttributeAt(this.instances.numAttributes() -1); // we need to delete those two
             this.instances.deleteAttributeAt(this.instances.numAttributes() -1); // because we dont need them and weka is confused
+            this.instances.deleteAttributeAt(this.instances.numAttributes() - 2);
             this.instances.setClassIndex(this.instances.numAttributes() - 3);
+            
+            logger.info(this.instances.toSummaryString());
+            
             this.loadModel();
         }
         catch (Exception e) {

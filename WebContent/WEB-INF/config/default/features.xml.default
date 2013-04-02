@@ -481,7 +481,7 @@
     
     <!-- ########################################################################## -->
     <!-- ########################################################################## -->
-    
+
     <bean id="POSSESSIVE"
         class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
         <constructor-arg value="POSSESSIVE" />
@@ -534,7 +534,6 @@
         <constructor-arg value="true" />
     </bean>
     
-        
     <bean id="NNP_COUNT"
         class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
         <constructor-arg value="NNP_COUNT" />
@@ -638,7 +637,7 @@
         <constructor-arg value="true" />
         <constructor-arg value="true" />
     </bean>
-    
+        
     <!-- ########################################################################## -->
     <!-- ########################################################################## -->
     
@@ -655,4 +654,5 @@
         <constructor-arg value="false" />
         <constructor-arg value="true" />
     </bean>
+    
 </beans>
