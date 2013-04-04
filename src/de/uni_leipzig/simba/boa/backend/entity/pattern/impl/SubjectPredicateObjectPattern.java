@@ -10,7 +10,7 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.AbstractPattern;
  * @author gerb
  *
  */
-public class SubjectPredicateObjectPattern extends AbstractPattern {
+public class SubjectPredicateObjectPattern extends AbstractPattern implements Comparable<SubjectPredicateObjectPattern> {
 
     /**
      * 
@@ -36,4 +36,10 @@ public class SubjectPredicateObjectPattern extends AbstractPattern {
         
         return this.naturalLanguageRepresentation.substring(0, this.naturalLanguageRepresentation.length() - 3).substring(3).trim();
     }
+
+	@Override
+	public int compareTo(SubjectPredicateObjectPattern o) {
+
+		return this.naturalLanguageRepresentation.compareTo(o.naturalLanguageRepresentation);
+	}
 }
