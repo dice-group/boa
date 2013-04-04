@@ -12,7 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
+
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingGeneralizedPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.context.Context;
 import de.uni_leipzig.simba.boa.backend.entity.context.LeftContext;
@@ -20,6 +22,7 @@ import de.uni_leipzig.simba.boa.backend.entity.context.RightContext;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
@@ -45,7 +48,7 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 	 * @see simba.nlpedia.entity.pattern.evaluation.PatternEvaluator#evaluatePattern(simba.nlpedia.entity.pattern.PatternMapping)
 	 */
 	@Override
-	public void score(PatternMappingPatternPair pair) {
+	public void score(PatternMappingGeneralizedPatternPair pair) {
 		
 		long start = new Date().getTime();
 		
@@ -54,63 +57,76 @@ public class TypicityFeatureExtractor extends AbstractFeatureExtractor {
 		
 		// load the named entity tool and the pattern searcher as late as possible
 		if ( this.patternSearcher == null ) this.patternSearcher = new DefaultPatternSearcher();
+		
+		SummaryStatistics domainStat	= new SummaryStatistics();
+		SummaryStatistics rangeStat		= new SummaryStatistics();
+		SummaryStatistics sentencesStat = new SummaryStatistics();
+		SummaryStatistics typicityStat	= new SummaryStatistics();
 
-	    Pattern pattern = pair.getPattern();
-		String patternWithOutVariables = pattern.getNaturalLanguageRepresentationWithoutVariables();
-		
-		Map<String,String> sentences = patternSearcher.getExactMatchSentencesTagged(patternWithOutVariables, maxNumberOfEvaluationSentences);
-		
-		double correctDomain  = 0;
-		double correctRange   = 0;
-		int sentenceCount     = sentences.size();
-		
-		// go through all sentences which were found in the index containing the pattern
-		for (Map.Entry<String,String> entry : sentences.entrySet()) {
+		for ( Pattern pattern : pair.getGeneralizedPattern().getPatterns() ) {
+
+			String patternWithOutVariables = pattern.getNaturalLanguageRepresentationWithoutVariables();
 			
-		    // left of the pattern can't be any named entity
-			if ( entry.getKey().toLowerCase().startsWith(patternWithOutVariables.toLowerCase())) continue;
+			Map<String,String> sentences = patternSearcher.getExactMatchSentencesTagged(patternWithOutVariables, maxNumberOfEvaluationSentences);
 			
-			String nerTagged = entry.getValue();
-			String sentence	 = entry.getKey();
+			double correctDomain  = 0;
+			double correctRange   = 0;
+			int sentenceCount     = sentences.size();
 			
-			if ( nerTagged != null && sentence != null && patternWithOutVariables != null &&
-					nerTagged.length() > 0 && sentence.length() > 0 && patternWithOutVariables.length() > 0 ) {
+			// go through all sentences which were found in the index containing the pattern
+			for (Map.Entry<String,String> entry : sentences.entrySet()) {
 				
-				Context leftContext     = this.createContext(LeftContext.class, nerTagged, sentence, patternWithOutVariables);
-				Context rightContext    = this.createContext(RightContext.class, nerTagged, sentence, patternWithOutVariables);
+			    // left of the pattern can't be any named entity
+				if ( entry.getKey().toLowerCase().startsWith(patternWithOutVariables.toLowerCase())) continue;
 				
-				// there are sentence which can not be parsed
-				if ( leftContext == null || rightContext == null ) {
-				    
-				    sentenceCount--; // we don't want to include broken sentences in the statistics
-				    continue;
-				}
+				String nerTagged = entry.getValue();
+				String sentence	 = entry.getKey();
 				
-				// to the left of the pattern is the domain resource, to the right the range resource
-				if ( pattern.isDomainFirst() ) {
+				if ( nerTagged != null && sentence != null && patternWithOutVariables != null &&
+						nerTagged.length() > 0 && sentence.length() > 0 && patternWithOutVariables.length() > 0 ) {
 					
-					if ( leftContext.containsSuitableEntity(domainUri) ) correctDomain++;
-					if ( rightContext.containsSuitableEntity(rangeUri) ) correctRange++; 
-				}
-				// vice versa
-				else {
+					Context leftContext     = this.createContext(LeftContext.class, nerTagged, sentence, patternWithOutVariables);
+					Context rightContext    = this.createContext(RightContext.class, nerTagged, sentence, patternWithOutVariables);
 					
-					if ( leftContext.containsSuitableEntity(rangeUri) ) correctRange++;
-					if ( rightContext.containsSuitableEntity(domainUri) ) correctDomain++;
+					// there are sentence which can not be parsed
+					if ( leftContext == null || rightContext == null ) {
+					    
+					    sentenceCount--; // we don't want to include broken sentences in the statistics
+					    continue;
+					}
+					
+					// to the left of the pattern is the domain resource, to the right the range resource
+					if ( pattern.isDomainFirst() ) {
+						
+						if ( leftContext.containsSuitableEntity(domainUri) ) correctDomain++;
+						if ( rightContext.containsSuitableEntity(rangeUri) ) correctRange++; 
+					}
+					// vice versa
+					else {
+						
+						if ( leftContext.containsSuitableEntity(rangeUri) ) correctRange++;
+						if ( rightContext.containsSuitableEntity(domainUri) ) correctDomain++;
+					}
 				}
 			}
+		
+			double domainCorrectness = (double) correctDomain / (double) sentenceCount;
+			double rangeCorrectness = (double) correctRange / (double) sentenceCount;
+			double typicity = ((domainCorrectness + rangeCorrectness) / 2) * Math.log(sentenceCount + 1);
+			
+			setValue(pattern, "TYPICITY_CORRECT_DOMAIN_NUMBER", domainCorrectness >= 0 ? domainCorrectness : 0, domainStat);
+			setValue(pattern, "TYPICITY_CORRECT_RANGE_NUMBER", rangeCorrectness >= 0 ? rangeCorrectness : 0, rangeStat);
+			setValue(pattern, "TYPICITY_SENTENCES", Math.log(sentenceCount + 1)  >= 0 ? Math.log(sentenceCount + 1) : 0, sentencesStat);
+			setValue(pattern, "TYPICITY", typicity >= 0 ? typicity : 0, typicityStat);
+			
+			this.logger.debug("Typicity feature for " + pair.getMapping().getProperty().getLabel() + "/\"" + pattern.getNaturalLanguageRepresentation() + "\"  finished in " + TimeUtil.convertMilliSeconds((new Date().getTime() - start)) + ".");
 		}
-	
-		double domainCorrectness = (double) correctDomain / (double) sentenceCount;
-		double rangeCorrectness = (double) correctRange / (double) sentenceCount;
-		double typicity = ((domainCorrectness + rangeCorrectness) / 2) * Math.log(sentenceCount + 1);
 		
-		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY_CORRECT_DOMAIN_NUMBER"), domainCorrectness >= 0 ? domainCorrectness : 0);
-		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY_CORRECT_RANGE_NUMBER"), rangeCorrectness >= 0 ? rangeCorrectness : 0);
-		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY_SENTENCES"), Math.log(sentenceCount + 1)  >= 0 ? Math.log(sentenceCount + 1) : 0);
-		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TYPICITY"), typicity >= 0 ? typicity : 0 );
-		
-		this.logger.debug("Typicity feature for " + pair.getMapping().getProperty().getLabel() + "/\"" + pattern.getNaturalLanguageRepresentation() + "\"  finished in " + TimeUtil.convertMilliSeconds((new Date().getTime() - start)) + ".");
+		Map<Feature,Double> features = pair.getGeneralizedPattern().getFeatures();
+		features.put(FeatureFactory.getInstance().getFeature("TYPICITY_CORRECT_DOMAIN_NUMBER"), domainStat.getMean());
+		features.put(FeatureFactory.getInstance().getFeature("TYPICITY_CORRECT_RANGE_NUMBER"), rangeStat.getMean());
+		features.put(FeatureFactory.getInstance().getFeature("TYPICITY_SENTENCES"), sentencesStat.getMean());
+		features.put(FeatureFactory.getInstance().getFeature("TYPICITY"), typicityStat.getMean());
 	}
 	
 	/**

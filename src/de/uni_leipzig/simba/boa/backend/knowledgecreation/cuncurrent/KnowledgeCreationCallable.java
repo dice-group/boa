@@ -13,6 +13,7 @@ import java.util.Set;
 import org.apache.lucene.store.Directory;
 
 import de.uni_leipzig.simba.boa.backend.concurrent.BoaCallable;
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingGeneralizedPatternPair;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.featureextraction.concurrent.PatternFeatureExtractionCallable;

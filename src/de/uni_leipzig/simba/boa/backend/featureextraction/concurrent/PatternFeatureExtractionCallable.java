@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.concurrent.BoaCallable;
-import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingGeneralizedPatternPair;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.ReverbFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TotalOccurrenceFeatureExtractor;
@@ -23,16 +23,16 @@ import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
  * 
  * @author Daniel Gerber
  */
-public class PatternFeatureExtractionCallable extends BoaCallable<PatternMappingPatternPair> {
+public class PatternFeatureExtractionCallable extends BoaCallable<PatternMappingGeneralizedPatternPair> {
 
     private final NLPediaLogger logger = new NLPediaLogger(PatternFeatureExtractionCallable.class);
     
     int numberOfActivatedFeatureExtractors = 0;
-    private List<PatternMappingPatternPair> patternMappingPatterns = null;
+    private List<PatternMappingGeneralizedPatternPair> patternMappingPatterns = null;
 	private Map<String,FeatureExtractor> featureExtractorsMapping = FeatureFactory.getInstance().getFeatureExtractorMap();
 	private Set<PatternMapping> patternMappings;
 	
-	public PatternFeatureExtractionCallable(Set<PatternMapping> patternMappings, List<PatternMappingPatternPair> featureExtractionPairsSubList) {
+	public PatternFeatureExtractionCallable(Set<PatternMapping> patternMappings, List<PatternMappingGeneralizedPatternPair> featureExtractionPairsSubList) {
 	    
 		this.patternMappingPatterns = featureExtractionPairsSubList;
 		this.patternMappings = patternMappings;
@@ -48,7 +48,7 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 	}
 	
 	@Override
-	public Collection<PatternMappingPatternPair> call() {
+	public Collection<PatternMappingGeneralizedPatternPair> call() {
 		
 	    // if we shuffle the future extractors first, we can avoid that all the extractors run heavy task,
 	    // for example a Lucene search, in parallel
@@ -66,17 +66,17 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 	            long start = System.currentTimeMillis();
 	            
 	            // do feature score with respect to each pattern mapping
-	            for (PatternMappingPatternPair pair : patternMappingPatterns) {
+	            for (PatternMappingGeneralizedPatternPair pair : patternMappingPatterns) {
 	                
-	                this.logger.debug(featureExtractor.getClass().getSimpleName() + "/" + this.name + ": " + pair.getMapping().getProperty().getUri() + " / " + pair.getPattern().getNaturalLanguageRepresentation());
+	                this.logger.debug(featureExtractor.getClass().getSimpleName() + "/" + this.name + ": " + pair.getMapping().getProperty().getUri() + " / " + pair.getGeneralizedPattern().getNaturalLanguageRepresentation());
 	                try {
 	                	
 	                	featureExtractor.score(pair);
 	                }
 	                catch ( Exception e) {
 	                	
-	                	System.out.println("Error for mapping in " + featureExtractor.getClass().getSimpleName() + ":\t"  + pair.getMapping().getProperty().getUri() + " & " + pair.getPattern().getNaturalLanguageRepresentation() + "\n" + e.getMessage() + " "+ Arrays.toString(e.getStackTrace()));
-	                	logger.error("Error for mapping in " + featureExtractor.getClass().getSimpleName() + ":\t"  + pair.getMapping().getProperty().getUri() + " & " + pair.getPattern().getNaturalLanguageRepresentation(), e);
+	                	System.out.println("Error for mapping in " + featureExtractor.getClass().getSimpleName() + ":\t"  + pair.getMapping().getProperty().getUri() + " & " + pair.getGeneralizedPattern().getNaturalLanguageRepresentation() + "\n" + e.getMessage() + " "+ Arrays.toString(e.getStackTrace()));
+	                	logger.error("Error for mapping in " + featureExtractor.getClass().getSimpleName() + ":\t"  + pair.getMapping().getProperty().getUri() + " & " + pair.getGeneralizedPattern().getNaturalLanguageRepresentation(), e);
 	                }
 	                this.progress++;
 	            }

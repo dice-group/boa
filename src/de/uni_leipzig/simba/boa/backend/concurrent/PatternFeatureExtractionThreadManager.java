@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.featureextraction.concurrent.PatternFeatureExtractionCallable;
@@ -34,33 +35,33 @@ public class PatternFeatureExtractionThreadManager {
     private static final NLPediaLogger logger                               = new NLPediaLogger(PatternFeatureExtractionThreadManager.class);
     private static final int PATTERN_FEATURE_EXTRACTION_THREAD_POOL_SIZE    = NLPediaSettings.getIntegerSetting("patternFeatureExtractionThreadPoolSize");
     
-    public static List<PatternMappingPatternPair> startFeatureExtractionCallables(Set<PatternMapping> patternMappings, int numberOfTotalFeatureExtractionThreads) {
+    public static List<PatternMappingGeneralizedPatternPair> startFeatureExtractionCallables(Set<PatternMapping> patternMappings, int numberOfTotalFeatureExtractionThreads) {
 
-        List<PatternMappingPatternPair> results = new ArrayList<PatternMappingPatternPair>();
+        List<PatternMappingGeneralizedPatternPair> results = new ArrayList<PatternMappingGeneralizedPatternPair>();
         
         // prepare pairs so that they can be better distributed to extraction threads 
-        List<PatternMappingPatternPair> patternMappingPattern = new ArrayList<PatternMappingPatternPair>();
+        List<PatternMappingGeneralizedPatternPair> patternMappingPattern = new ArrayList<PatternMappingGeneralizedPatternPair>();
         for ( PatternMapping mapping : patternMappings ) 
-            for ( Pattern pattern : mapping.getPatterns() )
-                patternMappingPattern.add(new PatternMappingPatternPair(mapping, pattern));
+            for ( GeneralizedPattern pattern : mapping.getGeneralizedPatterns() )
+                patternMappingPattern.add(new PatternMappingGeneralizedPatternPair(mapping, pattern));
         
         Collections.shuffle(patternMappingPattern);
                     
         try {
             
             // devide them into numberOfTotalFeatureExtractionThreads sublists to better distribute them to threads
-            List<List<PatternMappingPatternPair>> featureExtractionPairsSubLists = ListUtil.split(patternMappingPattern, (patternMappingPattern.size() / numberOfTotalFeatureExtractionThreads) + 1);
+            List<List<PatternMappingGeneralizedPatternPair>> featureExtractionPairsSubLists = ListUtil.split(patternMappingPattern, (patternMappingPattern.size() / numberOfTotalFeatureExtractionThreads) + 1);
 
             // create a thread pool and service for n threads/callable 
             ExecutorService executorService = Executors.newFixedThreadPool(PATTERN_FEATURE_EXTRACTION_THREAD_POOL_SIZE);
             logger.info("Created executorservice for pattern feature extraction with " + numberOfTotalFeatureExtractionThreads + 
                     " threads and a thread pool of size " + PATTERN_FEATURE_EXTRACTION_THREAD_POOL_SIZE + ".");
             
-            List<Callable<Collection<PatternMappingPatternPair>>> todo = new ArrayList<Callable<Collection<PatternMappingPatternPair>>>();
+            List<Callable<Collection<PatternMappingGeneralizedPatternPair>>> todo = new ArrayList<Callable<Collection<PatternMappingGeneralizedPatternPair>>>();
             
             int i = 1;
             // one thread per sublist of pattern mapping & pattern but only n threads get executed at the same time
-            for (List<PatternMappingPatternPair> featureExtractionPairsSubList : featureExtractionPairsSubLists ) {
+            for (List<PatternMappingGeneralizedPatternPair> featureExtractionPairsSubList : featureExtractionPairsSubLists ) {
                 
                 PatternFeatureExtractionCallable pfec = new PatternFeatureExtractionCallable(patternMappings, featureExtractionPairsSubList);
                 pfec.setName("PatternFeatureExtractionCallable-" + i++);
@@ -73,13 +74,13 @@ public class PatternFeatureExtractionThreadManager {
             timer.schedule(new PatternFeatureExtractionPrintProgressTask(todo), 0, 30000);
             
             // invoke all waits until all threads are finished
-            List<Future<Collection<PatternMappingPatternPair>>> answers = executorService.invokeAll(todo);
+            List<Future<Collection<PatternMappingGeneralizedPatternPair>>> answers = executorService.invokeAll(todo);
             
             // all threads have finished so we can shut down the progess printing
             timer.cancel();
             
             // collect all the results
-            for (Future<Collection<PatternMappingPatternPair>> future : answers) results.addAll(future.get());
+            for (Future<Collection<PatternMappingGeneralizedPatternPair>> future : answers) results.addAll(future.get());
             
             // shut down the service and all threads
             executorService.shutdown();

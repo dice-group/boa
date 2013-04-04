@@ -29,7 +29,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingGeneralizedPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.ReverbFeatureExtractor;

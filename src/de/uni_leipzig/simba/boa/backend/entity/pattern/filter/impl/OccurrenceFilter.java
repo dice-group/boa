@@ -1,15 +1,18 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.filter.impl;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Matcher;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.PatternMappingManager;
 
 /**
  * 
@@ -25,7 +28,7 @@ public class OccurrenceFilter implements PatternFilter {
 		// collect all patterns which do not fit the filters, can't modify list while iteration
 		Set<GeneralizedPattern> correctPatterns = new HashSet<GeneralizedPattern>();
 		
-		for ( GeneralizedPattern p : patternMapping.getPatterns() ) {
+		for ( GeneralizedPattern p : patternMapping.getGeneralizedPatterns() ) {
 			
 			// skip this evaluation, because it was characterized as not suitable in a previous evaluation
 			if ( p.isUseForPatternEvaluation() ) {
@@ -66,6 +69,32 @@ public class OccurrenceFilter implements PatternFilter {
 			}
 		}
 		// replace them with the ones which survived the filtering
-		patternMapping.setPatterns(correctPatterns);
+		patternMapping.setGeneralizedPatterns(correctPatterns);
 	}
+	
+//	public static void main(String[] args) {
+//		
+//		String nlr = "was his her he fault World in 9 March 2012 the";
+//		System.out.println(nlr + ": " + PatternMappingManager.generalize(nlr));
+//		nlr = "when he";
+//		System.out.println(nlr + ": " + PatternMappingManager.generalize(nlr));
+//		nlr = "when he ,";
+//		System.out.println(nlr + ": " + PatternMappingManager.generalize(nlr));
+//		nlr = "written by Steve Smith and";
+//		System.out.println(nlr + ": " + PatternMappingManager.generalize(nlr));
+//		nlr = "years old ,";
+//		System.out.println(nlr + ": " + PatternMappingManager.generalize(nlr));
+//		nlr = ", Baden-Württemberg";
+//		System.out.println(nlr + ": " + PatternMappingManager.generalize(nlr));
+//		nlr = ", Baden-Württemberg Baden-Württemberg";
+//		System.out.println(nlr + ": " + PatternMappingManager.generalize(nlr));
+//		nlr = ", Baden-Württemberg in Baden-Württemberg";
+//		System.out.println(nlr + ": " + PatternMappingManager.generalize(nlr));
+//		nlr = ", Baden-Württemberg in Baden-Württemberg ``";
+//		System.out.println(nlr + ": " + PatternMappingManager.generalize(nlr));
+//		nlr = ", Baden-Württemberg in Baden-Württemberg , ``";
+//		System.out.println(nlr + ": " + PatternMappingManager.generalize(nlr));
+//		nlr = "`` , Baden-Württemberg in Baden-Württemberg ``";
+//		System.out.println(nlr + ": " + PatternMappingManager.generalize(nlr));
+//	}
 }

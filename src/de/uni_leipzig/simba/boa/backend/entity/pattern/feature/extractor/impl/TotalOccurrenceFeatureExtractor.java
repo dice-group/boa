@@ -1,10 +1,13 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
-import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
+import java.util.Map;
+
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingGeneralizedPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.search.PatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 
@@ -28,21 +31,22 @@ public class TotalOccurrenceFeatureExtractor extends AbstractFeatureExtractor {
     }
 
     @Override
-	public void score(PatternMappingPatternPair pair) {
+	public void score(PatternMappingGeneralizedPatternPair pair) {
 		
         if ( this.searcher == null ) this.searcher = new DefaultPatternSearcher();
         
-		// this is for junit testing
-		this.scoreMapping(pair.getPattern());
+        int totalOccurrences = 0;
+        for ( Pattern pattern : pair.getGeneralizedPattern().getPatterns() ) {
+        	
+        	int occurrences = searcher.getTotalHits(pattern.getNaturalLanguageRepresentationWithoutVariables());
+        	totalOccurrences += occurrences;
+    		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TOTAL_OCCURRENCE"), Math.log(Double.valueOf(occurrences) + 1));
+        }
+        
+        Map<Feature,Double> features = pair.getGeneralizedPattern().getFeatures();
+		features.put(FeatureFactory.getInstance().getFeature("TOTAL_OCCURRENCE"), Math.log(Double.valueOf(totalOccurrences) + 1));
 	}
 	
-	public void scoreMapping(Pattern pattern) {
-
-		int totalOccurrences = searcher.getTotalHits(pattern.getNaturalLanguageRepresentationWithoutVariables());
-		
-		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature("TOTAL_OCCURRENCE"), Math.log(Double.valueOf(totalOccurrences) + 1));
-	}
-
 	public void close() {
 		
 		this.searcher.close();

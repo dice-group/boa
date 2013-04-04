@@ -20,15 +20,10 @@ public class GeneralizedPattern extends AbstractPattern {
 	
 	private List<Pattern> patterns = new ArrayList<Pattern>();
 	
-	/* (non-Javadoc)
-	 * @see de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern#getNaturalLanguageRepresentationWithoutVariables()
-	 */
-	@Override
-	public String getNaturalLanguageRepresentationWithoutVariables() {
-		// TODO Auto-generated method stub
-		return null;
+	public GeneralizedPattern(String generalizedNlr) {
+		this.naturalLanguageRepresentation = generalizedNlr;
 	}
-	
+
 	/**
 	 * @return the naturalLanguageRepresentation
 	 */
@@ -82,7 +77,9 @@ public class GeneralizedPattern extends AbstractPattern {
 		return nlr;
 	}
 	
-	public String getGeneralizedNaturalLanguageRepresentation() {
-		return this.naturalLanguageRepresentation;
-	}
+	@Override
+	public String getNaturalLanguageRepresentationWithoutVariables() {
+        
+        return this.naturalLanguageRepresentation.substring(0, this.naturalLanguageRepresentation.length() - 3).substring(3).trim();
+    }
 }
