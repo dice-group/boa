@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
  * @author gerb
  *
  */
-public class GeneralizedPattern extends AbstractPattern {
+public class GeneralizedPattern extends AbstractPattern implements Comparable<GeneralizedPattern> {
 
 	java.util.regex.Pattern number	= java.util.regex.Pattern.compile("\\d{1,2}");
 	java.util.regex.Pattern year	= java.util.regex.Pattern.compile("\\d{4}");
@@ -30,8 +30,7 @@ public class GeneralizedPattern extends AbstractPattern {
 	@Override
 	public String getNaturalLanguageRepresentation() {
 	
-		// TODO
-		return null;
+		return this.naturalLanguageRepresentation;
 	}
 	
 	/**
@@ -69,17 +68,15 @@ public class GeneralizedPattern extends AbstractPattern {
 		return learnedFrom;
 	}
 
-	public String generateGeneralizedNaturalLanguageRepresentation(String nlr) {
-		
-		nlr = nlr.replaceAll("\\d{4}", "YEAR");
-		nlr = nlr.replaceAll("(-)?\\d+(\\.\\d*)?", "NUMBER");
-		
-		return nlr;
-	}
-	
 	@Override
 	public String getNaturalLanguageRepresentationWithoutVariables() {
         
         return this.naturalLanguageRepresentation.substring(0, this.naturalLanguageRepresentation.length() - 3).substring(3).trim();
     }
+
+	@Override
+	public int compareTo(GeneralizedPattern o) {
+		
+		return this.naturalLanguageRepresentation.compareTo(o.naturalLanguageRepresentation);
+	}
 }
