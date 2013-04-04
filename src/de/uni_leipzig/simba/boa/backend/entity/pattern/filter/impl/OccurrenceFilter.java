@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
@@ -22,9 +23,9 @@ public class OccurrenceFilter implements PatternFilter {
 	public void filterPattern(PatternMapping patternMapping) {
 
 		// collect all patterns which do not fit the filters, can't modify list while iteration
-		Set<Pattern> correctPatterns = new HashSet<Pattern>();
+		Set<GeneralizedPattern> correctPatterns = new HashSet<GeneralizedPattern>();
 		
-		for ( Pattern p : patternMapping.getPatterns() ) {
+		for ( GeneralizedPattern p : patternMapping.getPatterns() ) {
 			
 			// skip this evaluation, because it was characterized as not suitable in a previous evaluation
 			if ( p.isUseForPatternEvaluation() ) {

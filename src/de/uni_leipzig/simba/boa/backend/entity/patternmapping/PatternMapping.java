@@ -1,7 +1,12 @@
 package de.uni_leipzig.simba.boa.backend.entity.patternmapping;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 
@@ -19,8 +25,6 @@ import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
  * 
  * @author Daniel Gerber
  */
-@Entity
-@Table(name="pattern_mapping") // uniqueConstraints = {@UniqueConstraint(columnNames={"uri"})} 
 public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Entity {
 	
 	/**
@@ -36,7 +40,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	/**
 	 * 
 	 */
-	private Set<Pattern> patterns;
+	private Map<String,Set<GeneralizedPattern>> patterns;
 	
 	/**
 	 * default constructor needed for hibernate
@@ -44,7 +48,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	public PatternMapping(){
 		
 	    this.property   = new Property();
-        this.patterns   = new HashSet<Pattern>();
+        this.patterns   = new TreeMap<String,Set<GeneralizedPattern>>();
 	}
 	
 	/**
@@ -56,34 +60,33 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	public PatternMapping(Property property) {
 
 		this.property = property;
-		this.patterns = new HashSet<Pattern>();
+		this.patterns   = new TreeMap<String,Set<GeneralizedPattern>>();
 	}
 
 	/**
 	 * @return the patterns
 	 */
-//	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-//	@JoinColumn(name = "patternMapping_id", nullable = true, updatable = true, insertable = true)
-	@ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	  @JoinTable(name = "pattern_mapping_pattern",
-	    joinColumns = {
-	      @JoinColumn(name="pattern_mapping_id")//, unique = true)           
-	    },
-	    inverseJoinColumns = {
-	      @JoinColumn(name="pattern_id")
-	    }
-	  )
 	public Set<Pattern> getPatterns() {
 	
-		return this.patterns;
+		Set<Pattern> patterns = new TreeSet<Pattern>();
+		for ( Set<GeneralizedPattern> set : this.patterns.values() )
+			for ( GeneralizedPattern genPat : set )
+				patterns.addAll(genPat.getPatterns());
+		
+		return patterns;
 	}
 	
 	/**
-	 * @param patterns the patterns to set
+	 * 
+	 * @return
 	 */
-	public void setPatterns(Set<Pattern> patterns) {
-	
-		this.patterns = patterns;
+	public Set<GeneralizedPattern> getGeneralizedPatterns() {
+		
+		Set<GeneralizedPattern> generalizedPatterns = new TreeSet<GeneralizedPattern>();
+		for ( Set<GeneralizedPattern> set : this.patterns.values() ) 
+			generalizedPatterns.addAll(set);
+		
+		return generalizedPatterns;
 	}
 	
 	/**

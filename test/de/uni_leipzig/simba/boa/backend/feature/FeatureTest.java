@@ -137,7 +137,7 @@ public class FeatureTest {
 				
 				patterns.add(pattern);
 			}
-			mapping.setPatterns(patterns);
+//			mapping.setPatterns(patterns);
 			
 			mappings.add(mapping);
 		}
