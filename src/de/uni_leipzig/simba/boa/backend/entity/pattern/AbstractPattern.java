@@ -315,8 +315,6 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	/**
 	 * @return the learnedFrom
 	 */
-	@ElementCollection(fetch = FetchType.EAGER)
-	@JoinTable(name="pattern_learned_from")
 	public Map<String,Integer> getLearnedFrom() {
 
 		return learnedFrom;

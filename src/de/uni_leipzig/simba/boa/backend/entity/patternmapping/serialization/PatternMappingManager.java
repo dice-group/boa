@@ -34,8 +34,8 @@ public final class PatternMappingManager {
     private static Map<String, Set<PatternMapping>> mappingsInDatabases = new LinkedHashMap<String, Set<PatternMapping>>();
     private static final PatternMappingManager INSTANCE = new PatternMappingManager();
     
-    private final String PATTERN_MAPPING_FOLDER = NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
-    private final String DEFAULT_DATABASE       = NLPediaSettings.BOA_DATA_DIRECTORY.replaceAll("/$", "");
+    private final String PATTERN_MAPPING_FOLDER = null;//NLPediaSettings.BOA_DATA_DIRECTORY + "patternmappings/";
+    private final String DEFAULT_DATABASE       = null;//NLPediaSettings.BOA_DATA_DIRECTORY.replaceAll("/$", "");
     
     
     public static void main(String[] args) {
@@ -57,7 +57,8 @@ public final class PatternMappingManager {
 					
 					String nlr = p.getNaturalLanguageRepresentation();
 //					nlr = year.replaceAll("YEAR");
-//					nlr = nlr.replaceAll("(-)?\\d+(\\.\\d*)?", "NUMBER");
+					nlr = nlr.replaceAll("\\d{4}", "YEAR");
+					nlr = nlr.replaceAll("(-)?\\d+(\\.\\d*)?", "NUMBER");
 					
 					patterns.get(mapping.getProperty().getUri()).add(nlr);
 				}
