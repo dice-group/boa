@@ -8,13 +8,15 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
-import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingGeneralizedPatternPair;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.PatternMappingManager;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -45,37 +47,42 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 	}
 	
 	@Override
-	public void score(PatternMappingPatternPair pair) {
+	public void score(PatternMappingGeneralizedPatternPair pair) {
 	    
 	    if ( this.documents.size() == 0 ) this.init();
 		
 		Set<String> distinctStringsForSingleDocument = new HashSet<String>(createDistinctStrings(pair.getMapping()));
 		Map<String,Token> tokensInSingleDocument = createDocumentFrequencyAndFrequencyForTokens(distinctStringsForSingleDocument);
 		
-		double idfScore = 0;
-		double tfScore = 0;
-		for (String s : pair.getPattern().getNaturalLanguageRepresentationWithoutVariables().split(" ") ) {
+		SummaryStatistics tfStat = new SummaryStatistics();
+		SummaryStatistics idfStat = new SummaryStatistics();
+		SummaryStatistics tfIdfStat = new SummaryStatistics();
+		
+		for ( Pattern pattern : pair.getGeneralizedPattern().getPatterns() ) {
 			
-			// should be always true since every word has been indexed, except stop words
-			if ( tokensInSingleDocument.containsKey(s) ) {
+			double idfScore = 0;
+			double tfScore = 0;
+			for (String s : pattern.getNaturalLanguageRepresentationWithoutVariables().split(" ") ) {
 				
-				double scoreIdf = tokensInSingleDocument.get(s).getIdf(documents.size());
-				if ( !Double.isInfinite(scoreIdf) && !Double.isNaN(scoreIdf) ) idfScore += scoreIdf;
-				
-				double scoreTf = tokensInSingleDocument.get(s).getTf();
-				if ( !Double.isInfinite(scoreTf) && !Double.isNaN(scoreTf) ) tfScore += scoreTf;
+				// should be always true since every word has been indexed, except stop words
+				if ( tokensInSingleDocument.containsKey(s) ) {
+					
+					double scoreIdf = tokensInSingleDocument.get(s).getIdf(documents.size());
+					if ( !Double.isInfinite(scoreIdf) && !Double.isNaN(scoreIdf) ) idfScore += scoreIdf;
+					
+					double scoreTf = tokensInSingleDocument.get(s).getTf();
+					if ( !Double.isInfinite(scoreTf) && !Double.isNaN(scoreTf) ) tfScore += scoreTf;
+				}
+				else if ( !Constants.STOP_WORDS.contains(s) ) this.logger.error("There was a token not analyzed: " + s);
 			}
-			else {
-				
-			    if ( !Constants.STOP_WORDS.contains(s) ) {
-			        
-			        this.logger.error("There was a token not analyzed: " + s);
-			    }
-			}
+			setValue(pattern, "TF_IDF_TFIDF",	tfScore*idfScore >= 0 ? tfScore*idfScore : 0, tfIdfStat);
+			setValue(pattern, "TF_IDF_TF",		tfScore			 >= 0 ? tfScore			 : 0, tfStat);
+			setValue(pattern, "TF_IDF_IDF",		idfScore		 >= 0 ? idfScore		 : 0, idfStat);
 		}
-		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("TF_IDF_TFIDF"), 	tfScore*idfScore	>= 0 ? tfScore*idfScore : 0);
-		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("TF_IDF_TF"), 		tfScore				>= 0 ? tfScore : 0);
-		pair.getPattern().getFeatures().put(FeatureFactory.getInstance().getFeature("TF_IDF_IDF"), 		idfScore			>= 0 ? idfScore : 0);
+		Map<Feature,Double> features = pair.getGeneralizedPattern().getFeatures();
+		features.put(FeatureFactory.getInstance().getFeature("TF_IDF_TFIDF"), tfStat.getMean());
+		features.put(FeatureFactory.getInstance().getFeature("TF_IDF_TF"), idfStat.getMean());
+		features.put(FeatureFactory.getInstance().getFeature("TF_IDF_IDF"), tfIdfStat.getMean());
 	}
 	
 	/**

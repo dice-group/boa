@@ -40,7 +40,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	/**
 	 * 
 	 */
-	private Map<String,Set<GeneralizedPattern>> patterns;
+	private Map<String,GeneralizedPattern> patterns;
 	
 	/**
 	 * default constructor needed for hibernate
@@ -48,7 +48,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	public PatternMapping(){
 		
 	    this.property   = new Property();
-        this.patterns   = new TreeMap<String,Set<GeneralizedPattern>>();
+        this.patterns   = new TreeMap<String,GeneralizedPattern>();
 	}
 	
 	/**
@@ -60,7 +60,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	public PatternMapping(Property property) {
 
 		this.property = property;
-		this.patterns   = new TreeMap<String,Set<GeneralizedPattern>>();
+		this.patterns   = new TreeMap<String,GeneralizedPattern>();
 	}
 
 	/**
@@ -69,9 +69,8 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	public Set<Pattern> getPatterns() {
 	
 		Set<Pattern> patterns = new TreeSet<Pattern>();
-		for ( Set<GeneralizedPattern> set : this.patterns.values() )
-			for ( GeneralizedPattern genPat : set )
-				patterns.addAll(genPat.getPatterns());
+		for ( GeneralizedPattern genPat : this.patterns.values() )
+			patterns.addAll(genPat.getPatterns());
 		
 		return patterns;
 	}
@@ -82,11 +81,17 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	 */
 	public Set<GeneralizedPattern> getGeneralizedPatterns() {
 		
-		Set<GeneralizedPattern> generalizedPatterns = new TreeSet<GeneralizedPattern>();
-		for ( Set<GeneralizedPattern> set : this.patterns.values() ) 
-			generalizedPatterns.addAll(set);
+		return new TreeSet<GeneralizedPattern>(this.patterns.values());
+	}
+	
+	/**
+	 * 
+	 * @param correctPatterns
+	 */
+	public void setGeneralizedPatterns(Set<GeneralizedPattern> correctPatterns) {
 		
-		return generalizedPatterns;
+		this.patterns = new TreeMap<String,GeneralizedPattern>();
+		for ( GeneralizedPattern gp : correctPatterns ) this.patterns.put(gp.getNaturalLanguageRepresentation(), gp);
 	}
 	
 	/**
@@ -95,16 +100,55 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	 */
 	public PatternMapping addPattern(Pattern pattern) {
 		
-		this.patterns.add(pattern);
+		String generalizedNlr = String.format("%s %s %s", 
+				pattern.isDomainFirst() ? "?D?" : "?R?", generalize(pattern), pattern.isDomainFirst() ? "?R?" : "?D?"); 
+		
+		if ( !this.patterns.containsKey(generalizedNlr)) this.patterns.put(generalizedNlr, new GeneralizedPattern(generalizedNlr));
+		this.patterns.get(generalizedNlr).addPattern(pattern);
+		
 		return this;
 	}
 	
-	public void removePattern(Pattern pattern) {
+	public static String generalize(Pattern pattern) {
 		
-//		pattern = this.patternMap.remove(pattern.getNaturalLanguageRepresentation().hashCode());
-//		this.patterns.remove(pattern);
+		String nlr = pattern.getNaturalLanguageRepresentationWithoutVariables();
+		
+    	// remove trailing trash
+		nlr = nlr.trim().replaceAll(" (the|,|, and|and|, the)$", "").trim();
+		nlr = nlr.startsWith("''") ? nlr.substring(2) : nlr;
+		nlr = nlr.endsWith("``") ? nlr.substring(0, nlr.length() - 2) : nlr;
+		nlr = " " + nlr.trim() + " ";
+    	
+		// replace words in upppercase
+		while ( nlr.matches("^.* \\p{Upper}\\S* .*$") )
+			nlr = nlr.replaceAll(" \\p{Upper}\\S* ", " _NE_ ");
+		
+		nlr = nlr.replaceAll("(_NE_ )+", "_NE_ ").replaceAll(" +", " ");;
+		
+		// date stuff
+		for ( String month : Arrays.asList("January", "February", "March", "April", "May", "June", 
+    			"July", "August", "September", "October", "November", "December"))
+    				nlr = nlr.replace(" " + month + " ", " _MONTH_ ");
+		nlr = nlr.replaceAll("\\d{4}", "_YEAR_");
+		nlr = nlr.replaceAll("(-)?\\d+(\\.\\d*)?", "_NUMBER_");
+		
+		for ( String pronoun : Arrays.asList("his", "her", "he", "she")) nlr = nlr.replace(" " + pronoun + " ", " _PP_ ");
+		
+		nlr = nlr.replaceAll(" an ", " a ");
+		for ( String be : Arrays.asList("was", "were", "is", "are", "am")) nlr = nlr.replace(" " + be + " ", " _BE_ ");
+		
+		return nlr.trim();
+		
+//		children -
+//		children --
+//		children -LRB-
+//		children :
+//		children ;
+		
+//		band _NE_ , released in
+//		band _NE_ , released on
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -166,8 +210,6 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	/**
 	 * @return the property
 	 */
-	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	@JoinColumn(name="property_id")
 	public Property getProperty() {
 
 		return property;

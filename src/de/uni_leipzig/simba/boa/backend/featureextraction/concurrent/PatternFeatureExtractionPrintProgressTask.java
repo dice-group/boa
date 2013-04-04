@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.concurrent.Callable;
 
-import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingPatternPair;
+import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingGeneralizedPatternPair;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPrintProgressTask;
 
@@ -21,15 +21,15 @@ import de.uni_leipzig.simba.boa.backend.search.concurrent.PatternSearchPrintProg
 public class PatternFeatureExtractionPrintProgressTask extends TimerTask {
 
     private DecimalFormat format = new DecimalFormat("##");
-    private List<Callable<Collection<PatternMappingPatternPair>>> callableList;
+    private List<Callable<Collection<PatternMappingGeneralizedPatternPair>>> callableList;
     private final NLPediaLogger logger = new NLPediaLogger(PatternSearchPrintProgressTask.class);
     private int totalNumber = 0;
     
-    public PatternFeatureExtractionPrintProgressTask(List<Callable<Collection<PatternMappingPatternPair>>> callableList) {
+    public PatternFeatureExtractionPrintProgressTask(List<Callable<Collection<PatternMappingGeneralizedPatternPair>>> callableList) {
         
         this.callableList = callableList;
         // we need this to calculate the total number of done searches for all callables
-        for (Callable<Collection<PatternMappingPatternPair>> callable : callableList) 
+        for (Callable<Collection<PatternMappingGeneralizedPatternPair>> callable : callableList) 
             totalNumber += ((PatternFeatureExtractionCallable) callable).getNumberTotal();
     }
     
@@ -43,7 +43,7 @@ public class PatternFeatureExtractionPrintProgressTask extends TimerTask {
         
         int totalProgress = 0;
         
-        for (Callable<Collection<PatternMappingPatternPair>> patternFeatureExtractionCallable : this.callableList) {
+        for (Callable<Collection<PatternMappingGeneralizedPatternPair>> patternFeatureExtractionCallable : this.callableList) {
 
             PatternFeatureExtractionCallable patternFeatureExtractionThread = (PatternFeatureExtractionCallable) patternFeatureExtractionCallable;
 

@@ -5,7 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
+
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Language;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
@@ -66,5 +70,23 @@ public abstract class AbstractFeatureExtractor implements FeatureExtractor {
     @Override
 	public void setPatternMappings(Set<PatternMapping> mappings) {
 		this.mappings = mappings;
+	}
+    
+    /**
+	 * 
+	 * @param pattern
+	 * @param featureName
+	 * @param value
+	 * @param statistic
+	 */
+	protected void setValue(Pattern pattern, String featureName, Double value, SummaryStatistics statistic) {
+		
+		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature(featureName), value);
+		statistic.addValue(Double.valueOf(value));
+	}
+	
+	protected void setValue(Pattern pattern, String featureName, double value) {
+		
+		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature(featureName), value);
 	}
 }

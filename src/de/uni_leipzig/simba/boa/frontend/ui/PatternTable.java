@@ -13,6 +13,7 @@ import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Table;
 
+import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.comparator.FeatureNameComparator;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
@@ -21,13 +22,13 @@ import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 @SuppressWarnings("serial")
 public class PatternTable extends Table {
     
-    private Map<Integer,Pattern> patterns = new HashMap<Integer,Pattern>();
+    private Map<Integer,GeneralizedPattern> patterns = new HashMap<Integer,GeneralizedPattern>();
 	
-	public PatternTable(BoaFrontendApplication app, List<Pattern> patterns) {
+	public PatternTable(BoaFrontendApplication app, ArrayList<GeneralizedPattern> arrayList) {
 		setSizeFull();
 		setColumnCollapsingAllowed(true);
 		
-		List<Feature> featureList = new ArrayList<Feature>(patterns.get(0).getFeatures().keySet());
+		List<Feature> featureList = new ArrayList<Feature>(arrayList.get(0).getFeatures().keySet());
 		Collections.sort(featureList, new FeatureNameComparator());
 		
 		this.addContainerProperty("Score",                            Double.class, null);
@@ -44,7 +45,7 @@ public class PatternTable extends Table {
 		}
 		
 		int i = 0;
-        for (Pattern pattern : patterns) {
+        for (GeneralizedPattern pattern : arrayList) {
             
             List<Object> entries = new ArrayList<Object>();
             entries.add(pattern.getScore());

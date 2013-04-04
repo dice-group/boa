@@ -49,6 +49,7 @@ import com.vaadin.ui.themes.Reindeer;
 import de.uni_leipzig.simba.boa.backend.concurrent.PrintJvmMemoryTimerTask;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.PatternMappingManager;
@@ -351,7 +352,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
                 vPanel.setSplitPosition(21);
                 vPanel.setLocked(true);
                 
-                this.patternTable = new PatternTable(this, new ArrayList<Pattern>(this.currentPatternMapping.getPatterns()));
+                this.patternTable = new PatternTable(this, new ArrayList<GeneralizedPattern>(this.currentPatternMapping.getGeneralizedPatterns()));
                 vPanel.setSecondComponent(this.patternTable);
                 this.horizontalSplitPanel.setSecondComponent(vPanel);
             }
