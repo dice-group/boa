@@ -22,18 +22,20 @@ import de.uni_leipzig.simba.boa.frontend.BoaFrontendApplication;
 @SuppressWarnings("serial")
 public class PatternTable extends Table {
     
-    private Map<Integer,GeneralizedPattern> patterns = new HashMap<Integer,GeneralizedPattern>();
+    private Map<Integer,Pattern> patterns = new HashMap<Integer,Pattern>();
 	
-	public PatternTable(BoaFrontendApplication app, ArrayList<GeneralizedPattern> arrayList) {
+	public PatternTable(BoaFrontendApplication app, ArrayList<Pattern> arrayList) {
 		setSizeFull();
 		setColumnCollapsingAllowed(true);
+		boolean generalizedPatternTable = determineType(arrayList);
 		
 		List<Feature> featureList = new ArrayList<Feature>(arrayList.get(0).getFeatures().keySet());
 		Collections.sort(featureList, new FeatureNameComparator());
 		
 		this.addContainerProperty("Score",                            Double.class, null);
-		this.addContainerProperty("Occurrence",                       Integer.class, null);
+		if ( generalizedPatternTable ) this.addContainerProperty("#Patterns",                        Integer.class, null);
 		this.addContainerProperty("Natural Language Representation",  String.class, null);
+		this.addContainerProperty("Occurrence",                       Integer.class, null);
 		this.addContainerProperty("Generalized",                      String.class, null);
 		this.addContainerProperty("Part Of Speech",                   String.class, null);
 		for ( Feature feature : featureList ) {
@@ -45,12 +47,13 @@ public class PatternTable extends Table {
 		}
 		
 		int i = 0;
-        for (GeneralizedPattern pattern : arrayList) {
+        for (Pattern pattern : arrayList) {
             
             List<Object> entries = new ArrayList<Object>();
             entries.add(pattern.getScore());
-            entries.add(pattern.getNumberOfOccurrences());
+            if ( generalizedPatternTable ) entries.add(((GeneralizedPattern) pattern).getPatterns().size());
             entries.add(pattern.getNaturalLanguageRepresentation());
+            entries.add(pattern.getNumberOfOccurrences());
             entries.add(pattern.getGeneralizedPattern());
             entries.add(pattern.getPosTaggedString());
             
@@ -70,6 +73,16 @@ public class PatternTable extends Table {
 		setNullSelectionAllowed(false);
 	}
 	
+	private boolean determineType(ArrayList<Pattern> arrayList) {
+		
+		if ( !arrayList.isEmpty() ) {
+			
+			if ( arrayList.get(0) instanceof GeneralizedPattern ) return true;
+		}
+		
+		return false;
+	}
+
 	public Pattern getSelectedPattern(Integer index) {
 	    
 	    return this.patterns.get(index);

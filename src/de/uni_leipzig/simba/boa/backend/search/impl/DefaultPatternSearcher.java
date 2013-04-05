@@ -311,12 +311,16 @@ public class DefaultPatternSearcher implements PatternSearcher {
                         // the subject of the triple is the domain of the property so,
                         // replace every occurrence with ?D?
                         if (nlr.startsWith("?D?")) {
-                            result.setFirstLabel(subjectLabel);
-                            result.setSecondLabel(objectLabel);
+//                            result.setFirstLabel(subjectLabel);
+//                            result.setSecondLabel(objectLabel);
+                        	result.setFirstLabel(backgroundKnowledge.getSubjectUri().replace("http://dbpedia.org/resource/", "dbr:"));
+                        	result.setSecondLabel(backgroundKnowledge.getObjectUri().replace("http://dbpedia.org/resource/", "dbr:"));
                         }
                         else {
-                            result.setFirstLabel(objectLabel);
-                            result.setSecondLabel(subjectLabel);
+//                            result.setFirstLabel(objectLabel);
+//                            result.setSecondLabel(subjectLabel);
+                        	result.setFirstLabel(backgroundKnowledge.getObjectUri().replace("http://dbpedia.org/resource/", "dbr:"));
+                        	result.setSecondLabel(backgroundKnowledge.getSubjectUri().replace("http://dbpedia.org/resource/", "dbr:"));
                         }
                         results.add(result);
                         

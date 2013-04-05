@@ -82,6 +82,7 @@
                                 <ref bean="UPPERCASE_LETTER_COUNT"/>
                                 <ref bean="NON_ALPHA_SPACE_COUNT"/>
                                 <ref bean="DIGIT_COUNT"/>
+                                <ref bean="COMMA_COUNT"/>
                             </list>
                         </property>
                     </bean>
@@ -378,6 +379,20 @@
     <bean id="UPPERCASE_LETTER_COUNT"
         class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
         <constructor-arg value="UPPERCASE_LETTER_COUNT" />
+        <constructor-arg>
+            <list>
+                <value>de</value>
+                <value>en</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg value="false" />
+        <constructor-arg value="true" />
+        <constructor-arg value="true" />
+    </bean>
+    
+    <bean id="COMMA_COUNT"
+        class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature">
+        <constructor-arg value="COMMA_COUNT" />
         <constructor-arg>
             <list>
                 <value>de</value>

@@ -12,6 +12,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import com.github.gerbsen.format.OutputFormatter;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
@@ -22,6 +23,7 @@ import com.vaadin.ui.Window;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.comparator.FeatureNameComparator;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
@@ -39,12 +41,15 @@ public class PatternWindow extends Window {
 	
 	private Pattern pattern;
 	private PatternMapping patternMapping;
+
+	private BoaFrontendApplication boaFrontendApplication;
 	
 	public PatternWindow(BoaFrontendApplication boa, Pattern pattern, PatternMapping pm) {
 		super("Details for pattern: \""+pattern.getNaturalLanguageRepresentation()+"\"");
 		
 		this.pattern = pattern;
 		this.patternMapping = pm;
+		this.boaFrontendApplication = boa;
 		
 		this.setModal(true);
 		this.setWidth("1000px");
@@ -64,13 +69,25 @@ public class PatternWindow extends Window {
 		
 		TabSheet tabSheet = new TabSheet();
 		tabSheet.addTab(buildTab1Content(), "General");
-		tabSheet.addTab(l2, "Learned from");
+		tabSheet.addTab(buildTab15Content(), "NL Patterns");
+		tabSheet.addTab(l2, "Support Set");
 		tabSheet.addTab(l3, "Sentences");
 		tabSheet.addTab(l4, "Query index");
 		
 		this.addComponent(tabSheet);
 	}
 	
+	private Component buildTab15Content() {
+
+		HorizontalLayout hLayout = new HorizontalLayout();
+		hLayout.setSizeFull();
+		PatternTable table = new PatternTable(boaFrontendApplication, new ArrayList<Pattern>(((GeneralizedPattern) this.pattern).getPatterns()));
+		table.setSizeFull();
+		hLayout.addComponent(table);
+		
+		return hLayout;
+	}
+
 	private Layout buildTab1Content(){
 	
 		HorizontalLayout hLayout = new HorizontalLayout();
@@ -261,58 +278,65 @@ public class PatternWindow extends Window {
 	 */
 	private String buildTab3Content(){
 	    
-	    List<String> sentences = PatternUtil.getLuceneDocuments(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH, new ArrayList<Integer>(this.pattern.getFoundInSentences()));
-        
-        StringBuilder builder = new StringBuilder();
-        builder.append("<h2>Sentences which lead to pattern: \""+ this.pattern.getNaturalLanguageRepresentation()+"\":</h2>");
-        
-        Iterator<String> iter = sentences.iterator(); 
-        int i = 0;
-        while ( iter.hasNext() && i++ < 10 ) {
+		StringBuffer buffer = new StringBuffer();
+		
+		for ( Pattern pattern : ((GeneralizedPattern) this.pattern).getPatterns() ) {
+			
+			List<String> sentences = PatternUtil.getLuceneDocuments(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH, new ArrayList<Integer>(pattern.getFoundInSentences()));
+	        
+	        StringBuilder builder = new StringBuilder();
+	        builder.append("<h2>"+ pattern.getNaturalLanguageRepresentation()+"</h2>");
+	        
+	        Iterator<String> iter = sentences.iterator(); 
+	        int i = 0;
+	        while ( iter.hasNext() && i++ < 10 ) {
 
-            String sentence = iter.next();
-            String sentenceLowerCase = sentence.toLowerCase();
-            
-            String longestSubject = "";
-            String longestObject  = "";
-            
-            for (String pair : this.pattern.getLearnedFrom().keySet()) {
-                
-                String[] pairParts = pair.split(java.util.regex.Pattern.quote("-;-"));
-                if ( pairParts[0].length() > longestSubject.length() && sentenceLowerCase.contains(pairParts[0])) longestSubject = pairParts[0];
-                if ( pairParts[1].length() > longestSubject.length() && sentenceLowerCase.contains(pairParts[1])) longestObject  = pairParts[1];
-            }
-            
-            System.out.println(i + "-normal: " + sentence);
-            
-            // we need to find the correct string normal case sentence, otherwise we would 
-            // replace the normal case entities with lowercase entities
-            int subjectStart = sentence.toLowerCase().indexOf(longestSubject);
-//            sentence = sentence.replace(
-//                    sentence.substring(subjectStart, subjectStart + longestSubject.length()),
-//                    "<span style=\"color: #EB1A1A;\">" + sentence.substring(subjectStart, subjectStart + longestSubject.length()) +"</span>");
-            
-            System.out.println(i + "-subject: " + sentence);
-            
-            int objectStart  = sentence.toLowerCase().indexOf(longestObject);
-//            sentence = sentence.replace(
-//                    sentence.substring(objectStart, objectStart + longestObject.length()), 
-//                    "<span style=\"color: #EB1A1A;\">" + sentence.substring(objectStart, objectStart + longestObject.length()) +"</span>");
-            
-            System.out.println(i + "-object: " + sentence);   
-            
-//            sentence = sentence.replaceAll("(?i)" + this.pattern.getNaturalLanguageRepresentationWithoutVariables(), 
-//                    "<span style=\"color: #61A30B;\">"+this.pattern.getNaturalLanguageRepresentationWithoutVariables()+"</span>");
-            
-            sentence = sentence.replace(this.pattern.getNaturalLanguageRepresentationWithoutVariables(), 
-                  "<span style=\"color: #61A30B;\">"+this.pattern.getNaturalLanguageRepresentationWithoutVariables()+"</span>");
-            
-            System.out.println(i + "-pattern: " + sentence);
-            
-            builder.append("<b>("+i + ")</b> " + sentence + "<br/>");
-            if (iter.hasNext()) builder.append("<hr/>");
-        }
-        return builder.toString();
+	            String sentence = iter.next();
+//	            String sentenceLowerCase = sentence.toLowerCase();
+	            
+//	            String longestSubject = "";
+//	            String longestObject  = "";
+//	            
+//	            for (String pair : pattern.getLearnedFrom().keySet()) {
+//	                
+//	                String[] pairParts = pair.split(java.util.regex.Pattern.quote("-;-"));
+//	                if ( pairParts[0].length() > longestSubject.length() && sentenceLowerCase.contains(pairParts[0])) longestSubject = pairParts[0];
+//	                if ( pairParts[1].length() > longestSubject.length() && sentenceLowerCase.contains(pairParts[1])) longestObject  = pairParts[1];
+//	            }
+	            
+//	            System.out.println(i + "-normal: " + sentence);
+	            
+	            // we need to find the correct string normal case sentence, otherwise we would 
+	            // replace the normal case entities with lowercase entities
+//	            int subjectStart = sentence.toLowerCase().indexOf(longestSubject);
+//	            sentence = sentence.replace(
+//	                    sentence.substring(subjectStart, subjectStart + longestSubject.length()),
+//	                    "<span style=\"color: #EB1A1A;\">" + sentence.substring(subjectStart, subjectStart + longestSubject.length()) +"</span>");
+	            
+//	            System.out.println(i + "-subject: " + sentence);
+	            
+//	            int objectStart  = sentence.toLowerCase().indexOf(longestObject);
+//	            sentence = sentence.replace(
+//	                    sentence.substring(objectStart, objectStart + longestObject.length()), 
+//	                    "<span style=\"color: #EB1A1A;\">" + sentence.substring(objectStart, objectStart + longestObject.length()) +"</span>");
+	            
+//	            System.out.println(i + "-object: " + sentence);   
+	            
+//	            sentence = sentence.replaceAll("(?i)" + this.pattern.getNaturalLanguageRepresentationWithoutVariables(), 
+//	                    "<span style=\"color: #61A30B;\">"+this.pattern.getNaturalLanguageRepresentationWithoutVariables()+"</span>");
+	            
+	            sentence = sentence.replace(pattern.getNaturalLanguageRepresentationWithoutVariables(), 
+	                  "<span style=\"color: #61A30B;\">"+pattern.getNaturalLanguageRepresentationWithoutVariables()+"</span>");
+	            
+//	            System.out.println(i + "-pattern: " + sentence);
+	            
+	            builder.append("<b>("+i + ")</b> " + sentence + "<br/>");
+	            if (iter.hasNext()) builder.append("<hr/>");
+	        }
+	        buffer.append(builder.toString());
+		}
+		
+		return buffer.toString();
 	}
 	
 	/**
@@ -321,22 +345,29 @@ public class PatternWindow extends Window {
 	 */
 	private String buildTab4Content(){
 		
-		Set<String> sentences = PatternUtil.exactQueryIndex(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH, this.pattern, 10);
-	    
-		StringBuilder builder = new StringBuilder();
-		builder.append("<h2>Search for label \""+ this.pattern.getNaturalLanguageRepresentation()+"\" in the index:</h2>");
+		StringBuffer buffer = new StringBuffer();
+		int numberOfResults = 3;
 		
-		Iterator<String> iter = sentences.iterator(); 
-		int i = 0;
-		while ( iter.hasNext() && i++ < 10 ) {
-
-			String sentence = iter.next();
-			sentence = sentence.replaceAll("(?i)" + this.pattern.getNaturalLanguageRepresentationWithoutVariables(), 
-			        "<span style=\"color: #61A30B;\">"+this.pattern.getNaturalLanguageRepresentationWithoutVariables()+"</span>");
+		for ( Pattern pattern : ((GeneralizedPattern) this.pattern).getPatterns() ) {
 			
-			builder.append("<b>("+i + ")</b> " + sentence + "<br/>");
-			if (iter.hasNext()) builder.append("<hr/>");
+			Set<String> sentences = PatternUtil.exactQueryIndex(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH, pattern, numberOfResults);
+		    
+			StringBuilder builder = new StringBuilder();
+			builder.append("<h2>"+ pattern.getNaturalLanguageRepresentation()+"</h2>");
+			
+			Iterator<String> iter = sentences.iterator(); 
+			int i = 0;
+			while ( iter.hasNext() && i++ < numberOfResults ) {
+
+				String sentence = iter.next();
+				sentence = sentence.replaceAll("(?i)" + pattern.getNaturalLanguageRepresentationWithoutVariables(), 
+				        "<span style=\"color: #61A30B;\">"+pattern.getNaturalLanguageRepresentationWithoutVariables()+"</span>");
+				
+				builder.append("<b>("+i + ")</b> " + sentence + "<br/>");
+				if (iter.hasNext()) builder.append("<hr/>");
+			}
+			buffer.append(builder.toString());
 		}
-		return builder.toString();
+		return buffer.toString();
 	}
 }

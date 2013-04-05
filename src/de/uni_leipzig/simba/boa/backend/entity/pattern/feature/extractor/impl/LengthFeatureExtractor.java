@@ -22,6 +22,7 @@ public class LengthFeatureExtractor extends AbstractFeatureExtractor {
 		SummaryStatistics upperCaseLetterCountStat = new SummaryStatistics();
 		SummaryStatistics averageTokenLengthStat = new SummaryStatistics();
 		SummaryStatistics digitCountStat = new SummaryStatistics();
+		SummaryStatistics commaStat = new SummaryStatistics();
 		SummaryStatistics nonAlphaSpaceCountStat = new SummaryStatistics();
 		
 		for ( Pattern pattern : pair.getGeneralizedPattern().getPatterns() ) {
@@ -52,6 +53,7 @@ public class LengthFeatureExtractor extends AbstractFeatureExtractor {
 			setValue(pattern, "UPPERCASE_LETTER_COUNT", Double.valueOf(upperCaseCharacterCount), upperCaseLetterCountStat);
 			setValue(pattern, "AVERAGE_TOKEN_LENGHT", averageTokenLength, averageTokenLengthStat);
 			setValue(pattern, "DIGIT_COUNT", Double.valueOf(digitCount), digitCountStat);
+			setValue(pattern, "COMMA_COUNT", Double.valueOf(StringUtils.countMatches(patternWithoutVariables, ",")), commaStat);
 			setValue(pattern, "NON_ALPHA_SPACE_COUNT", Double.valueOf(nonAlphaSpaceCharacterCount), nonAlphaSpaceCountStat);
 		}
 		
@@ -61,6 +63,7 @@ public class LengthFeatureExtractor extends AbstractFeatureExtractor {
 		features.put(FeatureFactory.getInstance().getFeature("UPPERCASE_LETTER_COUNT"), upperCaseLetterCountStat.getMean());
 		features.put(FeatureFactory.getInstance().getFeature("AVERAGE_TOKEN_LENGHT"), averageTokenLengthStat.getMean());
 		features.put(FeatureFactory.getInstance().getFeature("DIGIT_COUNT"), digitCountStat.getMean());
+		features.put(FeatureFactory.getInstance().getFeature("COMMA_COUNT"), commaStat.getMean());
 		features.put(FeatureFactory.getInstance().getFeature("NON_ALPHA_SPACE_COUNT"), nonAlphaSpaceCountStat.getMean());
 	}
 }
