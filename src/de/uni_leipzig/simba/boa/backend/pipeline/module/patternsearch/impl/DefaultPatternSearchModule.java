@@ -12,15 +12,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 
+import com.github.gerbsen.encoding.Encoder.Encoding;
 import com.github.gerbsen.file.BufferedFileReader;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternSearchThreadManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilterFactory;
@@ -31,9 +36,11 @@ import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguag
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.AbstractPatternSearchModule;
+import de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.concurrent.PatternPosTagCallable;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
+import de.uni_leipzig.simba.boa.backend.search.result.SearchResultReaderCallable;
 import de.uni_leipzig.simba.boa.backend.search.result.comparator.SearchResultComparator;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 
@@ -59,8 +66,6 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     private long patternCreationTime    = 0;
     protected long patternMappingCount  = 0;
     private long patternCount           = 0;
-	private PartOfSpeechTagger posTagger;
-	private DefaultPatternSearcher patternSearcher = new DefaultPatternSearcher();
 
     /* (non-Javadoc)
      * @see de.uni_leipzig.simba.boa.backend.pipeline.module.PipelineModule#getName()
@@ -101,62 +106,44 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         // get the cache from the interchange object
         this.properties = this.moduleInterchangeObject.getProperties();
 
-        List<SearchResult> results = new ArrayList<SearchResult>();
-        Map<Integer,String> alreadyKnowString = new HashMap<Integer,String>();
+        List<SearchResult> results = Collections.synchronizedList(new ArrayList<SearchResult>());
+        Collection<File> files = FileUtils.listFiles(new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH), FileFilterUtils.suffixFileFilter(".sr"), null);
+        Map<Integer,String> alreadyKnowString = new ConcurrentHashMap<Integer,String>();
         
-        if ( this.posTagger == null ) this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
-        
-        // collect all search results from the written files
-        for (File file : FileUtils.listFiles(new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH), FileFilterUtils.suffixFileFilter(".sr"), null)) {
-
-            logger.info("Reading search results from file: " + file.getName());
-            BufferedFileReader reader = new BufferedFileReader(file.getAbsolutePath(), "UTF-8");
-            String line = "";
-
-            // every line in each file is a serialized search result
-            while ((line = reader.readLine()) != null) {
-                
-                String[] lineParts                  = line.split(java.util.regex.Pattern.quote("]["));
-                
-                // we need to do this none-sense to avoid create 32mio different property uris and so on 
-                // this should dramatically reduce the memory usage while processing the search results
-                for (String part : Arrays.copyOfRange(lineParts, 0, 4) )
-                    if ( !alreadyKnowString.containsKey(part.hashCode()) ) alreadyKnowString.put(part.hashCode(), part);
-                
-                    try {
-            
-                        SearchResult searchResult = new SearchResult();
-                        searchResult.setProperty(alreadyKnowString.get(lineParts[0].hashCode()));
-                        searchResult.setNaturalLanguageRepresentation(alreadyKnowString.get(lineParts[1].hashCode()));
-                        searchResult.setFirstLabel(alreadyKnowString.get(lineParts[2].hashCode()));
-                        searchResult.setSecondLabel(alreadyKnowString.get(lineParts[3].hashCode()));
-                        searchResult.setSentence(Integer.valueOf(lineParts[4]));
-                        
-                        if ( searchResult.getNaturalLanguageRepresentation().contains("?D?") && searchResult.getNaturalLanguageRepresentation().contains("?R?") )
-                			results.add(searchResult);
-                    }
-                    catch (Exception e ) {
-                        
-                        e.printStackTrace();
-                        logger.error("Line: " + line, e);
-                    }
-            }
-            reader.close();
-        }
-        logger.info("Reading of search results finished!");
+        // reading all files in parallel is much faster
+        this.readSearchResultsInParallel(results, files, alreadyKnowString);
         
         // sort the patterns first by property and then by their natural
         // language representation
         Collections.sort(results, new SearchResultComparator());
-        logger.info("Sorting of search results finished!");
+        logger.info("Sorting of " + results.size() + " search results finished!");
+        
+        // parse the results
+        this.createMappings(results);
 
-        String currentProperty = null;
+        // filter the patterns which do not abide certain thresholds, mostly
+        // occurrence thresholds
+        this.filterPatterns(mappings.values());
+        
+        // we need to do this after we have filtered them, otherwise it would be too much
+        this.createPartOfSpeechTagsInParallel(mappings.values());
+        
+        // save the mappings
+        SerializationManager.getInstance().serializePatternMappings(mappings.values(), PATTERN_MAPPING_FOLDER);
+        logger.info("Pattern mapping saving finished!");
+    }
+
+    private void createMappings(List<SearchResult> results) {
+    	
+    	String currentProperty = null;
         PatternMapping currentMapping = null;
 
         // collect all search results from the written files
         Iterator<SearchResult> iterator = results.iterator();
+        int counter = 0; 
         while ( iterator.hasNext()) {
             
+        	if ( counter % 100 == 0 ) logger.debug("SearchResult " + counter + " of " + results.size());
             SearchResult searchResult = iterator.next();
 
             String propertyUri       = searchResult.getProperty();
@@ -246,63 +233,58 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
             searchResult = null; // probably better to just null it instead delete it from the collection
         }
         logger.info("Pattern mapping creation finished!");
+	}
 
-        // filter the patterns which do not abide certain thresholds, mostly
-        // occurrence thresholds
-        this.filterPatterns(mappings.values());
-        
-        // we need to do this after we have filtered them, otherwise it would be too much
-        this.createPartOfSpeechTags(mappings.values());
+	/**
+     * 
+     * @param results
+     * @param files
+     * @param alreadyKnowString
+     */
+    private void readSearchResultsInParallel(final List<SearchResult> results, Collection<File> files, final Map<Integer, String> alreadyKnowString) {
 
-        // save the mappings
-        SerializationManager.getInstance().serializePatternMappings(mappings.values(), PATTERN_MAPPING_FOLDER);
-        logger.info("Pattern mapping saving finished!");
-    }
+        try {
+        	
+        	List<SearchResultReaderCallable> searchResultReader = new ArrayList<SearchResultReaderCallable>();
+        	// collect all search results from the written files
+        	ExecutorService executor = Executors.newFixedThreadPool(files.size());
+            for (final File file : files) searchResultReader.add((new SearchResultReaderCallable(results, file, alreadyKnowString)));
+        	
+			executor.invokeAll(searchResultReader);
+			executor.shutdown();
+			
+			logger.info("Reading of search results finished!");
+		}
+        catch (InterruptedException e) {
+			
+			e.printStackTrace();
+		}
+	}
 
-    /**
+	/**
      * 
      * @param mappings
      */
-    private void createPartOfSpeechTags(Collection<PatternMapping> mappings) {
+    private void createPartOfSpeechTagsInParallel(Collection<PatternMapping> mappings) {
     	
-    	for ( PatternMapping mapping : mappings ) {
-    		for ( Pattern pattern : mapping.getPatterns() ) {
-    			pattern.setPosTaggedString(getPartOfSpeechTags(pattern, pattern.getFoundInSentences().iterator().next()));
-    		}
-    	}
-	}
-
-	private String getPartOfSpeechTags(Pattern pattern, int sentenceId) {
-
-    	String[] taggedSplit = this.posTagger.getAnnotatedString(this.patternSearcher.getSentencesByID(sentenceId)).split(" ");
-    	String[] patternSplit = pattern.getNaturalLanguageRepresentation().replace("?D?", "").replace("?R?", "").trim().split(" ");
-    	int  patternSplitIndex = 0;    	
-    	
-    	String patternPosTags = "";
-    	
-    	for (int i = 0; i < taggedSplit.length ; i++) {
+    	try {
+        	
+    		ExecutorService executor = Executors.newFixedThreadPool(mappings.size());
     		
-    		if ( taggedSplit[i].startsWith(patternSplit[patternSplitIndex] + "_")) {
-    			
-    			// first or any token except the last
-    			if (patternSplitIndex >= 0 && patternSplitIndex < patternSplit.length - 1) {
-    				
-    				patternPosTags += taggedSplit[i].substring(taggedSplit[i].indexOf("_") + 1) + " ";
-    				patternSplitIndex++;
-        			continue;
-    			}
-    			// last token of pattern
-    			else {
-    				
-    				patternPosTags += taggedSplit[i].substring(taggedSplit[i].indexOf("_") + 1);
-    				break;
-    			}
-    		}
-    	}
-    	
-    	return patternPosTags;
+    		List<PatternPosTagCallable> patternsTaggerCallables = new ArrayList<PatternPosTagCallable>();
+        	for ( PatternMapping mapping : mappings ) patternsTaggerCallables.add(new PatternPosTagCallable(mapping));
+        	
+			executor.invokeAll(patternsTaggerCallables);
+			executor.shutdown();
+			
+			logger.info("Parallel POS tagging of all patterns finished!");
+		}
+        catch (InterruptedException e) {
+			
+			e.printStackTrace();
+		}
 	}
-    
+
 	/**
      * 
      * @param patternMappings
@@ -310,6 +292,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     protected void filterPatterns(Collection<PatternMapping> patternMappings) {
 
         Map<String,PatternFilter> patternEvaluators = PatternFilterFactory.getInstance().getPatternFilterMap();
+        int numberOfPatterns = 0;
         
         // go through all filter
         for ( PatternFilter patternEvaluator : patternEvaluators.values() ) {
@@ -319,13 +302,13 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
             // and check each pattern mapping
             for ( PatternMapping patternMapping : patternMappings ) {
             
-//                this.logger.debug("Starting to filter pattern mapping: " + patternMapping.getProperty().getUri() + " with filter: " + patternEvaluator.getClass().getSimpleName());
                 patternEvaluator.filterPattern(patternMapping);
+                numberOfPatterns += patternMapping.getPatterns().size();
             }
             
             this.logger.info(patternEvaluator.getClass().getSimpleName() + " finished!");
         }
-        this.logger.info("All filters are finished.");
+        this.logger.info("All filters are finished. A total of " + numberOfPatterns + " have survived the filtering!");
     }
 
     /* (non-Javadoc)
