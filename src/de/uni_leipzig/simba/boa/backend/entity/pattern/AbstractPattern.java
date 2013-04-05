@@ -362,7 +362,6 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	/**
 	 * @return the generalizedPattern
 	 */
-	@Basic
 	public String getGeneralizedPattern() {
 
 		return generalizedPattern;

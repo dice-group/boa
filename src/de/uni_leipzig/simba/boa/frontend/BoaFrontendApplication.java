@@ -338,7 +338,7 @@ public class BoaFrontendApplication extends Application implements ItemClickList
                 vPanel.setSplitPosition(21);
                 vPanel.setLocked(true);
                 
-                this.patternTable = new PatternTable(this, new ArrayList<GeneralizedPattern>(this.currentPatternMapping.getGeneralizedPatterns()));
+                this.patternTable = new PatternTable(this, new ArrayList<Pattern>(this.currentPatternMapping.getGeneralizedPatterns()));
                 vPanel.setSecondComponent(this.patternTable);
                 this.horizontalSplitPanel.setSecondComponent(vPanel);
             }

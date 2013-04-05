@@ -137,35 +137,86 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     	
     	String currentProperty = null;
         PatternMapping currentMapping = null;
+        
+        int totalCounter = 0;
+        int resultSize = results.size();
+        
+        do {
+        	
+        	for ( int i = 0 ; i < results.size() && i < 1000000; i++) {
+        		
+        		if ( totalCounter++ % 100 == 0 ) logger.debug("SearchResult " + totalCounter + " of " + resultSize + " current: " + results.size());
+                SearchResult searchResult = results.get(i);
 
-        // collect all search results from the written files
-        Iterator<SearchResult> iterator = results.iterator();
-        int counter = 0; 
-        while ( iterator.hasNext()) {
-            
-        	if ( counter++ % 100 == 0 ) logger.debug("SearchResult " + counter + " of " + results.size());
-            SearchResult searchResult = iterator.next();
-
-            String propertyUri       = searchResult.getProperty();
-            String patternString     = searchResult.getNaturalLanguageRepresentation();
-            String label1            = searchResult.getFirstLabel();
-            String label2            = searchResult.getSecondLabel();
-            Integer sentenceID       = searchResult.getSentence();
-      
-            // next line is for the same property
-            if ( propertyUri.equals(currentProperty) ) {
-                
-                // add the patterns to the list with the hash-code of the natural language representation
-                Pattern pattern = patterns.get(propertyUri.hashCode()).get(patternString.hashCode()); //(patternString.hashCode());
-                
-                // pattern was not found, create a new pattern 
-                if ( pattern == null ) {
+                String propertyUri       = searchResult.getProperty();
+                String patternString     = searchResult.getNaturalLanguageRepresentation();
+                String label1            = searchResult.getFirstLabel();
+                String label2            = searchResult.getSecondLabel();
+                Integer sentenceID       = searchResult.getSentence();
+          
+                // next line is for the same property
+                if ( propertyUri.equals(currentProperty) ) {
                     
-                    pattern = new SubjectPredicateObjectPattern(patternString);
-                    pattern.addLearnedFrom(label1 + "-;-" + label2); 
-//                    pattern.addLearnedFrom(pattern.isDomainFirst() ? label1 + "-;-" + label2 : label2 + "-;-" + label1); 
+                    // add the patterns to the list with the hash-code of the natural language representation
+                    Pattern pattern = patterns.get(propertyUri.hashCode()).get(patternString.hashCode()); //(patternString.hashCode());
+                    
+                    // pattern was not found, create a new pattern 
+                    if ( pattern == null ) {
+                        
+                        pattern = new SubjectPredicateObjectPattern(patternString);
+                        pattern.addLearnedFrom(label1 + "-;-" + label2); 
+//                        pattern.addLearnedFrom(pattern.isDomainFirst() ? label1 + "-;-" + label2 : label2 + "-;-" + label1); 
+                        pattern.addPatternMapping(currentMapping);
+                        pattern.getFoundInSentences().add(sentenceID);
+                        
+                        if ( patterns.get(propertyUri.hashCode()) != null ) {
+                            
+                            patterns.get(propertyUri.hashCode()).put(patternString.hashCode(), pattern);
+                        }
+                        else {
+                            
+                            Map<Integer,Pattern> patternMap = new HashMap<Integer,Pattern>();
+                            patternMap.put(patternString.hashCode(), pattern);
+                            patterns.put(propertyUri.hashCode(), patternMap);
+                        }
+                        // add the current pattern to the current mapping
+                        currentMapping.addPattern(pattern);
+                    }
+                    // pattern already created, just add new values
+                    else {
+                        
+                        // due to the surface forms we find the same pattern multiple times in
+                        // one sentence, so we need to skip this pattern if we found it in the 
+                        // same sentence already
+                        if ( !pattern.getFoundInSentences().contains(sentenceID) ) {
+
+                            pattern.increaseNumberOfOccurrences();
+                            pattern.addLearnedFrom(label1 + "-;-" + label2);
+                            pattern.getFoundInSentences().add(sentenceID);
+                            pattern.addPatternMapping(currentMapping);
+                        }
+                    }
+                }
+                // next line contains pattern for other property
+                // so create a new pattern mapping and a new pattern
+                else {
+                    
+                    // create it to use the proper hash function, the properties map has a COMPLETE list of all properties
+                    Property p = properties.get(propertyUri.hashCode());
+                    currentMapping = mappings.get(propertyUri.hashCode());
+                    
+                    if ( currentMapping == null ) {
+                        
+                        currentMapping = new PatternMapping(p);
+                        this.patternMappingCount++;
+                    }
+                    
+                    Pattern pattern = new SubjectPredicateObjectPattern(patternString);
+                    pattern.addLearnedFrom(label1 + "-;-" + label2);
                     pattern.addPatternMapping(currentMapping);
                     pattern.getFoundInSentences().add(sentenceID);
+                    
+                    currentMapping.addPattern(pattern);
                     
                     if ( patterns.get(propertyUri.hashCode()) != null ) {
                         
@@ -177,61 +228,19 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                         patternMap.put(patternString.hashCode(), pattern);
                         patterns.put(propertyUri.hashCode(), patternMap);
                     }
-                    // add the current pattern to the current mapping
-                    currentMapping.addPattern(pattern);
-                }
-                // pattern already created, just add new values
-                else {
-                    
-                    // due to the surface forms we find the same pattern multiple times in
-                    // one sentence, so we need to skip this pattern if we found it in the 
-                    // same sentence already
-                    if ( !pattern.getFoundInSentences().contains(sentenceID) ) {
-
-                        pattern.increaseNumberOfOccurrences();
-                        pattern.addLearnedFrom(label1 + "-;-" + label2);
-                        pattern.getFoundInSentences().add(sentenceID);
-                        pattern.addPatternMapping(currentMapping);
-                    }
-                }
-            }
-            // next line contains pattern for other property
-            // so create a new pattern mapping and a new pattern
-            else {
-                
-                // create it to use the proper hash function, the properties map has a COMPLETE list of all properties
-                Property p = properties.get(propertyUri.hashCode());
-                currentMapping = mappings.get(propertyUri.hashCode());
-                
-                if ( currentMapping == null ) {
-                    
-                    currentMapping = new PatternMapping(p);
-                    this.patternMappingCount++;
+                    mappings.put(propertyUri.hashCode(), currentMapping);
                 }
                 
-                Pattern pattern = new SubjectPredicateObjectPattern(patternString);
-                pattern.addLearnedFrom(label1 + "-;-" + label2);
-                pattern.addPatternMapping(currentMapping);
-                pattern.getFoundInSentences().add(sentenceID);
-                
-                currentMapping.addPattern(pattern);
-                
-                if ( patterns.get(propertyUri.hashCode()) != null ) {
-                    
-                    patterns.get(propertyUri.hashCode()).put(patternString.hashCode(), pattern);
-                }
-                else {
-                    
-                    Map<Integer,Pattern> patternMap = new HashMap<Integer,Pattern>();
-                    patternMap.put(patternString.hashCode(), pattern);
-                    patterns.put(propertyUri.hashCode(), patternMap);
-                }
-                mappings.put(propertyUri.hashCode(), currentMapping);
-            }
-            currentProperty = propertyUri;
-//            iterator.remove(); // TODO can we call this since it shifts the collection for every pattern
-            searchResult = null; // probably better to just null it instead delete it from the collection
+                results.set(i, null);
+                currentProperty = propertyUri;
+        	}
+        	// make this huge list smaller
+        	logger.info("Result list size: " + results.size());
+        	results.removeAll(Collections.singleton(null));
+        	logger.info("Result list size after cleaning: " + results.size());
         }
+        while ( !results.isEmpty() );
+        
         logger.info("Pattern mapping creation finished!");
 	}
 

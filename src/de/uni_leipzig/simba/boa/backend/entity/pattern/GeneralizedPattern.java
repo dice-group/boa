@@ -5,8 +5,10 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author gerb
@@ -59,6 +61,31 @@ public class GeneralizedPattern extends AbstractPattern implements Comparable<Ge
 		Integer occ = 0;
 		for ( Pattern p : this.patterns ) occ += p.getNumberOfOccurrences();
 		return occ;
+	}
+	
+	@Override
+	public String getGeneralizedPattern() {
+		
+		for ( Pattern p : this.patterns ) 
+			if ( p.getGeneralizedPattern() != null && !p.getGeneralizedPattern().isEmpty() ) 
+				return p.getGeneralizedPattern();
+		
+		return "N/A";
+	}
+	
+	@Override
+	public Set<Integer> getFoundInSentences() {
+	
+		Set<Integer> sentenceIds = new HashSet<Integer>();
+		for ( Pattern p : this.patterns ) sentenceIds.addAll(p.getFoundInSentences());
+		return sentenceIds;
+	}
+	
+	@Override
+	public String getPosTaggedString() {
+
+		for ( Pattern p : this.patterns ) if ( !p.getPosTaggedString().isEmpty() ) return p.getPosTaggedString();
+		return "N/A";
 	}
 	
 	/**
