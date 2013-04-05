@@ -143,7 +143,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         int counter = 0; 
         while ( iterator.hasNext()) {
             
-        	if ( counter % 100 == 0 ) logger.debug("SearchResult " + counter + " of " + results.size());
+        	if ( counter++ % 100 == 0 ) logger.debug("SearchResult " + counter + " of " + results.size());
             SearchResult searchResult = iterator.next();
 
             String propertyUri       = searchResult.getProperty();
@@ -253,7 +253,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 			executor.invokeAll(searchResultReader);
 			executor.shutdown();
 			
-			logger.info("Reading of search results finished!");
+			logger.info("Reading of "+results.size()+" search results finished!");
 		}
         catch (InterruptedException e) {
 			
