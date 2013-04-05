@@ -7,11 +7,9 @@ import java.util.Set;
 
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Language;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 
 /**

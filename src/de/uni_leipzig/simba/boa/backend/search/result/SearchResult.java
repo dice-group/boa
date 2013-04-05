@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
-
 import edu.stanford.nlp.util.StringUtils;
 
 

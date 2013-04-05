@@ -1,14 +1,11 @@
 package de.uni_leipzig.simba.boa.backend.search.concurrent;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import com.github.gerbsen.encoding.Encoder.Encoding;
 import com.github.gerbsen.file.BufferedFileWriter;
-import com.github.gerbsen.file.BufferedFileWriter.WRITER_MODE;
 import com.github.gerbsen.file.BufferedFileWriter.WRITER_WRITE_MODE;
 
 import de.uni_leipzig.simba.boa.backend.Constants;

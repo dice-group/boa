@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 

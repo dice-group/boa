@@ -24,10 +24,8 @@ import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechta
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Resource;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
-import de.uni_leipzig.simba.boa.backend.rdf.uri.UriRetrieval;
-import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.FeatureBasedDisambiguation;
-import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.MeshupUriRetrieval;
 import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.ClassesUriRetrieval;
+import de.uni_leipzig.simba.boa.backend.rdf.uri.impl.FeatureBasedDisambiguation;
 
 
 /**

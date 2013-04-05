@@ -1,6 +1,7 @@
 package de.uni_leipzig.simba.boa.backend.search.result.comparator;
 
 import java.util.Comparator;
+
 import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 
 /**

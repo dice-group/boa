@@ -8,8 +8,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cern.colt.Arrays;
-
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;

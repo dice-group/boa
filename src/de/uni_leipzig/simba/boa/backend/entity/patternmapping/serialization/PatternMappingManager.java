@@ -4,7 +4,6 @@
 package de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -13,15 +12,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-
-import org.apache.commons.collections.list.TreeList;
-import org.apache.commons.lang3.StringUtils;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.comparator.PatternNlrComparator;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
@@ -41,51 +35,51 @@ public final class PatternMappingManager {
     private final String DEFAULT_DATABASE       = NLPediaSettings.BOA_DATA_DIRECTORY.replaceAll("/$", "");
     
     
-    public static void main(String[] args) {
-		
-    	Map<String,List<String>> patternsList = new TreeMap<String,List<String>>();
-    	Map<String,Set<String>> patternsSet = new TreeMap<String,Set<String>>();
-    	Set<PatternMapping> mappings = SerializationManager.getInstance().deserializePatternMappings("/Users/gerb/Development/workspaces/experimental/boa/qa/en/patternmappings/");
-    	
-		for ( PatternMapping mapping : mappings ) {
-    		
-    		for ( Pattern p : mapping.getPatterns()) {
-    			
-				if ( !patternsList.containsKey(mapping.getProperty().getUri()) ) patternsList.put(mapping.getProperty().getUri(), new ArrayList<String>());
-				if ( !patternsSet.containsKey(mapping.getProperty().getUri()) ) patternsSet.put(mapping.getProperty().getUri(), new HashSet<String>());
-				
-				String nlr = p.getNaturalLanguageRepresentationWithoutVariables();
-//				nlr  = PatternMapping.generalize(nlr);
-				
-				patternsList.get(mapping.getProperty().getUri()).add(p.getNaturalLanguageRepresentation());
-				patternsSet.get(mapping.getProperty().getUri()).add(nlr);
-    		}
-    	}
-
-		int sizeList = 0;
-		int sizeSet = 0;
-		
-    	for ( Map.Entry<String, List<String>> pattern : patternsList.entrySet() )
-    		sizeList += pattern.getValue().size();
-
-    	List<String> nlrs = new ArrayList<String>();
-    	
-    	for ( Map.Entry<String, Set<String>> pattern : patternsSet.entrySet() ) {
-    		
-//    		System.out.println(pattern.getKey());
-    		nlrs.addAll(pattern.getValue());
-    		Collections.sort(nlrs);
-//    		for( String p : pattern.getValue() ) 
-//    			System.out.println("\t"+p);
-    		
-//    			System.out.println(pattern.getValue().size());
-    		sizeSet += pattern.getValue().size();
-    	}
-    	for (String s : new TreeSet<String>(nlrs)) System.out.println(s); 
-    	
-    	System.out.println(sizeSet);
-    	System.out.println(sizeList);
-	}
+//    public static void main(String[] args) {
+//		
+//    	Map<String,List<String>> patternsList = new TreeMap<String,List<String>>();
+//    	Map<String,Set<String>> patternsSet = new TreeMap<String,Set<String>>();
+//    	Set<PatternMapping> mappings = SerializationManager.getInstance().deserializePatternMappings("/Users/gerb/Development/workspaces/experimental/boa/qa/en/patternmappings/");
+//    	
+//		for ( PatternMapping mapping : mappings ) {
+//    		
+//    		for ( Pattern p : mapping.getPatterns()) {
+//    			
+//				if ( !patternsList.containsKey(mapping.getProperty().getUri()) ) patternsList.put(mapping.getProperty().getUri(), new ArrayList<String>());
+//				if ( !patternsSet.containsKey(mapping.getProperty().getUri()) ) patternsSet.put(mapping.getProperty().getUri(), new HashSet<String>());
+//				
+//				String nlr = p.getNaturalLanguageRepresentationWithoutVariables();
+////				nlr  = PatternMapping.generalize(nlr);
+//				
+//				patternsList.get(mapping.getProperty().getUri()).add(p.getNaturalLanguageRepresentation());
+//				patternsSet.get(mapping.getProperty().getUri()).add(nlr);
+//    		}
+//    	}
+//
+//		int sizeList = 0;
+//		int sizeSet = 0;
+//		
+//    	for ( Map.Entry<String, List<String>> pattern : patternsList.entrySet() )
+//    		sizeList += pattern.getValue().size();
+//
+//    	List<String> nlrs = new ArrayList<String>();
+//    	
+//    	for ( Map.Entry<String, Set<String>> pattern : patternsSet.entrySet() ) {
+//    		
+////    		System.out.println(pattern.getKey());
+//    		nlrs.addAll(pattern.getValue());
+//    		Collections.sort(nlrs);
+////    		for( String p : pattern.getValue() ) 
+////    			System.out.println("\t"+p);
+//    		
+////    			System.out.println(pattern.getValue().size());
+//    		sizeSet += pattern.getValue().size();
+//    	}
+//    	for (String s : new TreeSet<String>(nlrs)) System.out.println(s); 
+//    	
+//    	System.out.println(sizeSet);
+//    	System.out.println(sizeList);
+//	}
     
     
     private PatternMappingManager() {

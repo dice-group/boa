@@ -1,12 +1,5 @@
 package de.uni_leipzig.simba.boa.backend.featurescoring;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,7 +22,6 @@ import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfi
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.entry.MachineLearningTrainingFileEntry;
 import de.uni_leipzig.simba.boa.backend.featurescoring.machinelearningtrainingfile.factory.MachineLearningTrainingFileFactory;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.pipeline.module.patternfeatureextraction.impl.DefaultPatternFeatureExtractionModule;
 
 /**
  * 

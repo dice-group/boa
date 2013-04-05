@@ -3,7 +3,6 @@
  */
 package de.uni_leipzig.simba.boa.frontend.data;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 

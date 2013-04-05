@@ -21,9 +21,6 @@ import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.impl.SubjectPredicateObjectPattern;
-import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 
 
 public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {

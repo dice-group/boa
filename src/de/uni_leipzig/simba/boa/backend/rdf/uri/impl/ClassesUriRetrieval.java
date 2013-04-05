@@ -2,12 +2,9 @@ package de.uni_leipzig.simba.boa.backend.rdf.uri.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import com.github.gerbsen.file.BufferedFileReader;
 import com.github.gerbsen.file.FileUtil;
-
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;

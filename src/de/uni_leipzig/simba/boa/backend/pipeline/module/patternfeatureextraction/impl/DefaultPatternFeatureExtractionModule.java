@@ -5,7 +5,6 @@ package de.uni_leipzig.simba.boa.backend.pipeline.module.patternfeatureextractio
 
 import java.io.File;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.Constants;

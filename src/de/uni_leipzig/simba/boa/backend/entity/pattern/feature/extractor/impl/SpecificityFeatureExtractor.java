@@ -1,8 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
@@ -13,7 +11,6 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.Abstrac
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.PatternMappingManager;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 

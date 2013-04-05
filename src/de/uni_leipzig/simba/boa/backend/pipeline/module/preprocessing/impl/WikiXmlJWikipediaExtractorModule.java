@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 

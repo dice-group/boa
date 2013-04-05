@@ -132,7 +132,8 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                         searchResult.setSecondLabel(alreadyKnowString.get(lineParts[3].hashCode()));
                         searchResult.setSentence(Integer.valueOf(lineParts[4]));
                         
-                        results.add(searchResult);
+                        if ( searchResult.getNaturalLanguageRepresentation().contains("?D?") && searchResult.getNaturalLanguageRepresentation().contains("?R?") )
+                			results.add(searchResult);
                     }
                     catch (Exception e ) {
                         

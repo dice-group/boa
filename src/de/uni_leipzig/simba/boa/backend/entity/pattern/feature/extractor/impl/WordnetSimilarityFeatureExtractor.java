@@ -1,7 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +20,6 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.SimilarityAssessor;
 import de.uni_leipzig.simba.boa.backend.wordnet.similarity.WordNotFoundException;
-import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.ling.WordTag;
 import edu.stanford.nlp.process.Morphology;
 

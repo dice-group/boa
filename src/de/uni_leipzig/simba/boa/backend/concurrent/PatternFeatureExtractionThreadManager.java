@@ -6,7 +6,6 @@ package de.uni_leipzig.simba.boa.backend.concurrent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Timer;
@@ -18,7 +17,6 @@ import java.util.concurrent.Future;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.featureextraction.concurrent.PatternFeatureExtractionCallable;
 import de.uni_leipzig.simba.boa.backend.featureextraction.concurrent.PatternFeatureExtractionPrintProgressTask;

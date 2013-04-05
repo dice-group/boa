@@ -3,7 +3,6 @@ package de.uni_leipzig.simba.boa.backend.machinelearning;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -16,7 +15,6 @@ import com.github.gerbsen.file.BufferedFileReader;
 import com.github.gerbsen.file.BufferedFileWriter;
 import com.github.gerbsen.file.BufferedFileWriter.WRITER_WRITE_MODE;
 import com.github.gerbsen.file.FileUtil;
-import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;

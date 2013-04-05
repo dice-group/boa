@@ -3,7 +3,6 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 import java.util.Map;
 
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingGeneralizedPatternPair;
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;

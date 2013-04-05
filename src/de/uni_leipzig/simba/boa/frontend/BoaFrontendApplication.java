@@ -2,12 +2,7 @@ package de.uni_leipzig.simba.boa.frontend;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,14 +11,12 @@ import java.util.Timer;
 import org.apache.commons.io.FileUtils;
 
 import com.vaadin.Application;
-import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.terminal.ExternalResource;
-import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.AbstractSelect.Filtering;
 import com.vaadin.ui.Alignment;
@@ -32,7 +25,6 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
@@ -53,19 +45,13 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.PatternMappingManager;
-import de.uni_leipzig.simba.boa.backend.evaluation.EvaluationIndexCreator;
-import de.uni_leipzig.simba.boa.backend.evaluation.EvaluationManager;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
-import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.sentenceboundarydisambiguation.SentenceBoundaryDisambiguation;
-import de.uni_leipzig.simba.boa.backend.rdf.entity.Triple;
 import de.uni_leipzig.simba.boa.frontend.data.AutosuggestionsManager;
 import de.uni_leipzig.simba.boa.frontend.data.DatabaseContainer;
 import de.uni_leipzig.simba.boa.frontend.ui.DatabaseNavigationTree;
 import de.uni_leipzig.simba.boa.frontend.ui.PatternTable;
 import de.uni_leipzig.simba.boa.frontend.ui.PatternWindow;
 import de.uni_leipzig.simba.boa.webservice.client.TextToRdfClient;
-import edu.stanford.nlp.util.StringUtils;
 
 @SuppressWarnings("serial")
 public class BoaFrontendApplication extends Application implements ItemClickListener, Button.ClickListener, Property.ValueChangeListener {
