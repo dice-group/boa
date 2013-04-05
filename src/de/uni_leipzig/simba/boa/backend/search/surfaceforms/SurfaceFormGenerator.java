@@ -1,10 +1,8 @@
 package de.uni_leipzig.simba.boa.backend.search.surfaceforms;
 
-import java.io.File;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -14,9 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import weka.core.tokenizers.NGramTokenizer;
+
 import com.github.gerbsen.file.FileUtil;
 
-import weka.core.tokenizers.NGramTokenizer;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledge;
 import de.uni_leipzig.simba.boa.backend.backgroundknowledge.impl.DatatypePropertyBackgroundKnowledge;

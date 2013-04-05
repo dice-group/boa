@@ -1,14 +1,11 @@
 package de.uni_leipzig.simba.boa.frontend.data;
 
-import java.io.File;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.HierarchicalContainer;
 
-import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 
 

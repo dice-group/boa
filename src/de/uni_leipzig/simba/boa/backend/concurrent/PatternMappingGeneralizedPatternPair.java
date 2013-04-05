@@ -1,7 +1,6 @@
 package de.uni_leipzig.simba.boa.backend.concurrent;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 
 /**

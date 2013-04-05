@@ -4,15 +4,11 @@
 package de.uni_leipzig.simba.boa.backend.machinelearning.generic.impl;
 
 import java.io.File;
-import java.io.IOException;
-
-import cern.colt.Arrays;
 
 import weka.classifiers.Classifier;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ArffLoader;
-
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;

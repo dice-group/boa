@@ -3,13 +3,7 @@
  */
 package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl;
 
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
@@ -24,14 +18,8 @@ import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.Abstrac
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
-import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
-import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.NamedEntityRecognition;
-import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.namedentityrecognition.impl.StanfordNLPNamedEntityRecognition;
 import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
-import de.uni_leipzig.simba.boa.backend.util.NaturalLanguageProcessingUtil;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
-import edu.stanford.nlp.ling.HasWord;
-import edu.stanford.nlp.process.DocumentPreprocessor;
 
 /**
  * @author Daniel Gerber

@@ -1,18 +1,14 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.filter.impl;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.regex.Matcher;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
-import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
-import de.uni_leipzig.simba.boa.backend.entity.patternmapping.serialization.PatternMappingManager;
 
 /**
  * 

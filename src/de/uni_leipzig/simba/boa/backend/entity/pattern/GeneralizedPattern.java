@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 /**
  * @author gerb
@@ -15,6 +14,11 @@ import java.util.regex.Matcher;
  */
 public class GeneralizedPattern extends AbstractPattern implements Comparable<GeneralizedPattern> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7073266160090836276L;
+	
 	java.util.regex.Pattern number	= java.util.regex.Pattern.compile("\\d{1,2}");
 	java.util.regex.Pattern year	= java.util.regex.Pattern.compile("\\d{4}");
 	

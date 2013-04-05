@@ -3,9 +3,7 @@
  */
 package de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;

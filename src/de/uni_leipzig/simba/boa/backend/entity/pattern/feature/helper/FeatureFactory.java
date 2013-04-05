@@ -2,7 +2,6 @@ package de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
