@@ -16,7 +16,8 @@ public class FeatureHelper {
     
     private static NLPediaLogger logger = new NLPediaLogger(FeatureHelper.class);
 	
-	private static Map<Feature,Map<PatternMapping,Double>> localFeatureMaxima; 
+	private static Map<Feature,Map<PatternMapping,Double>> localFeatureMaxima;
+	private static Map<Feature,Map<PatternMapping,Double>> localFeatureMinima;
 
 	/**
 	 * Calculates the local maximum for a mapping and a feature.
@@ -27,7 +28,19 @@ public class FeatureHelper {
 	 */
 	private static Double calculateLocalMaximum(PatternMapping mapping, Feature feature){
 		
-		return Collections.max(mapping.getPatterns(), PatternComparatorGenerator.getPatternFeatureComparator(feature)).getFeatures().get(feature);
+		return Collections.max(mapping.getGeneralizedPatterns(), PatternComparatorGenerator.getPatternFeatureComparator(feature)).getFeatures().get(feature);
+	}
+	
+	/**
+	 * Calculates the local maximum for a mapping and a feature.
+	 * 
+	 * @param mapping
+	 * @param feature
+	 * @return
+	 */
+	private static Double calculateLocalMinima(PatternMapping mapping, Feature feature){
+		
+		return Collections.min(mapping.getGeneralizedPatterns(), PatternComparatorGenerator.getPatternFeatureComparator(feature)).getFeatures().get(feature);
 	}
 	
 	/**
@@ -47,6 +60,16 @@ public class FeatureHelper {
 		return maximum;
 	}
 	
+	public static Double getGlobalMinimum(Feature feature){
+		
+		Double minimum = 0D;
+		for (Map.Entry<PatternMapping,Double> entry : FeatureHelper.localFeatureMinima.get(feature).entrySet()){
+		    
+		    minimum = Math.min(minimum, entry.getValue());
+		}
+		return minimum;
+	}
+	
 	/**
      * Returns the specific feature score for the pattern with the 
      * maximum value of this feature.
@@ -60,13 +83,19 @@ public class FeatureHelper {
 	    return FeatureHelper.localFeatureMaxima.get(feature).get(mapping);
 	}
 	
+	public static Double getLocalMinimum(PatternMapping mapping, Feature feature) {
+	    
+	    return FeatureHelper.localFeatureMinima.get(feature).get(mapping);
+	}
+	
 	/**
 	 * 
 	 * @param mappings
 	 */
-	public static void createLocalMaxima(Set<PatternMapping> mappings) {
+	public static void createLocalMaximaAndMinima(Set<PatternMapping> mappings) {
 	    
 	    FeatureHelper.localFeatureMaxima = new HashMap<Feature, Map<PatternMapping,Double>>();
+	    FeatureHelper.localFeatureMinima = new HashMap<Feature, Map<PatternMapping,Double>>();
 	    
 	    logger.info("Starting to generate feature cache!");
 	    
@@ -79,6 +108,7 @@ public class FeatureHelper {
 	            	if ( feature.getSupportedLanguages().contains(NLPediaSettings.getSystemLanguage()) ) {
 	                
 		                Map<PatternMapping,Double> maximas = new HashMap<PatternMapping,Double>();
+		                Map<PatternMapping,Double> minimas = new HashMap<PatternMapping,Double>();
 		                
 		                // calculate the local maximum of the current feature for all pattern mappings 
 		                for ( PatternMapping mapping : mappings ) {
@@ -88,10 +118,11 @@ public class FeatureHelper {
 		                        
 		                        logger.debug("Starting to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
 		                        maximas.put(mapping, calculateLocalMaximum(mapping, feature));
+		                        minimas.put(mapping, calculateLocalMinima(mapping, feature));
 		                        logger.debug("Finished to generate feature cache for feature: " + feature.getName() + " and mapping : " + mapping.getProperty().getUri() + "  !");
 		                    }
 		                }
-		                        
+		                FeatureHelper.localFeatureMinima.put(feature, minimas);
 		                FeatureHelper.localFeatureMaxima.put(feature, maximas);
 	            	}
 	            }
@@ -99,5 +130,10 @@ public class FeatureHelper {
 	    }
 	    
 	    logger.info("Finished to generate feature cache!");
+	}
+
+	public static void init(Set<PatternMapping> patternMappings) {
+		
+		createLocalMaximaAndMinima(patternMappings);
 	}
 }

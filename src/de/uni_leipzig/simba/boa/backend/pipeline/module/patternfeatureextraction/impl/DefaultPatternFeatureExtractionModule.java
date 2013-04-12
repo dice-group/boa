@@ -107,7 +107,7 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
 	private boolean createOrUpdateMachineLearningTrainingFile() {
 
 	    // create the maximas beforehand, so we can use them as a cache
-	    FeatureHelper.createLocalMaxima(this.moduleInterchangeObject.getPatternMappings());
+	    FeatureHelper.init(this.moduleInterchangeObject.getPatternMappings());
 	    MachineLearningTrainingFile file = null;
 	    
 	    if ( new File(MACHINE_LEARNING_TRAINING_FILE).exists() ) {
@@ -208,7 +208,7 @@ public class DefaultPatternFeatureExtractionModule extends AbstractPatternFeatur
             // create a file if possible
             if ( this.moduleInterchangeObject.getPatternMappings() != null ) {
                 
-                FeatureHelper.createLocalMaxima(this.moduleInterchangeObject.getPatternMappings());
+                FeatureHelper.init(this.moduleInterchangeObject.getPatternMappings());
                 MachineLearningTrainingFile file = patternScoreManager.createNeuronalNetworkTrainingFile(this.moduleInterchangeObject.getPatternMappings());
                 patternScoreManager.writeNetworkTrainingFile(file, MACHINE_LEARNING_TRAINING_FILE);
             }
