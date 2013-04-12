@@ -153,7 +153,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                 String label1            = searchResult.getFirstLabel();
                 String label2            = searchResult.getSecondLabel();
                 Integer sentenceID       = searchResult.getSentence();
-          
+                
                 // next line is for the same property
                 if ( propertyUri.equals(currentProperty) ) {
                     

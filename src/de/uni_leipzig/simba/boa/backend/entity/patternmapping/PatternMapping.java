@@ -29,7 +29,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	/**
 	 * 
 	 */
-	private Map<String,GeneralizedPattern> patterns;
+	private Map<Integer,GeneralizedPattern> patterns;
 	
 	/**
 	 * default constructor needed for hibernate
@@ -37,7 +37,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	public PatternMapping(){
 		
 	    this.property   = new Property();
-        this.patterns   = new TreeMap<String,GeneralizedPattern>();
+        this.patterns   = new TreeMap<Integer,GeneralizedPattern>();
 	}
 	
 	/**
@@ -49,7 +49,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	public PatternMapping(Property property) {
 
 		this.property = property;
-		this.patterns   = new TreeMap<String,GeneralizedPattern>();
+		this.patterns   = new TreeMap<Integer,GeneralizedPattern>();
 	}
 
 	/**
@@ -79,8 +79,8 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 	 */
 	public void setGeneralizedPatterns(Set<GeneralizedPattern> correctPatterns) {
 		
-		this.patterns = new TreeMap<String,GeneralizedPattern>();
-		for ( GeneralizedPattern gp : correctPatterns ) this.patterns.put(gp.getNaturalLanguageRepresentation(), gp);
+		this.patterns = new TreeMap<Integer,GeneralizedPattern>();
+		for ( GeneralizedPattern gp : correctPatterns ) this.patterns.put(gp.getNaturalLanguageRepresentation().hashCode(), gp);
 	}
 	
 	/**
@@ -92,7 +92,7 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 		String generalizedNlr = String.format("%s %s %s", 
 				pattern.isDomainFirst() ? "?D?" : "?R?", generalize(pattern), pattern.isDomainFirst() ? "?R?" : "?D?"); 
 		
-		if ( !this.patterns.containsKey(generalizedNlr)) this.patterns.put(generalizedNlr, new GeneralizedPattern(generalizedNlr));
+		if ( !this.patterns.containsKey(generalizedNlr)) this.patterns.put(generalizedNlr.hashCode(), new GeneralizedPattern(generalizedNlr));
 		this.patterns.get(generalizedNlr).addPattern(pattern);
 		
 		return this;
