@@ -69,7 +69,8 @@ public class TranslateBackgroundKnowledgeModule extends AbstractPreprocessingMod
 	        while ((line = reader.readLine()) != null) {
 	            
 	            // read the background knowledge 
-	            BackgroundKnowledge bk = BackgroundKnowledgeManager.getInstance().createBackgroundKnowledge(line, true);
+	            BackgroundKnowledge bk = null;//BackgroundKnowledgeManager.getInstance().createBackgroundKnowledge(line, true);
+	            // Todo!
 	            
 	            // uris of the background knowledge will always be NOT language specific: http://dbpedia.org/resource/Leipzig
 	            String englishSubjectUri = bk.getSubjectUri();

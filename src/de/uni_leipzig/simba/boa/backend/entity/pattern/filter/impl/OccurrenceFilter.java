@@ -1,10 +1,14 @@
 package de.uni_leipzig.simba.boa.backend.entity.pattern.filter.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
@@ -25,6 +29,11 @@ public class OccurrenceFilter implements PatternFilter {
 		Set<GeneralizedPattern> correctPatterns = new HashSet<GeneralizedPattern>();
 		
 		for ( GeneralizedPattern p : patternMapping.getGeneralizedPatterns() ) {
+			
+			 // we want to remove patterns like "?D? _NE_ ?R?", patterns which only contain stopwords
+			List<String> tokens = new ArrayList<String>(Arrays.asList(p.getNaturalLanguageRepresentationWithoutVariables().split(" ")));
+			tokens.removeAll(Constants.STOP_WORDS);
+			if ( tokens.isEmpty() ) p.setUseForPatternEvaluation(false);
 			
 			// skip this evaluation, because it was characterized as not suitable in a previous evaluation
 			if ( p.isUseForPatternEvaluation() ) {

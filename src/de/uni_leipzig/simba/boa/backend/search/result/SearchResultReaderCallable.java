@@ -50,23 +50,23 @@ public class SearchResultReaderCallable implements Callable<SearchResultReaderCa
             for (String part : Arrays.copyOfRange(lineParts, 0, 4) )
                 if ( !alreadyKnowString.containsKey(part.hashCode()) ) alreadyKnowString.put(part.hashCode(), part);
             
-                try {
-        
-                    SearchResult searchResult = new SearchResult();
-                    searchResult.setProperty(alreadyKnowString.get(lineParts[0].hashCode()));
-                    searchResult.setNaturalLanguageRepresentation(alreadyKnowString.get(lineParts[1].hashCode()));
-                    searchResult.setFirstLabel(alreadyKnowString.get(lineParts[2].hashCode()));
-                    searchResult.setSecondLabel(alreadyKnowString.get(lineParts[3].hashCode()));
-                    searchResult.setSentence(Integer.valueOf(lineParts[4]));
-                    
-                    if ( searchResult.getNaturalLanguageRepresentation().contains("?D?") && searchResult.getNaturalLanguageRepresentation().contains("?R?") )
-            			results.add(searchResult);
-                }
-                catch (Exception e ) {
-                    
-                    e.printStackTrace();
-                    logger.error("Line: " + line, e);
-                }
+            try {
+    
+                SearchResult searchResult = new SearchResult();
+                searchResult.setProperty(alreadyKnowString.get(lineParts[0].hashCode()));
+                searchResult.setNaturalLanguageRepresentation(alreadyKnowString.get(lineParts[1].hashCode()));
+                searchResult.setFirstLabel(alreadyKnowString.get(lineParts[2].hashCode()));
+                searchResult.setSecondLabel(alreadyKnowString.get(lineParts[3].hashCode()));
+                searchResult.setSentence(Integer.valueOf(lineParts[4]));
+                
+                if ( searchResult.getNaturalLanguageRepresentation().contains("?D?") 
+                		&& searchResult.getNaturalLanguageRepresentation().contains("?R?") ) results.add(searchResult);
+            }
+            catch (Exception e ) {
+                
+                e.printStackTrace();
+                logger.error("Line: " + line, e);
+            }
         }
         reader.close();
         
