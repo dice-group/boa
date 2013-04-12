@@ -53,7 +53,7 @@ public class PatternWindow extends Window {
 		
 		this.setModal(true);
 		this.setWidth("1000px");
-		this.setHeight("510px");
+		this.setHeight("710px");
 		this.setResizable(false);
 		
         VerticalLayout l2 = new VerticalLayout();
@@ -280,7 +280,12 @@ public class PatternWindow extends Window {
 	    
 		StringBuffer buffer = new StringBuffer();
 		
-		for ( Pattern pattern : ((GeneralizedPattern) this.pattern).getPatterns() ) {
+		List<Pattern> patterns = 
+				((GeneralizedPattern) this.pattern).getPatterns().size() > 5 ? 
+				((GeneralizedPattern) this.pattern).getPatterns().subList(0, 5) : 
+				((GeneralizedPattern) this.pattern).getPatterns(); 
+		
+		for ( Pattern pattern : patterns ) {
 			
 			List<String> sentences = PatternUtil.getLuceneDocuments(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH, new ArrayList<Integer>(pattern.getFoundInSentences()));
 	        
@@ -348,7 +353,12 @@ public class PatternWindow extends Window {
 		StringBuffer buffer = new StringBuffer();
 		int numberOfResults = 3;
 		
-		for ( Pattern pattern : ((GeneralizedPattern) this.pattern).getPatterns() ) {
+		List<Pattern> patterns = 
+				((GeneralizedPattern) this.pattern).getPatterns().size() > 5 ? 
+				((GeneralizedPattern) this.pattern).getPatterns().subList(0, 5) : 
+				((GeneralizedPattern) this.pattern).getPatterns(); 
+		
+		for ( Pattern pattern : patterns ) {
 			
 			Set<String> sentences = PatternUtil.exactQueryIndex(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.INDEX_CORPUS_PATH, pattern, numberOfResults);
 		    

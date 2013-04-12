@@ -59,7 +59,7 @@ public class DefaultPatternScoringModule extends AbstractPatternScoringModule {
         		patternScoreManager.readNetworkTrainingFile(MACHINE_LEARNING_TRAINING_FILE, "UTF-8"), null);
         machineLearningTool.loadModel();
         // fill the cache
-        FeatureHelper.createLocalMaxima(this.moduleInterchangeObject.getPatternMappings());
+        FeatureHelper.init(this.moduleInterchangeObject.getPatternMappings());
         
         // go through each mapping / pattern combination
         for ( PatternMapping mapping : this.moduleInterchangeObject.getPatternMappings() ) {

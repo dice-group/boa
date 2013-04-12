@@ -71,7 +71,7 @@ public class GoodNaturalLanguagePatternAnnotation {
         BufferedFileWriter writer = FileUtil.openWriter("/Users/gerb/eval.txt", "UTF-8", WRITER_WRITE_MODE.OVERRIDE);
         writer.write(writeFeatureNames());
 
-        FeatureHelper.createLocalMaxima(PatternMappingManager.getInstance().getPatternMappings());
+        FeatureHelper.init(PatternMappingManager.getInstance().getPatternMappings());
         List<String> lines = new ArrayList<String>();
         for (String propertyUri : top50Properties ) {
         	

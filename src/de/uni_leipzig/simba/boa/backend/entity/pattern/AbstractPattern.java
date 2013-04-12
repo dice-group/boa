@@ -459,25 +459,25 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	                        if ( !feature.isZeroToOneValue() ) {
 	                            
 	                            Double maximum = 0D;
+	                            Double minimum = 0D;
 	                            // take every mapping into account to find the maximum value
 	                            if ( feature.isNormalizeGlobaly() ) {
 
 	                                maximum = FeatureHelper.getGlobalMaximum(feature);
+	                                minimum = FeatureHelper.getGlobalMinimum(feature);
 	                            }
 	                            // only use the current mapping to find the maximum
 	                            else {
 	                                
 	                                maximum = FeatureHelper.getLocalMaximum(mapping, feature);
+	                                minimum = FeatureHelper.getLocalMinimum(mapping, feature);
 	                            }
-	                            Double featureValue =  this.features.get(feature) / maximum;
+	                            Double featureValue = (this.features.get(feature) - minimum) / ( maximum - minimum );
 	                            featureValue = featureValue.isNaN() || featureValue.isInfinite() ? 0D : featureValue;
 	                            featureValues.add(featureValue);
 	                        }
 	                        // we dont need to normalize a 0-1 value
-	                        else {
-	                            
-	                            featureValues.add(this.features.get(feature));
-	                        }
+	                        else featureValues.add(this.features.get(feature));
 	                    }
 	                }
 	            }

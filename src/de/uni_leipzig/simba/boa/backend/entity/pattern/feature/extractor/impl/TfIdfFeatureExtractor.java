@@ -11,6 +11,7 @@ import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingGeneralizedPatternPair;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.AbstractFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
@@ -34,10 +35,10 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 	    for ( PatternMapping mapping : this.mappings ) {
             
             StringBuffer buffer = new StringBuffer();
-            for ( Pattern p : mapping.getPatterns() ) {
-                
-                buffer.append(p.getNaturalLanguageRepresentationWithoutVariables() + " ");
-            }
+            for ( GeneralizedPattern gp : mapping.getGeneralizedPatterns() )
+            	for ( Pattern p : gp.getPatterns())
+            		buffer.append(p.getNaturalLanguageRepresentationWithoutVariables() + " ");
+            
             documents.put(mapping, buffer.toString());
         }
 	}
@@ -76,9 +77,9 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 			setValue(pattern, "TF_IDF_IDF",		idfScore		 >= 0 ? idfScore		 : 0, idfStat);
 		}
 		Map<Feature,Double> features = pair.getGeneralizedPattern().getFeatures();
-		features.put(FeatureFactory.getInstance().getFeature("TF_IDF_TFIDF"), tfStat.getMean());
-		features.put(FeatureFactory.getInstance().getFeature("TF_IDF_TF"), idfStat.getMean());
-		features.put(FeatureFactory.getInstance().getFeature("TF_IDF_IDF"), tfIdfStat.getMean());
+		features.put(FeatureFactory.getInstance().getFeature("TF_IDF_TFIDF"), tfIdfStat.getMean());
+		features.put(FeatureFactory.getInstance().getFeature("TF_IDF_TF"), tfStat.getMean());
+		features.put(FeatureFactory.getInstance().getFeature("TF_IDF_IDF"), idfStat.getMean());
 	}
 	
 	/**
@@ -93,7 +94,7 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 		
 		public double getIdf(int numberOfDocuments) {
 
-			return (Math.log(numberOfDocuments/(documentFrequency + 1)) + 1);
+			return Math.log((numberOfDocuments / (documentFrequency + 1)) + 1);
 		}
 
 		public double getTf() {
@@ -141,10 +142,10 @@ public class TfIdfFeatureExtractor extends AbstractFeatureExtractor {
 			
 			// we build a long string, by concatenating all patterns
 			StringBuilder patternText = new StringBuilder(); 
-			for (Pattern p : mapping.getPatterns()) {
-				
-				patternText.append(p.getNaturalLanguageRepresentationWithoutVariables() + " ");
-			}
+			for (GeneralizedPattern gp : mapping.getGeneralizedPatterns()) 
+				for ( Pattern p : gp.getPatterns() )
+					patternText.append(p.getNaturalLanguageRepresentationWithoutVariables() + " ");
+			
 			Set<String> tokens = new HashSet<String>(Arrays.asList(patternText.toString().split(" ")));
 			tokens.removeAll(Constants.STOP_WORDS);
 			this.mappingToText.put(mapping.getProperty().getUri(), tokens);

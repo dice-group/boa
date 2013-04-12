@@ -13,6 +13,7 @@ import com.github.gerbsen.file.FileUtil;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.helper.FeatureFactory;
@@ -65,7 +66,7 @@ public class PatternScoreManager {
 
         // collect all the patterns
         for (PatternMapping mapping : mappings) {
-            for (Pattern pattern : mapping.getPatterns() ) {
+            for (GeneralizedPattern pattern : mapping.getGeneralizedPatterns() ) {
                 
                 this.logger.debug("Generation of training example: " + mapping.getProperty().getUri() + "/" + pattern.getNaturalLanguageRepresentation());
                 trainingFileEntries.add(MachineLearningTrainingFileFactory.getInstance().getDefaultMachineLearningTrainingFileEntry(
@@ -104,7 +105,7 @@ public class PatternScoreManager {
         mlTrainingFile.setFeatureNames(featureNames);
         
         for (PatternMapping mapping : patternMappings) {
-            for (Pattern pattern : mapping.getPatterns()) {
+            for (GeneralizedPattern pattern : mapping.getGeneralizedPatterns()) {
                 
                 MachineLearningTrainingFileEntry entry = mlTrainingFile.getEntry(mapping.getProperty().getUri(), pattern.getNaturalLanguageRepresentation());
                 List<Double> features = pattern.buildNormalizedFeatureVector(mapping);
