@@ -92,8 +92,10 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 		String generalizedNlr = String.format("%s %s %s", 
 				pattern.isDomainFirst() ? "?D?" : "?R?", generalize(pattern), pattern.isDomainFirst() ? "?R?" : "?D?"); 
 		
-		if ( !this.patterns.containsKey(generalizedNlr)) this.patterns.put(generalizedNlr.hashCode(), new GeneralizedPattern(generalizedNlr));
-		this.patterns.get(generalizedNlr).addPattern(pattern);
+		if ( !this.patterns.containsKey(generalizedNlr.hashCode())) 
+			this.patterns.put(generalizedNlr.hashCode(), new GeneralizedPattern(generalizedNlr));
+		
+		this.patterns.get(generalizedNlr.hashCode()).addPattern(pattern);
 		
 		return this;
 	}
