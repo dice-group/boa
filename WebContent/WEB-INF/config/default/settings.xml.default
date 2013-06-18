@@ -17,6 +17,7 @@
         
                 <!-- ############### index stuff ############### -->
                 <entry key="ramBufferMaxSizeInMb"                           value="1000"/>
+                <entry key="nerAndPosTagIndex"                           	value="false"/>
                 
                 <!-- ############### pattern search ############### -->
                 <entry key="maxNumberOfDocuments"                           value="100"/>

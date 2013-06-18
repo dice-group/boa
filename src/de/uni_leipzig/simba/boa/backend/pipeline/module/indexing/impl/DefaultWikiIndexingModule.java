@@ -55,8 +55,6 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 	private final int RAM_BUFFER_MAX_SIZE	= NLPediaSettings.getIntegerSetting("ramBufferMaxSizeInMb");
 	private final boolean OVERWRITE_INDEX	= this.overrideData;
 	
-	private BlockingQueue<IndexingThread> queue = new LinkedBlockingQueue<IndexingThread>(Runtime.getRuntime().availableProcessors());
-	
 	// remember how many files get indexed
 	private int indexDocumentCount = 0;
 	
@@ -167,13 +165,19 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 		private IndexWriter writer;
 		
 		protected SentenceBoundaryDisambiguation sentenceBoundaryDisambiguation = NaturalLanguageProcessingToolFactory.getInstance().createDefaultSentenceBoundaryDisambiguation();
-		protected NamedEntityRecognition nerTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultNamedEntityRecognition();
-		protected PartOfSpeechTagger posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
+		protected NamedEntityRecognition nerTagger;
+		protected PartOfSpeechTagger posTagger;
 
 		public IndexingThread(IndexWriter writer, List<IndexDocument> documents) {
 			
 			this.documents	= documents;
 			this.writer		= writer;
+			
+			if ( NLPediaSettings.getBooleanSetting("nerAndPosTagIndex") ) {
+				
+				nerTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultNamedEntityRecognition();
+				posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
+			}
 		}
 
 		@Override
@@ -188,8 +192,8 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 					// there are mostly due to sbd errors :(
 					if ( StringUtils.countMatches(sentence, " ") < 5 ) continue;
 					
-					String nerSentence = nerTagger.getAnnotatedString(sentence);
-					String posTagged = posTagger.getAnnotatedString(sentence);
+					String nerSentence = nerTagger == null ? "" : nerTagger.getAnnotatedString(sentence);
+					String posTagged = posTagger == null ? "" : posTagger.getAnnotatedString(sentence);
 					
 					// add it to the index
 				    LuceneIndexHelper.indexDocument(writer, 
