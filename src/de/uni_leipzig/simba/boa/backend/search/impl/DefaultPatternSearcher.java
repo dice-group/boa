@@ -419,7 +419,9 @@ public class DefaultPatternSearcher implements PatternSearcher {
 		
         // patterns shall not start with "and" or "and ," because this is the
         // conjunction of sentences and does not carry meaning
-        if (patternWithoutVariables.startsWith("and ") || patternWithoutVariables.startsWith("and,") || patternWithoutVariables.startsWith("and ,"))
+        if (patternWithoutVariables.startsWith("and ") || patternWithoutVariables.startsWith("and,") || patternWithoutVariables.startsWith("and ,") ||
+        	patternWithoutVariables.startsWith("et ") || patternWithoutVariables.startsWith("et,") || patternWithoutVariables.startsWith("et ,") ||
+        	patternWithoutVariables.startsWith("und ") || patternWithoutVariables.startsWith("und,") || patternWithoutVariables.startsWith("und ,"))
             return false;
         
         return true;
