@@ -194,6 +194,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 					
 					String nerSentence = nerTagger == null ? "" : nerTagger.getAnnotatedString(sentence);
 					String posTagged = posTagger == null ? "" : posTagger.getAnnotatedString(sentence);
+					Set<String> entities = nerSentence.equals("") ? new HashSet<String>() : new HashSet<String>(getEntities(this.mergeTagsInSentences(nerSentence)));
 					
 					// add it to the index
 				    LuceneIndexHelper.indexDocument(writer, 
@@ -202,7 +203,7 @@ public class DefaultWikiIndexingModule extends AbstractPipelineModule {
 				    				sentence, 
 				    				nerSentence,
 				    				posTagged,
-				    				new HashSet<String>(getEntities(this.mergeTagsInSentences(nerSentence)))));
+				    				entities));
 				}
 			
 			// set those null so that they dont take up all RAM, since the 
