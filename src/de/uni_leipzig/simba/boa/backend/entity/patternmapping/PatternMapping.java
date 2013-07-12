@@ -114,12 +114,12 @@ public class PatternMapping extends de.uni_leipzig.simba.boa.backend.entity.Enti
 		while ( nlr.matches("^.* \\p{Upper}\\S* .*$") )
 			nlr = nlr.replaceAll(" \\p{Upper}\\S* ", " _NE_ ");
 		
-		nlr = nlr.replaceAll("(_NE_ )+", "_NE_ ").replaceAll(" +", " ");;
-		
 		// date stuff
 		for ( String month : Arrays.asList("January", "February", "March", "April", "May", "June", 
     			"July", "August", "September", "October", "November", "December"))
     				nlr = nlr.replace(" " + month + " ", " _MONTH_ ");
+		
+		nlr = nlr.replaceAll("(_NE_ )+", "_NE_ ").replaceAll(" +", " ");;
 		nlr = nlr.replaceAll("\\d{4}", "_YEAR_");
 		nlr = nlr.replaceAll("(-)?\\d+(\\.\\d*)?", "_NUMBER_");
 		

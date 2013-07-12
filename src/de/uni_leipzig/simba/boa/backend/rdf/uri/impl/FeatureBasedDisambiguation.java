@@ -180,7 +180,6 @@ public class FeatureBasedDisambiguation {
     	for ( String surfaceForm : getSurfaceFormsForUri(uri, dbpediaSearcher)) {
     		
     		double sim = metric.getSimilarity(label, surfaceForm);
-//    		System.out.println(label + " " + surfaceForm + " " +sim);
     		max = Math.max(max, sim);
     	}
 //    	System.out.println(max);

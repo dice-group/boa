@@ -43,7 +43,7 @@ public class TripleGenerator {
     
     public TripleGenerator() {
         
-        if ( NLPediaSettings.getBooleanSetting("useProperNounPhraseExtraction") )
+        if ( !NLPediaSettings.getBooleanSetting("useProperNounPhraseExtraction") )
             this.nerTagger  = NaturalLanguageProcessingToolFactory.getInstance().createDefaultNamedEntityRecognition();
         else 
             this.posTagger  = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
