@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.github.gerbsen.Constants;
+import com.github.gerbsen.encoding.Encoder.Encoding;
 import com.github.gerbsen.file.BufferedFileWriter;
 import com.github.gerbsen.file.BufferedFileWriter.WRITER_WRITE_MODE;
 import com.github.gerbsen.file.FileUtil;
@@ -297,18 +298,42 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
     
     public static void main(String[] args) {
     	
-    	List<String> uris = FileUtil.readFileInList("/Users/gerb/Development/workspaces/experimental/boa/qa/en/backgroundknowledge/object_properties_to_query.txt", "UTF-8", "#");
-		
-    	for ( String uri : uris ) {
+		String query = "SELECT ?s ?label from <http://dbpedia.org> WHERE { ?s a dbpedia-owl:Film . ?s rdfs:label ?label . FILTER(lang(?label) = \"en\") } LIMIT 100000";
+    	
+        int offset = 0;
+        
+        BufferedFileWriter writer = new BufferedFileWriter("/Users/gerb/movies.tsv", Encoding.UTF_8, WRITER_WRITE_MODE.OVERRIDE);
+        
+        // query as long as we get resultsets back
+//        while (true) {
 
-    		String query = "ask from <http://boa.dbpedia.org> where { <"+uri+"> a <http://www.w3.org/2002/07/owl#DatatypeProperty> }";
-        	
-        	QueryEngineHTTP qexecProperty = new QueryEngineHTTP("http://[2001:638:902:2010:0:168:35:138]/sparql", query);
-            qexecProperty.addDefaultGraph("http://boa.dbpedia.org");
-            boolean isData = qexecProperty.execAsk();
-            if (isData) 
-            System.out.println(uri);
-    	}
+            QueryEngineHTTP qexec = new QueryEngineHTTP("http://[2001:638:902:2010:0:168:35:138]/sparql", query.replaceAll("&OFFSET", String.valueOf(offset)));
+            qexec.addDefaultGraph("http://boa.dbpedia.org");
+
+            // query current query, collect results and increment the offset
+            // afterwards
+            System.out.println("Wasd");
+            ResultSet rs = getResults(qexec, query);
+            System.out.println("Query: " + query.replaceAll("&OFFSET", String.valueOf(offset)));
+            
+//            boolean finished = true;
+            
+            while (rs.hasNext()) {
+            	
+//            	finished = false;
+            	QuerySolution s = rs.next();
+            	writer.write(s.getLiteral("?label").getLexicalForm());
+            }
+            offset = offset + 10000;
+
+            // SPARQL query returned results
+//            if (finished) {
+
+            	qexec.close();
+//                break;
+//            }
+//        }
+        writer.close();
 	}
 
     /**
@@ -322,7 +347,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
      *            - the query only for logging purposes
      * @return a resultset for the given query
      */
-    protected ResultSet getResults(QueryEngineHTTP qexec, String query) {
+    protected static ResultSet getResults(QueryEngineHTTP qexec, String query) {
 
         ResultSet results = null;
 
@@ -333,7 +358,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
         catch (Exception e) {
             results = getResults(qexec, query);
             System.out.println("Retrying query: " + query);
-            logger.warn("Need to retry query: " + query, e);
+//            logger.warn("Need to retry query: " + query, e);
         }
 
         return results;

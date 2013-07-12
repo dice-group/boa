@@ -171,6 +171,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -185,6 +186,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -199,6 +201,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="true" />
@@ -291,6 +294,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -341,6 +345,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -355,6 +360,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -369,6 +375,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -383,6 +390,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -397,6 +405,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -411,6 +420,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -425,6 +435,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -442,6 +453,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -456,6 +468,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -473,6 +486,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -487,6 +501,7 @@
             <list>
                 <value>de</value>
                 <value>en</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="false" />
@@ -663,6 +678,7 @@
             <list>
                 <value>en</value>
                 <value>de</value>
+                <value>fr</value>
             </list>
         </constructor-arg>
         <constructor-arg value="true" />
