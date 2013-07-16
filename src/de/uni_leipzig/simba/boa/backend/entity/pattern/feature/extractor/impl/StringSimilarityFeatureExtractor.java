@@ -68,7 +68,7 @@ public class StringSimilarityFeatureExtractor extends AbstractFeatureExtractor {
 				"{ <%s> rdfs:label ?label . FILTER(lang(?label) = '%s') }", uri, NLPediaSettings.BOA_LANGUAGE); 
 		
 		QueryEngineHTTP qexecProperty = new QueryEngineHTTP(NLPediaSettings.getSetting("dbpediaSparqlEndpoint"), query);
-        qexecProperty.addDefaultGraph("http://boa.dbpedia.org");
+        qexecProperty.addDefaultGraph("http://dbpedia.org");
 
         ResultSet results = qexecProperty.execSelect();
         String label = "";
