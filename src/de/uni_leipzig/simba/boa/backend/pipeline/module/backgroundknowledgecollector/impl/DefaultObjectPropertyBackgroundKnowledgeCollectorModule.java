@@ -105,20 +105,24 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 	 */
 	protected String createObjectPropertyQuery(String property) {
 
-		return 
-			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>  " +
-			"SELECT ?s ?sl <"+property+"> ?o ?ol " +
-			"FROM <"+ NLPediaSettings.getSetting("importGraph")+"> " +
-			"WHERE {" +
-			 "	?s rdfs:label ?sl . " + 
-			 "  ?s <"+property+"> ?o . " +
-			 "  ?o rdfs:label ?ol . " +
-			 "  ?s rdf:type <http://dbpedia.org/ontology/Person> . " + 
-			 "  ?o rdf:type <http://dbpedia.org/ontology/Award> . " + 
-			 "	FILTER (   lang(?sl)= \""+BOA_LANGUAGE+"\"  &&  lang(?ol)= \""+BOA_LANGUAGE+"\"  ) " + //"	FILTER (   lang(?sl)= \"en\"  &&  lang(?ol)= \"en\"  ) " +// 
-			 "} " +
-			 "LIMIT " + SPARQL_QUERY_LIMIT + " " +
-			 "OFFSET &OFFSET";
+		String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>  " +
+				"SELECT ?s ?sl <"+property+"> ?o ?ol " +
+				"FROM <"+ NLPediaSettings.getSetting("importGraph")+"> " +
+				"WHERE {" +
+				 "	?s rdfs:label ?sl . " + 
+				 "  ?s <"+property+"> ?o . " +
+				 "  ?o rdfs:label ?ol . " +
+				 "  ?s rdf:type <http://dbpedia.org/ontology/Person> . " + 
+				 "  ?o rdf:type <http://dbpedia.org/ontology/Award> . " + 
+				 "	FILTER (   lang(?sl)= \""+BOA_LANGUAGE+"\"  &&  lang(?ol)= \""+BOA_LANGUAGE+"\"  ) " + 
+				 "} " +
+				 "LIMIT " + SPARQL_QUERY_LIMIT + " " +
+				 "OFFSET &OFFSET";
+		
+		System.out.println(query);
+		
+		return query;
+			
 	}
 }

@@ -10,6 +10,7 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.NumericField;
 
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
@@ -34,10 +35,11 @@ public class DetailedPatternIndexCreationModule extends DefaultPatternIndexCreat
     }
     
     @Override
-    protected Document createLuceneDocument(PatternMapping mapping, Pattern pattern) {
+    protected Document createLuceneDocument(PatternMapping mapping, Pattern pattern, GeneralizedPattern generalizedPattern) {
 
         Document doc = new Document();
         doc.add(new Field("uri",            mapping.getProperty().getUri(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        doc.add(new Field("nlr-gen",        generalizedPattern.getNaturalLanguageRepresentation(), Field.Store.YES, Field.Index.ANALYZED));
         doc.add(new Field("nlr-var",        pattern.getNaturalLanguageRepresentation(), Field.Store.YES, Field.Index.ANALYZED));
         doc.add(new Field("nlr-no-var",     pattern.getNaturalLanguageRepresentationWithoutVariables(), Field.Store.YES, Field.Index.ANALYZED));
         doc.add(new NumericField("boa-score",   Field.Store.YES, true).setDoubleValue(pattern.getScore()));

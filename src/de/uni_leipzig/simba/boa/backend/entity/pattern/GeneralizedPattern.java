@@ -84,7 +84,7 @@ public class GeneralizedPattern extends AbstractPattern implements Comparable<Ge
 	@Override
 	public String getPosTaggedString() {
 
-		for ( Pattern p : this.patterns ) if ( !p.getPosTaggedString().isEmpty() ) return p.getPosTaggedString();
+		for ( Pattern p : this.patterns ) if ( p.getPosTaggedString() != null && !p.getPosTaggedString().isEmpty() ) return p.getPosTaggedString();
 		return "N/A";
 	}
 	

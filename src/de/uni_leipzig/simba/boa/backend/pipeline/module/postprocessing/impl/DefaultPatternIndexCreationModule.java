@@ -14,6 +14,7 @@ import org.apache.lucene.util.Version;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
@@ -68,7 +69,7 @@ public class DefaultPatternIndexCreationModule extends AbstractPostProcessingMod
         
         // index all the pattern in default settings
         for (PatternMapping mapping : this.moduleInterchangeObject.getPatternMappings()) {
-            for (Pattern pattern : mapping.getPatterns()) {
+            for (GeneralizedPattern pattern : mapping.getGeneralizedPatterns()) {
                 
                 this.addPatternToIndex(writer, mapping, pattern);
             }
@@ -84,10 +85,12 @@ public class DefaultPatternIndexCreationModule extends AbstractPostProcessingMod
      * @param writer
      * @param pattern
      */
-    private void addPatternToIndex(IndexWriter writer, PatternMapping mapping, Pattern pattern) {
+    private void addPatternToIndex(IndexWriter writer, PatternMapping mapping, GeneralizedPattern pattern) {
         
         this.documentCount++;
-        LuceneIndexHelper.indexDocument(writer, this.createLuceneDocument(mapping, pattern));
+        
+        for ( Pattern p : pattern.getPatterns() ) 
+        	LuceneIndexHelper.indexDocument(writer, this.createLuceneDocument(mapping, p, pattern));
     }
 
     /**
@@ -95,12 +98,14 @@ public class DefaultPatternIndexCreationModule extends AbstractPostProcessingMod
      * in a different way.
      * 
      * @param pattern
+     * @param generalizedPattern 
      * @return
      */
-    protected Document createLuceneDocument(PatternMapping mapping, Pattern pattern) {
+    protected Document createLuceneDocument(PatternMapping mapping, Pattern pattern, GeneralizedPattern generalizedPattern) {
 
         Document doc = new Document();
         doc.add(new Field("uri",            mapping.getProperty().getUri(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        doc.add(new Field("nlr-gen",        generalizedPattern.getNaturalLanguageRepresentation(), Field.Store.YES, Field.Index.ANALYZED));
         doc.add(new Field("nlr-var",        pattern.getNaturalLanguageRepresentation(), Field.Store.YES, Field.Index.ANALYZED));
         doc.add(new Field("nlr-no-var",     pattern.getNaturalLanguageRepresentationWithoutVariables(), Field.Store.YES, Field.Index.ANALYZED));
         doc.add(new NumericField("boa-score",   Field.Store.YES, true).setDoubleValue(pattern.getScore()));

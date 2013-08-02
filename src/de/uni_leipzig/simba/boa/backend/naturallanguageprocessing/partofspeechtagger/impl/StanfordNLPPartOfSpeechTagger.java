@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSetup;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagNormalizer;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
@@ -51,13 +52,21 @@ public final class StanfordNLPPartOfSpeechTagger implements PartOfSpeechTagger {
 		}
 	}
 	
+	public static void main(String[] args) {
+		
+		NLPediaSetup s = new NLPediaSetup(false);
+		StanfordNLPPartOfSpeechTagger pos = new StanfordNLPPartOfSpeechTagger();
+		System.out.println(pos.getAnnotatedString("Lui et son épouse , Marie Curie , pionniers de l'étude des radiations , reçurent une moitié du prix Nobel de physique de 1903 -LRB- l'autre moitié a été remise à Henri Becquerel -RRB- ."));
+	}
+	
 	@Override
 	public String getAnnotatedString(String string) {
 
 		List<String> sentence = new ArrayList<String>();
+		
 		for ( String taggedWord : tagger.tagString(string).split(" ")) {
 			
-			int lastIndex	= taggedWord.lastIndexOf("/");
+			int lastIndex	= taggedWord.contains("/") ? taggedWord.lastIndexOf("/") : taggedWord.lastIndexOf("_");
 			String posTag	= taggedWord.substring(lastIndex + 1);
 			String token	= taggedWord.substring(0, lastIndex);
 			
