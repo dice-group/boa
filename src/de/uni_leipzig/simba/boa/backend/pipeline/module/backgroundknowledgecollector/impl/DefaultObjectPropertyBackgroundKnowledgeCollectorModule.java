@@ -114,7 +114,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 				 "  ?s <"+property+"> ?o . " +
 				 "  ?o rdfs:label ?ol . " +
 				 "  ?s rdf:type <http://dbpedia.org/ontology/Person> . " + 
-				 "  ?o rdf:type <http://dbpedia.org/ontology/Award> . " + 
+//				 "  ?o rdf:type <http://dbpedia.org/ontology/Award> . " + 
 				 "	FILTER (   lang(?sl)= \""+BOA_LANGUAGE+"\"  &&  lang(?ol)= \""+BOA_LANGUAGE+"\"  ) " + 
 				 "} " +
 				 "LIMIT " + SPARQL_QUERY_LIMIT + " " +
