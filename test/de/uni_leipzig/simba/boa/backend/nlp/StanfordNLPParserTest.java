@@ -14,13 +14,13 @@ public class StanfordNLPParserTest {
 
         NLPediaSetup s = new NLPediaSetup(true);
         
-        LexicalizedParser lp = new LexicalizedParser(NLPediaSettings.BOA_BASE_DIRECTORY + "training/parser/englishPCFG.ser.gz");
-        lp.setOptionFlags(new String[] { "-maxLength", "80", "-retainTmpSubcategories" });
-
-        String sentence = "This is an easy sentence.";
-        Tree parse = (Tree) lp.apply(sentence);
-
-        TreePrint tp = new TreePrint("penn");
-        tp.printTree(parse);
+//        LexicalizedParser lp = new LexicalizedParser(NLPediaSettings.BOA_BASE_DIRECTORY + "training/parser/englishPCFG.ser.gz");
+//        lp.setOptionFlags(new String[] { "-maxLength", "80", "-retainTmpSubcategories" });
+//
+//        String sentence = "This is an easy sentence.";
+//        Tree parse = (Tree) lp.apply(sentence);
+//
+//        TreePrint tp = new TreePrint("penn");
+//        tp.printTree(parse);
     }
 }
