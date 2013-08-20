@@ -83,12 +83,11 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
      * @param fileName
      *            - the file to where to write the knowledge
      */
-    protected void getKnowledge(String query, String propertyUri, String fileName) {
+    protected void getKnowledge(String query, String propertyUri, String fileName, Property property) {
 
         logger.info("Querying started for property: " + propertyUri);
         long start = System.currentTimeMillis();
 
-        Property property = this.queryPropertyData(propertyUri);
         int offset = 0;
 
         // query as long as we get resultsets back
@@ -282,7 +281,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
                 String domain = qs.get("domain") == null ? "NA" : qs.get("domain").toString();
                 String range = qs.get("range") == null ? "NA" : qs.get("range").toString();
                 
-                p = new Property(propertyUri, domain, range);
+                p = new Property(propertyUri, range, domain);
                 p.setSynsets(WordnetQuery.getSynsetsForAllSynsetTypes(p.getLabel()));
                 this.properties.put(p.hashCode(), p);
             }

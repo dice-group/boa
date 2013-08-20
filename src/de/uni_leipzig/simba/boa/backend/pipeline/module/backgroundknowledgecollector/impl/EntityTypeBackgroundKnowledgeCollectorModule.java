@@ -83,7 +83,7 @@ public class EntityTypeBackgroundKnowledgeCollectorModule extends AbstractDefaul
 			String query	= createObjectPropertyQuery(objectPropertyUri);
 			
 			super.getKnowledge(query, objectPropertyUri, NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH 
-			        + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/") + 1) + "-"+ objectPropertyUri.hashCode() + ".txt");
+			        + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/") + 1) + "-"+ objectPropertyUri.hashCode() + ".txt", null);
 		}
 	}
 	
