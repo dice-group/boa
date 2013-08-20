@@ -16,6 +16,7 @@ import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledgeM
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.AbstractDefaultBackgroundKnowledgeCollectorModule;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 
 
@@ -89,38 +90,40 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 		for ( String objectPropertyUri : objectPropertyUris ) {
 			
 			this.logger.info("Processing property: " + objectPropertyUri);
-			String query	= createObjectPropertyQuery(objectPropertyUri);
+			Property property	= this.queryPropertyData(objectPropertyUri);
+			String query		= createObjectPropertyQuery(property);
 			
 			super.getKnowledge(query, objectPropertyUri, NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH 
-			        + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/") + 1) + "-"+ objectPropertyUri.hashCode() + ".txt");
+			        + objectPropertyUri.substring(objectPropertyUri.lastIndexOf("/") + 1) + "-"+ objectPropertyUri.hashCode() + ".txt", property);
 		}
 	}
 	
 	/**
 	 * Creates a SPARQL query for the background knowledge collection of
 	 * object properties. 
+	 * @param property 
 	 * 
 	 * @param propertyUri - the object property uri to query
 	 * @return a SPARQL query
 	 */
-	protected String createObjectPropertyQuery(String property) {
+	protected String createObjectPropertyQuery(Property property) {
 
 		String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>  " +
-				"SELECT ?s ?sl <"+property+"> ?o ?ol " +
+				"SELECT ?s ?sl <"+property.getUri()+"> ?o ?ol " +
 				"FROM <"+ NLPediaSettings.getSetting("importGraph")+"> " +
 				"WHERE {" +
 				 "	?s rdfs:label ?sl . " + 
-				 "  ?s <"+property+"> ?o . " +
+				 "  ?s <"+property.getUri()+"> ?o . " +
 				 "  ?o rdfs:label ?ol . " +
-				 "  ?s rdf:type <http://dbpedia.org/ontology/Person> . " + 
-//				 "  ?o rdf:type <http://dbpedia.org/ontology/Award> . " + 
+				 (property.getRdfsDomain() != null && !property.getRdfsDomain().equals("NA") ? "  ?s rdf:type <" + property.getRdfsDomain() + "> . " : " ") +
+				 (property.getRdfsRange() != null && !property.getRdfsRange().equals("NA") ? "  ?o rdf:type <" + property.getRdfsRange() + "> . " : " ") +
 				 "	FILTER (   lang(?sl)= \""+BOA_LANGUAGE+"\"  &&  lang(?ol)= \""+BOA_LANGUAGE+"\"  ) " + 
 				 "} " +
 				 "LIMIT " + SPARQL_QUERY_LIMIT + " " +
 				 "OFFSET &OFFSET";
 		
-		System.out.println(query);
+		System.out.println("QUERY: " + query);
 		
 		return query;
 			

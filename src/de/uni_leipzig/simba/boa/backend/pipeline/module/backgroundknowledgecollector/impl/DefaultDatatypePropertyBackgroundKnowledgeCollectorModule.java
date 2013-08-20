@@ -16,6 +16,7 @@ import de.uni_leipzig.simba.boa.backend.backgroundknowledge.BackgroundKnowledgeM
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.AbstractDefaultBackgroundKnowledgeCollectorModule;
+import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 
 
@@ -87,10 +88,11 @@ public class DefaultDatatypePropertyBackgroundKnowledgeCollectorModule extends A
 		for ( String datatypePropertyUri : datatypePropertyUris ) {
 			
 			this.logger.info("Processing property: " + datatypePropertyUri);
+			Property property	= this.queryPropertyData(datatypePropertyUri);
 			String query = createDatatypePropertyQuery(datatypePropertyUri);
 			
 			getKnowledge(query, datatypePropertyUri, NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_DATATYPE_PROPERTY_PATH
-			        + datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/") + 1) + "-"+ datatypePropertyUri.hashCode() + ".txt");
+			        + datatypePropertyUri.substring(datatypePropertyUri.lastIndexOf("/") + 1) + "-"+ datatypePropertyUri.hashCode() + ".txt", property);
 		}
 	}
 

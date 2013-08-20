@@ -60,7 +60,7 @@ public class MusicOntologyObjectPropertyBackgroundGeneratorCollectorModule
 							+ Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH
 							+ properties[1].trim().replaceAll("<", "").substring(properties[1].trim().replaceAll("<", "")
 									.lastIndexOf("/") + 1) + "-"
-							+ objectPropertyUri.hashCode() + ".txt");
+							+ objectPropertyUri.hashCode() + ".txt", null);
 		}
 	}
 
@@ -87,7 +87,7 @@ public class MusicOntologyObjectPropertyBackgroundGeneratorCollectorModule
 
 	@Override
 	protected void getKnowledge(String query, String propertyUri,
-			String fileName) {
+			String fileName, Property p) {
 
 		logger.info("Querying started for property: " + propertyUri);
 		long start = System.currentTimeMillis();

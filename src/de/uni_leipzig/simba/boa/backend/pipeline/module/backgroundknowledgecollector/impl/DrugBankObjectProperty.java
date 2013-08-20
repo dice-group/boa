@@ -51,7 +51,7 @@ public class DrugBankObjectProperty extends
 	 */
 	@Override
 	protected void getKnowledge(String query, String propertyUri,
-			String fileName) {
+			String fileName, Property p) {
 
 		logger.info("Querying started for property: " + propertyUri);
 		long start = System.currentTimeMillis();
@@ -189,7 +189,7 @@ public class DrugBankObjectProperty extends
 						+ Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH
 						+ objectPropertyUri.substring(objectPropertyUri
 								.lastIndexOf("/") + 1) + "-"
-						+ objectPropertyUri.hashCode() + ".txt");
+						+ objectPropertyUri.hashCode() + ".txt", null);
 
 	}
 
