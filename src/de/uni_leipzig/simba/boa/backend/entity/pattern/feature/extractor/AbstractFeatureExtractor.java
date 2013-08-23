@@ -19,6 +19,7 @@ import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 public abstract class AbstractFeatureExtractor implements FeatureExtractor {
 
     protected List<Feature> handeledFeatures = new ArrayList<Feature>();
+    private List<String> languages = new ArrayList<String>();
     protected Set<PatternMapping> mappings = new HashSet<PatternMapping>();
     protected boolean activated;
 
@@ -86,5 +87,19 @@ public abstract class AbstractFeatureExtractor implements FeatureExtractor {
 	protected void setValue(Pattern pattern, String featureName, double value) {
 		
 		pattern.getFeatures().put(FeatureFactory.getInstance().getFeature(featureName), value);
+	}
+
+	/**
+	 * @return the languages
+	 */
+	public List<String> getLanguages() {
+		return languages;
+	}
+
+	/**
+	 * @param languages the languages to set
+	 */
+	public void setLanguages(List<String> languages) {
+		this.languages = languages;
 	}
 }

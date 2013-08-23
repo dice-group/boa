@@ -10,6 +10,7 @@ import java.util.Set;
 
 import de.uni_leipzig.simba.boa.backend.concurrent.BoaCallable;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternMappingGeneralizedPatternPair;
+import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.FeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.ReverbFeatureExtractor;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TotalOccurrenceFeatureExtractor;
@@ -38,6 +39,7 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 		this.patternMappings = patternMappings;
 		this.logger.info("Pattern to measure: " + this.patternMappingPatterns.size() + " with " + featureExtractorsMapping.size() + " featureExtractorsMapping!");
 		
+		// just for logging purposes
         for ( FeatureExtractor fe : featureExtractorsMapping.values() ) if (fe.isActivated()) numberOfActivatedFeatureExtractors++;
 		
 		// reset the feature vector for each pair
@@ -58,7 +60,7 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 		// go through all featureExtractorsMapping
 		for ( FeatureExtractor featureExtractor : featureExtractors ) {
 		    
-		    if ( featureExtractor.isActivated() ) {
+		    if ( featureExtractor.isActivated() && featureExtractor.getLanguages().contains(NLPediaSettings.BOA_LANGUAGE) ) {
 		    	
 		    	featureExtractor.setPatternMappings(this.patternMappings);
 		        
@@ -90,7 +92,11 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 		    }
 		    else {
 		        
-		        this.logger.info(featureExtractor.getClass().getSimpleName() + " is deactivated and will not be started!");
+		    	if ( !featureExtractor.isActivated())
+		    		this.logger.info(featureExtractor.getClass().getSimpleName() + " is deactivated and will not be started!");
+		    	
+		    	if ( !featureExtractor.getLanguages().contains(NLPediaSettings.BOA_LANGUAGE) )
+		    		this.logger.info(featureExtractor.getClass().getSimpleName() + " is not supposed to run for language: '"+NLPediaSettings.BOA_LANGUAGE+"'");
 		    }
 		}
 		

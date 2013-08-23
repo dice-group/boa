@@ -72,8 +72,8 @@ public final class StanfordNLPPartOfSpeechTagger implements PartOfSpeechTagger {
 			
 			sentence.add(token + Constants.PART_OF_SPEECH_TAG_DELIMITER + posTag);
 			
-			if ( PartOfSpeechTagNormalizer.PART_OF_SPEECH_TAG_MAPPINGS.get(posTag) == null )
-				System.err.println("No tag mapping for tag: \"" + posTag + "\" found");
+//			if ( PartOfSpeechTagNormalizer.PART_OF_SPEECH_TAG_MAPPINGS.get(posTag) == null )
+//				System.err.println("No tag mapping for tag: \"" + posTag + "\" found");
 		}
 		return StringUtils.join(sentence, " ");
 	}

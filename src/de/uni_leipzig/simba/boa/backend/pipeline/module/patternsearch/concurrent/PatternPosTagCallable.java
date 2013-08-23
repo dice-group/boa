@@ -7,8 +7,10 @@ import java.util.concurrent.Callable;
 
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
+import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
+import de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl.DefaultPatternSearchModule;
 import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 
 /**
@@ -20,6 +22,7 @@ public class PatternPosTagCallable implements Callable<PatternPosTagCallable> {
 	private PartOfSpeechTagger posTagger = null;
 	private PatternMapping mapping = null;
 	private DefaultPatternSearcher patternSearcher = null;
+	private final NLPediaLogger logger                  = new NLPediaLogger(PatternPosTagCallable.class);
 
 	public PatternPosTagCallable(PatternMapping mapping) {
 		
@@ -35,8 +38,12 @@ public class PatternPosTagCallable implements Callable<PatternPosTagCallable> {
 		if ( this.posTagger == null ) this.posTagger = NaturalLanguageProcessingToolFactory.getInstance().createDefaultPartOfSpeechTagger();
 		if ( this.patternSearcher == null ) this.patternSearcher = new DefaultPatternSearcher();
 		
+		logger.info("Starting to POS tag " + mapping.getPatterns().size() + " patterns.");
+		
 		for ( Pattern pattern : mapping.getPatterns() ) 
 			pattern.setPosTaggedString(getPartOfSpeechTags(pattern, pattern.getFoundInSentences().iterator().next()));
+		
+		logger.info("Finished POS tagging " + mapping.getPatterns().size() + " patterns.");
 		
 		// save the ram since those instances will live until all callables are finished
 		this.posTagger = null;
