@@ -54,4 +54,14 @@ public interface FeatureExtractor {
 	 * @return
 	 */
 	public Set<PatternMapping> getPatternMappings();
+	
+	/**
+	 * @return the languages
+	 */
+	public List<String> getLanguages();
+
+	/**
+	 * @param languages the languages to set
+	 */
+	public void setLanguages(List<String> languages);
 }

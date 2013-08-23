@@ -280,6 +280,8 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         	
     		ExecutorService executor = Executors.newFixedThreadPool(mappings.size());
     		
+    		logger.info("Starting parallel POS tagging of all patterns ...");
+    		
     		List<PatternPosTagCallable> patternsTaggerCallables = new ArrayList<PatternPosTagCallable>();
         	for ( PatternMapping mapping : mappings ) patternsTaggerCallables.add(new PatternPosTagCallable(mapping));
         	
