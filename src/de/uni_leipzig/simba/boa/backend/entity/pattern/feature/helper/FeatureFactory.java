@@ -97,6 +97,7 @@ public class FeatureFactory {
 			    FeatureExtractor fe = entry.getValue().getClass().newInstance();
 			    fe.setHandeledFeatures(entry.getValue().getHandeledFeatures());
 			    fe.setActivated(entry.getValue().isActivated());
+			    fe.setLanguages(entry.getValue().getLanguages());
 			    
 				map.put(entry.getKey(), fe);
 			}

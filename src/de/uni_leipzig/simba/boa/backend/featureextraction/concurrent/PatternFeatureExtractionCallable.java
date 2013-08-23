@@ -59,7 +59,7 @@ public class PatternFeatureExtractionCallable extends BoaCallable<PatternMapping
 	    
 		// go through all featureExtractorsMapping
 		for ( FeatureExtractor featureExtractor : featureExtractors ) {
-		    
+
 		    if ( featureExtractor.isActivated() && featureExtractor.getLanguages().contains(NLPediaSettings.BOA_LANGUAGE) ) {
 		    	
 		    	featureExtractor.setPatternMappings(this.patternMappings);
