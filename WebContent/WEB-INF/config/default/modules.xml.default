@@ -297,10 +297,6 @@
         <property name="moduleDependencies">
             <set>
                 <value>de.uni_leipzig.simba.boa.backend.pipeline.module.preprocessing.impl.CreateDataDirectoryStructureModule</value>
-                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultObjectPropertyBackgroundKnowledgeCollectorModule</value>
-                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.impl.DefaultDatatypePropertyBackgroundKnowledgeCollectorModule</value>
-                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.indexing.impl.DefaultWikiIndexingModule</value>
-                <value>de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.impl.DefaultPatternSearchModule</value>
             </set>
         </property>
 
