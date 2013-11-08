@@ -12,6 +12,13 @@
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SupportFeatureExtractor">
                     <bean id="SupportFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SupportFeatureExtractor">
                         <property name="activated" value="true" />
+                        <property name="languages">
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                                <value>fr</value>
+                            </list>
+                        </property>
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="SUPPORT_NUMBER_OF_MAX_PAIRS_LEARNED_FROM"/>
@@ -24,6 +31,13 @@
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TypicityFeatureExtractor">
                     <bean id="TypicityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TypicityFeatureExtractor">
                         <property name="activated" value="true" />
+                        <property name="languages">
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                                <value>fr</value>
+                            </list>
+                        </property>
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="TYPICITY_SENTENCES"/>
@@ -38,6 +52,13 @@
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SpecificityFeatureExtractor">
                     <bean id="SpecificityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.SpecificityFeatureExtractor">
                          <property name="activated" value="true" />
+                         <property name="languages">
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                                <value>fr</value>
+                            </list>
+                        </property>
                          <property name="handeledFeatures">
                             <list>
                                 <ref bean="SPECIFICITY"/>
@@ -50,6 +71,11 @@
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.WordnetSimilarityFeatureExtractor">
                     <bean id="WordnetSimilarityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.WordnetSimilarityFeatureExtractor">
                         <property name="activated" value="true" />
+                        <property name="languages">
+                            <list>
+                                <value>en</value>
+                            </list>
+                        </property>
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="WORDNET_DISTANCE"/>
@@ -61,6 +87,13 @@
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TfIdfFeatureExtractor">
                     <bean id="TfIdfFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TfIdfFeatureExtractor">
                         <property name="activated" value="true" />
+                        <property name="languages">
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                                <value>fr</value>
+                            </list>
+                        </property>
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="TF_IDF_TFIDF"/>
@@ -74,6 +107,13 @@
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.LengthFeatureExtractor">
                     <bean id="LengthFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.LengthFeatureExtractor" >
                         <property name="activated" value="true" />
+                        <property name="languages">
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                                <value>fr</value>
+                            </list>
+                        </property>
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="TOKEN_COUNT"/>
@@ -91,6 +131,13 @@
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TotalOccurrenceFeatureExtractor">
                     <bean id="TotalOccurrenceFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.TotalOccurrenceFeatureExtractor">
                         <property name="activated" value="true" />
+                        <property name="languages">
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                                <value>fr</value>
+                            </list>
+                        </property>
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="TOTAL_OCCURRENCE"/>
@@ -102,6 +149,11 @@
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.ReverbFeatureExtractor">
                     <bean id="ReverbFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.ReverbFeatureExtractor"> 
                         <property name="activated" value="true" />
+                        <property name="languages">
+                            <list>
+                                <value>en</value>
+                            </list>
+                        </property>
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="REVERB"/>
@@ -113,6 +165,13 @@
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.PartOfSpeechFeatureExtractor">
                     <bean id="PartOfSpeechFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.PartOfSpeechFeatureExtractor"> 
                         <property name="activated" value="true" />
+                        <property name="languages">
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                                <value>fr</value>
+                            </list>
+                        </property>
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="POSSESSIVE"/>
@@ -136,6 +195,13 @@
                 <entry key="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.StringSimilarityFeatureExtractor">
                     <bean id="StringSimilarityFeature" class="de.uni_leipzig.simba.boa.backend.entity.pattern.feature.extractor.impl.StringSimilarityFeatureExtractor"> 
                         <property name="activated" value="true" />
+                        <property name="languages">
+                            <list>
+                                <value>de</value>
+                                <value>en</value>
+                                <value>fr</value>
+                            </list>
+                        </property>
                         <property name="handeledFeatures">
                             <list>
                                 <ref bean="LEVENSHTEIN"/>

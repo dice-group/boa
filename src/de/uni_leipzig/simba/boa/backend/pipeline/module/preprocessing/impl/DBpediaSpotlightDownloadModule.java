@@ -27,19 +27,19 @@ public class DBpediaSpotlightDownloadModule extends AbstractPreprocessingModule 
     public static final String LANGUAGE								= NLPediaSettings.BOA_LANGUAGE;
     
     public static final String DBPEDIA_LABELS_FILE                  = DUMP_PATH + "labels_" + LANGUAGE + ".nt";
-    public static final String DBPEDIA_LABELS_FILE_URL              = "http://downloads.dbpedia.org/3.8/" + LANGUAGE + "/labels_" + LANGUAGE + ".nt.bz2";
+    public static final String DBPEDIA_LABELS_FILE_URL              = "http://downloads.dbpedia.org/3.9/" + LANGUAGE + "/labels_" + LANGUAGE + ".nt.bz2";
     public static final String DBPEDIA_LABELS_FILE_BZ2              = DUMP_PATH + "labels_" + LANGUAGE + ".nt.bz2";
 
     public static final String DBPEDIA_REDIRECTS_FILE               = DUMP_PATH + "redirects_" + LANGUAGE + ".nt";
-    public static final String DBPEDIA_REDIRECTS_FILE_URL           = "http://downloads.dbpedia.org/3.8/" + LANGUAGE + "/redirects_" + LANGUAGE + ".nt.bz2";
+    public static final String DBPEDIA_REDIRECTS_FILE_URL           = "http://downloads.dbpedia.org/3.9/" + LANGUAGE + "/redirects_" + LANGUAGE + ".nt.bz2";
     public static final String DBPEDIA_REDIRECTS_FILE_BZ2           = DUMP_PATH + "redirects_" + LANGUAGE + ".nt.bz2";
     
     public static final String DBPEDIA_DISAMBIGUATIONS_FILE         = DUMP_PATH + "disambiguations_" + LANGUAGE + ".nt";
-    public static final String DBPEDIA_DISAMBIGUATIONS_FILE_URL     = "http://downloads.dbpedia.org/3.8/" + LANGUAGE + "/disambiguations_" + LANGUAGE + ".nt.bz2";
+    public static final String DBPEDIA_DISAMBIGUATIONS_FILE_URL     = "http://downloads.dbpedia.org/3.9/" + LANGUAGE + "/disambiguations_" + LANGUAGE + ".nt.bz2";
     public static final String DBPEDIA_DISAMBIGUATIONS_FILE_BZ2     = DUMP_PATH + "disambiguations_" + LANGUAGE + ".nt.bz2";
     
     public static final String DBPEDIA_INTERLANGUAGE_LINKS_FILE     = DUMP_PATH + "interlanguage_links_" + LANGUAGE + ".ttl";
-    public static final String DBPEDIA_INTERLANGUAGE_LINKS_FILE_URL = "http://downloads.dbpedia.org/3.8/" + LANGUAGE + "/interlanguage_links_" + LANGUAGE + ".ttl.bz2";
+    public static final String DBPEDIA_INTERLANGUAGE_LINKS_FILE_URL = "http://downloads.dbpedia.org/3.9/" + LANGUAGE + "/interlanguage_links_" + LANGUAGE + ".ttl.bz2";
     public static final String DBPEDIA_INTERLANGUAGE_LINKS_FILE_BZ2 = DUMP_PATH + "interlanguage_links_" + LANGUAGE + ".ttl.bz2";
     
     private long downloadDBpediaSpotlightFilesTime = 0; 

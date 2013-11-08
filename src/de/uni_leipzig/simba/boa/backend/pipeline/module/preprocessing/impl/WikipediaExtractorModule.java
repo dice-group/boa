@@ -113,7 +113,6 @@ public class WikipediaExtractorModule extends AbstractPreprocessingModule {
      */
     @Override
     public boolean isDataAlreadyAvailable() {
-
         return new File(NLPediaSettings.BOA_DATA_DIRECTORY + "raw/" + NLPediaSettings.BOA_LANGUAGE + "wiki.xml").exists();
     }
 
