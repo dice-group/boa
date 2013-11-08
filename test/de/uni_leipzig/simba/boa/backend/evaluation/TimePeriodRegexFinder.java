@@ -63,38 +63,91 @@ public class TimePeriodRegexFinder {
 		IndexWriterConfig indexWriterConfig = new IndexWriterConfig(Version.LUCENE_34, new LowerCaseWhitespaceAnalyzer());
         indexWriterConfig.setOpenMode(OpenMode.APPEND);
         
+        Frequency beforeFreq = new Frequency();
+        Frequency matchFreq = new Frequency();
+        Frequency afterFreq = new Frequency();
         Frequency freq = new Frequency();
-        indexSearcher = LuceneIndexHelper.getIndexSearcher("/Users/gerb/Development/workspaces/experimental/boa/qa/en/index/corpus");
+//        indexSearcher = LuceneIndexHelper.getIndexSearcher("/Users/gerb/Development/workspaces/experimental/boa/qa/en/index/corpus");
+        indexSearcher = LuceneIndexHelper.getIndexSearcher("/Users/gerb/Development/workspaces/experimental/boa/qa/de/index/corpus");
+//        indexSearcher = LuceneIndexHelper.getIndexSearcher("/Users/gerb/Development/workspaces/experimental/boa/defacto/fr/index/corpus/");
 
-        BufferedFileWriter writer = new BufferedFileWriter("/Users/gerb/Development/workspaces/experimental/defacto/mltemp/eval/intervals.txt", Encoding.UTF_8, WRITER_WRITE_MODE.OVERRIDE);
+        BufferedFileWriter writer = new BufferedFileWriter("/Users/gerb/Development/workspaces/experimental/defacto/mltemp/eval/intervals_de.txt", Encoding.UTF_8, WRITER_WRITE_MODE.OVERRIDE);
         
 		List<YearMatch> matches = new ArrayList<YearMatch>();
-		for (int i = 1990; i < 2014 ; i++) {
-			for (int j = 1990; j < 2014 ; j++) {
+		for (int i = 1900; i < 2014 ; i++) {
+			for (int j = 1900; j < 2014 ; j++) {
 				
 				if ( i >= j ) continue;
 				
 				List<YearMatch> patterns = getPatterns(i+"", j+"");
 				for ( YearMatch m : patterns) {
 					
-					for ( String before : m.beforeMatch ) freq.addValue(before);
-					for ( String match : m.beforeMatch ) freq.addValue(match);
-					for ( String after : m.beforeMatch ) freq.addValue(after);
+					for ( String before : m.beforeMatch ) beforeFreq.addValue(before);
+					for ( String match : m.match ) matchFreq.addValue(match);
+					for ( String after : m.afterMatch ) afterFreq.addValue(after);
 					
-					writer.write(m.toString());
+					String one = StringUtils.join(m.beforeMatch, " ");
+					String two = StringUtils.join(m.match, " ");
+					String three = StringUtils.join(m.afterMatch, " ");
+					
+					freq.addValue(one + " _X_ " + two + " _Y_ " + three);
+					
+					writer.write(one + " _"+i+"_ " + two + " _"+j+"_ " + three);
 				}
 				matches.addAll(patterns);
 				
 				System.out.println(i+"/"+j + ": " + matches.size());
+				int n = 0;
+				if ( i % 10 == 0 && i > 1900) {
+					
+					for ( Map.Entry<Comparable<?>, Long> sortByValue : freq.sortByValue() ) {
+						
+						if ( n++ == 1000 )break;
+						System.out.println(sortByValue.getKey() + ":\t" + sortByValue.getValue());
+					}
+				}
 			}
-			int n = 0;
-			for ( Map.Entry<Comparable<?>, Long> sortByValue : freq.sortByValue() ) {
-				
-				if ( n++ == 100 )break;
-				System.out.println(sortByValue.getKey() + ":\t" + sortByValue.getValue());
-			}
+			
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println("#######################################################################################################################################");
+			System.out.println("#######################################################################################################################################");
+			System.out.println("#######################################################################################################################################");
+			System.out.println("#######################################################################################################################################");
+			System.out.println("#######################################################################################################################################");
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			
+			
+//			for ( Map.Entry<Comparable<?>, Long> sortByValue : beforeFreq.sortByValue() ) {
+//				
+//				if ( n++ == 100 )break;
+//				System.out.println(sortByValue.getKey() + ":\t" + sortByValue.getValue());
+//			}
+//			n = 0;
+//			for ( Map.Entry<Comparable<?>, Long> sortByValue : matchFreq.sortByValue() ) {
+//							
+//				if ( n++ == 100 )break;
+//				System.out.println(sortByValue.getKey() + ":\t" + sortByValue.getValue());
+//			}
+//			n = 0;
+//			for ( Map.Entry<Comparable<?>, Long> sortByValue : afterFreq.sortByValue() ) {
+//				
+//				if ( n++ == 100 )break;
+//				System.out.println(sortByValue.getKey() + ":\t" + sortByValue.getValue());
+//			}
 		}
 		
+		BufferedFileWriter a = new BufferedFileWriter("/Users/gerb/Development/workspaces/experimental/defacto/mltemp/eval/intervals_stats_de.txt", Encoding.UTF_8, WRITER_WRITE_MODE.OVERRIDE);
+		int n = 0;
+		for ( Map.Entry<Comparable<?>, Long> sortByValue : freq.sortByValue() ) {
+			
+			if ( n++ == 1000 )break;
+			a.write(sortByValue.getKey() + ":\t" + sortByValue.getValue());
+		}
+		a.close();
 		writer.close();
 	}
 	

@@ -31,6 +31,11 @@ public class WordnetSimilarityFeatureExtractor extends AbstractFeatureExtractor 
 	
 	private Morphology lemmatizer = new Morphology();
 	
+	public static void main(String[] args) {
+		Morphology lemmatizer = new Morphology();
+		System.out.println(lemmatizer.lemmatize(new WordTag("executive", "JJ")).lemma());
+	}
+	
 	@Override
 	public void score(PatternMappingGeneralizedPatternPair pair) {
 
