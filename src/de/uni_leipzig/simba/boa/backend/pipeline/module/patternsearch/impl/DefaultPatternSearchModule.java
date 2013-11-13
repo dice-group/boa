@@ -147,6 +147,16 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         		
         		if ( totalCounter++ % 100 == 0 ) logger.debug("SearchResult " + totalCounter + " of " + resultSize + " current: " + results.size());
                 SearchResult searchResult = results.get(i);
+                
+                
+                if ( i % 10000  == 0 ) {
+                	
+                	System.out.println("|Mappings| = " + mappings.size());
+                	System.out.println("|Properties| = " + properties.size());
+                	System.out.println("|Patterns| = " + patterns.size());
+                	for ( Map.Entry<Integer, Map<Integer,Pattern>> entry : patterns.entrySet())
+                		System.out.println("\t" + entry.getValue().size());
+                }
 
                 String propertyUri       = searchResult.getProperty();
                 String patternString     = searchResult.getNaturalLanguageRepresentation();
