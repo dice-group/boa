@@ -123,8 +123,6 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 				 "LIMIT " + SPARQL_QUERY_LIMIT + " " +
 				 "OFFSET &OFFSET";
 		
-		System.out.println("QUERY: " + query);
-		
 		return query;
 			
 	}

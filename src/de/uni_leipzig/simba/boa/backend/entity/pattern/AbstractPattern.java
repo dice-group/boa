@@ -286,8 +286,6 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	/**
 	 * @return the patternMappings
 	 */
-	//@ManyToMany(/*fetch = FetchType.EAGER,*/ cascade=CascadeType.ALL)
-	@ManyToMany(mappedBy="patterns", fetch = FetchType.EAGER)
 	public List<PatternMapping> getPatternMappings() {
 
 		return patternMappings;
