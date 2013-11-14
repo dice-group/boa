@@ -108,7 +108,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 
         // get the cache from the interchange object
         this.properties = this.moduleInterchangeObject.getProperties();
-        if ( this.properties != null || this.properties.isEmpty() ) fillProperties();
+        if ( this.properties == null || this.properties.isEmpty() ) fillProperties();
 
         List<SearchResult> results = Collections.synchronizedList(new ArrayList<SearchResult>());
         Collection<File> files = FileUtils.listFiles(new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH), FileFilterUtils.suffixFileFilter(".sr"), null);
@@ -130,7 +130,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         this.filterPatterns(mappings.values());
         
         // we need to do this after we have filtered them, otherwise it would be too much
-//        this.createPartOfSpeechTagsInParallel(mappings.values());
+        this.createPartOfSpeechTagsInParallel(mappings.values());
         
         // save the mappings
         SerializationManager.getInstance().serializePatternMappings(mappings.values(), PATTERN_MAPPING_FOLDER);
