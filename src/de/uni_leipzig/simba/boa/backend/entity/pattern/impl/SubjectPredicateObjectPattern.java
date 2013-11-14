@@ -3,6 +3,8 @@
  */
 package de.uni_leipzig.simba.boa.backend.entity.pattern.impl;
 
+import java.util.Map;
+
 import de.uni_leipzig.simba.boa.backend.entity.pattern.AbstractPattern;
 
 

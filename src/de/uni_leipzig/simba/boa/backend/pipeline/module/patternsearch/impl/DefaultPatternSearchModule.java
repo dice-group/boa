@@ -21,12 +21,14 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 
 import com.github.gerbsen.encoding.Encoder.Encoding;
 import com.github.gerbsen.file.BufferedFileReader;
+import com.github.gerbsen.file.FileUtil;
 
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.concurrent.PatternSearchThreadManager;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.SupportInstance;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilterFactory;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.impl.SubjectPredicateObjectPattern;
@@ -35,6 +37,7 @@ import de.uni_leipzig.simba.boa.backend.logging.NLPediaLogger;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.NaturalLanguageProcessingToolFactory;
 import de.uni_leipzig.simba.boa.backend.naturallanguageprocessing.partofspeechtagger.PartOfSpeechTagger;
 import de.uni_leipzig.simba.boa.backend.persistance.serialization.SerializationManager;
+import de.uni_leipzig.simba.boa.backend.pipeline.module.backgroundknowledgecollector.AbstractDefaultBackgroundKnowledgeCollectorModule;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.AbstractPatternSearchModule;
 import de.uni_leipzig.simba.boa.backend.pipeline.module.patternsearch.concurrent.PatternPosTagCallable;
 import de.uni_leipzig.simba.boa.backend.rdf.entity.Property;
@@ -105,6 +108,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
 
         // get the cache from the interchange object
         this.properties = this.moduleInterchangeObject.getProperties();
+        if ( this.properties != null || this.properties.isEmpty() ) fillProperties();
 
         List<SearchResult> results = Collections.synchronizedList(new ArrayList<SearchResult>());
         Collection<File> files = FileUtils.listFiles(new File(NLPediaSettings.BOA_DATA_DIRECTORY + Constants.SEARCH_RESULT_PATH), FileFilterUtils.suffixFileFilter(".sr"), null);
@@ -126,14 +130,27 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         this.filterPatterns(mappings.values());
         
         // we need to do this after we have filtered them, otherwise it would be too much
-        this.createPartOfSpeechTagsInParallel(mappings.values());
+//        this.createPartOfSpeechTagsInParallel(mappings.values());
         
         // save the mappings
         SerializationManager.getInstance().serializePatternMappings(mappings.values(), PATTERN_MAPPING_FOLDER);
         logger.info("Pattern mapping saving finished!");
     }
 
-    private void createMappings(List<SearchResult> results) {
+    private void fillProperties() {
+		
+    	String backgroundKnowledgeFilename = NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_PATH + "object_properties_to_query.txt";
+		List<String> objectPropertyUris = FileUtil.readFileInList(backgroundKnowledgeFilename, "UTF-8", "#");
+		
+		for ( String objectPropertyUri : objectPropertyUris ) {
+			
+			this.logger.info("Processing property: " + objectPropertyUri);
+			Property property	= AbstractDefaultBackgroundKnowledgeCollectorModule.queryPropertyData(objectPropertyUri);
+			this.properties.put(property.hashCode(), property);
+		}
+	}
+
+	private void createMappings(List<SearchResult> results) {
     	
     	String currentProperty = null;
         PatternMapping currentMapping = null;
@@ -154,8 +171,18 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                 	System.out.println("|Mappings| = " + mappings.size());
                 	System.out.println("|Properties| = " + properties.size());
                 	System.out.println("|Patterns| = " + patterns.size());
-                	for ( Map.Entry<Integer, Map<Integer,Pattern>> entry : patterns.entrySet())
+                	long sum = 0L;
+                	for ( Map.Entry<Integer, Map<Integer,Pattern>> entry : patterns.entrySet()) {
+                		
                 		System.out.println("\t" + entry.getValue().size());
+                		sum += entry.getValue().size();
+                		for ( Map.Entry<Integer, Pattern> e : entry.getValue().entrySet() ) {
+                			
+//                			System.out.println("\t\t"+ e.getValue().getNaturalLanguageRepresentation());
+                		}
+                	}
+                	System.out.println("Sum: " + sum);
+                	System.out.println("\n------------------------------------------------------\n");
                 }
 
                 String propertyUri       = searchResult.getProperty();
@@ -174,7 +201,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                     if ( pattern == null ) {
                         
                         pattern = new SubjectPredicateObjectPattern(patternString);
-                        pattern.addLearnedFrom(label1 + "-;-" + label2); 
+                        pattern.addSupportInstance(new SupportInstance(label1, label2)); 
 //                        pattern.addLearnedFrom(pattern.isDomainFirst() ? label1 + "-;-" + label2 : label2 + "-;-" + label1); 
                         pattern.addPatternMapping(currentMapping);
                         pattern.getFoundInSentences().add(sentenceID);
@@ -201,7 +228,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                         if ( !pattern.getFoundInSentences().contains(sentenceID) ) {
 
                             pattern.increaseNumberOfOccurrences();
-                            pattern.addLearnedFrom(label1 + "-;-" + label2);
+                            pattern.addSupportInstance(new SupportInstance(label1,label2));
                             pattern.getFoundInSentences().add(sentenceID);
                             pattern.addPatternMapping(currentMapping);
                         }
@@ -222,7 +249,7 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                     }
                     
                     Pattern pattern = new SubjectPredicateObjectPattern(patternString);
-                    pattern.addLearnedFrom(label1 + "-;-" + label2);
+                    pattern.addSupportInstance(new SupportInstance(label1,label2));
                     pattern.addPatternMapping(currentMapping);
                     pattern.getFoundInSentences().add(sentenceID);
                     

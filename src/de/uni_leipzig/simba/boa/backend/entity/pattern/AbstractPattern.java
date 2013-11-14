@@ -26,8 +26,6 @@ import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
  * 
  * @author Daniel Gerber
  */
-@Entity
-@Table(name="pattern")
 public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.entity.Entity implements Pattern {
 
 	/**
@@ -73,7 +71,7 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	/**
 	 * 
 	 */
-	protected Map<String,Integer> learnedFrom;
+	protected Map<Integer,SupportInstance> supportSet;
 	
 	/**
 	 * 
@@ -100,7 +98,7 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	
 	public AbstractPattern(){
 		
-	    this.learnedFrom = new HashMap<String,Integer>();
+	    this.supportSet = new HashMap<Integer,SupportInstance>();
         this.patternMappings = new ArrayList<PatternMapping>();
         this.numberOfOccurrences = 1;
         this.useForPatternEvaluation = true;
@@ -117,7 +115,7 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	public AbstractPattern(String patternString) {
 
 		this.naturalLanguageRepresentation = patternString;
-		this.learnedFrom = new HashMap<String,Integer>();
+		this.supportSet = new HashMap<Integer,SupportInstance>();
 		this.patternMappings = new ArrayList<PatternMapping>();
 		this.numberOfOccurrences = 1;
 		this.useForPatternEvaluation = true;
@@ -133,6 +131,11 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	
 		return this.naturalLanguageRepresentation;
 	}
+	
+//	public void addSupportInstance(SupportInstance supportInstance){
+//		
+//		this.supportSet.
+//	}
 	
 	/**
 	 * @return the numberOfOccurrences
@@ -301,49 +304,22 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	}
 
 	/**
-	 * @param learnedFrom the learnedFrom to set
-	 */
-	public void setLearnedFrom(Map<String,Integer> learnedFrom) {
-
-		this.learnedFrom = learnedFrom;
-	}
-
-	/**
-	 * @return the learnedFrom
-	 */
-	public Map<String,Integer> getLearnedFrom() {
-
-		return learnedFrom;
-	}
-	
-	/**
 	 * 
 	 * @param label
 	 */
-	public void addLearnedFrom(String label) {
+	@Override
+	public void addSupportInstance(SupportInstance supportInstance) {
 		
-		if ( this.learnedFrom.containsKey(label) ) this.learnedFrom.put(label, this.learnedFrom.get(label) + 1);
-		else {
-			this.learnedFrom.put(label, 1);
-		}
+		if ( !this.supportSet.containsKey(supportInstance.hashCode()) ) this.supportSet.put(supportInstance.hashCode(), supportInstance);
+		this.supportSet.get(supportInstance.hashCode()).count++;
 	}
 
-	public int retrieveMaxLearnedFrom() {
-
-		int maximum = 0;
-		for ( Entry<String,Integer> entry : this.learnedFrom.entrySet() ) {
-			
-			maximum = Math.max(entry.getValue(), maximum);
-		}
-		return maximum;
-	}
-	
 	/**
 	 * @return the number from how many triples this pattern has been learned from
 	 */
 	public int retrieveCountLearnedFrom(){
 		
-		return this.learnedFrom.size();
+		return this.supportSet.size();
 	}
 
 	@Basic
@@ -376,15 +352,14 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	/**
 	 * @return the maxLearnedFrom
 	 */
-	@Transient
 	public int getMaxLearnedFrom() {
 
-		int max = 0;
-		for ( Map.Entry<String, Integer> entry : this.learnedFrom.entrySet()) {
+		int maximum = 0;
+		for ( Entry<Integer,SupportInstance> entry : this.supportSet.entrySet() ) {
 			
-			max = Math.max(max, entry.getValue());
+			maximum = Math.max(entry.getValue().count, maximum);
 		}
-		return max;
+		return maximum;
 	}
 	
 	/**
@@ -393,7 +368,12 @@ public abstract class AbstractPattern extends de.uni_leipzig.simba.boa.backend.e
 	 */
 	public int getLearnedFromPairs() {
 		
-		return this.getLearnedFrom().size(); 
+		return this.supportSet.size(); 
+	}
+	
+	public Map<Integer, SupportInstance> getSupportSet() {
+		
+		return this.supportSet; 
 	}
 	
 	/**

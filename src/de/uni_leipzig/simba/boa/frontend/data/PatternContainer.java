@@ -29,17 +29,17 @@ public class PatternContainer extends BeanItemContainer<Pattern> implements Seri
 //		capital1.setSpecificity(7.33);
 //		capital1.setTfIdf(4.33);
 		capital1.setNumberOfOccurrences(45);
-		capital1.addLearnedFrom("Germany-;-Berlin");
-		capital1.addLearnedFrom("France-;-Paris");
-		capital1.addLearnedFrom("France-;-Paris");
-		capital1.addLearnedFrom("Germany-;-Berlin");
-		capital1.addLearnedFrom("Germany-;-Berlin");
-		capital1.addLearnedFrom("Germany-;-Berlin");
-		capital1.addLearnedFrom("Germany-;-Berlin");
-		capital1.addLearnedFrom("England-;-London");
-		capital1.addLearnedFrom("England-;-London");
-		capital1.addLearnedFrom("Russia-;-Moskow");
-		capital1.addLearnedFrom("Russia-;-Moskow");
+//		capital1.addLearnedFrom("Germany-;-Berlin");
+//		capital1.addLearnedFrom("France-;-Paris");
+//		capital1.addLearnedFrom("France-;-Paris");
+//		capital1.addLearnedFrom("Germany-;-Berlin");
+//		capital1.addLearnedFrom("Germany-;-Berlin");
+//		capital1.addLearnedFrom("Germany-;-Berlin");
+//		capital1.addLearnedFrom("Germany-;-Berlin");
+//		capital1.addLearnedFrom("England-;-London");
+//		capital1.addLearnedFrom("England-;-London");
+//		capital1.addLearnedFrom("Russia-;-Moskow");
+//		capital1.addLearnedFrom("Russia-;-Moskow");
 		capital1.setPosTaggedString("POS NN NN");
 		
 		BeanItemContainer<Pattern> container = new BeanItemContainer<Pattern>(Pattern.class);

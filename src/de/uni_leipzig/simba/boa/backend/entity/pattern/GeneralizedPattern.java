@@ -92,10 +92,10 @@ public class GeneralizedPattern extends AbstractPattern implements Comparable<Ge
 	 * 
 	 */
 	@Override
-	public Map<String,Integer> getLearnedFrom() {
+	public Map<Integer,SupportInstance> getSupportSet() {
 
-		Map<String,Integer> learnedFrom = new HashMap<String,Integer>();
-		for ( Pattern p : this.patterns ) learnedFrom.putAll(p.getLearnedFrom());
+		Map<Integer,SupportInstance> learnedFrom = new HashMap<Integer,SupportInstance>();
+		for ( Pattern p : this.patterns ) learnedFrom.putAll(p.getSupportSet());
 		return learnedFrom;
 	}
 

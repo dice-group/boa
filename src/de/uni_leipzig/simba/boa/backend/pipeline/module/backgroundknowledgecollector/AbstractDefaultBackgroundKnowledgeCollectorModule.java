@@ -41,7 +41,7 @@ import de.uni_leipzig.simba.boa.backend.wordnet.query.WordnetQuery;
  */
 public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends AbstractBackgroundKnowledgeCollectorModule {
 
-    private final NLPediaLogger logger = new NLPediaLogger(AbstractDefaultBackgroundKnowledgeCollectorModule.class);
+    private final static NLPediaLogger logger = new NLPediaLogger(AbstractDefaultBackgroundKnowledgeCollectorModule.class);
 
     protected final String SPARQL_ENDPOINT_URI              = NLPediaSettings.getSetting("dbpediaSparqlEndpoint");
     protected final String DBPEDIA_DEFAULT_GRAPH            = NLPediaSettings.getSetting("importGraph");
@@ -50,7 +50,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
     protected final String BOA_LANGUAGE                     = NLPediaSettings.BOA_LANGUAGE;
 
     protected Set<BackgroundKnowledge> backgroundKnowledge  = new HashSet<BackgroundKnowledge>();
-    protected Map<Integer, Property> properties             = new HashMap<Integer, Property>();
+    protected static Map<Integer, Property> properties             = new HashMap<Integer, Property>();
 
     @Override
     public String getName() {
@@ -248,10 +248,10 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
      *            - the property Uri to query
      * @return a new Property
      */
-    protected Property queryPropertyData(String propertyUri) {
+    public static Property queryPropertyData(String propertyUri) {
 
         Property property = new Property(propertyUri);
-        if (this.properties.containsKey(property.hashCode())) {
+        if (properties.containsKey(property.hashCode())) {
 
             return property;
         }
@@ -261,7 +261,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
             						"WHERE { OPTIONAL { " + "  <" + propertyUri + ">  rdfs:domain ?domain } .  " +
             								"OPTIONAL { " + "  <" + propertyUri + ">  rdfs:range ?range } . " + "}";
 
-            this.logger.info("Querying: " + propertyQuery);
+            logger.info("Querying: " + propertyQuery);
 
 //            QueryEngineHTTP qexecProperty = new QueryEngineHTTP(SPARQL_ENDPOINT_URI, propertyQuery);
 //            qexecProperty.addDefaultGraph(DBPEDIA_DEFAULT_GRAPH);
@@ -283,7 +283,7 @@ public abstract class AbstractDefaultBackgroundKnowledgeCollectorModule extends 
                 
                 p = new Property(propertyUri, range, domain);
                 p.setSynsets(WordnetQuery.getSynsetsForAllSynsetTypes(p.getLabel()));
-                this.properties.put(p.hashCode(), p);
+                properties.put(p.hashCode(), p);
             }
             else {
 
