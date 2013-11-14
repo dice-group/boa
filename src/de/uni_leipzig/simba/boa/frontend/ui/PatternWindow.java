@@ -25,6 +25,7 @@ import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.Pattern;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.SupportInstance;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.comparator.FeatureNameComparator;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.feature.impl.Feature;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
@@ -255,13 +256,12 @@ public class PatternWindow extends Window {
 	    table.addContainerProperty("Occurrence",   Integer.class, null);
 
 		int i = 0, total = 0;
-		for (Entry<String, Integer> entry : this.pattern.getLearnedFrom().entrySet() ) {
+		for (Entry<Integer, SupportInstance> entry : this.pattern.getSupportSet().entrySet() ) {
 			
-		    String[] parts = entry.getKey().split("-;-");
 		    table.addItem(new Object[] {
-		            this.pattern.isDomainFirst() ? parts[0] : parts[1], 
-		            this.pattern.isDomainFirst() ? parts[1] : parts[0], entry.getValue()}, new Integer(i++));
-		    total += entry.getValue();
+		            this.pattern.isDomainFirst() ? entry.getValue().subject : entry.getValue().object, 
+		            this.pattern.isDomainFirst() ? entry.getValue().object : entry.getValue().subject, entry.getValue().count}, new Integer(i++));
+		    total += entry.getValue().count;
 		}
 		
 		// Set the footers

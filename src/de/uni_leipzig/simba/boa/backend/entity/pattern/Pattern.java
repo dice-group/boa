@@ -87,28 +87,11 @@ public interface Pattern {
      */
     public void addPatternMapping(PatternMapping currentMapping);
     
-    /**
-     * @param learnedFrom the learnedFrom to set
-     */
-    public void setLearnedFrom(Map<String,Integer> learnedFrom);
+//    /**
+//     * @param learnedFrom the learnedFrom to set
+//     */
+//    public void setLearnedFrom(Map<String,Integer> learnedFrom);
 
-    /**
-     * @return the learnedFrom
-     */
-    public Map<String,Integer> getLearnedFrom();
-    
-    /**
-     * 
-     * @param label
-     */
-    public void addLearnedFrom(String label);
-
-    /**
-     * 
-     * @return
-     */
-    public int retrieveMaxLearnedFrom();
-    
     /**
      * @return the number from how many triples this pattern has been learned from
      */
@@ -169,6 +152,11 @@ public interface Pattern {
      * @return the foundInSentences
      */
     public Set<Integer> getFoundInSentences() ;
+    
+    public Map<Integer,SupportInstance> getSupportSet() ;
+    
+    
+    public void addSupportInstance(SupportInstance supportInstance);
 
     /**
      * @param foundInSentences the foundInSentences to set

@@ -90,7 +90,7 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 		for ( String objectPropertyUri : objectPropertyUris ) {
 			
 			this.logger.info("Processing property: " + objectPropertyUri);
-			Property property	= this.queryPropertyData(objectPropertyUri);
+			Property property	= queryPropertyData(objectPropertyUri);
 			String query		= createObjectPropertyQuery(property);
 			
 			super.getKnowledge(query, objectPropertyUri, NLPediaSettings.BOA_DATA_DIRECTORY + Constants.BACKGROUND_KNOWLEDGE_OBJECT_PROPERTY_PATH 

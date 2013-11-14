@@ -11,6 +11,7 @@ import java.util.Set;
 import de.uni_leipzig.simba.boa.backend.Constants;
 import de.uni_leipzig.simba.boa.backend.configuration.NLPediaSettings;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.GeneralizedPattern;
+import de.uni_leipzig.simba.boa.backend.entity.pattern.SupportInstance;
 import de.uni_leipzig.simba.boa.backend.entity.pattern.filter.PatternFilter;
 import de.uni_leipzig.simba.boa.backend.entity.patternmapping.PatternMapping;
 
@@ -49,10 +50,10 @@ public class OccurrenceFilter implements PatternFilter {
 				if ( p.isUseForPatternEvaluation() ) {
 					
 					// look if there are pairs available between the pattern occurs more than NUMBER_OF_UNIQUE_OCCURRENCES_THRESHOLD
-					Map<String,Integer> learnedFrom = p.getLearnedFrom();
-					for (Entry<String,Integer> entry : learnedFrom.entrySet()) {
+					Map<Integer,SupportInstance> learnedFrom = p.getSupportSet();
+					for (Entry<Integer,SupportInstance> entry : learnedFrom.entrySet()) {
 						
-						if ( entry.getValue() >= NLPediaSettings.getIntegerSetting("number.of.unique.occurrence.threshold") ) counter++;
+						if ( entry.getValue().count >= NLPediaSettings.getIntegerSetting("number.of.unique.occurrence.threshold") ) counter++;
 					}
 					
 					if ( counter < 1 ) p.setUseForPatternEvaluation(false);
