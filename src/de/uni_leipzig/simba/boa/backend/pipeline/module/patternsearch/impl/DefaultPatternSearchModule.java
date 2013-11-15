@@ -130,6 +130,9 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         // occurrence thresholds
         this.filterPatterns(mappings.values());
         
+        // backup save
+        SerializationManager.getInstance().serializePatternMappings(mappings.values(), PATTERN_MAPPING_FOLDER);
+        
         // we need to do this after we have filtered them, otherwise it would be too much
         this.createPartOfSpeechTagsInParallel(mappings.values());
         
