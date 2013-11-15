@@ -3,12 +3,18 @@
  */
 package de.uni_leipzig.simba.boa.backend.entity.pattern;
 
+import java.io.Serializable;
+
 /**
  * @author gerb
  *
  */
-public class SupportInstance {
+public class SupportInstance implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4269718780497450138L;
 	public String subject;
 	public String object;
 	public int count;
