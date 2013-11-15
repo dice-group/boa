@@ -45,6 +45,7 @@ import de.uni_leipzig.simba.boa.backend.search.impl.DefaultPatternSearcher;
 import de.uni_leipzig.simba.boa.backend.search.result.SearchResult;
 import de.uni_leipzig.simba.boa.backend.search.result.SearchResultReaderCallable;
 import de.uni_leipzig.simba.boa.backend.search.result.comparator.SearchResultComparator;
+import de.uni_leipzig.simba.boa.backend.util.ListUtil;
 import de.uni_leipzig.simba.boa.backend.util.TimeUtil;
 
 
@@ -158,33 +159,13 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
         int totalCounter = 0;
         int resultSize = results.size();
         
-        do {
+//        do {
         	
-        	for ( int i = 0 ; i < results.size() && i < 1000000; i++) {
+        	for ( int i = 0 ; i < results.size() /*&& i < 1000000*/; i++) {
         		
-        		if ( totalCounter++ % 100 == 0 ) logger.debug("SearchResult " + totalCounter + " of " + resultSize + " current: " + results.size());
+        		if ( totalCounter++ % 100000 == 0 ) logger.debug("SearchResult " + totalCounter + " of " + resultSize + " current: " + results.size());
                 SearchResult searchResult = results.get(i);
                 
-                
-                if ( i % 10000  == 0 ) {
-                	
-                	System.out.println("|Mappings| = " + mappings.size());
-                	System.out.println("|Properties| = " + properties.size());
-                	System.out.println("|Patterns| = " + patterns.size());
-                	long sum = 0L;
-                	for ( Map.Entry<Integer, Map<Integer,Pattern>> entry : patterns.entrySet()) {
-                		
-                		System.out.println("\t" + entry.getValue().size());
-                		sum += entry.getValue().size();
-                		for ( Map.Entry<Integer, Pattern> e : entry.getValue().entrySet() ) {
-                			
-//                			System.out.println("\t\t"+ e.getValue().getNaturalLanguageRepresentation());
-                		}
-                	}
-                	System.out.println("Sum: " + sum);
-                	System.out.println("\n------------------------------------------------------\n");
-                }
-
                 String propertyUri       = searchResult.getProperty();
                 String patternString     = searchResult.getNaturalLanguageRepresentation();
                 String label1            = searchResult.getFirstLabel();
@@ -268,15 +249,15 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
                     mappings.put(propertyUri.hashCode(), currentMapping);
                 }
                 
-                results.set(i, null);
+//                results.set(i, null);
                 currentProperty = propertyUri;
         	}
         	// make this huge list smaller
-        	logger.info("Result list size: " + results.size());
-        	results.removeAll(Collections.singleton(null));
-        	logger.info("Result list size after cleaning: " + results.size());
-        }
-        while ( !results.isEmpty() );
+//        	logger.info("Result list size: " + results.size());
+//        	results.removeAll(Collections.singleton(null));
+//        	logger.info("Result list size after cleaning: " + results.size());
+//        }
+//        while ( !results.isEmpty() );
         
         logger.info("Pattern mapping creation finished!");
 	}
@@ -315,12 +296,17 @@ public class DefaultPatternSearchModule extends AbstractPatternSearchModule {
     	
     	try {
         	
-    		ExecutorService executor = Executors.newFixedThreadPool(mappings.size());
+    		ExecutorService executor = Executors.newFixedThreadPool(TOTAL_NUMBER_OF_SEARCH_THREADS);
     		
     		logger.info("Starting parallel POS tagging of all patterns ...");
     		
+    		List<Pattern> patterns = new ArrayList<Pattern>();
+    		for ( PatternMapping mapping : mappings ) patterns.addAll(mapping.getPatterns());
+    		
+    		List<List<Pattern>> subPatternLists = ListUtil.split(patterns, TOTAL_NUMBER_OF_SEARCH_THREADS);
+    		
     		List<PatternPosTagCallable> patternsTaggerCallables = new ArrayList<PatternPosTagCallable>();
-        	for ( PatternMapping mapping : mappings ) patternsTaggerCallables.add(new PatternPosTagCallable(mapping));
+        	for ( List<Pattern> list : subPatternLists ) patternsTaggerCallables.add(new PatternPosTagCallable(list));
         	
 			executor.invokeAll(patternsTaggerCallables);
 			executor.shutdown();
