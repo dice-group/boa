@@ -125,6 +125,8 @@ public final class PatternMappingManager {
      */
     public Map<String, Set<PatternMapping>> getPatternMappingsInDatabases() {
 
+    	if ( NLPediaSettings.getSetting("patternMappingDatabases").isEmpty() ) return mappingsInDatabases; 
+    	
         for ( String database : NLPediaSettings.getSetting("patternMappingDatabases").split(";")) {
             
             this.logger.info("Reading mappings from database: " + database);
