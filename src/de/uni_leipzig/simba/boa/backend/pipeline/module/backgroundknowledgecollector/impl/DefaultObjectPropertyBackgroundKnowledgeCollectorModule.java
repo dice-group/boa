@@ -116,8 +116,8 @@ public class DefaultObjectPropertyBackgroundKnowledgeCollectorModule extends Abs
 				 "	?s rdfs:label ?sl . " + 
 				 "  ?s <"+property.getUri()+"> ?o . " +
 				 "  ?o rdfs:label ?ol . " +
-				 (property.getRdfsDomain() != null && !property.getRdfsDomain().equals("NA") ? "  ?s rdf:type <" + property.getRdfsDomain() + "> . " : " ") +
-				 (property.getRdfsRange() != null && !property.getRdfsRange().equals("NA") ? "  ?o rdf:type <" + property.getRdfsRange() + "> . " : " ") +
+//				 (property.getRdfsDomain() != null && !property.getRdfsDomain().equals("NA") ? "  ?s rdf:type <" + property.getRdfsDomain() + "> . " : " ") +
+//				 (property.getRdfsRange() != null && !property.getRdfsRange().equals("NA") ? "  ?o rdf:type <" + property.getRdfsRange() + "> . " : " ") +
 				 "	FILTER (   lang(?sl)= \""+BOA_LANGUAGE+"\"  &&  lang(?ol)= \""+BOA_LANGUAGE+"\"  ) " + 
 				 "} " +
 				 "LIMIT " + SPARQL_QUERY_LIMIT + " " +
