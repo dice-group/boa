@@ -1,4 +1,7 @@
 # boa
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9a984bb0b59245818a4be6d5c1edb033)](https://www.codacy.com/app/cirola2000/boa?utm_source=github.com&utm_medium=referral&utm_content=AKSW/boa&utm_campaign=badger)
+
 https://code.google.com/archive/p/boa/
 
 missing files:
